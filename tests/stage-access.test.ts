@@ -41,13 +41,14 @@ test('StageAccess converts completed preview learners without looping to prepara
   assert.match(render(fixture(2), false), /disabled=""[^>]*>暂不开放购买/)
 })
 test('StageAccess prioritizes owned access regardless of preview completion', () => {
-  for (const completed of [0, 1, 2, 3]) {
+  for (const completed of [0, 1, 2, 3, 4]) {
     const html = render(fixture(completed, true))
     assert.match(html, /继续学习/)
     assert.doesNotMatch(html, /免费体验|开通 Stage|开通本阶段/)
-    assert.doesNotMatch(html, /href="\/lesson\/stage-1\/s1-l4"/) // unpublished remains unavailable
+    assert.doesNotMatch(html, /href="\/lesson\/stage-1\/s1-l5"/) // unpublished remains unavailable
     if (completed === 2) assert.match(html, /href="\/lesson\/stage-1\/s1-l2"/)
     if (completed === 3) assert.match(html, /href="\/lesson\/stage-1\/s1-l3"/)
+    if (completed === 4) assert.match(html, /href="\/lesson\/stage-1\/s1-l4"/)
   }
 })
 test('StageAccess derives arbitrary preview IDs in course order and ignores unpublished previews', () => {
