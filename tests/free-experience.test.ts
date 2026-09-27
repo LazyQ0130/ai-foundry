@@ -27,15 +27,14 @@ test('a new zero-entitlement user completes preparation and 1.1; formal progress
     assert.ok(stored.completedLessons.includes(id))
     assert.ok(Object.values(stored.checks[id]).every(Boolean))
   }
-  await student.get('/api/lessons/s1-l2').expect(404)
-  // Published-but-paid metadata must still deny access, before attempting to read a body.
-  try {
-    await db.lesson.update({where:{id:'s1-l2'},data:{isPublished:true,isPreview:false}})
-    await student.get('/api/lessons/s1-l2').expect(403)
-    await request(app).get('/api/lessons/s1-l2').expect(401)
-  } finally { await db.lesson.update({where:{id:'s1-l2'},data:{isPublished:false}}) }
+  // 1.2 now has real paid content; completing the free lessons does not unlock it.
+  await student.get('/api/lessons/s1-l2').expect(403)
+  await request(app).get('/api/lessons/s1-l2').expect(401)
+  await student.get('/api/lessons/s1-l3').expect(403)
+  await request(app).get('/api/lessons/s1-l3').expect(401)
+  await student.get('/api/lessons/s1-l4').expect(404)
   const catalogue = (await request(app).get('/api/stages').expect(200)).body.data.stages
-  assert.equal(catalogue[0].lessons.find((l: {id:string})=>l.id==='s1-l2').isPublished,false)
+  assert.equal(catalogue[0].lessons.find((l: {id:string})=>l.id==='s1-l2').isPublished,true)
   assert.equal(catalogue[0].lessons.length,7) // public metadata includes prep + six formal lessons
   const row = await db.user.findUniqueOrThrow({where:{id:user.id}})
   await requireAssetAccess(row,{access:'authenticated-preview'})

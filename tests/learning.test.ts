@@ -26,7 +26,17 @@ test('student → manual purchase → protected lessons → durable progress →
     await grant('stage-1').expect(200)
     await a.get('/api/lessons/s1-l1').expect(200)
     // 未发布的占位课程始终不可访问，即使已开通所在阶段。
-    await a.get('/api/lessons/s1-l2').expect(404)
+    await a.get('/api/lessons/s1-l4').expect(404)
+    const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
+    assert.equal(nextLesson.body.data.lesson.isPreview, false)
+    assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)
+    const debugLesson = await a.get('/api/lessons/s1-l3').expect(200)
+    assert.equal(debugLesson.body.data.lesson.isPreview, false)
+    const debugKeys = debugLesson.body.data.content.meta.checkKeys
+    assert.equal(debugKeys.length, 5)
+    await a.put(`/api/progress/lessons/s1-l3/checks/${debugKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+    assert.equal(await db.lessonCheck.count({ where: { userId: id, lessonId: 's1-l3', checkKey: debugKeys[0], completed: true } }), 1)
+    await a.put(`/api/progress/lessons/s1-l3/checks/${debugKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)

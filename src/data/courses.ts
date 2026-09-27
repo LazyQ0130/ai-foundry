@@ -165,7 +165,7 @@ export const stages: Stage[] = [
         desc: '做出「只看重要资料」等真正可点击的小功能。',
         duration: '30 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's1-l3',
@@ -175,7 +175,7 @@ export const stages: Stage[] = [
         desc: '修复一个稳定可复现的交互 Bug。',
         duration: '30 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's1-l4',
