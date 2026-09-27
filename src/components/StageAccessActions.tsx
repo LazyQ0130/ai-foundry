@@ -7,6 +7,9 @@ export function StageAccessActions({ stage, purchasable, onPurchase }: {
   purchasable: boolean
   onPurchase: () => void
 }) {
+  if (stage.slug === 'stage-1' && stage.status === 'completed') {
+    return <Link className="btn btn-md btn-primary w-full" to="/stage/stage-1#cp-1">查看 Stage 1 阶段自检</Link>
+  }
   if (stage.status !== 'locked') {
     const available = stage.lessons.filter(lesson => lesson.isPublished !== false && lesson.status !== 'locked')
     const next = available.find(lesson => lesson.status === 'in_progress')

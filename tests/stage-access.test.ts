@@ -41,14 +41,14 @@ test('StageAccess converts completed preview learners without looping to prepara
   assert.match(render(fixture(2), false), /disabled=""[^>]*>暂不开放购买/)
 })
 test('StageAccess prioritizes owned access regardless of preview completion', () => {
-  for (const completed of [0, 1, 2, 3, 4, 5]) {
+  for (const completed of [0, 1, 2, 3, 4, 5, 6]) {
     const html = render(fixture(completed, true))
     assert.match(html, /继续学习/)
     assert.doesNotMatch(html, /免费体验|开通 Stage|开通本阶段/)
-    assert.doesNotMatch(html, /href="\/lesson\/stage-1\/s1-l6"/) // unpublished remains unavailable
     if (completed === 2) assert.match(html, /href="\/lesson\/stage-1\/s1-l2"/)
     if (completed === 3) assert.match(html, /href="\/lesson\/stage-1\/s1-l3"/)
     if (completed === 4) assert.match(html, /href="\/lesson\/stage-1\/s1-l4"/)
+    if (completed === 6) assert.match(html, /href="\/lesson\/stage-1\/s1-l6"/)
     if (completed === 5) assert.match(html, /href="\/lesson\/stage-1\/s1-l5"/)
   }
 })
@@ -70,4 +70,12 @@ test('curriculum exports no static user progress', () => {
   for (const name of ['completedLessons', 'overallPercent', 'currentStage', 'currentLesson']) {
     assert.equal(Object.hasOwn(curriculum, name), false, name)
   }
+})
+
+test('completed Stage 1 goes to self-check instead of looping to preparation', () => {
+  const stage = fixture(7, true)
+  stage.status = 'completed'
+  const html = render(stage)
+  assert.match(html, /href="\/stage\/stage-1#cp-1"/)
+  assert.doesNotMatch(html, /s1-l0|s1-l7|继续学习/)
 })

@@ -24,6 +24,7 @@
 
 ```text
 aifoundry-stage1-starter/
+├─ .gitignore
 ├─ app/
 ├─ components/
 ├─ lib/
@@ -37,7 +38,13 @@ aifoundry-stage1-starter/
 └─ tsconfig.json
 ```
 
-当前 ZIP 为 24,455 字节，界面显示约 24 KB。部署时需要将 starter/aifoundry-stage1-starter.zip 与后端一起交付，保持从仓库根目录启动。
+当前 ZIP 为 24,333 字节，界面显示约 24 KB。部署时需要将 starter/aifoundry-stage1-starter.zip 与后端一起交付，保持从仓库根目录启动。
+
+## 当前交付版本（2026-09-28）
+
+根目录 `.gitignore` 是唯一允许的隐藏文件，也是构建必需文件。其余隐藏文件、环境文件、测试和内部资料继续被拒绝。README 已去除作者备注，当前有效作者说明见 `course-content/internal/stage-1/README.md`。
+
+旧 SHA 已失效。本轮 ZIP SHA256：`7DE9C2D1B2A72FE352A2E0D3EE99C76C8541796470AC93E0F4A718AE1B3E93CE`。以下 2026-09-27 验收为历史记录，本轮完整结果见 [Stage 1 最终验收](stage-1-final-validation.md)。
 
 ## 依赖与验收（2026-09-27）
 

@@ -45,13 +45,13 @@ try {
   await fetch(`${base}/api/auth/logout`, { method: 'POST', headers: { Origin: origin, Cookie: token } })
   assert.equal((await fetch(`${base}/api/me`, { headers: { Cookie: token } })).status, 401)
   assert.equal((await fetch(`${base}/api/auth/logout`, { method: 'POST', headers: { Origin: 'https://evil.example' } })).status, 403)
-  for (const route of ['/course-content/stage-1/s1-l0.md', '/course-content/stage-1/s1-l1.md', '/course-content/stage-2/s2-l3.md', '/.env', '/server/app.ts', '/.runtime/legacy-build-phase4/index.html']) {
+  for (const route of ['/course-content/stage-1/s1-l0.md', '/course-content/stage-1/s1-l1.md', '/course-content/stage-1/s1-l6.md', '/course-content/internal/stage-1/s1-l6/README.md', '/course-content/stage-2/s2-l3.md', '/.env', '/server/app.ts', '/.runtime/legacy-build-phase4/index.html']) {
     const response = await fetch(base + route)
     const body = await response.text()
     assert.doesNotMatch(body, /FastAPI|DATABASE_URL|SESSION_SECRET|express|legacy-build|estimatedTime|checkKeys|先认识一下你手上的这个项目/)
   }
   const deniedLesson = await fetch(base + '/api/lessons/s1-l2')
-  assert.equal(deniedLesson.status, 404)
+  assert.equal(deniedLesson.status, 401)
   assert.doesNotMatch(await deniedLesson.text(), /checkKeys|body|第一次修改/)
   console.info('PASS: compiled production server, SPA routes, Secure cookie, logout, CSRF and private-file isolation.')
 } finally { server.kill() }

@@ -13,7 +13,7 @@ import { MobilePlanComparison } from '../src/components/MobilePlanComparison.js'
 import { planTemplates } from '../src/data/site.js'
 
 const render = (child: ReturnType<typeof createElement>) => renderToStaticMarkup(createElement(StaticRouter,{location:"/"},child))
-test('formal totals and both project pages exclude prep, and published completion cannot complete a stage', async () => {
+test('formal totals exclude prep and all six Stage 1 lessons complete the stage', async () => {
   assert.deepEqual(stages.map(stageLessonCount),[6,8,7,8])
   assert.equal(curriculumFormalLessonCount(),29)
   const stage: Stage = {...stages[0],lessons:stages[0].lessons.map(l=>({...l,status:l.isPrep?'completed':'not_started'}))}
@@ -22,6 +22,9 @@ test('formal totals and both project pages exclude prep, and published completio
   stage.lessons[1].status='completed'
   assert.equal(stageCompletedCount(stage),1)
   assert.equal(stageLearningStatus(stage,true),'in_progress')
+  stage.lessons.forEach(l => { l.status = 'completed' })
+  assert.equal(stageCompletedCount(stage),6)
+  assert.equal(stageLearningStatus(stage,true),'completed')
   for(const page of ['ProjectsPage','ProjectPage']) {
     const source=await readFile(`src/pages/${page}.tsx`,'utf8')
     assert.match(source,/stageCompletedCount\(/)

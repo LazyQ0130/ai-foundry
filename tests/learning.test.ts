@@ -26,7 +26,7 @@ test('student → manual purchase → protected lessons → durable progress →
     await grant('stage-1').expect(200)
     await a.get('/api/lessons/s1-l1').expect(200)
     // 未发布的占位课程始终不可访问，即使已开通所在阶段。
-    await a.get('/api/lessons/s1-l6').expect(404)
+    await a.get('/api/lessons/s2-l1').expect(404)
     const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
     assert.equal(nextLesson.body.data.lesson.isPreview, false)
     assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)

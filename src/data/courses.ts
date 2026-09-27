@@ -202,10 +202,10 @@ export const stages: Stage[] = [
         code: '1.6',
         order: 6,
         title: '独立带 AI 做一个自己的功能',
-        desc: '自选并完成一个同等规模的小功能，形成第一次独立闭环。',
+        desc: '自己定义一个小功能，验证结果、检查修改并保存完成版本。',
         duration: '40 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
     ],
     checkpoints: [
@@ -215,7 +215,7 @@ export const stages: Stage[] = [
         title: 'Stage 1 阶段自检',
         desc: '不看教程，独立完成下面几件事。做不到的部分，回到对应课程再看一遍。',
         items: [
-          '不看教程，能让 AI 给现有页面新增一个小功能',
+          '能从自己的需求开始，让 AI 新增一个小功能，亲自验证并保存完成版本',
           '能描述一个 Bug 的操作、预期和实际',
           '能看出本轮改了哪些文件',
           '能保存并恢复一个可用版本',

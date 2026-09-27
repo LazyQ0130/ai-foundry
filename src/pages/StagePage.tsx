@@ -219,6 +219,8 @@ export default function StagePage() {
                         return (
                           <div
                             key={c.id}
+                            id={stage.slug === 'stage-1' ? c.id : undefined}
+                            style={stage.slug === 'stage-1' ? { scrollMarginTop: '6rem' } : undefined}
                             className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-3"
                           >
                             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white text-slate-400 ring-1 ring-slate-200">
@@ -238,6 +240,11 @@ export default function StagePage() {
                             >
                               {cDone ? '已完成' : '未完成'}
                             </span>
+                            {stage.slug === 'stage-1' ? (
+                              <ul className="basis-full list-disc space-y-1 pl-5 text-[13px] leading-6 text-slate-600">
+                                {c.items.map(item => <li key={item}>{item}</li>)}
+                              </ul>
+                            ) : null}
                           </div>
                         )
                       })}
@@ -289,7 +296,7 @@ export default function StagePage() {
             </dl>
           </div>
 
-          {!locked && <div className="card p-5">
+          {!locked && !(stage.slug === 'stage-1' && done === total) && <div className="card p-5">
             <h2 className="text-[14px] font-semibold text-slate-900">下一节</h2>
             <p className="mt-3 text-[11.5px] text-slate-400">第 {upNextIndex + 1} 课</p>
             <h3 className="mt-1 text-[13.5px] font-semibold text-slate-900">{upNext.title}</h3>

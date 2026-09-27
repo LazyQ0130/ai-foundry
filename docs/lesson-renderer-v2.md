@@ -88,7 +88,7 @@ checkKeys:
 
 源文件位于 `starter/stage-1/`。运行 `npm run build:starter` 生成 `starter/aifoundry-stage1-starter.zip`，`npm run check:starter` 检查 ZIP 是否与源文件一致。网站 `npm run build` 会自动重新打包，测试也会检查源文件与 ZIP 一致。部署需同时携带该 ZIP，保持仓库根目录为启动工作目录；不能复制到 `public` 或 `dist`。
 
-打包只保留固定根文件及 app/components/lib/public 下允许的源代码、样式和素材；排除隐藏文件、依赖、构建缓存、日志和临时文件，拒绝符号链接。新增配置文件时需明确更新打包白名单。
+打包只保留固定根文件及 app/components/lib/public 下允许的源代码、样式和素材；根目录 `.gitignore` 是唯一允许且必需的隐藏文件，其余隐藏文件、依赖、构建缓存、测试、日志和临时文件均排除，拒绝符号链接。新增配置文件时需明确更新打包白名单。
 
 ## 图片与占位
 
