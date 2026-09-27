@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { LessonStatus, Stage } from './courses'
-import { formalLessons } from './courses'
+import { allLessons, curriculumFormalLessonCount, stageLearningStatus } from './courses'
 import { useAuth } from '../auth/AuthProvider'
 import { useCatalogue } from './catalog'
 import { api, errorMessage, jsonBody } from '../lib/api'
@@ -56,19 +56,18 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const stages = useMemo(() => catalogue.stages.map((stage): Stage => {
     const access = auth.user?.entitlements.includes(stage.slug) ?? false
     const lessons=stage.lessons.map((lesson) => {
-      const status: LessonStatus = !access && !lesson.isPreview ? 'locked' : progress.completedLessons.includes(lesson.id) ? 'completed' : progress.inProgressLessons.includes(lesson.id) ? 'in_progress' : 'not_started'
+      const status: LessonStatus = lesson.isPublished === false || (!access && !lesson.isPreview) ? 'locked' : progress.completedLessons.includes(lesson.id) ? 'completed' : progress.inProgressLessons.includes(lesson.id) ? 'in_progress' : 'not_started'
       return {...lesson,status}
     })
-    const formal = formalLessons(lessons)
-    const status: Stage['status'] = !access ? 'locked' : formal.length && formal.every((l)=>l.status==='completed') ? 'completed' : formal.some((l)=>['completed','in_progress'].includes(l.status)) ? 'in_progress' : 'not_started'
+    const status = stageLearningStatus({...stage, lessons}, access)
     return {...stage,lessons,status}
   }),[catalogue.stages,auth.user,progress])
-  const total = stages.flatMap((s)=>formalLessons(s.lessons)).length
-  const completedLessons = stages.flatMap((s)=>formalLessons(s.lessons)).filter((l)=>progress.completedLessons.includes(l.id)).length
+  const total = curriculumFormalLessonCount()
+  const completedLessons = allLessons.filter(l=>progress.completedLessons.includes(l.id)).length
   const last = progress.lastLesson
   const value: ProgressContextValue = {
     stages, completedLessons, overallPercent: total ? Math.round(completedLessons/total*100) : 0,
-    lastLessonPath: last ? '/lesson/'+last.stageSlug+'/'+last.lessonId : '/path',
+    lastLessonPath: !auth.user?.entitlements.length ? (progress.completedLessons.includes('s1-l0') ? progress.completedLessons.includes('s1-l1') ? '/stage/stage-1' : '/lesson/stage-1/s1-l1' : '/lesson/stage-1/s1-l0') : last ? '/lesson/'+last.stageSlug+'/'+last.lessonId : '/path',
     loading: auth.loading || catalogue.loading || loading || loadedFor !== userId,
     error: auth.error || catalogue.error || error, mutationError, saving,
     refresh: async () => { await Promise.all([auth.refreshUser(), catalogue.refresh(), refresh()]) },

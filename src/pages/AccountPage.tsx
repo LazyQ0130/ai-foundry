@@ -1,3 +1,4 @@
+import { curriculumFormalLessonCount, stageLessonCount } from '../data/courses'
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, LogOut, MessageCircle } from 'lucide-react'
@@ -6,7 +7,6 @@ import { useAuth } from '../auth/AuthProvider'
 import { useCatalogue } from '../data/catalog'
 import { usePlans } from '../data/pricing'
 import { useProgress } from '../data/progress'
-import { formalLessons } from '../data/courses'
 import { Ring } from '../components/ui'
 import type { Plan } from '../data/site'
 import PurchaseModal from '../components/PurchaseModal'
@@ -133,7 +133,7 @@ function CoursesSection({ onBuy }: { onBuy: (plan: Plan) => void }) {
                       {stage.tag} · {stage.title}
                     </p>
                     <p className="mt-1 text-[12px] text-slate-500">
-                      {formalLessons(stage.lessons).length} 节课 · 1 个阶段项目
+                      {stageLessonCount(stage)} 节课 · 1 个阶段项目
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-3">
@@ -157,8 +157,8 @@ function CoursesSection({ onBuy }: { onBuy: (plan: Plan) => void }) {
 /* ------------------------------- 学习概览 ------------------------------- */
 
 function LearningSection() {
-  const { stages, completedLessons, overallPercent, lastLessonPath, loading } = useProgress()
-  const totalLessons = stages.reduce((sum, stage) => sum + formalLessons(stage.lessons).length, 0)
+  const { completedLessons, overallPercent, lastLessonPath, loading } = useProgress()
+  const totalLessons = curriculumFormalLessonCount()
   const hasContinue = lastLessonPath.startsWith('/lesson/')
 
   return (

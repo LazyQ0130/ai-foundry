@@ -1,5 +1,5 @@
 import { db } from '../db.js'
-import { stages } from '../../src/data/courses.js'
+import { stages, formalLessons, curriculumFormalLessonCount } from '../../src/data/courses.js'
 
 export async function getProgress(userId: string) {
   const [progress, checks, entitlements, published] = await db.$transaction([
@@ -22,6 +22,7 @@ export async function getProgress(userId: string) {
   return {
     completedLessons: [...completed], inProgressLessons: progress.filter((p) => p.status === 'IN_PROGRESS').map((p) => p.lessonId),
     checks: grouped, lastLesson,
-    stageProgress: Object.fromEntries(stages.map((s) => { const lessons = s.lessons.filter((l) => !l.isPrep && published.some((p) => p.id === l.id)); const done = lessons.filter((l) => completed.has(l.id)).length; return [s.slug, { completed: done, total: lessons.length, percent: lessons.length ? Math.round(done / lessons.length * 100) : 0 }] })),
+    formalProgress: { completed: entries.filter(l => completed.has(l.lessonId)).length, total: curriculumFormalLessonCount() },
+    stageProgress: Object.fromEntries(stages.map((s) => { const lessons = formalLessons(s.lessons); const done = lessons.filter((l) => completed.has(l.id)).length; return [s.slug, { completed: done, total: lessons.length, percent: lessons.length ? Math.round(done / lessons.length * 100) : 0 }] })),
   }
 }

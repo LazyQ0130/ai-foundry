@@ -1,7 +1,9 @@
+import { curriculumFormalLessonCount, stageCompletedCount, stageLessonCount } from '../data/courses'
+import { FreeExperience } from '../components/FreeExperience'
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, FolderKanban, Play } from 'lucide-react'
 import { Progress, Ring, StageChip } from '../components/ui'
-import { accentClass, formalLessons, stageStatusLabel } from '../data/courses'
+import { accentClass, stageStatusLabel } from '../data/courses'
 import { useProgress } from '../data/progress'
 import { useAuth } from '../auth/AuthProvider'
 
@@ -9,7 +11,7 @@ export default function Dashboard() {
   const { stages, completedLessons, overallPercent, lastLessonPath } = useProgress()
   const { user } = useAuth()
   const hasContinue = lastLessonPath.startsWith('/lesson/')
-  const totalLessons = stages.reduce((sum, stage) => sum + formalLessons(stage.lessons).length, 0)
+  const totalLessons = curriculumFormalLessonCount()
   const currentStage = stages.find((stage) => lastLessonPath.includes('/'+stage.slug+'/')) ?? stages[0]
   const currentLesson = currentStage?.lessons.find((lesson) => lastLessonPath.endsWith('/'+lesson.id))
 
@@ -18,14 +20,14 @@ export default function Dashboard() {
       <section className="bg-gradient-to-b from-[#E9F2FE] via-[#F5F9FF] to-white">
         <div className="shell py-12 sm:py-16">
           <span className="chip bg-white text-brand-700 ring-1 ring-brand-100">我的学习 · 云端学习进度</span>
-          <h1 className="mt-4 text-[32px] font-bold tracking-tight text-slate-900 sm:text-[40px]">接着上次的进度，继续构建。</h1>
+          <h1 className="mt-4 text-[32px] font-bold tracking-tight text-slate-900 sm:text-[40px]">{user?.entitlements.length ? '接着上次的进度，继续构建。' : '免费体验 AIFoundry'}</h1>
           <p className="mt-3 text-[14px] leading-6 text-slate-600">完成一节课后，学习路径和阶段页会同步更新；再次登录仍可继续学习。</p>
         </div>
       </section>
 
       <div className="shell grid gap-5 pb-12 lg:grid-cols-[minmax(0,1fr)_330px]">
         <div className="space-y-6">
-          <section className="card p-6">
+          {!user?.entitlements.length ? <FreeExperience prepDone={stages.some(s => s.lessons.some(l => l.id === 's1-l0' && l.status === 'completed'))} firstDone={stages.some(s => s.lessons.some(l => l.id === 's1-l1' && l.status === 'completed'))}/> : <section className="card p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-[12px] font-semibold text-brand-600">CONTINUE LEARNING</p>
@@ -39,7 +41,7 @@ export default function Dashboard() {
               <Link to={lastLessonPath} className="btn btn-lg btn-primary"><Play className="h-4 w-4" />{hasContinue ? '继续学习' : '查看学习路径'}</Link>
               <Link to={`/stage/${currentStage.slug}`} className="btn btn-lg btn-outline">查看本阶段<ArrowRight className="h-4 w-4" /></Link>
             </div>
-          </section>
+          </section>}
 
           <section>
             <div className="mb-4 flex items-center justify-between">
@@ -48,15 +50,15 @@ export default function Dashboard() {
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {stages.map((stage) => {
-                const formal = formalLessons(stage.lessons)
-                const done = formal.filter((lesson) => lesson.status === 'completed').length
+                const total = stageLessonCount(stage)
+                const done = stageCompletedCount(stage)
                 return (
                   <Link key={stage.id} to={`/stage/${stage.slug}`} className="card p-5 transition hover:border-brand-200 hover:shadow-lift">
                     <div className="flex items-center justify-between gap-2"><span className="text-[12px] text-slate-500">{stage.tag}</span><StageChip status={stage.status} label={stageStatusLabel[stage.status]} /></div>
                     <h3 className="mt-3 text-[16px] font-semibold text-slate-900">{stage.title}</h3>
                     <p className="mt-1.5 text-[12.5px] leading-5 text-slate-500">{stage.subtitle}</p>
-                    <Progress value={Math.round(done / Math.max(1, formal.length) * 100)} className="mt-4" barClassName={accentClass[stage.accent].bg} />
-                    <p className="mt-2 text-right text-[11.5px] text-slate-500">{done} / {formal.length} 节课</p>
+                    <Progress value={Math.round(done / Math.max(1, total) * 100)} className="mt-4" barClassName={accentClass[stage.accent].bg} />
+                    <p className="mt-2 text-right text-[11.5px] text-slate-500">{done} / {total} 节课</p>
                   </Link>
                 )
               })}

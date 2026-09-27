@@ -13,9 +13,9 @@ export async function seed() {
     })
     for (const lesson of item.lessons) await db.lesson.upsert({
       where: { id: lesson.id },
-      // 目录同步：发布状态跟随 courses.ts；第 0 课默认试看。isPreview 仍可在后台调整。
-      create: { id: lesson.id, stageId: stage.id, isPublished: lesson.isPublished ?? true, isPreview: lesson.isPrep ?? false },
-      update: { stageId: stage.id, isPublished: lesson.isPublished ?? true },
+      // 目录同步：发布状态跟随 courses.ts；免费体验状态跟随 courses.ts，重复运行也会同步已有数据库。
+      create: { id: lesson.id, stageId: stage.id, isPublished: lesson.isPublished ?? true, isPreview: lesson.isPreview ?? false },
+      update: { stageId: stage.id, isPublished: lesson.isPublished ?? true, isPreview: lesson.isPreview ?? false },
     })
   }
   const phone = process.env.ADMIN_PHONE?.replace(/\s/g, '')

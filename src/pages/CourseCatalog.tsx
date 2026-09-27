@@ -105,7 +105,7 @@ export default function CourseCatalog() {
                                 : 'font-medium text-slate-800'
                           }`}
                         >
-                          {l.title}
+                          {l.title}{l.isPublished === false ? ' · 即将上线' : l.isPreview ? ' · 免费体验' : ''}
                         </span>
                         <span className={`mt-0.5 block text-[11.5px] ${isLocked ? 'text-slate-400' : 'text-slate-500'}`}>
                           {l.desc}

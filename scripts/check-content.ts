@@ -12,6 +12,7 @@ try {
       const row = published.find((l) => l.id === lesson.id)
       if (!lesson.isPublished && !row) continue
       if (!row) throw new Error(`Lesson ${lesson.id} is published in courses.ts but not in the database. Run npm run db:seed.`)
+      if (row.isPreview !== (lesson.isPreview ?? false)) throw new Error(`Lesson ${lesson.id} preview policy out of sync. Run npm run db:seed.`)
       await readLessonContent(stage.slug, lesson.id)
       count++
     }

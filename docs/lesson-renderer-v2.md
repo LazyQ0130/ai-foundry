@@ -84,7 +84,7 @@ checkKeys:
 
 页面呈现文件图标、资源名称、说明、ZIP 大小和「下载 Starter」按钮。下载失败在块内提示，401 提示登录，403 提示开通 Stage 1；不会把错误 JSON 保存成 ZIP。
 
-`GET /api/course-assets/stage1-starter` 单独验证登录与 Stage 1 entitlement，Admin 可下载。它不继承 Lesson Preview 权限。`/info` 只公开大小与格式，不公开路径或文件内容。服务器文件映射位于 `server/routes/course-assets.ts`，不能从 Markdown 或请求参数指定文件路径。
+`GET /api/course-assets/stage1-starter` 单独验证 ACTIVE 登录状态，当前使用 `authenticated-preview` 策略，无需 Stage 1 entitlement。它不继承 Lesson Preview 权限，匿名用户仍不能下载。`/info` 只公开大小与格式，不公开路径或文件内容。服务器文件映射位于 `server/routes/course-assets.ts`，不能从 Markdown 或请求参数指定文件路径。
 
 源文件位于 `starter/stage-1/`。运行 `npm run build:starter` 生成 `starter/aifoundry-stage1-starter.zip`，`npm run check:starter` 检查 ZIP 是否与源文件一致。网站 `npm run build` 会自动重新打包，测试也会检查源文件与 ZIP 一致。部署需同时携带该 ZIP，保持仓库根目录为启动工作目录；不能复制到 `public` 或 `dist`。
 

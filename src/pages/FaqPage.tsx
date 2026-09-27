@@ -1,3 +1,4 @@
+import { FaqPermalink } from '../components/FaqPermalink'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ArrowRight, ChevronDown, MessageCircle } from 'lucide-react'
@@ -59,7 +60,7 @@ export default function FaqPage() {
               <div id={`${faq.id}-answer`} hidden={!expanded.has(faq.id)} className="px-5 pb-5 text-[13.5px] leading-7 text-slate-600">
                 <p>{faq.a}</p>
                 {faq.link && <Link to={faq.link.to} className="mt-2 inline-flex items-center gap-1 font-medium text-brand-600 hover:underline">{faq.link.label}<ArrowRight className="h-3.5 w-3.5" /></Link>}
-                <Link to={`/faq#${faq.id}`} className="mt-3 block w-fit text-xs text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-brand-600" aria-label={`问题链接：${faq.q}`}>此问题的链接</Link>
+                <FaqPermalink id={faq.id}/>
               </div>
             </div>)}
           </div>

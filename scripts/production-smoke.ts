@@ -50,8 +50,8 @@ try {
     const body = await response.text()
     assert.doesNotMatch(body, /FastAPI|DATABASE_URL|SESSION_SECRET|express|legacy-build|estimatedTime|checkKeys|先认识一下你手上的这个项目/)
   }
-  const deniedLesson = await fetch(base + '/api/lessons/s1-l1')
-  assert.equal(deniedLesson.status, 401)
+  const deniedLesson = await fetch(base + '/api/lessons/s1-l2')
+  assert.equal(deniedLesson.status, 404)
   assert.doesNotMatch(await deniedLesson.text(), /checkKeys|body|第一次修改/)
   console.info('PASS: compiled production server, SPA routes, Secure cookie, logout, CSRF and private-file isolation.')
 } finally { server.kill() }

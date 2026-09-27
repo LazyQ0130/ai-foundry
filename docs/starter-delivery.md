@@ -2,8 +2,8 @@
 
 ## 下载接口与权限
 
-- `GET /api/course-assets/stage1-starter`：未登录 401；已登录但没有有效 Stage 1 entitlement 返回 403；有效学员或 Admin 下载 ZIP。复用现有 Session 和 entitlement 查询，没有改变 Auth 或数据模型。
-- 第 0 课 Preview 与附件授权分开，撤销 entitlement 后下一次下载立即被拒绝。
+- `GET /api/course-assets/stage1-starter`：未登录 401；ACTIVE 登录用户即可下载（无需 Stage 1 entitlement）；禁用用户仍拒绝。复用现有 Session，没有改变 Auth 或数据模型。
+- 第 0 课与 1.1 为 Preview；附件授权独立使用 `authenticated-preview` 策略。通用策略同时支持 `stage-entitlement` 和 `admin-only`，以后新增付费附件时显式声明。此规则取代最初的 Starter 付费限制，详见 `free-experience.md`。
 - 固定服务端白名单指向 `starter/aifoundry-stage1-starter.zip`。请求不接受 filesystem path；任意 query 不改变文件映射。未知 ID、路径穿越、原型属性名均不能解析为资源。
 - `Content-Type: application/zip`，`Content-Disposition: attachment; filename="aifoundry-stage1-starter.zip"`，`Cache-Control: no-store`。
 - `GET /api/course-assets/stage1-starter/info` 公开格式与实际字节数，供 Preview 显示资源信息，不公开正文、路径或附件内容。

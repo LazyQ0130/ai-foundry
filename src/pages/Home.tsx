@@ -1,3 +1,4 @@
+import { curriculumFormalLessonCount } from '../data/courses'
 import { useState } from 'react'
 import { usePlans } from '../data/pricing'
 import { Link } from 'react-router-dom'
@@ -17,7 +18,7 @@ import { Icon } from '../components/Icon'
 import { HeroAppMockup } from '../components/mockups'
 import PurchaseModal from '../components/PurchaseModal'
 import { SectionHeading } from '../components/ui'
-import { accentClass, formalLessons, stages, type Stage } from '../data/courses'
+import { accentClass, stages, type Stage } from '../data/courses'
 import { heroStats, homeFeatures } from '../data/site'
 
 /* ------------------------------- Hero ------------------------------- */
@@ -279,7 +280,7 @@ function PlansSection() {
   const allPlan = plans.find((p) => p.id === 'all-access')
   const minPrice = stagePlans.length ? Math.min(...stagePlans.map((p) => p.price)) : null
   const stageCount = catalogueStages.length
-  const lessonCount = catalogueStages.reduce((n, s) => n + formalLessons(s.lessons).length, 0)
+  const lessonCount = curriculumFormalLessonCount()
 
   return (
     <section className="shell pb-16">

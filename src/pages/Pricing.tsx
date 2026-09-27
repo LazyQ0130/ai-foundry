@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { MobilePlanComparison } from '../components/MobilePlanComparison'
 import { usePlans } from '../data/pricing'
 import type { Plan } from '../data/site'
 import PurchaseModal from '../components/PurchaseModal'
@@ -68,7 +69,8 @@ export default function Pricing() {
       {/* ------------------------------ 方案对比 ------------------------------ */}
       {allPlan && <section className="shell pb-16">
         <h2 className="h-sec">方案对比</h2>
-        <div className="mt-5 overflow-x-auto">
+        <MobilePlanComparison allPlan={allPlan} stagePlans={stagePlans} onBuy={setSelected}/>
+        <div className="mt-5 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[760px] border-collapse text-[12.5px]">
             <thead>
               <tr>

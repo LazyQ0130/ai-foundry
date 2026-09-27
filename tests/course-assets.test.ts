@@ -9,7 +9,7 @@ import { db } from '../server/db.js'
 import { createStarterZip, isStarterFile } from '../scripts/starter-package.js'
 
 const endpoint = '/api/course-assets/stage1-starter'
-test('Starter downloads require separate stage access, including preview, admin and revocation', async () => {
+test('Starter downloads allow active preview users, admin and revoked stage access but reject disabled users', async () => {
   const student = request.agent(app), admin = request.agent(app)
   const phone = `134${Date.now().toString().slice(-8)}`
   const id = (await student.post('/api/auth/register').set('Origin', env.APP_ORIGIN).send({ phone, password: 'asset-test-123', acceptedTerms: true }).expect(201)).body.data.user.id
@@ -17,10 +17,10 @@ test('Starter downloads require separate stage access, including preview, admin 
   await request(app).get('/api/lessons/s1-l0').expect(200)
   await request(app).get(endpoint).expect(401)
   await request(app).head(endpoint).expect(401)
-  await student.get(endpoint).expect(403)
+  await student.get(endpoint).expect(200)
   const grant = (stageSlug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug, source: 'TEST', note: '附件权限测试' })
   await grant('stage-2').expect(200)
-  await student.get(endpoint).expect(403)
+  await student.get(endpoint).expect(200)
   await grant('stage-1').expect(200)
   for (const agent of [student, admin]) {
     const result = await agent.get(endpoint).buffer(true).parse((res, callback) => {
@@ -41,10 +41,12 @@ test('Starter downloads require separate stage access, including preview, admin 
   const withPath = await admin.get(`${endpoint}?path=../../.env`).expect(200)
   assert.equal(withPath.headers['content-type'], 'application/zip')
   await admin.delete(`/api/admin/users/${id}/entitlements/stage-1`).set('Origin', env.APP_ORIGIN).send({ note: '撤销测试' }).expect(200)
-  await student.get(endpoint).expect(403)
+  await student.get(endpoint).expect(200)
   const info = await request(app).get(`${endpoint}/info`).expect(200)
   assert.deepEqual(Object.keys(info.body.data).sort(), ['bytes', 'format'])
   assert.equal(info.body.data.bytes, (await readFile('starter/aifoundry-stage1-starter.zip')).length)
+  await db.user.update({where:{id},data:{status:'DISABLED'}})
+  await student.get(endpoint).expect(401)
   await db.$disconnect()
 })
 

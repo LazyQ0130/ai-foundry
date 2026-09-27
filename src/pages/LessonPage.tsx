@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
 import { Link, useParams } from 'react-router-dom'
 import {
   ArrowLeft,
@@ -98,6 +99,7 @@ function LessonSidebar({
                       <span className="min-w-0 flex-1 truncate">
                         {l.code} {l.title}
                       </span>
+                      {l.isPublished === false && <span className="shrink-0 text-[10px] text-slate-400">即将上线</span>}
                     </>
                   )
                   return (
@@ -179,6 +181,8 @@ function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesso
 }
 
 function NavArrow({ dir, stage, lesson }: { dir: 'prev' | 'next'; stage: Stage; lesson: Lesson }) {
+  const { user } = useAuth()
+  if (dir === 'next' && lesson.id === 's1-l1' && !user?.entitlements.includes(stage.slug)) return <Link to={`/stage/${stage.slug}`} className="btn btn-sm btn-outline">继续 Stage 1 · 查看完整课程</Link>
   const target = dir === 'prev' ? prevLessonOf(stage, lesson) : nextLessonOf(stage, lesson)
   const label = dir === 'prev' ? '上一课' : '下一课'
   const Icon = dir === 'prev' ? ChevronLeft : ChevronRight
@@ -219,7 +223,7 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
 
   return (
     <div className="space-y-4">
-      {/* 学习进度 */}
+      {lesson.isPrep ? <PrepFeedback done={done}/> : <>
       <div className="card p-4">
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-900">
@@ -241,7 +245,7 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
           </span>
           <span>{percent}%</span>
         </div>
-      </div>
+      </div> </>}
 
       {mutationError && <p role="alert" className="text-sm text-red-600">{mutationError}</p>}
       {!user && <Link to="/login" className="block text-sm text-brand-600">登录后同步学习进度</Link>}
@@ -304,12 +308,13 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
         <p className="text-center text-[13px] text-slate-500">完成本地操作并勾选全部任务后，即可标记本课完成。</p>
       ) : null}
 
-      {done && next ? (
+      {done && next && !lesson.isPrep ? (
         <Link to={`/lesson/${stage.slug}/${next.id}`} className="btn btn-md btn-outline w-full">
           进入下一课：{next.code} {next.title.length > 10 ? `${next.title.slice(0, 10)}…` : next.title}
         </Link>
       ) : null}
 
+      {done && lesson.id === 's1-l1' && !user?.entitlements.includes(stage.slug) && <FreeExperience prepDone={stage.lessons.some(l => l.isPrep && l.status === 'completed')} firstDone={done}/>}
       {/* 卡住了 */}
       <div className="card p-4">
         <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-900">

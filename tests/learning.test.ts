@@ -13,6 +13,8 @@ test('student → manual purchase → protected lessons → durable progress →
   const id = (await register(a, phone).expect(201)).body.data.user.id
   const other = (await register(b, `135${phone.slice(3)}`).expect(201)).body.data.user.id
   await admin.post('/api/auth/login').set('Origin', env.APP_ORIGIN).send({ phone: process.env.ADMIN_PHONE, password: process.env.ADMIN_INITIAL_PASSWORD }).expect(200)
+  // Exercise the existing paid-content boundary with a temporary non-preview fixture.
+  await db.lesson.update({ where: { id: 's1-l1' }, data: { isPreview: false } })
   const grant = (slug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug: slug, source: 'MANUAL_PURCHASE', note: '测试付款' })
   let keys: string[] = []
   await t.test('paid content and writes denied for guests and unentitled students, including stage 1', async () => {
@@ -77,7 +79,7 @@ test('student → manual purchase → protected lessons → durable progress →
       await patch({isPublished:false}).expect(200)
       await b.get('/api/lessons/s1-l1').expect(404)
       const catalogue = (await request(app).get('/api/stages')).body.data.stages
-      assert.equal(catalogue.flatMap((s: {lessons:{id:string}[]})=>s.lessons).some((l:{id:string})=>l.id==='s1-l1'),false)
+      assert.equal(catalogue.flatMap((s: {lessons:{id:string;isPublished:boolean}[]})=>s.lessons).find((l:{id:string})=>l.id==='s1-l1').isPublished,false)
     } finally { await patch({isPreview:false,isPublished:true}).expect(200) }
   })
   await t.test('CSRF, input validation, body limit and admin boundaries',async()=>{
@@ -90,5 +92,6 @@ test('student → manual purchase → protected lessons → durable progress →
     const missing=await a.get('/api/lessons/not-a-lesson').expect(404)
     assert.doesNotMatch(JSON.stringify(missing.body),/stack|Prisma|C:\\/)
   })
+  await db.lesson.update({ where: { id: 's1-l1' }, data: { isPreview: true } })
   await db.$disconnect()
 })

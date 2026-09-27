@@ -1,3 +1,4 @@
+import { stageCompletedCount, stageLessonCount } from '../data/courses'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Code2, Target } from 'lucide-react'
 import { Icon } from '../components/Icon'
@@ -29,8 +30,8 @@ export default function ProjectsPage() {
           const p = getProject(s.project.id)
           const a = accentClass[s.accent]
           const locked = s.status === 'locked'
-          const doneTasks = s.lessons.filter((l) => l.status === 'completed').length
-          const totalTasks = s.lessons.length
+          const doneTasks = stageCompletedCount(s)
+          const totalTasks = stageLessonCount(s)
           const percent = totalTasks ? Math.round((doneTasks / totalTasks) * 100) : 0
 
           return (

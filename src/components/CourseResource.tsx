@@ -7,6 +7,7 @@ export function CourseResource({ asset }: { asset: string }) {
   const [bytes, setBytes] = useState<number>()
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
+  const [needsLogin, setNeedsLogin] = useState(false)
   useEffect(() => {
     if (!item) return
     const controller = new AbortController()
@@ -18,11 +19,12 @@ export function CourseResource({ asset }: { asset: string }) {
   if (!item) return null
   async function download() {
     if (!item || busy) return
-    setBusy(true); setMessage('')
+    setBusy(true); setMessage(''); setNeedsLogin(false)
     try {
       const response = await fetch(item.endpoint, { credentials: 'include' })
       if (!response.ok) {
-        setMessage(response.status === 401 ? '请先登录，再下载 Starter。' : response.status === 403 ? 'Starter 为 Stage 1 付费课程资源，开通 Stage 1 后即可下载。' : '下载暂时不可用，请稍后重试。')
+        setNeedsLogin(response.status === 401)
+        setMessage(response.status === 401 ? '登录后即可免费下载 Starter，并保存你的学习进度。' : response.status === 403 ? '当前账号没有此资源的下载权限。' : '下载暂时不可用，请稍后重试。')
         return
       }
       const url = URL.createObjectURL(await response.blob())
@@ -40,9 +42,10 @@ export function CourseResource({ asset }: { asset: string }) {
       <div className="lesson-resource-label">课程资源</div>
       <div className="lesson-resource-title">{item.title}</div>
       <div className="lesson-resource-description">{item.description}</div>
-      <div className="lesson-resource-meta">{item.format}{bytes !== undefined ? ` · 约 ${Math.ceil(bytes / 1024)} KB` : ''} · Stage 1 学员资源</div>
+      <div className="lesson-resource-meta">{item.format}{bytes !== undefined ? ` · 约 ${Math.ceil(bytes / 1024)} KB` : ''} · 免费体验资源</div>
     </div>
     <button type="button" className="lesson-resource-download" disabled={busy} onClick={() => void download()}><Download size={16} aria-hidden="true"/>{busy ? '正在下载…' : '下载 Starter'}</button>
+    {needsLogin && <div className="lesson-resource-message flex flex-wrap gap-3"><a href={`/login?next=${encodeURIComponent(window.location.pathname)}`}>登录后继续</a><a href={`/register?next=${encodeURIComponent(window.location.pathname)}`}>注册后继续</a></div>}
     {message && <div className="lesson-resource-message" role="status">{message}</div>}
   </aside>
 }

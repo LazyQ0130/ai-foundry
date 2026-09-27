@@ -61,7 +61,7 @@ export default function StagePage() {
   const stage = slug ? stages.find((item) => item.slug === slug) : undefined
   if (!stage) return <NotFound slug={slug} />
 
-  if (!stage.lessons.length) return <div className="shell py-20"><h1 className="text-2xl font-bold">{stage.title}</h1><p className="mt-4">本阶段课程正在准备中。</p><Link to="/path" className="btn btn-md btn-outline mt-5">返回学习路径</Link></div>
+
   const a = accentClass[stage.accent]
   const done = stageCompletedCount(stage)
   const total = stageLessonCount(stage)
@@ -125,7 +125,7 @@ export default function StagePage() {
             </div>
           </div>
 
-          <StageArchMockup />
+          <StageArchMockup stage={stage} />
         </div>
       </section>
 
@@ -151,8 +151,9 @@ export default function StagePage() {
 
           {/* 课程列表 */}
           <div>
-            <h2 className="h-sec">课程列表（{total} 节课）</h2>
+            <h2 className="h-sec">课程列表（{total} 节正式课）</h2>
             <p className="sub-sec">
+              {stage.lessons.some(lesson => lesson.isPrep) && '另含第 0 课：开始前准备，不计入正式课程进度。'}
               建议按顺序学习并动手实践。各阶段独立开通，完成当前阶段不会自动开通其他阶段。
             </p>
 
@@ -193,7 +194,7 @@ export default function StagePage() {
                             : 'bg-slate-100 text-slate-400'
                       }`}
                     >
-                      {lessonStatusLabel[lesson.status]}
+                      {lesson.isPublished === false ? '即将上线' : lesson.status === 'completed' ? '已完成' : lesson.isPreview ? '免费体验' : lessonStatusLabel[lesson.status]}
                     </span>
                   </>
                 )

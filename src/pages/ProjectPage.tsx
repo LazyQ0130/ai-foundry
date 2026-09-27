@@ -1,3 +1,4 @@
+import { stageCompletedCount, stageLessonCount } from '../data/courses'
 import { Link, useParams } from 'react-router-dom'
 import {
   ArrowRight,
@@ -68,9 +69,10 @@ function NotFound({ id }: { id?: string }) {
 function ProjectView({ project }: { project: ProjectDetail }) {
   const { stages } = useProgress()
   const stage = stages.find((item) => item.project.id === project.id)
-  const lessonPath = stage?.lessons.length ? `/lesson/${stage.slug}/${stage.lessons.find((lesson) => lesson.status === 'in_progress')?.id ?? stage.lessons[0]?.id}` : '/path'
-  const doneCount = stage?.lessons.filter((l) => l.status === 'completed').length ?? 0
-  const total = stage?.lessons.length ?? 0
+  const accessible = stage?.lessons.find(l => l.isPublished !== false && l.status !== 'locked' && l.status !== 'completed')
+  const lessonPath = accessible && stage ? `/lesson/${stage.slug}/${accessible.id}` : stage ? `/stage/${stage.slug}` : '/path'
+  const doneCount = stage ? stageCompletedCount(stage) : 0
+  const total = stage ? stageLessonCount(stage) : 0
   const percent = total ? Math.round((doneCount / total) * 100) : 0
 
   return (
@@ -125,11 +127,11 @@ function ProjectView({ project }: { project: ProjectDetail }) {
           </div>
 
           {project.id === 'rag' ? (
-            <KnowledgeBaseMockup className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.35)]" />
+            <KnowledgeBaseMockup stage={stage} className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.35)]" />
           ) : project.id === 'agent' ? (
-            <StageArchMockup className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.25)]" />
+            <StageArchMockup stage={stage} className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.25)]" />
           ) : (
-            <HeroAppMockup className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.25)]" />
+            <HeroAppMockup stage={stage} className="shadow-[0_28px_64px_-30px_rgba(37,99,235,0.25)]" />
           )}
         </div>
       </section>
@@ -273,23 +275,23 @@ function ProjectView({ project }: { project: ProjectDetail }) {
               <div className="flex items-center justify-between">
                 <dt className="flex items-center gap-1.5 text-slate-400">
                   <Clock className="h-3.5 w-3.5" strokeWidth={1.9} />
-                  开始时间
+                  正式课程总量
                 </dt>
-                <dd className="font-medium text-slate-700">{project.startDate}</dd>
+                <dd className="font-medium text-slate-700">{total} 节</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="flex items-center gap-1.5 text-slate-400">
                   <Target className="h-3.5 w-3.5" strokeWidth={1.9} />
-                  预计完成
+                  已完成正式课程
                 </dt>
-                <dd className="font-medium text-slate-700">{project.dueDate}</dd>
+                <dd className="font-medium text-slate-700">{doneCount} 节</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="flex items-center gap-1.5 text-slate-400">
                   <Rocket className="h-3.5 w-3.5" strokeWidth={1.9} />
-                  剩余时间
+                  待完成正式课程
                 </dt>
-                <dd className="font-medium text-slate-700">{project.remain}</dd>
+                <dd className="font-medium text-slate-700">{Math.max(0, total - doneCount)} 节</dd>
               </div>
             </dl>
 

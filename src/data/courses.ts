@@ -149,6 +149,7 @@ export const stages: Stage[] = [
       },
       {
         id: 's1-l1',
+        isPreview: true,
         code: '1.1',
         order: 1,
         title: '第一次让 AI 改一个真实项目',
@@ -608,16 +609,28 @@ export const overallPercent = Math.round((completedLessons / totalLessons) * 100
 
 export const totalProjects = stages.length
 
+export function curriculumFormalLessonCount(slug?: string) {
+  return stages.filter(s => !slug || s.slug === slug).reduce((sum, s) => sum + formalLessons(s.lessons).length, 0)
+}
+export const publishedLessons = (lessons: Lesson[]) => lessons.filter(l => l.isPublished !== false)
+
 export function stageLessonCount(stage: Stage) {
-  return formalLessons(stage.lessons).length
+  return curriculumFormalLessonCount(stage.slug)
 }
 
 export function stageCompletedCount(stage: Stage) {
-  return formalLessons(stage.lessons).filter((l) => l.status === 'completed').length
+  const ids = new Set(formalLessons(getStageBySlug(stage.slug)?.lessons ?? []).map(l => l.id))
+  return stage.lessons.filter(l => ids.has(l.id) && l.status === 'completed').length
 }
 
 export function stagePercent(stage: Stage) {
   return Math.round((stageCompletedCount(stage) / Math.max(1, stageLessonCount(stage))) * 100)
+}
+
+export function stageLearningStatus(stage: Stage, access: boolean): StageStatus {
+  if (!access) return 'locked'
+  if (stageCompletedCount(stage) === stageLessonCount(stage)) return 'completed'
+  return formalLessons(stage.lessons).some(l => l.status === 'completed' || l.status === 'in_progress') ? 'in_progress' : 'not_started'
 }
 
 export function getStageBySlug(slug: string) {
@@ -647,11 +660,11 @@ export const currentLesson =
 
 /** 下一节课（用于「下一课」按钮与「下一节」卡片） */
 export function nextLessonOf(stage: Stage, lesson: Lesson): Lesson | undefined {
-  return stage.lessons.find((l) => l.order === lesson.order + 1 && l.status !== 'locked')
+  return stage.lessons.find((l) => l.order === lesson.order + 1 && l.status !== 'locked' && l.isPublished !== false)
 }
 
 export function prevLessonOf(stage: Stage, lesson: Lesson): Lesson | undefined {
-  return stage.lessons.find((l) => l.order === lesson.order - 1)
+  return stage.lessons.find((l) => l.order === lesson.order - 1 && l.status !== 'locked' && l.isPublished !== false)
 }
 
 /** 学习路径页顶部总体进度里展示的阶段状态文案 */
