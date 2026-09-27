@@ -26,7 +26,7 @@ test('student → manual purchase → protected lessons → durable progress →
     await grant('stage-1').expect(200)
     await a.get('/api/lessons/s1-l1').expect(200)
     // 未发布的占位课程始终不可访问，即使已开通所在阶段。
-    await a.get('/api/lessons/s1-l5').expect(404)
+    await a.get('/api/lessons/s1-l6').expect(404)
     const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
     assert.equal(nextLesson.body.data.lesson.isPreview, false)
     assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)
@@ -45,6 +45,13 @@ test('student → manual purchase → protected lessons → durable progress →
     const saved = (await a.get('/api/progress').expect(200)).body.data
     assert.equal(saved.checks['s1-l4'][changesKeys[0]], true)
     await a.put(`/api/progress/lessons/s1-l4/checks/${changesKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
+    const versionsLesson = await a.get('/api/lessons/s1-l5').expect(200)
+    assert.equal(versionsLesson.body.data.lesson.isPreview, false)
+    const versionKeys = versionsLesson.body.data.content.meta.checkKeys
+    assert.equal(versionKeys.length, 5)
+    await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+    assert.equal((await a.get('/api/progress').expect(200)).body.data.checks['s1-l5'][versionKeys[0]], true)
+    await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)

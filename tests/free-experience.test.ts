@@ -34,7 +34,9 @@ test('a new zero-entitlement user completes preparation and 1.1; formal progress
   await request(app).get('/api/lessons/s1-l3').expect(401)
   await student.get('/api/lessons/s1-l4').expect(403)
   await request(app).get('/api/lessons/s1-l4').expect(401)
-  await student.get('/api/lessons/s1-l5').expect(404)
+  await student.get('/api/lessons/s1-l5').expect(403)
+  await request(app).get('/api/lessons/s1-l5').expect(401)
+  await student.get('/api/lessons/s1-l6').expect(404)
   const catalogue = (await request(app).get('/api/stages').expect(200)).body.data.stages
   assert.equal(catalogue[0].lessons.find((l: {id:string})=>l.id==='s1-l2').isPublished,true)
   assert.equal(catalogue[0].lessons.length,7) // public metadata includes prep + six formal lessons

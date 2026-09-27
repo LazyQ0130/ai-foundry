@@ -1,0 +1,611 @@
+{
+  "marker": "aifoundry-s1-l5-temporary-validation",
+  "zipHasIgnore": false,
+  "zipHash": "d4e95406f8e3040c0c8a3e039eae51c14882edcbdca645c02f2c8dc2185484ff",
+  "commands": [
+    {
+      "variant": "a",
+      "args": [
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "git version 2.55.0.windows.5\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git\n"
+    },
+    {
+      "variant": "b",
+      "args": [
+        "init"
+      ],
+      "exit": 0,
+      "stdout": "Initialized empty Git repository in C:/Users/QYF/AppData/Local/Temp/aifoundry-s1-l5-vjWl8K/b/.git/\n",
+      "stderr": "hint: Using 'master' as the name for the initial branch. This default branch name\nhint: will change to \"main\" in Git 3.0. To configure the initial branch name\nhint: to use in all of your new repositories, which will suppress this warning,\nhint: call:\nhint:\nhint: \tgit config --global init.defaultBranch <name>\nhint:\nhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and\nhint: 'development'. The just-created branch can be renamed via this command:\nhint:\nhint: \tgit branch -m <name>\nhint:\nhint: Disable this message with \"git config set advice.defaultBranchName false\"\n"
+    },
+    {
+      "variant": "b",
+      "args": [
+        "config",
+        "--local",
+        "user.name",
+        "Course validation"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "config",
+        "--local",
+        "user.email",
+        "qa@example.invalid"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "add",
+        "."
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "commit",
+        "-m",
+        "existing working project"
+      ],
+      "exit": 0,
+      "stdout": "[master (root-commit) c340091] existing working project\n 16 files changed, 2578 insertions(+)\n create mode 100644 .gitignore\n create mode 100644 README.md\n create mode 100644 app/globals.css\n create mode 100644 app/layout.tsx\n create mode 100644 app/page.tsx\n create mode 100644 components/ResourceCard.tsx\n create mode 100644 components/ResourceStats.tsx\n create mode 100644 components/icons.tsx\n create mode 100644 lib/resources.ts\n create mode 100644 next-env.d.ts\n create mode 100644 next.config.ts\n create mode 100644 package-lock.json\n create mode 100644 package.json\n create mode 100644 postcss.config.js\n create mode 100644 tailwind.config.ts\n create mode 100644 tsconfig.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "c3400917b56c446b5a7adef768d7c3bcfdf5d816\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git\n"
+    },
+    {
+      "variant": "a",
+      "args": [
+        "init"
+      ],
+      "exit": 0,
+      "stdout": "Initialized empty Git repository in C:/Users/QYF/AppData/Local/Temp/aifoundry-s1-l5-vjWl8K/a/.git/\n",
+      "stderr": "hint: Using 'master' as the name for the initial branch. This default branch name\nhint: will change to \"main\" in Git 3.0. To configure the initial branch name\nhint: to use in all of your new repositories, which will suppress this warning,\nhint: call:\nhint:\nhint: \tgit config --global init.defaultBranch <name>\nhint:\nhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and\nhint: 'development'. The just-created branch can be renamed via this command:\nhint:\nhint: \tgit branch -m <name>\nhint:\nhint: Disable this message with \"git config set advice.defaultBranchName false\"\n"
+    },
+    {
+      "variant": "a",
+      "args": [
+        "config",
+        "--local",
+        "user.useConfigOnly",
+        "true"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\n\nNo commits yet\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\t.gitignore\n\tREADME.md\n\tapp/\n\tcomponents/\n\tlib/\n\tnext-env.d.ts\n\tnext.config.ts\n\tpackage-lock.json\n\tpackage.json\n\tpostcss.config.js\n\ttailwind.config.ts\n\ttsconfig.json\n\nnothing added to commit but untracked files present (use \"git add\" to track)\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "add",
+        "."
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\n\nNo commits yet\n\nChanges to be committed:\n  (use \"git rm --cached <file>...\" to unstage)\n\tnew file:   .gitignore\n\tnew file:   README.md\n\tnew file:   app/globals.css\n\tnew file:   app/layout.tsx\n\tnew file:   app/page.tsx\n\tnew file:   components/ResourceCard.tsx\n\tnew file:   components/icons.tsx\n\tnew file:   lib/resources.ts\n\tnew file:   next-env.d.ts\n\tnew file:   next.config.ts\n\tnew file:   package-lock.json\n\tnew file:   package.json\n\tnew file:   postcss.config.js\n\tnew file:   tailwind.config.ts\n\tnew file:   tsconfig.json\n\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "ls-files"
+      ],
+      "exit": 0,
+      "stdout": ".gitignore\nREADME.md\napp/globals.css\napp/layout.tsx\napp/page.tsx\ncomponents/ResourceCard.tsx\ncomponents/icons.tsx\nlib/resources.ts\nnext-env.d.ts\nnext.config.ts\npackage-lock.json\npackage.json\npostcss.config.js\ntailwind.config.ts\ntsconfig.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "commit",
+        "-m",
+        "save working version"
+      ],
+      "exit": 128,
+      "stdout": "",
+      "stderr": "Author identity unknown\n\n*** Please tell me who you are.\n\nRun\n\n  git config --global user.email \"you@example.com\"\n  git config --global user.name \"Your Name\"\n\nto set your account's default identity.\nOmit --global to set the identity only in this repository.\n\nfatal: no email was given and auto-detection is disabled\n"
+    },
+    {
+      "variant": "a",
+      "args": [
+        "config",
+        "--local",
+        "user.name",
+        "Course validation"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "config",
+        "--local",
+        "user.email",
+        "qa@example.invalid"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "commit",
+        "-m",
+        "save working version"
+      ],
+      "exit": 0,
+      "stdout": "[master (root-commit) ce5d6d0] save working version\n 15 files changed, 2572 insertions(+)\n create mode 100644 .gitignore\n create mode 100644 README.md\n create mode 100644 app/globals.css\n create mode 100644 app/layout.tsx\n create mode 100644 app/page.tsx\n create mode 100644 components/ResourceCard.tsx\n create mode 100644 components/icons.tsx\n create mode 100644 lib/resources.ts\n create mode 100644 next-env.d.ts\n create mode 100644 next.config.ts\n create mode 100644 package-lock.json\n create mode 100644 package.json\n create mode 100644 postcss.config.js\n create mode 100644 tailwind.config.ts\n create mode 100644 tsconfig.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "log",
+        "--oneline",
+        "-n",
+        "3"
+      ],
+      "exit": 0,
+      "stdout": "ce5d6d0 save working version\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nnothing to commit, working tree clean\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "ce5d6d0b2ab1c090646df1189815b4bf9d6c9f8e\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "rev-list",
+        "--count",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "1\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   app/page.tsx\n\tmodified:   components/ResourceStats.tsx\n\tmodified:   package-lock.json\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "add",
+        "."
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n\tmodified:   app/page.tsx\n\tmodified:   components/ResourceStats.tsx\n\tmodified:   package-lock.json\n\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "ls-files"
+      ],
+      "exit": 0,
+      "stdout": ".gitignore\nREADME.md\napp/globals.css\napp/layout.tsx\napp/page.tsx\ncomponents/ResourceCard.tsx\ncomponents/ResourceStats.tsx\ncomponents/icons.tsx\nlib/resources.ts\nnext-env.d.ts\nnext.config.ts\npackage-lock.json\npackage.json\npostcss.config.js\ntailwind.config.ts\ntsconfig.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "commit",
+        "-m",
+        "save working version"
+      ],
+      "exit": 0,
+      "stdout": "[master 6077cdb] save working version\n 3 files changed, 5 insertions(+), 6 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "log",
+        "--oneline",
+        "-n",
+        "3"
+      ],
+      "exit": 0,
+      "stdout": "6077cdb save working version\nc340091 existing working project\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nnothing to commit, working tree clean\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "6077cdbf6561793bd76324c41f80dfb2f1890e42\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-list",
+        "--count",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "2\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   app/page.tsx\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "diff",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "app/page.tsx\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "ce5d6d0b2ab1c090646df1189815b4bf9d6c9f8e\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "diff",
+        "--",
+        "app/page.tsx"
+      ],
+      "exit": 0,
+      "stdout": "diff --git a/app/page.tsx b/app/page.tsx\nindex 2e0fe56..4df10d8 100644\n--- a/app/page.tsx\n+++ b/app/page.tsx\n@@ -37,10 +37,10 @@ export default function Home() {\n         {/* 介绍 */}\n         <section className=\"pt-10\">\n           <h1 className=\"text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl\">\n-            个人知识工作台\n+            版本恢复实验\n           </h1>\n           <p className=\"mt-2 max-w-xl text-[14px] leading-6 text-stone-500\">\n-            把我平时收集的资料整理在这里，需要的时候一键找到。\n+            这段修改稍后会恢复\n           </p>\n         </section>\n \n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   app/page.tsx\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "diff",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "app/page.tsx\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "6077cdbf6561793bd76324c41f80dfb2f1890e42\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "diff",
+        "--",
+        "app/page.tsx"
+      ],
+      "exit": 0,
+      "stdout": "diff --git a/app/page.tsx b/app/page.tsx\nindex 9450146..c9b6837 100644\n--- a/app/page.tsx\n+++ b/app/page.tsx\n@@ -38,10 +38,10 @@ export default function Home() {\n         {/* 介绍 */}\n         <section className=\"pt-10\">\n           <h1 className=\"text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl\">\n-            我的学习资料库\n+            版本恢复实验\n           </h1>\n           <p className=\"mt-2 max-w-xl text-[14px] leading-6 text-stone-500\">\n-            把课堂笔记和有用的链接收在一起。\n+            这段修改稍后会恢复\n           </p>\n         </section>\n \n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "diff",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "app/page.tsx\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "restore",
+        "app/page.tsx"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nnothing to commit, working tree clean\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "log",
+        "--oneline",
+        "-n",
+        "3"
+      ],
+      "exit": 0,
+      "stdout": "ce5d6d0 save working version\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "ce5d6d0b2ab1c090646df1189815b4bf9d6c9f8e\n",
+      "stderr": ""
+    },
+    {
+      "variant": "a",
+      "args": [
+        "rev-list",
+        "--count",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "1\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "diff",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "app/page.tsx\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "restore",
+        "app/page.tsx"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "status"
+      ],
+      "exit": 0,
+      "stdout": "On branch master\nnothing to commit, working tree clean\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "log",
+        "--oneline",
+        "-n",
+        "3"
+      ],
+      "exit": 0,
+      "stdout": "6077cdb save working version\nc340091 existing working project\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "6077cdbf6561793bd76324c41f80dfb2f1890e42\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-list",
+        "--count",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "2\n",
+      "stderr": ""
+    },
+    {
+      "variant": "b",
+      "args": [
+        "rev-parse",
+        "HEAD~1"
+      ],
+      "exit": 0,
+      "stdout": "c3400917b56c446b5a7adef768d7c3bcfdf5d816\n",
+      "stderr": ""
+    }
+  ],
+  "states": {
+    "bEarlierCommit": "c3400917b56c446b5a7adef768d7c3bcfdf5d816",
+    "a": {
+      "savepoint": "ce5d6d0b2ab1c090646df1189815b4bf9d6c9f8e",
+      "pageHash": "b328959038a982de0c135cdc44df05d84dcc429983da0559d2b16aaaadd7f953",
+      "count": 1,
+      "tracked": ".gitignore\nREADME.md\napp/globals.css\napp/layout.tsx\napp/page.tsx\ncomponents/ResourceCard.tsx\ncomponents/icons.tsx\nlib/resources.ts\nnext-env.d.ts\nnext.config.ts\npackage-lock.json\npackage.json\npostcss.config.js\ntailwind.config.ts\ntsconfig.json",
+      "experimentDiff": "diff --git a/app/page.tsx b/app/page.tsx\nindex 2e0fe56..4df10d8 100644\n--- a/app/page.tsx\n+++ b/app/page.tsx\n@@ -37,10 +37,10 @@ export default function Home() {\n         {/* 介绍 */}\n         <section className=\"pt-10\">\n           <h1 className=\"text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl\">\n-            个人知识工作台\n+            版本恢复实验\n           </h1>\n           <p className=\"mt-2 max-w-xl text-[14px] leading-6 text-stone-500\">\n-            把我平时收集的资料整理在这里，需要的时候一键找到。\n+            这段修改稍后会恢复\n           </p>\n         </section>",
+      "restored": true
+    },
+    "b": {
+      "savepoint": "6077cdbf6561793bd76324c41f80dfb2f1890e42",
+      "pageHash": "8c3f991d10f66c6d00e0d7a65047a7e6eaa95e693efb6270868f708bdef3d66b",
+      "count": 2,
+      "tracked": ".gitignore\nREADME.md\napp/globals.css\napp/layout.tsx\napp/page.tsx\ncomponents/ResourceCard.tsx\ncomponents/ResourceStats.tsx\ncomponents/icons.tsx\nlib/resources.ts\nnext-env.d.ts\nnext.config.ts\npackage-lock.json\npackage.json\npostcss.config.js\ntailwind.config.ts\ntsconfig.json",
+      "experimentDiff": "diff --git a/app/page.tsx b/app/page.tsx\nindex 9450146..c9b6837 100644\n--- a/app/page.tsx\n+++ b/app/page.tsx\n@@ -38,10 +38,10 @@ export default function Home() {\n         {/* 介绍 */}\n         <section className=\"pt-10\">\n           <h1 className=\"text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl\">\n-            我的学习资料库\n+            版本恢复实验\n           </h1>\n           <p className=\"mt-2 max-w-xl text-[14px] leading-6 text-stone-500\">\n-            把课堂笔记和有用的链接收在一起。\n+            这段修改稍后会恢复\n           </p>\n         </section>",
+      "restored": true
+    }
+  }
+}

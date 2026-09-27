@@ -195,7 +195,7 @@ export const stages: Stage[] = [
         desc: '保存一个可恢复版本，并亲手恢复一次。',
         duration: '25 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's1-l6',

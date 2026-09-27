@@ -110,9 +110,10 @@ test('published courses render in full with unique stable progress keys', async 
     ['check-67e269ad809e4b31','check-6c33578fa24d4190','check-b29e046d35fa418c','check-93f02c781ab649de','check-80d419e673ab42fc'],
     ['check-183ae741c9f2506b','check-29bdf052ea163c78','check-3ace106bf827459d','check-4bd12970cae8536f','check-5ce238a1dbf96470'],
     ['check-64f915b3a7d802ec','check-75a026c4b8e913fd','check-86b137d5c9fa240e','check-97c248e6da0b351f','check-a8d359f7eb1c4620'],
+    ['check-b9154a08fc2d5731','check-ca265b19ad3e6842','check-db376c2abe4f7953','check-ec487d3bcf508a64','check-fd598e4ad0619b75'],
   ]
   assert.equal(new Set(keys.flat()).size, keys.flat().length)
-  for (const [i, id] of ['s1-l0','s1-l1','s1-l2','s1-l3','s1-l4'].entries()) {
+  for (const [i, id] of ['s1-l0','s1-l1','s1-l2','s1-l3','s1-l4','s1-l5'].entries()) {
     const content = parseLessonContent(await readFile(`course-content/stage-1/${id}.md`, 'utf8'))
     assert.deepEqual(content.meta.checkKeys, keys[i])
     const html = render(content.body)
