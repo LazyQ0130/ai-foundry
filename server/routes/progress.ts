@@ -23,7 +23,7 @@ for (const action of ['visit', 'complete', 'check'] as const) {
       const meta = await requireLessonAccess(lessonId, userId, tx)
       if (check) {
         const content = await readLessonContent(meta.stage.slug, lessonId)
-        if (!content.checkKeys.includes(check.checkKey)) throw new ApiError(400, 'VALIDATION_ERROR', '任务项不存在')
+        if (!content.meta.checkKeys.includes(check.checkKey)) throw new ApiError(400, 'VALIDATION_ERROR', '任务项不存在')
         await tx.lessonCheck.upsert({ where: { userId_lessonId_checkKey: { userId, lessonId, checkKey: check.checkKey } }, create: { userId, lessonId, ...check }, update: { completed: check.completed } })
       }
       await tx.lessonProgress.upsert({ where: { userId_lessonId: { userId, lessonId } }, create: { userId, lessonId }, update: action === 'visit' ? { lastVisitedAt: new Date() } : {} })

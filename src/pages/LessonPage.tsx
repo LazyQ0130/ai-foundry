@@ -1,22 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
   ArrowLeft,
   ArrowRight,
   Check,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ClipboardList,
   Clock,
-  Copy,
   HelpCircle,
-  Lightbulb,
   ListChecks,
   Lock,
   Sparkles,
   Target,
-  TriangleAlert,
   X,
 } from 'lucide-react'
 import { Breadcrumb, Progress, Tick, lessonDot } from '../components/ui'
@@ -30,7 +26,7 @@ import {
   type Stage,
 } from '../data/courses'
 import type { LessonContent } from '../data/lessonContent'
-import { lessonPrompts } from '../data/lessonContent'
+const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
 import { api, ApiError, errorMessage } from '../lib/api'
 import { useAuth } from '../auth/AuthProvider'
 import { useProgress } from '../data/progress'
@@ -57,7 +53,7 @@ function LessonSidebar({
       <Link
         to="/path"
         onClick={onNavigate}
-        className="inline-flex items-center gap-1.5 px-4 pt-4 text-[12.5px] text-slate-500 transition hover:text-brand-600"
+        className="inline-flex items-center gap-1.5 px-4 pt-4 text-[13px] text-slate-500 transition hover:text-brand-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
         返回学习路径
@@ -66,12 +62,12 @@ function LessonSidebar({
       <div className="px-4 pt-4">
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-card">
           <h2 className="text-[14px] font-bold text-slate-900">{currentStage?.title ?? '课程目录'}</h2>
-          <p className="mt-1.5 text-[11.5px] leading-5 text-slate-500">{currentStage?.desc ?? ''}</p>
+          <p className="mt-1.5 text-[13px] leading-5 text-slate-500">{currentStage?.desc ?? ''}</p>
           <div className="mt-3 flex items-center gap-2">
             <Progress value={coursePercent} className="flex-1" />
-            <span className="text-[11.5px] font-semibold text-brand-600">{coursePercent}%</span>
+            <span className="text-[13px] font-semibold text-brand-600">{coursePercent}%</span>
           </div>
-          <p className="mt-2 text-[11px] text-slate-400">
+          <p className="mt-2 text-[13px] text-slate-400">
             本阶段已完成 {currentStage ? stageCompletedCount(currentStage) : 0} / {currentStage ? stageLessonCount(currentStage) : 0} 课
           </p>
         </div>
@@ -84,10 +80,10 @@ function LessonSidebar({
           return (
             <div key={s.id} className="mb-4 last:mb-0">
               <div className="mb-1.5 flex items-center justify-between px-1">
-                <span className="text-[12px] font-semibold text-slate-700">
+                <span className="text-[13px] font-semibold text-slate-700">
                   {s.tag}　{s.title}
                 </span>
-                <span className="text-[11px] tabular-nums text-slate-400">
+                <span className="text-[13px] tabular-nums text-slate-400">
                   {s.status === 'locked' ? <Lock className="h-3 w-3" /> : `${sDone}/${sTotal}`}
                 </span>
               </div>
@@ -107,14 +103,14 @@ function LessonSidebar({
                   return (
                     <li key={l.id}>
                       {locked ? (
-                        <span className="flex items-center gap-2 rounded-lg px-2 py-[7px] text-[12px] text-slate-400">
+                        <span className="flex items-center gap-2 rounded-lg px-2 py-[7px] text-[13px] text-slate-400">
                           {inner}
                         </span>
                       ) : (
                         <Link
                           to={`/lesson/${s.slug}/${l.id}`}
                           onClick={onNavigate}
-                          className={`flex items-center gap-2 rounded-lg px-2 py-[7px] text-[12px] transition ${
+                          className={`flex items-center gap-2 rounded-lg px-2 py-[7px] text-[13px] transition ${
                             isCurrent
                               ? 'bg-brand-50 font-semibold text-brand-700'
                               : 'text-slate-600 hover:bg-slate-50'
@@ -139,56 +135,9 @@ function LessonSidebar({
 /* 中间：正文                                                           */
 /* ------------------------------------------------------------------ */
 
-function ContentCard({
-  id,
-  icon,
-  title,
-  tint = 'brand',
-  children,
-}: {
-  id?: string
-  icon: React.ReactNode
-  title: string
-  tint?: 'brand' | 'emerald' | 'amber' | 'slate' | 'violet'
-  children: React.ReactNode
-}) {
-  const tints: Record<string, string> = {
-    brand: 'bg-brand-50 text-brand-600',
-    emerald: 'bg-emerald-50 text-emerald-600',
-    amber: 'bg-amber-50 text-amber-600',
-    slate: 'bg-slate-100 text-slate-500',
-    violet: 'bg-violet-50 text-violet-600',
-  }
-  return (
-    <section id={id} className="card scroll-mt-20 p-5">
-      <div className="flex items-center gap-2.5">
-        <span className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${tints[tint]}`}>
-          {icon}
-        </span>
-        <h2 className="text-[15px] font-semibold text-slate-900">{title}</h2>
-      </div>
-      <div className="mt-3.5 pl-[38px]">{children}</div>
-    </section>
-  )
-}
-
 function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesson; content: LessonContent }) {
-  const [copied, setCopied] = useState<number | null>(null)
-  const [deepOpen, setDeepOpen] = useState(false)
-  const prompts = lessonPrompts(content)
-
-  const copyPrompt = async (index: number, code: string) => {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(index)
-      window.setTimeout(() => setCopied(null), 1800)
-    } catch {
-      setCopied(null)
-    }
-  }
-
   return (
-    <article className="min-w-0 space-y-4">
+    <article className="lesson-article mx-auto min-w-0 w-full max-w-[740px]">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <Breadcrumb
           className="pt-1"
@@ -204,156 +153,27 @@ function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesso
         </div>
       </div>
 
-      <header>
+      <header className="lesson-header">
         <span className="chip bg-brand-50 text-brand-600">
           {stage.tag} · 第 {lesson.order} 课
         </span>
-        <h1 className="mt-3 text-[26px] font-bold leading-snug tracking-tight text-slate-900 sm:text-[30px]">
+        <h1 className="lesson-title">
           {lesson.code} {lesson.title}
         </h1>
-        <p className="mt-3 text-[13.5px] leading-6 text-slate-600">{lesson.desc}</p>
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-slate-500">
+        <p className="mt-4 text-[16px] leading-7 text-slate-600">{lesson.desc}</p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-slate-500">
           <span className="inline-flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.9} />
-            预计学习时间 {content.estimatedTime}
+            预计学习时间 {content.meta.estimatedTime}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <Target className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.9} />
-            难度 {content.difficulty}
+            难度 {content.meta.difficulty}
           </span>
         </div>
       </header>
 
-      {/* 本课任务 */}
-      <ContentCard icon={<ClipboardList className="h-3.5 w-3.5" strokeWidth={2} />} title="本课任务">
-        <p className="text-[13px] leading-6 text-slate-600">{content.task.intro}</p>
-        <p className="mt-3.5 text-[12.5px] font-medium text-slate-700">完成后你将得到：</p>
-        <ul className="mt-2 space-y-2">
-          {content.task.outcome.map((t) => (
-            <li key={t} className="flex items-start gap-2">
-              <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={2.8} />
-              <span className="text-[12.5px] leading-5 text-slate-600">{t}</span>
-            </li>
-          ))}
-        </ul>
-      </ContentCard>
-
-      {/* 为什么 */}
-      <ContentCard icon={<Lightbulb className="h-3.5 w-3.5" strokeWidth={2} />} title="为什么要做这个？">
-        <p className="text-[13px] leading-6 text-slate-600">{content.why}</p>
-      </ContentCard>
-
-      {/* 核心概念 */}
-      <ContentCard icon={<Sparkles className="h-3.5 w-3.5" strokeWidth={2} />} title="核心概念" tint="violet">
-        <div className="grid gap-2.5 sm:grid-cols-3">
-          {content.concepts.map((c) => (
-            <div key={c.title} className="rounded-xl border border-slate-200 bg-slate-50/70 p-3">
-              <p className="text-[12.5px] font-semibold text-slate-900">{c.title}</p>
-              <p className="mt-1.5 text-[11.5px] leading-5 text-slate-500">{c.desc}</p>
-            </div>
-          ))}
-        </div>
-      </ContentCard>
-
-      {/* 参考提示词 */}
-      {prompts.map((prompt, index) => (
-        <ContentCard
-          key={index}
-          id={index === 0 ? 'lesson-prompt' : `lesson-prompt-${index + 1}`}
-          icon={<Sparkles className="h-3.5 w-3.5" strokeWidth={2} />}
-          title={prompts.length > 1 ? `参考提示词 ${index + 1}（可直接复制使用）` : '参考提示词（可直接复制使用）'}
-        >
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <p className="max-w-[440px] text-[12.5px] leading-5 text-slate-500">{prompt.intro}</p>
-            <button
-              type="button"
-              onClick={() => void copyPrompt(index, prompt.code)}
-              className={`btn btn-sm shrink-0 ${copied === index ? 'btn-soft' : 'btn-primary'}`}
-            >
-              {copied === index ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied === index ? '已复制' : '复制提示词'}
-            </button>
-          </div>
-          <pre className="mt-3.5 overflow-x-auto rounded-xl border border-slate-200 bg-slate-50 p-4 text-[12.5px] leading-6 text-slate-700">
-            <code className="whitespace-pre-wrap break-words font-mono">{prompt.code}</code>
-          </pre>
-          {prompt.note ? (
-            <p className="mt-2.5 text-[11.5px] text-slate-400">提示：{prompt.note}</p>
-          ) : null}
-        </ContentCard>
-      ))}
-
-      {/* 开始任务 */}
-      {content.todo?.length ? (
-        <ContentCard icon={<ListChecks className="h-3.5 w-3.5" strokeWidth={2} />} title="开始任务">
-          <ol className="space-y-2.5">
-            {content.todo.map((t, i) => (
-              <li key={t} className="flex items-start gap-2.5">
-                <span className="mt-[2px] grid h-[18px] w-[18px] shrink-0 place-items-center rounded-md bg-slate-100 text-[10.5px] font-semibold text-slate-500">
-                  {i + 1}
-                </span>
-                <span className="text-[12.5px] leading-5 text-slate-600">{t}</span>
-              </li>
-            ))}
-          </ol>
-        </ContentCard>
-      ) : null}
-
-      {/* 动手检查 */}
-      <ContentCard icon={<Check className="h-4 w-4" strokeWidth={2.6} />} title="验收参考" tint="emerald">
-        <p className="text-[12.5px] text-slate-500">对照以下标准检查结果，再到学习工作台勾选任务：</p>
-        <ul className="mt-3 space-y-2.5">
-          {content.check.map((c) => (
-            <li key={c} className="flex items-start gap-2.5">
-              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
-              <span className="text-[12.5px] leading-5 text-slate-600">{c}</span>
-            </li>
-          ))}
-        </ul>
-      </ContentCard>
-
-      {/* 卡住了 */}
-      <ContentCard id="lesson-help" icon={<HelpCircle className="h-3.5 w-3.5" strokeWidth={2} />} title="卡住了？" tint="amber">
-        <p className="text-[12.5px] leading-6 text-slate-600">{content.stuck}</p>
-      </ContentCard>
-
-      {/* 深入了解 */}
-      {content.deepDive ? (
-        <section className="card overflow-hidden">
-          <button
-            type="button"
-            onClick={() => setDeepOpen((v) => !v)}
-            className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
-          >
-            <span className="flex items-center gap-2.5">
-              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
-                <ChevronDown
-                  className={`h-4 w-4 transition-transform ${deepOpen ? 'rotate-180' : ''}`}
-                  strokeWidth={2}
-                />
-              </span>
-              <span className="text-[15px] font-semibold text-slate-900">深入了解：{content.deepDive.title}</span>
-            </span>
-            <span className="shrink-0 text-[11.5px] text-slate-400">{deepOpen ? '收起' : '展开'}</span>
-          </button>
-          {deepOpen ? (
-            <p className="border-t border-slate-100 px-5 py-4 text-[12.5px] leading-6 text-slate-600">
-              {content.deepDive.body}
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      {/* 安全提醒 */}
-      {content.warning ? (
-        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
-          <TriangleAlert className="mt-[2px] h-4 w-4 shrink-0 text-amber-500" strokeWidth={2} />
-          <div>
-            <p className="text-[13px] font-semibold text-amber-800">注意</p>
-            <p className="mt-1 text-[12.5px] leading-5 text-amber-700">{content.warning}</p>
-          </div>
-        </div>
-      ) : null}
+      <Suspense fallback={<p role="status" className="text-base text-slate-600">正在排版课程…</p>}><LessonMarkdown body={content.body}/></Suspense>
     </article>
   )
 }
@@ -390,7 +210,7 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
   const { getChecks, setCheck, completeLesson, saving, mutationError } = useProgress()
   const { user } = useAuth()
   const done = lesson.status === 'completed'
-  const checked = getChecks(lesson.id, content.checkKeys)
+  const checked = getChecks(lesson.id, content.meta.checkKeys)
 
   const percent = stagePercent(stage)
   const checkedCount = checked.filter(Boolean).length
@@ -406,18 +226,18 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
             <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
             学习进度
           </h2>
-          <Link to={`/stage/${stage.slug}`} className="link-more !text-[11.5px]">
+          <Link to={`/stage/${stage.slug}`} className="link-more !text-[13px]">
             查看阶段总览
             <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
-        <p className="mt-3 text-[12.5px] font-medium text-slate-700">
+        <p className="mt-3 text-[13px] font-medium text-slate-700">
           {stage.tag}：{stage.title}
         </p>
         <Progress value={percent} className="mt-2.5" />
-        <div className="mt-2 flex items-center justify-between text-[11.5px] text-slate-400">
+        <div className="mt-2 flex items-center justify-between text-[13px] text-slate-400">
           <span className="tabular-nums">
-            {stageCompletedCount(stage)} / {stage.lessons.length}
+            {stageCompletedCount(stage)} / {stageLessonCount(stage)}
           </span>
           <span>{percent}%</span>
         </div>
@@ -432,7 +252,7 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
           <Target className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
           本课目标
         </h2>
-        <p className="mt-2.5 text-[12px] leading-5 text-slate-600">{content.objective}</p>
+        <p className="mt-2.5 text-[13px] leading-5 text-slate-600">{content.meta.objective}</p>
       </div>
 
       {/* 学习任务清单 */}
@@ -442,23 +262,23 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
             <ClipboardList className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
             学习任务清单
           </h2>
-          <span className="text-[11.5px] tabular-nums text-slate-400">
+          <span className="text-[13px] tabular-nums text-slate-400">
             {checkedCount}/{checked.length}
           </span>
         </div>
         <ul className="mt-3 space-y-2.5">
-          {content.checklist.map((c, i) => (
+          {content.meta.checklist.map((c, i) => (
             <li key={c}>
               <button
                 type="button"
                 disabled={!user || saving}
-                onClick={() => setCheck(lesson.id, content.checkKeys[i], !checked[i])}
+                onClick={() => setCheck(lesson.id, content.meta.checkKeys[i], !checked[i])}
                 aria-pressed={checked[i]}
                 className="flex w-full items-start gap-2.5 text-left"
               >
                 <Tick checked={checked[i]} className="mt-[1px]" />
                 <span
-                  className={`text-[12px] leading-5 transition ${
+                  className={`text-[13px] leading-5 transition ${
                     checked[i] ? 'text-slate-400 line-through' : 'text-slate-600'
                   }`}
                 >
@@ -481,7 +301,7 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
         {done ? '已完成本课' : '标记为完成'}
       </button>
       {!done && checkedCount !== checked.length ? (
-        <p className="text-center text-[11.5px] text-slate-500">完成本地操作并勾选全部任务后，即可标记本课完成。</p>
+        <p className="text-center text-[13px] text-slate-500">完成本地操作并勾选全部任务后，即可标记本课完成。</p>
       ) : null}
 
       {done && next ? (
@@ -496,12 +316,12 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
           <HelpCircle className="h-3.5 w-3.5 text-amber-500" strokeWidth={2.2} />
           卡住了？获取帮助
         </h2>
-        <p className="mt-2 text-[11.5px] text-slate-400">遇到问题时，可以通过以下方式解决：</p>
+        <p className="mt-2 text-[13px] text-slate-400">遇到问题时，可以通过以下方式解决：</p>
         <p className="mt-2 text-xs leading-5 text-slate-500">课程为自主阅读与实践，不提供人工答疑。购买、退款或账号问题请前往<Link to="/faq" className="text-brand-600">帮助中心</Link>。</p>
         <ul className="mt-3 space-y-2">
           {[
             { icon: ClipboardList, title: '查看排查建议', desc: '从常见问题和报错信息开始检查', href: '#lesson-help' },
-            { icon: Sparkles, title: '使用参考提示词', desc: '复制提示词，附上完整报错向 AI 提问', href: '#lesson-prompt' },
+            ...(content.body.includes(':::prompt') ? [{ icon: Sparkles, title: '使用参考提示词', desc: '复制提示词，附上完整报错向 AI 提问', href: '#lesson-prompt' }] : []),
           ].map((it) => (
             <li key={it.title}>
               <a
@@ -511,9 +331,9 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
                 <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white text-brand-600 ring-1 ring-slate-200">
                   <it.icon className="h-3.5 w-3.5" strokeWidth={2} />
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[12px] font-medium text-slate-800">{it.title}</span>
-                  <span className="mt-0.5 block text-[11px] leading-4 text-slate-400">{it.desc}</span>
+                <span className="mx-auto min-w-0 max-w-[740px] flex-1">
+                  <span className="block text-[13px] font-medium text-slate-800">{it.title}</span>
+                  <span className="mt-0.5 block text-[13px] leading-4 text-slate-400">{it.desc}</span>
                 </span>
                 <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300" />
               </a>
@@ -554,33 +374,31 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
   )
 
   return (
-    <div className="mx-auto w-full max-w-[1480px] px-5 pb-24 pt-6 sm:px-6 xl:pb-6">
+    <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-6 sm:px-6 min-[1360px]:pb-6">
       {/* 移动端目录入口 */}
-      <div className="mb-4 flex items-center justify-between lg:hidden">
+      <div className="mb-4 flex items-center justify-between min-[1360px]:hidden">
         <button type="button" onClick={() => setDrawer(true)} className="btn btn-sm btn-outline">
           <ListChecks className="h-3.5 w-3.5" />
           课程目录
         </button>
-        <span className="text-[12px] text-slate-400">
-          {lesson.code} {lesson.title}
-        </span>
+        <a href="#lesson-workbench" className="btn btn-sm btn-outline">学习任务与进度</a>
       </div>
 
       <div className="flex gap-6">
         {/* 左栏 */}
-        <aside className="hidden w-[248px] shrink-0 lg:block">
+        <aside className="hidden w-[236px] shrink-0 min-[1360px]:block">
           <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
             {sidebar}
           </div>
         </aside>
 
         {/* 中栏 */}
-        <div className="min-w-0 flex-1">
+        <div className="mx-auto min-w-0 max-w-[740px] flex-1">
           <LessonArticle stage={stage} lesson={lesson} content={content} />
         </div>
 
         {/* 右栏 */}
-        <aside className="hidden w-[300px] shrink-0 xl:block">
+        <aside className="hidden w-[260px] shrink-0 min-[1360px]:block">
           <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-2">
             <Workbench stage={stage} lesson={lesson} content={content} />
           </div>
@@ -588,17 +406,13 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
       </div>
 
       {/* 平板/移动端的工作台 */}
-      <div id="lesson-workbench" className="mt-6 scroll-mt-20 xl:hidden">
+      <div id="lesson-workbench" className="mx-auto mt-10 max-w-[740px] scroll-mt-20 min-[1360px]:hidden">
         <Workbench stage={stage} lesson={lesson} content={content} />
       </div>
 
-      <a href="#lesson-workbench" className="btn btn-primary fixed bottom-4 left-1/2 z-30 -translate-x-1/2 px-6 py-3 shadow-lift xl:hidden">
-        <ListChecks className="h-4 w-4" />查看任务与进度
-      </a>
-
       {/* 抽屉 */}
       {drawer ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 min-[1360px]:hidden">
           <button
             type="button"
             aria-label="关闭目录"

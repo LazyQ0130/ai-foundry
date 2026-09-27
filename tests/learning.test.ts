@@ -28,8 +28,9 @@ test('student → manual purchase → protected lessons → durable progress →
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)
-    assert.match(lesson.body.data.content.task.intro,/两次刷新，两次真实变化/)
-    keys=lesson.body.data.content.checkKeys
+    assert.match(lesson.body.data.content.body,/## 第一次修改/)
+    assert.equal(lesson.body.data.content.task, undefined)
+    keys=lesson.body.data.content.meta.checkKeys
     assert.ok(keys.length > 0)
     assert.equal(lesson.headers['cache-control'],'no-store')
   })
@@ -69,7 +70,8 @@ test('student → manual purchase → protected lessons → durable progress →
     const patch = (body: object) => admin.patch('/api/admin/courses/lessons/s1-l1').set('Origin',env.APP_ORIGIN).send(body)
     try {
       await patch({isPreview:true}).expect(200)
-      await request(app).get('/api/lessons/s1-l1').expect(200)
+      const preview = await request(app).get('/api/lessons/s1-l1').expect(200)
+      assert.match(preview.body.data.content.body, /## 第一次修改/)
       await request(app).post('/api/progress/lessons/s1-l1/visit').set('Origin',env.APP_ORIGIN).expect(401)
       await b.post('/api/progress/lessons/s1-l1/visit').set('Origin',env.APP_ORIGIN).expect(200)
       await patch({isPublished:false}).expect(200)
