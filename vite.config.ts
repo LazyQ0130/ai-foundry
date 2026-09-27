@@ -6,7 +6,7 @@ export default defineConfig({
   build: { emptyOutDir: false },
   server: {
     port: 5173,
-    fs: { deny: ['.env', '.env.*', '**/.env*', '**/.runtime/**', '**/course-content/**', '**/server/**', '**/prisma/**'] },
+    fs: { deny: ['.env', '.env.*', '**/.env*', '**/.runtime/**', '**/starter/**', '**/course-content/**', '**/server/**', '**/prisma/**'] },
     proxy: { '/api': 'http://127.0.0.1:3001' },
   },
 })

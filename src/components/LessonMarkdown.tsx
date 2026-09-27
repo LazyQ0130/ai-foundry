@@ -2,6 +2,7 @@ import { Children, isValidElement, useEffect, useRef, useState, type ReactNode }
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkDirective from 'remark-directive'
+import { CourseResource } from './CourseResource.js'
 import { calloutLabels, lessonUrl, remarkLessonBlocks, type CalloutKind } from '../lib/lessonMarkdown.js'
 
 function CopyButton({ text, prompt = false }: { text: string; prompt?: boolean }) {
@@ -57,6 +58,7 @@ const components = {
   </span> : <span className="lesson-caption">{alt}</span>,
   table: ({ children }) => <div className="lesson-table" tabIndex={0} role="region" aria-label="课程表格"><table>{children}</table></div>,
   'lesson-callout': Callout,
+  'lesson-resource': CourseResource,
 } as Components
 
 export function LessonMarkdown({ body }: { body: string }) {

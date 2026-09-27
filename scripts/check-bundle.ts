@@ -10,6 +10,7 @@ async function files(directory: string): Promise<string[]> {
 const paths = [...await files('dist'), ...await files('public')]
 if (!paths.some(name => name.endsWith('.js'))) throw new Error('Build frontend first')
 if (paths.some(name => /(?:^|[\\/])course-content(?:[\\/]|$)/.test(name))) throw new Error('Course source directory is publicly exposed')
+if (paths.some(name => /\.zip$/i.test(name) || /(?:^|[\\/])starter(?:[\\/]|$)/.test(name))) throw new Error('Starter attachment must not be in dist/public')
 const assets = await Promise.all(paths.map(async name => ({ name, text: await readFile(name, 'utf8') })))
 if (process.env.SMTP_PASSWORD && assets.some(asset => asset.text.includes(process.env.SMTP_PASSWORD!))) throw new Error('Server mail credential found in frontend bundle')
 let checked = 0

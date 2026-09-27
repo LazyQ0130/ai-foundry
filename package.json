@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:web\"",
-    "build": "npm run typecheck && vite build && tsc -p tsconfig.build.json",
+    "build": "npm run build:starter && npm run typecheck && vite build && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json",
     "preview": "vite preview",
     "dev:web": "vite --host localhost",
@@ -20,7 +20,9 @@
     "check:content": "tsx scripts/check-content.ts",
     "check:mail": "tsx scripts/check-mail.ts",
     "verify": "npm run typecheck && npm run build && npm test && npm run check:content && npm run check:bundle",
-    "test:production": "tsx scripts/production-smoke.ts"
+    "test:production": "tsx scripts/production-smoke.ts",
+    "build:starter": "tsx scripts/build-starter.ts",
+    "check:starter": "tsx scripts/build-starter.ts --check"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -57,6 +59,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "concurrently": "^10.0.5",
+    "fflate": "^0.8.3",
     "postcss": "^8.4.49",
     "prisma": "^6.19.3",
     "supertest": "^7.3.0",

@@ -28,6 +28,17 @@ try {
   const cookie = login.headers.get('set-cookie')!
   assert.match(cookie, /Secure/); assert.match(cookie, /HttpOnly/); assert.match(cookie, /SameSite=Lax/)
   const token = cookie.split(';')[0]
+  const starter = await fetch(base + '/api/course-assets/stage1-starter', { headers: { Cookie: token } })
+  assert.equal(starter.status, 200)
+  assert.equal(starter.headers.get('content-type'), 'application/zip')
+  assert.equal(starter.headers.get('cache-control'), 'no-store')
+  assert.equal(Buffer.from(await starter.arrayBuffer()).subarray(0, 2).toString(), 'PK')
+  assert.equal((await fetch(base + '/api/course-assets/stage1-starter')).status, 401)
+  for (const route of ['/starter/aifoundry-stage1-starter.zip', '/aifoundry-stage1-starter.zip', '/starter/stage-1/package.json']) {
+    const response = await fetch(base + route)
+    assert.doesNotMatch(response.headers.get('content-type') ?? '', /zip/)
+    assert.doesNotMatch(await response.text(), /personal-knowledge-workbench|^PK/)
+  }
   const me = await fetch(`${base}/api/me`, { headers: { Cookie: token } })
   assert.equal(me.status, 200)
   assert.doesNotMatch(await me.text(), /passwordHash|tokenHash|internalNote/)

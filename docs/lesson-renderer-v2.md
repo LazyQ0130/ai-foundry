@@ -73,6 +73,23 @@ checkKeys:
 
 第一处 Prompt 自动获得 `lesson-prompt` 锚点；第一处 Stuck 为 `lesson-help`，后续同类型加数字后缀。不要自行插入 HTML 锚点。
 
+## 课程资源下载
+
+资源块只声明固定 ID，不接受标题、URL、路径或正文。标题、说明、文件名来自 `src/data/courseAssets.ts` 白名单，文件大小从服务端查询。
+
+```md
+:::resource{asset="stage1-starter"}
+:::
+```
+
+页面呈现文件图标、资源名称、说明、ZIP 大小和「下载 Starter」按钮。下载失败在块内提示，401 提示登录，403 提示开通 Stage 1；不会把错误 JSON 保存成 ZIP。
+
+`GET /api/course-assets/stage1-starter` 单独验证登录与 Stage 1 entitlement，Admin 可下载。它不继承 Lesson Preview 权限。`/info` 只公开大小与格式，不公开路径或文件内容。服务器文件映射位于 `server/routes/course-assets.ts`，不能从 Markdown 或请求参数指定文件路径。
+
+源文件位于 `starter/stage-1/`。运行 `npm run build:starter` 生成 `starter/aifoundry-stage1-starter.zip`，`npm run check:starter` 检查 ZIP 是否与源文件一致。网站 `npm run build` 会自动重新打包，测试也会检查源文件与 ZIP 一致。部署需同时携带该 ZIP，保持仓库根目录为启动工作目录；不能复制到 `public` 或 `dist`。
+
+打包只保留固定根文件及 app/components/lib/public 下允许的源代码、样式和素材；排除隐藏文件、依赖、构建缓存、日志和临时文件，拒绝符号链接。新增配置文件时需明确更新打包白名单。
+
 ## 图片与占位
 
 ```md

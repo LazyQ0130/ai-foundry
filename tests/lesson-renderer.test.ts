@@ -91,6 +91,18 @@ test('raw HTML and scripts never execute; unsafe URLs and forged custom elements
   assert.equal(lessonUrl('/course-content/a.md', 'src'), '')
 })
 
+test('resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML', () => {
+  const body = ':::resource{asset="stage1-starter"}\n:::'
+  parseLessonContent(document(metadata, body))
+  const html = render(body)
+  assert.match(html, /Stage 1 Starter/)
+  assert.match(html, /下载 Starter/)
+  assert.match(html, /ZIP/)
+  assert.doesNotMatch(html, /starter\/aifoundry|https:\/\//)
+  for (const invalid of [':::resource\n:::', ':::resource{asset="__proto__"}\n:::', ':::resource{asset="../../.env"}\n:::', ':::resource{asset="https://evil.example"}\n:::', ':::resource{asset="stage1-starter" url="https://evil.example"}\n:::', ':::resource{asset="stage1-starter"}\nhttps://evil.example\n:::']) assert.throws(() => parseLessonContent(document(metadata, invalid)))
+  assert.doesNotMatch(render('<lesson-resource asset="stage1-starter"></lesson-resource>'), /下载 Starter/)
+})
+
 test('both migrated courses render in full and retain established progress keys', async () => {
   const keys = [
     ['check-0a1b2c3d4e5f6071','check-1b2c3d4e5f607182','check-2c3d4e5f60718293','check-3d4e5f60718293a4'],

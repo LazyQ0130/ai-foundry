@@ -5,6 +5,7 @@ import remarkDirective from 'remark-directive'
 import { visit } from 'unist-util-visit'
 import type { Root } from 'mdast'
 import type { VFile } from 'vfile'
+import { isCourseAssetId } from '../data/courseAssets.js'
 
 export const calloutLabels = {
   prompt: '参考提示词', task: '现在去做', concept: '先搞懂这件事',
@@ -22,6 +23,14 @@ export function remarkLessonBlocks() {
       // Colons in prose/URLs are not teaching blocks (e.g. localhost:3000).
       if (node.type === 'textDirective' && parent && index !== undefined) {
         parent.children[index] = { type: 'text', value: String(file.value).slice(node.position?.start.offset, node.position?.end.offset) }
+        return
+      }
+      if (node.type === 'containerDirective' && node.name === 'resource') {
+        const attributes = node.attributes ?? {}
+        if (Object.keys(attributes).some(key => key !== 'asset') || !isCourseAssetId(attributes.asset ?? '') || node.children.length) {
+          throw new Error('Resource 必须只声明白名单 asset ID，不接受正文、URL 或其他属性')
+        }
+        node.data = { hName: 'lesson-resource', hProperties: { asset: attributes.asset } }
         return
       }
       if (node.type !== 'containerDirective' || !Object.prototype.hasOwnProperty.call(calloutLabels, node.name)) {
