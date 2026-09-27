@@ -24,4 +24,3 @@ export function nextLessonOf(stage: Stage, lesson: Lesson): Lesson | undefined {
 export function prevLessonOf(stage: Stage, lesson: Lesson): Lesson | undefined {
   return stage.lessons.find((l) => l.order === lesson.order - 1 && l.status !== 'locked' && l.isPublished !== false)
 }
-
