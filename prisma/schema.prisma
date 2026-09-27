@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+enum EntitlementStatus {
+  ACTIVE
+  REVOKED
+}
+enum EntitlementSource {
+  MANUAL_PURCHASE
+  GIFT
+  COMPENSATION
+  TEST
+  OTHER
+}
+enum ProgressStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id             String @id @default(cuid())
+  phone          String @unique
+  phoneVerified  Boolean @default(false)
+  email          String? @unique
+  emailVerifiedAt DateTime?
+  acceptedTermsAt DateTime?
+  termsVersion   String?
+  passwordHash   String
+  nickname       String
+  avatarUrl      String?
+  avatar         UserAvatar?
+  role           Role @default(STUDENT)
+  status         UserStatus @default(ACTIVE)
+  internalNote   String @default("")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lastLoginAt    DateTime?
+  sessions       Session[]
+  entitlements   Entitlement[] @relation("Owner")
+  grants         Entitlement[] @relation("Grantor")
+  revocations    Entitlement[] @relation("Revoker")
+  progress       LessonProgress[]
+  checks         LessonCheck[]
+  adminActions   AdminAuditLog[] @relation("Admin")
+  receivedActions AdminAuditLog[] @relation("Target")
+  @@index([createdAt])
+}
+
+// Short-lived verification secrets are stored as keyed hashes, never plaintext.
+model EmailChallenge {
+  id              String @id
+  scope           String
+  userId          String?
+  email           String
+  previousEmail   String?
+  purpose         String
+  passwordVersion String
+  codeHash        String
+  oldCodeHash     String?
+  attempts        Int @default(0)
+  delivered       Boolean @default(false)
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
+  consumedAt      DateTime?
+  @@index([scope, createdAt])
+  @@index([email, createdAt])
+}
+
+model UserAvatar {
+  userId    String @id
+  data      Bytes
+  version   String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id         String @id @default(cuid())
+  userId     String
+  tokenHash  String @unique
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  lastSeenAt DateTime @default(now())
+  userAgent  String?
+  ipHash     String?
+  user       User @relation(fields: [userId], references: [id])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Stage {
+  id            String @id @default(cuid())
+  slug          String @unique
+  order         Int @unique
+  title         String
+  subtitle      String
+  price         Int
+  isPublished   Boolean @default(true)
+  isPurchasable Boolean @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  entitlements  Entitlement[]
+  lessons       Lesson[]
+}
+
+// The content catalogue remains in courses.ts; these are business flags only.
+model Lesson {
+  id          String @id
+  stageId     String
+  isPreview   Boolean @default(false)
+  isPublished Boolean @default(true)
+  stage       Stage @relation(fields: [stageId], references: [id])
+  progress    LessonProgress[]
+  checks      LessonCheck[]
+  @@index([stageId])
+}
+
+model Entitlement {
+  id              String @id @default(cuid())
+  userId          String
+  stageId         String
+  status          EntitlementStatus @default(ACTIVE)
+  grantedAt       DateTime @default(now())
+  revokedAt       DateTime?
+  grantedByUserId String
+  revokedByUserId String?
+  source          EntitlementSource
+  note            String @default("")
+  user            User @relation("Owner", fields: [userId], references: [id])
+  stage           Stage @relation(fields: [stageId], references: [id])
+  grantedBy       User @relation("Grantor", fields: [grantedByUserId], references: [id])
+  revokedBy       User? @relation("Revoker", fields: [revokedByUserId], references: [id])
+  @@unique([userId, stageId])
+}
+
+model LessonProgress {
+  id            String @id @default(cuid())
+  userId        String
+  lessonId      String
+  status        ProgressStatus @default(IN_PROGRESS)
+  startedAt     DateTime @default(now())
+  completedAt   DateTime?
+  lastVisitedAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User @relation(fields: [userId], references: [id])
+  lesson        Lesson @relation(fields: [lessonId], references: [id])
+  @@unique([userId, lessonId])
+  @@index([userId, lastVisitedAt])
+}
+
+model LessonCheck {
+  id        String @id @default(cuid())
+  userId    String
+  lessonId  String
+  checkKey  String
+  completed Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User @relation(fields: [userId], references: [id])
+  lesson    Lesson @relation(fields: [lessonId], references: [id])
+  @@unique([userId, lessonId, checkKey])
+}
+
+model AdminAuditLog {
+  id           String @id @default(cuid())
+  adminUserId  String
+  targetUserId String?
+  action       String
+  detail       String
+  metadata     Json
+  createdAt    DateTime @default(now())
+  admin        User @relation("Admin", fields: [adminUserId], references: [id])
+  target       User? @relation("Target", fields: [targetUserId], references: [id])
+  @@index([targetUserId, createdAt])
+  @@index([createdAt])
+}

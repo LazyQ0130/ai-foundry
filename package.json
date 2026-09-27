@@ -1,0 +1,67 @@
+{
+  "name": "aifoundry",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:web\"",
+    "build": "npm run typecheck && vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json",
+    "preview": "vite preview",
+    "dev:web": "vite --host localhost",
+    "dev:server": "tsx watch server/index.ts",
+    "start": "node server-dist/server/index.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "test": "tsx scripts/test.ts",
+    "db:local": "tsx scripts/local-db.ts",
+    "check:bundle": "tsx scripts/check-bundle.ts",
+    "check:content": "tsx scripts/check-content.ts",
+    "check:mail": "tsx scripts/check-mail.ts",
+    "verify": "npm run typecheck && npm run build && npm test && npm run check:content && npm run check:bundle",
+    "test:production": "tsx scripts/production-smoke.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "argon2": "^0.45.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "lucide-react": "^0.468.0",
+    "nodemailer": "^10.0.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-easy-crop": "^6.2.3",
+    "react-router-dom": "^6.28.0",
+    "sharp": "^0.35.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.3",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^10.0.5",
+    "postcss": "^8.4.49",
+    "prisma": "^6.19.3",
+    "supertest": "^7.3.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.3",
+    "vite": "^6.4.3"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2"
+  }
+}
