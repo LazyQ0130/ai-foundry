@@ -1,4 +1,5 @@
-import { curriculumFormalLessonCount, stageCompletedCount, stageLessonCount } from '../data/courses'
+import { curriculumFormalLessonCount, stageLessonCount } from '../data/courses'
+import { stageCompletedCount } from '../data/learningProgress'
 import { FreeExperience } from '../components/FreeExperience'
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, FolderKanban, Play } from 'lucide-react'

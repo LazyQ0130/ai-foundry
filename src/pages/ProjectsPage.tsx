@@ -1,4 +1,5 @@
-import { stageCompletedCount, stageLessonCount } from '../data/courses'
+import { stageLessonCount } from '../data/courses'
+import { stageCompletedCount } from '../data/learningProgress'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Code2, Target } from 'lucide-react'
 import { Icon } from '../components/Icon'

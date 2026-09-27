@@ -17,15 +17,8 @@ import {
   X,
 } from 'lucide-react'
 import { Breadcrumb, Progress, Tick, lessonDot } from '../components/ui'
-import {
-  nextLessonOf,
-  prevLessonOf,
-  stageCompletedCount,
-  stageLessonCount,
-  stagePercent,
-  type Lesson,
-  type Stage,
-} from '../data/courses'
+import { stageLessonCount, type Lesson, type Stage } from '../data/courses'
+import { nextLessonOf, prevLessonOf, stageCompletedCount, stagePercent } from '../data/learningProgress'
 import type { LessonContent } from '../data/lessonContent'
 const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
 import { api, ApiError, errorMessage } from '../lib/api'

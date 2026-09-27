@@ -1,13 +1,8 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Clock, Lock } from 'lucide-react'
 import { Breadcrumb, Progress, StageChip, lessonDot } from '../components/ui'
-import {
-  accentClass,
-  stageCompletedCount,
-  stageLessonCount,
-  stageStatusLabel,
-  totalLessons,
-} from '../data/courses'
+import { accentClass, stageLessonCount, stageStatusLabel, totalLessons } from '../data/courses'
+import { stageCompletedCount } from '../data/learningProgress'
 import { useProgress } from '../data/progress'
 
 export default function CourseCatalog() {

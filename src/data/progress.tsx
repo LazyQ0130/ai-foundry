@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { LessonStatus, Stage } from './courses'
-import { allLessons, curriculumFormalLessonCount, stageLearningStatus } from './courses'
+import { allLessons, curriculumFormalLessonCount } from './courses'
+import { stageLearningStatus } from './learningProgress'
 import { useAuth } from '../auth/AuthProvider'
 import { useCatalogue } from './catalog'
 import { api, errorMessage, jsonBody } from '../lib/api'

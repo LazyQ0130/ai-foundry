@@ -1,4 +1,5 @@
-import { stageCompletedCount, stageLessonCount } from '../data/courses'
+import { stageLessonCount } from '../data/courses'
+import { stageCompletedCount } from '../data/learningProgress'
 import { Link, useParams } from 'react-router-dom'
 import {
   ArrowRight,

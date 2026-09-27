@@ -3,14 +3,8 @@ import { ArrowRight, BookOpen, Check, Clock, Flag, Lock, Play, Users } from 'luc
 import { Icon } from '../components/Icon'
 import { StageArchMockup } from '../components/mockups'
 import { Breadcrumb, Progress, Ring } from '../components/ui'
-import {
-  accentClass,
-  lessonStatusLabel,
-  stageCompletedCount,
-  stageLessonCount,
-  stagePercent,
-  type Lesson,
-} from '../data/courses'
+import { accentClass, lessonStatusLabel, stageLessonCount, type Lesson } from '../data/courses'
+import { stageCompletedCount, stagePercent } from '../data/learningProgress'
 import { useProgress } from '../data/progress'
 import StageAccess from '../components/StageAccess'
 
