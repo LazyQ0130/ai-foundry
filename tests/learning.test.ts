@@ -28,7 +28,8 @@ test('student → manual purchase → protected lessons → durable progress →
     // Stage 1 权益不包含已发布的 Stage 2 正文；后续占位仍未发布。
     await a.get('/api/lessons/s2-l1').expect(403)
     await a.get('/api/lessons/s2-l2').expect(403)
-    await a.get('/api/lessons/s2-l3').expect(404)
+    await a.get('/api/lessons/s2-l3').expect(403)
+    await a.get('/api/lessons/s2-l4').expect(404)
     const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
     assert.equal(nextLesson.body.data.lesson.isPreview, false)
     assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)
@@ -55,8 +56,9 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal((await a.get('/api/progress').expect(200)).body.data.checks['s1-l5'][versionKeys[0]], true)
     await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
-  await t.test('2.1 and 2.2 are paid, stage 2 alone grants access, later lessons remain unpublished', async () => {
+  await t.test('2.1 through 2.3 are paid, stage 2 alone grants access, later lessons remain unpublished', async () => {
     await request(app).get('/api/lessons/s2-l1').expect(401)
+    await request(app).get('/api/lessons/s2-l3').expect(401)
     await a.get('/api/lessons/s2-l1').expect(403)
     await b.get('/api/lessons/s2-l1').expect(403)
     await admin.post(`/api/admin/users/${other}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug: 'stage-2', source: 'MANUAL_PURCHASE', note: '测试独立开通' }).expect(200)
@@ -69,7 +71,14 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal(secondLesson.body.data.content.meta.checkKeys.length, 5)
     assert.match(secondLesson.body.data.content.body, /## 建立第一条真正的 POST API/)
     assert.equal(secondLesson.headers['cache-control'], 'no-store')
-    await b.get('/api/lessons/s2-l3').expect(404)
+    const thirdLesson = await b.get('/api/lessons/s2-l3').expect(200)
+    assert.equal(thirdLesson.body.data.content.meta.checkKeys.length, 5)
+    assert.match(thirdLesson.body.data.content.body, /## 让数据库真正创建资料表/)
+    assert.equal(thirdLesson.headers['cache-control'], 'no-store')
+    const thirdKey = thirdLesson.body.data.content.meta.checkKeys[0]
+    await b.put(`/api/progress/lessons/s2-l3/checks/${thirdKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+    assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l3'][thirdKey], true)
+    await b.get('/api/lessons/s2-l4').expect(404)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)
@@ -98,7 +107,7 @@ test('student → manual purchase → protected lessons → durable progress →
   await t.test('other student cannot read or write first student progress',async()=>{
     assert.deepEqual((await b.get(`/api/progress?userId=${id}`)).body.data.completedLessons,[])
     await b.put(`/api/progress/lessons/s1-l1/checks/${keys[0]}`).set('Origin',env.APP_ORIGIN).send({completed:true,userId:id}).expect(403)
-    assert.equal(await db.lessonProgress.count({where:{userId:other}}),0)
+    assert.equal(await db.lessonProgress.count({where:{userId:other,lessonId:'s1-l1'}}),0)
   })
   await t.test('logout, fresh login, then revocation retain progress but immediately deny protected content',async()=>{
     await a.post('/api/auth/logout').set('Origin',env.APP_ORIGIN).expect(200)
