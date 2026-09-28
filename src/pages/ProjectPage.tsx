@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom'
 import {
   ArrowRight,
   BookOpen,
-  Check,
   Clock,
   Code2,
   Database,
@@ -17,7 +16,7 @@ import {
 } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { HeroAppMockup, KnowledgeBaseMockup, StageArchMockup } from '../components/mockups'
-import { Breadcrumb, Progress, Ring, Tick } from '../components/ui'
+import { Breadcrumb, Ring } from '../components/ui'
 import { getProject, type ProjectDetail } from '../data/site'
 import { useProgress } from '../data/progress'
 
@@ -199,14 +198,14 @@ function ProjectView({ project }: { project: ProjectDetail }) {
 
           {/* 完成标准 */}
           <SectionCard
-            icon={<Check className="h-4 w-4" strokeWidth={2.6} />}
+            icon={<ListChecks className="h-4 w-4" strokeWidth={2.6} />}
             title="完成标准"
             intro={project.standardsIntro}
           >
             <ul className="space-y-3">
-              {project.standards.map((s) => (
+              {project.standards.map((s, i) => (
                 <li key={s} className="flex items-start gap-2.5">
-                  <Tick checked className="mt-[1px]" />
+                  <span className="w-5 shrink-0 text-[12px] tabular-nums text-slate-400">{i + 1}.</span>
                   <span className="text-[12.5px] leading-5 text-slate-600">{s}</span>
                 </li>
               ))}
@@ -217,7 +216,7 @@ function ProjectView({ project }: { project: ProjectDetail }) {
           <SectionCard
             icon={<Rocket className="h-3.5 w-3.5" strokeWidth={2} />}
             title="推荐展示方式"
-            intro={project.deliverIntro}
+            intro={`${project.deliverIntro} 以下均为选做，不影响阶段完成。`}
           >
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -225,7 +224,7 @@ function ProjectView({ project }: { project: ProjectDetail }) {
                 <ul className="mt-2.5 space-y-2">
                   {project.deliverables.map((d) => (
                     <li key={d} className="flex items-start gap-2">
-                      <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={2.8} />
+                      <span className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-slate-300" />
                       <span className="text-[12px] leading-5 text-slate-600">{d}</span>
                     </li>
                   ))}
@@ -306,24 +305,15 @@ function ProjectView({ project }: { project: ProjectDetail }) {
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-1.5 text-[14px] font-semibold text-slate-900">
                 <ListChecks className="h-4 w-4 text-brand-600" strokeWidth={2} />
-                项目验收清单
+                项目要求
               </h2>
-              <span className="text-[11.5px] tabular-nums text-slate-400">
-                {doneCount} / {total}
-              </span>
             </div>
-            <Progress value={percent} className="mt-3" />
+            <p className="mt-2 text-[12px] leading-5 text-slate-500">以下是实践要求，请自行核对；平台不验证项目完成状态。</p>
             <ul className="mt-4 space-y-2.5">
               {project.tasks.map((t, i) => (
                 <li key={t.title} className="flex items-start gap-2.5">
-                  <Tick checked={false} size="sm" className="mt-[1px]" />
-                  <span
-                    className={`text-[12px] leading-5 ${
-                      'text-slate-600'
-                    }`}
-                  >
-                    {i + 1}. {t.title}
-                  </span>
+                  <span className="w-5 shrink-0 text-[12px] tabular-nums text-slate-400">{i + 1}.</span>
+                  <span className="text-[12px] leading-5 text-slate-600">{t.title}</span>
                 </li>
               ))}
             </ul>

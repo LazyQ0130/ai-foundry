@@ -225,7 +225,7 @@ export const stages: Stage[] = [
     project: {
       id: 'assistant',
       title: '个人知识工作台',
-      desc: '提交一个带搜索、筛选、个性化功能的小型前端产品，其中至少一个功能由你自己决定。完成后保存一个可恢复的阶段版本（stage-1-complete）。',
+      desc: '完成一个能在本地运行、带搜索与筛选的小型前端产品，亲自验证自己决定的功能，并用本地 Git 保存可恢复的完成版本。',
     },
   },
   {
@@ -257,9 +257,9 @@ export const stages: Stage[] = [
         order: 1,
         title: '从页面到完整产品：读懂全栈项目',
         desc: '在同一个项目里，第一次看懂页面、API、服务端和数据库将怎样配合。',
-        duration: '30 分钟',
+        duration: '30～40 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l2',
@@ -269,7 +269,7 @@ export const stages: Stage[] = [
         desc: '建立第一条 POST API，页面提交的数据能到服务端并得到真实响应。',
         duration: '45 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l3',

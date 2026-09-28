@@ -7,14 +7,15 @@ import { Progress, Ring, StageChip } from '../components/ui'
 import { accentClass, stageStatusLabel } from '../data/courses'
 import { useProgress } from '../data/progress'
 import { useAuth } from '../auth/AuthProvider'
+import { dashboardState } from '../data/dashboardState'
 
 export default function Dashboard() {
   const { stages, completedLessons, overallPercent, lastLessonPath } = useProgress()
   const { user } = useAuth()
-  const hasContinue = lastLessonPath.startsWith('/lesson/')
+  const learning = dashboardState(stages, user?.entitlements ?? [], lastLessonPath)
   const totalLessons = curriculumFormalLessonCount()
-  const currentStage = stages.find((stage) => lastLessonPath.includes('/'+stage.slug+'/')) ?? stages[0]
-  const currentLesson = currentStage?.lessons.find((lesson) => lastLessonPath.endsWith('/'+lesson.id))
+  const currentStage = learning.kind === 'free' ? stages[0] : learning.stage
+  const currentLesson = learning.kind === 'continue' ? learning.lesson : undefined
 
   return (
     <>
@@ -32,15 +33,15 @@ export default function Dashboard() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-[12px] font-semibold text-brand-600">CONTINUE LEARNING</p>
-                <h2 className="mt-2 text-[22px] font-bold text-slate-900">{currentLesson ? currentLesson.code+' '+currentLesson.title : user?.entitlements.length ? '查看已开通课程' : '尚未开通课程'}</h2>
+                <h2 className="mt-2 text-[22px] font-bold text-slate-900">{learning.kind === 'continue' ? `${learning.lesson.code} ${learning.lesson.title}` : learning.kind === 'completed' ? `${learning.stage.tag} 已完成` : '查看已开通课程'}</h2>
                 <p className="mt-2 text-[13px] text-slate-500">{currentStage.tag} · {currentStage.title}</p>
               </div>
               <span className={`chip ${accentClass[currentStage.accent].softBg} ${accentClass[currentStage.accent].text}`}>{stageStatusLabel[currentStage.status]}</span>
             </div>
-            <p className="mt-5 max-w-2xl text-[13.5px] leading-6 text-slate-600">{currentLesson?.desc ?? '通过微信联系管理员购买，确认开通后即可开始学习。'}</p>
+            <p className="mt-5 max-w-2xl text-[13.5px] leading-6 text-slate-600">{learning.kind === 'continue' ? learning.lesson.desc : learning.kind === 'completed' ? '可以回顾已学课程、查看阶段自检，或了解下一阶段。' : '当前没有可继续的已发布课程，可以回顾已开通内容或查看学习路径。'}</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link to={lastLessonPath} className="btn btn-lg btn-primary"><Play className="h-4 w-4" />{hasContinue ? '继续学习' : '查看学习路径'}</Link>
-              <Link to={`/stage/${currentStage.slug}`} className="btn btn-lg btn-outline">查看本阶段<ArrowRight className="h-4 w-4" /></Link>
+              <Link to={learning.kind === 'continue' ? learning.path : `/stage/${currentStage.slug}`} className="btn btn-lg btn-primary"><Play className="h-4 w-4" />{learning.kind === 'continue' ? '继续学习' : '回顾本阶段'}</Link>
+              <Link to={learning.kind === 'completed' ? `/stage/${currentStage.slug}#cp-1` : '/path'} className="btn btn-lg btn-outline">{learning.kind === 'completed' ? '查看阶段自检' : '查看学习路径'}<ArrowRight className="h-4 w-4" /></Link>
             </div>
           </section>}
 

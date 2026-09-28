@@ -369,8 +369,9 @@ function NotFound({ stageSlug, lessonId }: { stageSlug?: string; lessonId?: stri
 
 function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; content: LessonContent }) {
   const [drawer, setDrawer] = useState(false)
-  const { visitLesson } = useProgress()
+  const { visitLesson, getChecks } = useProgress()
   const { user } = useAuth()
+  const remainingTasks = getChecks(lesson.id, content.meta.checkKeys).filter(done => !done).length
   useEffect(() => { if(user) visitLesson(lesson.id) }, [lesson.id, visitLesson, user?.id])
   const sidebar = useMemo(
     () => <LessonSidebar currentLessonId={lesson.id} onNavigate={() => setDrawer(false)} />,
@@ -380,13 +381,14 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-6 sm:px-6 min-[1360px]:pb-6">
       {/* 移动端目录入口 */}
-      <div className="mb-4 flex items-center justify-between min-[1360px]:hidden">
+      <div className="mb-1 flex items-center justify-between gap-2 min-[1360px]:hidden">
         <button type="button" onClick={() => setDrawer(true)} className="btn btn-sm btn-outline">
           <ListChecks className="h-3.5 w-3.5" />
           课程目录
         </button>
         <a href="#lesson-workbench" className="btn btn-sm btn-outline">学习任务与进度</a>
       </div>
+      <p className="mb-4 text-right text-[12px] text-slate-500 min-[1360px]:hidden">{remainingTasks ? `还有 ${remainingTasks} 项任务待确认` : '本课任务已全部确认'}</p>
 
       <div className="flex gap-6">
         {/* 左栏 */}
