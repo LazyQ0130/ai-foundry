@@ -57,7 +57,7 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal((await a.get('/api/progress').expect(200)).body.data.checks['s1-l5'][versionKeys[0]], true)
     await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
-  await t.test('2.1 through 2.6 are paid, stage 2 alone grants access, later lessons remain unpublished', async () => {
+  await t.test('2.1 through 2.7 are paid, stage 2 alone grants access, 2.8 remains unpublished', async () => {
     await request(app).get('/api/lessons/s2-l1').expect(401)
     await request(app).get('/api/lessons/s2-l3').expect(401)
     await a.get('/api/lessons/s2-l1').expect(403)
@@ -98,7 +98,13 @@ test('student → manual purchase → protected lessons → durable progress →
     const sixthKey = sixthLesson.body.data.content.meta.checkKeys[0]
     await b.put(`/api/progress/lessons/s2-l6/checks/${sixthKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
     assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l6'][sixthKey], true)
-    await b.get('/api/lessons/s2-l7').expect(404)
+    const seventhLesson = await b.get('/api/lessons/s2-l7').expect(200)
+    assert.equal(seventhLesson.body.data.content.meta.checkKeys.length, 5)
+    assert.match(seventhLesson.body.data.content.body, /## 第一次把等待做清楚/)
+    const seventhKey = seventhLesson.body.data.content.meta.checkKeys[0]
+    await b.put(`/api/progress/lessons/s2-l7/checks/${seventhKey}`).set('Origin',env.APP_ORIGIN).send({ completed:true }).expect(200)
+    assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l7'][seventhKey], true)
+    await b.get('/api/lessons/s2-l8').expect(404)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)

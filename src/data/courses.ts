@@ -317,9 +317,9 @@ export const stages: Stage[] = [
         order: 7,
         title: '把失败状态也做成产品的一部分',
         desc: '加入 Loading、Empty、Error、Validation 等真实状态。',
-        duration: '45 分钟',
+        duration: '80～110 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l8',
