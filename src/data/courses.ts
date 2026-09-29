@@ -287,9 +287,9 @@ export const stages: Stage[] = [
         order: 4,
         title: '完成一条资料的完整 CRUD',
         desc: '资料可以创建、查看、修改和删除。',
-        duration: '1 小时',
+        duration: '70～100 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l5',
@@ -297,9 +297,9 @@ export const stages: Stage[] = [
         order: 5,
         title: '加入真实的注册和登录',
         desc: '用户可以注册、登录、刷新保持登录并登出。',
-        duration: '1 小时',
+        duration: '80～110 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l6',

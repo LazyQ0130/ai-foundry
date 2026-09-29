@@ -29,7 +29,8 @@ test('student → manual purchase → protected lessons → durable progress →
     await a.get('/api/lessons/s2-l1').expect(403)
     await a.get('/api/lessons/s2-l2').expect(403)
     await a.get('/api/lessons/s2-l3').expect(403)
-    await a.get('/api/lessons/s2-l4').expect(404)
+    await a.get('/api/lessons/s2-l4').expect(403)
+    await a.get('/api/lessons/s2-l5').expect(403)
     const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
     assert.equal(nextLesson.body.data.lesson.isPreview, false)
     assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)
@@ -56,7 +57,7 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal((await a.get('/api/progress').expect(200)).body.data.checks['s1-l5'][versionKeys[0]], true)
     await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
-  await t.test('2.1 through 2.3 are paid, stage 2 alone grants access, later lessons remain unpublished', async () => {
+  await t.test('2.1 through 2.5 are paid, stage 2 alone grants access, later lessons remain unpublished', async () => {
     await request(app).get('/api/lessons/s2-l1').expect(401)
     await request(app).get('/api/lessons/s2-l3').expect(401)
     await a.get('/api/lessons/s2-l1').expect(403)
@@ -78,7 +79,20 @@ test('student → manual purchase → protected lessons → durable progress →
     const thirdKey = thirdLesson.body.data.content.meta.checkKeys[0]
     await b.put(`/api/progress/lessons/s2-l3/checks/${thirdKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
     assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l3'][thirdKey], true)
-    await b.get('/api/lessons/s2-l4').expect(404)
+    const fourthLesson = await b.get('/api/lessons/s2-l4').expect(200)
+    assert.equal(fourthLesson.body.data.content.meta.checkKeys.length, 5)
+    assert.match(fourthLesson.body.data.content.body, /## 亲自完成一次 CRUD/)
+    assert.equal(fourthLesson.headers['cache-control'], 'no-store')
+    const fourthKey = fourthLesson.body.data.content.meta.checkKeys[0]
+    await b.put(`/api/progress/lessons/s2-l4/checks/${fourthKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+    assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l4'][fourthKey], true)
+    const fifthLesson = await b.get('/api/lessons/s2-l5').expect(200)
+    assert.equal(fifthLesson.body.data.content.meta.checkKeys.length, 5)
+    assert.match(fifthLesson.body.data.content.body, /## 再注册一个 Bob/)
+    const fifthKey = fifthLesson.body.data.content.meta.checkKeys[0]
+    await b.put(`/api/progress/lessons/s2-l5/checks/${fifthKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+    assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l5'][fifthKey], true)
+    await b.get('/api/lessons/s2-l6').expect(404)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)

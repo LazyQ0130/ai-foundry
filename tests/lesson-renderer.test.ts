@@ -115,9 +115,11 @@ test('published courses render in full with unique stable progress keys', async 
     ['check-52e7a91c30d84b6f','check-63f8ba2d41e95c70','check-7409cb3e52fa6d81','check-851adc4f630b7e92','check-962bed50741c8fa3'],
     ['check-a36e91f247b80c5d','check-b47fa20358c91d6e','check-c580b31469da2e7f','check-d691c4257aeb3f80','check-e7a2d5368bfc4091'],
     ['check-b8c31d47e90a52f6','check-c9d42e58fa1b6307','check-dae53f690b2c7418','check-ebf6407a1c3d8529','check-fc07518b2d4e963a'],
+    ['check-1d7e4a90b62c3f58','check-2e8f5ba1c73d4069','check-3f906cb2d84e517a','check-40a17dc3e95f628b','check-51b28ed4fa60739c'],
+    ['check-62c39fe50b7184ad','check-73d40af61c8295be','check-84e51b072d93a6cf','check-95f62c183ea4b7d0','check-a6073d294fb5c8e1'],
   ]
   assert.equal(new Set(keys.flat()).size, keys.flat().length)
-  for (const [i, id] of ['s1-l0','s1-l1','s1-l2','s1-l3','s1-l4','s1-l5','s1-l6','s2-l1','s2-l2','s2-l3'].entries()) {
+  for (const [i, id] of ['s1-l0','s1-l1','s1-l2','s1-l3','s1-l4','s1-l5','s1-l6','s2-l1','s2-l2','s2-l3','s2-l4','s2-l5'].entries()) {
     const stage = id.startsWith('s2') ? 'stage-2' : 'stage-1'
     const content = parseLessonContent(await readFile(`course-content/${stage}/${id}.md`, 'utf8'))
     assert.deepEqual(content.meta.checkKeys, keys[i])
