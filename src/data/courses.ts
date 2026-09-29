@@ -277,7 +277,7 @@ export const stages: Stage[] = [
         order: 3,
         title: '让数据刷新和重启以后还存在',
         desc: '接入云 PostgreSQL + Prisma，把第一条资料真正写入数据库。',
-        duration: '70～100 分钟',
+        duration: '分两次各 45～60 分钟',
         status: 'not_started',
         isPublished: true,
       },

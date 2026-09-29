@@ -2,7 +2,7 @@
 
 把资料保存到个人账号的全栈知识工作台。支持静态示例浏览、搜索和筛选，以及注册登录后独立保存、修改和删除自己的资料；A 版本保留日期排序，B 版本另有自选标题和统计。
 
-**在线演示：** [Production HTTPS 站点](https://aifoundry-stage2-workbench-referenc.vercel.app/)。这是 A 版本的独立参考部署。
+**作者在线演示：** [Production HTTPS 站点](https://aifoundry-stage2-workbench-referenc.vercel.app/)。这是 A 版本的独立参考部署，不是学员自己的交付地址；学员 README 应填写各自实际部署并复验的地址。
 
 ## 技术栈与本地运行
 

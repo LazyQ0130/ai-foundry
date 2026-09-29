@@ -19,6 +19,7 @@
     "check:bundle": "tsx scripts/check-bundle.ts",
     "check:content": "tsx scripts/check-content.ts",
     "check:mail": "tsx scripts/check-mail.ts",
+    "check": "npm run check:content && npm run check:starter",
     "verify": "npm run typecheck && npm run build && npm test && npm run check:content && npm run check:bundle",
     "test:production": "tsx scripts/production-smoke.ts",
     "build:starter": "tsx scripts/build-starter.ts",
