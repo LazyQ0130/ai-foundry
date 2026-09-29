@@ -327,9 +327,9 @@ export const stages: Stage[] = [
         order: 8,
         title: '把全栈产品真正交付出去',
         desc: '部署到 Vercel，连接云 PostgreSQL，并提供最短运行说明。',
-        duration: '1 小时',
+        duration: '90～120 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
     ],
     checkpoints: [

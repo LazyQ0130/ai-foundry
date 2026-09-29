@@ -2,11 +2,11 @@
 
 把资料保存到个人账号的全栈知识工作台。支持静态示例浏览、搜索和筛选，以及注册登录后独立保存、修改和删除自己的资料；A 版本保留日期排序，B 版本另有自选标题和统计。
 
-**在线演示：** 部署完成后填入真实 Production HTTPS 地址。未部署前不要写一个不可用的假链接。
+**在线演示：** [Production HTTPS 站点](https://aifoundry-stage2-workbench-referenc.vercel.app/)。这是 A 版本的独立参考部署。
 
 ## 技术栈与本地运行
 
-Next.js 15、React 19、Prisma 6、PostgreSQL。需要 Node.js 20、一个独立 PostgreSQL 数据库和环境变量 `DATABASE_URL`。将变量放在本地 `.env`；`.env*` 应由 `.gitignore` 排除，不提交真实值。
+Next.js 15、React 19、Prisma 6、PostgreSQL。需要 Node.js 20、一个独立 PostgreSQL 数据库和环境变量 `DATABASE_URL`。先将变量放在本地 `.env`，再执行 `npm install`；安装后脚本会运行 `prisma generate`，它也要读取该变量。`.env*` 应由 `.gitignore` 排除，不提交真实值。
 
 ```bash
 npm install
@@ -15,7 +15,7 @@ npx prisma migrate status
 npm run dev
 ```
 
-首次安装会运行 `prisma generate`。已有三次迁移依次建立 Resource、User/Session 和 Resource.ownerId；保留全部 `prisma/migrations`。`npm run build` 在本地生成 Client 并构建 Next.js。Vercel 的 Build Command 设置为 `npm run vercel-build`，按 `prisma generate → prisma migrate deploy → next build` 执行。生产 `DATABASE_URL` 只填在 Vercel **Production** 服务端环境变量。Preview 如需连接数据库，使用独立库或 Neon branch。
+已有三次迁移依次建立 Resource、User/Session 和 Resource.ownerId；保留全部 `prisma/migrations`。`npm run build` 在本地生成 Client 并构建 Next.js。Vercel 的 Build Command 设置为 `npm run vercel-build`，按 `prisma generate → prisma migrate deploy → prisma migrate status → next build` 执行。生产 `DATABASE_URL` 只填在 Vercel **Production** 服务端环境变量。Preview 如需连接数据库，使用独立库或 Neon branch。
 
 ## 结构与数据流
 

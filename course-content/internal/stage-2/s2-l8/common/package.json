@@ -10,7 +10,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "build": "prisma generate && next build",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && prisma migrate status && next build",
     "start": "next start"
   },
   "dependencies": {
@@ -33,5 +33,10 @@
   "overrides": {
     "postcss": "$postcss",
     "deepmerge-ts": "8.0.2"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true
   }
 }

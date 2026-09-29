@@ -28,7 +28,7 @@ for (const action of ['visit', 'complete', 'check'] as const) {
       }
       await tx.lessonProgress.upsert({ where: { userId_lessonId: { userId, lessonId } }, create: { userId, lessonId }, update: action === 'visit' ? { lastVisitedAt: new Date() } : {} })
       if (action === 'complete') await tx.lessonProgress.updateMany({ where: { userId, lessonId, status: 'IN_PROGRESS' }, data: { status: 'COMPLETED', completedAt: new Date() } })
-    })
+    }, { maxWait: 10_000, timeout: 20_000 })
     res.json({ data: await getProgress(userId) })
   }
   if (action === 'check') progressRoutes.put('/lessons/:lessonId/checks/:checkKey', handler)

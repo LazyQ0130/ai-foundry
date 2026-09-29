@@ -4,4 +4,4 @@
 
 本节选择 A 做生产参考部署，B 保持本地生产构建级回归。真实云端结果和公开 URL 记录在 `docs/stage-2-l8-validation.md`；未执行的项目明确标为未验证。学生应部署自己的独立知识工作台仓库，不能把 AIFoundry 教学平台仓库当成学生项目。
 
-完整项目的 README 模板在 `common/README.md`。`postinstall` 生成 Prisma Client；本地 `npm run build` 生成 Client 再构建；Vercel Build Command 为 `npm run vercel-build`，顺序为 generate、migrate deploy、next build。`DATABASE_URL` 只配置在 Vercel Production；Preview 使用独立数据库或暂不连接数据库。
+完整项目的 README 模板在 `common/README.md`。`postinstall` 生成 Prisma Client；本地 `npm run build` 生成 Client 再构建；Vercel Build Command 为 `npm run vercel-build`，顺序为 generate、migrate deploy、migrate status、next build。`DATABASE_URL` 只配置在 Vercel Production；Preview 使用独立数据库或暂不连接数据库。

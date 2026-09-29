@@ -25,12 +25,13 @@ test('student → manual purchase → protected lessons → durable progress →
     await a.post('/api/progress/lessons/s1-l1/complete').set('Origin',env.APP_ORIGIN).expect(403)
     await grant('stage-1').expect(200)
     await a.get('/api/lessons/s1-l1').expect(200)
-    // Stage 1 权益不包含已发布的 Stage 2 正文；后续占位仍未发布。
+    // Stage 1 权益不包含已发布的 Stage 2 正文。
     await a.get('/api/lessons/s2-l1').expect(403)
     await a.get('/api/lessons/s2-l2').expect(403)
     await a.get('/api/lessons/s2-l3').expect(403)
     await a.get('/api/lessons/s2-l4').expect(403)
     await a.get('/api/lessons/s2-l5').expect(403)
+    await a.get('/api/lessons/s2-l8').expect(403)
     const nextLesson = await a.get('/api/lessons/s1-l2').expect(200)
     assert.equal(nextLesson.body.data.lesson.isPreview, false)
     assert.equal(nextLesson.body.data.content.meta.checkKeys.length, 5)
@@ -57,7 +58,7 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal((await a.get('/api/progress').expect(200)).body.data.checks['s1-l5'][versionKeys[0]], true)
     await a.put(`/api/progress/lessons/s1-l5/checks/${versionKeys[0]}`).set('Origin', env.APP_ORIGIN).send({ completed: false }).expect(200)
   })
-  await t.test('2.1 through 2.7 are paid, stage 2 alone grants access, 2.8 remains unpublished', async () => {
+  await t.test('2.1 through 2.8 require Stage 2 access and reach 8/8 completion', async () => {
     await request(app).get('/api/lessons/s2-l1').expect(401)
     await request(app).get('/api/lessons/s2-l3').expect(401)
     await a.get('/api/lessons/s2-l1').expect(403)
@@ -104,7 +105,21 @@ test('student → manual purchase → protected lessons → durable progress →
     const seventhKey = seventhLesson.body.data.content.meta.checkKeys[0]
     await b.put(`/api/progress/lessons/s2-l7/checks/${seventhKey}`).set('Origin',env.APP_ORIGIN).send({ completed:true }).expect(200)
     assert.equal((await b.get('/api/progress').expect(200)).body.data.checks['s2-l7'][seventhKey], true)
-    await b.get('/api/lessons/s2-l8').expect(404)
+    const eighthLesson = await b.get('/api/lessons/s2-l8').expect(200)
+    assert.equal(eighthLesson.body.data.content.meta.checkKeys.length, 5)
+    assert.match(eighthLesson.body.data.content.body, /## 打开第一个真正的 HTTPS 地址/)
+    assert.equal(eighthLesson.headers['cache-control'], 'no-store')
+    for (const lessonId of ['s2-l1','s2-l2','s2-l3','s2-l4','s2-l5','s2-l6','s2-l7','s2-l8']) {
+      const lessonContent = (await b.get(`/api/lessons/${lessonId}`).expect(200)).body.data.content
+      for (const checkKey of lessonContent.meta.checkKeys) {
+        await b.put(`/api/progress/lessons/${lessonId}/checks/${checkKey}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+      }
+      await b.post(`/api/progress/lessons/${lessonId}/complete`).set('Origin', env.APP_ORIGIN).expect(200)
+    }
+    const stageTwoProgress = (await b.get('/api/progress').expect(200)).body.data
+    assert.deepEqual(stageTwoProgress.stageProgress['stage-2'], { completed: 8, total: 8, percent: 100 })
+    assert.equal(stageTwoProgress.formalProgress.total, 29)
+    await b.get('/api/lessons/s3-l1').expect(404)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)
@@ -131,7 +146,9 @@ test('student → manual purchase → protected lessons → durable progress →
     assert.equal(await db.lessonCheck.count({where:{userId:id,lessonId:'s1-l1'}}),keys.length)
   })
   await t.test('other student cannot read or write first student progress',async()=>{
-    assert.deepEqual((await b.get(`/api/progress?userId=${id}`)).body.data.completedLessons,[])
+    const otherProgress = (await b.get(`/api/progress?userId=${id}`)).body.data.completedLessons
+    assert.equal(otherProgress.includes('s1-l1'), false)
+    assert.equal(otherProgress.includes('s2-l8'), true)
     await b.put(`/api/progress/lessons/s1-l1/checks/${keys[0]}`).set('Origin',env.APP_ORIGIN).send({completed:true,userId:id}).expect(403)
     assert.equal(await db.lessonProgress.count({where:{userId:other,lessonId:'s1-l1'}}),0)
   })

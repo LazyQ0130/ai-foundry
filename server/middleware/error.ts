@@ -23,6 +23,9 @@ export const errorHandler: ErrorRequestHandler = (error: unknown, _req, res, _ne
     res.status(413).json({ error: { code: 'VALIDATION_ERROR', message: '请求内容过大' } }); return
   }
   // Never print request bodies, tokens, connection strings or raw Prisma errors.
-  console.error('API request failed:', error instanceof Error ? error.name : 'UnknownError')
+  const errorType = error instanceof Prisma.PrismaClientKnownRequestError
+    ? `${error.name} (${error.code})`
+    : error instanceof Error ? error.name : 'UnknownError'
+  console.error('API request failed:', errorType)
   res.status(500).json({ error: { code: 'INTERNAL_ERROR', message: '服务暂时不可用，请稍后重试' } })
 }
