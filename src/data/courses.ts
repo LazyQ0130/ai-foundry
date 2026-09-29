@@ -307,9 +307,9 @@ export const stages: Stage[] = [
         order: 6,
         title: '每个人只能看到自己的资料',
         desc: '完成真正的资源所有权隔离。',
-        duration: '45 分钟',
+        duration: '80～110 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's2-l7',
