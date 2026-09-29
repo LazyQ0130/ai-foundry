@@ -79,3 +79,15 @@ test('completed Stage 1 goes to self-check instead of looping to preparation', (
   assert.match(html, /href="\/stage\/stage-1#cp-1"/)
   assert.doesNotMatch(html, /s1-l0|s1-l7|继续学习/)
 })
+
+test('completed Stage 2 goes to its checkpoint and never offers a locked Stage 3 lesson', () => {
+  const stage: Stage = {
+    ...curriculum.stages[1],
+    status: 'completed',
+    lessons: curriculum.stages[1].lessons.map(lesson => ({ ...lesson, status: 'completed' })),
+  }
+  assert.equal(stage.lessons.length, 8)
+  const html = render(stage)
+  assert.match(html, /href="\/stage\/stage-2#cp-2"/)
+  assert.doesNotMatch(html, /继续学习|\/lesson\/stage-3/)
+})

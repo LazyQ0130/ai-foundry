@@ -32,6 +32,14 @@ test('Dashboard state distinguishes free, learning, completed and later availabl
   if (continueLater.kind === 'continue') assert.equal(continueLater.stage.slug, 'stage-2')
 })
 
+test('Stage 2 eight-lesson completion stays completed when Stage 3 has no access', () => {
+  const stage2Done = withStatus(stage2, stage2.lessons.map(lesson => lesson.id))
+  assert.equal(stage2Done.lessons.length, 8)
+  const state = dashboardState([stage2Done, withStatus(stages[2])], ['stage-2'], '/lesson/stage-2/s2-l8')
+  assert.equal(state.kind, 'completed')
+  if (state.kind === 'completed') assert.equal(state.stage.slug, 'stage-2')
+})
+
 test('project requirements are descriptive and Stage 1 delivery matches taught work', () => {
   for (const project of projects) {
     assert.ok(project.tasks.length > 0)

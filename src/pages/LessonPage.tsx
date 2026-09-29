@@ -313,6 +313,12 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
         </Link>
       ) : null}
 
+      {done && lesson.id === 's2-l8' ? (
+        <Link to="/stage/stage-2#cp-2" className="btn btn-md btn-outline w-full">
+          查看 Stage 2 阶段自检
+        </Link>
+      ) : null}
+
       {done && lesson.id === 's1-l1' && !user?.entitlements.includes(stage.slug) && <FreeExperience prepDone={stage.lessons.some(l => l.isPrep && l.status === 'completed')} firstDone={done}/>}
       {/* 卡住了 */}
       <div className="card p-4">
