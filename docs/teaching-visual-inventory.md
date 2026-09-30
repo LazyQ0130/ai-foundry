@@ -1,6 +1,6 @@
-# AIFoundry Learning Visuals V1｜配图清单
+# AIFoundry Learning Visuals V2｜配图清单
 
-共计划 20 张，实际生成并插入 20 张。位置为课程 Markdown 中对应的概念段落；标题栏为该图之前最近的章节标题。
+共 20 张正式配图，已按用户选定的 B、A、A、A 样板方案重设计并替换图片文件；课程 Markdown 中的图号、路径、Alt、Caption 与插入位置保持原样。位置为课程 Markdown 中对应的概念段落；标题栏为该图之前最近的章节标题。
 
 | 编号 | 课程 | 正文位置 | 理解目标 | 实际文件路径 | 状态 |
 | --- | --- | --- | --- | --- | --- |
@@ -25,4 +25,4 @@
 | s2-8-01 | s2-l8 | 把 README 变成真正的项目说明（第 153 行） | 代码、应用与生产数据位于不同位置 | `public/course-media/stage-2/s2-8-01.webp` | 已生成、已集成 |
 | s2-8-02 | s2-l8 | 准备真正的云 PostgreSQL（第 93 行） | 本地和生产环境分离，网络可达性另行验收 | `public/course-media/stage-2/s2-8-02.webp` | 已生成、已集成 |
 
-所有文件位于公开的 `public/course-media`，只表达抽象教学关系。原有未制作的真实软件截图建议仍保留为注释；没有将其记录为已完成。
+所有文件位于公开的 `public/course-media`，只表达抽象教学关系。四张选定样板与对比图保留在 `docs/teaching-visual-v2-samples/`；SVG 备用源保留在 `docs/teaching-visual-v2-sources/`。V1 备份见视觉规范。原有未制作的真实软件截图建议仍保留为注释；没有将其记录为已完成。

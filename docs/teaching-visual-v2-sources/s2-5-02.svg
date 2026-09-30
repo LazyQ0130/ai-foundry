@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Alice 与 Bob 使用各自的 Cookie 和数据库 Session 登录，服务端仍访问同一份共享 Resource">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f7fbfc"/><stop offset="1" stop-color="#e8f6f5"/></linearGradient>
+    <linearGradient id="server" x2="1" y2="1"><stop stop-color="#153f69"/><stop offset="1" stop-color="#0b7281"/></linearGradient>
+    <linearGradient id="db" x2="1" y2="1"><stop stop-color="#187b9a"/><stop offset="1" stop-color="#104e80"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#316575" flood-opacity=".15"/></filter>
+    <marker id="blueArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#1465c7"/></marker>
+    <marker id="tealArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#079d9e"/></marker>
+    <marker id="darkArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#15516e"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="455" r="360" fill="#dff3f3" opacity=".48"/>
+  <path d="M30 450 H1560" stroke="#d6e8ea" stroke-width="3" stroke-dasharray="10 14"/>
+
+  <g font-family="Arial, 'Microsoft YaHei', sans-serif" font-weight="700">
+    <text x="74" y="105" font-size="46" fill="#123e5a">各自登录</text>
+    <text x="736" y="105" font-size="46" fill="#123e5a">服务端验证</text>
+    <text x="1240" y="105" font-size="46" fill="#123e5a">同一份资料</text>
+
+    <g filter="url(#shadow)">
+      <rect x="68" y="175" width="360" height="205" rx="28" fill="#fff" stroke="#9fc8f0" stroke-width="4"/>
+      <rect x="88" y="195" width="320" height="42" rx="13" fill="#dcecff"/>
+      <circle cx="112" cy="216" r="7" fill="#ff7066"/><circle cx="136" cy="216" r="7" fill="#ffbd4a"/><circle cx="160" cy="216" r="7" fill="#38c990"/>
+      <rect x="112" y="265" width="100" height="80" rx="13" fill="#d9ebff"/>
+      <text x="139" y="324" font-size="48" fill="#1465c7">A</text>
+      <text x="250" y="302" font-size="38" fill="#1454a1">Alice</text>
+      <text x="250" y="344" font-size="26" fill="#407798">Browser</text>
+
+      <rect x="68" y="520" width="360" height="205" rx="28" fill="#fff" stroke="#91dbd7" stroke-width="4"/>
+      <rect x="88" y="540" width="320" height="42" rx="13" fill="#dff7f3"/>
+      <circle cx="112" cy="561" r="7" fill="#ff7066"/><circle cx="136" cy="561" r="7" fill="#ffbd4a"/><circle cx="160" cy="561" r="7" fill="#38c990"/>
+      <rect x="112" y="610" width="100" height="80" rx="13" fill="#d7f4f0"/>
+      <text x="139" y="669" font-size="48" fill="#079d9e">B</text>
+      <text x="250" y="647" font-size="38" fill="#067b7d">Bob</text>
+      <text x="250" y="689" font-size="26" fill="#407f82">Browser</text>
+
+      <rect x="720" y="280" width="280" height="340" rx="36" fill="url(#server)"/>
+      <rect x="755" y="328" width="210" height="55" rx="14" fill="#58bbce" opacity=".42"/>
+      <rect x="755" y="400" width="210" height="55" rx="14" fill="#58bbce" opacity=".42"/>
+      <rect x="755" y="472" width="210" height="55" rx="14" fill="#58bbce" opacity=".42"/>
+      <circle cx="920" cy="355" r="8" fill="#44e6cb"/><circle cx="920" cy="427" r="8" fill="#44e6cb"/><circle cx="920" cy="499" r="8" fill="#44e6cb"/>
+      <text x="776" y="578" font-size="42" fill="#fff">Server</text>
+
+      <rect x="1100" y="175" width="430" height="550" rx="38" fill="url(#db)"/>
+      <ellipse cx="1315" cy="193" rx="215" ry="60" fill="#328eaa" stroke="#b5e8e8" stroke-width="4"/>
+      <text x="1175" y="252" font-size="38" fill="#fff">PostgreSQL</text>
+      <rect x="1140" y="300" width="350" height="140" rx="24" fill="#e5f3ff"/>
+      <text x="1174" y="353" font-size="31" fill="#1454a1">Session</text>
+      <rect x="1170" y="378" width="135" height="40" rx="20" fill="#c4ddff"/>
+      <text x="1190" y="406" font-size="23" fill="#1454a1">Alice</text>
+      <rect x="1320" y="378" width="135" height="40" rx="20" fill="#c5f3ea"/>
+      <text x="1361" y="406" font-size="23" fill="#067b7d">Bob</text>
+      <rect x="1140" y="477" width="350" height="178" rx="24" fill="#e9faf7"/>
+      <text x="1172" y="540" font-size="37" fill="#066d70">共享 Resource</text>
+      <rect x="1173" y="565" width="280" height="25" rx="12" fill="#9ddfd8"/>
+      <rect x="1173" y="603" width="210" height="20" rx="10" fill="#b7e9e3"/>
+    </g>
+
+    <path d="M430 275 C560 275 555 365 705 365" fill="none" stroke="#1465c7" stroke-width="14" marker-end="url(#blueArrow)"/>
+    <path d="M430 625 C560 625 555 535 705 535" fill="none" stroke="#079d9e" stroke-width="14" marker-end="url(#tealArrow)"/>
+    <rect x="493" y="270" width="126" height="52" rx="26" fill="#e2efff"/><text x="509" y="305" font-size="26" fill="#1454a1">Cookie</text>
+    <rect x="493" y="578" width="126" height="52" rx="26" fill="#def8f3"/><text x="509" y="613" font-size="26" fill="#067b7d">Cookie</text>
+    <path d="M1005 365 H1120" fill="none" stroke="#1465c7" stroke-width="12" marker-end="url(#blueArrow)"/>
+    <path d="M1005 535 H1120" fill="none" stroke="#079d9e" stroke-width="12" marker-end="url(#tealArrow)"/>
+    <path d="M1080 445 V590 H1120" fill="none" stroke="#15516e" stroke-width="10" marker-end="url(#darkArrow)"/>
+    <rect x="775" y="685" width="340" height="82" rx="36" fill="#fff1d9" stroke="#f8c877" stroke-width="3"/>
+    <text x="820" y="740" font-size="38" fill="#a85c0a">尚未隔离</text>
+  </g>
+</svg>
