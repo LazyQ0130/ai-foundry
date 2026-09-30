@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Session 如何保持登录</title>
+  <desc id="desc">Browser、Server、Database 三条时间线展示登录建立 Session、HttpOnly Cookie 返回浏览器、刷新时查询 Session、退出使会话失效以及旧 Cookie 再请求返回 401。</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#f9fbf9"/><stop offset="1" stop-color="#f2f7f5"/></linearGradient>
+    <linearGradient id="server" x2="1" y2="1"><stop stop-color="#123c6d"/><stop offset="1" stop-color="#0c2542"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#123854" flood-opacity=".12"/></filter>
+    <marker id="blue" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0 14 7 0 14Z" fill="#2568d8"/></marker>
+    <marker id="teal" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0 14 7 0 14Z" fill="#079bad"/></marker>
+    <marker id="green" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0 14 7 0 14Z" fill="#15946d"/></marker>
+    <marker id="orange" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0 14 7 0 14Z" fill="#dc801e"/></marker>
+    <marker id="red" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0 14 7 0 14Z" fill="#d84c55"/></marker>
+    <style>
+      text{font-family:'Microsoft YaHei','Noto Sans CJK SC','PingFang SC',sans-serif;fill:#14334c}
+      .actor{font-size:52px;font-weight:800;letter-spacing:-1px}
+      .label{font-size:38px;font-weight:750}
+      .detail{font-size:32px;font-weight:650}
+      .pill{fill:#fff;stroke-width:3}
+      .line{fill:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1600" height="1120" fill="url(#bg)"/>
+  <path d="M0 502H1600M0 783H1600" stroke="#dbe9eb" stroke-width="3"/>
+  <path d="M250 223V1039M800 223V1039M1350 223V1039" stroke="#c7d8dd" stroke-width="4" stroke-dasharray="12 15"/>
+  <g filter="url(#shadow)">
+    <rect x="135" y="70" width="230" height="136" rx="29" fill="#eaf3ff" stroke="#5593df" stroke-width="5"/>
+    <rect x="160" y="92" width="180" height="89" rx="12" fill="#fff" stroke="#2568d8" stroke-width="7"/>
+    <path d="M158 164H342" stroke="#2568d8" stroke-width="7"/>
+    <circle cx="178" cy="111" r="7" fill="#079bad"/><circle cx="201" cy="111" r="7" fill="#68cfc6"/>
+    <rect x="685" y="70" width="230" height="136" rx="29" fill="url(#server)"/>
+    <rect x="716" y="98" width="168" height="25" rx="8" fill="#2b5e8f"/>
+    <rect x="716" y="147" width="168" height="25" rx="8" fill="#2b5e8f"/>
+    <circle cx="856" cy="111" r="7" fill="#48d2b0"/><circle cx="856" cy="160" r="7" fill="#48d2b0"/>
+    <ellipse cx="1350" cy="92" rx="119" ry="28" fill="#5a92d4"/>
+    <path d="M1231 92V175Q1350 226 1469 175V92" fill="#14528a"/>
+    <ellipse cx="1350" cy="175" rx="119" ry="28" fill="#0d456f"/>
+    <ellipse cx="1350" cy="92" rx="119" ry="28" fill="#5a92d4" stroke="#a8d4fa" stroke-width="4"/>
+  </g>
+  <text x="250" y="260" class="actor" text-anchor="middle">Browser</text>
+  <text x="800" y="260" class="actor" text-anchor="middle">Server</text>
+  <text x="1350" y="260" class="actor" text-anchor="middle">Database</text>
+  <path class="line" d="M282 321H751" stroke="#2568d8" marker-end="url(#blue)"/>
+  <text x="510" y="310" class="label" text-anchor="middle" fill="#2568d8">登录</text>
+  <path class="line" d="M841 369H1301" stroke="#2568d8" marker-end="url(#blue)"/>
+  <text x="1065" y="354" class="detail" text-anchor="middle">User 验证 · Session 创建</text>
+  <g transform="translate(1255 392)"><rect width="187" height="58" rx="16" fill="#e7f0fc" stroke="#74a8df" stroke-width="3"/><text x="94" y="39" class="detail" text-anchor="middle">tokenHash</text></g>
+  <path class="line" d="M760 438H302" stroke="#079bad" marker-end="url(#teal)"/>
+  <g transform="translate(390 405)"><rect width="270" height="61" rx="29" fill="#def8f5"/><text x="135" y="42" class="detail" text-anchor="middle">HttpOnly Cookie</text></g>
+  <path class="line" d="M281 550H751" stroke="#15946d" marker-end="url(#green)"/>
+  <text x="516" y="540" class="label" text-anchor="middle">刷新 /me</text>
+  <path class="line" d="M841 608H1301" stroke="#15946d" marker-end="url(#green)"/>
+  <text x="1063" y="596" class="detail" text-anchor="middle">查询 Session</text>
+  <path class="line" d="M758 681H301" stroke="#15946d" marker-end="url(#green)"/>
+  <circle cx="525" cy="681" r="31" fill="#15946d"/><path d="m510 679 11 11 23-27" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="658" y="671" class="detail">200</text>
+  <path class="line" d="M282 811H751" stroke="#dc801e" marker-end="url(#orange)"/>
+  <text x="520" y="800" class="label" text-anchor="middle">退出</text>
+  <path class="line" d="M841 861H1301" stroke="#dc801e" marker-end="url(#orange)"/>
+  <text x="1075" y="851" class="detail" text-anchor="middle">Session 失效</text>
+  <circle cx="1350" cy="860" r="31" fill="#d84c55"/><path d="m1337 847 26 26m0-26-26 26" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+  <path class="line" d="M281 945H751" stroke="#d84c55" stroke-dasharray="16 13" marker-end="url(#red)"/>
+  <text x="521" y="931" class="detail" text-anchor="middle">旧 Cookie /me</text>
+  <path class="line" d="M758 1010H301" stroke="#d84c55" marker-end="url(#red)"/>
+  <text x="520" y="995" class="label" text-anchor="middle">401</text>
+</svg>

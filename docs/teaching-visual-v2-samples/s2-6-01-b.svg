@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-labelledby="title desc">
+  <title id="title">服务端所有权隔离</title>
+  <desc id="desc">Alice 与 Bob 各自通过 Cookie、Session 得到 user.id。服务端校验 user.id 与 ownerId，正常访问各自 Resource；Bob 尝试访问 Alice Resource 在服务端被阻止并返回 404。</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fbfcf8"/><stop offset="1" stop-color="#f2f8f7"/></linearGradient>
+    <linearGradient id="gate" x2="1" y2="1"><stop stop-color="#e9f3fa" stop-opacity=".82"/><stop offset="1" stop-color="#d5eceb" stop-opacity=".62"/></linearGradient>
+    <linearGradient id="vaultA" x2="1" y2="1"><stop stop-color="#1f72d5"/><stop offset="1" stop-color="#0b427f"/></linearGradient>
+    <linearGradient id="vaultB" x2="1" y2="1"><stop stop-color="#11aa99"/><stop offset="1" stop-color="#096d71"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#174462" flood-opacity=".13"/></filter>
+    <marker id="blue" markerUnits="userSpaceOnUse" markerWidth="31" markerHeight="31" refX="27" refY="15" orient="auto"><path d="M0 0 31 15 0 31Z" fill="#2b70d6"/></marker>
+    <marker id="teal" markerUnits="userSpaceOnUse" markerWidth="31" markerHeight="31" refX="27" refY="15" orient="auto"><path d="M0 0 31 15 0 31Z" fill="#119c93"/></marker>
+    <marker id="red" markerUnits="userSpaceOnUse" markerWidth="31" markerHeight="31" refX="27" refY="15" orient="auto"><path d="M0 0 31 15 0 31Z" fill="#d84c55"/></marker>
+    <style>
+      text{font-family:'Microsoft YaHei','Noto Sans CJK SC','PingFang SC',sans-serif;fill:#14344d}
+      .name{font-size:50px;font-weight:800}
+      .node{font-size:39px;font-weight:750}
+      .small{font-size:32px;font-weight:720}
+      .line{fill:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+      .light{fill:#fff}
+      .danger{fill:#c6404c}
+    </style>
+  </defs>
+  <rect width="1600" height="960" fill="url(#bg)"/>
+  <path d="M0 473H1600" stroke="#d9e9e9" stroke-width="3"/>
+  <rect x="20" y="163" width="780" height="245" rx="120" fill="#eaf3ff" opacity=".56"/>
+  <rect x="20" y="570" width="780" height="245" rx="120" fill="#e4f7f3" opacity=".65"/>
+  <g filter="url(#shadow)">
+    <circle cx="120" cy="282" r="78" fill="#246ad0"/>
+    <circle cx="120" cy="255" r="25" fill="#fff"/><path d="M73 324q47-72 94 0" fill="#fff"/>
+    <circle cx="120" cy="687" r="78" fill="#0a9b92"/>
+    <circle cx="120" cy="659" r="25" fill="#fff"/><path d="M73 730q47-72 94 0" fill="#fff"/>
+    <rect x="260" y="207" width="170" height="150" rx="28" fill="#fff" stroke="#5b98de" stroke-width="6"/>
+    <circle cx="345" cy="270" r="37" fill="#e5a645"/><circle cx="330" cy="253" r="6" fill="#9a591e"/><circle cx="363" cy="262" r="7" fill="#9a591e"/><circle cx="346" cy="288" r="5" fill="#9a591e"/>
+    <rect x="260" y="612" width="170" height="150" rx="28" fill="#fff" stroke="#4bc3b3" stroke-width="6"/>
+    <circle cx="345" cy="675" r="37" fill="#e5a645"/><circle cx="330" cy="658" r="6" fill="#9a591e"/><circle cx="363" cy="667" r="7" fill="#9a591e"/><circle cx="346" cy="693" r="5" fill="#9a591e"/>
+    <ellipse cx="540" cy="237" rx="70" ry="22" fill="#4f8bd6"/><path d="M470 237v96q70 48 140 0v-96" fill="#1d64b5"/><ellipse cx="540" cy="333" rx="70" ry="22" fill="#0d4b92"/>
+    <ellipse cx="540" cy="642" rx="70" ry="22" fill="#43c0ae"/><path d="M470 642v96q70 48 140 0v-96" fill="#0c9088"/><ellipse cx="540" cy="738" rx="70" ry="22" fill="#087b79"/>
+    <rect x="675" y="220" width="160" height="125" rx="23" fill="#fff" stroke="#75a9df" stroke-width="5"/>
+    <rect x="675" y="625" width="160" height="125" rx="23" fill="#fff" stroke="#57bdaf" stroke-width="5"/>
+    <path d="M870 148H1120L1190 215V754L1120 823H870L800 754V215Z" fill="url(#gate)" stroke="#318ba7" stroke-width="8"/>
+    <rect x="1237" y="205" width="304" height="158" rx="29" fill="url(#vaultA)"/>
+    <rect x="1237" y="610" width="304" height="158" rx="29" fill="url(#vaultB)"/>
+  </g>
+  <text x="120" y="392" class="name" text-anchor="middle">Alice</text>
+  <text x="120" y="797" class="name" text-anchor="middle">Bob</text>
+  <text x="345" y="391" class="node" text-anchor="middle">Cookie</text>
+  <text x="345" y="796" class="node" text-anchor="middle">Cookie</text>
+  <text x="540" y="391" class="node" text-anchor="middle">Session</text>
+  <text x="540" y="796" class="node" text-anchor="middle">Session</text>
+  <text x="755" y="274" class="small" text-anchor="middle">user.id</text>
+  <text x="755" y="322" class="small" text-anchor="middle">Alice</text>
+  <text x="755" y="679" class="small" text-anchor="middle">user.id</text>
+  <text x="755" y="727" class="small" text-anchor="middle">Bob</text>
+  <text x="996" y="207" class="small" text-anchor="middle">服务端校验</text>
+  <text x="996" y="274" class="small" text-anchor="middle">user.id = ownerId</text>
+  <text x="996" y="338" class="node" text-anchor="middle" fill="#2073c8">✓ Alice</text>
+  <text x="996" y="678" class="small" text-anchor="middle">user.id = ownerId</text>
+  <text x="996" y="742" class="node" text-anchor="middle" fill="#0b9e8e">✓ Bob</text>
+  <text x="1410" y="300" class="small light" text-anchor="middle">Alice Resource</text>
+  <text x="1410" y="705" class="small light" text-anchor="middle">Bob Resource</text>
+  <path class="line" d="M199 282H254M433 282H465M613 282H667M838 282H864M1192 282H1229" stroke="#2b70d6" marker-end="url(#blue)"/>
+  <path class="line" d="M199 687H254M433 687H465M613 687H667M838 687H864M1192 687H1229" stroke="#119c93" marker-end="url(#teal)"/>
+  <path d="M188 617C303 476 540 444 879 475" fill="none" stroke="#d84c55" stroke-width="10" stroke-dasharray="19 15" stroke-linecap="round" marker-end="url(#red)"/>
+  <text x="510" y="432" class="small danger" text-anchor="middle">Bob → Alice Resource</text>
+  <circle cx="931" cy="477" r="45" fill="#d84c55"/>
+  <path d="m911 457 40 40m0-40-40 40" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+  <path d="M924 531C672 567 388 550 200 655" fill="none" stroke="#d84c55" stroke-width="11" stroke-linecap="round" marker-end="url(#red)"/>
+  <rect x="512" y="527" width="150" height="61" rx="30" fill="#d84c55"/>
+  <text x="587" y="572" class="node light" text-anchor="middle">404</text>
+</svg>
