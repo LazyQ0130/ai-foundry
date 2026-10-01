@@ -411,7 +411,7 @@ export const stages: Stage[] = [
         order: 4,
         title: '让资料变成可以检索的向量',
         desc: '将自己粘贴的文本或 Markdown 建成 KnowledgeDocument，切块、生成 Embedding 并存入 PostgreSQL + pgvector。',
-        duration: '1 小时',
+        duration: '90～120 分钟（建议分两次完成）',
         status: 'not_started',
         isPublished: false,
       },
