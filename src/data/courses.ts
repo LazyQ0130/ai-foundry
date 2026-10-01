@@ -441,7 +441,7 @@ export const stages: Stage[] = [
         order: 7,
         title: '判断 AI 功能到底好不好用',
         desc: '建立小型问题集，记录检索、回答、引用和成本表现。',
-        duration: '45 分钟',
+        duration: '60～80 分钟（真实评估运行时间另计）',
         status: 'not_started',
         isPublished: false,
       },

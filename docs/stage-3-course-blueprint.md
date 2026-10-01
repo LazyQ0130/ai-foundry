@@ -22,7 +22,7 @@
 
 - 保留 Stage 2 的 `Resource`、`User`、`Session` 和既有 ownerId 语义。新增 `KnowledgeDocument(id, ownerId, title, content, createdAt, status)`；内容限非敏感粘贴文本或 Markdown。`KnowledgeChunk(id, documentId, position, content, embedding, embeddingModel, embeddingDimension)`，`(documentId, position)` 唯一。`ownerId` 可通过 Document 关联并在每条查询中强制过滤；服务端绝不信任客户端传来的 ownerId。
 - Stage 3 V1 的已验收 Embedding baseline 固定为 **1024 维**。`vector(1024)` 由手写 SQL migration 建立，Prisma 6.19.3 Schema 用 `Unsupported("vector")` 表示，向量写入和余弦查询用参数化 `$executeRaw` / `$queryRaw`。切换 Embedding 模型或维度须显式迁移与重建，绝不自动批量重算。
-- 引用 ID 由本次检索结果生成，例如 `S1`、`S2`，与 Chunk id 的映射仅由服务端维护；回答输出中的每个引用须在该映射中，UI 再显示标题、片段、位置。没有可信检索证据时返回“资料中没有足够依据”，不让模型补造。
+- 引用 ID 由服务端根据本次检索结果的真实 Chunk id 生成，例如 `SRC-CHUNK-123`；回答输出中的每个引用须在本次 Retrieved Set 中，UI 再显示服务端映射的标题、片段、位置。没有可信检索证据时返回“资料中没有足够依据”，不让模型补造。
 
 ## Provider 与安全成本边界
 
