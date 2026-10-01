@@ -421,7 +421,7 @@ export const stages: Stage[] = [
         order: 5,
         title: '做出第一条完整 RAG 链路',
         desc: '完成 Query → Embedding → Top-K → Context → Model 的闭环。',
-        duration: '1 小时',
+        duration: '70～90 分钟',
         status: 'not_started',
         isPublished: false,
       },
