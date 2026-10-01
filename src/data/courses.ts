@@ -431,7 +431,7 @@ export const stages: Stage[] = [
         order: 6,
         title: '让回答带着来源，而不是只让人「相信 AI」',
         desc: '只引用本次真正检索到的 Chunk，服务端校验来源，证据不足时明确说不知道。',
-        duration: '45 分钟',
+        duration: '55～75 分钟',
         status: 'not_started',
         isPublished: false,
       },
