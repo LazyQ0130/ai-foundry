@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
 import { Link, useParams } from 'react-router-dom'
 import {
@@ -33,14 +33,18 @@ import { useProgress } from '../data/progress'
 
 function LessonSidebar({
   currentLessonId,
+  checkKeys,
   onNavigate,
 }: {
   currentLessonId: string
+  checkKeys: string[]
   onNavigate?: () => void
 }) {
-  const { stages } = useProgress()
+  const { stages, getChecks } = useProgress()
   const currentStage = stages.find(stage => stage.lessons.some(lesson => lesson.id === currentLessonId))
-  const coursePercent = currentStage ? stagePercent(currentStage) : 0
+  const currentLesson = currentStage?.lessons.find(lesson => lesson.id === currentLessonId)
+  const completedChecks = getChecks(currentLessonId, checkKeys).filter(Boolean).length
+  const checkPercent = checkKeys.length ? Math.round(completedChecks / checkKeys.length * 100) : 0
 
   return (
     <div className="flex h-full flex-col">
@@ -55,19 +59,23 @@ function LessonSidebar({
 
       <div className="px-4 pt-4">
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-card">
-          <h2 className="text-[14px] font-bold text-slate-900">{currentStage?.title ?? '课程目录'}</h2>
-          <p className="mt-1.5 text-[13px] leading-5 text-slate-500">{currentStage?.desc ?? ''}</p>
-          <div className="mt-3 flex items-center gap-2">
-            <Progress value={coursePercent} className="flex-1" />
-            <span className="text-[13px] font-semibold text-brand-600">{coursePercent}%</span>
+          <p className="text-[12px] font-semibold text-brand-600">{currentStage?.tag ?? '当前课程'} · 当前课时</p>
+          <h2 className="mt-2 text-[14px] font-bold leading-5 text-slate-900">
+            {currentLesson ? `${currentLesson.code} ${currentLesson.title}` : '课程目录'}
+          </h2>
+          <p className="mt-1.5 text-[13px] leading-5 text-slate-500">{currentLesson?.desc ?? ''}</p>
+          <div className="mt-3 flex items-center justify-between text-[12px]">
+            <span className="text-slate-500">本课任务</span>
+            <span className="font-semibold text-brand-600">{completedChecks}/{checkKeys.length}</span>
           </div>
-          <p className="mt-2 text-[13px] text-slate-400">
-            本阶段已完成 {currentStage ? stageCompletedCount(currentStage) : 0} / {currentStage ? stageLessonCount(currentStage) : 0} 课
+          <Progress value={checkPercent} className="mt-2" />
+          <p className="mt-2 text-[12px] text-slate-400">
+            {currentStage?.title ?? '当前阶段'} · 已完成 {currentStage ? stageCompletedCount(currentStage) : 0}/{currentStage ? stageLessonCount(currentStage) : 0} 课
           </p>
         </div>
       </div>
 
-      <nav className="mt-4 flex-1 overflow-y-auto px-4 pb-6">
+      <nav className="mt-4 min-h-0 flex-1 overflow-y-auto px-4 pb-6">
         {stages.map((s) => {
           const sDone = stageCompletedCount(s)
           const sTotal = stageLessonCount(s)
@@ -379,10 +387,7 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
   const { user } = useAuth()
   const remainingTasks = getChecks(lesson.id, content.meta.checkKeys).filter(done => !done).length
   useEffect(() => { if(user) visitLesson(lesson.id) }, [lesson.id, visitLesson, user?.id])
-  const sidebar = useMemo(
-    () => <LessonSidebar currentLessonId={lesson.id} onNavigate={() => setDrawer(false)} />,
-    [lesson.id],
-  )
+  const sidebar = <LessonSidebar currentLessonId={lesson.id} checkKeys={content.meta.checkKeys} onNavigate={() => setDrawer(false)} />
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-6 sm:px-6 min-[1360px]:pb-6">
@@ -399,7 +404,7 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
       <div className="flex gap-6">
         {/* 左栏 */}
         <aside className="hidden w-[236px] shrink-0 min-[1360px]:block">
-          <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
+          <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
             {sidebar}
           </div>
         </aside>
