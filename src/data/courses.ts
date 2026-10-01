@@ -401,7 +401,7 @@ export const stages: Stage[] = [
         order: 3,
         title: '做出真正像 AI 产品的流式体验',
         desc: '答案逐段出现，用户可以取消，失败时有清晰状态。',
-        duration: '45 分钟',
+        duration: '55～70 分钟',
         status: 'not_started',
         isPublished: false,
       },
