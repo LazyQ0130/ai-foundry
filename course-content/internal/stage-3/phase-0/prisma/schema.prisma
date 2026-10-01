@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("STAGE3_SPIKE_DATABASE_URL")
+}
+
+// Minimal isolated copy of Stage 2 ownership shape; never targets the platform database.
+model User {
+  id        Int                 @id @default(autoincrement())
+  username  String              @unique
+  documents KnowledgeDocument[]
+}
+
+model KnowledgeDocument {
+  id        Int              @id @default(autoincrement())
+  ownerId   Int
+  owner     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  createdAt DateTime         @default(now())
+  chunks    KnowledgeChunk[]
+
+  @@index([ownerId])
+}
+
+model KnowledgeChunk {
+  id         Int                   @id @default(autoincrement())
+  documentId Int
+  document   KnowledgeDocument     @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  position   Int
+  content    String
+  embedding  Unsupported("vector")?
+
+  @@unique([documentId, position])
+}
