@@ -1,6 +1,6 @@
 # Stage 3｜AI 应用开发：课程实施蓝图
 
-内部蓝图，2026-10-01。正式课 3.1～3.7 共 7 节，仍未发布；本轮不编写正文。学生始终升级自己的 Stage 2「全栈知识工作台」，不另起产品。项目名称统一为「AI 知识工作台」。
+内部蓝图，2026-10-01 制定，2026-10-02 更新验收状态。正式课 3.1～3.7 共 7 节，仍未发布；本轮不编写正文。学生始终升级自己的 Stage 2「全栈知识工作台」，不另起产品。项目名称统一为「AI 知识工作台」。
 
 ## 输入、退出与连续项目
 
@@ -35,5 +35,7 @@ Route 在鉴权后限制单次输入长度与输出 token，设置超时和单�
 ## 完成标准与 Stage 4 边界
 
 保留 29 节正式课中的 7 节 Stage 3，全部七课的可观察结果都须在同一 Stage 2 产品中复现；至少 3 份非敏感粘贴文档完成向量化和 ownerId 隔离，RAG 引用回查本次 Chunk，10～20 问评估含无答案问题，记录延迟与可得 usage。保存 `stage-3-complete` Git 点。
+
+**V1 技术验收状态（2026-10-02）**：独立新建的 Neon PostgreSQL 17 云库已成功启用 pgvector 0.8.0，四次正式 migration 从空库依次部署且状态 up to date；实际列类型为 `vector(1024)`。独立 Stage 3 Reference Production 已完成 Build、Stage 2 回归、真实 Provider、Embedding、Top-K、RAG 与引用的公网检查；Stage 3.1～3.7 A/B Reference 回归和平台验证通过。证据、网络范围和剩余限制见 [Stage 3 Final Acceptance](stage-3-final-acceptance.md)。这代表 Stage 3 V1 技术基线完成；真人新学员全流程验证及发布决定仍待人工处理，七课继续 `isPublished=false`。
 
 PDF/DOCX/TXT 上传、多知识库、网页抓取、Hybrid Search、Rerank 均为项目扩展挑战，不是 V1 完成条件。Stage 4 才进入 Tool Calling、Agent Loop、MCP、多步 Workflow、写操作人工确认及恢复；Stage 3 不提前教授或验收这些能力。
