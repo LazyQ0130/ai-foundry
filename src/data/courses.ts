@@ -381,7 +381,7 @@ export const stages: Stage[] = [
         order: 1,
         title: '第一次把真实模型接进自己的产品',
         desc: '先 Mock 跑通接口，再配置低成本 Provider，完成一次真实模型调用。',
-        duration: '45 分钟',
+        duration: '60～75 分钟',
         status: 'not_started',
         isPublished: false,
       },
