@@ -391,7 +391,7 @@ export const stages: Stage[] = [
         order: 2,
         title: '别让 AI 只返回一段「随缘文字」',
         desc: '校验 summary / tags / confidence，把模型结果先作为建议预览，不自动覆盖资料。',
-        duration: '45 分钟',
+        duration: '50～65 分钟',
         status: 'not_started',
         isPublished: false,
       },
