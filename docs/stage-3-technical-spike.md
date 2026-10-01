@@ -1,12 +1,44 @@
 # Stage 3 Phase 0｜技术验证记录
 
+## Phase 0.5｜真实 Provider 最小验收（2026-10-01）
+
+开工基线为 `8b555ec2ad710ceae80c580f8d1282cf25b41230`。隔离验收脚本 `real-provider-acceptance.mjs` 与 `real-embedding-topk.mjs` 复用 Phase 0 的 `provider.mjs`。本地 stub 的 7/7 仍是独立合同测试；下表是本轮**真实北京地域云端调用**及独立本地 pgvector 实测，二者不混淆。
+
+脚本固定检查北京地域 Workspace 专属兼容接口、`qwen3.7-flash`、`text-embedding-v4` 和 1024 维。一次短 Chat、一次真实无效 Key、一次完整流、一次取消、一次结构化输出、一次 Embedding；Top-K 脚本另对三段非敏感短文本和一个问题共发四次 Embedding。每次只输出状态、耗时、长度、Chunk 数及可得 usage；不会输出 Key、完整回答或向量。两个脚本均不自动重试或更换模型。数据库脚本拒绝任何非 `127.0.0.1:55433/stage3_spike` 地址。
+
+凭证仅保存在本机被 `.gitignore` 排除的 `.env`；脚本日志、文档和 Git 不含 Key 或完整响应。配置项为 `AI_CHAT_BASE_URL`、`AI_CHAT_API_KEY`、`AI_CHAT_MODEL`、`AI_EMBEDDING_BASE_URL`、`AI_EMBEDDING_API_KEY`、`AI_EMBEDDING_MODEL`、`AI_EMBEDDING_DIMENSION`。官方[北京地域兼容 Chat 地址](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)、[Embedding 接口](https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api/)和[API Key 创建](https://help.aliyun.com/zh/model-studio/get-api-key)供操作者核对。
+
+重跑命令（先确保隔离数据库容器启动，且 `STAGE3_SPIKE_DATABASE_URL` 仅指向该容器）：
+
+```powershell
+node course-content/internal/stage-3/phase-0/real-provider-acceptance.mjs
+node course-content/internal/stage-3/phase-0/real-embedding-topk.mjs
+```
+
+| 检查 | 真实结果 |
+| --- | --- |
+| Chat | `qwen3.7-flash`，实际 HTTP 200，`kind: real`，非空 26 字符；522 ms；usage 23 输入 / 12 输出 / 35 总 token。输入限 2000 字符，请求输出 `max_tokens: 256`；验收脚本还检查回答字符上限。 |
+| 无效 Key | 向真实云端提交明确无效的临时测试 Key，HTTP 401；Adapter 映射 `PROVIDER_UNAUTHORIZED`；34 ms；随后恢复本机有效凭证。 |
+| Streaming | 真实模型给出 9 个独立文本 Chunk、共 48 字符；935 ms；正常结束；流末 usage 26 输入 / 24 输出 / 50 总 token。另一次请求用 AbortController 中断，Provider 确认停止，取消后视图新增写入 0。Node reader 已验收，正式浏览器 UI 仍待课程开发。 |
+| Structured Output | 真实模型生成 `summary` / `tags` / `confidence`，JSON 可解析且 Zod strict 校验通过，无额外字段、confidence 在 0～1；实际 HTTP 200；1243 ms；usage 70 输入 / 60 输出 / 130 总 token。另用构造的越界且多字段坏输出确认 validator 拒绝。 |
+| Embedding | 真实 `text-embedding-v4` 明确请求 `dimensions: 1024`，实际 HTTP 200；返回 1024 个有限 number；122 ms；usage 7 输入 / 7 总 token；未打印完整向量。 |
+| Embedding → pgvector | 三段非敏感中文短文与一个问题实际向量化，写入隔离本地 `vector(1024)`；按 ownerId 过滤余弦 Top-3，问题「什么工具可以保存代码版本？」的首位为 Git 文本，另一个用户的向量未进入结果；全流程 537 ms，四次 Embedding 共 37 token。此为连通性/基本语义验收，非正式 RAG 质量评估。 |
+
+首次真实 Chat 请求在默认 8 秒超时处结束，未形成成功响应。对照百炼 [OpenAI 兼容参数说明](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)后，Adapter 保留默认 8 秒，并允许服务端 `AI_TIMEOUT_MS` 受控设置为最多 30 秒；本轮使用 20 秒及 `AI_CHAT_DISABLE_THINKING=1`，同一 `qwen3.7-flash` 成功。未静默切换模型、无限重试或提高输出 token 上限。
+
+**仍未验证：**真实浏览器 UI 的流式状态、真实 Provider 5xx、云 PostgreSQL 的 pgvector 权限、学生 Stage 2 数据的增量迁移、生产部署。以上不属于本轮最小云端验收结果，不据此声称完整 Stage 3 产品完成。
+
+## Phase 0 历史记录
+
+以下“未验证”描述保留 Phase 0 当时的状态；其后完成的项目以上方 Phase 0.5 真实结果为准。
+
 2026-10-01，内部 reference spike：`course-content/internal/stage-3/phase-0/`。本轮只验证接口、流与隔离数据库路径，不是 Stage 3 正式产品或课程正文。开工时本地与 `origin/main` 均为 `79b9fad9f5cf061c2736948fa0cc79431439e993`。Stage 2 最终参考项目使用 Next.js 15.5.26、`prisma`/`@prisma/client` 固定 6.19.3、三次原有迁移，`Resource.ownerId`、`User`、`Session`；平台本身是独立 Vite/Express 项目，不把平台数据库当学生项目数据库。
 
 ## 验证环境与候选选型
 
 - Node 内置 `fetch` + 本地 HTTP stub 验证 Provider Adapter；`zod` 严格校验结构化结果；Node HTTP 服务测试断连与旧响应；独立 Next.js 15.5.26 Route Handler 测试真实框架传输。代码全部在 internal，未接平台公开路由。
 - 独立 Docker 容器 `aifoundry-stage3-spike-pgvector`，`pgvector/pgvector:0.8.6-pg17`，只绑定 `127.0.0.1:55433`，数据库 `stage3_spike`。未连接或 reset 平台现有 `aifoundry-postgres-local`，未访问生产库，也未使用平台用户数据。
-- 中国大陆课程候选：阿里云百炼北京地域兼容接口，Chat `qwen-flash`，Embedding `text-embedding-v4`、1024 维。官方 [Embedding API](https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api/) 列出该维度，[Chat 流式接口](https://help.aliyun.com/zh/model-studio/stream)说明 `stream_options.include_usage`，[qwen-flash 信息](https://help.aliyun.com/en/model-studio/qwen-flash)列出价格。价格与可用地域须在正式授课前复查。**当前环境没有可用 AI Key，因此这只是候选，不是实测通过的 Provider baseline。**
+- Phase 0 当时的候选为阿里云百炼北京地域兼容接口、Chat `qwen-flash`、Embedding `text-embedding-v4` / 1024 维，彼时没有真实 Key。该候选已由上方 Phase 0.5 的 `qwen3.7-flash` 真实验收取代；价格与可用地域在正式授课前仍须复查。
 
 ## Spike A：真实模型调用
 
@@ -31,7 +63,7 @@
 ```powershell
 $spikePassword = [guid]::NewGuid().ToString('N')
 docker run -d --name aifoundry-stage3-spike-pgvector -e "POSTGRES_PASSWORD=$spikePassword" -e POSTGRES_DB=stage3_spike -p 127.0.0.1:55433:5432 pgvector/pgvector:0.8.6-pg17
-$env:STAGE3_SPIKE_DATABASE_URL="postgresql://postgres:$spikePassword@127.0.0.1:55433/stage3_spike?schema=public"
+$env:STAGE3_SPIKE_DATABASE_URL='postgresql://postgres:' + $spikePassword + '@127.0.0.1:55433/stage3_spike?schema=public'
 npx prisma migrate deploy --schema course-content/internal/stage-3/phase-0/prisma/schema.prisma
 npx prisma generate --schema course-content/internal/stage-3/phase-0/prisma/schema.prisma
 node course-content/internal/stage-3/phase-0/db-spike.mjs

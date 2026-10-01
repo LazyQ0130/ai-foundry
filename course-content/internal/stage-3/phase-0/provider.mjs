@@ -14,8 +14,15 @@ export function parseSuggestion(text) {
   return parsed.data
 }
 
-const timeoutMs = 8_000
 const maxInput = 2_000
+function timeoutMs() {
+  const value = Number(process.env.AI_TIMEOUT_MS ?? 8_000)
+  if (!Number.isInteger(value) || value < 1_000 || value > 30_000) throw new Error('PROVIDER_TIMEOUT_CONFIG_INVALID')
+  return value
+}
+function chatOptions() {
+  return process.env.AI_CHAT_DISABLE_THINKING === '1' ? { enable_thinking: false } : {}
+}
 function bounded(input) {
   if (typeof input !== 'string' || !input.trim() || input.length > maxInput) throw new Error('INPUT_LIMIT')
   return input.trim()
@@ -32,7 +39,7 @@ function config(prefix) {
 async function request(prefix, path, body, signal) {
   const { base, key } = config(prefix)
   if (signal?.aborted) throw new Error('CANCELLED')
-  const timeout = AbortSignal.timeout(timeoutMs)
+  const timeout = AbortSignal.timeout(timeoutMs())
   const requestSignal = signal ? AbortSignal.any([signal, timeout]) : timeout
   try {
     const response = await fetch(`${base}/${path}`, {
@@ -58,18 +65,18 @@ export function createRealProvider() {
     async generate(input, { signal, structured = false } = {}) {
       const { model } = config('AI_CHAT')
       const response = await request('AI_CHAT', 'chat/completions', {
-        model, messages: [{ role: 'user', content: bounded(input) }], max_tokens: 256,
+        model, messages: [{ role: 'user', content: bounded(input) }], max_tokens: 256, ...chatOptions(),
         ...(structured ? { response_format: { type: 'json_object' } } : {}),
       }, signal)
       const data = await response.json()
       const text = data.choices?.[0]?.message?.content
       if (typeof text !== 'string') throw new Error('PROVIDER_INVALID_RESPONSE')
-      return { kind: 'real', text, usage: data.usage ?? null }
+      return { kind: 'real', status: response.status, text, usage: data.usage ?? null }
     },
     async *stream(input, { signal } = {}) {
       const { model } = config('AI_CHAT')
       const response = await request('AI_CHAT', 'chat/completions', {
-        model, messages: [{ role: 'user', content: bounded(input) }], max_tokens: 256,
+        model, messages: [{ role: 'user', content: bounded(input) }], max_tokens: 256, ...chatOptions(),
         stream: true, stream_options: { include_usage: true },
       }, signal)
       if (!response.body) throw new Error('PROVIDER_INVALID_RESPONSE')
@@ -107,7 +114,7 @@ export function createRealProvider() {
       const data = await response.json()
       const vector = data.data?.[0]?.embedding
       if (!Array.isArray(vector) || vector.length !== dimension || !vector.every(Number.isFinite)) throw new Error('EMBEDDING_DIMENSION_MISMATCH')
-      return { kind: 'real', vector, usage: data.usage ?? null }
+      return { kind: 'real', status: response.status, vector, usage: data.usage ?? null }
     },
   }
 }

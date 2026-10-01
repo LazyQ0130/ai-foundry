@@ -21,14 +21,14 @@
 ## 数据模型草案
 
 - 保留 Stage 2 的 `Resource`、`User`、`Session` 和既有 ownerId 语义。新增 `KnowledgeDocument(id, ownerId, title, content, createdAt, status)`；内容限非敏感粘贴文本或 Markdown。`KnowledgeChunk(id, documentId, position, content, embedding, embeddingModel, embeddingDimension)`，`(documentId, position)` 唯一。`ownerId` 可通过 Document 关联并在每条查询中强制过滤；服务端绝不信任客户端传来的 ownerId。
-- Stage 3 V1 的向量维度固定为 **1024 候选**。`vector(1024)` 由手写 SQL migration 建立，Prisma 6.19.3 Schema 用 `Unsupported("vector")` 表示，向量写入和余弦查询用参数化 `$executeRaw` / `$queryRaw`。切换 Embedding 模型或维度须显式迁移与重建，绝不自动批量重算。
+- Stage 3 V1 的已验收 Embedding baseline 固定为 **1024 维**。`vector(1024)` 由手写 SQL migration 建立，Prisma 6.19.3 Schema 用 `Unsupported("vector")` 表示，向量写入和余弦查询用参数化 `$executeRaw` / `$queryRaw`。切换 Embedding 模型或维度须显式迁移与重建，绝不自动批量重算。
 - 引用 ID 由本次检索结果生成，例如 `S1`、`S2`，与 Chunk id 的映射仅由服务端维护；回答输出中的每个引用须在该映射中，UI 再显示标题、片段、位置。没有可信检索证据时返回“资料中没有足够依据”，不让模型补造。
 
 ## Provider 与安全成本边界
 
 内部适配器最小接口为 `generate(input, options)`、`stream(input, options)`、`embed(input, options)`。Chat 与 Embedding 各从服务端 `AI_CHAT_BASE_URL` / `AI_CHAT_API_KEY` / `AI_CHAT_MODEL`、`AI_EMBEDDING_BASE_URL` / `AI_EMBEDDING_API_KEY` / `AI_EMBEDDING_MODEL` 读取，维度取 `AI_EMBEDDING_DIMENSION`；任何 Secret 不使用 `NEXT_PUBLIC_`，不进入浏览器、响应或日志。Mock Provider 可确定性复现并显式返回 `kind: mock`。
 
-候选课程 Provider 是中国大陆百炼北京地域的 OpenAI 兼容 API，候选 Chat `qwen-flash`、Embedding `text-embedding-v4` 的 1024 维。模型、价格和地域配置都可能变化；**本轮未获得真实 Key，不能称为实际验收配置**。以 [百炼文本向量接口](https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api/) 和 [qwen-flash 模型信息](https://help.aliyun.com/en/model-studio/qwen-flash)为候选依据，正式课程只写实测通过的型号、地域、参数和成本。
+**Stage 3 V1 已验收 baseline（2026-10-01）**：阿里云百炼 China (Beijing) Workspace 的 OpenAI 兼容 API；Chat `qwen3.7-flash`；Embedding `text-embedding-v4`，明确请求 `dimensions: 1024`。真实短 Chat、401 映射、流式与取消、结构化校验、1024 维返回及隔离 pgvector Top-K 已通过，证据与限制见 [Phase 0.5 技术记录](stage-3-technical-spike.md)。这是课程验证基线，不要求永久使用同一模型；正式授课前复查型号、地域、价格与账号额度。适配器保留模型环境变量，默认 8 秒超时；本次验收使用服务端可配置的 20 秒上限和关闭思考模式，输出仍限 256 token。
 
 Route 在鉴权后限制单次输入长度与输出 token，设置超时和单用户简单限流；对失败返回受控错误，不自动无限重试。用户取消须传递 AbortSignal。一次最多嵌入受限数量 Chunk，不自动批量重算。日志只记请求 id、状态、耗时、可得 token usage，不记录 Key、完整 Prompt、完整 Provider 响应或真实资料。测试只用非敏感文本，学生可设置账户预算告警。
 

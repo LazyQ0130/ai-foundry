@@ -54,8 +54,12 @@ test('schema rejects invalid model output', () => {
 })
 test('real adapter contract against isolated local HTTP stub', async () => {
   const real = createRealProvider()
-  assert.equal((await real.generate('hello')).usage.total_tokens, 3)
-  assert.deepEqual((await real.embed('hello')).vector, [0.1, 0.2, 0.3])
+  const generated = await real.generate('hello')
+  assert.equal(generated.status, 200)
+  assert.equal(generated.usage.total_tokens, 3)
+  const embedded = await real.embed('hello')
+  assert.equal(embedded.status, 200)
+  assert.deepEqual(embedded.vector, [0.1, 0.2, 0.3])
   const parts = []
   for await (const part of real.stream('hello')) parts.push(part.text)
   assert.deepEqual(parts, ['first', ' second'])
