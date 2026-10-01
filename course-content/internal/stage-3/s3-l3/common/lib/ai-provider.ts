@@ -114,7 +114,7 @@ export async function* stream(input: string, options: { signal?: AbortSignal } =
   if (providerMode() === "mock") {
     for (const text of ["MOCK：", "这是", "一段", "流式回答。"]) {
       if (options.signal?.aborted) throw new AiProviderError("CANCELLED");
-      try { await pause(110, undefined, { signal: options.signal }); } catch { throw new AiProviderError("CANCELLED"); }
+      try { await pause(800, undefined, { signal: options.signal }); } catch { throw new AiProviderError("CANCELLED"); }
       if (options.signal?.aborted) throw new AiProviderError("CANCELLED");
       yield { type: "delta", text };
     }

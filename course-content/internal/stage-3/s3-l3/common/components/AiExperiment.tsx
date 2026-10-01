@@ -133,6 +133,7 @@ export default function AiExperiment() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (mode === "stream" && (streamView.kind === "pending" || streamView.kind === "streaming")) return;
     if (!input.trim() || input.trim().length > 2000) {
       const message = "请输入 1～2000 个字符的问题。";
       if (mode === "ordinary") setAnswerView({ kind: "error", message });
@@ -159,12 +160,13 @@ export default function AiExperiment() {
           className="min-h-24 w-full rounded-lg border border-stone-300 bg-white p-3 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" />
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs text-stone-500">{input.length}/2000 字符</span>
-          {mode === "stream" && active ? <button type="button" onClick={stopStream} className="rounded-lg border border-violet-700 px-4 py-2 text-sm text-violet-800">停止生成</button> :
+          {mode === "stream" && active ? <span className="text-sm text-stone-600">可随时停止</span> :
             <button type="submit" disabled={answerView.kind === "loading"} className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-60">
               {mode === "ordinary" ? answerView.kind === "loading" ? "正在询问…" : "询问 AI" : "开始生成"}
             </button>}
         </div>
       </form>
+      {mode === "stream" && active && <button type="button" onClick={stopStream} className="mt-3 rounded-lg border border-violet-700 px-4 py-2 text-sm text-violet-800">停止生成</button>}
       {mode === "ordinary" ? <div aria-live="polite" className="mt-4 text-sm">
         {answerView.kind === "loading" && <p className="text-stone-600">正在等待回答…</p>}
         {answerView.kind === "error" && <p role="alert" className="text-rose-700">{answerView.message}</p>}

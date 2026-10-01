@@ -11,7 +11,8 @@
 - 单个 server-only `lib/ai-provider.ts` 中的 `stream()` 与 `generate()` 共用配置、请求 helper、固定 `max_tokens:256`、thinking 选项、超时和错误映射。真实请求发送 `stream:true`、`stream_options.include_usage:true`；默认受控超时 20 秒，无自动重试。
 - `ProviderSseParser` 按行缓存任意网络切分，处理 `data:`、空行、`[DONE]`、delta、usage、坏 JSON 与非正常结束。Route 在 Auth、Origin、JSON、输入与共享限流通过后，发送本产品的 NDJSON `meta/delta/usage/done/error`，不透传 Provider 原始 SSE。
 - 浏览器沿用原问答输入区的普通/流式切换。流式状态为 `idle/pending/streaming/completed/cancelled/failed`。第一段前 pending，收到正文后 streaming；取消立即保留部分文字并停止当前视图写入。generation id 过滤取消后 A 的迟到内容。取消由浏览器 AbortController 经 Route 的信号传给 Provider fetch。
-- Mock 固定四段、每段间隔约 110 ms，页面标注「Mock 模式 · 未调用真实模型」。
+- 浏览器交互复核时发现，停止按钮留在 `<form>` 内会在当前自动化环境中伴随一次重复提交，导致取消状态被新请求覆盖。将停止按钮移到表单外，并在流式活动期间拒绝表单重复提交；随后用真实浏览器点击首段后取消，页面保留 `MOCK：`、显示「已停止生成」，再次读取也未增长。
+- Mock 固定四段、每段间隔约 800 ms，页面标注「Mock 模式 · 未调用真实模型」。
 
 ## 自动与本地实测
 
@@ -25,6 +26,7 @@
 | `npm run check` | 通过，课程目录与 Starter 检查通过 |
 | Prompt Copy | 使用现有 LessonMarkdown 实际点击，剪贴板与正文代码块严格相等，长度均为 864 字符；随后清空测试剪贴板 |
 | 页面 | 同一渲染器桌面及 390px 截图检查通过；标题、Prompt 卡片与复制按钮可见，移动宽度未见横向溢出 |
+| 浏览器 Mock 交互 | 本地隔离账号实际观察 pending → streaming，首段后点击停止，显示 cancelled 且保留首段；后续无新增文字 |
 
 隔离数据库：本机 Docker `aifoundry-stage3-spike-pgvector`，`stage3_l1`，仅 127.0.0.1:55433；未连接平台/生产数据库。平台 `npm run verify/check` 使用既有平台测试环境。参考项目装配在被忽略的 `.runtime/`，不提交构建产物。
 
