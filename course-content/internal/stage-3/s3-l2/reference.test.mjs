@@ -46,7 +46,7 @@ const stub = createServer(async (request, response) => {
     content = Object.entries(cases).find(([marker]) => input.includes(marker))?.[1] ?? JSON.stringify(valid)
   }
   response.writeHead(200, { 'Content-Type': 'application/json' })
-  response.end(JSON.stringify({ choices: [{ message: { content } }], usage: { prompt_tokens: 3, completion_tokens: 4, total_tokens: 7 } }))
+  response.end(JSON.stringify({ choices: [{ message: { content }, finish_reason: input.includes('TRUNCATED') ? 'length' : 'stop' }], usage: { prompt_tokens: 3, completion_tokens: 4, total_tokens: 7 } }))
 })
 stub.listen(0, '127.0.0.1')
 await once(stub, 'listening')
@@ -185,6 +185,11 @@ try {
     assert(JSON.parse(bad.text).error.includes('结构不符合要求'), marker)
     assert(!bad.text.includes(marker) && !bad.text.includes(testKey), marker)
   }
+  const truncatedCookie = await user()
+  const truncated = await suggest('TRUNCATED', truncatedCookie)
+  assert.equal(truncated.status, 502)
+  assert.match(JSON.parse(truncated.text).error, /长度上限/)
+  assert(!truncated.text.includes('TRUNCATED') && !truncated.text.includes(testKey))
   for (const marker of ['UNAUTHORIZED', 'FAILURE']) {
     const errorCookie = await user()
     const bad = await suggest(marker, errorCookie)

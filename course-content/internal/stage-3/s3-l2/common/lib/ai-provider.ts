@@ -4,7 +4,7 @@ export type AiUsage = { promptTokens: number; completionTokens: number; totalTok
 export type AiAnswer = { kind: "mock" | "real"; text: string; usage: AiUsage | null };
 
 export class AiProviderError extends Error {
-  constructor(readonly code: "CONFIG" | "TIMEOUT" | "UNAUTHORIZED" | "UPSTREAM") {
+  constructor(readonly code: "CONFIG" | "TIMEOUT" | "UNAUTHORIZED" | "UPSTREAM" | "OUTPUT_TRUNCATED") {
     super(code);
   }
 }
@@ -78,6 +78,7 @@ export async function generate(input: string, options: { structured?: boolean } 
     const body = data as Record<string, unknown>;
     const choices = body.choices;
     const first = Array.isArray(choices) ? choices[0] : null;
+    if (structured && first && typeof first === "object" && (first as Record<string, unknown>).finish_reason === "length") throw new AiProviderError("OUTPUT_TRUNCATED");
     const message = first && typeof first === "object" ? (first as Record<string, unknown>).message : null;
     const content = message && typeof message === "object" ? (message as Record<string, unknown>).content : null;
     if (typeof content !== "string" || !content.trim()) throw new AiProviderError("UPSTREAM");

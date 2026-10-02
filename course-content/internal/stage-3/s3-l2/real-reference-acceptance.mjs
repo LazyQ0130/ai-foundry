@@ -40,7 +40,7 @@ try {
   assert.equal(data.ok, true)
   assert.equal(data.kind, 'real')
   assert.equal(typeof data.suggestion?.summary, 'string')
-  assert(data.suggestion.summary.trim().length > 0 && data.suggestion.summary.length <= 500)
+  assert(data.suggestion.summary.trim().length > 0 && data.suggestion.summary.length <= 200)
   assert(Array.isArray(data.suggestion.tags) && data.suggestion.tags.length >= 1 && data.suggestion.tags.length <= 5)
   assert(typeof data.suggestion.confidence === 'number' && data.suggestion.confidence >= 0 && data.suggestion.confidence <= 1)
   assert(!JSON.stringify(data).includes(process.env.AI_CHAT_API_KEY))

@@ -5,7 +5,7 @@ import { hasStageAccess } from './entitlement.js'
 export type AssetAccess = { access: 'authenticated-preview' } | { access: 'stage-entitlement'; stage: string } | { access: 'admin-only' }
 export async function requireAssetAccess(user: User | undefined, policy: AssetAccess) {
   if (!user || user.status !== 'ACTIVE') throw new ApiError(401, 'UNAUTHORIZED', '请先登录')
-  if (user.role === 'ADMIN') return
+  if (user.role === 'ADMIN' && policy.access !== 'stage-entitlement') return
   switch (policy.access) {
     case 'authenticated-preview': return
     case 'stage-entitlement': if (await hasStageAccess(user.id, policy.stage)) return; break

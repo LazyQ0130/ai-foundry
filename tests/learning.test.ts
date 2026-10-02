@@ -190,3 +190,45 @@ test('student → manual purchase → protected lessons → durable progress →
   await db.lesson.update({ where: { id: 's1-l1' }, data: { isPreview: true } })
   await db.$disconnect()
 })
+
+test('temporarily published Stage 3 enforces independent entitlement and persists 7/7 progress', async () => {
+  const lessonIds = ['s3-l1', 's3-l2', 's3-l3', 's3-l4', 's3-l5', 's3-l6', 's3-l7']
+  const stage = await db.stage.findUniqueOrThrow({ where: { slug: 'stage-3' } })
+  const lessons = await db.lesson.findMany({ where: { id: { in: lessonIds } }, select: { id: true, isPublished: true, isPreview: true } })
+  assert.equal(lessons.length, 7)
+  const admin = request.agent(app), stageThree = request.agent(app), stageTwo = request.agent(app)
+  const suffix = Date.now().toString().slice(-8)
+  const password = 'stage3-access-test-123'
+  try {
+    await db.stage.update({ where: { slug: 'stage-3' }, data: { isPublished: true } })
+    await db.lesson.updateMany({ where: { id: { in: lessonIds } }, data: { isPublished: true, isPreview: false } })
+    const register = (agent: ReturnType<typeof request.agent>, phone: string) => agent.post('/api/auth/register').set('Origin', env.APP_ORIGIN).send({ phone, password, acceptedTerms: true })
+    const threeId = (await register(stageThree, `132${suffix}`).expect(201)).body.data.user.id
+    const twoId = (await register(stageTwo, `133${suffix}`).expect(201)).body.data.user.id
+    await admin.post('/api/auth/login').set('Origin', env.APP_ORIGIN).send({ phone: process.env.ADMIN_PHONE, password: process.env.ADMIN_INITIAL_PASSWORD }).expect(200)
+    const grant = (id: string, slug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug: slug, source: 'TEST', note: 'Stage 3 independent access fixture' })
+    await grant(twoId, 'stage-2').expect(200)
+    await grant(threeId, 'stage-3').expect(200)
+    await request(app).get('/api/lessons/s3-l1').expect(401)
+    await stageTwo.get('/api/lessons/s3-l1').expect(403)
+    await stageThree.get('/api/lessons/s2-l1').expect(403)
+    let firstKey = ''
+    for (const lessonId of lessonIds) {
+      const content = (await stageThree.get(`/api/lessons/${lessonId}`).expect(200)).body.data.content
+      assert.equal(content.meta.checkKeys.length, 5)
+      if (!firstKey) firstKey = content.meta.checkKeys[0]
+      for (const key of content.meta.checkKeys) await stageThree.put(`/api/progress/lessons/${lessonId}/checks/${key}`).set('Origin', env.APP_ORIGIN).send({ completed: true }).expect(200)
+      await stageThree.post(`/api/progress/lessons/${lessonId}/complete`).set('Origin', env.APP_ORIGIN).expect(200)
+    }
+    const progress = (await stageThree.get('/api/progress').expect(200)).body.data
+    assert.deepEqual(progress.stageProgress['stage-3'], { completed: 7, total: 7, percent: 100 })
+    assert.equal((await stageThree.get('/api/progress').expect(200)).body.data.checks['s3-l1'][firstKey], true)
+    await admin.delete(`/api/admin/users/${threeId}/entitlements/stage-3`).set('Origin', env.APP_ORIGIN).send({ note: 'Stage 3 revoke fixture' }).expect(200)
+    await stageThree.get('/api/lessons/s3-l1').expect(403)
+    assert.equal((await stageThree.get('/api/progress').expect(200)).body.data.stageProgress['stage-3'].completed, 7)
+  } finally {
+    for (const lesson of lessons) await db.lesson.update({ where: { id: lesson.id }, data: { isPublished: lesson.isPublished, isPreview: lesson.isPreview } })
+    await db.stage.update({ where: { slug: 'stage-3' }, data: { isPublished: stage.isPublished } })
+    await db.$disconnect()
+  }
+})

@@ -82,11 +82,15 @@ checkKeys:
 :::
 ```
 
-页面呈现文件图标、资源名称、说明、ZIP 大小和「下载 Starter」按钮。下载失败在块内提示，401 提示登录，403 提示开通 Stage 1；不会把错误 JSON 保存成 ZIP。
+页面呈现文件图标、资源名称、说明、ZIP 大小和「下载 Starter」按钮。下载失败在块内提示，401 提示登录，403 提示当前账号缺少资源权限；不会把错误 JSON 保存成 ZIP。
+
+Stage 3 正文使用 `:::resource{asset="stage3-starter"}`。该资源要求 ACTIVE 登录和 ACTIVE Stage 3 entitlement；Stage 2 entitlement 不代替 Stage 3。资源卡显示“需 Stage 3 权限”，401/403 给出对应受控提示。
 
 `GET /api/course-assets/stage1-starter` 单独验证 ACTIVE 登录状态，当前使用 `authenticated-preview` 策略，无需 Stage 1 entitlement。它不继承 Lesson Preview 权限，匿名用户仍不能下载。`/info` 只公开大小与格式，不公开路径或文件内容。服务器文件映射位于 `server/routes/course-assets.ts`，不能从 Markdown 或请求参数指定文件路径。
 
 源文件位于 `starter/stage-1/`。运行 `npm run build:starter` 生成 `starter/aifoundry-stage1-starter.zip`，`npm run check:starter` 检查 ZIP 是否与源文件一致。网站 `npm run build` 会自动重新打包，测试也会检查源文件与 ZIP 一致。部署需同时携带该 ZIP，保持仓库根目录为启动工作目录；不能复制到 `public` 或 `dist`。
+
+Stage 3 的源目录为 `starter/stage-3/`，对应 `starter/aifoundry-stage3-starter.zip`；相同两条命令会同时构建和检查 Stage 1、Stage 3 两份 ZIP。
 
 打包只保留固定根文件及 app/components/lib/public 下允许的源代码、样式和素材；根目录 `.gitignore` 是唯一允许且必需的隐藏文件，其余隐藏文件、依赖、构建缓存、测试、日志和临时文件均排除，拒绝符号链接。新增配置文件时需明确更新打包白名单。
 

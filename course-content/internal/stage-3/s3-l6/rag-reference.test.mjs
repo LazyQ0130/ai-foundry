@@ -17,7 +17,7 @@ const require = createRequire(path.join(project, 'package.json'))
 const { PrismaClient } = require('@prisma/client')
 const db = new PrismaClient({ datasources: { db: { url: process.env.TEST_DATABASE_URL } } })
 const question = '什么工具可以帮助我保存代码版本？'
-let embedCalls = 0, chatCalls = 0, lastChat = null, citationOverride = null
+let embedCalls = 0, chatCalls = 0, lastChat = null, citationOverride = null, finishReasonOverride = null
 const stub = createServer(async (request, response) => {
   const parts = []
   for await (const part of request) parts.push(part)
@@ -46,7 +46,7 @@ const stub = createServer(async (request, response) => {
       ? { status: 'insufficient', answer: '当前资料中没有足够依据。', sourceIds: [] }
       : { status: 'answered', answer: 'Git 可以记录代码版本。', sourceIds: [firstSource] })
     response.writeHead(200, { 'Content-Type': 'application/json' })
-    response.end(JSON.stringify({ choices: [{ message: { content } }], usage: { prompt_tokens: 5, completion_tokens: 6, total_tokens: 11 } }))
+    response.end(JSON.stringify({ choices: [{ message: { content }, finish_reason: finishReasonOverride ?? 'stop' }], usage: { prompt_tokens: 5, completion_tokens: 6, total_tokens: 11 } }))
     return
   }
   response.writeHead(404); response.end()
@@ -265,6 +265,14 @@ try {
   await bad(citationThird.cookie, `\`\`\`json\n${answered([secondId])}\n\`\`\``)
   await bad(citationThird.cookie, '{bad json')
   await bad(citationThird.cookie, JSON.stringify({ status: 'unknown', answer: '测试', sourceIds: [] }))
+  const truncatedUser = await user()
+  await seed(truncatedUser.id, 'Truncated Git', 'ready', 'text-embedding-v4', [{ content: 'Git 保存版本。', vector: q }])
+  finishReasonOverride = 'length'
+  const truncated = await ask(truncatedUser.cookie)
+  finishReasonOverride = null
+  assert.equal(truncated.status, 502)
+  assert.match(truncated.body.error, /长度上限/)
+  assert(!JSON.stringify(truncated.body).includes('SRC-CHUNK-'))
   const errorUser = await user()
   await seed(errorUser.id, '真实错误测试', 'ready', 'text-embedding-v4', [{ content: 'Git', vector: q }])
   for (const marker of ['EMBED_UNAUTHORIZED', 'EMBED_FAILURE', 'EMBED_BAD_DIM', 'EMBED_SLOW', 'CHAT_UNAUTHORIZED']) {

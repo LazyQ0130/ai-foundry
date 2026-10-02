@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="920" viewBox="0 0 800 920" role="img" aria-label="RAG 的单轮数据流">
+<defs><marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#187A91" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="800" height="920" rx="28" fill="#F3F9F8"/>
+<text x="400" y="60" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-size="34" font-weight="700" fill="#15394B">RAG 的单轮数据流</text>
+<text x="400" y="105" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#477083">先检索，再生成</text>
+<rect x="74" y="150" width="652" height="94" rx="22" fill="#DDEDF5" stroke="#2C739A" stroke-width="3"/>
+<circle cx="130" cy="197" r="29" fill="#2C739A"/>
+<text x="130" y="206" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">1</text>
+<text x="185" y="192" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Question</text>
+<text x="185" y="224" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">用户提出一个问题</text>
+<path d="M400 250 V273" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="282" width="652" height="94" rx="22" fill="#D9F4E9" stroke="#138B79" stroke-width="3"/>
+<circle cx="130" cy="329" r="29" fill="#138B79"/>
+<text x="130" y="338" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">2</text>
+<text x="185" y="324" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Query Embedding</text>
+<text x="185" y="356" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">用同一模型向量化问题</text>
+<path d="M400 382 V405" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="414" width="652" height="94" rx="22" fill="#DDEDF5" stroke="#2C739A" stroke-width="3"/>
+<circle cx="130" cy="461" r="29" fill="#2C739A"/>
+<text x="130" y="470" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">3</text>
+<text x="185" y="456" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Top-K</text>
+<text x="185" y="488" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">只检索当前用户 ready Chunk</text>
+<path d="M400 514 V537" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="546" width="652" height="94" rx="22" fill="#D9F4E9" stroke="#138B79" stroke-width="3"/>
+<circle cx="130" cy="593" r="29" fill="#138B79"/>
+<text x="130" y="602" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">4</text>
+<text x="185" y="588" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Context</text>
+<text x="185" y="620" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">把本次候选内容交给模型</text>
+<path d="M400 646 V669" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="678" width="652" height="94" rx="22" fill="#DDEDF5" stroke="#2C739A" stroke-width="3"/>
+<circle cx="130" cy="725" r="29" fill="#2C739A"/>
+<text x="130" y="734" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">5</text>
+<text x="185" y="720" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Model → Answer</text>
+<text x="185" y="752" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">根据 Context 生成简短回答</text>
+<rect x="74" y="796" width="652" height="76" rx="18" fill="#E7F1F4" stroke="#80B6C0" stroke-width="2"/>
+<text x="400" y="844" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-size="24" font-weight="700" fill="#1D6577">检索命中不等于答案已被证实</text>
+</svg>

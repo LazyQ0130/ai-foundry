@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="713" viewBox="0 0 800 713" role="img" aria-label="一次模型请求的安全边界">
+<defs><marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#187A91" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="800" height="713" rx="28" fill="#F3F9F8"/>
+<text x="400" y="60" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-size="34" font-weight="700" fill="#15394B">一次模型请求的安全边界</text>
+<text x="400" y="105" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#477083">API Key 只留在自己的服务端</text>
+<rect x="74" y="150" width="652" height="94" rx="22" fill="#DDEDF5" stroke="#2C739A" stroke-width="3"/>
+<circle cx="130" cy="197" r="29" fill="#2C739A"/>
+<text x="130" y="206" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">1</text>
+<text x="185" y="192" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Browser</text>
+<text x="185" y="224" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">登录用户提交问题，不携带 Key</text>
+<path d="M400 250 V273" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="282" width="652" height="94" rx="22" fill="#D9F4E9" stroke="#138B79" stroke-width="3"/>
+<circle cx="130" cy="329" r="29" fill="#138B79"/>
+<text x="130" y="338" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">2</text>
+<text x="185" y="324" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Next.js Server</text>
+<text x="185" y="356" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">验证 Session 与输入；读取服务端 Key</text>
+<path d="M400 382 V405" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="414" width="652" height="94" rx="22" fill="#DDEDF5" stroke="#2C739A" stroke-width="3"/>
+<circle cx="130" cy="461" r="29" fill="#2C739A"/>
+<text x="130" y="470" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">3</text>
+<text x="185" y="456" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Model Provider</text>
+<text x="185" y="488" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">接收服务端请求，返回模型结果</text>
+<path d="M400 514 V537" fill="none" stroke="#187A91" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="74" y="546" width="652" height="94" rx="22" fill="#D9F4E9" stroke="#138B79" stroke-width="3"/>
+<circle cx="130" cy="593" r="29" fill="#138B79"/>
+<text x="130" y="602" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">4</text>
+<text x="185" y="588" font-family="Arial,Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#15394B">Browser</text>
+<text x="185" y="620" font-family="Arial,Microsoft YaHei,sans-serif" font-size="22" fill="#376477">只收到经过整理的回答与用量</text>
+</svg>

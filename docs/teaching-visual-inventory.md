@@ -26,3 +26,16 @@
 | s2-8-02 | s2-l8 | 准备真正的云 PostgreSQL（第 93 行） | 本地和生产环境分离，网络可达性另行验收 | `public/course-media/stage-2/s2-8-02.webp` | 已生成、已集成 |
 
 所有文件位于公开的 `public/course-media`，只表达抽象教学关系。四张选定样板与对比图保留在 `docs/teaching-visual-v2-samples/`；SVG 备用源保留在 `docs/teaching-visual-v2-sources/`。V1 备份见视觉规范。原有未制作的真实软件截图建议仍保留为注释；没有将其记录为已完成。
+
+## Stage 3 V1.1 已完成图
+
+| 编号 | 课程 | 教学关系 | 文件 |
+| --- | --- | --- | --- |
+| S3-1-01 | 3.1 | Browser → Next.js Server → Provider，Key 只在服务端 | `public/course-media/stage-3/s3-1-01.svg` |
+| S3-3-01 | 3.3 | A 取消、B 启动、A 迟到片段被忽略 | `public/course-media/stage-3/s3-3-01.svg` |
+| S3-4-01 | 3.4 | Document → Chunk → Embedding → vector(1024) → pgvector | `public/course-media/stage-3/s3-4-01.svg` |
+| S3-5-01 | 3.5 | Question → Query Embedding → Top-K → Context → Model → Answer | `public/course-media/stage-3/s3-5-01.svg` |
+| S3-6-01 | 3.6 | JSON Schema 与本次来源集合的双层校验 | `public/course-media/stage-3/s3-6-01.svg` |
+| S3-7-01 | 3.7 | 固定题集、自动指标、人工支持度与错误类别 | `public/course-media/stage-3/s3-7-01.svg` |
+
+六张均为从零绘制的完整 SVG 信息图，生成源为 `docs/teaching-visual-v2-sources/stage-3-diagrams.py`。抽象关系可公开；正文细节仍在受保护 Markdown。

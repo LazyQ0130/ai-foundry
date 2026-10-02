@@ -11,6 +11,7 @@ import { db } from '../server/db.js'
 import { createStarterZip, isStarterFile } from '../scripts/starter-package.js'
 
 const endpoint = '/api/course-assets/stage1-starter'
+const stageThreeEndpoint = '/api/course-assets/stage3-starter'
 test('Starter downloads allow active preview users, admin and revoked stage access but reject disabled users', async () => {
   const student = request.agent(app), admin = request.agent(app)
   const phone = `134${Date.now().toString().slice(-8)}`
@@ -18,11 +19,22 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await admin.post('/api/auth/login').set('Origin', env.APP_ORIGIN).send({ phone: process.env.ADMIN_PHONE, password: process.env.ADMIN_INITIAL_PASSWORD }).expect(200)
   await request(app).get('/api/lessons/s1-l0').expect(200)
   await request(app).get(endpoint).expect(401)
+  await request(app).get(stageThreeEndpoint).expect(401)
+  await admin.get(stageThreeEndpoint).expect(403)
   await request(app).head(endpoint).expect(401)
   await student.get(endpoint).expect(200)
   const grant = (stageSlug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug, source: 'TEST', note: '附件权限测试' })
   await grant('stage-2').expect(200)
   await student.get(endpoint).expect(200)
+  await student.get(stageThreeEndpoint).expect(403)
+  await grant('stage-3').expect(200)
+  const stageThreeZip = await student.get(stageThreeEndpoint).buffer(true).parse((res, callback) => {
+    const chunks: Buffer[] = []
+    res.on('data', chunk => chunks.push(Buffer.from(chunk)))
+    res.on('end', () => callback(null, Buffer.concat(chunks)))
+    res.on('error', callback)
+  }).expect(200)
+  assert.deepEqual(stageThreeZip.body, await readFile('starter/aifoundry-stage3-starter.zip'))
   await grant('stage-1').expect(200)
   for (const agent of [student, admin]) {
     const result = await agent.get(endpoint).buffer(true).parse((res, callback) => {
@@ -44,6 +56,8 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   assert.equal(withPath.headers['content-type'], 'application/zip')
   await admin.delete(`/api/admin/users/${id}/entitlements/stage-1`).set('Origin', env.APP_ORIGIN).send({ note: '撤销测试' }).expect(200)
   await student.get(endpoint).expect(200)
+  await admin.delete(`/api/admin/users/${id}/entitlements/stage-3`).set('Origin', env.APP_ORIGIN).send({ note: '撤销测试' }).expect(200)
+  await student.get(stageThreeEndpoint).expect(403)
   const info = await request(app).get(`${endpoint}/info`).expect(200)
   assert.deepEqual(Object.keys(info.body.data).sort(), ['bytes', 'format'])
   assert.equal(info.body.data.bytes, (await readFile('starter/aifoundry-stage1-starter.zip')).length)
@@ -72,6 +86,24 @@ test('Starter ZIP is current, extractable, contains only deliverable source unde
   assert.equal(pkg.name, 'personal-knowledge-workbench')
   assert.equal(isStarterFile('.gitignore'), true)
   for (const name of ['.env', '.env.local', '.env.production', '.secret', '.foo', '.git/config', 'Thumbs.db', 'node_modules/a.js', '.next/a.js', 'app/.gitignore', 'app/.env', 'app/a.log', 'app/.DS_Store', 'app/Thumbs.db', '../secret.ts', '/etc/passwd', 'app/../../.env', 'private.key', 'app/a.ts.bak', 'app/a.test.tsx', 'lib/a.spec.ts', 'app/__tests__/a.ts', 'components/tests/a.tsx', 'course-content/lesson.md', 'docs/test.ts']) assert.equal(isStarterFile(name), false, name)
+})
+
+test('Stage 3 Starter ZIP matches the complete allowed Stage 2 project baseline', async () => {
+  const zip = await readFile('starter/aifoundry-stage3-starter.zip')
+  assert.deepEqual(zip, Buffer.from(await createStarterZip('starter/stage-3', 3)))
+  const files = unzipSync(zip)
+  const prefix = 'aifoundry-stage3-starter/'
+  for (const [name, data] of Object.entries(files)) {
+    assert.ok(name.startsWith(prefix), name)
+    const relative = name.slice(prefix.length)
+    assert.ok(isStarterFile(relative, 3), relative)
+    assert.deepEqual(Buffer.from(data), await readFile(`starter/stage-3/${relative}`))
+    assert.doesNotMatch(relative, /node_modules|\.next|\.runtime|\.test\.|\.spec\.|\.log$|dump|course-content|secret/i)
+  }
+  for (const required of ['.env.example', 'compose.yaml', 'prisma/schema.prisma', 'app/api/auth/register/route.ts', 'app/api/resources/route.ts']) assert.ok(files[prefix + required])
+  assert.equal(Object.keys(files).filter(name => name.endsWith('/migration.sql')).length, 3)
+  assert.equal(Object.keys(files).filter(name => /app\/api\/ai\//.test(name)).length, 0)
+  assert.doesNotMatch(strFromU8(files[prefix + 'README.md']), /A\/B|作者在线演示|API Key/i)
 })
 
 test('Starter requires source .gitignore and excludes hidden/test files even when present', async () => {

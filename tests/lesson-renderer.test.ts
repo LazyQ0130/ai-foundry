@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { stringify } from 'yaml'
@@ -101,6 +101,10 @@ test('resource renders only fixed registry IDs; rejects arbitrary URLs, paths, a
   assert.doesNotMatch(html, /starter\/aifoundry|https:\/\//)
   for (const invalid of [':::resource\n:::', ':::resource{asset="__proto__"}\n:::', ':::resource{asset="../../.env"}\n:::', ':::resource{asset="https://evil.example"}\n:::', ':::resource{asset="stage1-starter" url="https://evil.example"}\n:::', ':::resource{asset="stage1-starter"}\nhttps://evil.example\n:::']) assert.throws(() => parseLessonContent(document(metadata, invalid)))
   assert.doesNotMatch(render('<lesson-resource asset="stage1-starter"></lesson-resource>'), /下载 Starter/)
+  const stageThree = render(':::resource{asset="stage3-starter"}\n:::')
+  assert.match(stageThree, /Stage 3 Starter/)
+  assert.match(stageThree, /需 Stage 3 权限/)
+  assert.doesNotMatch(stageThree, /免费体验资源/)
 })
 
 test('published courses render in full with unique stable progress keys', async () => {
@@ -128,4 +132,19 @@ test('published courses render in full with unique stable progress keys', async 
     assert.match(html, /lesson-help/); assert.match(html, /lesson-deepdive/)
     assert.doesNotMatch(html, /配图建议|:::|Structured content/)
   }
+})
+
+test('every authored lesson parses and renders with globally unique progress keys', async () => {
+  const seen = new Set<string>()
+  let count = 0
+  for (const stage of (await readdir('course-content', { withFileTypes: true })).filter(entry => entry.isDirectory() && /^stage-\d+$/.test(entry.name))) {
+    for (const file of (await readdir(`course-content/${stage.name}`)).filter(name => name.endsWith('.md'))) {
+      const content = parseLessonContent(await readFile(`course-content/${stage.name}/${file}`, 'utf8'))
+      assert.equal(content.meta.checklist.length, content.meta.checkKeys.length)
+      for (const key of content.meta.checkKeys) { assert.ok(!seen.has(key), `${file}: ${key}`); seen.add(key) }
+      assert.match(render(content.body), /<h2>/)
+      count++
+    }
+  }
+  assert.ok(count >= 22)
 })
