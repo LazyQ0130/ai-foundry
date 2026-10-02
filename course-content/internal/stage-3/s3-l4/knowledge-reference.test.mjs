@@ -12,11 +12,13 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 const require = createRequire(path.join(project, 'package.json'))
 const { PrismaClient } = require('@prisma/client')
 const db = new PrismaClient({ datasources: { db: { url: process.env.TEST_DATABASE_URL } } })
+let embedCalls = 0
 const server = createServer(async (request, response) => {
   const parts = []
   for await (const part of request) parts.push(part)
   const body = JSON.parse(Buffer.concat(parts).toString())
   assert.equal(request.url, '/compatible-mode/v1/embeddings')
+  embedCalls++
   assert.equal(body.dimensions, 1024)
   assert.equal(body.model, 'text-embedding-v4')
   if (body.input.includes('UNAUTHORIZED')) { response.writeHead(401); response.end('secret provider response'); return }
@@ -111,6 +113,18 @@ try {
   assert.equal(real.body.kind, 'real')
   assert.equal(real.body.model, 'text-embedding-v4')
   assert.equal(real.body.usage, 2)
+  const budgetCookie = await user()
+  const eightChunks = Array.from({ length: 8 }, (_, index) => `${index + 1}` + '知'.repeat(649)).join('\n\n')
+  const beforeEight = embedCalls
+  const fullBudget = await post(budgetCookie, '八块资料', eightChunks)
+  assert.equal(fullBudget.status, 201)
+  assert.equal(fullBudget.body.chunkCount, 8)
+  assert.equal(embedCalls - beforeEight, 8)
+  const exhausted = await post(budgetCookie, '第二篇八块资料', eightChunks)
+  assert.equal(exhausted.status, 429)
+  assert.equal(embedCalls - beforeEight, 8, 'budget denial happens before every Embedding')
+  const afterDenial = await list(budgetCookie)
+  assert.equal(afterDenial.body.documents.filter(item => item.title === '第二篇八块资料').length, 0, 'no indexing row is created')
   for (const marker of ['UNAUTHORIZED', 'FAILURE', 'BAD_DIMENSION', 'SLOW']) {
     const owner = await user()
     const result = await post(owner, marker, marker)

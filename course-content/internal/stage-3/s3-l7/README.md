@@ -9,3 +9,17 @@
 `eval/knowledge-pack.json` 是固定的三篇非敏感资料；`eval/rag-cases.json` 是 8 条可答、4 条无答案的固定题目。明确入库知识包后要等待至少 60 秒，让同账号入库请求离开限流窗口。`scripts/rag-eval.mjs` 只通过现有 `/api/knowledge/ask` 顺序运行，不复制 Embedding、SQL、Prompt 或 Provider；12 题之间至少等待 13 秒，不自动重试。真实模式须显式 `EVAL_REAL_CONFIRM=YES`，账号、密码和本地 URL 只从环境变量读取。详细 JSON 和人工复核 Markdown 只写到运行目录的 `.runtime/`；终端只输出计数、耗时和 Token 摘要。人工逐条判断来源是否支持答案，不由模型给自己打分。
 
 `eval/rag-eval-core.test.mjs` 验证题集格式、重复 ID、两类题目、指标、失败分类、null usage 和摘要；继承的 reference tests 回归 3.1～3.6 与 Resource、Alice/Bob 隔离。结果见 `docs/stage-3-l7-validation.md`。独立云 PostgreSQL pgvector extension 权限和增量 migration 仍未验收。
+
+## 干净装配与验证
+
+在 AIFoundry 平台仓库根目录，为本课选择 A 或 B 页面，并使用一个新的 `.runtime` 目录：
+
+```powershell
+node scripts/assemble-stage3-reference.mjs LESSON a .runtime/clean-s3-lLESSON-a
+cd .runtime/clean-s3-lLESSON-a
+npm install
+npm test
+npm run build
+```
+
+把 `LESSON` 换成本课编号。`npm test` 使用项目本地固定版本的 `tsx`，运行本课全部纯单元测试，不要求数据库或 Provider Key。需要数据库的 `reference.test.mjs`、`knowledge-reference.test.mjs`、`rag-reference.test.mjs` 是独立集成测试；先设置独立的 `TEST_DATABASE_URL` 和 `DATABASE_URL`，部署本课已有 migrations，再以 `node <测试文件绝对路径> <装配项目绝对路径>` 运行。RAG 集成测试使用 `node --import tsx`。这些集成测试使用本地 Provider Stub，不产生真实模型费用。

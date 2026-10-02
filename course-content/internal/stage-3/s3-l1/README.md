@@ -9,3 +9,17 @@
 `POST /api/ai/answer` 先查同源和 Session，再验证 1～2000 字符输入，并按登录用户限制约 5 次/分钟。限流使用进程内 Map，仅为本地/单实例基础保护，多实例部署不具备全局计费保证。错误响应不携带 Provider 原文或堆栈。页面只提供单次问答状态，不实现流式、历史、结构化输出、Embedding 或 RAG。
 
 Phase 0.5 的真实云端验收见 `docs/stage-3-technical-spike.md`。本参考 TypeScript Adapter 保留了已验收的请求体、超时范围和兼容参数，但与 Phase 0 JavaScript Adapter 是新的正式实现，应另做一次短真实调用验收；默认测试不访问云端。
+
+## 干净装配与验证
+
+在 AIFoundry 平台仓库根目录，为本课选择 A 或 B 页面，并使用一个新的 `.runtime` 目录：
+
+```powershell
+node scripts/assemble-stage3-reference.mjs LESSON a .runtime/clean-s3-lLESSON-a
+cd .runtime/clean-s3-lLESSON-a
+npm install
+npm test
+npm run build
+```
+
+把 `LESSON` 换成本课编号。`npm test` 使用项目本地固定版本的 `tsx`，运行本课全部纯单元测试，不要求数据库或 Provider Key。需要数据库的 `reference.test.mjs`、`knowledge-reference.test.mjs`、`rag-reference.test.mjs` 是独立集成测试；先设置独立的 `TEST_DATABASE_URL` 和 `DATABASE_URL`，部署本课已有 migrations，再以 `node <测试文件绝对路径> <装配项目绝对路径>` 运行。RAG 集成测试使用 `node --import tsx`。这些集成测试使用本地 Provider Stub，不产生真实模型费用。

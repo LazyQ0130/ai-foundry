@@ -9,3 +9,17 @@
 `POST /api/ai/answer` 保持 3.1 行为。`POST /api/ai/suggest` 同样先查同源和 Session，验证 1～3000 字符内容，复用同一用户级每分钟五次限流 Map。两个 Route 共享 Provider 配置、fetch、超时和安全错误映射。suggest 只返回严格 Schema 通过的 `summary`、`tags`、`confidence`，不调用 Resource 写入。进程内限流仅是单实例基础保护，不是多实例计费系统。页面只做预览，不实现 Streaming、Embedding 或 RAG。
 
 `reference.test.mjs` 对 A/B 装配项目运行 Mock、Provider Stub 和坏输出测试；`real-reference-acceptance.mjs` 是需显式执行的一次真实低成本验收，不在默认测试中调用云端。历史 baseline 与 3.1 验收见 `docs/stage-3-technical-spike.md`、`docs/stage-3-l1-validation.md`。
+
+## 干净装配与验证
+
+在 AIFoundry 平台仓库根目录，为本课选择 A 或 B 页面，并使用一个新的 `.runtime` 目录：
+
+```powershell
+node scripts/assemble-stage3-reference.mjs LESSON a .runtime/clean-s3-lLESSON-a
+cd .runtime/clean-s3-lLESSON-a
+npm install
+npm test
+npm run build
+```
+
+把 `LESSON` 换成本课编号。`npm test` 使用项目本地固定版本的 `tsx`，运行本课全部纯单元测试，不要求数据库或 Provider Key。需要数据库的 `reference.test.mjs`、`knowledge-reference.test.mjs`、`rag-reference.test.mjs` 是独立集成测试；先设置独立的 `TEST_DATABASE_URL` 和 `DATABASE_URL`，部署本课已有 migrations，再以 `node <测试文件绝对路径> <装配项目绝对路径>` 运行。RAG 集成测试使用 `node --import tsx`。这些集成测试使用本地 Provider Stub，不产生真实模型费用。

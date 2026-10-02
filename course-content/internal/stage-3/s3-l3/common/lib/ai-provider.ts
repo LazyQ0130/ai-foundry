@@ -135,7 +135,9 @@ export async function* stream(input: string, options: { signal?: AbortSignal } =
       for (const frame of parser.push(value)) {
         if (options.signal?.aborted) throw new AiProviderError("CANCELLED");
         if (frame.type === "delta") { deltas++; yield frame; }
-        else { const usage = usageOf(frame.value); if (usage) yield { type: "usage", usage }; }
+        else if (frame.type === "finish") {
+          if (frame.reason === "length") throw new AiProviderError("OUTPUT_TRUNCATED");
+        } else { const usage = usageOf(frame.value); if (usage) yield { type: "usage", usage }; }
       }
       if (parser.done) break;
     }

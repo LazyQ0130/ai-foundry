@@ -291,6 +291,16 @@ try {
   const limitUser = await user()
   for (let i = 0; i < 5; i++) assert.equal((await ask(limitUser.cookie, `limit-${i}`)).status, 200)
   assert.equal((await ask(limitUser.cookie, 'sixth')).status, 429)
+  const budgetUser = await user()
+  const eightChunks = Array.from({ length: 8 }, (_, index) => `${index + 1}` + '知'.repeat(649)).join('\n\n')
+  const budgetIndex = await index(budgetUser.cookie, 'Budget Git', eightChunks)
+  assert.equal(budgetIndex.status, 201)
+  assert.equal(budgetIndex.body.chunkCount, 8)
+  assert.equal((await retrieve(budgetUser.cookie)).status, 200)
+  const beforeBudgetAsk = { embedCalls, chatCalls }
+  assert.equal((await ask(budgetUser.cookie)).status, 429, 'ask reserves two units before Query Embedding')
+  assert.equal(embedCalls, beforeBudgetAsk.embedCalls)
+  assert.equal(chatCalls, beforeBudgetAsk.chatCalls)
   await stop()
 
   await start({ AI_PROVIDER_MODE: 'mock' })

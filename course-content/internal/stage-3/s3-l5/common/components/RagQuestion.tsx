@@ -51,7 +51,7 @@ export default function RagQuestion() {
     <div aria-live="polite" className="mt-4">
       {error && <p role="alert" className="text-sm text-rose-700">{error}</p>}
       {result && <div className="space-y-4">
-        <p className="text-xs font-medium text-emerald-900">{result.kind === "mock" ? "Mock 模式 · 流程示例" : "真实模型 · 知识库问答"}</p>
+        <p className="text-xs font-medium text-emerald-900">{result.kind === "mock" ? "Mock 模式 · 未调用真实模型" : "真实模型 · 知识库问答"}</p>
         {!result.previewOnly && <div className="rounded-lg border border-stone-200 bg-white p-4"><h3 className="font-semibold text-stone-900">回答</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-stone-700">{result.answer}</p></div>}
         <div className="rounded-lg border border-stone-200 bg-white p-4"><h3 className="font-semibold text-stone-900">本次检索命中</h3>
           {result.matches.length === 0 ? <p className="mt-2 text-sm text-stone-600">没有与当前 Embedding 模型兼容的已入库资料。</p> : <ol className="mt-2 space-y-3">

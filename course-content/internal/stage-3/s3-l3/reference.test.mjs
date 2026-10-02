@@ -41,7 +41,9 @@ const stub = createServer(async (request, response) => {
     if (response.destroyed) return
     if (input === 'PARTIAL_FAILURE') { response.write('data: {bad}\n\n'); response.end(); return }
     if (input === 'UNEXPECTED_CLOSE') { response.end(); return }
+    if (input === 'PARTIAL_TRUNCATED') { send({ choices: [{ finish_reason: 'length' }] }); response.end('data: [DONE]\n\n'); return }
     send({ choices: [{ delta: { content: '可以记录版本' } }] })
+    send({ choices: [{ finish_reason: 'stop' }] })
     send({ choices: [], usage: { prompt_tokens: 3, completion_tokens: 4, total_tokens: 7 } })
     response.end('data: [DONE]\n\n')
     return
@@ -269,6 +271,11 @@ try {
     assert.deepEqual(partial.events.map(event => event.type), ['meta', 'delta', 'error'])
     assert(!partial.raw.includes('{bad') && !partial.raw.includes(testKey))
   }
+  const truncated = await streamed('PARTIAL_TRUNCATED', badStreamCookie)
+  assert.equal(truncated.status, 200)
+  assert.deepEqual(truncated.events.map(event => event.type), ['meta', 'delta', 'error'])
+  assert.equal(truncated.events.at(-1).message, '回答达到长度上限，生成已中断。')
+  assert(!truncated.raw.includes(testKey) && !truncated.raw.includes('sensitive provider text'))
   await stop()
 
   for (const invalidTimeout of ['999', '30001']) {
