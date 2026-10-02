@@ -10,6 +10,7 @@ import { courseAssets, isCourseAssetId, type CourseAssetId } from '../../src/dat
 const files: Record<CourseAssetId, { path: string; policy: AssetAccess }> = {
   'stage1-starter': { path: path.resolve('starter/aifoundry-stage1-starter.zip'), policy: { access: 'authenticated-preview' } },
   'stage3-starter': { path: path.resolve('starter/aifoundry-stage3-starter.zip'), policy: { access: 'stage-entitlement', stage: 'stage-3' } },
+  'stage4-starter': { path: path.resolve('starter/aifoundry-stage4-starter.zip'), policy: { access: 'stage-entitlement', stage: 'stage-4' } },
 }
 function asset(id: unknown) {
   if (typeof id !== 'string' || !isCourseAssetId(id)) throw new ApiError(404, 'NOT_FOUND', '课程资源不存在')

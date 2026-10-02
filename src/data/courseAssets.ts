@@ -10,6 +10,11 @@ export const courseAssets = {
     filename: 'aifoundry-stage3-starter.zip', format: 'ZIP',
     endpoint: '/api/course-assets/stage3-starter',
   },
+  'stage4-starter': {
+    title: 'Stage 4 Starter', description: 'AI 知识工作台的 Stage 4 起点项目。',
+    filename: 'aifoundry-stage4-starter.zip', format: 'ZIP',
+    endpoint: '/api/course-assets/stage4-starter',
+  },
 } as const
 export type CourseAssetId = keyof typeof courseAssets
 export function isCourseAssetId(id: string): id is CourseAssetId {

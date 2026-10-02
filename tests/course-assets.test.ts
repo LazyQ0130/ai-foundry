@@ -12,6 +12,7 @@ import { createStarterZip, isStarterFile } from '../scripts/starter-package.js'
 
 const endpoint = '/api/course-assets/stage1-starter'
 const stageThreeEndpoint = '/api/course-assets/stage3-starter'
+const stageFourEndpoint = '/api/course-assets/stage4-starter'
 test('Starter downloads allow active preview users, admin and revoked stage access but reject disabled users', async () => {
   const student = request.agent(app), admin = request.agent(app)
   const phone = `134${Date.now().toString().slice(-8)}`
@@ -20,7 +21,9 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await request(app).get('/api/lessons/s1-l0').expect(200)
   await request(app).get(endpoint).expect(401)
   await request(app).get(stageThreeEndpoint).expect(401)
+  await request(app).get(stageFourEndpoint).expect(401)
   await admin.get(stageThreeEndpoint).expect(403)
+  await admin.get(stageFourEndpoint).expect(403)
   await request(app).head(endpoint).expect(401)
   await student.get(endpoint).expect(200)
   const grant = (stageSlug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug, source: 'TEST', note: '附件权限测试' })
@@ -28,6 +31,7 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await student.get(endpoint).expect(200)
   await student.get(stageThreeEndpoint).expect(403)
   await grant('stage-3').expect(200)
+  await student.get(stageFourEndpoint).expect(403)
   const stageThreeZip = await student.get(stageThreeEndpoint).buffer(true).parse((res, callback) => {
     const chunks: Buffer[] = []
     res.on('data', chunk => chunks.push(Buffer.from(chunk)))
@@ -35,6 +39,25 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
     res.on('error', callback)
   }).expect(200)
   assert.deepEqual(stageThreeZip.body, await readFile('starter/aifoundry-stage3-starter.zip'))
+  const stageFourOnly = request.agent(app)
+  const secondPhone = `135${Date.now().toString().slice(-8)}`
+  const secondId = (await stageFourOnly.post('/api/auth/register').set('Origin', env.APP_ORIGIN)
+    .send({ phone: secondPhone, password: 'asset-test-456', acceptedTerms: true }).expect(201)).body.data.user.id
+  await admin.post(`/api/admin/users/${secondId}/entitlements`).set('Origin', env.APP_ORIGIN)
+    .send({ stageSlug: 'stage-4', source: 'TEST', note: 'Stage 4 独立权限测试' }).expect(200)
+  await stageFourOnly.get(stageThreeEndpoint).expect(403)
+  const stageFourZip = await stageFourOnly.get(stageFourEndpoint).buffer(true).parse((res, callback) => {
+    const chunks: Buffer[] = []
+    res.on('data', chunk => chunks.push(Buffer.from(chunk)))
+    res.on('end', () => callback(null, Buffer.concat(chunks)))
+    res.on('error', callback)
+  }).expect(200)
+  assert.deepEqual(stageFourZip.body, await readFile('starter/aifoundry-stage4-starter.zip'))
+  await admin.delete(`/api/admin/users/${secondId}/entitlements/stage-4`).set('Origin', env.APP_ORIGIN)
+    .send({ note: '撤销测试' }).expect(200)
+  await stageFourOnly.get(stageFourEndpoint).expect(403)
+  await db.user.update({ where: { id: secondId }, data: { status: 'DISABLED' } })
+  await stageFourOnly.get(stageFourEndpoint).expect(401)
   await grant('stage-1').expect(200)
   for (const agent of [student, admin]) {
     const result = await agent.get(endpoint).buffer(true).parse((res, callback) => {
@@ -86,6 +109,36 @@ test('Starter ZIP is current, extractable, contains only deliverable source unde
   assert.equal(pkg.name, 'personal-knowledge-workbench')
   assert.equal(isStarterFile('.gitignore'), true)
   for (const name of ['.env', '.env.local', '.env.production', '.secret', '.foo', '.git/config', 'Thumbs.db', 'node_modules/a.js', '.next/a.js', 'app/.gitignore', 'app/.env', 'app/a.log', 'app/.DS_Store', 'app/Thumbs.db', '../secret.ts', '/etc/passwd', 'app/../../.env', 'private.key', 'app/a.ts.bak', 'app/a.test.tsx', 'lib/a.spec.ts', 'app/__tests__/a.ts', 'components/tests/a.tsx', 'course-content/lesson.md', 'docs/test.ts']) assert.equal(isStarterFile(name), false, name)
+})
+
+test('Stage 4 Starter ZIP is a clean Stage 3 final baseline without Agent answers', async () => {
+  const zip = await readFile('starter/aifoundry-stage4-starter.zip')
+  assert.deepEqual(zip, Buffer.from(await createStarterZip('starter/stage-4', 4)))
+  const files = unzipSync(zip), prefix = 'aifoundry-stage4-starter/'
+  for (const [name, data] of Object.entries(files)) {
+    assert.ok(name.startsWith(prefix), name)
+    const relative = name.slice(prefix.length)
+    assert.ok(isStarterFile(relative, 4), relative)
+    assert.deepEqual(Buffer.from(data), await readFile(`starter/stage-4/${relative}`))
+    assert.doesNotMatch(relative, /node_modules|\.next|\.runtime|\.test\.|\.spec\.|\.log$|course-content|(^|\/)docs\/|secret/i)
+    assert.doesNotMatch(relative, /(^|\/)(agent|mcp|approval|workflow|eval|reference|tests?)(\/|[-_.])/i)
+  }
+  for (const required of ['app/api/ai/answer/route.ts', 'app/api/ai/suggest/route.ts',
+    'app/api/ai/stream/route.ts', 'app/api/knowledge/documents/route.ts',
+    'app/api/knowledge/retrieve/route.ts', 'app/api/knowledge/ask/route.ts',
+    'lib/ai-provider.ts', 'lib/knowledge-citations.ts', 'lib/provider-work-budget.ts',
+    'prisma/schema.prisma']) assert.ok(files[prefix + required], required)
+  assert.equal(Object.keys(files).filter(name => name.endsWith('/migration.sql')).length, 4)
+  const schema = strFromU8(files[prefix + 'prisma/schema.prisma'])
+  assert.doesNotMatch(schema, /AgentRun|AgentStep|AgentAction/)
+  const pkg = strFromU8(files[prefix + 'package.json'])
+  assert.doesNotMatch(pkg, /@modelcontextprotocol/)
+  const allText = Object.entries(files).filter(([name]) => /\.(ts|tsx|json|md|prisma|sql)$/.test(name))
+    .map(([, data]) => strFromU8(data)).join('\n')
+  assert.doesNotMatch(allText, /echo_research_topic|tool_choice|AgentRun|AgentStep|AgentAction|@modelcontextprotocol\/|\/api\/agent\/|AgentExperiment/)
+  assert.doesNotMatch(strFromU8(files[prefix + 'README.md']), /Implementation A|Implementation B|A\/B|作者在线演示|内部验收/)
+  assert.ok(files[prefix + '.env.example'])
+  assert.ok(!files[prefix + '.env'])
 })
 
 test('Stage 3 Starter ZIP matches the complete allowed Stage 2 project baseline', async () => {

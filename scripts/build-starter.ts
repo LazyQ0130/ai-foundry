@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createStarterZip } from './starter-package.js'
 
-for (const stage of [1, 3] as const) {
+for (const stage of [1, 3, 4] as const) {
   const destination = `starter/aifoundry-stage${stage}-starter.zip`
   const zip = await createStarterZip(`starter/stage-${stage}`, stage)
   if (process.argv.includes('--check')) {
