@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ClipboardList,
@@ -34,10 +35,16 @@ import { useProgress } from '../data/progress'
 function LessonSidebar({
   currentLessonId,
   checkKeys,
+  expandedStageId,
+  onToggleStage,
+  idPrefix,
   onNavigate,
 }: {
   currentLessonId: string
   checkKeys: string[]
+  expandedStageId: number | null
+  onToggleStage: (stageId: number) => void
+  idPrefix: string
   onNavigate?: () => void
 }) {
   const { stages, getChecks } = useProgress()
@@ -75,22 +82,31 @@ function LessonSidebar({
         </div>
       </div>
 
-      <nav className="mt-4 min-h-0 flex-1 overflow-y-auto px-4 pb-6">
+      <nav aria-label="课程目录" className="mt-4 min-h-0 flex-1 overflow-y-auto px-4 pb-6">
         {stages.map((s) => {
           const sDone = stageCompletedCount(s)
           const sTotal = stageLessonCount(s)
+          const expanded = expandedStageId === s.id
+          const lessonListId = `${idPrefix}-${s.id}-lessons`
           return (
             <div key={s.id} className="mb-4 last:mb-0">
-              <div className="mb-1.5 flex items-center justify-between px-1">
-                <span className="text-[13px] font-semibold text-slate-700">
-                  {s.tag}　{s.title}
-                </span>
-                <span className="text-[13px] tabular-nums text-slate-400">
-                  {s.status === 'locked' ? <Lock className="h-3 w-3" /> : `${sDone}/${sTotal}`}
-                </span>
-              </div>
+              <h3>
+                <button
+                  type="button"
+                  aria-expanded={expanded}
+                  aria-controls={lessonListId}
+                  onClick={() => onToggleStage(s.id)}
+                  className="mb-1.5 flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  <span className="min-w-0 flex-1 truncate">{s.tag}　{s.title}</span>
+                  <span className="shrink-0 tabular-nums text-slate-400">
+                    {s.status === 'locked' ? <><Lock aria-hidden="true" className="h-3 w-3" /><span className="sr-only">未开通</span></> : `${sDone}/${sTotal}`}
+                  </span>
+                  <ChevronDown aria-hidden="true" className={`h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                </button>
+              </h3>
 
-              <ul className="space-y-0.5">
+              <ul id={lessonListId} hidden={!expanded} className="space-y-0.5">
                 {s.lessons.map((l) => {
                   const isCurrent = l.id === currentLessonId
                   const locked = l.status === 'locked'
@@ -113,6 +129,7 @@ function LessonSidebar({
                         <Link
                           to={`/lesson/${s.slug}/${l.id}`}
                           onClick={onNavigate}
+                          aria-current={isCurrent ? 'page' : undefined}
                           className={`flex items-center gap-2 rounded-lg px-2 py-[7px] text-[13px] transition ${
                             isCurrent
                               ? 'bg-brand-50 font-semibold text-brand-700'
@@ -383,11 +400,14 @@ function NotFound({ stageSlug, lessonId }: { stageSlug?: string; lessonId?: stri
 
 function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; content: LessonContent }) {
   const [drawer, setDrawer] = useState(false)
+  const [expandedStageId, setExpandedStageId] = useState<number | null>(stage.id)
   const { visitLesson, getChecks } = useProgress()
   const { user } = useAuth()
   const remainingTasks = getChecks(lesson.id, content.meta.checkKeys).filter(done => !done).length
   useEffect(() => { if(user) visitLesson(lesson.id) }, [lesson.id, visitLesson, user?.id])
-  const sidebar = <LessonSidebar currentLessonId={lesson.id} checkKeys={content.meta.checkKeys} onNavigate={() => setDrawer(false)} />
+  useEffect(() => { setExpandedStageId(stage.id) }, [stage.id])
+  const toggleStage = (stageId: number) => setExpandedStageId(current => current === stageId ? null : stageId)
+  const sidebarProps = { currentLessonId: lesson.id, checkKeys: content.meta.checkKeys, expandedStageId, onToggleStage: toggleStage, onNavigate: () => setDrawer(false) }
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-6 sm:px-6 min-[1360px]:pb-6">
@@ -405,7 +425,7 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
         {/* 左栏 */}
         <aside className="hidden w-[236px] shrink-0 min-[1360px]:block">
           <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
-            {sidebar}
+            <LessonSidebar {...sidebarProps} idPrefix="desktop" />
           </div>
         </aside>
 
@@ -445,7 +465,7 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
             >
               <X className="h-4 w-4" />
             </button>
-            {sidebar}
+            <LessonSidebar {...sidebarProps} idPrefix="drawer" />
           </div>
         </div>
       ) : null}

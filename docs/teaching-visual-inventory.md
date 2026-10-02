@@ -1,6 +1,6 @@
 # AIFoundry Learning Visuals V2｜配图清单
 
-共 20 张正式配图，已按用户选定的 B、A、A、A 样板方案重设计并替换图片文件；课程 Markdown 中的图号、路径、Alt、Caption 与插入位置保持原样。位置为课程 Markdown 中对应的概念段落；标题栏为该图之前最近的章节标题。
+Stage 1 / 2 共 20 张正式配图，已按用户选定的 B、A、A、A 样板方案重设计。Stage 3 另有 9 张生图式教学配图，见下表。位置为课程 Markdown 中对应的概念段落；标题栏为该图之前最近的章节标题。
 
 | 编号 | 课程 | 正文位置 | 理解目标 | 实际文件路径 | 状态 |
 | --- | --- | --- | --- | --- | --- |
@@ -27,15 +27,18 @@
 
 所有文件位于公开的 `public/course-media`，只表达抽象教学关系。四张选定样板与对比图保留在 `docs/teaching-visual-v2-samples/`；SVG 备用源保留在 `docs/teaching-visual-v2-sources/`。V1 备份见视觉规范。原有未制作的真实软件截图建议仍保留为注释；没有将其记录为已完成。
 
-## Stage 3 V1.1 已完成图
+## Stage 3 生图式教学配图
 
 | 编号 | 课程 | 教学关系 | 文件 |
 | --- | --- | --- | --- |
-| S3-1-01 | 3.1 | Browser → Next.js Server → Provider，Key 只在服务端 | `public/course-media/stage-3/s3-1-01.svg` |
-| S3-3-01 | 3.3 | A 取消、B 启动、A 迟到片段被忽略 | `public/course-media/stage-3/s3-3-01.svg` |
-| S3-4-01 | 3.4 | Document → Chunk → Embedding → vector(1024) → pgvector | `public/course-media/stage-3/s3-4-01.svg` |
-| S3-5-01 | 3.5 | Question → Query Embedding → Top-K → Context → Model → Answer | `public/course-media/stage-3/s3-5-01.svg` |
-| S3-6-01 | 3.6 | JSON Schema 与本次来源集合的双层校验 | `public/course-media/stage-3/s3-6-01.svg` |
-| S3-7-01 | 3.7 | 固定题集、自动指标、人工支持度与错误类别 | `public/course-media/stage-3/s3-7-01.svg` |
+| S3-1-01 | 3.1 | 单次问答经过服务端；Mock 与真实模型分路；Key 留在服务端 | `public/course-media/stage-3/s3-1-01.webp` |
+| S3-2-01 | 3.2 | 模型返回 JSON 后，Zod 决定展示建议或拒绝 | `public/course-media/stage-3/s3-2-01.webp` |
+| S3-3-01 | 3.3 | 六种状态与取消、重启、旧片段忽略 | `public/course-media/stage-3/s3-3-01.webp` |
+| S3-4-01 | 3.4 | 文档切块后逐块 Embedding，再写入 pgvector | `public/course-media/stage-3/s3-4-01.webp` |
+| S3-4-02 | 3.4 | 文档和分块的一对多关系，以及 ownerId 隔离 | `public/course-media/stage-3/s3-4-02.webp` |
+| S3-5-01 | 3.5 | 提问、向量检索、Top-K、Context、生成回答 | `public/course-media/stage-3/s3-5-01.webp` |
+| S3-6-01 | 3.6 | JSON 结构与本次来源集合双重校验；检索命中和实际引用分开 | `public/course-media/stage-3/s3-6-01.webp` |
+| S3-7-01 | 3.7 | 固定题集顺序运行，结合自动指标与人工复核 | `public/course-media/stage-3/s3-7-01.webp` |
+| S3-7-02 | 3.7 | 六类错误及其对应的检索、拒答、生成、引用和服务环节 | `public/course-media/stage-3/s3-7-02.webp` |
 
-六张均为从零绘制的完整 SVG 信息图，生成源为 `docs/teaching-visual-v2-sources/stage-3-diagrams.py`。抽象关系可公开；正文细节仍在受保护 Markdown。
+九张正式图均由生图工具直接生成完整构图与主要文字，再压缩为 WebP。先前六张 SVG 仍保留为历史源文件，课程正文不再引用。公开图片只表达抽象教学关系；正文细节仍在受保护 Markdown。
