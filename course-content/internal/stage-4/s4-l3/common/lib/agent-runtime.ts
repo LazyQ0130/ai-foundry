@@ -1,12 +1,14 @@
-import { modelTools, validateToolCall, ToolBudgetExhaustedError } from "./agent-tools";
+import { modelTools, validateToolCall, ToolBudgetExhaustedError, saveResearchNoteSchema } from "./agent-tools";
+import type { SaveResearchNoteArgs } from "./agent-tools";
 import type { SafeKnowledgeMatch } from "./knowledge-search";
 
 export type AgentMessage = { role: "system" | "user" | "assistant" | "tool"; content: string | null;
   tool_calls?: unknown[]; tool_call_id?: string };
 export type AgentTurn = { finishReason: "stop" | "tool_calls"; content: string | null;
   toolCalls: unknown[]; usage: { promptTokens: number; completionTokens: number; totalTokens: number } | null };
-export type AgentStatus = "completed" | "failed" | "cancelled" | "max_steps" | "max_tools" | "budget_exhausted";
+export type AgentStatus = "completed" | "failed" | "cancelled" | "max_steps" | "max_tools" | "budget_exhausted" | "waiting_approval";
 export type AgentResult = { status: AgentStatus; answer?: string; error?: string;
+  proposal?: { toolName: "save_research_note"; args: SaveResearchNoteArgs }; approvalToken?: string;
   modelCalls: number; toolCalls: number; embeddingCalls: number; providerUnits: number; totalTokens: number;
   searchMatches?: SafeKnowledgeMatch[]; finishReasons: string[]; trace: string[] };
 
@@ -22,6 +24,7 @@ export async function runAgent(options: {
   maxToolCalls?: number;
   onToolExecution?: () => void;
   countProviderUnits?: boolean;
+  issueApproval?: (args: SaveResearchNoteArgs, userId: number) => string;
 }): Promise<AgentResult> {
   const { goal, model, reserve, signal } = options;
   if (typeof goal !== "string" || !goal.trim() || goal.length > 2000) throw new Error("INVALID_GOAL");
@@ -64,6 +67,17 @@ export async function runAgent(options: {
     catch (error) { return { ...state, status: "failed", error: error instanceof Error ? error.message : "INVALID_TOOL_CALL" }; }
     if (!availableTools.some(tool => tool.function.name === selected.tool.name))
       return { ...state, status: "failed", error: "UNKNOWN_TOOL" };
+    if (selected.tool.risk === "write") {
+      if (selected.tool.name !== "save_research_note" || !Number.isSafeInteger(options.userId) ||
+          !options.userId || !options.issueApproval) return { ...state, status: "failed", error: "TOOL_POLICY_REJECTED" };
+      const args = saveResearchNoteSchema.parse(selected.args);
+      try {
+        const approvalToken = options.issueApproval(args, options.userId);
+        if (signal?.aborted) return { ...state, status: "cancelled" };
+        return { ...state, status: "waiting_approval", proposal: { toolName: "save_research_note", args },
+          approvalToken, trace: [...state.trace, "写入参数已校验 → 等待用户确认；尚未执行工具"] };
+      } catch { return { ...state, status: "failed", error: "APPROVAL_UNAVAILABLE" }; }
+    }
     if (selected.tool.risk !== "read") return { ...state, status: "failed", error: "TOOL_POLICY_REJECTED" };
     if (signal?.aborted) return { ...state, status: "cancelled" };
     state.trace.push(`参数校验通过 → 执行 ${selected.tool.name}`);

@@ -65,6 +65,16 @@ test('budget A/B/C stops before the next provider work', async () => withFakeSea
   assert.equal(modelCalls, 2); assert.equal(embeddingCount(), 1)
 }))
 
+test('missing embedding budget capability fails closed before search Provider work', async () => withFakeSearch(async embeddingCount => {
+  const result = await runAgent({ goal: 'Git', userId: 17, availableTools: modelTools,
+    reserve: () => true, model: async () => toolTurn(call()) })
+  assert.equal(result.status, 'budget_exhausted')
+  assert.equal(result.modelCalls, 1)
+  assert.equal(result.embeddingCalls, 0)
+  assert.equal(result.toolCalls, 0)
+  assert.equal(embeddingCount(), 0)
+}))
+
 test('spoof, multiple calls and cancellation never execute a knowledge search', async () => withFakeSearch(async embeddingCount => {
   for (const turn of [toolTurn(call('{"query":"Git","ownerId":2}')),
     { ...toolTurn(call()), toolCalls: [call(), call()] }]) {
