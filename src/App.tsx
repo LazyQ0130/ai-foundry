@@ -14,6 +14,7 @@ import AuthPage from './pages/AuthPage'
 import { RequireAuth } from './auth/AuthProvider'
 import AccountPage from './pages/AccountPage'
 import AboutPage from './pages/AboutPage'
+import CapstoneOverview from './pages/CapstoneOverview'
 import FaqPage from './pages/FaqPage'
 import EmailSecurity from './components/EmailSecurity'
 import PolicyPage from './pages/PolicyPage'
@@ -47,6 +48,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="capstone" element={<CapstoneOverview />} />
         <Route path="faq" element={<FaqPage />} />
         <Route path="privacy" element={<PolicyPage kind="privacy" />} />
         <Route path="terms" element={<PolicyPage kind="terms" />} />

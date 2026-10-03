@@ -13,6 +13,7 @@ import {
 import { useProgress } from '../data/progress'
 import { homePathSteps } from '../data/site'
 import StageAccess from '../components/StageAccess'
+import { CapstonePathCard } from '../components/CapstoneShowcase'
 
 /* ------------------------------- Hero ------------------------------- */
 
@@ -39,7 +40,7 @@ function Hero() {
           </h1>
           <p className="mt-2 text-[16px] font-semibold text-slate-800">一条结构化的 AI 原生开发者成长路径</p>
           <p className="mt-3 max-w-xl text-[13.5px] leading-6 text-slate-500">
-            从第 0 课的准备，到 4 个阶段、29 节正式课程和 4 个阶段项目，同一个产品持续演进，逐步构建真实 AI 应用。
+            从第 0 课准备开始，完成 4 个学习阶段和 29 节正式课程，再通过 Capstone 毕业项目综合交付。
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to={lastLessonPath} className="btn btn-lg btn-primary">
@@ -56,7 +57,7 @@ function Hero() {
           <div className="flex items-start justify-between gap-3">
             <h2 className="text-[14px] font-semibold text-slate-900">总体学习进度</h2>
             <span className="text-[11.5px] text-slate-400">
-              共 4 个阶段 · {totalLessons} 节课
+              4 个学习阶段 · {totalLessons} 节正式课
             </span>
           </div>
 
@@ -218,7 +219,7 @@ function Overview() {
     <section className="shell pb-16">
       <SectionHeading
         title="学习路径总览"
-        sub="从入门到进阶，4 个阶段循序渐进，帮你掌握 AI 原生开发的完整技能栈。"
+        sub="4 个学习阶段循序渐进，Capstone 毕业项目负责综合交付与能力验证。"
       />
       <div className="mt-7">
         <Timeline />
@@ -227,6 +228,7 @@ function Overview() {
             <StageOverviewCard key={s.id} stage={s} />
           ))}
         </div>
+        <CapstonePathCard />
       </div>
     </section>
   )

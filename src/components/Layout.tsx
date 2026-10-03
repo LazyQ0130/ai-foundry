@@ -115,6 +115,7 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
       { label: '学习路径', to: '/path' },
       { label: '课程目录', to: '/courses' },
       { label: '项目实战', to: '/projects' },
+      { label: 'Capstone 毕业项目', to: '/capstone' },
       { label: '价格方案', to: '/pricing' },
     ],
   },

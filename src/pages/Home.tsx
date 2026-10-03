@@ -20,6 +20,7 @@ import PurchaseModal from '../components/PurchaseModal'
 import { SectionHeading } from '../components/ui'
 import { accentClass, stages, type Stage } from '../data/courses'
 import { heroStats, homeFeatures } from '../data/site'
+import { CapstoneHomeTeaser } from '../components/CapstoneShowcase'
 
 /* ------------------------------- Hero ------------------------------- */
 
@@ -225,7 +226,7 @@ function PathSection() {
     <section className="shell pb-16">
       <SectionHeading
         title="系统化的学习路径"
-        sub="从基础到进阶，4 个阶段、4 个阶段作品，带你掌握 AI 时代的软件开发全流程。"
+        sub="4 个学习阶段、4 个阶段作品，之后通过 Capstone 毕业项目完成综合交付。"
         right={
           <Link to="/path" className="link-more">
             查看完整学习路径
@@ -238,6 +239,7 @@ function PathSection() {
           <StagePreviewCard key={s.id} stage={s} />
         ))}
       </div>
+      <CapstoneHomeTeaser />
     </section>
   )
 }
