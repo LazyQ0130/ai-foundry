@@ -497,7 +497,7 @@ export const stages: Stage[] = [
         desc: '让模型选择直答或提出只读工具调用，由服务端验证、执行并明确停止。',
         duration: '75～90 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l2',
@@ -507,7 +507,7 @@ export const stages: Stage[] = [
         desc: '让 Agent 使用 search_knowledge 检索当前登录用户自己的知识库，并验证 Session 身份隔离。',
         duration: '75～90 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l3',
@@ -517,7 +517,7 @@ export const stages: Stage[] = [
         desc: '让 AI 只能提出写入，用户看到精确参数并确认后，服务端才执行同一份已签名参数。',
         duration: '90～120 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l4',
@@ -527,7 +527,7 @@ export const stages: Stage[] = [
         desc: '用 Streamable HTTP 接入 research_reference MCP，并验证远端能力仍受本地 Registry、Schema 与权限策略控制。',
         duration: '90～120 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l5',
@@ -537,7 +537,7 @@ export const stages: Stage[] = [
         desc: '把知识搜索、模型综合、写入提议与人工确认串成一条有明确状态和停止条件的完整研究 Workflow。',
         duration: '90～120 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l6',
@@ -547,7 +547,7 @@ export const stages: Stage[] = [
         desc: '把 Run、Step 和高风险 Action 持久化到 PostgreSQL，支持刷新/重启后的恢复，并用事务与唯一键保证同一确认动作只产生一条业务记录。',
         duration: '120 分钟（建议分两次完成）',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l7',
@@ -557,7 +557,7 @@ export const stages: Stage[] = [
         desc: '用固定案例、数据库事实和工具调用评估 Agent 的功能、安全、可靠性与成本，并设置不可被平均分掩盖的安全硬门槛。',
         duration: '90～120 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's4-l8',
@@ -567,7 +567,7 @@ export const stages: Stage[] = [
         desc: '完成生产环境配置、HTTPS Demo、README、架构与安全边界说明，并用评估摘要和三分钟演示把 Agent 项目交付成可展示的作品。',
         duration: '75～90 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
     ],
     checkpoints: [

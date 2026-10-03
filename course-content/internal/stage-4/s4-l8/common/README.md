@@ -61,7 +61,7 @@ flowchart LR
 
 ## 技术栈与本地启动
 
-Next.js 15 / React 19、TypeScript、Prisma、PostgreSQL + pgvector、Zod、MCP Streamable HTTP。需要 Node.js 20+、npm 和 Docker。项目基于 Stage 4 Starter，已有的五次 migration 包含知识向量与 Agent 持久化。
+Next.js 15 / React 19、TypeScript、Prisma、PostgreSQL + pgvector、Zod、MCP Streamable HTTP。推荐 Node.js 20+；项目最低 engine 要求为 Node.js 18.18。还需要 npm 和 Docker。项目基于 Stage 4 Starter，已有的五次 migration 包含知识向量与 Agent 持久化。
 
 1. `npm ci`，将 `.env.example` 复制为本机 `.env`。设置本机 `STAGE4_LOCAL_DB_PASSWORD`、匹配的 `DATABASE_URL`、不同的 `AGENT_APPROVAL_SECRET` 与 `MCP_AUTH_SECRET`（两者各至少 32 字节）。`.env` 不提交。
 2. `docker compose up -d`，等待 `stage4_learning` 健康；运行 `npx prisma migrate deploy` 和 `npx prisma migrate status`，应显示五次 migration、schema up to date。
