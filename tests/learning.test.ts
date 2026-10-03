@@ -119,7 +119,7 @@ test('student → manual purchase → protected lessons → durable progress →
     const stageTwoProgress = (await b.get('/api/progress').expect(200)).body.data
     assert.deepEqual(stageTwoProgress.stageProgress['stage-2'], { completed: 8, total: 8, percent: 100 })
     assert.equal(stageTwoProgress.formalProgress.total, 29)
-    await b.get('/api/lessons/s3-l1').expect(404)
+    await b.get('/api/lessons/s3-l1').expect(403)
   })
   await t.test('published lesson content exposes stable check keys, no-store cache', async () => {
     const lesson=await a.get('/api/lessons/s1-l1').expect(200)
@@ -191,7 +191,7 @@ test('student → manual purchase → protected lessons → durable progress →
   await db.$disconnect()
 })
 
-test('temporarily published Stage 3 enforces independent entitlement and persists 7/7 progress', async () => {
+test('published Stage 3 enforces independent entitlement and persists 7/7 progress', async () => {
   const lessonIds = ['s3-l1', 's3-l2', 's3-l3', 's3-l4', 's3-l5', 's3-l6', 's3-l7']
   const stage = await db.stage.findUniqueOrThrow({ where: { slug: 'stage-3' } })
   const lessons = await db.lesson.findMany({ where: { id: { in: lessonIds } }, select: { id: true, isPublished: true, isPreview: true } })

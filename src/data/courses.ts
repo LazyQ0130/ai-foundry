@@ -383,7 +383,7 @@ export const stages: Stage[] = [
         desc: '先 Mock 跑通接口，再配置低成本 Provider，完成一次真实模型调用。',
         duration: '60～75 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l2',
@@ -393,7 +393,7 @@ export const stages: Stage[] = [
         desc: '校验 summary / tags / confidence，把模型结果先作为建议预览，不自动覆盖资料。',
         duration: '50～65 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l3',
@@ -403,7 +403,7 @@ export const stages: Stage[] = [
         desc: '答案逐段出现，用户可以取消，失败时有清晰状态。',
         duration: '55～70 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l4',
@@ -413,7 +413,7 @@ export const stages: Stage[] = [
         desc: '将自己粘贴的文本或 Markdown 建成 KnowledgeDocument，切块、生成 Embedding 并存入 PostgreSQL + pgvector。',
         duration: '90～120 分钟（建议分两次完成）',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l5',
@@ -423,7 +423,7 @@ export const stages: Stage[] = [
         desc: '完成 Query → Embedding → Top-K → Context → Model 的闭环。',
         duration: '70～90 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l6',
@@ -433,7 +433,7 @@ export const stages: Stage[] = [
         desc: '只引用本次真正检索到的 Chunk，服务端校验来源，证据不足时明确说不知道。',
         duration: '55～75 分钟',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
       {
         id: 's3-l7',
@@ -443,7 +443,7 @@ export const stages: Stage[] = [
         desc: '建立小型问题集，记录检索、回答、引用和成本表现。',
         duration: '60～80 分钟（真实评估运行时间另计）',
         status: 'not_started',
-        isPublished: false,
+        isPublished: true,
       },
     ],
     checkpoints: [
