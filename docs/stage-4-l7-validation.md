@@ -24,10 +24,23 @@
 ## 平台与历史回归
 
 - 平台 `npm run verify` 通过：typecheck、生产构建、71/71 测试、29 篇 authored content / 144 个唯一 checkKey、22 篇 published content、bundle 检查。
-- 旧课独立 HTTP 回归：4.1、4.3、4.4、4.5 通过。4.7 固定矩阵重新覆盖 4.2 的用户隔离搜索和 4.6 的持久化、确认、重启、并发、篡改与回滚。
-- 旧版 4.2 独立脚本在全新 `stage4_l2_regression` 库停在 `knowledge-route-acceptance.mjs:78`：脚本断言短资料的 preview 不等于原文，但该资料短于当前 preview 上限。该脚本没有完成后续断言。
-- 旧版 4.6 独立脚本在全新 `stage4_l6_regression` 库先通过重启与 8 次并发确认，之后停在 `persistence-route-acceptance.mjs:137` 的篡改后 GET 状态断言；该脚本没有完成后续断言。没有为这两个旧脚本改动已验收的 Agent 或 Lesson 4.7 范围外代码。
-- Eval 首轮出现的用户名 fixture 超过 Starter 24 字限制，导致 12/20；仅缩短 Eval fixture 用户名后，A/B 从零装配均 20/20。正式 Agent 未改。
+- 旧课独立 HTTP 回归：4.1、4.3、4.4、4.5 通过。以下 4.2 与 4.6 悬案在 Stage 4.7.1 用全新装配和新隔离库重跑，两个**原样的完整 historical script** 均通过；没有删除或放宽断言。
+
+### 4.2 历史脚本收口
+
+原失败在 `knowledge-route-acceptance.mjs:78`，`preview === aliceContent`。真正原因是当时复用的 `.runtime/stage4-l2-a-final` 是过期装配：其中 `lib/knowledge-search.ts` 的 SHA-256 为 `781B127D…`，执行的是 `chunk.content.slice(0, 160)`；当前 4.2 overlay 与新装配文件的 SHA-256 都是 `55208083…`，执行 `slice(0, Math.min(160, Math.floor(length * 0.75)))`。两个装配的 Next `BUILD_ID` 也不同。此前“短资料低于 160 所以全文返回”只解释了过期实现的结果，不能解释当前代码，现予以纠正。
+
+新装配 `.runtime/regression-l2-a-20261003-v2` 经 `npm ci`、Prisma generate、build 后，在从零迁移的 `stage4_l2_regression_v2` 上诊断：Alice fixture 全文长 36、preview 长 27、两者不相等，匹配标题是 Alice 自己的资料。随后撤掉临时诊断，再运行**未改动**的完整 `knowledge-route-acceptance.mjs`：PASS，继续覆盖 Bob 高相似度但 Alice 不可见、Bob 自有检索、空用户、浏览器与 Tool owner 伪造、预算 A/B/C。该 route 脚本本身没有取消用例；取消前模型、Embedding 与最终模型等路径由同一新装配的 `knowledge-agent.test.mjs` 覆盖。正式代码未修改，测试脚本未修改。
+
+### 4.6 历史脚本收口
+
+原失败在 `persistence-route-acceptance.mjs:137`：损坏 Action 后，GET 响应中的 `status` 为 `undefined`；当时未记录 HTTP 状态码。复用的 `.runtime/s4-l6-a-final/lib/agent-persistence.ts` SHA-256 为 `9275BCA7…`，没有当前 `safeRunView()` 的损坏 Action 修复分支；当前 4.6 overlay 与新装配文件的 SHA-256 均为 `CD3CC452…`，包含 `JSON.parse`、canonicalize 校验、Run 和 Approval Step 转 `failed`。旧装配与新装配的 Next `BUILD_ID` 不同。原因是过期装配/构建，而非当前持久化代码的安全缺陷。
+
+新装配 `.runtime/regression-l6-a-20261003-v2` 经 `npm ci`、Prisma generate、build 后，在从零迁移的 `stage4_l6_regression_v2` 上诊断：损坏前 Run=`waiting_approval`、Action=`proposed`、canonicalArgs 有效；Action count=1，更新命中 1 行，损坏后 JSON 无效；GET HTTP 200、响应 `failed`，数据库 Run=`failed`、Approval Step=`failed`，该 Action 对应 Resource 数为 0。旧 Token 的 Confirm 被原脚本断言为 400，`failed` 视图不签发新 Token。撤掉临时诊断后，**未改动**的完整 `persistence-route-acceptance.mjs` 三段 Server A/B/C 均 PASS，涵盖后续预算和取消。正式代码未修改，测试脚本未修改；因此无需新增 4.7 Eval 子案例。
+
+### 4.7.1 复核
+
+4.2 新装配单测 32/32，4.6 新装配单测 51/51。再次从 Starter 分别新装配 4.7 A/B，各自 `npm ci`、Prisma generate、单测 55/55、生产构建通过；隔离 `stage4_l7` 库的确定性矩阵均 20/20、73 子案例、三个 Hard Gates 各为 0。A 的红灯注入结果为退出码 1、`unapproved_writes=1`、总门槛 FAIL；不带注入重跑完整矩阵恢复 PASS。4.1、4.3、4.4、4.5 独立 HTTP 脚本也在本轮再次执行并通过。故 4.1～4.7 的独立回归与固定矩阵均通过。上轮 Eval 首轮曾因 fixture 用户名超过 Starter 24 字限制而只有 12/20；当时仅缩短 Eval 用户名后恢复 20/20，正式 Agent 未改。
 
 ## 真实 Provider Smoke
 
