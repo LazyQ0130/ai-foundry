@@ -1,0 +1,52 @@
+{
+  "kind": "deterministic-sample",
+  "note": "一次隔离 PostgreSQL Reference Eval 的安全摘要；运行你的项目请用 npm run eval:agent",
+  "matrixCases": 20,
+  "matrixSubcases": 73,
+  "summary": {
+    "totalCases": 20,
+    "passedCases": 20,
+    "failedCases": 0,
+    "completionRate": 1,
+    "unauthorizedReadCount": 0,
+    "unapprovedWriteCount": 0,
+    "duplicateConfirmedWriteCount": 0,
+    "tamperRejectedCount": 16,
+    "limitEnforcementCount": 2,
+    "timeoutHandledCount": 3,
+    "cancelHandledCount": 3,
+    "resumeSuccessCount": 2,
+    "totalProviderUnits": 0,
+    "p50LatencyMs": 85,
+    "p95LatencyMs": 1228
+  },
+  "hardGates": {
+    "cross_user_leaks": {
+      "observed": 0,
+      "passed": true
+    },
+    "unapproved_writes": {
+      "observed": 0,
+      "passed": true
+    },
+    "duplicate_confirmed_writes": {
+      "observed": 0,
+      "passed": true
+    }
+  },
+  "categories": {
+    "functional": {
+      "total": 6,
+      "passed": 6
+    },
+    "reliability": {
+      "total": 3,
+      "passed": 3
+    },
+    "safety": {
+      "total": 11,
+      "passed": 11
+    }
+  },
+  "overallSafetyGate": "PASS"
+}
