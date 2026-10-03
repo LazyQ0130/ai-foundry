@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const [lessonNumber, variant, outputArg] = process.argv.slice(2)
-if (!['1', '2', '3', '4', '5'].includes(lessonNumber) || !['a', 'b'].includes(variant) || !outputArg) {
-  throw new Error('Usage: node scripts/assemble-stage4-reference.mjs <1|2|3|4|5> <a|b> <new .runtime directory>')
+if (!['1', '2', '3', '4', '5', '6'].includes(lessonNumber) || !['a', 'b'].includes(variant) || !outputArg) {
+  throw new Error('Usage: node scripts/assemble-stage4-reference.mjs <1|2|3|4|5|6> <a|b> <new .runtime directory>')
 }
 const runtime = path.join(root, '.runtime')
 const output = path.resolve(root, outputArg)
@@ -15,6 +15,7 @@ const nextLesson = path.join(root, 'course-content/internal/stage-4/s4-l2')
 const thirdLesson = path.join(root, 'course-content/internal/stage-4/s4-l3')
 const fourthLesson = path.join(root, 'course-content/internal/stage-4/s4-l4')
 const fifthLesson = path.join(root, 'course-content/internal/stage-4/s4-l5')
+const sixthLesson = path.join(root, 'course-content/internal/stage-4/s4-l6')
 const prior = path.join(root, 'course-content/internal/stage-3/s3-l7')
 const skip = new Set(['node_modules', '.next', '.runtime', '.git', 'tsconfig.tsbuildinfo'])
 
@@ -65,10 +66,16 @@ if (Number(lessonNumber) >= 4) {
   copyFileSync(path.join(fourthLesson, 'mcp-agent.test.mjs'), path.join(output, 'mcp-agent.test.mjs'))
   copyFileSync(path.join(fourthLesson, 'mcp-request-guard.test.mjs'), path.join(output, 'mcp-request-guard.test.mjs'))
 }
-if (lessonNumber === '5') {
+if (Number(lessonNumber) >= 5) {
   if (!existsSync(fifthLesson)) throw new Error('Stage 4.5 Reference source is missing')
   copyTree(path.join(fifthLesson, 'common'), output)
   copyTree(path.join(fifthLesson, 'common'), path.join(output, 'common'))
   copyFileSync(path.join(fifthLesson, 'workflow-agent.test.mjs'), path.join(output, 'workflow-agent.test.mjs'))
+}
+if (lessonNumber === '6') {
+  if (!existsSync(sixthLesson)) throw new Error('Stage 4.6 Reference source is missing')
+  copyTree(path.join(sixthLesson, 'common'), output)
+  copyTree(path.join(sixthLesson, 'common'), path.join(output, 'common'))
+  copyFileSync(path.join(sixthLesson, 'persistence-agent.test.mjs'), path.join(output, 'persistence-agent.test.mjs'))
 }
 console.log(`Assembled Stage 4.${lessonNumber} ${variant.toUpperCase()} at ${output}`)

@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Resource {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String
+  tag       String
+  important Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ownerId   Int?
+  owner     User?    @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  agentActionKey String? @unique
+
+  @@index([ownerId])
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+  resources    Resource[]
+  knowledgeDocuments KnowledgeDocument[]
+  agentRuns AgentRun[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  tokenHash String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model KnowledgeDocument {
+  id        Int              @id @default(autoincrement())
+  ownerId   Int
+  owner     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  status    String           @default("indexing")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  chunks    KnowledgeChunk[]
+
+  @@index([ownerId])
+}
+
+model KnowledgeChunk {
+  id                 Int                    @id @default(autoincrement())
+  documentId         Int
+  document           KnowledgeDocument      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  position           Int
+  content            String
+  embedding          Unsupported("vector")?
+  embeddingModel     String
+  embeddingDimension Int
+  createdAt          DateTime               @default(now())
+
+  @@unique([documentId, position])
+  @@index([documentId])
+}
+
+model AgentRun {
+  id          String        @id @default(cuid())
+  ownerId     Int
+  owner       User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  goal        String
+  status      String        @default("running")
+  currentStep Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  steps       AgentStep[]
+  actions     AgentAction[]
+
+  @@index([ownerId, createdAt])
+  @@index([ownerId, status])
+}
+
+model AgentStep {
+  id            String       @id @default(cuid())
+  runId         String
+  run           AgentRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
+  position      Int
+  kind          String
+  toolName      String?
+  inputSummary  String?
+  outputSummary String?
+  status        String
+  latencyMs     Int?
+  usage         Int?
+  errorCategory String?
+  createdAt     DateTime     @default(now())
+  action        AgentAction?
+
+  @@unique([runId, position])
+}
+
+model AgentAction {
+  id             String    @id @default(cuid())
+  runId          String
+  run            AgentRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  stepId         String    @unique
+  step           AgentStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  toolName       String
+  canonicalArgs  String
+  status         String    @default("proposed")
+  idempotencyKey String    @unique
+  approvedAt     DateTime?
+  executedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([runId])
+}
