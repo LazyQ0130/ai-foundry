@@ -476,7 +476,7 @@ export const stages: Stage[] = [
     accent: 'orange',
     difficulty: '高级',
     shortDuration: '3-4 周',
-    totalDuration: '约 12 小时',
+    totalDuration: '约 12～15 小时',
     recommend: '完成 Stage 3 阶段自检',
     price: 299,
     status: 'not_started',
