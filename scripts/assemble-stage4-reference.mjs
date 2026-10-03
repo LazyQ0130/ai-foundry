@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const [lessonNumber, variant, outputArg] = process.argv.slice(2)
-if (!['1', '2', '3'].includes(lessonNumber) || !['a', 'b'].includes(variant) || !outputArg) {
-  throw new Error('Usage: node scripts/assemble-stage4-reference.mjs <1|2|3> <a|b> <new .runtime directory>')
+if (!['1', '2', '3', '4'].includes(lessonNumber) || !['a', 'b'].includes(variant) || !outputArg) {
+  throw new Error('Usage: node scripts/assemble-stage4-reference.mjs <1|2|3|4> <a|b> <new .runtime directory>')
 }
 const runtime = path.join(root, '.runtime')
 const output = path.resolve(root, outputArg)
@@ -13,6 +13,7 @@ if (!output.startsWith(runtime + path.sep) || existsSync(output)) throw new Erro
 const lesson = path.join(root, 'course-content/internal/stage-4/s4-l1')
 const nextLesson = path.join(root, 'course-content/internal/stage-4/s4-l2')
 const thirdLesson = path.join(root, 'course-content/internal/stage-4/s4-l3')
+const fourthLesson = path.join(root, 'course-content/internal/stage-4/s4-l4')
 const prior = path.join(root, 'course-content/internal/stage-3/s3-l7')
 const skip = new Set(['node_modules', '.next', '.runtime', '.git', 'tsconfig.tsbuildinfo'])
 
@@ -50,10 +51,16 @@ if (Number(lessonNumber) >= 2) {
   copyTree(path.join(nextLesson, 'common'), path.join(output, 'common'))
   copyFileSync(path.join(nextLesson, 'knowledge-agent.test.mjs'), path.join(output, 'knowledge-agent.test.mjs'))
 }
-if (lessonNumber === '3') {
+if (Number(lessonNumber) >= 3) {
   if (!existsSync(thirdLesson)) throw new Error('Stage 4.3 Reference source is missing')
   copyTree(path.join(thirdLesson, 'common'), output)
   copyTree(path.join(thirdLesson, 'common'), path.join(output, 'common'))
   copyFileSync(path.join(thirdLesson, 'approval-agent.test.mjs'), path.join(output, 'approval-agent.test.mjs'))
+}
+if (lessonNumber === '4') {
+  if (!existsSync(fourthLesson)) throw new Error('Stage 4.4 Reference source is missing')
+  copyTree(path.join(fourthLesson, 'common'), output)
+  copyTree(path.join(fourthLesson, 'common'), path.join(output, 'common'))
+  copyFileSync(path.join(fourthLesson, 'mcp-agent.test.mjs'), path.join(output, 'mcp-agent.test.mjs'))
 }
 console.log(`Assembled Stage 4.${lessonNumber} ${variant.toUpperCase()} at ${output}`)
