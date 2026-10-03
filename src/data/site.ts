@@ -133,15 +133,17 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
     id: 'all-access',
     tag: '全套课程',
     title: '从入门到进阶',
-    desc: '一次解锁全部 4 个阶段的课程，系统掌握 AI 开发的完整能力。',
+    desc: '从 AI Coding、全栈、RAG 到 Agent 工程，一次解锁完整学习路径，并额外获得毕业项目实战。',
     badge: '最受欢迎',
     accent: 'brand',
     meta: '包含 29 节正式课 · 4 个阶段项目',
     features: [
-      { text: '包含全部 4 个阶段课程', highlight: true },
+      { text: '完整解锁 Stage 1–4 学习路径', highlight: true },
+      { text: '四阶段项目自然承接，减少知识断层', highlight: true },
+      { text: '全套专属 Capstone 毕业项目实战（暂未解锁）', highlight: true },
+      { text: '后续新增综合项目实战，具体内容以上线页面为准' },
+      { text: '29 节正式课程永久开放阅读' },
       { text: '第 0 课开始前准备 + 4 次阶段自检' },
-      { text: '4 个阶段项目持续演进' },
-      { text: '持续免费更新' },
       { text: '配套源码与学习资料' },
       { text: '课程内排查建议' },
       { text: '跨设备学习进度记录' },
@@ -158,21 +160,12 @@ export const pricingHighlights = [
   { icon: 'users', title: '清晰的任务反馈', desc: '完成清单后再进入下一课' },
 ] as const
 
-export const compareRows: { label: string; values: string[]; check?: boolean[] }[] = [
-  { label: '包含课程内容', values: ['阶段 1', '阶段 2', '阶段 3', '阶段 4', '全部 4 个阶段'] },
-  { label: '阶段项目', values: ['1 个', '1 个', '1 个', '1 个', '4 个'] },
-  { label: '是否永久开放阅读', values: ['是', '是', '是', '是', '是'], check: [true, true, true, true, true] },
-  { label: '是否包含更新', values: ['是', '是', '是', '是', '是'], check: [true, true, true, true, true] },
-  {
-    label: '是否支持分阶段购买',
-    values: ['是', '是', '是', '是', '—'],
-    check: [true, true, true, true, false],
-  },
-  {
-    label: '适合人群',
-    values: ['初学者', '有一定基础的开发者', '希望构建专业 AI 应用的开发者', '希望深入 Agent 开发的开发者', '系统学习，全面提升'],
-  },
-]
+export const fullPlanBenefits = [
+  { icon: 'path', title: '不是学四门课，而是完成一条成长路径', desc: '从第一次带 AI 改项目，到全栈开发、RAG，再到 Agent 工程，每个阶段都建立在前一阶段成果上。' },
+  { icon: 'build', title: '前一阶段的成果，就是后一阶段的起点', desc: 'Stage 1 做出第一个产品，Stage 2 升级为全栈应用，Stage 3 加入真实 AI 与 RAG，Stage 4 继续升级为 Agent。' },
+  { icon: 'gem', title: '额外解锁毕业项目实战', desc: '完成四阶段后，用 Capstone 重新组合 AI Coding、全栈、RAG 与 Agent 能力；当前首个项目已公布，暂未解锁。' },
+  { icon: 'refresh', title: '后续还会继续新增项目实战', desc: '全套课程包含后续新增的综合项目实战内容，具体项目与更新时间以上线内容为准。' },
+] as const
 
 /* ------------------------------------------------------------------ */
 /* 项目详情                                                             */

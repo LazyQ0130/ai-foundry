@@ -30,7 +30,7 @@ export default function PurchaseModal({ plan, onClose }: { plan?: Plan; onClose:
   return (
     <Modal title={plan ? `购买 ${plan.tag} · ${plan.title}` : '购买与账号帮助'} onClose={onClose}>
       {plan ? <p className="text-xl font-bold text-brand-600">¥ {plan.price}</p> : null}
-      {plan && <div className="mt-3 rounded-xl bg-brand-50 p-3 text-sm leading-6 text-slate-700">图文讲解 · 永久开放阅读。首次开通后 72 小时内可申请无理由全额退款。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。<Link to="/terms" className="ml-1 text-brand-600">查看退款说明</Link></div>}
+      {plan && <div className="mt-3 rounded-xl bg-brand-50 p-3 text-sm leading-6 text-slate-700">图文讲解 · 永久开放阅读。首次开通后 72 小时内可申请退款，具体处理方式以《用户协议》为准。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。<Link to="/terms" className="ml-1 text-brand-600">查看退款说明</Link></div>}
 
       <ol className="my-5 list-inside list-decimal space-y-2 text-sm leading-6 text-slate-600">
         {plan ? (

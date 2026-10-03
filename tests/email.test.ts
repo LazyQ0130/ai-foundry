@@ -143,7 +143,7 @@ test('email binding, double verification, reset, quotas and consent with real Po
     await request(app).post('/api/auth/register').set('Origin', env.APP_ORIGIN).send({ phone, password, acceptedTerms: false }).expect(400)
     const created = await request(app).post('/api/auth/register').set('Origin', env.APP_ORIGIN).send({ phone, password, acceptedTerms: true }).expect(201)
     const row = await db.user.findUniqueOrThrow({ where: { id: created.body.data.user.id } })
-    assert.ok(row.acceptedTermsAt); assert.equal(row.termsVersion, '2026-09-26.2')
+    assert.ok(row.acceptedTermsAt); assert.equal(row.termsVersion, '2026-10-04.1')
     await request(app).post('/api/auth/password-reset/code').send({ email: nextEmail }).expect(403)
   })
   await db.$disconnect()
