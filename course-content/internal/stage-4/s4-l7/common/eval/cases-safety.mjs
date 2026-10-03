@@ -106,7 +106,8 @@ export const safetyCases = [
         { approvalToken: token, title: 'swapped' }, { approvalToken: token, content: 'swapped' },
         { approvalToken: `${Buffer.from(JSON.stringify({ ...payload, runId: 'other' })).toString('base64url')}.${signature}` },
         { approvalToken: `${Buffer.from(JSON.stringify({ ...payload, actionId: 'other' })).toString('base64url')}.${signature}` },
-        { approvalToken: `${encoded}.${signature.slice(0, -1)}x` },
+        // Mutate the first Base64url digit: changing the final digit can alter only unused pad bits.
+        { approvalToken: `${encoded}.${signature[0] === 'A' ? 'B' : 'A'}${signature.slice(1)}` },
       ]
       for (const [index, body] of changed.entries()) {
         const response = await ctx.post('/api/agent/confirm', user.cookie, body)
