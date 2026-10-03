@@ -16,6 +16,7 @@ const allowed = [
   'approval-agent.test.mjs',
   'mcp-agent.test.mjs',
   'mcp-request-guard.test.mjs',
+  'workflow-agent.test.mjs',
 ]
 const files = allowed.map(name => path.join(lesson, name)).filter(existsSync)
 if (!files.length) throw new Error('No Reference unit tests found for this lesson')
