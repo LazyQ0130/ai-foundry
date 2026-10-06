@@ -19,17 +19,22 @@ test('Capstone has its own locked showcase data and does not enter course statis
   assert.equal(curriculumFormalLessonCount(), 29)
   assert.equal(capstoneShowcase.status, '暂未解锁')
   assert.equal(capstoneShowcase.badge, '全套课程专属')
+  assert.equal(capstoneShowcase.project, 'AI 研究工作台')
+  assert.equal(capstoneShowcase.projectEn, 'AI Research Workspace')
+  assert.equal(capstoneShowcase.subtitle, 'AI 研究 Agent 毕业项目实战')
 })
 
 test('learning path and home teaser link to the public Capstone overview', () => {
   assert.match(render(createElement(CapstonePathCard)), /href="\/capstone"/)
-  assert.match(render(createElement(CapstoneHomeTeaser)), /4 个学习阶段 \+ Capstone 毕业项目/)
+  assert.match(render(createElement(CapstonePathCard)), /AI 研究工作台/)
+  assert.match(render(createElement(CapstoneHomeTeaser)), /AI 研究工作台/)
 })
 
 test('Capstone overview lists eight locked lessons without lesson or purchase links', async () => {
   const html = render(createElement(CapstoneOverview))
   assert.match(html, /AI Foundry Capstone Project/)
-  assert.match(html, /AI Research Agent 毕业项目实战/)
+  assert.match(html, /<h1[^>]*>AI 研究工作台<\/h1>/)
+  assert.match(html, /AI 研究 Agent 毕业项目实战/)
   assert.match(html, /AI Research Workspace/)
   assert.equal((html.match(/aria-label="C[1-8] /g) ?? []).length, 8)
   assert.equal((html.match(/暂未解锁/g) ?? []).length >= 9, true)

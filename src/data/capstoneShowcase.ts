@@ -1,14 +1,15 @@
 export const capstoneShowcase = {
   title: 'AI Foundry Capstone Project',
-  subtitle: 'AI Research Agent 毕业项目实战',
-  project: 'AI Research Workspace',
-  description: '综合运用前四阶段能力，从产品拆解、架构设计到工程实现，完成一个融合 RAG、Citation、Agent、MCP、Human-in-the-loop、Persistence 与 Eval 的完整 AI Research Workspace。',
+  subtitle: 'AI 研究 Agent 毕业项目实战',
+  project: 'AI 研究工作台',
+  projectEn: 'AI Research Workspace',
+  description: '综合运用前四阶段能力，从产品拆解、架构设计到工程实现，完成一个融合 RAG、Citation、Agent、MCP、Human-in-the-loop、Persistence 与 Eval 的完整 AI 研究工作台。',
   exitState: '把学过的 AI Coding、全栈、RAG 与 Agent 工程能力，真正组装成一个可以部署、验证、展示并写进简历的完整 AI 产品。',
   status: '暂未解锁',
   badge: '全套课程专属',
   abilities: [
     { title: '产品架构', desc: '从需求、领域模型到完整 AI 产品架构。' },
-    { title: 'Research Agent', desc: '把 RAG、Tool、MCP 与 Research Workflow 组合进真实产品。' },
+    { title: '研究 Agent', desc: '把 RAG、Tool、MCP 与 Research Workflow 组合进真实产品。' },
     { title: '工程可靠性', desc: 'Citation、Approval、Persistence、Failure Handling、Eval。' },
     { title: '项目交付', desc: '部署、README、架构图、Demo、简历和面试准备。' },
   ],
@@ -22,7 +23,7 @@ export const capstoneShowcase = {
     { code: 'C7', title: '证明整个 AI 产品真的可靠', desc: '完成 RAG、Citation、Agent、MCP、Approval、Persistence 的产品级 Eval。' },
     { code: 'C8', title: '把毕业项目变成真正能拿出去的作品', desc: '完成生产部署、README、架构图、3 分钟 Demo、简历与面试准备。' },
   ],
-  flow: ['Knowledge', 'Research Task', 'Research Agent', 'Evidence', 'Report', 'Human Approval', 'Knowledge Note'],
+  flow: ['Knowledge', 'Research Task', '研究 Agent', 'Evidence', 'Report', 'Human Approval', 'Knowledge Note'],
   technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'pgvector', 'RAG', 'Citation', 'Agent', 'MCP', 'Human-in-the-loop', 'Persistence', 'Eval'],
   deliverables: ['Production Product', 'GitHub Repository', 'README', 'Architecture Diagram', '3-minute Demo', 'Resume Project Entry'],
 } as const

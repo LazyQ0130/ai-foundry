@@ -1,4 +1,5 @@
 import type { Plan } from '../data/site.js'
+import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { Link } from 'react-router-dom'
 export function MobilePlanComparison({ allPlan, stagePlans, onBuy }: { allPlan: Plan; stagePlans: Plan[]; onBuy: (plan: Plan) => void }) {
   const sum = stagePlans.reduce((total, plan) => total + plan.price, 0)
@@ -7,7 +8,7 @@ export function MobilePlanComparison({ allPlan, stagePlans, onBuy }: { allPlan: 
       <p className="text-xs font-semibold text-brand-600">完整学习路径</p><h3 className="mt-2 text-lg font-semibold">Stage 1 → 2 → 3 → 4</h3>
       <ul className="mt-4 space-y-3 text-sm text-slate-700">
         <li><span className="font-semibold">四阶段自然承接</span><span className="mt-0.5 block text-xs text-slate-500">同一项目从 AI Coding 升级到全栈、RAG 与 Agent</span></li>
-        <li><span className="font-semibold">全套专属 Capstone</span><span className="mt-0.5 block text-xs text-slate-500">AI Research Workspace，当前暂未解锁</span></li>
+        <li><span className="font-semibold">全套专属 Capstone</span><span className="mt-0.5 block text-xs text-slate-500">{capstoneShowcase.project}（{capstoneShowcase.projectEn}），当前{capstoneShowcase.status}</span></li>
         <li><span className="font-semibold">后续新增综合实战</span><span className="mt-0.5 block text-xs text-slate-500">具体内容以上线页面为准</span></li>
       </ul>
       <div className="mt-5 border-t border-brand-200 pt-4"><p className="text-xs text-slate-600">全套课程</p><p className="mt-1 text-2xl font-bold text-brand-700">¥{allPlan.price}</p>

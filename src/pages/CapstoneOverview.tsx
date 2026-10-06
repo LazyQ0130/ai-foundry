@@ -6,7 +6,7 @@ import { stages } from '../data/courses.js'
 
 const abilityIcons = {
   '产品架构': Boxes,
-  'Research Agent': BookOpen,
+  '研究 Agent': BookOpen,
   '工程可靠性': ShieldCheck,
   '项目交付': FileCheck2,
 }
@@ -25,10 +25,10 @@ export default function CapstoneOverview() {
           <nav aria-label="面包屑导航" className="text-[12px] text-slate-500"><Link to="/path" className="hover:text-brand-700">学习路径</Link><span className="px-2" aria-hidden="true">/</span><span className="text-slate-700">毕业项目</span></nav>
           <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <span className="inline-flex items-center gap-2 text-[11px] font-bold text-slate-500"><GraduationCap className="h-4 w-4" />AI FOUNDRY · FINAL PROJECT</span>
-              <h1 className="mt-3 max-w-3xl text-[30px] font-bold leading-tight text-slate-950 sm:text-[38px]">{capstoneShowcase.title}</h1>
-              <p className="mt-2 text-[17px] font-semibold text-slate-700">{capstoneShowcase.subtitle}</p>
-              <p className="mt-1 text-[13.5px] text-slate-500">项目：{capstoneShowcase.project}</p>
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold text-slate-500"><GraduationCap className="h-4 w-4" />{capstoneShowcase.title}</span>
+              <h1 className="mt-3 max-w-3xl text-[30px] font-bold leading-tight text-slate-950 sm:text-[38px]">{capstoneShowcase.project}</h1>
+              <p className="mt-1 text-[14px] font-medium text-slate-500">{capstoneShowcase.projectEn}</p>
+              <p className="mt-3 text-[16px] font-semibold text-slate-700">{capstoneShowcase.subtitle}</p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-700"><LockKeyhole className="h-3.5 w-3.5" />{capstoneShowcase.status}</span>

@@ -10,7 +10,7 @@ import { getProject } from '../data/site.js'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 
 const capstoneTechnologies = ['RAG', 'Citation', 'Agent', 'MCP', 'Human-in-the-loop', 'Persistence', 'Eval'] as const
-const futureDirections = ['AI SaaS', 'Knowledge Agent', 'Workflow Automation', 'Research Agent', 'Multimodal AI'] as const
+const futureDirections = ['AI SaaS 产品', '知识库 Agent', 'AI 工作流自动化', '研究 Agent', '多模态 AI 应用'] as const
 
 export default function ProjectsPage() {
   const { stages } = useProgress()
@@ -119,7 +119,8 @@ export default function ProjectsPage() {
                   <span className="chip border border-slate-200 bg-white text-slate-600"><LockKeyhole className="h-3 w-3" />{capstoneShowcase.status}</span>
                 </div>
                 <h3 className="mt-5 text-[22px] font-bold leading-tight text-slate-900 sm:text-[26px]">{capstoneShowcase.project}</h3>
-                <p className="mt-1.5 text-[14px] font-medium text-slate-700">{capstoneShowcase.subtitle}</p>
+                <p className="mt-1 text-[13px] font-medium text-slate-500">{capstoneShowcase.projectEn}</p>
+                <p className="mt-2 text-[14px] font-medium text-slate-700">{capstoneShowcase.subtitle}</p>
                 <p className="mt-4 max-w-2xl text-[13px] leading-6 text-slate-600">{capstoneShowcase.description}</p>
                 <div className="mt-5 flex flex-wrap gap-2" aria-label="核心技术">
                   {capstoneTechnologies.filter((technology) => capstoneShowcase.technologies.includes(technology)).map((technology) => (
@@ -142,7 +143,7 @@ export default function ProjectsPage() {
       <section className="shell py-12 sm:py-14" aria-labelledby="future-projects-heading">
         <div id="future-projects-heading">
           <span className="text-[11px] font-bold tracking-widest text-brand-600">03 / FUTURE PROJECTS</span>
-          <SectionHeading title="更多综合项目实战将持续更新" sub="AI Research Workspace 是首个毕业项目。后续会根据 AI 技术发展和真实应用场景，继续加入新的综合项目实战。" className="mt-2" />
+          <SectionHeading title="更多综合项目实战将持续更新" sub={`${capstoneShowcase.project}是首个毕业项目。后续会根据 AI 技术发展和真实应用场景，继续加入新的综合项目实战。`} className="mt-2" />
         </div>
         <div className="mt-6 rounded-2xl border border-dashed border-brand-200 bg-gradient-to-br from-brand-50/80 to-white p-5 sm:p-7">
           <div className="flex flex-wrap items-baseline justify-between gap-2">

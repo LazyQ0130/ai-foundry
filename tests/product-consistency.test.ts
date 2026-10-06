@@ -51,6 +51,7 @@ test('mockups reflect each project and mobile comparison renders current prices 
   const html=render(createElement(MobilePlanComparison,{allPlan:all,stagePlans:plans,onBuy:()=>{}}))
   assert.match(html,/400/);assert.match(html,/492/);assert.match(html,/92/)
   assert.match(html,/全套专属 Capstone/);assert.match(html,/暂未解锁/);assert.match(html,/后续新增综合实战/)
+  assert.match(html,/AI 研究工作台/);assert.match(html,/AI Research Workspace/)
   assert.ok(html.indexOf('完整学习路径') < html.indexOf('也可以单独购买某一个阶段'))
   assert.match(html,/Stage 1 → 2 → 3 → 4/)
   assert.match(render(createElement(FaqPermalink,{id:'test'})),/复制问题链接/)
