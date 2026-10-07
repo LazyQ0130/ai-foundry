@@ -11,6 +11,7 @@ export type Faq = {
   q: string
   a: string
   featured?: boolean
+  featuredSummary?: string
   link?: { to: string; label: string }
 }
 
@@ -30,16 +31,20 @@ export const faqs: Faq[] = [
   { id: 'tools', category: 'getting-started', q: '需要准备哪些工具？',
     a: '建议使用一台可安装开发工具的电脑、现代浏览器、代码编辑器和 AI 编程助手。具体运行环境按课程的环境搭建指引准备。第三方工具、模型及 API 的使用费用由学员自行承担，不包含在课程价格内；账号、使用限制和收费方式请查看对应服务的说明。' },
   { id: 'how-to-purchase', category: 'purchase', q: '如何购买和开通？', featured: true,
+    featuredSummary: '选择方案后添加管理员微信，注册账号并提供手机号；管理员确认付款后手动开通对应权益。',
     a: '在价格页选择方案，添加管理员微信确认课程和付款方式。注册 AIFoundry 账号，并将注册手机号提供给管理员。管理员确认收款后开通对应课程，刷新页面即可查看；付款不会自动完成开通。',
     link: { to: '/pricing', label: '查看课程方案' } },
   { id: 'buy-a-stage', category: 'purchase', q: '可以单独购买阶段吗？', featured: true,
+    featuredSummary: '可以。既可以按阶段购买，也可以选择 ¥599 全阶段课程版或 ¥699 项目版。',
     a: '可以。单阶段适合只想补某一部分能力的学习者；全阶段课程版包含 Stage 1–4 和四个阶段项目。想在课程之后继续做综合作品，可选择额外包含 Project Lab 的项目版。当前方案和价格以价格页展示为准。',
     link: { to: '/pricing', label: '比较学习方案' } },
   { id: 'lifetime-access', category: 'purchase', q: '课程是否永久开放阅读？', featured: true,
+    featuredSummary: '是。已购买的课程阶段永久开放阅读，不另外收取阅读续费。',
     a: '是的，购买后对应课程永久开放阅读，不另收阅读续费。已开通的阶段可在个人中心查看，请使用购买时提供的注册账号登录。' },
   { id: 'course-updates', category: 'purchase', q: '是否包含后续更新？', featured: true,
+    featuredSummary: '已购课程持续获得阶段内内容维护；¥699 项目版额外包含 Project Lab 后续新增综合项目。',
     a: '已购买的阶段会持续获得该阶段范围内的内容维护与更新。项目版额外解锁 Project Lab；该专区后续新增的综合项目实战持续开放，具体项目与更新节奏以上线内容为准。' },
-  { id: 'course-vs-project', category: 'purchase', q: '599 和 699 有什么区别？', featured: true,
+  { id: 'course-vs-project', category: 'purchase', q: '599 和 699 有什么区别？',
     a: '599 是完整 Stage 1–4 课程版，包含 29 节正式课程和 4 个阶段项目。699 在此基础上额外解锁 Project Lab，包括 Capstone 毕业项目以及项目实战专区后续新增的综合项目。只想系统学习四阶段课程，599 已经完整；希望学完继续做更完整项目，可以选择 699 项目版。' },
   { id: 'find-courses', category: 'learning', q: '在哪里查看已开通课程？',
     a: '登录后点击顶部头像和昵称，进入个人中心，在「我的课程与权限」中查看已开通阶段及开通记录。点击对应阶段的「去学习」即可进入课程。',

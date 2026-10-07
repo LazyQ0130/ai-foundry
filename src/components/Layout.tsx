@@ -142,10 +142,10 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
 
 const footerLinkClass = 'text-[13px] text-slate-500 transition hover:text-brand-600'
 
-function Footer() {
+function Footer({ compact = false }: { compact?: boolean }) {
   const [contact, setContact] = useState(false)
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-slate-50/70">
+    <footer className={`${compact ? 'mt-0' : 'mt-20'} border-t border-slate-200 bg-slate-50/70`}>
       <div className="shell py-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
@@ -240,7 +240,7 @@ export default function Layout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      <Footer compact={pathname === '/pricing'} />
     </div>
   )
 }

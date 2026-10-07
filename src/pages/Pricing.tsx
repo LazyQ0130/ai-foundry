@@ -143,15 +143,16 @@ export default function Pricing() {
           </Link>
         </div>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {featuredFaqs.map((f) => (
-            <div key={f.id} className="card p-4">
+            <article key={f.id} className="card flex flex-col p-4">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-[15px] font-bold text-brand-600">
                 ?
               </span>
-              <h3 className="mt-3 text-[13.5px] font-semibold text-slate-900"><Link to={`/faq#${f.id}`} className="hover:text-brand-600 hover:underline">{f.q}</Link></h3>
-              <p className="mt-2 text-[12px] leading-5 text-slate-500">{f.a}</p>
-            </div>
+              <h3 className="mt-3 text-[13.5px] font-semibold text-slate-900">{f.q}</h3>
+              <p className="mt-2 text-[12px] leading-5 text-slate-500">{f.featuredSummary ?? f.a}</p>
+              <Link to={`/faq#${f.id}`} className="mt-3 inline-flex items-center gap-1 self-start text-[12px] font-medium text-brand-600 hover:text-brand-700 hover:underline">查看详情 <ArrowRight className="h-3 w-3" /></Link>
+            </article>
           ))}
         </div>
       </section>
