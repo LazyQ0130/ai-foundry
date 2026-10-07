@@ -41,18 +41,17 @@ test('free experience state cards and prep completion provide explicit actions',
   const prep=render(createElement(PrepFeedback,{done:true}))
   assert.match(prep,/开始前准备已完成/);assert.match(prep,/100%/);assert.match(prep,/不计入 29/)
 })
-test('mockups reflect each project and mobile comparison renders current prices and all stages first',()=>{
+test('mockups reflect each project and mobile comparison shows entitlements without duplicate plan cards',()=>{
   for(const stage of stages) {
     assert.ok(render(createElement(HeroAppMockup,{stage})).includes(stage.project.title))
     assert.ok(render(createElement(StageArchMockup,{stage})).includes(stage.project.title))
   }
-  const plans=planTemplates.filter(p=>p.id.startsWith('stage-')).map(p=>({...p,price:123}))
   const all={...planTemplates.find(p=>p.id==='all-access')!,price:400}
   const project={...planTemplates.find(p=>p.id==='all-access-projects')!,price:500}
-  const html=render(createElement(MobilePlanComparison,{allAccessPlan:all,projectPlan:project,stagePlans:plans,onBuy:()=>{}}))
-  assert.match(html,/400/);assert.match(html,/492/);assert.match(html,/92/)
+  const html=render(createElement(MobilePlanComparison,{allAccessPlan:all,projectPlan:project}))
+  assert.match(html,/400/);assert.match(html,/500/);assert.match(html,/100/)
   assert.match(html,/Project Lab/);assert.match(html,/Capstone/);assert.match(html,/暂未开放/)
-  assert.ok(html.indexOf('全阶段课程版') < html.indexOf('项目版'))
+  assert.doesNotMatch(html,/选择课程版|选择项目版|单阶段购买/)
   assert.match(render(createElement(FaqPermalink,{id:'test'})),/复制问题链接/)
 })
 test('pricing and policy copy preserves catalogue pricing, purchase boundaries, and distinct policy versions',async()=>{

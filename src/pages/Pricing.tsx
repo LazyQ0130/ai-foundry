@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { FullPlanCard } from '../components/PlanCard'
-import { coursePlanBenefits, projectPlanBenefits, pricingHighlights } from '../data/site'
+import { pricingHighlights } from '../data/site'
 import { featuredFaqs } from '../data/help'
 
 export default function Pricing() {
@@ -28,11 +28,11 @@ export default function Pricing() {
           className="grid-bg pointer-events-none absolute inset-0 opacity-60"
           style={{ maskImage: 'linear-gradient(to bottom, black, transparent 80%)' }}
         />
-        <div className="shell relative py-14 text-center">
+        <div className="shell relative py-9 text-center sm:py-11">
           <span className="chip bg-white text-brand-600 ring-1 ring-brand-100">
             从入门到进阶，系统掌握 AI 时代的开发能力
           </span>
-          <h1 className="mx-auto mt-5 max-w-3xl text-[30px] font-bold leading-tight tracking-tight text-slate-900 sm:text-[40px]">
+          <h1 className="mx-auto mt-4 max-w-3xl text-[30px] font-bold leading-tight tracking-tight text-slate-900 sm:text-[40px]">
             选择适合你的<span className="text-brand-600">学习方案</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-[13.5px] leading-6 text-slate-500">
@@ -40,9 +40,7 @@ export default function Pricing() {
             <br className="hidden sm:block" />
             想系统学习，可选择全阶段课程版；希望学完继续完成综合作品，可选择项目版。
           </p>
-          <p className="mx-auto mt-3 max-w-2xl text-[12px] text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见《用户协议》。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。</p>
-
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {pricingHighlights.map((h) => (
               <div key={h.title} className="flex items-center gap-3 text-left">
                 <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-brand-600 ring-1 ring-brand-100">
@@ -59,18 +57,18 @@ export default function Pricing() {
       </section>
 
       {/* ------------------------------ 价格卡片 ------------------------------ */}
-      <section className="shell pb-16 pt-12">
+      <section className="shell pb-10 pt-8">
         <h2 className="h-sec">按阶段学习</h2>
         <p className="sub-sec">只需要一个阶段时，选择对应课程与阶段项目。</p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stagePlans.map((p) => (
             <FullPlanCard key={p.id} plan={p} onBuy={setSelected} />
           ))}
         </div>
         {allPlan && projectPlan && <>
-          <h2 className="h-sec mt-14">一次解锁完整路径</h2>
+          <h2 className="h-sec mt-10">一次解锁完整路径</h2>
           <p className="sub-sec">两种方案都包含完整四阶段课程与 4 个阶段项目；项目版另外开放 Project Lab。</p>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
             <FullPlanCard plan={allPlan} onBuy={setSelected} />
             <FullPlanCard plan={projectPlan} onBuy={setSelected} />
           </div>
@@ -78,21 +76,15 @@ export default function Pricing() {
       </section>
 
       {/* ------------------------------ 方案对比 ------------------------------ */}
-      {allPlan && projectPlan && <section className="shell pb-16">
-        <h2 className="h-sec">完整课程，以及课程之后的项目实战</h2>
-        <p className="sub-sec">全阶段课程版适合系统学习；项目版适合继续完成综合作品。</p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {coursePlanBenefits.map((benefit, index) => (
-            <article key={benefit.title} className="border-t-2 border-brand-200 bg-white py-4 pr-3">
-              <div className="flex items-center gap-2 text-brand-600"><Icon name={benefit.icon} className="h-4 w-4"/><span className="text-xs font-semibold">0{index + 1}</span></div>
-              <h3 className="mt-3 text-sm font-semibold text-slate-900">{benefit.title}</h3>
-              <p className="mt-2 text-xs leading-5 text-slate-600">{benefit.desc}</p>
-            </article>
-          ))}
+      {allPlan && projectPlan && <section className="shell pb-10">
+        <h2 className="h-sec">怎么选？</h2>
+        <div className="mt-4 grid overflow-hidden rounded-xl border border-slate-200 sm:grid-cols-2 sm:divide-x sm:divide-slate-200">
+          <div className="px-4 py-3 sm:py-4"><p className="text-[13px] font-semibold text-slate-900">¥{allPlan.price} 全阶段课程版</p><p className="mt-1 text-[12px] text-slate-600">想系统学完四阶段，完成阶段项目。</p></div>
+          <div className="border-t border-slate-200 bg-brand-50/50 px-4 py-3 sm:border-t-0 sm:py-4"><p className="text-[13px] font-semibold text-brand-700">¥{projectPlan.price} 项目版 · 推荐</p><p className="mt-1 text-[12px] text-slate-600">想继续做综合作品，获得 Project Lab 权益。</p></div>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">{projectPlanBenefits.map((benefit) => <article key={benefit.title} className="rounded-xl border border-brand-100 bg-brand-50/50 p-5"><h3 className="font-semibold text-slate-900">{benefit.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{benefit.desc}</p></article>)}</div>
-        <MobilePlanComparison allAccessPlan={allPlan} projectPlan={projectPlan} stagePlans={stagePlans} onBuy={setSelected}/>
-        <div className="mt-5 hidden overflow-x-auto md:block">
+        <h3 className="mt-8 text-[16px] font-semibold text-slate-900">权益对比</h3>
+        <MobilePlanComparison allAccessPlan={allPlan} projectPlan={projectPlan}/>
+        <div className="mt-3 hidden overflow-x-auto md:block">
           <table className="w-full border-collapse text-[12.5px]">
             <thead>
               <tr>
@@ -138,7 +130,8 @@ export default function Pricing() {
 
       }
       {/* ------------------------------ 常见问题 ------------------------------ */}
-      <section id="faq" className="shell scroll-mt-24 pb-8">
+      <section id="faq" className="shell scroll-mt-24 pb-10">
+        <p className="mb-6 text-[12px] leading-5 text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见<Link to="/terms" className="text-brand-600">《用户协议》</Link>。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。</p>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="h-sec">常见问题</h2>

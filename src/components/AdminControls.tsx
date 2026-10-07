@@ -7,7 +7,7 @@ export type Activity = { id: string; userId: string; at: string; userName: strin
 export type AdminUser = { id: string; name: string; phone: string; phoneMasked: string; createdAt: string; lastLogin: string | null; entitlements: number[]; productEntitlements: string[]; progress: number; disabled: boolean; internalNote?: string; recentLesson?: { lessonId: string; lastVisitedAt: string } | null; learning?: { lessonId: string; status: string }[]; activity?: { id: string; action: string; detail: string; createdAt: string }[] }
 export const actionLabels: Record<string, string> = { GRANT_ENTITLEMENT: '开通课程', REVOKE_ENTITLEMENT: '撤销课程', GRANT_ALL_ACCESS: '开通全阶段课程版', GRANT_ALL_ACCESS_PROJECTS: '开通项目版', GRANT_PRODUCT_ENTITLEMENT: '开通 Project Lab', REVOKE_PRODUCT_ENTITLEMENT: '撤销 Project Lab', DISABLE_USER: '禁用账号', ENABLE_USER: '启用账号', EDIT_USER_NOTE: '修改备注', EDIT_STAGE: '修改阶段', EDIT_LESSON: '修改课程' }
 export const formatTime = (value: string | null) => value ? new Date(value).toLocaleString('zh-CN', { hour12: false }) : '—'
-export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+export function Modal({ title, onClose, children, wide = false }: { title: string; onClose: () => void; children: ReactNode; wide?: boolean }) {
   const dialog = useRef<HTMLElement>(null)
   const close = useRef(onClose)
   close.current = onClose
@@ -30,7 +30,7 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
     window.addEventListener('keydown', keydown)
     return () => { window.removeEventListener('keydown', keydown); document.body.style.overflow = overflow; if (previous?.isConnected) previous.focus({ preventScroll: true }) }
   }, [])
-  return <div className="fixed inset-0 z-[60] flex items-center justify-center p-4"><button type="button" tabIndex={-1} aria-label="关闭弹窗" className="absolute inset-0 bg-slate-900/35" onClick={onClose} /><section ref={dialog} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl"><div className="mb-5 flex justify-between gap-3"><h2 className="text-xl font-bold">{title}</h2><button type="button" aria-label="关闭" onClick={onClose}><X className="h-5 w-5" /></button></div>{children}</section></div>
+  return <div className="fixed inset-0 z-[60] flex items-center justify-center p-4"><button type="button" tabIndex={-1} aria-label="关闭弹窗" className="absolute inset-0 bg-slate-900/35" onClick={onClose} /><section ref={dialog} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className={`relative z-10 w-full overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl ${wide ? 'max-h-[94vh] max-w-2xl p-4 sm:p-6' : 'max-h-[90vh] max-w-lg p-6'}`}><div className={`${wide ? 'mb-4' : 'mb-5'} flex justify-between gap-3`}><h2 className="text-xl font-bold">{title}</h2><button type="button" aria-label="关闭" onClick={onClose}><X className="h-5 w-5" /></button></div>{children}</section></div>
 }
 export function AccessModal({ user, onClose, onUpdated }: { user: AdminUser; onClose: () => void; onUpdated: () => Promise<void> }) {
   const [source, setSource] = useState('MANUAL_PURCHASE')

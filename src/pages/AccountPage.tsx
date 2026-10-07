@@ -305,7 +305,7 @@ export default function AccountPage() {
   return (
     <>
       <section className="bg-gradient-to-b from-[#E9F2FE] via-[#F5F9FF] to-white">
-        <div className="shell py-12 sm:py-14">
+        <div className="shell py-9 sm:py-10">
           <span className="chip bg-white text-brand-700 ring-1 ring-brand-100">个人中心</span>
           <h1 className="mt-4 text-[30px] font-bold tracking-tight text-slate-900 sm:text-[36px]">我的账号</h1>
           <p className="mt-3 text-[14px] leading-6 text-slate-600">

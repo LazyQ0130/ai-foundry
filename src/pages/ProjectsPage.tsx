@@ -2,7 +2,6 @@ import { stageLessonCount } from '../data/courses.js'
 import { stageCompletedCount } from '../data/learningProgress.js'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Code2, LockKeyhole, Target } from 'lucide-react'
-import { Icon } from '../components/Icon.js'
 import { Breadcrumb, Progress, SectionHeading, StageChip } from '../components/ui.js'
 import { accentClass, stageStatusLabel } from '../data/courses.js'
 import { useProgress } from '../data/progress.js'
@@ -21,7 +20,7 @@ export default function ProjectsPage() {
           className="grid-bg pointer-events-none absolute inset-0 opacity-60"
           style={{ maskImage: 'linear-gradient(to bottom, black, transparent 80%)' }}
         />
-        <div className="shell relative py-12">
+        <div className="shell relative py-9 sm:py-10">
           <Breadcrumb items={[{ label: '项目' }]} />
           <h1 className="mt-4 text-[30px] font-bold tracking-tight text-slate-900 sm:text-[36px]">项目实战</h1>
           <p className="mt-3 max-w-3xl text-[13.5px] leading-6 text-slate-600">
@@ -32,7 +31,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className="shell pb-12 pt-10 sm:pt-12" aria-labelledby="stage-projects-heading">
+      <section className="shell py-9" aria-labelledby="stage-projects-heading">
         <div id="stage-projects-heading">
           <span className="text-[11px] font-bold tracking-widest text-brand-600">01 / STAGE PROJECTS</span>
           <SectionHeading title="阶段项目" sub="每个阶段对应一个持续演进的项目，用来学习并验证当前阶段的核心能力。" className="mt-2" />
@@ -103,11 +102,11 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-slate-50/60" aria-labelledby="capstone-projects-heading">
-        <div className="shell py-12 sm:py-14">
-          <div id="capstone-projects-heading">
-            <span className="text-[11px] font-bold tracking-widest text-brand-600">02 / CAPSTONE</span>
-            <SectionHeading title="毕业项目实战" sub="完成阶段学习后，重新组合 AI Coding、全栈、RAG 与 Agent 能力，交付更完整的 AI 产品。" className="mt-2" />
+      <section className="border-y border-slate-200 bg-slate-50/60" aria-labelledby="project-lab-heading">
+        <div className="shell py-10">
+          <div id="project-lab-heading">
+            <span className="text-[11px] font-bold tracking-widest text-brand-600">02 / PROJECT LAB</span>
+            <SectionHeading title="Project Lab · 毕业项目实战" sub="完成阶段学习后，重新组合 AI Coding、全栈、RAG 与 Agent 能力，交付更完整的 AI 产品。" className="mt-2" />
           </div>
           <article className="card mt-6 overflow-hidden border-brand-200">
             <div className="h-1 bg-brand-600" aria-hidden="true" />
@@ -138,43 +137,12 @@ export default function ProjectsPage() {
               </div>
             </div>
           </article>
-        </div>
-      </section>
-
-      <section className="shell py-12 sm:py-14" aria-labelledby="future-projects-heading">
-        <div id="future-projects-heading">
-          <span className="text-[11px] font-bold tracking-widest text-brand-600">03 / FUTURE PROJECTS</span>
-          <SectionHeading title="更多综合项目实战将持续更新" sub={`${capstoneShowcase.project}是首个毕业项目。后续会根据 AI 技术发展和真实应用场景，继续加入新的综合项目实战。`} className="mt-2" />
-        </div>
-        <div className="mt-6 rounded-2xl border border-dashed border-brand-200 bg-gradient-to-br from-brand-50/80 to-white p-5 sm:p-7">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <p className="text-[13px] font-semibold text-brand-700">持续更新 <span className="ml-2 text-[11px] font-medium tracking-widest text-slate-500">FUTURE PROJECTS</span></p>
-            <span className="text-[11px] text-slate-400">未来方向 · 尚非已上线项目</span>
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-brand-100 bg-white px-4 py-3">
+            <p className="text-[12px] font-semibold text-brand-700">更多综合项目实战将持续更新</p>
+            <span className="text-[11px] text-slate-500">未来方向 · 尚非已上线项目</span>
+            <div className="flex flex-wrap gap-1.5" aria-label="未来项目方向">{futureDirections.map((direction) => <span key={direction} className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] text-slate-600">{direction}</span>)}</div>
           </div>
-          <p className="mt-4 text-[15px] font-semibold leading-6 text-slate-800">Project Lab 的综合项目实战会持续扩充。</p>
-          <div className="mt-4 flex flex-wrap gap-2" aria-label="未来项目方向">
-            {futureDirections.map((direction) => <span key={direction} className="rounded-full border border-brand-100 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600">{direction}</span>)}
-          </div>
-          <p className="mt-4 text-[11px] leading-5 text-slate-500">未来项目方向仅作展示，具体新增内容与开放时间以上线页面为准。</p>
-        </div>
-      </section>
-
-      <section className="shell pb-12 sm:pb-14">
-        <div className="card flex flex-wrap items-center justify-between gap-5 bg-brand-50/60 p-5 sm:p-6">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-brand-100">
-              <Icon name="ship" className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-[14px] font-semibold text-slate-900">从阶段作品，到真正的综合项目交付</p>
-              <p className="mt-1 text-[12.5px] text-slate-500">
-                四个阶段项目帮你逐步建立能力，毕业项目则要求你把这些能力重新组合成一个可以部署、验证和展示的完整 AI 产品。
-              </p>
-            </div>
-          </div>
-          <Link to="/pricing" className="btn btn-md btn-primary">
-            查看学习方案
-          </Link>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p className="text-[12px] leading-5 text-slate-600">项目版用户可持续获得 Project Lab 后续项目。未来项目方向仅作展示，具体新增内容与开放时间以上线页面为准。</p><Link to="/pricing" className="btn btn-md btn-primary">查看项目版</Link></div>
         </div>
       </section>
     </>

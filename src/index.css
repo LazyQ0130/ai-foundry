@@ -67,7 +67,7 @@
   .btn {
     @apply inline-flex select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-lg
       text-sm font-medium transition focus:outline-none focus-visible:ring-2
-      focus-visible:ring-brand-500/40 focus-visible:ring-offset-2;
+      focus-visible:ring-brand-500/40 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-sm {
     @apply h-9 px-3.5 text-[13px];
@@ -79,10 +79,10 @@
     @apply h-11 rounded-[10px] px-5 text-[15px];
   }
   .btn-primary {
-    @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800;
+    @apply bg-brand-600 text-white shadow-sm enabled:hover:bg-brand-700 enabled:active:bg-brand-800;
   }
   .btn-outline {
-    @apply border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50;
+    @apply border border-slate-200 bg-white text-slate-700 enabled:hover:border-slate-300 enabled:hover:bg-slate-50;
   }
   .btn-outline-brand {
     @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-brand-50;

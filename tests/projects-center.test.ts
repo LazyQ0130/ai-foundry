@@ -20,7 +20,7 @@ test('projects center keeps four stage project links and course progress', () =>
 })
 
 test('Capstone uses shared showcase data and only links to its public overview', () => {
-  const capstoneSection = page.split('aria-labelledby="capstone-projects-heading"')[1].split('aria-labelledby="future-projects-heading"')[0]
+  const capstoneSection = page.split('aria-labelledby="project-lab-heading"')[1]
   assert.match(page, /\{capstoneShowcase\.project\}/)
   assert.match(page, /\{capstoneShowcase\.projectEn\}/)
   assert.match(page, /\{capstoneShowcase\.description\}/)
@@ -37,7 +37,7 @@ test('Capstone uses shared showcase data and only links to its public overview',
 })
 
 test('future directions remain presentation only and match Project Lab pricing', () => {
-  const futureSection = page.split('aria-labelledby="future-projects-heading"')[1].split('<section className="shell pb-12')[0]
+  const futureSection = page.split('更多综合项目实战将持续更新')[1]
   assert.match(page, /更多综合项目实战将持续更新/)
   assert.match(page, /具体新增内容与开放时间以上线页面为准/)
   assert.match(page, /未来方向 · 尚非已上线项目/)

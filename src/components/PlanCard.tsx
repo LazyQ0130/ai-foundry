@@ -49,7 +49,7 @@ export function FeaturedPlanCard({ plan, size = 'md', onBuy }: { plan: Plan; siz
         ) : null}
       </div>
 
-      <ul className="mt-4 flex-1 space-y-2">
+      <ul className={`mt-4 ${plan.id.startsWith('stage-') ? 'flex-1 space-y-2' : 'grid content-start gap-x-4 gap-y-2 sm:grid-cols-2'}`}>
         {plan.features.map((f) => (
           <li key={f.text} className="flex items-start gap-2">
             <Check
@@ -87,7 +87,7 @@ export function FullPlanCard({ plan, onBuy }: { plan: Plan; onBuy?: (plan: Plan)
         <Price plan={plan} size="lg" />
       </div>
       <p className="mt-2 text-[12px] text-slate-500">{plan.meta}</p>
-      <ul className="mt-4 flex-1 space-y-2">
+      <ul className={`mt-4 ${plan.id.startsWith('stage-') ? 'flex-1 space-y-2' : 'grid content-start gap-x-4 gap-y-2 sm:grid-cols-2'}`}>
         {plan.features.map((f) => (
           <li key={f.text} className="flex items-start gap-2">
             <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={2.8} />

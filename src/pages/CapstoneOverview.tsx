@@ -23,7 +23,7 @@ export default function CapstoneOverview() {
   return (
     <div>
       <section className="border-b border-slate-200 bg-slate-50/70">
-        <div className="shell py-9 sm:py-12">
+        <div className="shell py-9 sm:py-11">
           <nav aria-label="面包屑导航" className="text-[12px] text-slate-500"><Link to="/path" className="hover:text-brand-700">学习路径</Link><span className="px-2" aria-hidden="true">/</span><span className="text-slate-700">毕业项目</span></nav>
           <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
@@ -45,7 +45,7 @@ export default function CapstoneOverview() {
         </div>
       </section>
 
-      <section className="shell py-12 sm:py-14">
+      <section className="shell py-9 sm:py-10">
         <SectionHeading title="这不是新的知识阶段" sub="前四阶段负责学习能力，Capstone 负责证明能力。" />
         <div className="mt-7 grid gap-2 sm:grid-cols-5">
           {stages.map((stage, index) => (
@@ -66,7 +66,7 @@ export default function CapstoneOverview() {
       </section>
 
       <section className="border-y border-slate-200 bg-slate-50/60">
-        <div className="shell py-12 sm:py-14">
+        <div className="shell py-9 sm:py-10">
           <SectionHeading title="最终会做出什么" sub={capstoneShowcase.project} />
           <div className="mt-7 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
             {capstoneShowcase.flow.map((step, index) => (
@@ -79,43 +79,43 @@ export default function CapstoneOverview() {
         </div>
       </section>
 
-      <section className="shell py-12 sm:py-14">
+      <section className="shell py-9 sm:py-10">
         <SectionHeading title="综合交付能力" sub="把前四阶段已经学过的能力，放进一个完整产品里一起验证。" />
-        <div className="mt-7 grid gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {capstoneShowcase.abilities.map((ability) => {
             const AbilityIcon = abilityIcons[ability.title as keyof typeof abilityIcons]
-            return <div key={ability.title} className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+            return <div key={ability.title} className="rounded-lg border border-slate-200 bg-white p-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-slate-100 text-slate-700"><AbilityIcon className="h-4 w-4" /></span>
-              <h2 className="mt-3 text-[14px] font-semibold text-slate-900">{ability.title}</h2>
-              <p className="mt-1.5 text-[13px] leading-6 text-slate-600">{ability.desc}</p>
+              <h2 className="mt-2 text-[14px] font-semibold text-slate-900">{ability.title}</h2>
+              <p className="mt-1 text-[13px] leading-5 text-slate-600">{ability.desc}</p>
             </div>
           })}
         </div>
       </section>
 
       <section className="border-y border-slate-200 bg-slate-50/60">
-        <div className="shell py-12 sm:py-14">
+        <div className="shell py-9 sm:py-10">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading title="八课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
             <span className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-slate-500"><LockKeyhole className="h-3.5 w-3.5" />全部暂未解锁</span>
           </div>
           {notice && <p className="mt-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-[12.5px] text-slate-600" role="status" aria-live="polite">毕业项目实战暂未解锁</p>}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {capstoneShowcase.lessons.map((lesson) => (
-              <button key={lesson.code} type="button" onClick={() => setNotice(true)} aria-label={`${lesson.code} ${lesson.title}，${capstoneShowcase.status}`} className="group flex min-h-[132px] w-full flex-col rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-slate-300 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 sm:p-5">
+              <button key={lesson.code} type="button" onClick={() => setNotice(true)} aria-label={`${lesson.code} ${lesson.title}，${capstoneShowcase.status}`} className="group flex min-h-[112px] w-full flex-col rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-slate-300 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
                 <span className="flex w-full items-center justify-between gap-3">
                   <span className="text-[11px] font-bold text-slate-500">{lesson.code}</span>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600"><LockKeyhole className="h-3 w-3" />{capstoneShowcase.status}</span>
                 </span>
-                <span className="mt-3 text-[14px] font-semibold leading-5 text-slate-900">{lesson.title}</span>
-                <span className="mt-1.5 text-[12.5px] leading-5 text-slate-500">{lesson.desc}</span>
+                <span className="mt-2 text-[14px] font-semibold leading-5 text-slate-900">{lesson.title}</span>
+                <span className="mt-1 text-[12.5px] leading-5 text-slate-500">{lesson.desc}</span>
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="shell grid gap-10 py-12 sm:py-14 lg:grid-cols-2">
+      <section className="shell grid gap-8 py-9 sm:py-10 lg:grid-cols-2">
         <div>
           <SectionHeading title="核心技术" sub="按产品需要组合现有能力，不额外堆叠技术关键词。" />
           <div className="mt-5 flex flex-wrap gap-2">{capstoneShowcase.technologies.map((technology) => <span key={technology} className="rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700">{technology}</span>)}</div>

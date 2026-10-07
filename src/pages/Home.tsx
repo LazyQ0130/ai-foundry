@@ -223,7 +223,7 @@ function StagePreviewCard({ stage }: { stage: Stage }) {
 
 function PathSection() {
   return (
-    <section className="shell pb-16">
+    <section className="shell pb-12">
       <SectionHeading
         title="系统化的学习路径"
         sub="4 个学习阶段、4 个阶段作品；项目版另含 Project Lab 毕业项目实战。"
@@ -248,7 +248,7 @@ function PathSection() {
 
 function WhySection() {
   return (
-    <section id="why" className="shell scroll-mt-24 pb-16">
+    <section id="why" className="shell scroll-mt-24 pb-12">
       <SectionHeading
         title="为什么选择 AIFoundry"
         sub="我们专注于帮助开发者在 AI 时代，真正掌握可以落地的开发能力。"
@@ -286,7 +286,7 @@ function PlansSection() {
   const lessonCount = curriculumFormalLessonCount()
 
   return (
-    <section className="shell pb-16">
+    <section className="shell pb-12">
       <div className="card relative overflow-hidden">
         <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-brand-50/70" />
         <div className="relative flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
