@@ -27,7 +27,9 @@ function copyTree(source, target) {
 }
 
 copyTree(path.join(root, 'starter/capstone'), output)
-copyTree(path.join(root, 'course-content/internal/capstone/c1'), output)
+const c1 = path.join(root, 'course-content/internal/capstone/c1')
+copyTree(path.join(c1, 'docs'), path.join(output, 'docs'))
+copyFileSync(path.join(c1, 'README.md'), path.join(output, 'README.md'))
 if (stage === 'c2') {
   const source = path.join(root, 'course-content/internal/capstone/c2')
   copyTree(path.join(source, 'overlay'), output)

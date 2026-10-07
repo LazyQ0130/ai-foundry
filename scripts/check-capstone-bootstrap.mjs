@@ -8,6 +8,7 @@ const allowed = new Set([
   '.env.example', '.gitignore', 'README.md', 'package.json', 'package-lock.json',
   'tsconfig.json', 'next-env.d.ts', 'next.config.ts', 'eslint.config.mjs', 'postcss.config.mjs',
   'app/layout.tsx', 'app/page.tsx', 'app/styles.css', 'test/bootstrap.test.mjs',
+  'docs/templates/product-brief.md', 'docs/templates/user-flow.md',
 ])
 
 function visit(dir) {
@@ -23,4 +24,4 @@ function visit(dir) {
   }
 }
 visit(root)
-console.log('Student ownership audit passed: bootstrap contains engineering shell only')
+console.log('Student ownership audit passed: bootstrap contains engineering shell and blank templates only')
