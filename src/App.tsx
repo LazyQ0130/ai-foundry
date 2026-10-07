@@ -2,6 +2,7 @@ import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Admin from './pages/Admin'
 import CourseCatalog from './pages/CourseCatalog'
+import CourseGuide from './pages/CourseGuide'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import LearningPath from './pages/LearningPath'
@@ -48,6 +49,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="guide" element={<CourseGuide />} />
         <Route path="capstone" element={<CapstoneOverview />} />
         <Route path="faq" element={<FaqPage />} />
         <Route path="privacy" element={<PolicyPage kind="privacy" />} />

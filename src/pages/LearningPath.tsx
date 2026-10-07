@@ -51,6 +51,7 @@ function Hero() {
               查看课程目录
             </Link>
           </div>
+          <Link to="/guide" className="mt-5 block max-w-xl rounded-xl border border-brand-100 bg-white/90 px-4 py-3 text-[13px] text-slate-600 shadow-sm hover:border-brand-300"><span className="font-semibold text-brand-700">开始前推荐 · 课程导读</span><br />第一次来到 AIFoundry？先用 25～35 分钟看懂 AI 时代、核心概念和整条学习路线。<span className="mt-1 block font-medium text-brand-700">阅读课程导读 →</span></Link>
         </div>
 
         <div className="card p-5">

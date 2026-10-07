@@ -44,6 +44,7 @@ export default function CourseCatalog() {
       </section>
 
       <section className="shell space-y-8 pb-8 pt-12">
+        <Link to="/guide" className="flex items-center justify-between gap-3 rounded-xl border border-brand-100 bg-brand-50/50 px-4 py-3 hover:border-brand-300"><span className="text-[13px] text-slate-600"><span className="mb-0.5 block text-xs font-semibold text-brand-600">开始之前</span><strong className="text-slate-900">课程导读 · 免费公开</strong>　先看懂概念和学习路线</span><span className="shrink-0 text-[13px] font-medium text-brand-700">阅读导读 →</span></Link>
         {stages.map((s) => {
           const a = accentClass[s.accent]
           const locked = s.status === 'locked'

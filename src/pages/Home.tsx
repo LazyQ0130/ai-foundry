@@ -58,6 +58,7 @@ function Hero() {
               开始学习
             </Link>
           </div>
+          <Link to="/guide" className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-brand-700 hover:underline">第一次来？先看课程导读 <ArrowRight className="h-3.5 w-3.5" /></Link>
         </div>
 
         <div className="relative">

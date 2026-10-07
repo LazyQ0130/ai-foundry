@@ -22,6 +22,7 @@ function AccountLinks() {
 const navLinks = [
   { to: '/dashboard', label: '我的学习', match: (p: string) => p.startsWith('/dashboard') },
   { to: '/path', label: '学习路径', match: (p: string) => p.startsWith('/path') },
+  { to: '/guide', label: '课程导读', match: (p: string) => p.startsWith('/guide') },
   {
     to: '/courses',
     label: '课程',
@@ -46,7 +47,7 @@ function Navbar() {
           <Link to="/" className="flex items-center gap-2 transition hover:opacity-90">
             <BrandLockup />
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             {navLinks.map((l) => {
               const active = l.match(pathname)
               return (
@@ -67,7 +68,7 @@ function Navbar() {
           </nav>
         </div>
 
-        <div className="hidden items-center gap-2.5 md:flex">
+        <div className="hidden items-center gap-2.5 lg:flex">
           <AccountLinks />
         </div>
 
@@ -75,14 +76,14 @@ function Navbar() {
           type="button"
           aria-label="打开菜单"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 md:hidden"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 lg:hidden"
         >
           {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
       </div>
 
       {open ? (
-        <div className="border-t border-slate-200/70 bg-white md:hidden">
+        <div className="border-t border-slate-200/70 bg-white lg:hidden">
           <div className="shell flex flex-col py-3">
             {navLinks.map((l) => (
               <NavLink
@@ -113,6 +114,7 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
     title: '课程',
     links: [
       { label: '学习路径', to: '/path' },
+      { label: '课程导读', to: '/guide' },
       { label: '课程目录', to: '/courses' },
       { label: '项目实战', to: '/projects' },
       { label: 'Capstone 毕业项目', to: '/capstone' },
