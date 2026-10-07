@@ -12,12 +12,16 @@ export const hashPassword = (password: string) => argon2.hash(password, { type: 
 export const dummyHash = hashPassword('unusable-random-comparison-password')
 export const maskPhone = (phone: string) => `${phone.slice(0, 3)}****${phone.slice(-4)}`
 export async function publicUser(user: User) {
-  const active = await db.entitlement.findMany({ where: { userId: user.id, status: 'ACTIVE' }, include: { stage: true } })
+  const [active, products] = await db.$transaction([
+    db.entitlement.findMany({ where: { userId: user.id, status: 'ACTIVE' }, include: { stage: true } }),
+    db.productEntitlement.findMany({ where: { userId: user.id, status: 'ACTIVE' }, select: { productKey: true } }),
+  ])
   return {
     id: user.id, phoneMasked: maskPhone(user.phone), phoneVerified: user.phoneVerified,
     nickname: user.nickname, avatarUrl: user.avatarUrl, role: user.role,
     email: user.email, emailVerifiedAt: user.emailVerifiedAt,
     entitlements: active.map((e) => e.stage.slug),
+    productEntitlements: products.map((e) => e.productKey),
     createdAt: user.createdAt, lastLoginAt: user.lastLoginAt,
   }
 }

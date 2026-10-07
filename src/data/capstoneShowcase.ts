@@ -6,7 +6,7 @@ export const capstoneShowcase = {
   description: '综合运用前四阶段能力，从产品拆解、架构设计到工程实现，完成一个融合 RAG、Citation、Agent、MCP、Human-in-the-loop、Persistence 与 Eval 的完整 AI 研究工作台。',
   exitState: '把学过的 AI Coding、全栈、RAG 与 Agent 工程能力，真正组装成一个可以部署、验证、展示并写进简历的完整 AI 产品。',
   status: '暂未解锁',
-  badge: '全套课程专属',
+  badge: 'Project Lab 专属',
   abilities: [
     { title: '产品架构', desc: '从需求、领域模型到完整 AI 产品架构。' },
     { title: '研究 Agent', desc: '把 RAG、Tool、MCP 与 Research Workflow 组合进真实产品。' },

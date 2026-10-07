@@ -53,6 +53,9 @@ model User {
   entitlements   Entitlement[] @relation("Owner")
   grants         Entitlement[] @relation("Grantor")
   revocations    Entitlement[] @relation("Revoker")
+  productEntitlements ProductEntitlement[] @relation("ProductOwner")
+  productGrants ProductEntitlement[] @relation("ProductGrantor")
+  productRevocations ProductEntitlement[] @relation("ProductRevoker")
   progress       LessonProgress[]
   checks         LessonCheck[]
   adminActions   AdminAuditLog[] @relation("Admin")
@@ -144,6 +147,24 @@ model Entitlement {
   grantedBy       User @relation("Grantor", fields: [grantedByUserId], references: [id])
   revokedBy       User? @relation("Revoker", fields: [revokedByUserId], references: [id])
   @@unique([userId, stageId])
+}
+
+model ProductEntitlement {
+  id              String @id @default(cuid())
+  userId          String
+  productKey      String
+  status          EntitlementStatus @default(ACTIVE)
+  grantedAt       DateTime @default(now())
+  revokedAt       DateTime?
+  grantedByUserId String
+  revokedByUserId String?
+  source          EntitlementSource
+  note            String @default("")
+  user            User @relation("ProductOwner", fields: [userId], references: [id])
+  grantedBy       User @relation("ProductGrantor", fields: [grantedByUserId], references: [id])
+  revokedBy       User? @relation("ProductRevoker", fields: [revokedByUserId], references: [id])
+  @@unique([userId, productKey])
+  @@index([userId, status])
 }
 
 model LessonProgress {

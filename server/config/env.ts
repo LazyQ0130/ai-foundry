@@ -12,6 +12,7 @@ const schema = z.object({
   WECHAT_QR_URL: z.string().refine((value) => !value || /^\/(?!\/)/.test(value) || /^https:\/\//.test(value), 'Use a same-origin path or HTTPS URL').default('/wechat-contact.jpg'),
   WECHAT_CONTACT: z.string().default(''),
   ALL_ACCESS_PRICE: z.coerce.number().int().min(0).max(1000000).default(599),
+  ALL_ACCESS_PROJECTS_PRICE: z.coerce.number().int().min(0).max(1000000).default(699),
 })
 const result = schema.safeParse(process.env)
 if (!result.success) throw new Error(`Invalid environment fields: ${result.error.issues.map((e) => e.path.join('.')).join(', ')}`)

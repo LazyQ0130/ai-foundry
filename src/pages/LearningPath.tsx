@@ -40,7 +40,7 @@ function Hero() {
           </h1>
           <p className="mt-2 text-[16px] font-semibold text-slate-800">一条结构化的 AI 原生开发者成长路径</p>
           <p className="mt-3 max-w-xl text-[13.5px] leading-6 text-slate-500">
-            从第 0 课准备开始，完成 4 个学习阶段和 29 节正式课程，再通过 Capstone 毕业项目综合交付。
+            从第 0 课准备开始，完成 4 个学习阶段和 29 节正式课程；项目版可继续加入 Project Lab 毕业项目实战。
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to={lastLessonPath} className="btn btn-lg btn-primary">
@@ -219,7 +219,7 @@ function Overview() {
     <section className="shell pb-16">
       <SectionHeading
         title="学习路径总览"
-        sub="4 个学习阶段循序渐进，Capstone 毕业项目负责综合交付与能力验证。"
+        sub="4 个学习阶段循序渐进；Project Lab 的 Capstone 毕业项目负责综合交付与能力验证。"
       />
       <div className="mt-7">
         <Timeline />

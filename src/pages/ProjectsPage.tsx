@@ -27,6 +27,7 @@ export default function ProjectsPage() {
           <p className="mt-3 max-w-3xl text-[13.5px] leading-6 text-slate-600">
             从四个阶段项目，到持续更新的毕业项目实战。先在项目中建立能力，再把这些能力组合成可以交付的 AI 产品。
           </p>
+          <p className="mt-2 max-w-3xl text-[12px] leading-5 text-slate-600">阶段项目属于对应课程阶段；Project Lab 与 Capstone 属于项目版权益。</p>
           <p className="mt-5 text-[11px] font-semibold tracking-wide text-brand-700">01 阶段项目 <span className="mx-2 text-slate-300">/</span> 02 毕业项目实战 <span className="mx-2 text-slate-300">/</span> 03 持续更新</p>
         </div>
       </section>
@@ -150,7 +151,7 @@ export default function ProjectsPage() {
             <p className="text-[13px] font-semibold text-brand-700">持续更新 <span className="ml-2 text-[11px] font-medium tracking-widest text-slate-500">FUTURE PROJECTS</span></p>
             <span className="text-[11px] text-slate-400">未来方向 · 尚非已上线项目</span>
           </div>
-          <p className="mt-4 text-[15px] font-semibold leading-6 text-slate-800">全套课程的综合项目实战会持续扩充。</p>
+          <p className="mt-4 text-[15px] font-semibold leading-6 text-slate-800">Project Lab 的综合项目实战会持续扩充。</p>
           <div className="mt-4 flex flex-wrap gap-2" aria-label="未来项目方向">
             {futureDirections.map((direction) => <span key={direction} className="rounded-full border border-brand-100 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600">{direction}</span>)}
           </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Boxes, Check, FileCheck2, GraduationCap, LockKeyhole, ShieldCheck } from 'lucide-react'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { stages } from '../data/courses.js'
+import { useOptionalAuth } from '../auth/AuthProvider.js'
 
 const abilityIcons = {
   '产品架构': Boxes,
@@ -17,6 +18,7 @@ function SectionHeading({ title, sub }: { title: string; sub: string }) {
 
 export default function CapstoneOverview() {
   const [notice, setNotice] = useState(false)
+  const hasProjectLab = useOptionalAuth()?.user?.productEntitlements.includes('project-lab') ?? false
 
   return (
     <div>
@@ -36,6 +38,8 @@ export default function CapstoneOverview() {
             </div>
           </div>
           <p className="mt-5 max-w-3xl text-[14px] leading-7 text-slate-600">{capstoneShowcase.description}</p>
+          <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? '已拥有 Project Lab 权益；Capstone 当前暂未开放。' : 'Project Lab 专属；开通项目版后可在项目上线时访问。'}</p>
+          {!hasProjectLab && <Link to="/pricing" className="mt-2 inline-block text-[13px] font-medium text-brand-700">查看项目版 <ArrowRight className="inline h-4 w-4" /></Link>}
           <p className="mt-5 max-w-3xl border-l-2 border-brand-500 pl-4 text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">最终目标：</span>{capstoneShowcase.exitState}</p>
           <Link to="/path" className="link-more mt-6">返回完整学习路径 <ArrowRight className="h-4 w-4" /></Link>
         </div>

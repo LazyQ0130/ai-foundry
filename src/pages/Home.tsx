@@ -226,7 +226,7 @@ function PathSection() {
     <section className="shell pb-16">
       <SectionHeading
         title="系统化的学习路径"
-        sub="4 个学习阶段、4 个阶段作品，之后通过 Capstone 毕业项目完成综合交付。"
+        sub="4 个学习阶段、4 个阶段作品；项目版另含 Project Lab 毕业项目实战。"
         right={
           <Link to="/path" className="link-more">
             查看完整学习路径
@@ -278,8 +278,9 @@ function PlansSection() {
   if (loading) return <p role="status" className="shell py-12">正在加载课程价格…</p>
   if (error) return <div role="alert" className="shell py-12">{error}<button onClick={()=>void refresh()} className="btn btn-outline ml-3">重试</button></div>
 
-  const stagePlans = plans.filter((p) => p.id !== 'all-access')
+  const stagePlans = plans.filter((p) => p.id.startsWith('stage-'))
   const allPlan = plans.find((p) => p.id === 'all-access')
+  const projectPlan = plans.find((p) => p.id === 'all-access-projects')
   const minPrice = stagePlans.length ? Math.min(...stagePlans.map((p) => p.price)) : null
   const stageCount = catalogueStages.length
   const lessonCount = curriculumFormalLessonCount()
@@ -304,7 +305,7 @@ function PlansSection() {
                 {minPrice != null && allPlan ? ' · ' : null}
                 {allPlan && (
                   <>
-                    全套 <span className="text-[15px] font-bold text-brand-600">¥{allPlan.price}</span>
+                    全阶段课程版 <span className="text-[15px] font-bold text-brand-600">¥{allPlan.price}</span>
                     {allPlan.originPrice ? (
                       <span className="ml-1 text-[12.5px] text-slate-400 line-through">
                         ¥{allPlan.originPrice}
@@ -312,6 +313,7 @@ function PlansSection() {
                     ) : null}
                   </>
                 )}
+                {projectPlan && <> · 项目版 <span className="text-[15px] font-bold text-brand-600">¥{projectPlan.price}</span></>}
                 {stageCount > 0 && lessonCount > 0
                   ? `（含 ${stageCount} 个阶段、${lessonCount} 节课）`
                   : null}

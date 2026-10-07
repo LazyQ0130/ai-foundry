@@ -40,7 +40,7 @@ export function CapstoneHomeTeaser() {
       <span className="min-w-0">
         <span className="mr-2 text-[11px] font-semibold text-slate-500">毕业项目</span>
         <span className="text-[13.5px] font-semibold text-slate-800">{capstoneShowcase.project}</span>
-        <span className="mt-1 block text-[12px] leading-5 text-slate-500">{capstoneShowcase.projectEn} · 4 个学习阶段后的毕业项目</span>
+        <span className="mt-1 block text-[12px] leading-5 text-slate-500">{capstoneShowcase.projectEn} · Project Lab 专属毕业项目</span>
       </span>
       <span className="inline-flex shrink-0 items-center gap-1.5 text-[12.5px] font-semibold text-slate-700">{capstoneShowcase.status} <ArrowRight className="h-4 w-4" /></span>
     </Link>

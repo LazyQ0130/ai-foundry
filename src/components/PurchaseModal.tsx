@@ -4,6 +4,7 @@ import { useAuth, type User } from '../auth/AuthProvider'
 import { api, errorMessage } from '../lib/api'
 import { useCatalogue } from '../data/catalog'
 import type { Plan } from '../data/site'
+import { isPlanOpen } from '../data/planAccess'
 import { Modal } from './AdminControls'
 
 /**
@@ -21,8 +22,8 @@ export default function PurchaseModal({ plan, onClose }: { plan?: Plan; onClose:
     setChecking(true); setCheckError('')
     try {
       const current = await api<User>('/me'); applyUser(current)
-      const opened = plan?.id === 'all-access' ? ['stage-1', 'stage-2', 'stage-3', 'stage-4'].every(id => current.entitlements.includes(id)) : current.entitlements.includes(plan?.id ?? '')
-      setMessage(opened ? '课程已开通！可进入个人中心，点击对应阶段继续学习。' : '当前尚未开通。若已付款，请通过微信发送注册手机号、购买方案和付款凭据，由管理员核实。')
+      const opened = isPlanOpen(plan?.id ?? '', current.entitlements, current.productEntitlements)
+      setMessage(opened ? '方案已开通！可在个人中心查看课程及项目实战权益。' : plan?.id === 'all-access-projects' ? '当前尚未完整开通项目版。若已付款，请通过微信发送注册手机号、购买方案和付款凭据，由管理员核实。' : '当前尚未开通。若已付款，请通过微信发送注册手机号、购买方案和付款凭据，由管理员核实。')
     } catch (e) { setCheckError(errorMessage(e)) } finally { setChecking(false) }
   }
   const retryContact = () => { setQrFailed(false); void refresh() }
@@ -30,7 +31,7 @@ export default function PurchaseModal({ plan, onClose }: { plan?: Plan; onClose:
   return (
     <Modal title={plan ? `购买 ${plan.tag} · ${plan.title}` : '购买与账号帮助'} onClose={onClose}>
       {plan ? <p className="text-xl font-bold text-brand-600">¥ {plan.price}</p> : null}
-      {plan && <div className="mt-3 rounded-xl bg-brand-50 p-3 text-sm leading-6 text-slate-700">图文讲解 · 永久开放阅读。首次开通后 72 小时内可申请退款，具体处理方式以《用户协议》为准。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。<Link to="/terms" className="ml-1 text-brand-600">查看退款说明</Link></div>}
+      {plan && <div className="mt-3 rounded-xl bg-brand-50 p-3 text-sm leading-6 text-slate-700">所购阶段课程永久开放阅读。{plan.id === 'all-access-projects' ? '项目版另含 Project Lab 权益；后续新增综合项目实战持续开放，具体内容与更新节奏以上线页面为准。' : ''}首次开通后 72 小时内可申请退款，具体处理方式以《用户协议》为准。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。<Link to="/terms" className="ml-1 text-brand-600">查看退款说明</Link></div>}
 
       <ol className="my-5 list-inside list-decimal space-y-2 text-sm leading-6 text-slate-600">
         {plan ? (

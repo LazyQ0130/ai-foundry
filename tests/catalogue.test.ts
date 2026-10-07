@@ -17,6 +17,7 @@ test('published catalogue, operator prices, all-access pricing, and content allo
     assert.equal(catalogue.stages.find((s: { slug: string }) => s.slug === 'stage-4').price, 321)
     assert.equal(catalogue.stages.find((s: { slug: string }) => s.slug === 'stage-4').isPurchasable, false)
     assert.equal(catalogue.purchase.allAccessPrice, 599)
+    assert.equal(catalogue.purchase.allAccessProjectsPrice, 699)
     assert.doesNotMatch(JSON.stringify(catalogue), /"prompt":|"content":|passwordHash|tokenHash|请使用 Python 的 FastAPI 框架/)
     await patch({ isPublished: false }).expect(200)
     catalogue = (await request(app).get('/api/stages').expect(200)).body.data

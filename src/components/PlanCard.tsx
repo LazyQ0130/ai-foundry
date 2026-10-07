@@ -101,5 +101,5 @@ export function FullPlanCard({ plan, onBuy }: { plan: Plan; onBuy?: (plan: Plan)
 }
 
 function PurchaseButton({ plan, onBuy, featured=false }: {plan: Plan; onBuy?: (plan: Plan)=>void; featured?: boolean}) {
-return onBuy ? <button disabled={!plan.isPurchasable} onClick={()=>onBuy(plan)} className={`btn btn-md mt-5 w-full ${featured ? 'btn-primary' : 'btn-outline'}`}>{plan.isPurchasable ? '立即购买' : '暂未开放购买'}</button> : <Link to="/pricing" className="btn btn-md btn-outline mt-5 w-full">查看购买方案</Link>
+return onBuy ? <button disabled={!plan.isPurchasable} onClick={()=>onBuy(plan)} className={`btn btn-md mt-5 w-full ${featured ? 'btn-primary' : 'btn-outline'}`}>{plan.isPurchasable ? plan.cta : '暂未开放购买'}</button> : <Link to="/pricing" className="btn btn-md btn-outline mt-5 w-full">查看购买方案</Link>
 }

@@ -8,10 +8,10 @@ import { ApiError } from '../../middleware/error.js'
 import { totalLessons } from '../../../src/data/courses.js'
 
 export const usersRoutes = Router()
-const include = { entitlements: { where: { status: 'ACTIVE' as const }, include: { stage: true } }, progress: true } satisfies Prisma.UserInclude
+const include = { entitlements: { where: { status: 'ACTIVE' as const }, include: { stage: true } }, productEntitlements: { where: { status: 'ACTIVE' as const }, select: { productKey: true } }, progress: true } satisfies Prisma.UserInclude
 type Row = Prisma.UserGetPayload<{ include: typeof include }>
 function summary(user: Row) {
-  return { id: user.id, name: user.nickname, phoneMasked: maskPhone(user.phone), createdAt: user.createdAt, lastLogin: user.lastLoginAt, entitlements: user.entitlements.map((e) => e.stage.order), progress: Math.round(user.progress.filter((p) => p.status === 'COMPLETED').length / totalLessons * 100), disabled: user.status === 'DISABLED', role: user.role }
+  return { id: user.id, name: user.nickname, phoneMasked: maskPhone(user.phone), createdAt: user.createdAt, lastLogin: user.lastLoginAt, entitlements: user.entitlements.map((e) => e.stage.order), productEntitlements: user.productEntitlements.map((e) => e.productKey), progress: Math.round(user.progress.filter((p) => p.status === 'COMPLETED').length / totalLessons * 100), disabled: user.status === 'DISABLED', role: user.role }
 }
 usersRoutes.get('/', async (req, res) => {
   const input = pageSchema.extend({ status: z.enum(['ACTIVE', 'DISABLED']).optional(), stage: slugSchema.optional(), access: z.enum(['enrolled', 'unenrolled']).optional(), sort: z.enum(['asc', 'desc']).default('desc') }).parse(req.query)

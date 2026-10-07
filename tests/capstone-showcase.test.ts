@@ -18,7 +18,7 @@ test('Capstone has its own locked showcase data and does not enter course statis
   assert.equal(stages.length, 4)
   assert.equal(curriculumFormalLessonCount(), 29)
   assert.equal(capstoneShowcase.status, '暂未解锁')
-  assert.equal(capstoneShowcase.badge, '全套课程专属')
+  assert.equal(capstoneShowcase.badge, 'Project Lab 专属')
   assert.equal(capstoneShowcase.project, 'AI 研究工作台')
   assert.equal(capstoneShowcase.projectEn, 'AI Research Workspace')
   assert.equal(capstoneShowcase.subtitle, 'AI 研究 Agent 毕业项目实战')

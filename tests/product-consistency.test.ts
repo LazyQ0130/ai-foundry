@@ -46,23 +46,24 @@ test('mockups reflect each project and mobile comparison renders current prices 
     assert.ok(render(createElement(HeroAppMockup,{stage})).includes(stage.project.title))
     assert.ok(render(createElement(StageArchMockup,{stage})).includes(stage.project.title))
   }
-  const plans=planTemplates.filter(p=>p.id!=='all-access').map(p=>({...p,price:123}))
+  const plans=planTemplates.filter(p=>p.id.startsWith('stage-')).map(p=>({...p,price:123}))
   const all={...planTemplates.find(p=>p.id==='all-access')!,price:400}
-  const html=render(createElement(MobilePlanComparison,{allPlan:all,stagePlans:plans,onBuy:()=>{}}))
+  const project={...planTemplates.find(p=>p.id==='all-access-projects')!,price:500}
+  const html=render(createElement(MobilePlanComparison,{allAccessPlan:all,projectPlan:project,stagePlans:plans,onBuy:()=>{}}))
   assert.match(html,/400/);assert.match(html,/492/);assert.match(html,/92/)
-  assert.match(html,/全套专属 Capstone/);assert.match(html,/暂未解锁/);assert.match(html,/后续新增综合实战/)
-  assert.match(html,/AI 研究工作台/);assert.match(html,/AI Research Workspace/)
-  assert.ok(html.indexOf('完整学习路径') < html.indexOf('也可以单独购买某一个阶段'))
-  assert.match(html,/Stage 1 → 2 → 3 → 4/)
+  assert.match(html,/Project Lab/);assert.match(html,/Capstone/);assert.match(html,/暂未开放/)
+  assert.ok(html.indexOf('全阶段课程版') < html.indexOf('项目版'))
   assert.match(render(createElement(FaqPermalink,{id:'test'})),/复制问题链接/)
 })
 test('pricing and policy copy preserves catalogue pricing, purchase boundaries, and distinct policy versions',async()=>{
   const all=planTemplates.find(plan=>plan.id==='all-access')!
-  assert.match(all.desc,/完整学习路径/)
-  assert.ok(all.features.findIndex(feature=>feature.text.includes('Capstone')) < all.features.findIndex(feature=>feature.text.includes('配套源码')))
+  assert.match(all.desc,/四阶段完整课程/)
+  assert.doesNotMatch(JSON.stringify(all),/Capstone|Project Lab|后续综合项目/)
+  const project=planTemplates.find(plan=>plan.id==='all-access-projects')!
+  assert.match(JSON.stringify(project),/Capstone|Project Lab|后续新增综合项目/)
   const pricing=await readFile('src/pages/Pricing.tsx','utf8')
   assert.match(pricing,/usePlans\(\)/)
-  assert.match(pricing,/stagePlans\.reduce\(\(sum, p\) => sum \+ p\.price, 0\) - allPlan\.price/)
+  assert.match(pricing,/projectPlan\.price - allPlan\.price/)
   const terms=render(createElement(PolicyPage,{kind:'terms'}))
   const privacy=render(createElement(PolicyPage,{kind:'privacy'}))
   assert.match(terms,/2026-10-04\.1/);assert.match(terms,/首次开通后 72 小时内，可通过管理员微信提出退款申请/)

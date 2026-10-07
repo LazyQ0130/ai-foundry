@@ -131,24 +131,39 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
   },
   {
     id: 'all-access',
-    tag: '全套课程',
-    title: '从入门到进阶',
-    desc: '从 AI Coding、全栈、RAG 到 Agent 工程，一次解锁完整学习路径，并额外获得毕业项目实战。',
-    badge: '最受欢迎',
-    accent: 'brand',
-    meta: '包含 29 节正式课 · 4 个阶段项目',
+    tag: '全阶段课程版',
+    title: 'Stage 1–4 完整学习路径',
+    desc: '从 AI Coding、全栈、RAG 到 Agent 工程，一次解锁四阶段完整课程。',
+    badge: '完整课程',
+    accent: 'blue',
+    meta: '29 节正式课 · 4 个阶段项目',
     features: [
-      { text: '完整解锁 Stage 1–4 学习路径', highlight: true },
-      { text: '四阶段项目自然承接，减少知识断层', highlight: true },
-      { text: '全套专属 Capstone 毕业项目实战（暂未解锁）', highlight: true },
-      { text: '后续新增综合项目实战，具体内容以上线页面为准' },
+      { text: '完整解锁 Stage 1–4', highlight: true },
       { text: '29 节正式课程永久开放阅读' },
-      { text: '第 0 课开始前准备 + 4 次阶段自检' },
+      { text: '4 个阶段项目连续演进' },
+      { text: '4 次阶段自检' },
       { text: '配套源码与学习资料' },
       { text: '课程内排查建议' },
-      { text: '跨设备学习进度记录' },
+      { text: '学习进度记录' },
     ],
-    cta: '立即购买',
+    cta: '选择课程版',
+  },
+  {
+    id: 'all-access-projects',
+    tag: '项目版',
+    title: '完整课程 + Project Lab',
+    desc: '完整解锁 Stage 1–4，并加入 Project Lab：毕业项目实战和后续持续新增的综合项目。',
+    badge: '推荐',
+    accent: 'brand',
+    meta: '29 节正式课 · 4 个阶段项目 · Project Lab',
+    features: [
+      { text: '包含全阶段课程版全部权益', highlight: true },
+      { text: 'Project Lab 专属访问权', highlight: true },
+      { text: 'Capstone 毕业项目实战（暂未开放）' },
+      { text: 'Project Lab 后续新增综合项目实战持续开放，具体内容与更新节奏以上线页面为准' },
+      { text: '完整项目作品与交付训练' },
+    ],
+    cta: '选择项目版',
     featured: true,
   },
 ]
@@ -156,15 +171,20 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
 export const pricingHighlights = [
   { icon: 'path', title: '系统的学习路径', desc: '从基础到进阶，循序渐进' },
   { icon: 'gem', title: '真实的项目实战', desc: '4 个阶段项目' },
-  { icon: 'refresh', title: '持续更新的内容', desc: '跟随 AI 技术的发展同步更新' },
+  { icon: 'refresh', title: '课程内容持续维护', desc: '已购阶段的内容持续维护' },
   { icon: 'users', title: '清晰的任务反馈', desc: '完成清单后再进入下一课' },
 ] as const
 
-export const fullPlanBenefits = [
+export const coursePlanBenefits = [
   { icon: 'path', title: '不是学四门课，而是完成一条成长路径', desc: '从第一次带 AI 改项目，到全栈开发、RAG，再到 Agent 工程，每个阶段都建立在前一阶段成果上。' },
   { icon: 'build', title: '前一阶段的成果，就是后一阶段的起点', desc: 'Stage 1 做出第一个产品，Stage 2 升级为全栈应用，Stage 3 加入真实 AI 与 RAG，Stage 4 继续升级为 Agent。' },
-  { icon: 'gem', title: '额外解锁毕业项目实战', desc: '完成四阶段后，用 Capstone 重新组合 AI Coding、全栈、RAG 与 Agent 能力；当前首个项目已公布，暂未解锁。' },
-  { icon: 'refresh', title: '后续还会继续新增项目实战', desc: '全套课程包含后续新增的综合项目实战内容，具体项目与更新时间以上线内容为准。' },
+  { icon: 'gem', title: '四个阶段项目完整演进', desc: '每个阶段都有对应项目，课程版一次开通完整学习路径。' },
+  { icon: 'refresh', title: '按自己的节奏学习', desc: '四阶段课程永久开放阅读，学习进度在账号中保存。' },
+] as const
+
+export const projectPlanBenefits = [
+  { icon: 'gem', title: '继续完成综合作品', desc: 'Project Lab 提供课程之后的完整项目交付训练。' },
+  { icon: 'refresh', title: '项目实战持续开放', desc: 'Capstone 当前暂未开放；Project Lab 后续新增综合项目的具体内容与更新时间以上线页面为准。' },
 ] as const
 
 /* ------------------------------------------------------------------ */

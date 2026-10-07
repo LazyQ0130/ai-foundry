@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { FullPlanCard } from '../components/PlanCard'
-import { fullPlanBenefits, pricingHighlights } from '../data/site'
+import { coursePlanBenefits, projectPlanBenefits, pricingHighlights } from '../data/site'
 import { featuredFaqs } from '../data/help'
 
 export default function Pricing() {
@@ -17,7 +17,8 @@ export default function Pricing() {
   if(error) return <div role="alert" className="shell py-20">{error}<button className="btn btn-outline ml-3" onClick={()=>void refresh()}>重试</button></div>
   if(!plans.length) return <p className="shell py-20">暂无已发布课程。</p>
   const allPlan = plans.find((p)=>p.id==='all-access')
-  const stagePlans = plans.filter((p)=>p.id!=='all-access')
+  const projectPlan = plans.find((p)=>p.id==='all-access-projects')
+  const stagePlans = plans.filter((p)=>p.id.startsWith('stage-'))
 
   return (
     <>
@@ -37,7 +38,7 @@ export default function Pricing() {
           <p className="mx-auto mt-4 max-w-2xl text-[13.5px] leading-6 text-slate-500">
             4 个阶段、4 个阶段项目，带你从 AI 原生开发入门到构建完整的 Agent 应用。
             <br className="hidden sm:block" />
-            图文讲解，自主阅读，一次购买永久开放。
+            想系统学习，可选择全阶段课程版；希望学完继续完成综合作品，可选择项目版。
           </p>
           <p className="mx-auto mt-3 max-w-2xl text-[12px] text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见《用户协议》。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。</p>
 
@@ -59,28 +60,38 @@ export default function Pricing() {
 
       {/* ------------------------------ 价格卡片 ------------------------------ */}
       <section className="shell pb-16 pt-12">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {plans.map((p) => (
+        <h2 className="h-sec">按阶段学习</h2>
+        <p className="sub-sec">只需要一个阶段时，选择对应课程与阶段项目。</p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stagePlans.map((p) => (
             <FullPlanCard key={p.id} plan={p} onBuy={setSelected} />
           ))}
         </div>
+        {allPlan && projectPlan && <>
+          <h2 className="h-sec mt-14">一次解锁完整路径</h2>
+          <p className="sub-sec">两种方案都包含完整四阶段课程与 4 个阶段项目；项目版另外开放 Project Lab。</p>
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            <FullPlanCard plan={allPlan} onBuy={setSelected} />
+            <FullPlanCard plan={projectPlan} onBuy={setSelected} />
+          </div>
+        </>}
       </section>
 
       {/* ------------------------------ 方案对比 ------------------------------ */}
-      {allPlan && <section className="shell pb-16">
-        <h2 className="h-sec">为什么更推荐全套学习</h2>
-        <p className="sub-sec">四个阶段不是互不相关的课程，而是一条持续升级的项目学习路径。</p>
+      {allPlan && projectPlan && <section className="shell pb-16">
+        <h2 className="h-sec">完整课程，以及课程之后的项目实战</h2>
+        <p className="sub-sec">全阶段课程版适合系统学习；项目版适合继续完成综合作品。</p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {fullPlanBenefits.map((benefit, index) => (
+          {coursePlanBenefits.map((benefit, index) => (
             <article key={benefit.title} className="border-t-2 border-brand-200 bg-white py-4 pr-3">
               <div className="flex items-center gap-2 text-brand-600"><Icon name={benefit.icon} className="h-4 w-4"/><span className="text-xs font-semibold">0{index + 1}</span></div>
               <h3 className="mt-3 text-sm font-semibold text-slate-900">{benefit.title}</h3>
               <p className="mt-2 text-xs leading-5 text-slate-600">{benefit.desc}</p>
-              {index === 2 && <Link to="/capstone" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-brand-600">了解毕业项目 <ArrowRight className="h-3.5 w-3.5"/></Link>}
             </article>
           ))}
         </div>
-        <MobilePlanComparison allPlan={allPlan} stagePlans={stagePlans} onBuy={setSelected}/>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">{projectPlanBenefits.map((benefit) => <article key={benefit.title} className="rounded-xl border border-brand-100 bg-brand-50/50 p-5"><h3 className="font-semibold text-slate-900">{benefit.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{benefit.desc}</p></article>)}</div>
+        <MobilePlanComparison allAccessPlan={allPlan} projectPlan={projectPlan} stagePlans={stagePlans} onBuy={setSelected}/>
         <div className="mt-5 hidden overflow-x-auto md:block">
           <table className="w-full border-collapse text-[12.5px]">
             <thead>
@@ -90,32 +101,35 @@ export default function Pricing() {
                   <span className="block text-sm font-semibold text-slate-900">单阶段购买</span>
                   <span className="mt-1 block text-xs text-slate-500">按需选择一个阶段</span>
                 </th>
-                <th className="rounded-t-lg border-x-2 border-t-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center">
-                  <span className="block text-[13px] font-semibold text-slate-900">全套课程</span>
+                <th className="px-4 py-3 text-center">
+                  <span className="block text-[13px] font-semibold text-slate-900">全阶段课程版</span>
                   <span className="mt-1 block text-[12.5px] font-bold text-brand-600">¥ {allPlan.price}</span>
                 </th>
+                <th className="rounded-t-lg border-x-2 border-t-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center"><span className="block text-[13px] font-semibold text-slate-900">项目版 · 推荐</span><span className="mt-1 block text-[12.5px] font-bold text-brand-600">¥ {projectPlan.price}</span></th>
               </tr>
             </thead>
             <tbody>
               {[
-                ['学习范围', '选择一个阶段', 'Stage 1–4 完整路径'],
-                ['项目衔接', '学习所选阶段项目', '四阶段项目连续演进'],
-                ['Capstone 毕业实战', '不包含', '全套专属 · 暂未解锁'],
-                ['后续新增综合实战', '不包含', '包含，具体内容以上线页面为准'],
-                ['购买成本', `单阶段 ¥${Math.min(...stagePlans.map(p => p.price))} 起`, `全套 ¥${allPlan.price}${stagePlans.reduce((sum, p) => sum + p.price, 0) > allPlan.price ? `，比分开购买省 ¥${stagePlans.reduce((sum, p) => sum + p.price, 0) - allPlan.price}` : ''}`],
-              ].map(([label, stageValue, fullValue], index) => (
+                ['学习范围', '一个阶段', 'Stage 1–4', 'Stage 1–4'],
+                ['正式课程', '对应阶段', '29 节', '29 节'],
+                ['阶段项目', '1 个', '4 个', '4 个'],
+                ['Project Lab', '不包含', '不包含', '包含'],
+                ['Capstone', '不包含', '不包含', '项目版专属 · 暂未开放'],
+                ['后续综合项目', '不包含', '不包含', 'Project Lab 内持续更新'],
+                ['价格', `单阶段 ¥${Math.min(...stagePlans.map(p => p.price))} 起`, `¥${allPlan.price}`, `¥${projectPlan.price} · 只比课程版多 ¥${projectPlan.price - allPlan.price}`],
+              ].map(([label, stageValue, fullValue, projectValue], index) => (
                 <tr key={label} className={index % 2 ? 'bg-slate-50/60' : ''}>
                   <th className="px-4 py-3 text-left font-normal text-slate-500">{label}</th>
                   <td className="px-4 py-3 text-center text-slate-600">{stageValue}</td>
-                  <td className="border-x-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center font-medium text-brand-700">{fullValue}</td>
+                  <td className="px-4 py-3 text-center text-slate-700">{fullValue}</td>
+                  <td className="border-x-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center font-medium text-brand-700">{projectValue}</td>
                 </tr>
               ))}
               <tr>
                 <th className="px-4 py-3" />
                 <td className="px-4 py-3 text-center"><Link to="/path" className="btn btn-sm btn-outline">查看阶段并选择</Link></td>
-                <td className="rounded-b-lg border-x-2 border-b-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center">
-                  <button disabled={allPlan.isPurchasable === false} onClick={() => setSelected(allPlan)} className="btn btn-sm btn-primary">了解全套开通方式</button>
-                </td>
+                <td className="px-4 py-3 text-center"><button disabled={allPlan.isPurchasable === false} onClick={() => setSelected(allPlan)} className="btn btn-sm btn-outline">选择课程版</button></td>
+                <td className="rounded-b-lg border-x-2 border-b-2 border-brand-600 bg-brand-50/60 px-4 py-3 text-center"><button disabled={projectPlan.isPurchasable === false} onClick={() => setSelected(projectPlan)} className="btn btn-sm btn-primary">选择项目版</button></td>
               </tr>
             </tbody>
           </table>

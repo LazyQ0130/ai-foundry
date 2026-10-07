@@ -36,7 +36,7 @@ test('Capstone uses shared showcase data and only links to its public overview',
   assert.doesNotMatch(capstoneSection, /useProgress|stageCompletedCount|stageLessonCount|<Progress/)
 })
 
-test('future directions remain presentation only and match all-access pricing', () => {
+test('future directions remain presentation only and match Project Lab pricing', () => {
   const futureSection = page.split('aria-labelledby="future-projects-heading"')[1].split('<section className="shell pb-12')[0]
   assert.match(page, /更多综合项目实战将持续更新/)
   assert.match(page, /具体新增内容与开放时间以上线页面为准/)
@@ -44,7 +44,8 @@ test('future directions remain presentation only and match all-access pricing', 
   assert.match(page, /futureDirections\.map/)
   for (const direction of ['AI SaaS 产品', '知识库 Agent', 'AI 工作流自动化', '研究 Agent', '多模态 AI 应用']) assert.ok(page.includes(direction))
   assert.doesNotMatch(futureSection, /getProject|useProgress|stageCompletedCount|stageLessonCount|<Progress|to="\/project\//)
-  const allAccess = planTemplates.find((plan) => plan.id === 'all-access')!
-  assert.ok(allAccess.features.some((feature) => feature.text.includes('后续新增综合项目实战')))
-  assert.ok(allAccess.features.some((feature) => feature.text.includes('暂未解锁')))
+  const course = planTemplates.find((plan) => plan.id === 'all-access')!
+  const project = planTemplates.find((plan) => plan.id === 'all-access-projects')!
+  assert.doesNotMatch(JSON.stringify(course), /Project Lab|Capstone|后续新增综合项目/)
+  assert.ok(project.features.some((feature) => feature.text.includes('后续新增综合项目实战')))
 })

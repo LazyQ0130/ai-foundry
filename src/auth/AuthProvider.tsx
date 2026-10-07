@@ -1,8 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { api, ApiError, errorMessage, jsonBody } from '../lib/api'
+import { api, ApiError, errorMessage, jsonBody } from '../lib/api.js'
 
-export type User = { id: string; nickname: string; phoneMasked: string; phoneVerified: boolean; email: string | null; emailVerifiedAt: string | null; role: 'ADMIN' | 'STUDENT'; avatarUrl: string | null; entitlements: string[]; createdAt: string; lastLoginAt: string | null }
+export type User = { id: string; nickname: string; phoneMasked: string; phoneVerified: boolean; email: string | null; emailVerifiedAt: string | null; role: 'ADMIN' | 'STUDENT'; avatarUrl: string | null; entitlements: string[]; productEntitlements: string[]; createdAt: string; lastLoginAt: string | null }
 type Auth = {
   user: User | null; loading: boolean; error: string
   login: (phone: string, password: string) => Promise<User>
@@ -38,6 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <Context.Provider value={{ user, loading, error, refreshUser, applyUser, login: (p, s) => authenticate('login', p, s), register: (p, s, n, a) => authenticate('register', p, s, n, a), logout }}>{children}</Context.Provider>
 }
 export function useAuth() { const value = useContext(Context); if (!value) throw new Error('AuthProvider missing'); return value }
+export function useOptionalAuth() { return useContext(Context) }
 export function RequireAuth({ children, admin = false }: { children: ReactNode; admin?: boolean }) {
   const { user, loading, error, refreshUser } = useAuth()
   const location = useLocation()
