@@ -1,5 +1,7 @@
 # AI Foundry Capstone｜Phase 1 Delivery Plan
 
+> 历史计划：Phase 2 已调整为 C1～C9 与 Greenfield Engineering Bootstrap。当前安排见 `docs/capstone-phase-2-validation.md`；下文用于追溯 Phase 1，不再作为学生起点或课时安排。
+
 本计划将 [架构规格](capstone-phase-1-architecture.md) 转成八课的 Starter / Reference、工程增量和验收顺序。本轮仅确定计划，不写 Lesson 1 正文、不生成产品代码或下载包。
 
 ## 1. Starter / Reference Strategy

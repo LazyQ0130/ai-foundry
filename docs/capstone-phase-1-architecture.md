@@ -1,5 +1,7 @@
 # AI Foundry Capstone｜Phase 1 Architecture Specification
 
+> 历史规格：Phase 2 已将「从 Stage 4 Final Reference 裁剪 Capstone Base」改为 Greenfield Engineering Bootstrap。Capstone 现为 C1～C9；课程入口与学生起点以 `docs/capstone-phase-2-validation.md` 为准。下文保留 Phase 1 的决策过程，不再作为当前实施指令。
+
 状态：工程规格，供 Capstone 产品开发与课程制作使用。本文件不注册课程、不修改 Stage 1～4、不发布正文。依据 Phase 0 产品蓝图与仓库 `dc5e347` 的实际文件审计整理。
 
 ## 1. Repository Audit
