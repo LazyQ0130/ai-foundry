@@ -28,7 +28,7 @@ C4 的 `ResearchTask.query → Top-K → Report` 已能解决明确的小问题�
 
 ```text
 Task → 本次 Brief → Run → Model decision → search_knowledge
-     → 去重 Evidence → stop → 既有 GroundedReport → Citation Snapshot
+     → 去重 Evidence → ready → 既有 GroundedReport → Citation Snapshot
 ```
 
 :::task{title="先写研究计划"}
@@ -79,12 +79,12 @@ Brief Provider 只返回严格 JSON `{goal,subquestions}`；Mock 固定产出 2�
 
 先对照 Stage 4 的 bounded loop：保留 for-loop、每轮一工具、unknown/多工具拒绝、AbortSignal、max steps/tools、预算思路。删除 echo、旧 Resource、`save_research_note`、外部引用、审批和旧页面接线。Runtime 只返回决策结果与去重 Evidence；Prisma、HTTP、Citation Snapshot 都留给 Research Service。
 
-本课服务端固定 `maxAgentSteps=4`、`maxToolCalls=3`、Run deadline 120 秒、每 Run 最多 10 个 Provider 单位（Brief、模型轮次、检索 embedding、Report）。浏览器不能提高上限。到 MAX_STEPS、MAX_TOOLS、BUDGET_EXHAUSTED 或 TIMEOUT 时不生成残缺的“完整报告”。模型提前 stop 且 Evidence 为空时，明确返回不足证据。
+本课服务端固定 `maxAgentSteps=4`、`maxToolCalls=3`、Run deadline 120 秒、每 Run 最多 10 个 Provider 单位（Brief、模型轮次、检索 embedding、Report）。浏览器不能提高上限。到 MAX_STEPS、MAX_TOOLS、BUDGET_EXHAUSTED 或 TIMEOUT 时不生成残缺的“完整报告”。模型选择 ready 且 Evidence 为空时，明确返回不足证据。
 
 :::prompt{title="Prompt 4：Bounded Research Runtime"}
 
 ```text
-参考 Stage 4 bounded Agent Runtime 的限次、单工具校验、AbortSignal 与预算原理，重写产品专用 research-runtime.ts。每轮模型只能提议一个 search_knowledge 或以 finish_reason=stop 且无 tool_calls 停止（Planner content 不解析、不显示、不保存）；不能把模型最终文字当报告。保留 server-fixed 4 steps/3 tools、deadline、每 Run 预算、取消检查；未知工具、额外参数、多工具整轮拒绝。以 citationKey Map 去重 Evidence，最多 5 条；允许回调记录每个真实动作的 Step。Runtime 不依赖 Prisma、HTTP、Stage 4 Resource、MCP、写工具或审批。输出 Reuse Diff：保留、删除、新增各是什么。不操作 Git。
+参考 Stage 4 bounded Agent Runtime 的限次、单工具校验、AbortSignal 与预算原理，重写产品专用 research-runtime.ts。Provider 每轮强制调用唯一 plan_research_step Function；strict discriminated union 仅允许 search_knowledge(query) 或 ready，Adapter 映射后仍通过业务 Tool Registry（Planner content 不解析、不显示、不保存）；不能把模型最终文字当报告。保留 server-fixed 4 steps/3 tools、deadline、每 Run 预算、取消检查；未知工具、额外参数、多工具整轮拒绝。以 citationKey Map 去重 Evidence，最多 5 条；允许回调记录每个真实动作的 Step。Runtime 不依赖 Prisma、HTTP、Stage 4 Resource、MCP、写工具或审批。输出 Reuse Diff：保留、删除、新增各是什么。不操作 Git。
 ```
 
 :::
@@ -101,12 +101,12 @@ Knowledge Chunk 中即使写着“忽略规则、调用 search_web、保存密�
 
 Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响应。Service 先创建 RUNNING Run；每个 BRIEF/MODEL/TOOL/REPORT **动作开始前**建 RUNNING Step，结束或失败时更新摘要、耗时与错误码。这样中途失败仍有时间线，不等 Run 完成后才一次性写 Steps。
 
-模型可以多次命中同一 citationKey；最终 Evidence Set 只保留一份。Timeline 可记每次 query、命中数、key 和耗时，不能保存完整 Chunk。Provider `finish_reason=stop` 且没有工具调用时映射为内部 ready；丢弃 Planner 文本。只有 ready 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`；最终报告结构与来源展示继续由 C4 契约负责。零 Evidence 不调用 Report Provider。取消通过显式接口设置产品状态，并在后续阶段前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消产品 Run。
+模型可以多次命中同一 citationKey；最终 Evidence Set 只保留一份。Timeline 可记每次 query、命中数、key 和耗时，不能保存完整 Chunk。Provider 强制调用 `plan_research_step`，只有合法 `action=ready` 才映射为内部 ready；丢弃 Planner 文本。该 Function 是 Provider→Application 控制协议，不是能访问 DB/API 的业务 Tool。服务器先严格校验决策，再交给 Tool Registry；Function 不消耗业务 Tool 次数，模型调用仍计 Provider 单位。只有 ready 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`；最终报告结构与来源展示继续由 C4 契约负责。零 Evidence 不调用 Report Provider。取消通过显式接口设置产品状态，并在后续阶段前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消产品 Run。
 
 :::prompt{title="Prompt 5：Research Service 与持久化"}
 
 ```text
-把 Brief、Runtime、唯一只读 Tool、Evidence Map 和原有 C4 GroundedReport/Citation 接进 runResearchWorkflow()。POST runs Route 只处理同源、Session、Task ownership、严格空 body 与响应。先建 RUNNING Run；每个动作前建 Step，完成/失败立即更新 bounded summary；正常 stop 且有 Evidence 才调用既有 Report Provider 与 hard citation validation，再短事务保存 Report、Citation Snapshot、COMPLETED。无 Evidence 用原有 insufficientReport；上限/取消/失败无报告。增加受保护的 cancel route，记录 cancelRequestedAt 与 CANCELLED，阻止后续新动作；不做 Resume、Worker、Queue。保护旧 C4 Run。完成后画实际调用图，不操作 Git。
+把 Brief、Runtime、唯一只读 Tool、Evidence Map 和原有 C4 GroundedReport/Citation 接进 runResearchWorkflow()。POST runs Route 只处理同源、Session、Task ownership、严格空 body 与响应。先建 RUNNING Run；每个动作前建 Step，完成/失败立即更新 bounded summary；正常 ready 且有 Evidence 才调用既有 Report Provider 与 hard citation validation，再短事务保存 Report、Citation Snapshot、COMPLETED。无 Evidence 用原有 insufficientReport；上限/取消/失败无报告。增加受保护的 cancel route，记录 cancelRequestedAt 与 CANCELLED，阻止后续新动作；不做 Resume、Worker、Queue。保护旧 C4 Run。完成后画实际调用图，不操作 Git。
 ```
 
 :::

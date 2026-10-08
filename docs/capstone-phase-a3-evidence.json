@@ -1,0 +1,906 @@
+{
+  "phase": "Release Blocker Remediation Phase A3",
+  "baseline": "b23a1605bc5fb86d3d6143376ed35fbe9cd451e8",
+  "date": "2026-10-08",
+  "verdict": "BLOCKED",
+  "overallReleaseVerdict": "BLOCKED",
+  "protocol": {
+    "functionName": "plan_research_step",
+    "providerControlOnly": true,
+    "businessRegistryMember": false,
+    "toolChoice": {
+      "type": "function",
+      "function": {
+        "name": "plan_research_step"
+      }
+    },
+    "parallelToolCalls": false,
+    "jsonMode": false,
+    "expectedFinishReason": "tool_calls",
+    "callsPerDecision": 1,
+    "decisionSchema": "strict Zod discriminated union by action; private/search or ready; external only if policy allows and source available; exact approved query",
+    "readyMapping": {
+      "type": "ready",
+      "toolCalls": []
+    },
+    "searchMapping": "Existing ModelDecision => business Tool Registry => server-owned execution",
+    "plannerToolBudgetCharge": 0,
+    "modelProviderUnitCharge": 1,
+    "limits": {
+      "modelSteps": 4,
+      "actualTools": 3,
+      "providerUnits": 10,
+      "deadlineMs": 120000,
+      "maxTokens": 500
+    },
+    "otherProvidersJsonModeUnchanged": true,
+    "retry": false,
+    "fallback": false
+  },
+  "deterministic": {
+    "red": {
+      "tests": 5,
+      "passed": 1,
+      "failed": 4
+    },
+    "plannerFinalTests": 7,
+    "c5OnlyAssemblyTest": "PASS",
+    "referenceUnitTests": 48,
+    "registryAndRuntimeRegressionsRetained": true
+  },
+  "plannerProbe": {
+    "runs": [
+      {
+        "run": 1,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 962,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 2,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 670,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 3,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 808,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 4,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 645,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 5,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 918,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 6,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 607,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 7,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 823,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 8,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 624,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 9,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 765,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "protocolPass": false
+      },
+      {
+        "run": 10,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 4770,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 1,
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "protocolPass": false
+      }
+    ],
+    "diagnostics": [
+      {
+        "run": 1,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 53,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 960,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 2,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 670,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 53,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 808,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 644,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 51,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 918,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 6,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 607,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 7,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 53,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 823,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 8,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 624,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 9,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 51,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 765,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 10,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 378,
+        "contentPresent": true,
+        "contentLength": 1532,
+        "latencyMs": 4770,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      }
+    ],
+    "passed": 0,
+    "total": 10,
+    "invalidModelTurns": 10,
+    "retry": false
+  },
+  "observation": {
+    "model": "qwen3.7-flash",
+    "enableThinking": false,
+    "modelCalls": 10,
+    "actualToolCalls": 0,
+    "providerUnits": 10,
+    "plannerFunctionCalls": 10,
+    "privateRuns": 5,
+    "mixedRuns": 5,
+    "finishReasonCounts": {
+      "stop": 10
+    },
+    "emptyContentCalls": 9,
+    "nonemptyContentCalls": 1,
+    "maxContentLength": 1532,
+    "outputTokensMin": 42,
+    "outputTokensMax": 378,
+    "outputTokensTotal": 807,
+    "latencyMinMs": 607,
+    "latencyMaxMs": 4770,
+    "latencyMedianMs": 786.5,
+    "maxTokensDecision": "Retain 500. Observed one 378-token output and failed initial decisions; insufficient successful multi-turn evidence for 128/256.",
+    "interpretation": "All ten specified function calls arrived with stop, which violates the declared tool_calls-only protocol. No calls were executed; no relaxation or repeat probe."
+  },
+  "fullStagingSmoke": {
+    "status": "NOT_RUN",
+    "gate": "FAIL",
+    "invocations": 0,
+    "reason": "Real Planner Probe 0/10; user forbids smoke below 10/10"
+  },
+  "proposal": {
+    "pathReached": false,
+    "repair": "None",
+    "stabilitySamplesExecuted": 0,
+    "stabilitySamplesTarget": 5,
+    "stabilityResult": "NOT_RUN",
+    "realFidelity": "NOT_VERIFIED",
+    "titleLimit": 120,
+    "contentLimit": 2000,
+    "historical2318EvidencePreserved": true
+  },
+  "reference": {
+    "freshAssembly": {
+      "files": 155,
+      "mismatches": []
+    },
+    "npmCi": "PASS",
+    "initialVerification": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 1
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "finalVerification": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      }
+    ],
+    "initialTypecheckFailure": "EPERM Prisma Windows DLL rename while probe process was importing Prisma; no TypeScript diagnostics. Subsequent serial typecheck and release:check PASS; original log preserved.",
+    "unitTests": 48,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "approvalDatabaseTests": 5,
+    "migrations": {
+      "freshDatabase": true,
+      "count": 6,
+      "method": "migrate deploy",
+      "isolatedEvalDatabase": "capstone_c8_eval",
+      "isolatedSecurityDatabase": "capstone_c9_test",
+      "platformDatabaseUsed": false
+    },
+    "eval": {
+      "summary": {
+        "totalCases": 25,
+        "matrixCases": 25,
+        "passed": 25,
+        "failed": 0,
+        "incomplete": 0
+      },
+      "hardGates": {
+        "cross_workspace_leaks": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unapproved_writes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "duplicate_knowledge_notes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "invalid_citations": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_deterministic_claims": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_answer_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "partial_ready_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "tamper_accepts": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        }
+      },
+      "metrics": {
+        "modelCalls": 5,
+        "toolCalls": 3,
+        "invalid_citations": 0,
+        "externalCalls": 1,
+        "retrieval_total": 10,
+        "retrieval_hits": 10,
+        "retrieval_rr": 9.5,
+        "embeddingCalls": 10,
+        "unsupported_deterministic_claims": 0,
+        "answerable_total": 4,
+        "answerable_success": 4,
+        "abstention_total": 2,
+        "abstention_success": 2,
+        "unsupported_answer_count": 0,
+        "note_fidelity_total": 4,
+        "note_fidelity_pass": 4,
+        "cross_workspace_leaks": 0,
+        "unapproved_writes": 0,
+        "tamper_accepts": 0,
+        "duplicate_knowledge_notes": 0,
+        "failure_handled_count": 5,
+        "partial_ready_count": 0,
+        "retry_success_count": 3,
+        "timeout_handled_count": 1,
+        "cancel_handled_count": 1,
+        "external_degradation_success_count": 4,
+        "retrieval_hit_at_3": 1,
+        "retrieval_mrr": 0.95,
+        "answerable_success_rate": 1,
+        "unsupported_abstention_rate": 1,
+        "note_fidelity_pass_rate": 1
+      },
+      "comparison": {
+        "changes": [
+          {
+            "name": "private-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "mixed-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "insufficient-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "knowledge-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "human-edit",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-validity",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-support-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable-behavior",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported-abstention",
+            "change": "unchanged"
+          },
+          {
+            "name": "note-fidelity",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-evidence-quality",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross-workspace-isolation",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "approval-boundaries",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate-notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "tool-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "report-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "file-failures",
+            "change": "unchanged"
+          },
+          {
+            "name": "index-atomic-retry",
+            "change": "unchanged"
+          },
+          {
+            "name": "runtime-limits",
+            "change": "unchanged"
+          },
+          {
+            "name": "timeout-cancel",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-degradation",
+            "change": "unchanged"
+          },
+          {
+            "name": "write-rollback",
+            "change": "unchanged"
+          },
+          {
+            "name": "provider-failure",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross_workspace_leaks",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved_writes",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate_knowledge_notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "invalid_citations",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_deterministic_claims",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_answer_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "partial_ready_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "tamper_accepts",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval_hit_at_3",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_abstention_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable_success_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "note_fidelity_pass_rate",
+            "change": "unchanged"
+          }
+        ],
+        "regressed": false
+      }
+    },
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "platform": {
+    "npmCi": "PASS",
+    "verification": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "unitTests": 84,
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "devServicesRestored": {
+      "vite": 200,
+      "apiHealth": 200
+    }
+  },
+  "dependencyRisk": {
+    "decision": "ACCEPTED DEV TOOLCHAIN RISK",
+    "policyUnchanged": true,
+    "dependenciesUnchanged": true,
+    "advisory": "GHSA-vfj7-8cjw-p6xm",
+    "runtimeTree": {
+      "exit": 0,
+      "found": [
+        "@prisma/client > prisma > @prisma/config > c12 > chokidar@4.0.3"
+      ]
+    },
+    "artifactScan": {
+      "files": 280,
+      "matches": []
+    },
+    "prismaException": "Unrelated chokidar 4.0.3 optional-peer Prisma CLI; affected Tailwind/braces chain absent from production dependency tree. No claim all five package names absent.",
+    "cloudRuntimeExposure": "NOT_VERIFIED"
+  },
+  "scope": {
+    "stageLessons": 29,
+    "capstoneLocked": true,
+    "cloud": false,
+    "publishing": false,
+    "pricing": false,
+    "entitlement": false,
+    "releaseTag": false,
+    "c5c6MinimalCourseSync": true,
+    "c7c9CourseOrProposalChanged": false,
+    "checkKeysUnchanged": true
+  },
+  "cloud": {
+    "runtime": "NOT_VERIFIED",
+    "database": "NOT_VERIFIED",
+    "storage": "NOT_VERIFIED",
+    "httpsMcp": "NOT_VERIFIED",
+    "productionSmoke": "NOT_VERIFIED",
+    "backupRollback": "NOT_VERIFIED"
+  },
+  "remaining": [
+    "Forced specific-function finish metadata incompatible with declared protocol on qwen3.7-flash",
+    "Full Staging Smoke and real Proposal samples not run",
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim unsupported"
+  ],
+  "filesChanged": [
+    "course-content/internal/capstone/c5/lesson-draft.md",
+    "course-content/internal/capstone/c5/overlay/docs/architecture.md",
+    "course-content/internal/capstone/c5/overlay/lib/research-chat.ts",
+    "course-content/internal/capstone/c5/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c6/lesson-draft.md",
+    "course-content/internal/capstone/c6/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c6/overlay/test/research-model.test.ts",
+    "course-content/internal/capstone/c5/overlay/lib/planner-decision.ts",
+    "course-content/internal/capstone/c5/overlay/test/planner-decision.test.ts",
+    "course-content/internal/capstone/c6/overlay/lib/planner-decision.ts",
+    "docs/capstone-phase-a3-evidence.json",
+    "docs/capstone-release-readiness-audit.md"
+  ]
+}

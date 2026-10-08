@@ -138,6 +138,12 @@ MCP discovery 描述服务器提供什么，本地产品策略决定本次 Run �
 :::
 
 ## 90～115 分钟：工具、Evidence 与失败降级
+:::concept
+
+Planner 的 `plan_research_step` 只是结构化控制协议，不执行 DB/API。PRIVATE_ONLY 仅允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时才增加 search_external_references，发生 unavailable 后移除。外部 query 必须逐字等于服务端 approvedExternalQuery。Adapter 严格解析后，仍通过现有业务 Tool Registry、Workspace 与预算边界。Provider 每轮强制唯一指定 Function，parallel_tool_calls=false，不使用 Planner JSON mode 或自由文本 fallback。
+
+:::
+
 
 现在泛化 `ResearchEvidence = KnowledgeEvidence | ExternalEvidence`。私人 Evidence 保留原始 document/chunk/page/offset；外部 Evidence 带 DOI、sourceUrl、year、adapterVersion 和 CLAIM_EVIDENCE。metadata-only 可以用于解释检索结果数量，但不能进入报告证据集合。
 

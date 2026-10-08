@@ -535,3 +535,80 @@ fresh Bootstrap+C1...C9 → .runtime/phase-a2/c9。另fresh canonical assembly *
 仍有Planner length协议失败、未完成完整Staging/真实Proposal稳定性，以及Cloud Verification/Publishing Integration。Cloud Runtime/DB/R2/HTTPS MCP/Production Smoke/Cloud backup-rollback继续 **NOT VERIFIED**。Loader/Progress/Entitlement仍MISSING/PARTIAL，Pricing不变，Production Product claim仍无依据。
 
 没有执行云清单或Publishing Plan；两个文档未变。没有Tag。提交消息：Stabilize Capstone planner and staging release gate。最终SHA、origin/main一致性与working tree见实际提交后核对和最终回复。
+
+
+# Phase A3 Addendum
+
+2026-10-08；基线 b23a1605bc5fb86d3d6143376ed35fbe9cd451e8。**Phase A3 BLOCKED，整体 Capstone Release BLOCKED**。本轮仅加固 Planner 控制协议；不新增产品能力，不切模型、不重试、不放宽契约。原始 Audit、Phase A/A2 failures 与历史2318字符 Proposal 证据全部保留。
+
+## 1. Structured Planner Decision / Provider Contract
+
+C5/C6 都改用唯一 Provider Function：plan_research_step。请求明确 tool_choice={type:function,function:{name:plan_research_step}}，parallel_tool_calls=false，Planner jsonMode=false；Report/Brief/Proposal 默认 JSON mode 保持。该 Function 是 Provider→Application 的控制 envelope，不是 business Tool Registry 成员，不能访问 DB/API。
+
+服务端使用 strict Zod discriminated union：search_knowledge(query)、ready；C6 在 PRIVATE_AND_EXTERNAL 且本 Run 无 external unavailable 时才允许 search_external_references(query)，否则移除。ready 不允许 query，未知 action/额外字段拒绝；外部 query 在任何 trim 前逐字比较 approvedExternalQuery，再通过既有外部输入校验。Provider schema 同步暴露按 policy 生成的 oneOf 动作集合。
+
+唯一接收协议：finish_reason=tool_calls，恰好一个 type=function/name=plan_research_step，arguments 为有效 JSON 且通过 strict schema/policy。wrong/missing/zero/multiple function、坏 JSON、非法 shape/policy、unexpected finish 均 INVALID_MODEL_TURN，不解析 prose、不把 stop/length 当 ready。合法 ready 映射既有 ModelDecision.ready；合法 search 映射既有 business Tool Call，继续经 Tool Registry、Workspace ownership、exact external query 与所有预算。没有双协议、fallback、retry。
+
+Planner Function 不增加 actual toolCalls；每次模型请求仍计一个 Provider unit。现有4 model steps/3实际工具/10 Provider units/120s/cancel 未改。Stage4没有新复制。Prompt 只表达决策规则、证据不可信、禁止重复query/写入/正文回答，以及 external exact query。
+
+## 2. Deterministic Tests / Course Sync
+
+先写测试并确认旧实现 red：5组中1通过、4失败，随后实现协议。最终7组协议测试覆盖：actual request body唯一Function/指定tool_choice/parallel=false/no JSON mode、private/ready/external映射、private-only与unavailable限制、modified external query、额外字段、未知动作、wrong/missing/multiple function、malformed JSON、stop/length/filter/unknown finish；业务 Registry 继续独立拒绝 unknown/extra/multiple/plan_research_step。零 Evidence ready 保持 INSUFFICIENT_EVIDENCE，不产生报告；search→ready 明确2 model/1 tool/3 units，控制Function没有重复收费。
+
+C5-only fresh assembly 的 private-only schema测试通过；Final Reference **48/48**。C5/C6正文和C5 architecture doc只做最小协议同步，copyable prompts/checkKeys数量不变。学生仍须理解 Model proposes → Server validates → Registry → business search；Provider function不是模型直接执行系统能力。C7/C9正文和Proposal Provider没有修改。
+
+## 3. Real Planner Probe — 0/10, BLOCKED
+
+使用原 qwen3.7-flash + enable_thinking=false；合成任务/私有Evidence/外部abstract fixtures，真实Provider，真实schema和正常bounded Runtime。总共仅一组10 runs：5 PRIVATE_ONLY、5 PRIVATE_AND_EXTERNAL；检索fixture无需网络和私人资料，业务工具在adapter拒绝前均未执行。安全证据见 docs/capstone-phase-a3-evidence.json，不包含full prompt/content/args/evidence/credentials。
+
+| Run | Policy | HTTP / Finish | Function calls | Output tokens | Content chars | Latency ms | Result |
+|---|---|---|---:|---:|---:|---:|---|
+| 1 | PRIVATE_ONLY | 200 / stop | 1 | 53 | 0 | 960 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 2 | PRIVATE_AND_EXTERNAL | 200 / stop | 1 | 42 | 0 | 670 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 3 | PRIVATE_ONLY | 200 / stop | 1 | 53 | 0 | 808 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 4 | PRIVATE_AND_EXTERNAL | 200 / stop | 1 | 42 | 0 | 644 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 5 | PRIVATE_ONLY | 200 / stop | 1 | 51 | 0 | 918 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 6 | PRIVATE_AND_EXTERNAL | 200 / stop | 1 | 42 | 0 | 607 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 7 | PRIVATE_ONLY | 200 / stop | 1 | 53 | 0 | 823 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 8 | PRIVATE_AND_EXTERNAL | 200 / stop | 1 | 42 | 0 | 624 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 9 | PRIVATE_ONLY | 200 / stop | 1 | 51 | 0 | 765 | INVALID_MODEL_TURN → MODEL_FAILED |
+| 10 | PRIVATE_AND_EXTERNAL | 200 / stop | 1 | 378 | 1532 | 4770 | INVALID_MODEL_TURN → MODEL_FAILED |
+
+实际 **0/10 protocol-valid、INVALID_MODEL_TURN=10**。10个指定 Function 都确实出现，但其 finish_reason 全为 stop，违反本轮预先固定的 tool_calls-only Contract；不是missing function，也不是A2的length。9次content为空，第10次还有1532字符无用正文。没有将 stop-with-function 临时认作有效、改用旧parser、重试、换模型或启动Smoke。
+
+合计10 model calls、0 actual tools、10 Provider units、10 planner function calls。动作提议为5次private/5次external，均未执行，不代表完成研究或来源选择质量。每次在第1模型回合失败，因此没有真实ready或多轮成功证据。输出42～378 tokens，延迟607～4770ms（中位数786.5ms）；保留maxTokens=500：378-token样本及缺失成功多轮证据不足以证明128/256足够，也没有提高上限。
+
+**Compatibility conclusion**：当前Provider对 forced specific Function 的 finish metadata不满足本次声明的接收协议。下一步需要单独 Provider Compatibility Decision（含是否明确支持 stop+严格函数 envelope，或 Responses API/模型选择），本轮没有擅自改变已测Gate。
+
+## 4. Full Smoke / Proposal
+
+Full Local Staging Smoke **NOT RUN / Gate FAIL**：Probe未达到10/10，按用户规则不授权Smoke。本轮0 full-staging invocation；没有拼接mock安全回归或旧轮次证明全链。未创建本轮real-app/image/storage链路或fresh staging DB，实际新建的仅独立Eval与security测试DB。
+
+Proposal path未到达；**Proposal Repair: None**，没有触发本轮真实overlength-only条件。真实Proposal stability **0/5 executed（NOT RUN）**，不能当作5次失败或准确率。title<=120/content<=2000不变，禁止截断/放宽；历史2318证据仍留在原Audit。C8 deterministic Note Fidelity 4/4不代表本轮真实Proposal fidelity。
+
+## 5. Boundary / Approval / Eval Regression
+
+C5 HTTP smoke、C6 HTTP smoke、C7 test:db 均exit0，C7数据库事务tests **5/5**：Edit/old-token403/new approval/replay/concurrency/rollback/expiry/tamper/Bob/strict input保持。Agent unknown tool/bad args/multiple tools、source policy、steps/tools/budget、cancel/timeout、MCP extra tools、external degradation原测试保留并通过。mock回归不能替代真实Full Smoke。
+
+C8 **25/25 PASS、37 unchanged、8 Hard Gates全零**；thresholds/gold/baseline没有修改。无跨Workspace泄漏、未经审批写入、token篡改接受、重复Note、非法Citation、无依据确定性claim、unsupported answer或partial-ready。
+
+## 6. Fresh Assembly / Full Verification
+
+Bootstrap+C1…C9组装全新 .runtime/phase-a3/c9；第二次独立canonical组装逐字核对 **155文件、0 mismatch**。没有复用A2运行目录。红灯测试仅借用已有依赖junction，独立C9正式安装为 fresh npm ci。
+
+- Final Reference npm ci/lint/typecheck/test/build/eval:capstone/--compare-baseline/release:check 均最终exit0；48/48。首次typecheck因Probe进程加载Prisma Windows DLL造成EPERM rename，非TypeScript诊断；原日志保留，进程结束后串行typecheck与最终release:check均通过。
+- 六条正式migration在新isolated capstone_c8_eval与capstone_c9_test数据库从空migrate deploy成功。未用db push、平台DB或production DB。根平台既有测试使用其专用测试schema，未用于Capstone迁移。
+- Reference production/full audit均0 vulnerabilities、exit0。
+- Platform npm ci/typecheck/test/check/build/check:bundle均exit0；84/84。Renderer九课、56 prompts、61 unique checkKeys；Stage29、Capstone locked不变。
+- Platform production audit exit1：2 Moderate / 0 High / 0 Critical；full audit exit1：4 Moderate / 5 High / 0 Critical。没有误报full audit clean。
+- 暂停的本仓库开发服务已恢复，Vite5173/API3001 health各HTTP200。
+
+## 7. Dependency Risk / Exposure
+
+保留Phase A2 **ACCEPTED DEV TOOLCHAIN RISK** 与接受条件；未修改依赖、Tailwind或风险分类。重新检查production dependency tree：受影响Tailwind/braces/fast-glob/micromatch/chokidar3链缺席；Prisma optional peer带入无关chokidar4.0.3，不能声称五个包名全部缺席。新280个compiled文本产物相关模块import为零。既有trusted固定源码构建路径与未来不受信任CI无secrets/no auto deploy/hard timeout/上线前runtime prune核查条件不变。Cloud实际安装状态仍未验证。
+
+## 8. Global Release / Git
+
+Cloud Runtime、Cloud DB、Cloud Storage、HTTPS MCP、Production Smoke、Cloud Backup/Rollback均 **NOT VERIFIED**。Publishing Loader/0-9 Progress/Project Lab server entitlement仍未实现，本轮不执行。Pricing、正式Stage统计和Capstone暂未解锁保持；没有Release Tag。Production Product claim无依据，整体Release继续BLOCKED。
+
+剩余：当前Provider协议兼容性、未完成Full Staging与真实Proposal稳定性、Cloud Verification、Publishing Integration。提交消息：Harden Capstone planner decision protocol；提交后的SHA/origin-main/working-tree以最终实测报告为准。
