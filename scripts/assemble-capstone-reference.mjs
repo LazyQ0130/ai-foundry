@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const [stage, outputArg] = process.argv.slice(2)
-if (!['c1', 'c2', 'c3', 'c4', 'c5', 'c6'].includes(stage) || !outputArg) {
-  throw new Error('Usage: node scripts/assemble-capstone-reference.mjs <c1|c2|c3|c4|c5|c6> <new .runtime directory>')
+if (!['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'].includes(stage) || !outputArg) {
+  throw new Error('Usage: node scripts/assemble-capstone-reference.mjs <c1|c2|c3|c4|c5|c6|c7> <new .runtime directory>')
 }
 const runtime = path.join(root, '.runtime')
 const output = path.resolve(root, outputArg)
@@ -30,7 +30,7 @@ copyTree(path.join(root, 'starter/capstone'), output)
 const c1 = path.join(root, 'course-content/internal/capstone/c1')
 copyTree(path.join(c1, 'docs'), path.join(output, 'docs'))
 copyFileSync(path.join(c1, 'README.md'), path.join(output, 'README.md'))
-if (stage === 'c2' || stage === 'c3' || stage === 'c4' || stage === 'c5' || stage === 'c6') {
+if (stage === 'c2' || stage === 'c3' || stage === 'c4' || stage === 'c5' || stage === 'c6' || stage === 'c7') {
   const source = path.join(root, 'course-content/internal/capstone/c2')
   copyTree(path.join(source, 'overlay'), output)
   copyFileSync(path.join(source, 'architecture-decision.md'), path.join(output, 'docs/architecture-decision.md'))
@@ -57,7 +57,7 @@ if (stage === 'c2' || stage === 'c3' || stage === 'c4' || stage === 'c5' || stag
   const lock = path.join(source, 'package-lock.json')
   if (existsSync(lock)) copyFileSync(lock, path.join(output, 'package-lock.json'))
 }
-if (stage === 'c3' || stage === 'c4' || stage === 'c5' || stage === 'c6') {
+if (stage === 'c3' || stage === 'c4' || stage === 'c5' || stage === 'c6' || stage === 'c7') {
   const source = path.join(root, 'course-content/internal/capstone/c3')
   copyTree(path.join(source, 'overlay'), output)
   copyTree(path.join(root, 'course-content/internal/capstone/fixtures'), path.join(output, 'test/fixtures'))
@@ -73,7 +73,7 @@ if (stage === 'c3' || stage === 'c4' || stage === 'c5' || stage === 'c6') {
   writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n')
   copyFileSync(path.join(source, 'package-lock.json'), path.join(output, 'package-lock.json'))
 }
-if (stage === 'c4' || stage === 'c5' || stage === 'c6') {
+if (stage === 'c4' || stage === 'c5' || stage === 'c6' || stage === 'c7') {
   const source = path.join(root, 'course-content/internal/capstone/c4')
   copyTree(path.join(source, 'overlay'), output)
   const packagePath = path.join(output, 'package.json')
@@ -86,7 +86,7 @@ if (stage === 'c4' || stage === 'c5' || stage === 'c6') {
   lock.packages[''].name = pkg.name
   writeFileSync(path.join(output, 'package-lock.json'), JSON.stringify(lock, null, 2) + '\n')
 }
-if (stage === 'c5' || stage === 'c6') {
+if (stage === 'c5' || stage === 'c6' || stage === 'c7') {
   const source = path.join(root, 'course-content/internal/capstone/c5')
   copyTree(path.join(source, 'overlay'), output)
   const packagePath = path.join(output, 'package.json')
@@ -100,7 +100,7 @@ if (stage === 'c5' || stage === 'c6') {
   writeFileSync(path.join(output, 'package-lock.json'), JSON.stringify(lock, null, 2) + '\n')
 }
 
-if (stage === 'c6') {
+if (stage === 'c6' || stage === 'c7') {
   const source = path.join(root, 'course-content/internal/capstone/c6')
   copyTree(path.join(source, 'overlay'), output)
   const packagePath = path.join(output, 'package.json')
@@ -114,4 +114,16 @@ if (stage === 'c6') {
   if (existsSync(lockPath)) copyFileSync(lockPath, path.join(output, 'package-lock.json'))
 }
 
+if (stage === 'c7') {
+  copyTree(path.join(root, 'course-content/internal/capstone/c7/overlay'), output)
+  const packagePath = path.join(output, 'package.json')
+  const pkg = JSON.parse(readFileSync(packagePath, 'utf8'))
+  pkg.name = 'ai-research-workspace-c7-reference'
+  pkg.scripts['test:db'] = 'node scripts/c7-http-smoke.mjs && tsx --test test/knowledge-write.integration.ts'
+  writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n')
+  const lockPath = path.join(output, 'package-lock.json')
+  const lock = JSON.parse(readFileSync(lockPath, 'utf8'))
+  lock.name = pkg.name; lock.packages[''].name = pkg.name
+  writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n')
+}
 console.log(`Assembled ${stage.toUpperCase()} internal reference at ${output}`)
