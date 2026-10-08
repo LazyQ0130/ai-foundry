@@ -84,7 +84,7 @@ test('real proposal prompt targets a margin below the strict character cap; vali
   const previous = process.env.AI_NOTE_MODE
   process.env.AI_NOTE_MODE = 'real'
   try {
-    for (const length of [1600, 2000]) {
+    for (const length of [1500, 2000]) {
       let calls = 0
       const content = 'x'.repeat(length)
       const result = generateKnowledgeNoteProposal(report, [], AbortSignal.timeout(3000), async (messages, options) => {
@@ -134,10 +134,44 @@ test('compression eligibility fails closed; malformed/extra/title/type/finish/pr
    {choices:[{finish_reason:'stop',message:{content:JSON.stringify(long),tool_calls:[{name:'save'}]}}]}]){
    let calls=0;await assert.rejects(generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>{calls++;return bad}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,1)
   }
-  for(const second of [long,{...long,content:'short',extra:true},'malformed']){
+  for(const second of [{...long,content:'short',extra:true},'malformed']){
    let calls=0;await assert.rejects(generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>{calls++;return {choices:[{finish_reason:'stop',message:{content:second==='malformed'&&calls===2?'not JSON':JSON.stringify(calls===1?long:second)}}]}}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,2)
   }
   const aborted=new AbortController();let calls=0
   await assert.rejects(generateKnowledgeNoteProposal(report,[],aborted.signal,async()=>{calls++;aborted.abort();return {choices:[{finish_reason:'stop',message:{content:JSON.stringify(long)}}]}}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,1)
  }finally{if(previous===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=previous}
+})
+
+
+test('otherwise-valid overlength twice produces grounded whole-Claim fallback with no third call', async () => {
+ const previous=process.env.AI_NOTE_MODE;process.env.AI_NOTE_MODE='real'
+ try {
+  const facts=['NumaDB did not improve latency by 37 ms.', 'Orion may help; results remain uncertain.', 'Limited to the synthetic 2025 fixture; no generalization.']
+  const full:GroundedReport={answerability:'grounded',summary:[{text:facts[0],citationKeys:['key']}],conclusion:[{text:facts[1],citationKeys:['key']}],findings:[{text:facts[2],citationKeys:['key']}],analysis:Array.from({length:8},(_,i)=>({text:String(i)+' '+ 'full claim '.repeat(45).trim(),citationKeys:['key']}))}
+  const sources=[{citationKey:'key',title:'fixture',sourceType:'KNOWLEDGE',excerpt:'Never use raw excerpt facts'}]
+  let calls=0;const logs:string[]=[];const original=console.info;console.info=(line)=>logs.push(String(line))
+  let result
+  try {result=await generateKnowledgeNoteProposal(full,sources,AbortSignal.timeout(3000),async()=>({choices:[{finish_reason:'stop',message:{content:JSON.stringify({title:calls++===0?'Initial valid title':'Compressed title',content:'x'.repeat(calls===1?2800:2600)})}}]}))}finally{console.info=original}
+  assert.equal(calls,2);assert.equal(result.title,'Initial valid title');assert.ok(result.content.length<=1850)
+  assert.ok(logs.some(line=>line.includes('GROUNDED_FALLBACK')))
+  const originalClaims=[...full.summary,...full.conclusion,...full.findings,...full.analysis].map(c=>c.text)
+  for(const paragraph of result.content.split('\n\n').filter(p=>!p.startsWith('## ')))assert.ok(originalClaims.includes(paragraph))
+  for(const fact of facts)assert.ok(result.content.includes(fact))
+  assert.ok(!result.content.includes('Never use raw excerpt facts'));canonicalizeKnowledgeNoteArgs(result)
+  for(const invalid of [{...full,summary:[{text:'x'.repeat(501),citationKeys:['key']}]},{...full,summary:[{text:'unknown',citationKeys:['missing']}]}]){
+   let count=0;await assert.rejects(generateKnowledgeNoteProposal(invalid,sources,AbortSignal.timeout(3000),async()=>{count++;return {choices:[{finish_reason:'stop',message:{content:JSON.stringify({title:'valid',content:'x'.repeat(2500)})}}]}}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(count,2)
+  }
+ }finally{if(previous===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=previous}
+})
+
+
+test('proposal safe logs distinguish normal model and successful bounded compression', async()=>{
+ const previous=process.env.AI_NOTE_MODE;process.env.AI_NOTE_MODE='real';const original=console.info;const logs:string[]=[];console.info=line=>logs.push(String(line))
+ try {
+  for(const [initial,compressed,mode] of [[1500,0,'MODEL'],[2500,1400,'MODEL_COMPRESSED']] as const){
+   let calls=0;logs.length=0
+   const result=await generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>({choices:[{finish_reason:'stop',message:{content:JSON.stringify({title:'valid',content:'x'.repeat(calls++===0?initial:compressed)})}}]}))
+   assert.equal(calls,compressed?2:1);assert.equal(result.content.length,compressed||initial);assert.ok(logs.some(line=>JSON.parse(line).proposalMode===mode))
+  }
+ }finally{console.info=original;if(previous===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=previous}
 })

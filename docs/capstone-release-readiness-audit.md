@@ -744,3 +744,25 @@ deterministic repair **7/7**，涵盖eligibility、共享signal、最多一次�
 本地Planner blocker CLOSED；**Full Smoke与真实Proposal contract blocker REMAINING**。Cloud Verification目标资料已请求，但没有完整local PASS，云执行未开始；Cloud runtime/DB/storage/HTTPS MCP/production smoke/backup-rollback全部NOT VERIFIED。Publishing Integration不执行，Production Product claim仍无依据；正式29节、暂未解锁、Pricing/entitlement不变。没有Release Tag。
 
 证据：docs/capstone-launch-sprint-evidence.json。提交消息 Qualify Capstone planner for launch；最终SHA/origin-main/working-tree见提交后核对。没有创建新的本地Phase或扩大benchmark范围。
+
+
+## Final Local Release Fix — LOCAL RELEASE BLOCKERS CLOSED
+
+Baseline: 710497f149486127604f98ecb72563644586fe63. This entry supersedes the remaining local Note/Full Smoke blockers from Launch Sprint; all historical failures remain preserved.
+
+- Planner qwen3.8-flash qualification inherited: 5/5 PASS, no extra paid qualification runs.
+- Proposal strategy: MODEL → one bounded compression → GROUNDED_FALLBACK, only when both responses are otherwise valid and overlength. No third Provider call, truncation, new facts or relaxed limit.
+- Fallback reads only validated persisted Report Claims; uses initial valid title, complete Claims, deduplication, 1850-character composition budget and final strict knowledgeNoteArgs.parse. Schema has no separate limitations field; Claim wording is preserved verbatim.
+- Human approval, token/version/exact args hash/transaction/replay/rollback unchanged. No DB migration or proposalMode column; safe server logs record the mode.
+- Local Staging Full Smoke = PASS. Exactly one fresh DB/user/TXT/PDF/container continuous invocation, exit 0, 30 HTTP calls. Private and mixed research, real MCP/Crossref, grounded reports/citations, Proposal, Edit, stale token rejection, approval, replay, exactly one Note, signed source success and anonymous denial all passed.
+- Actual Proposal Mode = GROUNDED_FALLBACK. Initial 2830 chars, compression 2830 chars, fallback 1708 chars. Persisted Note contains 8 whole original Report Claims; sourceRunId matches. One EXECUTED Action, version 2, one Note.
+- C8 25/25 PASS; baseline comparison has no regression; Note Fidelity 5/5 including fallback; all eight hard gates zero. Gold/baseline/thresholds unchanged.
+- Reference npm ci/lint/typecheck/55 tests/build/Eval/baseline/release:check/audits PASS; fresh canonical assembly matches all 155 files. Initial parallel Prisma DLL lock was resolved by serial release:check rerun.
+- C5/C6 HTTP regression and C7 database approval regression (5 tests) PASS.
+- Platform npm ci/typecheck/84 tests/check/build/check:bundle PASS. Initial course check was corrected by adding fallback assertions inside the existing fidelity case.
+- Platform production audit: 0 High/Critical, 2 Moderate. Reference full/production audits: 0 vulnerabilities. Existing ACCEPTED DEV TOOLCHAIN RISK remains; no Tailwind migration.
+- Local HTTPS/browser CORS are not cloud evidence. No cloud resources, publishing, entitlement, unlocking, pricing or Tag changes. Stage remains 29; Capstone stays locked.
+
+Remaining global blockers: Cloud Verification; Publishing Integration; Production Product claim pending cloud evidence. Next step: CLOUD VERIFICATION.
+
+Machine-readable evidence: docs/capstone-local-release-fix-evidence.json.

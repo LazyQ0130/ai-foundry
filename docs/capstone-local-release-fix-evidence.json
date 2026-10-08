@@ -1,0 +1,495 @@
+{
+  "version": 1,
+  "baseline": "710497f149486127604f98ecb72563644586fe63",
+  "verdict": "LOCAL RELEASE BLOCKERS CLOSED",
+  "scope": "One final local release fix; cloud and publishing not executed",
+  "strategy": {
+    "normal": "MODEL",
+    "overlengthOnly": "one MODEL_COMPRESSED attempt",
+    "fallback": "Only initial and compression otherwise-valid overlength; persisted validated Report complete Claims; initial validated title; 1850-character composition budget; final strict 2000-character parse; no third Provider call",
+    "provenance": "sourceRunId; existing Report and Citation Snapshot",
+    "humanReview": "PROPOSED -> Edit / Reject / Approve; approval contract unchanged",
+    "invalidCases": "malformed/extra/title/type/tool/finish/invalid report fail closed"
+  },
+  "plannerQualification": {
+    "inheritedFrom": "docs/capstone-launch-sprint-evidence.json",
+    "model": "qwen3.8-flash",
+    "passed": 5,
+    "total": 5,
+    "rerun": false
+  },
+  "fullSmoke": {
+    "invocations": 1,
+    "exit": 0,
+    "result": "PASS",
+    "environment": "LOCAL PRODUCTION-LIKE VERIFIED",
+    "https": "NOT VERIFIED",
+    "storageAccess": "SIGNED_GET_PASS_ANONYMOUS_DENIED",
+    "browserCors": "NOT VERIFIED",
+    "runs": [
+      {
+        "sourcePolicy": "PRIVATE_ONLY",
+        "status": "PASS",
+        "citations": 1,
+        "privateCitations": 1,
+        "noteCount": 0
+      },
+      {
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "status": "PASS",
+        "citations": 4,
+        "externalCitations": 2,
+        "noteCount": 1
+      }
+    ],
+    "researchRuns": 2,
+    "actions": 1,
+    "knowledgeNotes": 1,
+    "humanEdit": true,
+    "oldApprovalDenied": true,
+    "approvalReplay": true,
+    "anonymousSourceDenied": true,
+    "calls": 30,
+    "elapsedMs": 42521,
+    "proposalMode": "GROUNDED_FALLBACK",
+    "initialContentLength": 2830,
+    "compressedContentLength": 2830,
+    "fallbackContentLength": 1708
+  },
+  "databaseFacts": {
+    "users": 1,
+    "documents": 2,
+    "readyDocuments": 2,
+    "runs": 2,
+    "completedRuns": 2,
+    "actions": 1,
+    "executedActions": 1,
+    "notes": 1,
+    "privateCitations": 3,
+    "externalCitations": 2,
+    "plannerModel": "qwen3.8-flash",
+    "synthesisModel": "qwen3.7-flash",
+    "embeddingModel": "text-embedding-v4",
+    "imageId": "sha256:d3c9187212d130c2a3c9d85e41556d57371e871a1cf6f118e9459981de0fb752"
+  },
+  "fallbackProof": {
+    "contentLength": 1708,
+    "selectedWholeClaims": 8,
+    "allBodyClaimsMatchPersistedReport": true,
+    "sourceRunMatches": true,
+    "actionStatus": "EXECUTED",
+    "actionVersion": 2,
+    "finalLengthContract": true
+  },
+  "assembly": {
+    "files": 155,
+    "mismatches": []
+  },
+  "c8": {
+    "summary": {
+      "totalCases": 25,
+      "matrixCases": 25,
+      "passed": 25,
+      "failed": 0,
+      "incomplete": 0
+    },
+    "metrics": {
+      "modelCalls": 5,
+      "toolCalls": 3,
+      "invalid_citations": 0,
+      "externalCalls": 1,
+      "retrieval_total": 10,
+      "retrieval_hits": 10,
+      "retrieval_rr": 9.5,
+      "embeddingCalls": 10,
+      "unsupported_deterministic_claims": 0,
+      "answerable_total": 4,
+      "answerable_success": 4,
+      "abstention_total": 2,
+      "abstention_success": 2,
+      "unsupported_answer_count": 0,
+      "note_fidelity_total": 5,
+      "note_fidelity_pass": 5,
+      "cross_workspace_leaks": 0,
+      "unapproved_writes": 0,
+      "tamper_accepts": 0,
+      "duplicate_knowledge_notes": 0,
+      "failure_handled_count": 5,
+      "partial_ready_count": 0,
+      "retry_success_count": 3,
+      "timeout_handled_count": 1,
+      "cancel_handled_count": 1,
+      "external_degradation_success_count": 4,
+      "retrieval_hit_at_3": 1,
+      "retrieval_mrr": 0.95,
+      "answerable_success_rate": 1,
+      "unsupported_abstention_rate": 1,
+      "note_fidelity_pass_rate": 1
+    },
+    "hardGates": {
+      "cross_workspace_leaks": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "unapproved_writes": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "duplicate_knowledge_notes": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "invalid_citations": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "unsupported_deterministic_claims": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "unsupported_answer_count": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "partial_ready_count": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      },
+      "tamper_accepts": {
+        "observed": 0,
+        "required": 0,
+        "status": "PASS"
+      }
+    },
+    "baselineComparison": {
+      "changes": [
+        {
+          "name": "private-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "mixed-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "insufficient-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "knowledge-write",
+          "change": "unchanged"
+        },
+        {
+          "name": "human-edit",
+          "change": "unchanged"
+        },
+        {
+          "name": "retrieval-gold",
+          "change": "unchanged"
+        },
+        {
+          "name": "citation-validity",
+          "change": "unchanged"
+        },
+        {
+          "name": "citation-support-gold",
+          "change": "unchanged"
+        },
+        {
+          "name": "answerable-behavior",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported-abstention",
+          "change": "unchanged"
+        },
+        {
+          "name": "note-fidelity",
+          "change": "unchanged"
+        },
+        {
+          "name": "external-evidence-quality",
+          "change": "unchanged"
+        },
+        {
+          "name": "cross-workspace-isolation",
+          "change": "unchanged"
+        },
+        {
+          "name": "unapproved-write",
+          "change": "unchanged"
+        },
+        {
+          "name": "approval-boundaries",
+          "change": "unchanged"
+        },
+        {
+          "name": "duplicate-notes",
+          "change": "unchanged"
+        },
+        {
+          "name": "tool-injection",
+          "change": "unchanged"
+        },
+        {
+          "name": "report-injection",
+          "change": "unchanged"
+        },
+        {
+          "name": "file-failures",
+          "change": "unchanged"
+        },
+        {
+          "name": "index-atomic-retry",
+          "change": "unchanged"
+        },
+        {
+          "name": "runtime-limits",
+          "change": "unchanged"
+        },
+        {
+          "name": "timeout-cancel",
+          "change": "unchanged"
+        },
+        {
+          "name": "external-degradation",
+          "change": "unchanged"
+        },
+        {
+          "name": "write-rollback",
+          "change": "unchanged"
+        },
+        {
+          "name": "provider-failure",
+          "change": "unchanged"
+        },
+        {
+          "name": "cross_workspace_leaks",
+          "change": "unchanged"
+        },
+        {
+          "name": "unapproved_writes",
+          "change": "unchanged"
+        },
+        {
+          "name": "duplicate_knowledge_notes",
+          "change": "unchanged"
+        },
+        {
+          "name": "invalid_citations",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_deterministic_claims",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_answer_count",
+          "change": "unchanged"
+        },
+        {
+          "name": "partial_ready_count",
+          "change": "unchanged"
+        },
+        {
+          "name": "tamper_accepts",
+          "change": "unchanged"
+        },
+        {
+          "name": "retrieval_hit_at_3",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_abstention_rate",
+          "change": "unchanged"
+        },
+        {
+          "name": "answerable_success_rate",
+          "change": "unchanged"
+        },
+        {
+          "name": "note_fidelity_pass_rate",
+          "change": "unchanged"
+        }
+      ],
+      "regressed": false
+    },
+    "thresholdsUnchanged": true,
+    "baselineUnchanged": true,
+    "addedFidelitySubcase": true
+  },
+  "verification": {
+    "referenceInitial": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "referenceFinalReleaseCheck": {
+      "command": "npm run release:check",
+      "exit": 0,
+      "includes": [
+        "lint",
+        "typecheck",
+        "55 tests",
+        "build",
+        "eval baseline comparison",
+        "production/full audit"
+      ]
+    },
+    "referenceCi": {
+      "command": "npm ci",
+      "exit": 0
+    },
+    "platformCi": {
+      "command": "npm ci",
+      "exit": 0
+    },
+    "platformInitial": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 1
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "platformFinalContentCheck": {
+      "command": "npm run check",
+      "exit": 0
+    },
+    "platformTests": 84,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "environmentalFailure": "Initial release check encountered Windows Prisma DLL lock from parallel security process; rerun serially passed",
+    "contentCheckRepair": "Additional fallback fidelity subcase integrated into existing note-fidelity case; 25-case baseline retained"
+  },
+  "dependencies": {
+    "platformProduction": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "platformFull": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "referenceProduction": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "referenceFull": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "devPolicy": "ACCEPTED DEV TOOLCHAIN RISK"
+  },
+  "remainingGlobalBlockers": [
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim pending cloud evidence"
+  ],
+  "unchanged": [
+    "Planner protocol/model/budgets",
+    "approval token/hash/version/transaction/replay/concurrency/rollback",
+    "DB schema/migrations",
+    "C8 gold/baseline/thresholds",
+    "entitlement/Capstone locked/29 Stage lessons/pricing"
+  ],
+  "filesChanged": [
+    "course-content/internal/capstone/c7/lesson-draft.md",
+    "course-content/internal/capstone/c7/overlay/lib/knowledge-note-provider.ts",
+    "course-content/internal/capstone/c7/overlay/test/knowledge-note.test.ts",
+    "course-content/internal/capstone/c8/overlay/eval/cases.mjs",
+    "course-content/internal/capstone/c9/lesson-draft.md",
+    "docs/capstone-local-release-fix-evidence.json",
+    "docs/capstone-release-readiness-audit.md"
+  ]
+}

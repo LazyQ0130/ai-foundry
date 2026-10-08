@@ -233,3 +233,5 @@ git diff --check
 :::
 
 更新 docs/architecture.md，画出 Model→Proposal→Server validation→Human exact review→Persisted args execution→Note。本课继续 Internal Authoring；C8 的 Eval、C9 的进程恢复/部署与最终交付不在本轮实现。
+
+可靠性补充：AI Proposal → One bounded compression → Grounded deterministic fallback。仅当两次结果都只是 content 超长时，服务器从当前 Run 已持久化并验证的 Grounded Report 中，以完整 Claim 确定性组装不超过 1850 字符的可编辑草稿，复用初始合法标题；不截断、不增加事实、不再调用模型。安全日志区分 MODEL、MODEL_COMPRESSED、GROUNDED_FALLBACK。这是安全降级，不代表 AI 总结成功。模型负责可读性，服务器负责产品契约；草稿仍为 PROPOSED，必须经用户 Edit / Reject / Approve，sourceRunId 保留报告与引用来源。其他错误继续安全失败。

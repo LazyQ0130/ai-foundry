@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { knowledgeNoteArgs, type KnowledgeNoteProposal } from './knowledge-note-contract'
-import type { GroundedReport } from './grounded-report'
+import { groundedReportSchema, MAX_REPORT_CLAIMS, type GroundedReport } from './grounded-report'
 import { chatCompletion, firstMessage } from './research-chat'
 
 const overlengthOnly = knowledgeNoteArgs.extend({ content: z.string().trim().min(2001).max(12_000) }).strict()
@@ -8,6 +8,29 @@ function proposalMessage(raw: unknown): unknown {
   const message = firstMessage(raw)
   if (message.finish_reason !== 'stop' || message.tool_calls?.length || !message.content || message.content.length > 12_000) throw new Error('invalid')
   return JSON.parse(message.content)
+}
+
+// Only complete validated Claims enter this extractive, editable draft. No model facts.
+export function groundedNoteFallback(title: string, report: GroundedReport): KnowledgeNoteProposal {
+  const parsed = groundedReportSchema.parse(report)
+  const claims = [...parsed.summary, ...parsed.findings, ...parsed.analysis, ...parsed.conclusion]
+  if (parsed.answerability !== 'grounded' || !claims.length || claims.length > MAX_REPORT_CLAIMS) throw new Error('invalid')
+  let content = ''
+  const seen = new Set<string>()
+  // Schema has no separate limitations field; retain caveats verbatim within Claims.
+  for (const [section, heading] of [['summary', '研究摘要'], ['conclusion', '研究结论'], ['findings', '关键发现'], ['analysis', '分析与限制']] as const) {
+    let included = false
+    for (const claim of parsed[section]) {
+      if (seen.has(claim.text)) continue
+      const addition = (included ? '\n\n' : (content ? '\n\n' : '') + '## ' + heading + '\n\n') + claim.text
+      if (content.length + addition.length > 1850) continue
+      content += addition; included = true; seen.add(claim.text)
+    }
+  }
+  return knowledgeNoteArgs.parse({ title, content })
+}
+function recordMode(proposalMode: 'MODEL' | 'MODEL_COMPRESSED' | 'GROUNDED_FALLBACK', content: string) {
+  console.info(JSON.stringify({ event: 'knowledge_note_proposal', proposalMode, contentLength: content.length }))
 }
 
 export type NoteSource = { citationKey: string; title: string; sourceType: string; excerpt: string }
@@ -31,7 +54,7 @@ export async function generateKnowledgeNoteProposal(report: GroundedReport, sour
     proposalSignal.throwIfAborted()
     const value = proposalMessage(raw)
     const valid = knowledgeNoteArgs.safeParse(value)
-    if (valid.success) return valid.data
+    if (valid.success) { recordMode('MODEL', valid.data.content); return valid.data }
     // Only a complete, otherwise-valid proposal may enter the compression path.
     const initial = overlengthOnly.parse(value)
     console.info(JSON.stringify({ event: 'knowledge_note_compression', phase: 'START', initialContentLength: initial.content.length }))
@@ -41,7 +64,20 @@ export async function generateKnowledgeNoteProposal(report: GroundedReport, sour
       { role: 'user', content: JSON.stringify({ proposal: initial }) },
     ], { signal: proposalSignal, maxTokens: 1800 })
     proposalSignal.throwIfAborted()
-    const final = knowledgeNoteArgs.parse(proposalMessage(compressed))
+    const compressedValue = proposalMessage(compressed)
+    const finalResult = knowledgeNoteArgs.safeParse(compressedValue)
+    if (!finalResult.success) {
+      // A second otherwise-valid overlength response is the sole fallback trigger.
+      overlengthOnly.parse(compressedValue)
+      const allowed = new Set(sources.map(source => source.citationKey))
+      const claims = [...report.summary, ...report.findings, ...report.analysis, ...report.conclusion]
+      if (claims.some(claim => claim.citationKeys.some(key => !allowed.has(key)))) throw new Error('invalid')
+      const fallback = groundedNoteFallback(initial.title, report)
+      recordMode('GROUNDED_FALLBACK', fallback.content)
+      return fallback
+    }
+    const final = finalResult.data
+    recordMode('MODEL_COMPRESSED', final.content)
     console.info(JSON.stringify({ event: 'knowledge_note_compression', phase: 'COMPLETE', finalContentLength: final.content.length }))
     return final
   } catch { throw new Error('PROPOSAL_PROVIDER_FAILED') }

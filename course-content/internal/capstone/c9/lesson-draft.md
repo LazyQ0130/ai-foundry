@@ -268,3 +268,5 @@ C9 仍为 Internal Authoring。Capstone 暂未解锁，正式 Stage 课程仍为
 :::
 
 毕业项目现在应当既能操作，也能解释：你为什么这样设计、如何证明边界、失败时怎样处理，以及哪些事情还没有被验证。
+
+可靠性补充：AI Proposal → One bounded compression → Grounded deterministic fallback。仅当两次结果都只是 content 超长时，服务器从当前 Run 已持久化并验证的 Grounded Report 中，以完整 Claim 确定性组装不超过 1850 字符的可编辑草稿，复用初始合法标题；不截断、不增加事实、不再调用模型。安全日志区分 MODEL、MODEL_COMPRESSED、GROUNDED_FALLBACK。这是安全降级，不代表 AI 总结成功。模型负责可读性，服务器负责产品契约；草稿仍为 PROPOSED，必须经用户 Edit / Reject / Approve，sourceRunId 保留报告与引用来源。其他错误继续安全失败。

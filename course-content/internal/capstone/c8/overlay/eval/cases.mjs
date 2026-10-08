@@ -99,6 +99,15 @@ add('note-fidelity','quality','deterministic',['preserve facts','reject negation
   const pass=noteFidelity(note.content,[source.text.slice(0,180)],row.forbidden)
   p.count('note_fidelity_total');p.count('note_fidelity_pass',Number(pass));p.check('actual proposal fidelity '+row.source,pass)
   p.check('hallucinated mock caught '+row.source,!noteFidelity(note.content+' '+row.forbidden[0],[source.text.slice(0,180)],row.forbidden))}
+ const prior=process.env.AI_NOTE_MODE;process.env.AI_NOTE_MODE='real'
+ try {
+  const text='NumaDB did not improve latency by 37 ms. Orion may help; results remain uncertain and limited to the synthetic 2025 fixture.'
+  const e=evidence(text),report=validateGroundedReport({answerability:'grounded',summary:[{text,citationKeys:[e.citationKey]}],findings:[],analysis:[],conclusion:[]},[e]).report
+  let calls=0
+  const note=await generateKnowledgeNoteProposal(report,[{citationKey:e.citationKey,title:'fixture',sourceType:'KNOWLEDGE',excerpt:'unused'}],AbortSignal.timeout(3000),async()=>{calls++;return {choices:[{finish_reason:'stop',message:{content:JSON.stringify({title:'Valid title',content:'x'.repeat(calls===1?2800:2600)})}}]}})
+  const pass=note.content==='## 研究摘要\n\n'+text && calls===2 && note.content.length<=2000
+  p.count('note_fidelity_total');p.count('note_fidelity_pass',Number(pass));p.check('fallback preserves whole original claim including limits',pass)
+ }finally{if(prior===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=prior}
 })
 add('external-evidence-quality','quality','stub',['metadata excluded','abstract allowed','invalid DOI URL rejected'],async(c,p)=>{
  p.check('metadata excluded',externalEvidence({...externalReference,supportLevel:'REFERENCE_METADATA',evidenceText:null})===null)
