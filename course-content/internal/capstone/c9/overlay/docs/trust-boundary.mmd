@@ -1,0 +1,13 @@
+flowchart TB
+ Model[Model: proposes read action] --> Policy[Server: policy / strict args / budget]
+ Policy --> Tools[Read-only scoped tools]
+ Tools --> Evidence[Untrusted evidence data]
+ Evidence --> Grounding[Allowed citation set / structured report]
+ Grounding --> Proposal[Model: proposes Note / no write tool]
+ Proposal --> Human[Human Review / Edit]
+ Human --> Approval[Exact args / version / HMAC / user-workspace binding]
+ Approval --> Lock[Server locked transaction / idempotency key]
+ Lock --> Note[KnowledgeNote]
+ Browser[Browser userId / workspaceId is not authority] --> Session[Server Session -> User -> Workspace]
+ Session --> Policy
+ Session --> Approval

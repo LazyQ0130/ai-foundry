@@ -1,0 +1,19 @@
+flowchart TB
+ Browser[Browser] --> App[Next.js Research Workspace]
+ App --> Auth[Session / Workspace]
+ App --> Knowledge[Knowledge Pipeline / Parser]
+ Knowledge --> Storage[Private S3 / Signed Access]
+ Knowledge --> DB[(PostgreSQL / pgvector 1024)]
+ App --> Research[Research Service / Bounded Runtime]
+ Research --> Search[search_knowledge / Workspace Predicate]
+ Search --> DB
+ Research --> MCP[Authenticated MCP / Fixed Crossref Adapter]
+ MCP --> Crossref[Public Abstract / Metadata]
+ Research --> Provider[Server-only AI Provider]
+ Research --> Report[Grounded Report / Citation Snapshot]
+ Report --> DB
+ Report --> Review[Human Review / Exact Approval]
+ Review --> Tx[Locked Transaction / Idempotency]
+ Tx --> Note[KnowledgeNote]
+ Note --> DB
+ Recovery[Operator Stale Recovery / No Resume] --> DB

@@ -1,0 +1,54 @@
+{
+  "name": "ai-research-workspace-c9-reference",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "lint": "eslint .",
+    "typecheck": "prisma generate && tsc --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "db:migrate": "prisma migrate deploy",
+    "test:db": "node scripts/c7-http-smoke.mjs && tsx --test test/knowledge-write.integration.ts",
+    "eval:capstone": "tsx eval/runner.mjs",
+    "eval:capstone:real": "tsx eval/runner.mjs --real",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run build && npm run eval:capstone",
+    "check:production-env": "node scripts/check-production-env.mjs",
+    "recover:stale-runs": "node scripts/reconcile-stale-runs.mjs",
+    "release:check": "tsx scripts/release-check.mjs",
+    "test:recovery": "node --test test/recovery.integration.mjs",
+    "smoke:production": "node scripts/production-smoke.mjs",
+    "smoke:staging": "node scripts/staging-smoke.mjs"
+  },
+  "dependencies": {
+    "next": "15.5.27",
+    "react": "19.0.8",
+    "react-dom": "19.0.8",
+    "zod": "4.6.5",
+    "@prisma/client": "6.19.3",
+    "@aws-sdk/client-s3": "3.1147.0",
+    "@aws-sdk/s3-request-presigner": "3.1147.0",
+    "pdfjs-dist": "6.4.299",
+    "@modelcontextprotocol/client": "2.2.0",
+    "@modelcontextprotocol/server": "2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.15",
+    "@types/react": "19.0.14",
+    "@types/react-dom": "19.0.6",
+    "eslint": "9.39.1",
+    "typescript": "5.7.3",
+    "prisma": "6.19.3",
+    "tsx": "4.23.15",
+    "typescript-eslint": "8.71.1",
+    "eslint-plugin-react-hooks": "7.1.1"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2",
+    "postcss": "8.5.23"
+  }
+}
