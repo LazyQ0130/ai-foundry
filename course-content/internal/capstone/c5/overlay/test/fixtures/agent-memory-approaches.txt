@@ -1,0 +1,7 @@
+Internal training fixture: two approaches to persistent agent memory.
+
+Approach A, append-only event log: store each memory change as an event. Reconstruct current state by replaying events or reading periodic snapshots. The log preserves an audit trail, but replay and storage grow with history. Concurrent writers need ordering or conflict handling to keep a consistent state.
+
+Approach B, snapshot-based key-value store: store the latest memory state by key. Reads are simple and usually cheaper than replaying a long event stream. Updating the same key needs version checks or transactions to prevent lost updates. Historical changes are not retained unless a separate version history is added.
+
+Both approaches require access control for private memory. These notes describe design trade-offs, not measured performance for a particular deployment.
