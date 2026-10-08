@@ -20,7 +20,7 @@ export function plannerProtocol() {
    const call = message.tool_calls[0] as { type?: unknown; function?: { name?: unknown; arguments?: unknown } } | null
    if (call?.type !== 'function' || call.function?.name !== 'plan_research_step' || typeof call.function.arguments !== 'string') throw new Error()
    const decision = schema.parse(JSON.parse(call.function.arguments))
-   
+
    if (decision.action === 'ready') return { type: 'ready' as const, toolCalls: [] as [] }
    return { type: 'tool_calls' as const, toolCalls: [{ name: decision.action, arguments: JSON.stringify({ query: decision.query }) }] }
   } catch { throw new ResearchProviderError('INVALID_MODEL_TURN') }
