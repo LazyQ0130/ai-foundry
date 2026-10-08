@@ -102,3 +102,21 @@ test('planner compatibility acceptance matrix: stop needs a valid forced functio
  for(const finish of ['length','content_filter','unknown'])for(const calls of [[],[ready],[ready,ready]])
   await assert.rejects(decision(calls,finish),/INVALID_MODEL_TURN/)
 }))
+
+
+test('Planner model override is isolated from synthesis, with backward-compatible fallback and thinking disabled',()=>real(async()=>{
+ const keys=['AI_CHAT_BASE_URL','AI_CHAT_API_KEY','AI_CHAT_MODEL','AI_CHAT_DISABLE_THINKING','AI_PLANNER_MODEL'];const previous=keys.map(k=>process.env[k]);const original=globalThis.fetch
+ try{
+  Object.assign(process.env,{AI_CHAT_BASE_URL:'https://provider.invalid',AI_CHAT_API_KEY:'synthetic-unit-only',AI_CHAT_MODEL:'qwen3.7-flash',AI_CHAT_DISABLE_THINKING:'1',AI_PLANNER_MODEL:'qwen3.8-flash'})
+  const bodies:Record<string,unknown>[]=[]
+  globalThis.fetch=async(_url,options)=>{bodies.push(JSON.parse(String(options?.body)));return Response.json({choices:[{finish_reason:'stop',message:{content:null,tool_calls:[ready]}}]})}
+  await decideResearchAction(input)
+  await chatCompletion([],{signal:input.signal,maxTokens:1800})
+  delete process.env.AI_PLANNER_MODEL;await decideResearchAction(input)
+  process.env.AI_PLANNER_MODEL='qwen3.7-plus';await decideResearchAction(input)
+  assert.deepEqual(bodies.map(b=>b.model),['qwen3.8-flash','qwen3.7-flash','qwen3.7-flash','qwen3.7-plus'])
+  for(const body of bodies)assert.equal(body.enable_thinking,false)
+  assert.deepEqual(bodies[1].response_format,{type:'json_object'})
+  for(const i of [0,2,3]){assert.equal(bodies[i].max_tokens,500);assert.equal(bodies[i].parallel_tool_calls,false);assert.ok(!('response_format' in bodies[i]))}
+ }finally{globalThis.fetch=original;keys.forEach((key,i)=>{if(previous[i]===undefined)delete process.env[key];else process.env[key]=previous[i]})}
+}))

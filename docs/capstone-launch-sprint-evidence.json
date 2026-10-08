@@ -1,0 +1,1191 @@
+{
+  "sprint": "Launch Sprint · Close Local Release Blockers",
+  "date": "2026-10-08",
+  "baseline": "c94041dc58bda2ca7c0edf521d88494bb7171e6d",
+  "verdict": "BLOCKED",
+  "overallRelease": "BLOCKED",
+  "gate": {
+    "qualification": 5,
+    "privateRuns": 3,
+    "mixedRuns": 2,
+    "completeFullSmokeRequired": true,
+    "permanentProvider100PercentSuccessRequired": false,
+    "proposalStabilitySamplesRequired": false
+  },
+  "modelConfiguration": {
+    "planner": "qwen3.8-flash",
+    "synthesis": "qwen3.7-flash",
+    "env": "AI_PLANNER_MODEL",
+    "fallback": "AI_CHAT_MODEL",
+    "sharedAdapterModelOption": true,
+    "separateHttpAdapter": false,
+    "disableThinking": true,
+    "businessPromptSchemaRuntimeBudgetsUnchangedDuringQualification": true
+  },
+  "candidates": [
+    {
+      "model": "qwen3.8-flash",
+      "passed": 5,
+      "total": 5,
+      "exit": 0
+    }
+  ],
+  "selectedPlanner": {
+    "model": "qwen3.8-flash",
+    "passed": 5,
+    "total": 5
+  },
+  "qualification": {
+    "candidate": "qwen3.8-flash",
+    "gate": 5,
+    "runs": [
+      {
+        "run": 1,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1783,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 2,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 3109,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_knowledge",
+          "search_external_references",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 3,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1613,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 4,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 4014,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_knowledge",
+          "search_external_references",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 5,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 2103,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      }
+    ],
+    "diagnostics": [
+      {
+        "run": 1,
+        "turn": 0,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 49,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1184,
+        "category": "NONE"
+      },
+      {
+        "run": 1,
+        "turn": 1,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 19,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 595,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 0,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 41,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1171,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 1,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 33,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1052,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 2,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 19,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 882,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 49,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1078,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 1,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 19,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 534,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 41,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1650,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 1,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 33,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1033,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 2,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 19,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1329,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1559,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 1,
+        "httpStatus": 200,
+        "requestedModel": "qwen3.8-flash",
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 19,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 542,
+        "category": "NONE"
+      }
+    ],
+    "compatibilityEvents": [
+      {
+        "run": 1,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 1,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 2,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 2,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 2,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 3,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 5,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      }
+    ],
+    "compatibilityCounts": {
+      "standardToolCalls": 0,
+      "stopWithValidFunction": 12,
+      "invalid": 0
+    },
+    "passed": 5,
+    "total": 5,
+    "invalidModelTurns": 0,
+    "retry": false
+  },
+  "fullSmoke": {
+    "invocations": 2,
+    "attempts": [
+      {
+        "freshDatabase": "capstone_launch_staging",
+        "repairPresent": false,
+        "result": "FAIL",
+        "phase": "proposal",
+        "errorCategory": "HTTP_502",
+        "retryOccurred": false,
+        "partialSideEffect": {
+          "researchRuns": 2,
+          "actionsProposed": 0,
+          "knowledgeNotes": 0
+        },
+        "calls": 18,
+        "elapsedMs": 38439
+      },
+      {
+        "freshDatabase": "capstone_launch_repaired",
+        "repairPresent": true,
+        "result": "FAIL",
+        "phase": "proposal",
+        "errorCategory": "HTTP_502",
+        "retryOccurred": false,
+        "partialSideEffect": {
+          "researchRuns": 2,
+          "actionsProposed": 0,
+          "knowledgeNotes": 0
+        },
+        "calls": 18,
+        "elapsedMs": 40851
+      }
+    ],
+    "finalExit": 1,
+    "finalFacts": {
+      "users": 1,
+      "documents": 2,
+      "readyDocuments": 2,
+      "runs": 2,
+      "completedRuns": 2,
+      "actions": 0,
+      "executedActions": 0,
+      "notes": 0,
+      "privateCitations": 3,
+      "externalCitations": 2,
+      "plannerModel": "qwen3.8-flash",
+      "synthesisModel": "qwen3.7-flash",
+      "embeddingModel": "text-embedding-v4",
+      "imageId": "sha256:4cba368d1edbb1371bfd553ceb9b4f3418b0674401238b108a2ffdf4eded18ea"
+    },
+    "diagnostics": [
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 866,
+        "toolCallCount": 0,
+        "outputTokens": 164,
+        "latencyMs": 1964,
+        "category": "NONE"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 52,
+        "latencyMs": 1113,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 19,
+        "latencyMs": 507,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 2369,
+        "toolCallCount": 0,
+        "outputTokens": 766,
+        "latencyMs": 6798,
+        "category": "NONE"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 849,
+        "toolCallCount": 0,
+        "outputTokens": 166,
+        "latencyMs": 2390,
+        "category": "NONE"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 40,
+        "latencyMs": 1238,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 33,
+        "latencyMs": 1071,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 33,
+        "latencyMs": 1549,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": true,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "outputTokens": 19,
+        "latencyMs": 910,
+        "category": "NONE"
+      },
+      {
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 3236,
+        "toolCallCount": 0,
+        "outputTokens": 1236,
+        "latencyMs": 10111,
+        "category": "NONE"
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 2995,
+        "toolCallCount": 0,
+        "outputTokens": 521,
+        "titleLength": 86,
+        "proposalLength": 2869,
+        "latencyMs": 6165,
+        "category": "OVERLENGTH_ONLY"
+      },
+      {
+        "event": "knowledge_note_compression",
+        "phase": "START",
+        "initialContentLength": 2869
+      },
+      {
+        "event": "provider_diagnostic",
+        "planner": false,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "contentExists": true,
+        "contentLength": 2990,
+        "toolCallCount": 0,
+        "outputTokens": 515,
+        "titleLength": 86,
+        "proposalLength": 2869,
+        "latencyMs": 3475,
+        "category": "OVERLENGTH_ONLY"
+      }
+    ],
+    "completed": "health/register/login/TXT+PDF READY/retrieval/private Run+report+citations/mixed Run+MCP+Crossref+report+citations",
+    "notReached": [
+      "Proposal persisted",
+      "Edit",
+      "old token rejection",
+      "Approve",
+      "Replay",
+      "one Note",
+      "final protected source/anonymous denial"
+    ],
+    "noPartialActionOrNote": true
+  },
+  "proposal": {
+    "firstSmoke": {
+      "category": "OVERLENGTH_ONLY",
+      "titleLength": 64,
+      "contentLength": 2425
+    },
+    "secondSmoke": {
+      "initialContentLength": 2869,
+      "compressionOutputLength": 2869,
+      "category": "OVERLENGTH_ONLY",
+      "compressionCalls": 1,
+      "final": "PROPOSAL_PROVIDER_FAILED / HTTP_502"
+    },
+    "repair": {
+      "implemented": true,
+      "onlyOverlengthOtherwiseValid": true,
+      "maxCompressionCalls": 1,
+      "maxTotalCalls": 2,
+      "sharedDeadlineMs": 30000,
+      "input": "Existing proposal only; no Report, sources, retrieval or tools",
+      "strictFinalLimits": {
+        "title": 120,
+        "content": 2000
+      },
+      "truncation": false,
+      "relaxedLimit": false,
+      "deterministicTests": {
+        "passed": 7,
+        "total": 7
+      },
+      "realCompressionSucceeded": false
+    },
+    "extraStabilitySamplesRun": 0,
+    "modelStillExistingAiChat": true
+  },
+  "regressions": {
+    "referenceUnitTests": 53,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "c7AfterRepair": [
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "approvalDatabaseTests": 5,
+    "c8": {
+      "summary": {
+        "totalCases": 25,
+        "matrixCases": 25,
+        "passed": 25,
+        "failed": 0,
+        "incomplete": 0
+      },
+      "hardGates": {
+        "cross_workspace_leaks": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unapproved_writes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "duplicate_knowledge_notes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "invalid_citations": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_deterministic_claims": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_answer_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "partial_ready_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "tamper_accepts": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        }
+      },
+      "comparison": {
+        "changes": [
+          {
+            "name": "private-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "mixed-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "insufficient-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "knowledge-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "human-edit",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-validity",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-support-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable-behavior",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported-abstention",
+            "change": "unchanged"
+          },
+          {
+            "name": "note-fidelity",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-evidence-quality",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross-workspace-isolation",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "approval-boundaries",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate-notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "tool-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "report-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "file-failures",
+            "change": "unchanged"
+          },
+          {
+            "name": "index-atomic-retry",
+            "change": "unchanged"
+          },
+          {
+            "name": "runtime-limits",
+            "change": "unchanged"
+          },
+          {
+            "name": "timeout-cancel",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-degradation",
+            "change": "unchanged"
+          },
+          {
+            "name": "write-rollback",
+            "change": "unchanged"
+          },
+          {
+            "name": "provider-failure",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross_workspace_leaks",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved_writes",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate_knowledge_notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "invalid_citations",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_deterministic_claims",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_answer_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "partial_ready_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "tamper_accepts",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval_hit_at_3",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_abstention_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable_success_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "note_fidelity_pass_rate",
+            "change": "unchanged"
+          }
+        ],
+        "regressed": false
+      },
+      "noteFidelity": {
+        "passed": 4,
+        "total": 4
+      }
+    },
+    "fidelityLimit": "Deterministic Note Fidelity and transport/repair tests do not prove semantic accuracy of arbitrary real output"
+  },
+  "reference": {
+    "freshAssembly": {
+      "files": 155,
+      "mismatches": []
+    },
+    "npmCi": "PASS",
+    "verification": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "migrations": {
+      "method": "migrate deploy",
+      "count": 6,
+      "isolatedDatabases": [
+        "capstone_c8_eval",
+        "capstone_c9_test",
+        "capstone_launch_staging",
+        "capstone_launch_repaired"
+      ],
+      "productionOrPlatformDbUsed": false
+    }
+  },
+  "platform": {
+    "npmCi": "PASS",
+    "unitTests": 84,
+    "verification": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "finalCourseCheck": "PASS: 56 prompts, 61 checkKeys, Stage29, locked",
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "dependencyRisk": "ACCEPTED DEV TOOLCHAIN RISK; policy/dependencies unchanged",
+    "runtimeTree": {
+      "exit": 0,
+      "found": [
+        "@prisma/client > prisma > @prisma/config > c12 > chokidar@4.0.3"
+      ]
+    },
+    "artifactScan": {
+      "files": 280,
+      "matches": []
+    }
+  },
+  "localBlockers": {
+    "plannerQualification": "CLOSED",
+    "fullLocalStaging": "REMAINING",
+    "proposalContractInRealSmoke": "REMAINING",
+    "safeFailure": "VERIFIED: no partial Action/Note, completed reports remain; no fake report"
+  },
+  "cloud": {
+    "status": "NOT_VERIFIED",
+    "target": "NOT_PROVIDED",
+    "targetInformationRequested": true,
+    "execution": "NOT_STARTED: complete local Smoke gate not satisfied"
+  },
+  "globalBlockers": [
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim until cloud PASS"
+  ],
+  "scope": {
+    "noNewPhase": true,
+    "noTag": true,
+    "noPublishing": true,
+    "noUnlock": true,
+    "noEntitlementOrPricingChange": true,
+    "noTailwindMigration": true
+  },
+  "filesChanged": [
+    "course-content/internal/capstone/c5/lesson-draft.md",
+    "course-content/internal/capstone/c5/overlay/.env.example",
+    "course-content/internal/capstone/c5/overlay/lib/research-chat.ts",
+    "course-content/internal/capstone/c5/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c6/overlay/.env.example",
+    "course-content/internal/capstone/c6/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c6/overlay/test/research-model.test.ts",
+    "course-content/internal/capstone/c7/lesson-draft.md",
+    "course-content/internal/capstone/c7/overlay/.env.example",
+    "course-content/internal/capstone/c7/overlay/lib/knowledge-note-provider.ts",
+    "course-content/internal/capstone/c7/overlay/test/knowledge-note.test.ts",
+    "course-content/internal/capstone/c9/lesson-draft.md",
+    "course-content/internal/capstone/c9/overlay/.env.production.example",
+    "course-content/internal/capstone/c9/overlay/scripts/check-production-env.mjs",
+    "course-content/internal/capstone/c9/overlay/test/production-env.test.ts",
+    "docs/capstone-launch-sprint-evidence.json",
+    "docs/capstone-release-readiness-audit.md"
+  ]
+}

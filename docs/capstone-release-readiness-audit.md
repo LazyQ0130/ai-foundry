@@ -698,3 +698,49 @@ fresh Bootstrap+C1…C9 → .runtime/phase-a4/c9；独立canonical再次组装 *
 Cloud Runtime/DB/R2/HTTPS MCP/Production Smoke/Backup-Rollback均 **NOT VERIFIED**。Publishing Loader=MISSING、Progress0/9=MISSING、Capstone server entitlement=PARTIAL。本轮未修改这些集成、Pricing、entitlement、正式Stage统计或解锁，不创建Release Tag。
 
 安全证据 docs/capstone-phase-a4-evidence.json；保留旧Audit+A/A2/A3。剩余本地Provider qualification、Full Smoke、真实Proposal稳定性，以及Cloud Verification/Publishing Integration；Production Product claim无依据，整体Release仍BLOCKED。提交消息 Normalize Capstone planner provider compatibility；最终SHA/origin-main/working-tree见提交后实测。
+
+
+# Launch Sprint · Close Local Release Blockers
+
+2026-10-08；基线c94041dc58bda2ca7c0edf521d88494bb7171e6d。**Launch Sprint BLOCKED：Planner qualification已关闭，Full Local Staging blocker仍未关闭。** 不创建A5/A6；本轮采用用户新授权Gate：选定模型5/5 + 一次完整Full Smoke + C8 25/25/8 Hard Gates零 + production High/Critical零。不要求永久100% Provider成功，不运行五次Proposal样本。原Audit、A/A2/A3/A4、qwen3.7-flash 9/10与历史2318字符证据保留。
+
+## Planner selection
+
+Shared chat primitive支持可选model；缺省仍AI_CHAT_MODEL。C5/C6 Planner显式使用AI_PLANNER_MODEL ?? AI_CHAT_MODEL；examples设AI_PLANNER_MODEL=qwen3.8-flash，production checker仅验证可选model名称合法，不硬编码模型。Brief/Report/Note仍为既有qwen3.7-flash。对两款候选与现模型保持同一enable_thinking=false设置。没有复制HTTP adapter或加入动态Router。
+
+qwen3.8-flash **5/5 PASS**：3 PRIVATE_ONLY、2 PRIVATE_AND_EXTERNAL，全部READY、INVALID_MODEL_TURN0；12 model calls、7 fixture工具执行、19 Provider units，12次stop+合法Function兼容映射。按规则立即SELECT，qwen3.7-plus未测试；没有额外10/20次Probe，没有修改Prompt/Decision schema/业务Registry/sourcePolicy/external exact query/steps/tools/token预算/Evidence/Citation/Report。
+
+## Full Local Staging Smoke — FAIL
+
+共两次独立fresh DB/user/app、真实Provider与Crossref的连续invocation，均不是拼接：
+
+| Attempt | Proposal behavior | Exit / side effects |
+|---|---|---|
+| 1 · before repair | valid title64/content2425，OVERLENGTH_ONLY | exit1；18HTTP/38439ms；2Runs、0Action、0Note |
+| 2 · after one bounded repair | initial2869 → 唯一压缩仍2869 → strict reject | exit1；18HTTP/40851ms；2Runs、0Action、0Note |
+
+两次都已通过health/register/login、TXT/PDF→READY、private retrieval、private Run/report/citation、mixed Run/MCP/真实Crossref/mixed report/citations，并实际到达Proposal。没有完成Edit/旧Token拒绝/Approve/Replay/oneNote/最终source-access链，不能写Full Smoke PASS。
+
+最终独立DB实测：User1、READY documents2、COMPLETED Runs2、private citations3、external citations2、Action0、Note0。原成功报告与Run保持，没有半写或伪报告。Planner=qwen3.8-flash、Report/Note=qwen3.7-flash，与实际容器配置一致。
+
+## One bounded compression repair
+
+第一次真实2425触发条件后才实现。仅首次响应完整JSON、title合法、无额外字段、content字符串且唯一失败为超过2000时调用一次；输入仅原Proposal，不重新研究、不传Report/sources、不调工具。初次生成与压缩共享30秒deadline，总最多2请求。最终仍strict title<=120/content<=2000；无truncate/slice、无放宽、无第二次压缩或自动Provider重试。
+
+deterministic repair **7/7**，涵盖eligibility、共享signal、最多一次、无Report重传、数字/实体/否定/uncertainty/limitation保留、malformed/extra/title/type/finish/超大输入拒绝、再次超长失败与取消。实际第二次Smoke压缩未成功缩短，严格校验正确拒绝并映射PROPOSAL_PROVIDER_FAILED/HTTP502；不以确定性测试替代真实成功。没有追加Smoke或五次Proposal样本刷通过。Provider偶发安全失败是允许的产品行为，但当前仍缺本轮要求的一次完整真实链PASS。
+
+## Verification / course sync
+
+- 最终Reference53/53；ci/lint/typecheck/test/build/Eval/baseline comparison/release:check全部exit0；production/full audit0。
+- C8 **25/25、37 unchanged、8 Hard Gates全零**；Note Fidelity4/4。threshold/gold/baseline未改。
+- C5/C6 HTTP与C7原安全回归通过；repair后C7全量HTTP+数据库5/5再次通过。
+- 最终fresh canonical assembly155files、0 mismatch；独立Eval/security/两次staging库均正式migrate deploy六条migration，不用db push、不用平台或生产DB。
+- Platform ci/typecheck/84tests/check/build/check:bundle通过；修复后Renderer再次通过：56 prompts/61 checkKeys/Stage29/Capstone locked。
+- Production audit：0 High/0 Critical/2 Moderate（exit1）；full5 High/4 Moderate（exit1），维持ACCEPTED DEV TOOLCHAIN RISK，不宣称full clean。不改依赖或Tailwind；受影响运行链缺席，Prisma无关chokidar4例外保留，280编译产物相关import为零。
+- C5最小同步独立Planner model；repair触发后C7/C9最小同步一次压缩边界。学生正文不包含内部发布调试历史。
+
+## Remaining / evidence / Git
+
+本地Planner blocker CLOSED；**Full Smoke与真实Proposal contract blocker REMAINING**。Cloud Verification目标资料已请求，但没有完整local PASS，云执行未开始；Cloud runtime/DB/storage/HTTPS MCP/production smoke/backup-rollback全部NOT VERIFIED。Publishing Integration不执行，Production Product claim仍无依据；正式29节、暂未解锁、Pricing/entitlement不变。没有Release Tag。
+
+证据：docs/capstone-launch-sprint-evidence.json。提交消息 Qualify Capstone planner for launch；最终SHA/origin-main/working-tree见提交后核对。没有创建新的本地Phase或扩大benchmark范围。

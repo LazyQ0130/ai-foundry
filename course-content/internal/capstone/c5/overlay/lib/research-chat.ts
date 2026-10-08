@@ -1,9 +1,9 @@
 export class ResearchProviderError extends Error { constructor(code = 'PROVIDER_FAILED') { super(code) } }
 
-export async function chatCompletion(messages: unknown[], options: { tools?: unknown[]; toolChoice?: 'auto' | 'required' | { type: 'function'; function: { name: string } }; parallelToolCalls?: boolean; jsonMode?: boolean; signal: AbortSignal; maxTokens: number }): Promise<unknown> {
+export async function chatCompletion(messages: unknown[], options: { model?: string; tools?: unknown[]; toolChoice?: 'auto' | 'required' | { type: 'function'; function: { name: string } }; parallelToolCalls?: boolean; jsonMode?: boolean; signal: AbortSignal; maxTokens: number }): Promise<unknown> {
   const base = process.env.AI_CHAT_BASE_URL
   const key = process.env.AI_CHAT_API_KEY
-  const model = process.env.AI_CHAT_MODEL
+  const model = options.model ?? process.env.AI_CHAT_MODEL
   if (!base || !key || !model) throw new ResearchProviderError()
   let url: URL
   try { url = new URL(base) } catch { throw new ResearchProviderError() }
@@ -13,7 +13,7 @@ export async function chatCompletion(messages: unknown[], options: { tools?: unk
     const response = await fetch(`${base.replace(/\/$/, '')}/chat/completions`, {
       method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, temperature: 0, max_tokens: options.maxTokens,
-        ...(model === 'qwen3.7-flash' && process.env.AI_CHAT_DISABLE_THINKING === '1' ? { enable_thinking: false } : {}),
+        ...(['qwen3.7-flash', 'qwen3.8-flash', 'qwen3.7-plus'].includes(model) && process.env.AI_CHAT_DISABLE_THINKING === '1' ? { enable_thinking: false } : {}),
         ...(options.jsonMode === false ? {} : { response_format: { type: 'json_object' } }), messages,
         ...(options.tools ? { tools: options.tools, tool_choice: options.toolChoice ?? 'auto', ...(options.parallelToolCalls === undefined ? {} : { parallel_tool_calls: options.parallelToolCalls }) } : {}) }), signal,
     })

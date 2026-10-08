@@ -165,6 +165,8 @@ Staging full smoke 与 Production safe smoke 分开。增加 release:check 复�
 
 先在隔离 Test/Eval shell 运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；生产 env check 在另一个安全进程进行。
 
+可靠性边界：Note Proposal 若唯一错误为超长，可压缩该 Proposal 一次，初次生成与压缩共享 30 秒 deadline；保留数字、实体、否定、不确定性及适用限制，最终仍执行严格长度校验。其他 Provider 错误安全失败，不产生半 Action 或伪报告。
+
 Staging Full Smoke：Register/Login → synthetic TXT/PDF → READY → private search → Task → private Run → external enabled Run → Grounded Report → Citation/source → Proposal → Human approval → replay → one Note。再检验 bucket anonymous denied、MCP HTTPS、recovery。C8 的破坏性实验只能在 Test/Eval，不能迁到 Production。
 
 Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 bounded mixed Run，检查 health/HTTPS/auth/READY/Citation/Proposal/Approve/replay/source。最多 60 HTTP calls、8 分钟，Run 还有现有预算。数据用 [SMOKE]/smoke- 前缀，不为清理加用户删除 API。

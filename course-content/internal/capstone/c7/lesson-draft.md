@@ -83,7 +83,7 @@ ResearchAction 属于 Run，runId 唯一，canonicalArgs 保存确定性序列�
 
 用户点击「生成知识笔记提议」，客户端只发 {}。服务器按 Session→User→Workspace 查自己的 Run，再读取持久化 Report 和 Citation。只有 COMPLETED、grounded、非空且引用仍与该 Run Snapshot 一致的报告可生成提议；FAILED、CANCELLED、不足证据或没有 Report 都拒绝。
 
-Proposal Provider 仅返回严格 {title,content}，title 1～120，content 1～2000。它只能总结已验证报告，不查 Knowledge/Crossref、不调工具、不添加来源、不产生写副作用。Mock 用于确定性验证，Real 用于 opt-in smoke。Provider 失败不创建半 Action，也不修改成功 Run、报告或 Citation。
+Proposal Provider 仅返回严格 {title,content}，title 1～120，content 1～2000。它只能总结已验证报告，不查 Knowledge/Crossref、不调工具、不添加来源、不产生写副作用。Mock 用于确定性验证，Real 用于 opt-in smoke。仅当首次 JSON/标题/字段全部合法、唯一问题为 content 超过 2000 字符时，允许在同一 30 秒 deadline 内压缩原 Proposal 一次；不重新读取报告或检索，最终仍严格校验，不截断、不放宽、失败不再重试。Provider 失败不创建半 Action，也不修改成功 Run、报告或 Citation。
 
 :::prompt{title="Prompt 2：Note Proposal Provider 与生成入口"}
 

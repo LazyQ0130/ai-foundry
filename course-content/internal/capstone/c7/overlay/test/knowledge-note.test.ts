@@ -80,11 +80,11 @@ test('proposal provider summarizes persisted report, has no tools, rejects provi
   } finally { if (previous === undefined) delete process.env.AI_NOTE_MODE; else process.env.AI_NOTE_MODE = previous }
 })
 
-test('real proposal prompt targets a margin below the strict character cap; overlength fails without truncation or retry', async () => {
+test('real proposal prompt targets a margin below the strict character cap; valid output stays single-call without truncation', async () => {
   const previous = process.env.AI_NOTE_MODE
   process.env.AI_NOTE_MODE = 'real'
   try {
-    for (const length of [1600, 2000, 2300]) {
+    for (const length of [1600, 2000]) {
       let calls = 0
       const content = 'x'.repeat(length)
       const result = generateKnowledgeNoteProposal(report, [], AbortSignal.timeout(3000), async (messages, options) => {
@@ -101,4 +101,43 @@ test('real proposal prompt targets a margin below the strict character cap; over
       assert.equal(calls, 1)
     }
   } finally { if (previous === undefined) delete process.env.AI_NOTE_MODE; else process.env.AI_NOTE_MODE = previous }
+})
+
+
+test('overlength-only proposal has one compression using exact proposal, shared signal, no research; fidelity preserved', async()=>{
+ const previous=process.env.AI_NOTE_MODE;process.env.AI_NOTE_MODE='real'
+ try{
+  const facts='NumaDB did not improve latency by 37 ms. Orion may help; the result is uncertain and limited to the synthetic 2025 fixture.'
+  const initial={title:'NumaDB / Orion limits',content:facts.repeat(30)},compressed={title:initial.title,content:facts}
+  const signals:AbortSignal[]=[];let calls=0
+  const result=await generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async(messages,options)=>{
+   signals.push(options.signal);calls++;assert.equal(options.tools,undefined);assert.equal(options.maxTokens,1800)
+   if(calls===2){const sent=JSON.parse((messages[1] as {content:string}).content);assert.deepEqual(sent,{proposal:initial});assert.ok(!JSON.stringify(sent).includes(args.content))}
+   return {choices:[{finish_reason:'stop',message:{content:JSON.stringify(calls===1?initial:compressed)}}]}
+  })
+  assert.equal(calls,2);assert.equal(signals[0],signals[1]);assert.deepEqual(result,compressed)
+  for(const fact of ['NumaDB','Orion','did not','37 ms','2025','may','uncertain','limited to'])assert.ok(result.content.includes(fact))
+  for(const altered of ['did improve','99 ms','certain result'])assert.ok(!result.content.includes(altered))
+ }finally{if(previous===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=previous}
+})
+
+test('compression eligibility fails closed; malformed/extra/title/type/finish/provider errors never retry',async()=>{
+ const previous=process.env.AI_NOTE_MODE;process.env.AI_NOTE_MODE='real'
+ try{
+  const long={title:'valid',content:'x'.repeat(2200)}
+  for(const value of [{...long,ownerId:99},{...long,title:'x'.repeat(121)},{...long,content:99},{...long,content:''},{...long,content:'x'.repeat(13000)},null,'malformed']){
+   let calls=0
+   await assert.rejects(generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>{calls++;return {choices:[{finish_reason:'stop',message:{content:value==='malformed'?'not JSON':JSON.stringify(value)}}]}}),/PROPOSAL_PROVIDER_FAILED/)
+   assert.equal(calls,1)
+  }
+  for(const bad of [{choices:[{finish_reason:'length',message:{content:JSON.stringify(long)}}]},
+   {choices:[{finish_reason:'stop',message:{content:JSON.stringify(long),tool_calls:[{name:'save'}]}}]}]){
+   let calls=0;await assert.rejects(generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>{calls++;return bad}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,1)
+  }
+  for(const second of [long,{...long,content:'short',extra:true},'malformed']){
+   let calls=0;await assert.rejects(generateKnowledgeNoteProposal(report,[],AbortSignal.timeout(3000),async()=>{calls++;return {choices:[{finish_reason:'stop',message:{content:second==='malformed'&&calls===2?'not JSON':JSON.stringify(calls===1?long:second)}}]}}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,2)
+  }
+  const aborted=new AbortController();let calls=0
+  await assert.rejects(generateKnowledgeNoteProposal(report,[],aborted.signal,async()=>{calls++;aborted.abort();return {choices:[{finish_reason:'stop',message:{content:JSON.stringify(long)}}]}}),/PROPOSAL_PROVIDER_FAILED/);assert.equal(calls,1)
+ }finally{if(previous===undefined)delete process.env.AI_NOTE_MODE;else process.env.AI_NOTE_MODE=previous}
 })

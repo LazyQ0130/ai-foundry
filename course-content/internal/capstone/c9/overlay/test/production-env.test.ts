@@ -11,6 +11,8 @@ test('production env fails closed on test/local/mock/shared/public secrets witho
  MCP_EXTERNAL_AUTH_SECRET:randomBytes(32).toString('base64url'),ACTION_APPROVAL_SECRET:randomBytes(32).toString('base64url'),
  AI_EMBEDDING_MODE:'real',AI_RESEARCH_MODE:'real',AI_REPORT_MODE:'real',AI_NOTE_MODE:'real'}
  assert.deepEqual(validateProductionEnv(env),[])
+ for(const model of ['qwen3.8-flash','another-provider/model-v2'])assert.deepEqual(validateProductionEnv({...env,AI_PLANNER_MODEL:model}),[])
+ for(const model of ['', '  ', 'bad model', '\nunsafe'])assert.ok(validateProductionEnv({...env,AI_PLANNER_MODEL:model}).includes('AI_PLANNER_MODEL: INVALID_MODEL_NAME'))
  for(const [key,value] of Object.entries({TEST_DATABASE_URL:'secret-db-url',MCP_ALLOW_LOCAL_HTTP:'1',AI_NOTE_MODE:'mock',
   AI_EMBEDDING_DIMENSION:'1536',S3_ENDPOINT:'http://localhost:3900',NEXT_PUBLIC_AI_CHAT_API_KEY:'never-print',
   ACTION_APPROVAL_SECRET:env.MCP_EXTERNAL_AUTH_SECRET,DATABASE_URL:'postgresql://app:secret@127.0.0.2/db?sslmode=require',S3_BUCKET:'*',C9_LOCAL_STAGING_SMOKE:'1'})){

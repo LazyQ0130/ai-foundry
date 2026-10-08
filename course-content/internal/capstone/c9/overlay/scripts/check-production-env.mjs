@@ -23,6 +23,7 @@ export function validateProductionEnv(e) {
   if(['localhost','0.0.0.0','::1','[::1]','host.docker.internal'].includes(u.hostname)||u.hostname.startsWith('127.'))throw Error()
   if(u.searchParams.get('sslmode')!=='require'&&u.searchParams.get('sslmode')!=='verify-full')throw Error()
  } catch {failures.push('DATABASE_URL: REMOTE_TLS_DATABASE_REQUIRED')}
+ if(e.AI_PLANNER_MODEL!==undefined&&(typeof e.AI_PLANNER_MODEL!=='string'||! /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/.test(e.AI_PLANNER_MODEL)))failures.push('AI_PLANNER_MODEL: INVALID_MODEL_NAME')
  if(e.NODE_ENV!=='production')failures.push('NODE_ENV: PRODUCTION_REQUIRED')
  if(e.TEST_DATABASE_URL)failures.push('TEST_DATABASE_URL: FORBIDDEN')
  if(e.C9_LOCAL_STAGING_SMOKE)failures.push('C9_LOCAL_STAGING_SMOKE: FORBIDDEN')
