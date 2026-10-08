@@ -96,7 +96,7 @@ export default function CapstoneOverview() {
       <section className="border-y border-slate-200 bg-slate-50/60">
         <div className="shell py-9 sm:py-10">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading title="八课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
+            <SectionHeading title="九课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
             <span className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-slate-500"><LockKeyhole className="h-3.5 w-3.5" />全部暂未解锁</span>
           </div>
           {notice && <p className="mt-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-[12.5px] text-slate-600" role="status" aria-live="polite">毕业项目实战暂未解锁</p>}

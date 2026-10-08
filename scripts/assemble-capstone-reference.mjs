@@ -141,4 +141,30 @@ if (stage === 'c8' || stage === 'c9') {
   writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n')
 }
 if (stage === 'c9') copyTree(path.join(root, 'course-content/internal/capstone/c9/overlay'), output)
+if (['c4', 'c5', 'c6', 'c7', 'c8'].includes(stage)) {
+  // Do not leave the inherited C3 README claiming that later domains do not exist.
+  const scope = {
+    c4: 'Grounded Report and historical Citation Snapshot',
+    c5: 'Bounded Research Workflow, Brief and persistent Steps',
+    c6: 'Controlled external MCP evidence and explicit Source Policy',
+    c7: 'Post-run Proposal, exact human approval and atomic KnowledgeNote',
+    c8: 'Fixed Product Eval, zero-only safety gates and reviewed baseline',
+  }[stage]
+  writeFileSync(path.join(output, 'README.md'), `# AI Research Workspace — internal ${stage.toUpperCase()} teaching reference
+
+Current increment: ${scope}. All earlier Capstone increments are included; later increments are not implemented. Students continue their own project and product decisions. This is an author reference, not a downloadable Starter.
+
+Requires Node >=20.19, isolated PostgreSQL/pgvector and private S3-compatible storage. Never use the platform or production database. Set DATABASE_URL and TEST_DATABASE_URL to the same isolated test URL. Configure S3_* privately. Run npm ci, npm run db:migrate, npm run lint, npm run typecheck, npm test and npm run build.
+
+For deterministic HTTP verification set AI_EMBEDDING_MODE, AI_RESEARCH_MODE, AI_REPORT_MODE and AI_NOTE_MODE to mock. Start Next with CAPSTONE_BASE_URL matching its actual port; export the same test DB and base URL in the test shell. Set C4_MOCK_TEST_SCENARIOS=1 and C5_MOCK_TEST_SCENARIOS=1 only in this isolated test environment. Do not enable C3_EMBED_FAIL_ONCE_AT for these later-stage smoke scripts.
+
+${['c6', 'c7', 'c8'].includes(stage) ? 'Start the separate test-only MCP fixture with C6_TEST_MCP_FIXTURE=1 and a freshly generated server-only MCP_EXTERNAL_AUTH_SECRET: npx tsx scripts/c6-mcp-fixture.ts. The app uses the SAME secret, MCP_EXTERNAL_URL=http://127.0.0.1:3133/api/mcp/external-research and MCP_ALLOW_LOCAL_HTTP=1. This fixture advertises an extra tool to test the local whitelist; it is never imported by production routes. Then run npm run test:db.' : 'Run npm run test:db against the running app; this stage needs no external MCP fixture.'}
+${['c7', 'c8'].includes(stage) ? 'Approval tests additionally require a separate random ACTION_APPROVAL_SECRET.' : ''}
+
+${stage === 'c8' ? 'C8 Eval uses its own stricter guard: local port 55440, database capstone_c8_eval (or capstone_c8_real), schema public, matching DATABASE_URL and TEST_DATABASE_URL, never NODE_ENV=production. Run npm run eval:capstone and npm run eval:capstone -- --compare-baseline eval/baseline.json after build. Eval starts its own HTTP app and explicitly labelled storage stub; stop any process on its reserved ports first.' : ''}
+Real Provider runs require separate explicit opt-in. Mock results do not prove semantic quality or production IAM.
+
+Keep credentials, tokens and reports outside Git. Current stage ${stage.toUpperCase()} is Internal Authoring. Capstone remains locked; Stage formal lessons remain 29.
+`)
+}
 console.log(`Assembled ${stage.toUpperCase()} internal reference at ${output}`)

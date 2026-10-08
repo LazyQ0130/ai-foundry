@@ -32,7 +32,7 @@ Login → Workspace → Upload Knowledge → Research Task → Research Run → 
 | --- | --- | --- |
 | 私人资料和任务 | 服务端身份、统一 ownership | 是，先覆盖 Task |
 | 任务刷新后还在 | 持久化关系数据 | 是 |
-| 同一任务可多次研究 | Task 与 Run 生命周期分离 | 只建 Task；Run 留给 C5 |
+| 同一任务可多次研究 | Task 与 Run 生命周期分离 | 只建 Task；C4 建 Run，C5 扩展 Workflow |
 | 带出处的报告 | 文件、检索、引用 | 否，C3/C4 |
 | 调用模型 | 服务端 Provider | 否 |
 | 外部资料 | 受控工具 / MCP | 否，C6 |
@@ -117,7 +117,7 @@ Agent 的选型也只做轻量决定：A 复用 Stage 4 已验证的 bounded run
 
 ## 30～45 分钟：从 User Flow 抽取领域
 
-现在才进入工程对象。User 回答「谁在使用系统」；Workspace 回答「谁拥有研究资料与任务」；ResearchTask 回答「用户长期想研究什么」。例如「Agent Memory 的工程实现」是 Task，不是一次模型请求。同一 Task 的 Run 1、Run 2、Run 3 会在 C5 出现。
+现在才进入工程对象。User 回答「谁在使用系统」；Workspace 回答「谁拥有研究资料与任务」；ResearchTask 回答「用户长期想研究什么」。例如「Agent Memory 的工程实现」是 Task，不是一次模型请求。C4 会建立同一 Task 的多次 Run，C5 再为每次 Run 加入有界研究步骤。
 
 ```text
 User

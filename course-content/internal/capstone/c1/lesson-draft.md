@@ -18,6 +18,8 @@ checkKeys:
   - "check-c1a1000000000006"
 ---
 
+开始前确认：已完成 Stage 1～4，或能独立验收 Next.js/API、Prisma migration、Session ownership、RAG、bounded Agent、MCP、精确审批与 Eval。缺少其中一项，先回对应阶段补齐。Capstone 是综合毕业实践，建议总计 18 小时～22 小时 45 分钟；云账号、DNS 和 Provider 等待另计。
+
 ## 0～6 分钟：一个很容易写出的错误需求
 
 假设你现在打开 Codex，输入这段话：

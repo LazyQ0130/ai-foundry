@@ -1,0 +1,771 @@
+{
+  "date": "2026-10-08",
+  "baselineSourceCommit": "15646e9c457d6bafb5f1d6f4692b98e0e1552ead",
+  "verdict": "BLOCKED",
+  "environment": "isolated local containers; cloud NOT VERIFIED",
+  "stages": [
+    {
+      "stage": 1,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 1,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 1,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 1,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 1,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 2,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 2,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 2,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 2,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 2,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 3,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 3,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 3,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 3,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 3,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 4,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 4,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 4,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 4,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 4,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 5,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 5,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 5,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 5,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 5,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 6,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 6,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 6,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 6,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 6,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 7,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 7,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 7,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 7,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 7,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 8,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 8,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 8,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 8,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 8,
+      "cmd": "npm run build",
+      "exit": 0
+    },
+    {
+      "stage": 9,
+      "cmd": "npm ci",
+      "exit": 0
+    },
+    {
+      "stage": 9,
+      "cmd": "npm run lint",
+      "exit": 0
+    },
+    {
+      "stage": 9,
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "stage": 9,
+      "cmd": "npm test",
+      "exit": 0
+    },
+    {
+      "stage": 9,
+      "cmd": "npm run build",
+      "exit": 0
+    }
+  ],
+  "db": [
+    {
+      "label": "c2-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c2-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c2-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c3-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c3-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c3-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c4-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c4-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c4-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c5-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c5-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c5-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c6-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c6-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c6-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c7-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c7-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c7-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c8-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c8-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c8-eval",
+      "cmd": "npm run eval:capstone",
+      "exit": 0
+    },
+    {
+      "label": "c9-migration",
+      "cmd": "npx prisma migrate deploy",
+      "exit": 0
+    },
+    {
+      "label": "c9-migration-status",
+      "cmd": "npx prisma migrate status",
+      "exit": 0
+    },
+    {
+      "label": "c9-http",
+      "cmd": "npm run test:db",
+      "exit": 0
+    },
+    {
+      "label": "c9-recovery",
+      "cmd": "npm run test:recovery",
+      "exit": 0
+    }
+  ],
+  "reassembly": [
+    {
+      "stage": 1,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 17
+    },
+    {
+      "stage": 2,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 34
+    },
+    {
+      "stage": 3,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 59
+    },
+    {
+      "stage": 4,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 69
+    },
+    {
+      "stage": 5,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 84
+    },
+    {
+      "stage": 6,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 96
+    },
+    {
+      "stage": 7,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 115
+    },
+    {
+      "stage": 8,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 127
+    },
+    {
+      "stage": 9,
+      "assembly": "PASS",
+      "identicalNonReadmeFiles": 150
+    }
+  ],
+  "finalCommands": [
+    {
+      "label": "release",
+      "cmd": "npm run release:check",
+      "exit": 1,
+      "expected": 0
+    },
+    {
+      "label": "eval",
+      "cmd": "npm run eval:capstone",
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "label": "baseline",
+      "cmd": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "label": "inject-leak",
+      "cmd": "npm run eval:capstone -- --case cross-workspace-isolation --inject-failure leak",
+      "exit": 1,
+      "expected": 1
+    },
+    {
+      "label": "inject-write",
+      "cmd": "npm run eval:capstone -- --case unapproved-write --inject-failure unapproved-write",
+      "exit": 1,
+      "expected": 1
+    },
+    {
+      "label": "inject-claim",
+      "cmd": "npm run eval:capstone -- --case citation-support-gold --inject-failure unsupported-claim",
+      "exit": 1,
+      "expected": 1
+    },
+    {
+      "label": "inject-execution",
+      "cmd": "npm run eval:capstone -- --case private-research --inject-failure execution-error",
+      "exit": 2,
+      "expected": 2
+    },
+    {
+      "label": "audit-prod",
+      "cmd": "npm audit --omit=dev --json",
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "label": "audit-full",
+      "cmd": "npm audit --json",
+      "exit": 0,
+      "expected": 0
+    }
+  ],
+  "releaseRetry": {
+    "command": "npm run release:check",
+    "exit": 0,
+    "reason": "serial retry after Windows Prisma engine file lock; first exit1 retained"
+  },
+  "eval": {
+    "overall": "PASS",
+    "summary": {
+      "totalCases": 25,
+      "matrixCases": 25,
+      "passed": 25,
+      "failed": 0,
+      "incomplete": 0
+    },
+    "metrics": {
+      "modelCalls": 5,
+      "toolCalls": 3,
+      "invalid_citations": 0,
+      "externalCalls": 1,
+      "retrieval_total": 10,
+      "retrieval_hits": 10,
+      "retrieval_rr": 9.5,
+      "embeddingCalls": 10,
+      "unsupported_deterministic_claims": 0,
+      "answerable_total": 4,
+      "answerable_success": 4,
+      "abstention_total": 2,
+      "abstention_success": 2,
+      "unsupported_answer_count": 0,
+      "note_fidelity_total": 4,
+      "note_fidelity_pass": 4,
+      "cross_workspace_leaks": 0,
+      "unapproved_writes": 0,
+      "tamper_accepts": 0,
+      "duplicate_knowledge_notes": 0,
+      "failure_handled_count": 5,
+      "partial_ready_count": 0,
+      "retry_success_count": 3,
+      "timeout_handled_count": 1,
+      "cancel_handled_count": 1,
+      "external_degradation_success_count": 4,
+      "retrieval_hit_at_3": 1,
+      "retrieval_mrr": 0.95,
+      "answerable_success_rate": 1,
+      "unsupported_abstention_rate": 1,
+      "note_fidelity_pass_rate": 1
+    },
+    "baseline": {
+      "changes": [
+        {
+          "name": "private-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "mixed-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "insufficient-research",
+          "change": "unchanged"
+        },
+        {
+          "name": "knowledge-write",
+          "change": "unchanged"
+        },
+        {
+          "name": "human-edit",
+          "change": "unchanged"
+        },
+        {
+          "name": "retrieval-gold",
+          "change": "unchanged"
+        },
+        {
+          "name": "citation-validity",
+          "change": "unchanged"
+        },
+        {
+          "name": "citation-support-gold",
+          "change": "unchanged"
+        },
+        {
+          "name": "answerable-behavior",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported-abstention",
+          "change": "unchanged"
+        },
+        {
+          "name": "note-fidelity",
+          "change": "unchanged"
+        },
+        {
+          "name": "external-evidence-quality",
+          "change": "unchanged"
+        },
+        {
+          "name": "cross-workspace-isolation",
+          "change": "unchanged"
+        },
+        {
+          "name": "unapproved-write",
+          "change": "unchanged"
+        },
+        {
+          "name": "approval-boundaries",
+          "change": "unchanged"
+        },
+        {
+          "name": "duplicate-notes",
+          "change": "unchanged"
+        },
+        {
+          "name": "tool-injection",
+          "change": "unchanged"
+        },
+        {
+          "name": "report-injection",
+          "change": "unchanged"
+        },
+        {
+          "name": "file-failures",
+          "change": "unchanged"
+        },
+        {
+          "name": "index-atomic-retry",
+          "change": "unchanged"
+        },
+        {
+          "name": "runtime-limits",
+          "change": "unchanged"
+        },
+        {
+          "name": "timeout-cancel",
+          "change": "unchanged"
+        },
+        {
+          "name": "external-degradation",
+          "change": "unchanged"
+        },
+        {
+          "name": "write-rollback",
+          "change": "unchanged"
+        },
+        {
+          "name": "provider-failure",
+          "change": "unchanged"
+        },
+        {
+          "name": "cross_workspace_leaks",
+          "change": "unchanged"
+        },
+        {
+          "name": "unapproved_writes",
+          "change": "unchanged"
+        },
+        {
+          "name": "duplicate_knowledge_notes",
+          "change": "unchanged"
+        },
+        {
+          "name": "invalid_citations",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_deterministic_claims",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_answer_count",
+          "change": "unchanged"
+        },
+        {
+          "name": "partial_ready_count",
+          "change": "unchanged"
+        },
+        {
+          "name": "tamper_accepts",
+          "change": "unchanged"
+        },
+        {
+          "name": "retrieval_hit_at_3",
+          "change": "unchanged"
+        },
+        {
+          "name": "unsupported_abstention_rate",
+          "change": "unchanged"
+        },
+        {
+          "name": "answerable_success_rate",
+          "change": "unchanged"
+        },
+        {
+          "name": "note_fidelity_pass_rate",
+          "change": "unchanged"
+        }
+      ],
+      "regressed": false
+    }
+  },
+  "referenceAudit": {
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "platformAudit": {
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 1,
+      "critical": 0,
+      "total": 3
+    },
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 7,
+      "critical": 2,
+      "total": 13
+    }
+  },
+  "realTargeted": {
+    "external": {
+      "count": 3,
+      "eligible": 2
+    },
+    "privateNote": {
+      "status": 502
+    },
+    "mixed": {
+      "http": 201,
+      "status": "COMPLETED",
+      "errorCode": null,
+      "sources": [
+        "KNOWLEDGE",
+        "CROSSREF",
+        "KNOWLEDGE"
+      ],
+      "note": {
+        "status": 200,
+        "noteCount": 1,
+        "replayed": true
+      }
+    }
+  },
+  "fullStagingSmoke": {
+    "status": "FAIL",
+    "reason": "MODEL_FAILED on first research attempt; subsequent private Note Proposal failed strict length; no full PASS claimed"
+  },
+  "database": {
+    "migrations": 6,
+    "pgvector": "0.8.6",
+    "column": "vector(1024)"
+  },
+  "image": "sha256:bc395e0cce1d32ff69247f1dcf93f7ee0337d298a9fd0e0d2980dffa83c62cb1 127199166 node",
+  "recovery": {
+    "exit": 0,
+    "tests": 1,
+    "cli": {
+      "before": {
+        "eligible": 3,
+        "applied": 0
+      },
+      "apply": {
+        "eligible": 3,
+        "applied": 3
+      },
+      "after": {
+        "eligible": 0,
+        "applied": 0
+      }
+    }
+  },
+  "platformTests": {
+    "passed": 84,
+    "failed": 0
+  },
+  "curriculum": {
+    "lessons": 9,
+    "prompts": 56,
+    "checkKeys": 61,
+    "minutes": [
+      1080,
+      1365
+    ]
+  },
+  "cloud": "NOT VERIFIED",
+  "lockSHA256": "a4c54121bab41cc8f77d0298b3e7042b4ceefe190d5643f74ef6c7ec9f84cdbe",
+  "productionNegativeGuards": {
+    "missingEnvExit": 1,
+    "localProductionSmokeExit": 1
+  }
+}
