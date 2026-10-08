@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  username     String      @unique
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  sessions     Session[]
+  workspace    Workspace?
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  tokenHash String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Workspace {
+  id        Int            @id @default(autoincrement())
+  ownerId   Int            @unique
+  owner     User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  tasks     ResearchTask[]
+  documents KnowledgeDocument[]
+}
+
+enum DocumentStatus {
+  PENDING_UPLOAD
+  PROCESSING
+  READY
+  FAILED
+}
+
+model KnowledgeDocument {
+  id                  String         @id @default(uuid())
+  workspaceId         Int
+  workspace           Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  title               String
+  originalName        String
+  mimeType            String
+  byteSize            Int
+  objectKey           String         @unique
+  contentHash         String?
+  status              DocumentStatus @default(PENDING_UPLOAD)
+  errorCode           String?
+  pageCount           Int?
+  parserVersion       String         @default("pdfjs-6.4.299-text-v1")
+  indexingVersion     String         @default("chunk-800-120-v1")
+  processingStartedAt DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  chunks              KnowledgeChunk[]
+
+  @@index([workspaceId, status, createdAt])
+}
+
+model KnowledgeChunk {
+  id                 Int               @id @default(autoincrement())
+  documentId         String
+  document           KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  position           Int
+  page               Int?
+  startOffset        Int
+  endOffset          Int
+  content            String
+  citationKey        String
+  embedding          Unsupported("vector(1024)")
+  embeddingModel     String
+  embeddingDimension Int
+  indexingVersion    String
+  createdAt          DateTime          @default(now())
+
+  @@unique([documentId, indexingVersion, position])
+  @@index([documentId, position])
+}
+
+model ResearchTask {
+  id          Int       @id @default(autoincrement())
+  workspaceId Int
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  title       String
+  query       String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  runs        ResearchRun[]
+
+  @@index([workspaceId, createdAt])
+}
+
+enum ResearchRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model ResearchRun {
+  id          Int               @id @default(autoincrement())
+  taskId      Int
+  task        ResearchTask      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  sourcePolicy String           @default("PRIVATE_ONLY")
+  status      ResearchRunStatus @default(RUNNING)
+  stopReason  String?
+  brief       Json?
+  report      Json?
+  errorCode   String?
+  cancelRequestedAt DateTime?
+  startedAt   DateTime          @default(now())
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  citations   ResearchCitation[]
+  steps       ResearchStep[]
+
+  @@index([taskId, createdAt])
+}
+
+enum ResearchStepKind {
+  BRIEF
+  MODEL
+  TOOL
+  REPORT
+}
+
+enum ResearchStepStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model ResearchStep {
+  id            Int                @id @default(autoincrement())
+  runId         Int
+  run           ResearchRun        @relation(fields: [runId], references: [id], onDelete: Cascade)
+  position      Int
+  kind          ResearchStepKind
+  status        ResearchStepStatus @default(RUNNING)
+  toolName      String?
+  inputSummary  String?
+  outputSummary String?
+  latencyMs     Int?
+  usage         Json?
+  errorCode     String?
+  startedAt     DateTime           @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime           @default(now())
+
+  @@unique([runId, position])
+  @@index([runId, createdAt])
+}
+
+model ResearchCitation {
+  id                    Int         @id @default(autoincrement())
+  runId                 Int
+  run                   ResearchRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  position              Int
+  citationKey           String
+  sourceType            String      @default("KNOWLEDGE")
+  externalId            String?
+  sourceUrl             String?
+  publishedYear         Int?
+  sourceVersion         String?
+  supportLevel          String?
+  // Historical hints, intentionally not FKs: source deletion must not delete the snapshot.
+  documentId            String?
+  chunkId               Int?
+  title                 String
+  excerpt               String
+  page                  Int?
+  startOffset           Int?
+  endOffset             Int?
+  sourceContentHash     String?
+  sourceIndexingVersion String?
+  createdAt             DateTime    @default(now())
+
+  @@unique([runId, citationKey])
+  @@unique([runId, position])
+}
