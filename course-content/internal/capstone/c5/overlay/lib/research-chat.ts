@@ -1,6 +1,6 @@
 export class ResearchProviderError extends Error { constructor(code = 'PROVIDER_FAILED') { super(code) } }
 
-export async function chatCompletion(messages: unknown[], options: { tools?: unknown[]; signal: AbortSignal; maxTokens: number }): Promise<unknown> {
+export async function chatCompletion(messages: unknown[], options: { tools?: unknown[]; jsonMode?: boolean; signal: AbortSignal; maxTokens: number }): Promise<unknown> {
   const base = process.env.AI_CHAT_BASE_URL
   const key = process.env.AI_CHAT_API_KEY
   const model = process.env.AI_CHAT_MODEL
@@ -14,7 +14,7 @@ export async function chatCompletion(messages: unknown[], options: { tools?: unk
       method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, temperature: 0, max_tokens: options.maxTokens,
         ...(model === 'qwen3.7-flash' && process.env.AI_CHAT_DISABLE_THINKING === '1' ? { enable_thinking: false } : {}),
-        response_format: { type: 'json_object' }, messages,
+        ...(options.jsonMode === false ? {} : { response_format: { type: 'json_object' } }), messages,
         ...(options.tools ? { tools: options.tools, tool_choice: 'auto' } : {}) }), signal,
     })
     if (!response.ok) { await response.body?.cancel(); throw new Error('provider') }

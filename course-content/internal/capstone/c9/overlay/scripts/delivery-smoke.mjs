@@ -65,6 +65,9 @@ export async function deliverySmoke({base,staging=false,local=false}) {
   phase='human_edit'
   const edited=await call(`/api/research/actions/${action.id}`,{method:'PATCH',cookie,body:{expectedVersion:action.version,title:'[SMOKE reviewed] Memory trade-offs',content:action.content}})
   assert.equal(edited.status,200);assert.equal(edited.data.action.version,action.version+1);assert.notEqual(edited.data.action.approvalToken,action.approvalToken)
+  phase='old_approval_denied'
+  const stale=await fetchSafe(base+`/api/research/actions/${action.id}/approve`,{method:'POST',headers:{cookie,'content-type':'application/json'},body:JSON.stringify({approvalToken:action.approvalToken})})
+  assert.equal(stale.status,403);await stale.body?.cancel()
   action=edited.data.action
   phase='approve_and_replay'
   const approve=()=>call(`/api/research/actions/${action.id}/approve`,{method:'POST',cookie,body:{approvalToken:action.approvalToken}})
@@ -85,6 +88,6 @@ export async function deliverySmoke({base,staging=false,local=false}) {
    assert.equal(cors.headers.get('access-control-allow-origin'),new URL(base).origin)
   }
  }
- console.log(JSON.stringify({result:'PASS',environment:local?'LOCAL PRODUCTION-LIKE VERIFIED':staging?'STAGING':'PRODUCTION SAFE',https:local?'NOT VERIFIED':'PASS',storageAccess:'SIGNED_GET_PASS_ANONYMOUS_DENIED',browserCors:local?'NOT VERIFIED':'PREFLIGHT_PASS_BROWSER_CONFIRM_REQUIRED',runs:runResults,knowledgeNotes:notesWritten,humanEdit:true,approvalReplay:true,anonymousSourceDenied:true,calls,elapsedMs:Date.now()-started}))
+ console.log(JSON.stringify({result:'PASS',environment:local?'LOCAL PRODUCTION-LIKE VERIFIED':staging?'STAGING':'PRODUCTION SAFE',https:local?'NOT VERIFIED':'PASS',storageAccess:'SIGNED_GET_PASS_ANONYMOUS_DENIED',browserCors:local?'NOT VERIFIED':'PREFLIGHT_PASS_BROWSER_CONFIRM_REQUIRED',runs:runResults,researchRuns:runCalls,actions:actionsProposed,knowledgeNotes:notesWritten,humanEdit:true,oldApprovalDenied:true,approvalReplay:true,anonymousSourceDenied:true,calls,elapsedMs:Date.now()-started}))
  }catch(error){console.error(JSON.stringify({result:'FAIL',phase,errorCategory:/^(?:HTTP_\d{3}|MODEL_FAILED|TIMEOUT|BUDGET_EXCEEDED|CANCELLED|RESEARCH_RUN_FAILED|SMOKE_BUDGET_EXHAUSTED|RUN_BUDGET_EXHAUSTED)$/.test(error.message)?error.message:error.code==='ERR_ASSERTION'?'CONTRACT_ASSERTION':error.name==='TimeoutError'?'TIMEOUT':'OTHER',retryOccurred:false,partialSideEffect:{researchRuns:runCalls,actionsProposed,knowledgeNotes:notesWritten},calls,elapsedMs:Date.now()-started}));throw Error('STAGING_SMOKE_FAILED')}
 }

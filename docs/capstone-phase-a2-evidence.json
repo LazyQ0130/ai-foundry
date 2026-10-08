@@ -1,0 +1,764 @@
+{
+  "phase": "Release Blocker Remediation Phase A2",
+  "baseline": "b9d394067f630539bb929d4d85372485139fd410",
+  "date": "2026-10-08",
+  "verdict": "BLOCKED",
+  "overallReleaseVerdict": "BLOCKED",
+  "protocol": {
+    "stop": "finish_reason stop + zero tool calls => ready; planner content discarded",
+    "continue": "finish_reason tool_calls => registry strictly validates exactly one allowed tool and strict args",
+    "unsupported": "length/content_filter/unknown or stop-with-tools => INVALID_MODEL_TURN",
+    "plannerJsonMode": false,
+    "reportJsonMode": true,
+    "retry": false,
+    "controlTool": false
+  },
+  "plannerProbe": {
+    "runs": [
+      {
+        "run": 1,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 4,
+        "toolCalls": 3,
+        "providerUnits": 7,
+        "evidenceCount": 1,
+        "protocolPass": true
+      },
+      {
+        "run": 2,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 4,
+        "toolCalls": 3,
+        "providerUnits": 7,
+        "evidenceCount": 2,
+        "protocolPass": true
+      },
+      {
+        "run": 3,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 4,
+        "toolCalls": 3,
+        "providerUnits": 7,
+        "evidenceCount": 1,
+        "protocolPass": true
+      },
+      {
+        "run": 4,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 4,
+        "toolCalls": 3,
+        "providerUnits": 7,
+        "evidenceCount": 2,
+        "protocolPass": false
+      },
+      {
+        "run": 5,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 4,
+        "toolCalls": 3,
+        "providerUnits": 7,
+        "evidenceCount": 1,
+        "protocolPass": true
+      }
+    ],
+    "diagnostics": [
+      {
+        "run": 1,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 665,
+        "category": "NONE"
+      },
+      {
+        "run": 1,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 539,
+        "category": "NONE"
+      },
+      {
+        "run": 1,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 650,
+        "category": "NONE"
+      },
+      {
+        "run": 1,
+        "turn": 3,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 0,
+        "toolNames": [],
+        "contentPresent": true,
+        "contentLength": 2092,
+        "latencyMs": 4589,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 614,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_external_references"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 804,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 665,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 3,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 0,
+        "toolNames": [],
+        "contentPresent": true,
+        "contentLength": 2672,
+        "latencyMs": 7121,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 850,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 1567,
+        "latencyMs": 4237,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 539,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 3,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 0,
+        "toolNames": [],
+        "contentPresent": true,
+        "contentLength": 1552,
+        "latencyMs": 3596,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 736,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_external_references"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 584,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 557,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 3,
+        "httpStatus": 200,
+        "finishReason": "length",
+        "toolCount": 0,
+        "toolNames": [],
+        "contentPresent": true,
+        "contentLength": 2573,
+        "latencyMs": 6736,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 530,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 588,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "toolCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 579,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 3,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 0,
+        "toolNames": [],
+        "contentPresent": true,
+        "contentLength": 2383,
+        "latencyMs": 5609,
+        "category": "NONE"
+      }
+    ],
+    "passed": 4,
+    "total": 5,
+    "invalidModelTurns": 1,
+    "retry": false
+  },
+  "blocker": {
+    "run": 4,
+    "turnZeroBased": 3,
+    "httpStatus": 200,
+    "finishReason": "length",
+    "toolCount": 0,
+    "contentLength": 2573,
+    "category": "UNSUPPORTED_FINISH_REASON",
+    "error": "INVALID_MODEL_TURN → MODEL_FAILED",
+    "retry": false
+  },
+  "proposal": {
+    "providerChanged": false,
+    "repair": "None",
+    "realPathReached": false,
+    "overlengthReproducedThisPhase": false,
+    "stabilitySamples": 0,
+    "deterministicFidelity": {
+      "passed": 4,
+      "total": 4
+    },
+    "realFidelity": "NOT_VERIFIED",
+    "contentLimit": 2000,
+    "titleLimit": 120
+  },
+  "fullStagingSmoke": {
+    "status": "NOT_RUN",
+    "gate": "FAIL",
+    "reason": "Required five-run real planner probe failed; no full smoke authorized after failed probe",
+    "invocations": 0,
+    "httpCalls": 0,
+    "researchRuns": 0,
+    "actions": 0,
+    "notes": 0
+  },
+  "platform": {
+    "ci": "PASS_AFTER_LOCAL_FILE_LOCK_RESOLUTION",
+    "verification": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "unitTests": 84,
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "dependenciesChanged": false,
+    "finalBundleCheck": {
+      "exit": 0,
+      "publicFiles": 339,
+      "protectedLessons": 30,
+      "internalArtifacts": 191
+    }
+  },
+  "reference": {
+    "freshAssembly": {
+      "files": 153,
+      "mismatches": []
+    },
+    "verification": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "unitTests": 45,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "approvalDatabaseTests": 5,
+    "eval": {
+      "summary": {
+        "totalCases": 25,
+        "matrixCases": 25,
+        "passed": 25,
+        "failed": 0,
+        "incomplete": 0
+      },
+      "metrics": {
+        "modelCalls": 5,
+        "toolCalls": 3,
+        "invalid_citations": 0,
+        "externalCalls": 1,
+        "retrieval_total": 10,
+        "retrieval_hits": 10,
+        "retrieval_rr": 9.5,
+        "embeddingCalls": 10,
+        "unsupported_deterministic_claims": 0,
+        "answerable_total": 4,
+        "answerable_success": 4,
+        "abstention_total": 2,
+        "abstention_success": 2,
+        "unsupported_answer_count": 0,
+        "note_fidelity_total": 4,
+        "note_fidelity_pass": 4,
+        "cross_workspace_leaks": 0,
+        "unapproved_writes": 0,
+        "tamper_accepts": 0,
+        "duplicate_knowledge_notes": 0,
+        "failure_handled_count": 5,
+        "partial_ready_count": 0,
+        "retry_success_count": 3,
+        "timeout_handled_count": 1,
+        "cancel_handled_count": 1,
+        "external_degradation_success_count": 4,
+        "retrieval_hit_at_3": 1,
+        "retrieval_mrr": 0.95,
+        "answerable_success_rate": 1,
+        "unsupported_abstention_rate": 1,
+        "note_fidelity_pass_rate": 1
+      },
+      "comparison": {
+        "changes": [
+          {
+            "name": "private-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "mixed-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "insufficient-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "knowledge-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "human-edit",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-validity",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-support-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable-behavior",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported-abstention",
+            "change": "unchanged"
+          },
+          {
+            "name": "note-fidelity",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-evidence-quality",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross-workspace-isolation",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "approval-boundaries",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate-notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "tool-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "report-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "file-failures",
+            "change": "unchanged"
+          },
+          {
+            "name": "index-atomic-retry",
+            "change": "unchanged"
+          },
+          {
+            "name": "runtime-limits",
+            "change": "unchanged"
+          },
+          {
+            "name": "timeout-cancel",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-degradation",
+            "change": "unchanged"
+          },
+          {
+            "name": "write-rollback",
+            "change": "unchanged"
+          },
+          {
+            "name": "provider-failure",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross_workspace_leaks",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved_writes",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate_knowledge_notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "invalid_citations",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_deterministic_claims",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_answer_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "partial_ready_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "tamper_accepts",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval_hit_at_3",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_abstention_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable_success_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "note_fidelity_pass_rate",
+            "change": "unchanged"
+          }
+        ],
+        "regressed": false
+      }
+    },
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "dependencyRisk": {
+    "decision": "ACCEPTED DEV TOOLCHAIN RISK",
+    "advisory": "GHSA-vfj7-8cjw-p6xm",
+    "affectedChain": "Tailwind 3.4.19 → chokidar 3.6.0 / fast-glob 3.3.3 → micromatch 4.0.8 → braces 3.0.3",
+    "upstreamLatestBraces": "3.0.3",
+    "runtimeTree": {
+      "exit": 0,
+      "found": [
+        "@prisma/client > prisma > @prisma/config > c12 > chokidar@4.0.3"
+      ]
+    },
+    "artifactScan": {
+      "files": 280,
+      "matches": []
+    },
+    "dockerInspection": {
+      "image": "aifoundry-phase-a:runtime",
+      "dependencyInspectionOnly": true,
+      "found": []
+    },
+    "dockerEvidenceLimit": "Previous Phase A standalone image dependency inspection only; not Phase A2 functional or cloud verification",
+    "prismaException": "Optional peer Prisma CLI retains chokidar 4.0.3, unrelated to the vulnerable Tailwind/braces chain; all-five-name-absence is not claimed for platform",
+    "productionHttpOrCoursePatternPath": false,
+    "sourcePattern": "./index.html and ./src/**/*.{ts,tsx}",
+    "repositoryCiWorkflows": false,
+    "cloudInstallState": "NOT_VERIFIED",
+    "acceptanceConditions": [
+      "Trusted build sources only",
+      "No production secrets or auto-deploy for untrusted PR builds",
+      "Hard build timeout",
+      "Recheck/prune production dependencies and validate actual runtime before shipping",
+      "Revoke acceptance for new runtime/user input exposure or compatible upstream patch"
+    ]
+  },
+  "scope": {
+    "cloud": false,
+    "publishing": false,
+    "pricing": false,
+    "entitlement": false,
+    "releaseTag": false,
+    "stageLessons": 29,
+    "capstoneLocked": true
+  },
+  "remaining": [
+    "Planner probe length finish at run 4 turn 4",
+    "Full staging smoke and real Proposal samples not reached",
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim unsupported"
+  ]
+}

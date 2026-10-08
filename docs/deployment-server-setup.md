@@ -167,3 +167,12 @@ Caddy 会自动为新域名申请证书，不需要手动跑 certbot。
 
 > **建议尽快在站点「个人中心」里修改管理员密码。** 初始密码在部署过程中以明文形式
 > 出现过（控制台页面、本文档的前置沟通），属于已知暴露面。
+
+
+## 2026-10-08：Phase A2 本地运行依赖边界补充（未部署）
+
+以上历史部署记录保留。本轮没有访问或修改服务器。后续交付应区分 build 环境与 runtime：完成 Prisma/migration/seed/build 后再对运行副本执行 npm prune --omit=dev --no-audit --no-fund，并验证生成 client/原生模块可用、runtime tree 不含受影响 Tailwind/braces 链。下一次更新前须重新安装 build 依赖。
+
+仅 npm audit --omit=dev 或仓库 devDependency 标记不能证明现网 node_modules 已移除开发工具。详情与本地证据见 dependency-risk-classification.md；当前线上安装状态未核验，不改变任何 Capstone Cloud Verification 状态。
+
+构建只执行受信任源码；Linux 可用 timeout --signal=TERM --kill-after=10s 600s npm run build 设置上限。若以后接 fork-PR CI，必须无生产 secrets、不自动生产部署、设置 job timeout。本轮未增加 CI 平台。

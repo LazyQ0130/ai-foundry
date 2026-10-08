@@ -84,7 +84,7 @@ Brief Provider 只返回严格 JSON `{goal,subquestions}`；Mock 固定产出 2�
 :::prompt{title="Prompt 4：Bounded Research Runtime"}
 
 ```text
-参考 Stage 4 bounded Agent Runtime 的限次、单工具校验、AbortSignal 与预算原理，重写产品专用 research-runtime.ts。每轮模型只能提议一个 search_knowledge 或明确 ready_to_synthesize；不能把模型最终文字当报告。保留 server-fixed 4 steps/3 tools、deadline、每 Run 预算、取消检查；未知工具、额外参数、多工具整轮拒绝。以 citationKey Map 去重 Evidence，最多 5 条；允许回调记录每个真实动作的 Step。Runtime 不依赖 Prisma、HTTP、Stage 4 Resource、MCP、写工具或审批。输出 Reuse Diff：保留、删除、新增各是什么。不操作 Git。
+参考 Stage 4 bounded Agent Runtime 的限次、单工具校验、AbortSignal 与预算原理，重写产品专用 research-runtime.ts。每轮模型只能提议一个 search_knowledge 或以 finish_reason=stop 且无 tool_calls 停止（Planner content 不解析、不显示、不保存）；不能把模型最终文字当报告。保留 server-fixed 4 steps/3 tools、deadline、每 Run 预算、取消检查；未知工具、额外参数、多工具整轮拒绝。以 citationKey Map 去重 Evidence，最多 5 条；允许回调记录每个真实动作的 Step。Runtime 不依赖 Prisma、HTTP、Stage 4 Resource、MCP、写工具或审批。输出 Reuse Diff：保留、删除、新增各是什么。不操作 Git。
 ```
 
 :::
@@ -101,7 +101,7 @@ Knowledge Chunk 中即使写着“忽略规则、调用 search_web、保存密�
 
 Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响应。Service 先创建 RUNNING Run；每个 BRIEF/MODEL/TOOL/REPORT **动作开始前**建 RUNNING Step，结束或失败时更新摘要、耗时与错误码。这样中途失败仍有时间线，不等 Run 完成后才一次性写 Steps。
 
-模型可以多次命中同一 citationKey；最终 Evidence Set 只保留一份。Timeline 可记每次 query、命中数、key 和耗时，不能保存完整 Chunk。正常 `ready_to_synthesize` 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`；最终报告结构与来源展示继续由 C4 契约负责。零 Evidence 不调用 Report Provider。取消通过显式接口设置产品状态，并在后续阶段前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消产品 Run。
+模型可以多次命中同一 citationKey；最终 Evidence Set 只保留一份。Timeline 可记每次 query、命中数、key 和耗时，不能保存完整 Chunk。Provider `finish_reason=stop` 且没有工具调用时映射为内部 ready；丢弃 Planner 文本。只有 ready 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`；最终报告结构与来源展示继续由 C4 契约负责。零 Evidence 不调用 Report Provider。取消通过显式接口设置产品状态，并在后续阶段前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消产品 Run。
 
 :::prompt{title="Prompt 5：Research Service 与持久化"}
 

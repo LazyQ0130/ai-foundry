@@ -16,7 +16,7 @@ Browser → Next.js modular monolith
 
 The Route checks Origin, Session and server-derived Workspace→Task ownership. Research Service creates RUNNING Run and a BRIEF Step before the Brief Provider call, stores a small validated Brief, then invokes the bounded Runtime. Runtime controls one model decision and at most one strictly validated tool call per turn, accumulating at most five unique Evidence rows by citationKey. It has no Prisma or HTTP dependency. Service creates and finishes a Step around each real action. Timeline summaries are limited to 500 characters; raw private Evidence, system prompts and Provider bodies are not persisted there.
 
-Only `ready_to_synthesize` with nonempty Evidence reaches the existing C4 `generateReport` → `validateGroundedReport` → `citationSnapshots` path. C4 Report JSON and Citation Snapshot semantics remain. Zero Evidence produces COMPLETED/INSUFFICIENT_EVIDENCE. MAX_STEPS, MAX_TOOLS, BUDGET_EXHAUSTED, TIMEOUT, FAILED and CANCELLED never masquerade as a completed report. C4 historical Runs with null Brief and no Steps remain readable.
+A provider `finish_reason=stop` with no tool calls means internal ready; planner content is discarded, never parsed or stored. Unsupported finish reasons or stop-with-tools fail closed. Only internal ready with nonempty Evidence reaches the existing C4 `generateReport` → `validateGroundedReport` → `citationSnapshots` path. C4 Report JSON and Citation Snapshot semantics remain. Zero Evidence produces COMPLETED/INSUFFICIENT_EVIDENCE. MAX_STEPS, MAX_TOOLS, BUDGET_EXHAUSTED, TIMEOUT, FAILED and CANCELLED never masquerade as a completed report. C4 historical Runs with null Brief and no Steps remain readable.
 
 ## Limits and cancellation
 

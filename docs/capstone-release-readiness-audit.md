@@ -446,3 +446,92 @@ Cloud Runtime、Cloud DB、R2、HTTPS MCP、Production Smoke、Cloud backup/roll
 本轮修改：package.json、package-lock.json；C6 research-model.ts 与新 research-model.test.ts；C7 knowledge-note-provider.ts / knowledge-note.test.ts；C9 delivery-smoke.mjs；本审计附录；docs/capstone-phase-a-evidence.json。诊断/日志/DB/凭据只在忽略的 .runtime 或本地测试环境，未入 Git。没有删除文件。
 
 提交消息：Remediate Capstone local release blockers。最终 SHA、origin/main 和 working tree 由实际提交后核对，见本轮最终回复；不创建 Tag。
+
+
+# Phase A2 Addendum
+
+2026-10-08；基线 b9d394067f630539bb929d4d85372485139fd410。**Phase A2 BLOCKED，整体 Release BLOCKED**。本轮不是 C10，没有云验证、Publishing、Pricing/Entitlement、解锁或 Tag。正式 Stage 仍 29 节。
+
+## 1. Planner Protocol Decision / Implementation
+
+旧协议把 HTTP 200/stop 的 content 必须精确解析为 ready_to_synthesize=true 当成控制信号。现在按 Provider metadata：finish_reason=stop 且无 tool_calls → 内部 ready；Planner content 不解析为业务 JSON、不执行、不展示、不保存为产品输出。它可以是 JSON/prose/empty/null；Report 仍由独立 Provider 与 Grounded Report Contract 产生。
+
+finish_reason=tool_calls 时只映射函数提议，Runtime/Registry 仍要求恰好一个 allowlisted call、strict args、source policy、workspace ownership 与 exact external query。零/多工具、unknown/bad/extra args 仍拒绝。stop-with-tools、length/content_filter/unknown finish 仍 INVALID_MODEL_TURN。早停且零 Evidence 为 INSUFFICIENT_EVIDENCE，不调用 Report Provider；少量证据只能进入已有 allowed-set report 路径，质量由 Eval 判断。
+
+C5/C6 adapters 一起修改，避免课程演进重新引入旧协议。共享 chat adapter 仅对 Planner 关闭强制 JSON response_format；Brief/Report/Proposal 默认 JSON mode 保持，增加确定性测试。没有 retry、fake finish tool、扩大 token/step/tool/provider budget 或 deadline。C5 正文与架构说明做最小协议同步，Prompt/checkKeys 不变；C7/C9 正文及 Proposal provider 未修改。
+
+## 2. Deterministic / Agent / Approval Tests
+
+Final Reference **45/45**。新 Planner tests 覆盖 stop JSON（含旧 false）、prose、empty/null、untrusted text、empty tool array，均映射 ready 且只调用一次；one tool 保留，zero/multiple/unknown/malformed/extra args 经 registry 拒绝；length/filter/unknown 与 stop-with-tools 拒绝。早停零证据不执行搜索、输出 INSUFFICIENT_EVIDENCE，结果/Step 没有 Planner 原文。共享 adapter 测试确认 Planner 不请求 JSON mode，其他默认调用仍请求 JSON object。
+
+C5/C6 HTTP smoke exit 0/0，覆盖 one/multiple/unknown/bad、steps/tools/budget、cancel/timeout、private-only external、exact query、MCP extra tools、external degradation。C7 HTTP + 5 DB transaction tests exit0：Edit/old token/reject/approve/replay/concurrency/rollback/tamper/expiry/Bob/strict input 全部回归。Proposal provider 本轮未变，仍额外复验 C7。
+
+C8 **25/25、37 unchanged、全部八项 Hard Gates 为零**。Note Fidelity 4/4，threshold/gold 未改。真实 Proposal fidelity 未验证。
+
+## 3. Real Planner Stability Probe — 4/5, BLOCKED
+
+真实 qwen3.7-flash、当前真实 tools schema、合成任务与合成 Evidence（检索工具使用本地 fixture，不发送私有数据），5 runs，每 run <=4 model turns、<=3 tools、<=10 provider units、120s deadline。实际 **20 model calls、15 fixture tool calls**，没有 retry。
+
+| Run | Policy | Outcome | Model / Tool / Units | Protocol |
+|---|---|---|---|---|
+| 1 | PRIVATE_ONLY | READY | 4 / 3 / 7 | PASS |
+| 2 | PRIVATE_AND_EXTERNAL | READY | 4 / 3 / 7 | PASS |
+| 3 | PRIVATE_ONLY | READY | 4 / 3 / 7 | PASS |
+| 4 | PRIVATE_AND_EXTERNAL | FAILED / MODEL_FAILED | 4 / 3 / 7 | FAIL |
+| 5 | PRIVATE_ONLY | READY | 4 / 3 / 7 | PASS |
+
+Run4 第4轮：HTTP200，finish_reason=length，tool count0，content存在/2573字符，latency6736ms；安全类别 **UNSUPPORTED_FINISH_REASON**，adapter INVALID_MODEL_TURN → runtime MODEL_FAILED。未保存或输出该正文。其余四个 stop 的正文分别为2092/2672/1552/2383字符，均直接丢弃并映射 ready；工具验证无失败。
+
+本轮正确解除了 stop-content shape 的协议依赖，但真实模型仍可能在本应停止的轮次输出直到 token 边界。不能把 length 当 stop，也不扩大 token cap 换绿。根据本轮明确的失败规则，**Probe 没有 PASS，不再试刷、不加 retry、不启动 Full Smoke**。是否采用显式 control tool 或其他协议决策留待后续负责人决定；本轮未实现。
+
+## 4. Full Smoke / Proposal — NOT RUN
+
+Full Staging gate 未通过；**0 invocation、0 staging HTTP、0 staging Runs/Actions/Notes**。这些是本轮 staging 计数，不是另外安全回归数据库的全局计数。没有拼接旧 Phase A 或本轮 mock 回归当真实全链 PASS。
+
+本轮真实链未到 Proposal，未再次复现 overlength；历史2318字符记录仍保留。未运行 after-PASS 的5次 Proposal样本，真实schema稳定性没有新增结论。**Proposal Repair: None**，启用条件未满足，不提前改架构；title<=120/content<=2000、无真实slice、现有一次调用/30s边界保持。
+
+C9 runner 补充在 Edit 后实际用旧 token 请求并断言403，再使用新 token Approve/Replay；安全结果计数输出 Runs/Actions/Notes。由于 Probe 失败，该新的真实后半程本轮未执行；C7 安全回归单列通过，不能替代它。
+
+## 5. Dependency Risk Classification / Exposure
+
+依据与政策详见 docs/dependency-risk-classification.md。新结论为 **ACCEPTED DEV TOOLCHAIN RISK**，仅限 GHSA-vfj7-8cjw-p6xm 的 Tailwind3/braces 受影响构建链；不是 full audit clean，也没有改变历史 Phase A BLOCKED 或删除旧报告。
+
+实际 npm ls braces/tailwindcss 显示 Tailwind3 → chokidar3 / fast-glob → micromatch → braces3.0.3；registry最新braces仍3.0.3，官方advisory Patched versions=None。production tree 无 Tailwind/braces/fast-glob/micromatch 或受影响 chokidar3；独立 production 依赖安装同样成立。
+
+**不隐瞒例外**：@prisma/client 的 optional peer Prisma CLI 带入无关 chokidar4.0.3，且 npm ci --omit=dev --omit=peer 也保留它。因此平台“五个包名全部缺席”的字面检查不成立；4.0.3不依赖braces、不在本漏洞链，不能将它误报成运行时High。本轮没有为了移除安全版本迁移Prisma。
+
+静态检查280个 dist/server-dist 文本产物，无相关模块import。Tailwind固定 content 配置只处理 index.html/src，不读取上传、HTTP或课程Markdown作为brace pattern；服务端渲染/上传路径不导入Tailwind/braces。代码、完整依赖链和产物共同支持当前无用户可控runtime调用路径。
+
+上一轮本地C9 standalone镜像经无网络依赖检查，五个包名全部缺席；镜像/lock属于旧PhaseA，此处只用作相同C9依赖/Dockerfile的暴露证据，**不冒充本轮功能镜像或平台运行时**。平台仓库没有Docker manifest，现有部署记录为systemd/Node。
+
+仓库没有fork-PR CI workflow；当前受审为受信任main手动build。若将来执行不受信任PR，存在CI DoS及一般npm-script执行风险，必须无production secret、不自动production deploy、hard job timeout（最多10分钟）。该条件与生产依赖prune/检查加入本地风险政策和部署手册补充；没有创建CI或访问现网。旧手册full install不能证明现网dev工具缺席，线上实际安装/权限/timeout仍未核验。
+
+接受条件改变、兼容补丁发布或runtime暴露时重新BLOCK。若负责人坚持full audit 0 High，则需单独 TAILWIND 4 MIGRATION REQUIRED，而非本轮混做major。现有react-router Moderate继续披露。
+
+| Scope | Counts | Decision |
+|---|---|---|
+| Platform production | 2 Moderate / 0 High / 0 Critical | Runtime High/Critical gate PASS |
+| Platform full | 4 Moderate / 5 High / 0 Critical | 五个High为上述accepted dev-toolchain chain；非zero |
+| Final Reference production | 0 | PASS |
+| Final Reference full | 0 | PASS |
+
+## 6. Full Verification / Evidence Limits
+
+fresh Bootstrap+C1...C9 → .runtime/phase-a2/c9。另fresh canonical assembly **153 files、0 mismatch**。独立新security/Eval数据库执行正式migrate deploy六条migration，不使用平台或生产库。
+
+- Platform npm ci：首次被正在运行的Vite/esbuild锁住，EPERM；仅停止本仓库开发进程后重跑ci/generate成功，失败记录保留；未删除目录。
+- Platform typecheck/test/check/build/check:bundle 全部exit0，84/84，Renderer V2九课/56prompts/61unique keys/Stage29/locked通过。
+- Platform npm audit --omit=dev --json / npm audit --json：exit1/1，实际moderate/accepted High如上，不忽略结果。
+- Reference npm ci/lint/typecheck/test/build 全部exit0；45/45。
+- Reference eval:capstone / --compare-baseline eval/baseline.json / release:check 全部exit0；25/25、37 unchanged、8 hard gates全零。
+- Reference audit production/full exit0/0，0vulnerabilities。
+- C5 HTTP / C6 HTTP / C7 test:db exit0/0/0；独立approval DB tests5/5。
+- 唯一一组真实Planner stability probe exit1，4/5；没有Full Smoke或Proposal真实样本。
+
+安全证据：docs/capstone-phase-a2-evidence.json；原始本地诊断只在忽略的.runtime，只有status/finish/count/name/content-present-length/latency/category，不含full content/prompt/evidence/credential。
+
+## 7. Global Release / Git
+
+仍有Planner length协议失败、未完成完整Staging/真实Proposal稳定性，以及Cloud Verification/Publishing Integration。Cloud Runtime/DB/R2/HTTPS MCP/Production Smoke/Cloud backup-rollback继续 **NOT VERIFIED**。Loader/Progress/Entitlement仍MISSING/PARTIAL，Pricing不变，Production Product claim仍无依据。
+
+没有执行云清单或Publishing Plan；两个文档未变。没有Tag。提交消息：Stabilize Capstone planner and staging release gate。最终SHA、origin/main一致性与working tree见实际提交后核对和最终回复。
