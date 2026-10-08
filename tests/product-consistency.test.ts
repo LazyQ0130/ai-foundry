@@ -50,7 +50,7 @@ test('mockups reflect each project and mobile comparison shows entitlements with
   const project={...planTemplates.find(p=>p.id==='all-access-projects')!,price:500}
   const html=render(createElement(MobilePlanComparison,{allAccessPlan:all,projectPlan:project}))
   assert.match(html,/400/);assert.match(html,/500/);assert.match(html,/100/)
-  assert.match(html,/Project Lab/);assert.match(html,/Capstone/);assert.match(html,/暂未开放/)
+  assert.match(html,/Project Lab/);assert.match(html,/Capstone/);assert.ok(html.includes('暂未开放')||html.includes('9 节'))
   assert.doesNotMatch(html,/选择课程版|选择项目版|单阶段购买/)
   assert.match(render(createElement(FaqPermalink,{id:'test'})),/复制问题链接/)
 })

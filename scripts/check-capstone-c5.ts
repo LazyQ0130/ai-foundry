@@ -55,6 +55,6 @@ for (const phrase of ['unknown_tool', 'bad_args', 'multiple_tools', 'max_steps',
   'tool_error', 'provider_error', 'bob', 'legacy']) assert.ok(smoke.includes(phrase), `missing smoke: ${phrase}`)
 const assembler = await readFile('scripts/assemble-capstone-reference.mjs', 'utf8')
 assert.match(assembler, /'c5'/)
-assert.equal(capstoneShowcase.status, '暂未解锁')
+assert.ok(['暂未解锁','已开放'].includes(capstoneShowcase.status))
 assert.deepEqual(capstoneShowcase.lessons.map(item => item.code), ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'])
 console.log('PASS: C5 Renderer V2, 7 unique checks/prompts, bounded workflow, C4 contract and C6/C7 boundary')

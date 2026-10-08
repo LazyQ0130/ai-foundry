@@ -1,5 +1,6 @@
 // Public presentation metadata only. Filesystem paths remain server-only.
 export const courseAssets = {
+  'capstone-starter': { title:'Capstone Starter', description:'AI 研究工作台的最小起点、空白模板与 Bootstrap 测试。',filename:'aifoundry-capstone-starter.zip',format:'ZIP',endpoint:'/api/course-assets/capstone-starter' },
   'stage1-starter': {
     title: 'Stage 1 Starter', description: '个人知识工作台的起点项目。',
     filename: 'aifoundry-stage1-starter.zip', format: 'ZIP',

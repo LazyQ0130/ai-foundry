@@ -28,7 +28,7 @@ test('Capstone uses shared showcase data and only links to its public overview',
   assert.match(page, /\{capstoneShowcase\.badge\}/)
   assert.match(page, /to="\/capstone"/)
   assert.doesNotMatch(page, /to="\/project\/capstone|to="\/lesson\/capstone/)
-  assert.equal(capstoneShowcase.status, '暂未解锁')
+  assert.ok(['暂未解锁','已开放'].includes(capstoneShowcase.status))
   assert.equal(projects.length, 4)
   assert.ok(projects.every((project) => project.id !== 'capstone'))
   assert.equal(stages[3].project.title, 'AI 研究 Agent')

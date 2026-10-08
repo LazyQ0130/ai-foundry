@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import {useCapstone} from '../data/capstoneProgress.js'
+import {CourseResource} from '../components/CourseResource.js'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, BookOpen, Boxes, Check, FileCheck2, GraduationCap, LockKeyhole, ShieldCheck } from 'lucide-react'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { stages } from '../data/courses.js'
@@ -17,6 +19,9 @@ function SectionHeading({ title, sub }: { title: string; sub: string }) {
 }
 
 export default function CapstoneOverview() {
+  const navigate=useNavigate()
+  const lab=useCapstone()
+  const released=String(capstoneShowcase.status)==='已开放'
   const [notice, setNotice] = useState(false)
   const hasProjectLab = useOptionalAuth()?.user?.productEntitlements.includes('project-lab') ?? false
 
@@ -38,9 +43,11 @@ export default function CapstoneOverview() {
             </div>
           </div>
           <p className="mt-5 max-w-3xl text-[14px] leading-7 text-slate-600">{capstoneShowcase.description}</p>
-          <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? '已拥有 Project Lab 权益；Capstone 当前暂未开放。' : 'Project Lab 专属；开通项目版后可在项目上线时访问。'}</p>
+          <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? released ? '已拥有 Project Lab 权益。' : '已拥有 Project Lab 权益；Capstone 当前暂未开放。' : 'Project Lab 专属；开通项目版后可进入毕业项目实战。'}</p>
           {!hasProjectLab && <Link to="/pricing" className="mt-2 inline-block text-[13px] font-medium text-brand-700">查看项目版 <ArrowRight className="inline h-4 w-4" /></Link>}
           <p className="mt-5 max-w-3xl border-l-2 border-brand-500 pl-4 text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">最终目标：</span>{capstoneShowcase.exitState}</p>
+          {released&&lab.data?.access&&<div className="mt-6 rounded-xl border border-brand-200 bg-white p-5"><p className="font-semibold">Project Lab · {lab.data.progress?.completed??0}/9</p>{lab.data.progress?.continueLessonId?<Link className="btn btn-primary mt-3" to={'/capstone/lessons/'+lab.data.progress.continueLessonId}>{lab.data.progress.completed===0?'开始毕业项目':'继续学习 '+lab.data.progress.continueLessonId.toUpperCase()}</Link>:<p className="mt-3">Capstone 已完成。</p>}<CourseResource asset="capstone-starter"/></div>}
+          {lab.error&&<p role="alert" className="mt-3">{lab.error}<button className="btn btn-outline ml-3" onClick={()=>void lab.refresh()}>重试</button></p>}
           <Link to="/path" className="link-more mt-6">返回完整学习路径 <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
@@ -97,19 +104,19 @@ export default function CapstoneOverview() {
         <div className="shell py-9 sm:py-10">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading title="九课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
-            <span className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-slate-500"><LockKeyhole className="h-3.5 w-3.5" />全部暂未解锁</span>
+            <span className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-slate-500"><LockKeyhole className="h-3.5 w-3.5" />{released?'9 节 Project Lab':'全部暂未解锁'}</span>
           </div>
-          {notice && <p className="mt-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-[12.5px] text-slate-600" role="status" aria-live="polite">毕业项目实战暂未解锁</p>}
+          {notice && <p className="mt-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-[12.5px] text-slate-600" role="status" aria-live="polite">{released?'请使用下方入口进入课程；需要 Project Lab 权益。':'毕业项目实战暂未解锁'}</p>}
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {capstoneShowcase.lessons.map((lesson) => (
-              <button key={lesson.code} type="button" onClick={() => setNotice(true)} aria-label={`${lesson.code} ${lesson.title}，${capstoneShowcase.status}`} className="group flex min-h-[112px] w-full flex-col rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-slate-300 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
+              <div key={lesson.code}><button type="button" onClick={() => released ? navigate(lab.data?.access ? "/capstone/lessons/"+lesson.code.toLowerCase() : "/pricing") : setNotice(true)} aria-label={`${lesson.code} ${lesson.title}，${capstoneShowcase.status}`} className="group flex min-h-[112px] w-full flex-col rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-slate-300 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
                 <span className="flex w-full items-center justify-between gap-3">
                   <span className="text-[11px] font-bold text-slate-500">{lesson.code}</span>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600"><LockKeyhole className="h-3 w-3" />{capstoneShowcase.status}</span>
                 </span>
                 <span className="mt-2 text-[14px] font-semibold leading-5 text-slate-900">{lesson.title}</span>
                 <span className="mt-1 text-[12.5px] leading-5 text-slate-500">{lesson.desc}</span>
-              </button>
+              </button>{released&&<div className="-mt-1 rounded-b-lg border border-t-0 border-slate-200 bg-white px-4 pb-4"><Link className="text-sm font-semibold text-brand-700" to={lab.data?.access?'/capstone/lessons/'+lesson.code.toLowerCase():'/pricing'}>{lab.data?.progress?.completedLessons.includes(lesson.code.toLowerCase())?'已完成':lab.data?.progress?.inProgressLessons.includes(lesson.code.toLowerCase())?'继续学习':lab.data?.access?'开始学习':'获取 Project Lab 权益'}</Link></div>}</div>
             ))}
           </div>
         </div>

@@ -15,6 +15,7 @@ import AuthPage from './pages/AuthPage'
 import { RequireAuth } from './auth/AuthProvider'
 import AccountPage from './pages/AccountPage'
 import AboutPage from './pages/AboutPage'
+import CapstoneLessonPage from './pages/CapstoneLessonPage'
 import CapstoneOverview from './pages/CapstoneOverview'
 import FaqPage from './pages/FaqPage'
 import EmailSecurity from './components/EmailSecurity'
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="about" element={<AboutPage />} />
         <Route path="guide" element={<CourseGuide />} />
         <Route path="capstone" element={<CapstoneOverview />} />
+        <Route path="capstone/lessons/:lessonId" element={<RequireAuth><CapstoneLessonPage /></RequireAuth>} />
         <Route path="faq" element={<FaqPage />} />
         <Route path="privacy" element={<PolicyPage kind="privacy" />} />
         <Route path="terms" element={<PolicyPage kind="terms" />} />

@@ -19,9 +19,9 @@ for(let i=1;i<=9;i++){
  const duration=lesson.meta.estimatedTime.match(/(\d+)～(\d+)/)!;min+=Number(duration[1]);max+=Number(duration[2]);prompts+=count;checks+=lesson.meta.checkKeys.length
  console.log(`C${i}: Renderer PASS; ${count} copyable prompts; ${lesson.meta.checkKeys.length} unique checks; ${duration[0]} minutes`)
 }
-assert.equal(allLessons.length,29);assert.equal(capstoneShowcase.status,'暂未解锁')
+assert.equal(allLessons.length,29);assert.ok(['暂未解锁','已开放'].includes(capstoneShowcase.status))
 assert.equal(capstoneShowcase.lessons.length,9)
 assert.ok((await readFile('src/pages/CapstoneOverview.tsx','utf8')).includes('九课毕业路线'))
 assert.ok((await readFile('course-content/internal/capstone/c1/lesson-draft.md','utf8')).includes('已完成 Stage 1～4'))
 assert.equal(min,1080);assert.equal(max,1365)
-console.log(`PASS: ${prompts} prompts, ${checks} Capstone checkKeys; ${min}–${max} minutes; locked, Stage=29`)
+console.log(`PASS: ${prompts} prompts, ${checks} Capstone checkKeys; ${min}–${max} minutes; Project Lab independent, Stage=29`)

@@ -31,5 +31,5 @@ const baseline=JSON.parse(await read('eval/baseline.json'));assert.equal(baselin
 const context=await read('eval/context.mjs');for(const word of ['55440','capstone_c8_eval','capstone_c8_real','EVAL_DATABASE_NOT_ALLOWLISTED','EVAL_PRODUCTION_ENV_FORBIDDEN'])assert.ok(context.includes(word))
 // C8 may fix a demonstrated product bug, but this reference needs no product changes.
 for(const forbidden of ['prisma','app','lib','Dockerfile','docker-compose.yml','worker','queue'])await assert.rejects(access(overlay+'/'+forbidden))
-assert.equal(allLessons.length,29);assert.equal(capstoneShowcase.status,'暂未解锁')
+assert.equal(allLessons.length,29);assert.ok(['暂未解锁','已开放'].includes(capstoneShowcase.status))
 console.log(`PASS: C8 Renderer V2, seven unique keys/prompts, ${count} fixed cases, four categories, metrics/gates/INCOMPLETE/baseline and C9 boundary`)

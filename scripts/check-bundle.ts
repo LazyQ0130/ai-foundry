@@ -1,6 +1,10 @@
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
+import {capstoneLessons} from '../src/data/capstoneLessons.js'
+import {readCapstoneContent} from '../server/services/capstone-content.js'
+import {unzipSync} from 'fflate'
+import {capstoneStarterFiles} from './capstone-starter-package.js'
 import { stages } from '../src/data/courses.js'
 import { readLessonContent } from '../server/services/course-content.js'
 
@@ -44,6 +48,15 @@ for (const [key, value] of Object.entries(process.env)) {
       assets.some(asset => asset.text.includes(value) || asset.text.includes(JSON.stringify(value).slice(1, -1))))
     throw new Error(`Server credential found in frontend bundle: ${key}`)
 }
+const zip=unzipSync(await readFile('starter/aifoundry-capstone-starter.zip'))
+const names=Object.keys(zip).map(name=>name.replace(/^aifoundry-capstone-starter\//,''))
+if(names.length!==capstoneStarterFiles.length||names.some(name=>!capstoneStarterFiles.includes(name as typeof capstoneStarterFiles[number])))throw new Error('Forbidden file in Capstone Starter ZIP')
+for(const lesson of capstoneLessons){
+ const {body}=await readCapstoneContent(lesson.id)
+ for(const part of body.split(/\r?\n\s*\r?\n/).map(p=>p.trim()).filter(p=>p.length>=80)){
+  if(assets.some(a=>a.text.includes(part)||a.text.includes(JSON.stringify(part).slice(1,-1))))throw new Error('Protected Capstone Markdown in public output: '+lesson.id)
+ }
+}
 let checked = 0
 for (const stage of stages) for (const lesson of stage.lessons) {
   if (lesson.isPublished === false) continue
@@ -57,4 +70,4 @@ for (const stage of stages) for (const lesson of stage.lessons) {
   }
   checked++
 }
-console.info(`PASS: ${paths.length} dist/public files contain no protected Markdown markers; ${checked} lessons and ${internalChecked} internal Capstone artifacts checked.`)
+console.info(`PASS: ${paths.length} dist/public files contain no protected Markdown markers; ${checked} Stage content files + ${capstoneLessons.length} protected Capstone labs and ${internalChecked} internal Capstone artifacts checked.`)

@@ -12,3 +12,8 @@ for (const stage of [1, 3, 4] as const) {
     console.info(`Starter ZIP: ${destination} (${zip.length} bytes)`)
   }
 }
+
+const {createCapstoneStarterZip}=await import('./capstone-starter-package.js')
+const capstoneZip=await createCapstoneStarterZip(),capstoneDestination='starter/aifoundry-capstone-starter.zip'
+if(process.argv.includes('--check')) {if(!Buffer.from(capstoneZip).equals(await readFile(capstoneDestination)))throw new Error('Capstone Starter ZIP 已过期');console.info('PASS: Capstone Starter ZIP matches exact allowlist')}
+else {await writeFile(capstoneDestination,capstoneZip);console.info('Capstone Starter ZIP: '+capstoneZip.length+' bytes')}

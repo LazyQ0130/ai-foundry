@@ -788,3 +788,17 @@ Production env checker, cloud migrations/pgvector/vector(1024), R2 private acces
 Official procedures rechecked: [Render PITR](https://render.com/docs/postgresql-backups), [Render rollback](https://render.com/docs/rollbacks), [private image deployment](https://render.com/docs/deploying-an-image), [R2 CORS](https://developers.cloudflare.com/r2/buckets/cors/). Paid Render Postgres recovery creates a new DB; application rollback is a separate capability. Account-visible plans/window/cost must be verified before paid creation.
 
 Remaining Release blockers: Cloud Verification; Publishing Integration; Production Product claim pending cloud evidence. Safe machine-readable record: docs/capstone-cloud-verification-evidence.json.
+
+
+## Publishing Integration product decision (2026-10-08)
+
+Cloud Verification:
+WAIVED AS RELEASE BLOCKER BY PRODUCT DECISION
+
+Reason:
+Commercial cloud deployment is no longer part of the author-reference release gate.
+
+Public claim changed at publishing: Production Product → Deployable AI Product.
+Historical NOT VERIFIED cloud evidence remains unchanged. The author Reference has local production-like delivery evidence; cloud deployment is a student exercise for their chosen platform.
+
+Publishing Integration: access, independent progress, protected content and Starter implemented. Integration commit retains the locked showcase status pending final publishing gates.

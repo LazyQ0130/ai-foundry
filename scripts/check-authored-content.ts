@@ -22,3 +22,7 @@ for (const stageDir of await readdir('course-content', { withFileTypes: true }))
   }
 }
 console.info(`PASS: ${count} authored lessons, ${keys.size} globally unique checkKeys`)
+
+const {capstoneLessons}=await import('../src/data/capstoneLessons.js')
+for(const lesson of capstoneLessons){const content=parseLessonContent(await readFile(lesson.contentPath,'utf8'));for(const key of content.meta.checkKeys){if(keys.has(key))throw new Error('Duplicate Capstone checkKey '+key);keys.set(key,lesson.id)}}
+console.info('PASS: nine independent Capstone labs; globally unique Stage/Capstone checklist keys')

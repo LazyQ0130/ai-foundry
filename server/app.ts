@@ -10,6 +10,7 @@ import { meRoutes } from './routes/me.js'
 import { adminRoutes } from './routes/admin/index.js'
 import { courseRoutes } from './routes/courses.js'
 import { courseAssetRoutes } from './routes/course-assets.js'
+import { capstoneRoutes } from './routes/capstone.js'
 import { progressRoutes } from './routes/progress.js'
 import { createEmailRoutes } from './routes/email.js'
 
@@ -36,6 +37,7 @@ app.use('/api/admin', adminRoutes)
 app.use('/api', courseRoutes)
 app.use('/api', courseAssetRoutes)
 app.use('/api/progress', progressRoutes)
+app.use('/api/capstone', capstoneRoutes)
 app.use('/api', (_req, _res) => { throw new ApiError(404, 'NOT_FOUND', '接口不存在') })
 if (env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve('dist'), { index: false, dotfiles: 'deny' }))
