@@ -1,6 +1,6 @@
 # ADR 001 — Web and agent architecture
 
-Status: Accepted for internal C2 spike
+Status: Accepted for C2 teaching reference; students write their own decision
 Date: 2026-10-07
 
 ## Decision
@@ -9,7 +9,10 @@ Use a Next.js and TypeScript modular monolith with PostgreSQL/Prisma. Introduce 
 ## Context
 One developer must deliver a browser UI, server-side auth and APIs, private file handling, relational data, vector retrieval and a deployable product. The course already contains verified TypeScript primitives.
 
-## Options and criteria
+## Options
+Next.js + TypeScript modular monolith; React + Express + TypeScript; React + FastAPI.
+
+## Criteria
 Scores: 1 poor, 3 strong. This is a project decision, not a universal ranking.
 
 | Criterion | Next.js monolith | React + Express | React + FastAPI |
@@ -24,7 +27,7 @@ Scores: 1 poor, 3 strong. This is a project decision, not a universal ranking.
 ## Trade-offs
 Next.js binds the product to its server runtime and requires care with long agent calls. React + Express gives explicit service boundaries but duplicates routing and build configuration. FastAPI has a strong Python parsing/AI ecosystem but introduces two languages and contract generation for this cohort.
 
-## Final choice
+## Final Choice
 The existing Next.js/TypeScript primitives reduce integration risk while keeping the new product domain genuinely student-owned. Keep service boundaries as modules. Do not split microservices for V1.
 
 ## Agent decision

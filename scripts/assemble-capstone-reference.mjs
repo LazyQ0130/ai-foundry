@@ -33,6 +33,7 @@ copyFileSync(path.join(c1, 'README.md'), path.join(output, 'README.md'))
 if (stage === 'c2') {
   const source = path.join(root, 'course-content/internal/capstone/c2')
   copyTree(path.join(source, 'overlay'), output)
+  copyFileSync(path.join(source, 'architecture-decision.md'), path.join(output, 'docs/architecture-decision.md'))
   // These are reviewed engineering primitives, not a copied product shell.
   const primitiveFiles = [
     'lib/auth.ts', 'lib/password.ts', 'lib/prisma.ts',
