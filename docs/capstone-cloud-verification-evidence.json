@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "sourceCommit": "dad1c6833f8818e403f0fca6cf54bb6d79cb3da0",
+  "cloudVerdict": "INCOMPLETE",
+  "overallRelease": "BLOCKED",
+  "productionProductClaim": "NOT_SUPPORTED",
+  "localReleaseBlockers": "CLOSED (prior reviewed evidence)",
+  "architecture": {
+    "runtime": "Render Docker Web Service",
+    "database": "Render paid PostgreSQL + pgvector, same region as web",
+    "storage": "Cloudflare R2 private bucket",
+    "provider": "existing Bailian/OpenAI-compatible provider",
+    "planner": "qwen3.8-flash",
+    "synthesis": "existing AI_CHAT_MODEL (locally validated qwen3.7-flash)",
+    "external": "Crossref via same-product HTTPS MCP",
+    "actualRegion": null,
+    "actualWebPlan": null,
+    "actualDatabasePlan": null,
+    "actualCloudResourceIds": []
+  },
+  "artifact": {
+    "sourceCommit": "dad1c6833f8818e403f0fca6cf54bb6d79cb3da0",
+    "deploymentRepository": "https://github.com/LazyQ0130/ai-research-workspace-deploy",
+    "deploymentCommit": "1a47a62d04867c9c41403093b2cf43a2e0f6d2e1",
+    "repositoryVisibility": "PRIVATE",
+    "deploymentTreeSha256": "4d844f2ffa9b3766fab808de980ee5de093a02ff272b6edd6ce4fa469d747ad8",
+    "sourceFiles": 155,
+    "localImageId": "sha256:f80ba0596f90493b69991ad52cfc0025745ca8972256e64ef380e858220be9c9",
+    "localManifestDigest": "aifoundry-capstone-cloud@sha256:f80ba0596f90493b69991ad52cfc0025745ca8972256e64ef380e858220be9c9",
+    "registryPublished": false,
+    "sourceRevisionLabel": "dad1c6833f8818e403f0fca6cf54bb6d79cb3da0",
+    "imageAudit": {
+      "files": 2218,
+      "suspect": [],
+      "user": 1000,
+      "metadataContainsKnownSecret": false,
+      "historyChecked": true,
+      "buildCredentialsPassed": false,
+      "knownCredentialContentScan": {
+        "filesScanned": 2218,
+        "knownCredentialMatches": 0
+      }
+    },
+    "cloudDeployed": false
+  },
+  "gates": {
+    "productionEnv": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "cloudDatabase": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "pgvector": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "vector1024": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "privateR2": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "browserSignedPut": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "browserSignedGet": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "browserCors": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "publicHttpsHealth": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "httpsMcp": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "providerIntegration": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "cloudFullSmoke": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "productionSafeSmoke": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "crashRecovery": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "databaseBackup": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "databaseRestore": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "applicationRollback": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    },
+    "cloudLogHygiene": {
+      "status": "NOT_VERIFIED",
+      "reason": "Cloud account login/authorization and billing/resource selection pending"
+    }
+  },
+  "execution": {
+    "cloudResourcesCreated": false,
+    "billingAccepted": false,
+    "cloudSecretsCreatedOrCopied": false,
+    "cloudProviderCalls": 0,
+    "cloudSmokeInvocations": 0,
+    "localArtifactNpmCi": "PASS",
+    "localDockerBuild": "PASS",
+    "privateDeploymentRepositoryCreated": true,
+    "productCoreChanged": false
+  },
+  "blockingCondition": {
+    "category": "CONFIGURATION",
+    "observed": [
+      "Render dashboard redirects to login",
+      "Cloudflare dashboard redirects to login",
+      "No Render/Cloudflare CLI or environment authorization available",
+      "Account/workspace, billing limit and region not selected"
+    ],
+    "manualBoundary": "User request section 3: account login/authorization, billing, API token creation, secret copying and DNS ownership are manual boundaries",
+    "nextUserAction": "Sign in to Render and Cloudflare in the opened Edge tabs. Do not send passwords or secrets in chat. Plan/budget selection follows a concrete account-visible proposal."
+  },
+  "officialReferences": {
+    "postgresRecovery": "https://render.com/docs/postgresql-backups",
+    "applicationRollback": "https://render.com/docs/rollbacks",
+    "privateImageDeployment": "https://render.com/docs/deploying-an-image",
+    "r2Cors": "https://developers.cloudflare.com/r2/buckets/cors/",
+    "r2Pricing": "https://developers.cloudflare.com/r2/pricing/"
+  },
+  "remainingReleaseBlockers": [
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim pending cloud evidence"
+  ],
+  "filesChanged": [
+    "docs/capstone-cloud-verification-evidence.json",
+    "docs/capstone-release-readiness-audit.md"
+  ]
+}

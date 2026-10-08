@@ -766,3 +766,25 @@ Baseline: 710497f149486127604f98ecb72563644586fe63. This entry supersedes the re
 Remaining global blockers: Cloud Verification; Publishing Integration; Production Product claim pending cloud evidence. Next step: CLOUD VERIFICATION.
 
 Machine-readable evidence: docs/capstone-local-release-fix-evidence.json.
+
+
+## Cloud Verification Addendum — INCOMPLETE
+
+Reviewed source: dad1c6833f8818e403f0fca6cf54bb6d79cb3da0. Local Release Blockers remain CLOSED; overall release remains BLOCKED. Product core, course publishing, entitlement, pricing and locked status unchanged.
+
+### Completed deployment preparation
+
+- Fresh C9 assembled from the reviewed source, not reused from a prior runtime. npm ci and Docker runtime build PASS.
+- Option A: private deployment repository https://github.com/LazyQ0130/ai-research-workspace-deploy; visibility verified PRIVATE. Deployment commit 1a47a62d04867c9c41403093b2cf43a2e0f6d2e1 maps to the reviewed source; 155 source files. It is not a Student Starter or public download.
+- Local image manifest digest: sha256:f80ba0596f90493b69991ad52cfc0025745ca8972256e64ef380e858220be9c9. This is a local build artifact, not a Render-deployed or registry-published image. Render build/deploy digest remains unknown.
+- Image revision label matches source; runtime UID 1000. History/config inspected without exposing values; 2218 /app files scanned, zero .env/credential files and zero known local credential content matches. No build credential supplied.
+
+### Manual boundary and unverified gates
+
+Render and Cloudflare browser consoles both require login. Per the request's section 3 manual boundaries, account authorization and billing are pending; no paid cloud resource, new secret, public endpoint or cloud Provider call was created. Actual account/workspace, region, plans and budget remain undecided. The next user action is only to sign in to both consoles; a concrete resource/cost proposal will follow account access. Passwords/API secrets must not be sent in chat or recorded here.
+
+Production env checker, cloud migrations/pgvector/vector(1024), R2 private access/browser CORS, public HTTPS/health, HTTPS MCP, Provider integration, Full Cloud Smoke, Production Safe Smoke, cloud crash recovery, backup/PITR/restore, application rollback and cloud log hygiene are all NOT VERIFIED. No local pass was relabeled as cloud evidence. Production Product claim = NOT SUPPORTED.
+
+Official procedures rechecked: [Render PITR](https://render.com/docs/postgresql-backups), [Render rollback](https://render.com/docs/rollbacks), [private image deployment](https://render.com/docs/deploying-an-image), [R2 CORS](https://developers.cloudflare.com/r2/buckets/cors/). Paid Render Postgres recovery creates a new DB; application rollback is a separate capability. Account-visible plans/window/cost must be verified before paid creation.
+
+Remaining Release blockers: Cloud Verification; Publishing Integration; Production Product claim pending cloud evidence. Safe machine-readable record: docs/capstone-cloud-verification-evidence.json.
