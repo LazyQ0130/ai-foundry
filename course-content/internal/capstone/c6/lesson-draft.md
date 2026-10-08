@@ -140,7 +140,7 @@ MCP discovery 描述服务器提供什么，本地产品策略决定本次 Run �
 ## 90～115 分钟：工具、Evidence 与失败降级
 :::concept
 
-Planner 的 `plan_research_step` 只是结构化控制协议，不执行 DB/API。PRIVATE_ONLY 仅允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时才增加 search_external_references，发生 unavailable 后移除。外部 query 必须逐字等于服务端 approvedExternalQuery。Adapter 严格解析后，仍通过现有业务 Tool Registry、Workspace 与预算边界。Provider 每轮强制唯一指定 Function，parallel_tool_calls=false，不使用 Planner JSON mode 或自由文本 fallback。
+Planner 的 `plan_research_step` 只是结构化控制协议，不执行 DB/API。PRIVATE_ONLY 仅允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时才增加 search_external_references，发生 unavailable 后移除。外部 query 必须逐字等于服务端 approvedExternalQuery。Adapter 严格解析后，仍通过现有业务 Tool Registry、Workspace 与预算边界。Provider 每轮强制唯一指定 Function，parallel_tool_calls=false，不使用 Planner JSON mode 或自由文本 fallback。Planner 专用 Adapter 兼容 `stop` 或 `tool_calls` 携带恰好一个合法指定 Function；缺失、多次、`length`、过滤或未知 finish 一律拒绝。共享 Provider metadata 不改写，正文始终丢弃。
 
 :::
 

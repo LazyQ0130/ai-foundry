@@ -33,7 +33,7 @@ test('planner fails closed on envelope, shape, policy and exact-query violations
   [planner({action:'ready',query:'extra'})],[planner({action:'delete_database'})],
   [planner({action:'search_knowledge',query:''})],[planner({action:'search_knowledge',query:'memory',workspaceId:99})],
   [planner({action:'search_external_references',query:input.query})]])await assert.rejects(decision(calls),/INVALID_MODEL_TURN/)
- for(const finish of ['stop','length','content_filter','unknown'])await assert.rejects(decision([ready],finish),/INVALID_MODEL_TURN/)
+ for(const finish of ['length','content_filter','unknown'])await assert.rejects(decision([ready],finish),/INVALID_MODEL_TURN/)
  for(const query of ['Synthetic memory',input.query+' ',input.query+' private evidence'])
   await assert.rejects(decision([planner({action:'search_external_references',query})],'tool_calls',{sourcePolicy:'PRIVATE_AND_EXTERNAL'}),/INVALID_MODEL_TURN/)
  await assert.rejects(decision([planner({action:'search_external_references',query:input.query})],'tool_calls',{
@@ -80,4 +80,25 @@ test('search then ready counts two model decisions, one actual search and three 
   decide:async(turn)=>decision([turn===0?planner({action:'search_knowledge',query:'memory'}):ready]),search:async()=>[],
   startStep:async()=>1,completeStep:async()=>{},failStep:async()=>{throw Error('MUST_NOT_FAIL_PROTOCOL')}})
  assert.equal(result.outcome,'INSUFFICIENT_EVIDENCE');assert.equal(result.modelCalls,2);assert.equal(result.toolCalls,1);assert.equal(units,3)
+}))
+
+
+test('planner compatibility acceptance matrix: stop needs a valid forced function; content has no authority',()=>real(async()=>{
+ for(const finish of ['tool_calls','stop']){
+  assert.deepEqual(await decision([ready],finish),{type:'ready',toolCalls:[]})
+  const search=await decision([planner({action:'search_knowledge',query:'memory'})],finish)
+  assert.deepEqual(search,{type:'tool_calls',toolCalls:[{name:'search_knowledge',arguments:'{"query":"memory"}'}]})
+  assert.ok(!JSON.stringify(search).includes('untrusted planner prose'))
+  const external=await decision([planner({action:'search_external_references',query:input.query})],finish,{sourcePolicy:'PRIVATE_AND_EXTERNAL'})
+  assert.deepEqual(validateResearchToolCalls(external.toolCalls,'PRIVATE_AND_EXTERNAL'),{query:input.query})
+  await assert.rejects(decision([planner({action:'search_external_references',query:input.query+' '})],finish,{sourcePolicy:'PRIVATE_AND_EXTERNAL'}),/INVALID_MODEL_TURN/)
+  await assert.rejects(decision([planner({action:'search_external_references',query:input.query})],finish,{sourcePolicy:'PRIVATE_AND_EXTERNAL',observations:[{query:'not sent',matchCount:0,evidence:[],unavailable:'EXTERNAL_UNAVAILABLE'}]}),/INVALID_MODEL_TURN/)
+
+  for(const calls of [undefined,[],[ready,ready],[planner('broken JSON')],
+   ...['search_knowledge','search_external_references','ready','delete_database'].map(name=>[planner({action:'ready'},name)]),
+   [planner({action:'ready',query:'extra'})],[planner({action:'search_external_references',query:input.query})]])
+   await assert.rejects(decision(calls,finish),/INVALID_MODEL_TURN/)
+ }
+ for(const finish of ['length','content_filter','unknown'])for(const calls of [[],[ready],[ready,ready]])
+  await assert.rejects(decision(calls,finish),/INVALID_MODEL_TURN/)
 }))

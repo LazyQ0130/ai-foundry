@@ -46,5 +46,5 @@ export async function decideResearchAction(input: { query: string; brief: Resear
     { role: 'user', content: JSON.stringify({ approvedExternalQuery: approvedExternalQuery(input.query), question: input.query, brief: input.brief, previousSearches: observations,
       searchesUsed: observations.length, searchesRemaining: Math.max(0, 3 - observations.length) }) },
   ], { tools: protocol.tools, toolChoice: plannerToolChoice, parallelToolCalls: false, signal: input.signal, maxTokens: 500, jsonMode: false })
-  return protocol.parse(raw)
+  return protocol.parse(raw, diagnostic => console.info(JSON.stringify({ event: 'planner_provider_compatibility', ...diagnostic })))
 }

@@ -1,0 +1,1352 @@
+{
+  "phase": "Release Blocker Remediation Phase A4",
+  "date": "2026-10-08",
+  "baseline": "2bdc9fb58ecf8e99b02f3b3c53c017c548a25733",
+  "verdict": "BLOCKED",
+  "blocker": "PROVIDER COMPATIBILITY BLOCKER",
+  "overallReleaseVerdict": "BLOCKED",
+  "localReleaseBlocker": "OPEN",
+  "acceptance": {
+    "allowedFinishes": [
+      "tool_calls",
+      "stop"
+    ],
+    "requiredFunction": "plan_research_step",
+    "requiredCount": 1,
+    "requiredType": "function",
+    "arguments": "JSON.parse => strict discriminated union => source policy / exact external query => existing business Tool Registry",
+    "rejectFinishes": [
+      "length",
+      "content_filter",
+      "unknown"
+    ],
+    "stopWithoutCall": "REJECT",
+    "multipleCalls": "REJECT",
+    "wrongFunction": "REJECT",
+    "content": "Always discarded, never an authority or fallback",
+    "sharedFirstMessage": "UNCHANGED",
+    "reportBriefProposal": "UNCHANGED",
+    "runtime": "UNCHANGED",
+    "retry": 0,
+    "model": "qwen3.7-flash",
+    "enableThinking": false,
+    "maxTokens": 500
+  },
+  "deterministic": {
+    "plannerTests": 9,
+    "plannerTestsPassed": 9,
+    "c5OnlyAssembly": {
+      "tests": 2,
+      "passed": 2
+    },
+    "referenceUnitTests": 50,
+    "redTests": {
+      "total": 9,
+      "passed": 7,
+      "failed": 2
+    }
+  },
+  "realPlannerProbe": {
+    "runs": [
+      {
+        "run": 1,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1833,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 2,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "providerUnits": 1,
+        "evidenceCount": 0,
+        "latencyMs": 7059,
+        "adapterError": "INVALID_MODEL_TURN",
+        "plannerFunctionCallCount": 0,
+        "decisionActions": [],
+        "protocolPass": false
+      },
+      {
+        "run": 3,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1256,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 4,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 2158,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_external_references",
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 5,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1265,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 6,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 4240,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_external_references",
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 7,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1355,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 8,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 2347,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_external_references",
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 9,
+        "sourcePolicy": "PRIVATE_ONLY",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "providerUnits": 3,
+        "evidenceCount": 1,
+        "latencyMs": 1467,
+        "adapterError": null,
+        "plannerFunctionCallCount": 2,
+        "decisionActions": [
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      },
+      {
+        "run": 10,
+        "sourcePolicy": "PRIVATE_AND_EXTERNAL",
+        "outcome": "READY",
+        "errorCode": null,
+        "modelCalls": 3,
+        "toolCalls": 2,
+        "providerUnits": 5,
+        "evidenceCount": 2,
+        "latencyMs": 2194,
+        "adapterError": null,
+        "plannerFunctionCallCount": 3,
+        "decisionActions": [
+          "search_external_references",
+          "search_knowledge",
+          "ready"
+        ],
+        "protocolPass": true
+      }
+    ],
+    "diagnostics": [
+      {
+        "run": 1,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 51,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 821,
+        "category": "NONE"
+      },
+      {
+        "run": 1,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 1007,
+        "category": "NONE"
+      },
+      {
+        "run": 2,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "length",
+        "toolCount": 0,
+        "toolNames": [],
+        "decisionActions": [],
+        "outputTokens": 500,
+        "contentPresent": true,
+        "contentLength": 2147,
+        "latencyMs": 7059,
+        "category": "UNSUPPORTED_FINISH_REASON"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 53,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 664,
+        "category": "NONE"
+      },
+      {
+        "run": 3,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 591,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 725,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 48,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 749,
+        "category": "NONE"
+      },
+      {
+        "run": 4,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 678,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 51,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 684,
+        "category": "NONE"
+      },
+      {
+        "run": 5,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 581,
+        "category": "NONE"
+      },
+      {
+        "run": 6,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 197,
+        "contentPresent": true,
+        "contentLength": 692,
+        "latencyMs": 2761,
+        "category": "NONE"
+      },
+      {
+        "run": 6,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 48,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 765,
+        "category": "NONE"
+      },
+      {
+        "run": 6,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 714,
+        "category": "NONE"
+      },
+      {
+        "run": 7,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 52,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 649,
+        "category": "NONE"
+      },
+      {
+        "run": 7,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 706,
+        "category": "NONE"
+      },
+      {
+        "run": 8,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 761,
+        "category": "NONE"
+      },
+      {
+        "run": 8,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 50,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 875,
+        "category": "NONE"
+      },
+      {
+        "run": 8,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 711,
+        "category": "NONE"
+      },
+      {
+        "run": 9,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 53,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 895,
+        "category": "NONE"
+      },
+      {
+        "run": 9,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 572,
+        "category": "NONE"
+      },
+      {
+        "run": 10,
+        "turn": 0,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_external_references"
+        ],
+        "outputTokens": 42,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 876,
+        "category": "NONE"
+      },
+      {
+        "run": 10,
+        "turn": 1,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "search_knowledge"
+        ],
+        "outputTokens": 48,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 700,
+        "category": "NONE"
+      },
+      {
+        "run": 10,
+        "turn": 2,
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "toolCount": 1,
+        "toolNames": [
+          "plan_research_step"
+        ],
+        "decisionActions": [
+          "ready"
+        ],
+        "outputTokens": 28,
+        "contentPresent": true,
+        "contentLength": 0,
+        "latencyMs": 618,
+        "category": "NONE"
+      }
+    ],
+    "compatibilityEvents": [
+      {
+        "run": 1,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 1,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 3,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 3,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 4,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 5,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 5,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 6,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 6,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 6,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 7,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 7,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 8,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 8,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 8,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 9,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 9,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 10,
+        "turn": 0,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 10,
+        "turn": 1,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      },
+      {
+        "run": 10,
+        "turn": 2,
+        "event": "planner_provider_compatibility",
+        "plannerProviderFinishReason": "stop",
+        "plannerFunctionPresent": true,
+        "plannerCompatibilityPath": "STOP_WITH_VALID_FORCED_FUNCTION"
+      }
+    ],
+    "compatibilityCounts": {
+      "standardToolCalls": 0,
+      "stopWithValidFunction": 22,
+      "invalid": 1
+    },
+    "passed": 9,
+    "total": 10,
+    "invalidModelTurns": 1,
+    "retry": false
+  },
+  "observation": {
+    "providerCalls": 23,
+    "actualToolCalls": 13,
+    "providerUnits": 36,
+    "outputTokensTotal": 1529,
+    "outputTokensMin": 28,
+    "outputTokensMax": 500,
+    "discardedContentCount": 2,
+    "discardedContentTotalChars": 2839,
+    "acceptedDiscardedContentCount": 1,
+    "acceptedDiscardedContentChars": 692,
+    "compatibilityNormalizations": 22,
+    "maxTokens": 500
+  },
+  "invalidProviderResponses": [
+    {
+      "run": 2,
+      "turn": 0,
+      "httpStatus": 200,
+      "finishReason": "length",
+      "toolCount": 0,
+      "toolNames": [],
+      "decisionActions": [],
+      "outputTokens": 500,
+      "contentPresent": true,
+      "contentLength": 2147,
+      "latencyMs": 7059,
+      "category": "UNSUPPORTED_FINISH_REASON"
+    }
+  ],
+  "fullStagingSmoke": {
+    "status": "NOT_RUN",
+    "gate": "FAIL",
+    "invocations": 0,
+    "reason": "Real Planner Probe 9/10; no smoke authorization below 10/10",
+    "image": "Fresh local runtime image built but not launched; not functional verification",
+    "database": "Fresh capstone_phase_a4_staging created and migrated but unused",
+    "preparedCounts": {
+      "users": 0,
+      "runs": 0,
+      "actions": 0,
+      "notes": 0
+    },
+    "initialProgressCorrection": "A commentary mistakenly interpreted successful run10 as 10/10; corrected from final aggregate before launching any real smoke"
+  },
+  "proposal": {
+    "pathReached": false,
+    "repair": "None",
+    "realOverlengthReproduced": false,
+    "stabilityExecuted": 0,
+    "stabilityTarget": 5,
+    "strictValid": "NOT_RUN",
+    "initialOverlengthCount": null,
+    "repairCount": 0,
+    "finalValidCount": null,
+    "providerFailureCount": null,
+    "titleLimit": 120,
+    "contentLimit": 2000,
+    "historical2318EvidencePreserved": true
+  },
+  "reference": {
+    "freshAssembly": {
+      "files": 155,
+      "mismatches": []
+    },
+    "npmCi": "PASS",
+    "verification": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "unitTests": 50,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "approvalDatabaseTests": 5,
+    "eval": {
+      "summary": {
+        "totalCases": 25,
+        "matrixCases": 25,
+        "passed": 25,
+        "failed": 0,
+        "incomplete": 0
+      },
+      "hardGates": {
+        "cross_workspace_leaks": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unapproved_writes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "duplicate_knowledge_notes": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "invalid_citations": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_deterministic_claims": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "unsupported_answer_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "partial_ready_count": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        },
+        "tamper_accepts": {
+          "observed": 0,
+          "required": 0,
+          "status": "PASS"
+        }
+      },
+      "comparison": {
+        "changes": [
+          {
+            "name": "private-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "mixed-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "insufficient-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "knowledge-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "human-edit",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-validity",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-support-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable-behavior",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported-abstention",
+            "change": "unchanged"
+          },
+          {
+            "name": "note-fidelity",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-evidence-quality",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross-workspace-isolation",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "approval-boundaries",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate-notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "tool-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "report-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "file-failures",
+            "change": "unchanged"
+          },
+          {
+            "name": "index-atomic-retry",
+            "change": "unchanged"
+          },
+          {
+            "name": "runtime-limits",
+            "change": "unchanged"
+          },
+          {
+            "name": "timeout-cancel",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-degradation",
+            "change": "unchanged"
+          },
+          {
+            "name": "write-rollback",
+            "change": "unchanged"
+          },
+          {
+            "name": "provider-failure",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross_workspace_leaks",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved_writes",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate_knowledge_notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "invalid_citations",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_deterministic_claims",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_answer_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "partial_ready_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "tamper_accepts",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval_hit_at_3",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_abstention_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable_success_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "note_fidelity_pass_rate",
+            "change": "unchanged"
+          }
+        ],
+        "regressed": false
+      },
+      "metrics": {
+        "modelCalls": 5,
+        "toolCalls": 3,
+        "invalid_citations": 0,
+        "externalCalls": 1,
+        "retrieval_total": 10,
+        "retrieval_hits": 10,
+        "retrieval_rr": 9.5,
+        "embeddingCalls": 10,
+        "unsupported_deterministic_claims": 0,
+        "answerable_total": 4,
+        "answerable_success": 4,
+        "abstention_total": 2,
+        "abstention_success": 2,
+        "unsupported_answer_count": 0,
+        "note_fidelity_total": 4,
+        "note_fidelity_pass": 4,
+        "cross_workspace_leaks": 0,
+        "unapproved_writes": 0,
+        "tamper_accepts": 0,
+        "duplicate_knowledge_notes": 0,
+        "failure_handled_count": 5,
+        "partial_ready_count": 0,
+        "retry_success_count": 3,
+        "timeout_handled_count": 1,
+        "cancel_handled_count": 1,
+        "external_degradation_success_count": 4,
+        "retrieval_hit_at_3": 1,
+        "retrieval_mrr": 0.95,
+        "answerable_success_rate": 1,
+        "unsupported_abstention_rate": 1,
+        "note_fidelity_pass_rate": 1
+      }
+    },
+    "migration": {
+      "count": 6,
+      "method": "migrate deploy",
+      "freshIsolatedDatabases": [
+        "capstone_c8_eval",
+        "capstone_c9_test",
+        "capstone_phase_a4_staging"
+      ],
+      "platformOrProductionDatabaseUsed": false
+    },
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "platform": {
+    "npmCi": "PASS",
+    "verification": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "unitTests": 84,
+    "initialFailure": "Initial platform check inherited the isolated Capstone DATABASE_URL from migration setup: Stage table absent (P2021). No platform data reset. Cleared process env overrides; repeated platform gates against its existing configured environment. Initial failure log retained.",
+    "productionAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "fullAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "devServicesRestored": {
+      "vite": 200,
+      "apiHealth": 200
+    }
+  },
+  "dependencyRisk": {
+    "decision": "ACCEPTED DEV TOOLCHAIN RISK",
+    "policyAndDependenciesUnchanged": true,
+    "advisory": "GHSA-vfj7-8cjw-p6xm",
+    "runtimeTree": {
+      "exit": 0,
+      "found": [
+        "@prisma/client > prisma > @prisma/config > c12 > chokidar@4.0.3"
+      ]
+    },
+    "artifactScan": {
+      "files": 280,
+      "matches": []
+    },
+    "prismaException": "Unrelated chokidar4.0.3 via optional peer Prisma CLI; affected Tailwind/braces chain absent",
+    "cloudExposure": "NOT_VERIFIED"
+  },
+  "providerCompatibilityDecision": {
+    "file": "docs/capstone-provider-compatibility-decision.md",
+    "options": [
+      "qwen3.7-flash / current Chat Completions",
+      "Another documented Function Calling Qwen such as qwen3.8-max / Chat Completions",
+      "Qwen / Model Studio Responses API"
+    ],
+    "recommendation": "Separately qualify another documented Qwen using the existing API first; engineering inference about isolating variables, not demonstrated superior reliability",
+    "otherCandidatesTested": false,
+    "modelOrApiChanged": false,
+    "noA5ProtocolTuning": true,
+    "officialSources": [
+      "https://docs.modelstudio.console.alibabacloud.com/en/model-studio/qwen-function-calling",
+      "https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-responses"
+    ]
+  },
+  "scope": {
+    "cloud": false,
+    "publishing": false,
+    "pricing": false,
+    "entitlement": false,
+    "tailwindMigration": false,
+    "releaseTag": false,
+    "stageLessons": 29,
+    "capstoneLocked": true,
+    "prompts": 56,
+    "uniqueCheckKeys": 61
+  },
+  "cloud": {
+    "runtime": "NOT_VERIFIED",
+    "database": "NOT_VERIFIED",
+    "storage": "NOT_VERIFIED",
+    "httpsMcp": "NOT_VERIFIED",
+    "productionSmoke": "NOT_VERIFIED",
+    "backupRollback": "NOT_VERIFIED"
+  },
+  "publishing": {
+    "loader": "MISSING",
+    "progress0of9": "MISSING",
+    "serverEntitlement": "PARTIAL"
+  },
+  "remaining": [
+    "Provider compatibility qualification",
+    "Full Local Staging Smoke",
+    "Real Proposal contract stability",
+    "Cloud Verification",
+    "Publishing Integration",
+    "Production Product claim unsupported"
+  ],
+  "filesChanged": [
+    "course-content/internal/capstone/c5/lesson-draft.md",
+    "course-content/internal/capstone/c5/overlay/docs/architecture.md",
+    "course-content/internal/capstone/c5/overlay/lib/planner-decision.ts",
+    "course-content/internal/capstone/c5/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c5/overlay/test/planner-decision.test.ts",
+    "course-content/internal/capstone/c6/lesson-draft.md",
+    "course-content/internal/capstone/c6/overlay/lib/planner-decision.ts",
+    "course-content/internal/capstone/c6/overlay/lib/research-model.ts",
+    "course-content/internal/capstone/c6/overlay/test/research-model.test.ts",
+    "docs/capstone-provider-compatibility-decision.md",
+    "docs/capstone-phase-a4-evidence.json",
+    "docs/capstone-release-readiness-audit.md"
+  ]
+}
