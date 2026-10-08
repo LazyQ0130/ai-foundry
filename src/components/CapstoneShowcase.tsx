@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, LockKeyhole } from 'lucide-react'
+import { ArrowDown, ArrowRight, GraduationCap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 
@@ -25,7 +25,7 @@ export function CapstonePathCard() {
         </div>
         <div className="flex items-center justify-between gap-4 sm:justify-end">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-700">
-            <LockKeyhole className="h-3.5 w-3.5" />{capstoneShowcase.status}
+            <GraduationCap className="h-3.5 w-3.5" />{capstoneShowcase.status}
           </span>
           <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-brand-700 group-hover:text-brand-800">了解毕业项目 <ArrowRight className="h-4 w-4" /></span>
         </div>

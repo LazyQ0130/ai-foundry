@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-08",
+  "verdict": "PASS",
+  "integrationCommit": "0830120f0471b5e8e4e593999f9608776bfedb9a",
+  "publishingCommit": "Publish AI Foundry Capstone (this record is included in that commit)",
+  "stageFormalLessons": 29,
+  "capstoneLabs": 9,
+  "checkKeys": 61,
+  "studentMarkdown": "Reviewed final drafts copied byte-for-byte; only C9 claim clarification added to both draft and formal content",
+  "status": "已开放",
+  "publicClaim": "Deployable AI Product",
+  "duration": "约 18～23 小时",
+  "prerequisite": "Stage 1–4 or equivalent AI Coding / Full-stack / RAG / Agent ability",
+  "cloudVerification": {
+    "releaseGate": "WAIVED AS RELEASE BLOCKER BY PRODUCT DECISION",
+    "reason": "Commercial cloud deployment is no longer part of the author-reference release gate.",
+    "historicalStatus": "NOT VERIFIED — preserved; not converted to PASS"
+  },
+  "gates": {
+    "npm ci": "PASS",
+    "npm run typecheck": "PASS",
+    "npm test": "PASS (88/88)",
+    "npm run check": "PASS",
+    "npm run build": "PASS (non-blocking Vite chunk-size warning)",
+    "npm run check:bundle": "PASS (346 public files; 30 Stage content files including preparation, 9 Capstone labs, 194 internal artifacts)",
+    "negative bundle injection": "PASS (expected exit 1; single injected file removed)",
+    "migration": "PASS (isolated test schema and local platform public schema; no reset)"
+  },
+  "accessMatrix": {
+    "anonymous": [
+      401,
+      401,
+      401
+    ],
+    "noEntitlement": [
+      403,
+      403,
+      403
+    ],
+    "stageBundle": [
+      403,
+      403,
+      403
+    ],
+    "projectLab": [
+      200,
+      200,
+      200
+    ],
+    "revoked": [
+      403,
+      403,
+      403
+    ],
+    "disabled": [
+      401,
+      401,
+      401
+    ],
+    "adminWithoutProjectLab": [
+      403,
+      403,
+      403
+    ],
+    "adminWithExplicitProjectLab": [
+      200,
+      200,
+      200
+    ]
+  },
+  "accessMatrixColumns": [
+    "body",
+    "progress",
+    "Starter"
+  ],
+  "lessonMatrix": "c1–c9 200; c10, unknown, traversal, encoded path and unpublished 404",
+  "progress": "0/9 through all 61 checks to 9/9; first incomplete Continue; persisted across login; undo C1 → 8/9; isolated between users; arbitrary and wrong-lesson keys rejected; Stage stays 0/29",
+  "httpSmoke": "Real listening Express server + fetch on test database: login/catalogue/C1/progress/ZIP; anonymous denied; next request after revoke denied",
+  "browserSmoke": "IAB: login → C1 Renderer → checklist complete → 9/9 → reload persists → overview completed → Starter downloaded",
+  "starter": "17 exact allowlisted files; fixed server resource ID; no completed documents, overlay, reference, gold, runtime or secrets; private no-store",
+  "productEntitlement": "Existing admin grant/revoke endpoints exercised in tests; no payment code changes or bulk grants",
+  "localService": "Normal API restored after browser test; new migration applied to localhost:55432/aifoundry public schema",
+  "deployment": "Code release only; no remote production deployment claimed",
+  "logs": {
+    "npm-ci.log": {
+      "sha256": "48622ac0798dc92fc25552665a50dc05e53033c0fd450f597807e9b47db13f63",
+      "bytes": 358
+    },
+    "typecheck-publish-final.log": {
+      "sha256": "b7d0eab445b58ca50137b64f4d1ee5839dcb5977f9faa0f323900befd53c1405",
+      "bytes": 80
+    },
+    "tests-publish.log": {
+      "sha256": "5f29807028f597c5318fe89117feb29942963ad0008665ed3e6c207c02fe19cd",
+      "bytes": 9041
+    },
+    "check-publish.log": {
+      "sha256": "786c973542a057a027427d481d11df6cd5eef3eb99190d875686d517e34177f2",
+      "bytes": 3695
+    },
+    "build-publish.log": {
+      "sha256": "17d6cac6198a1e70017648a907eb7618c347beefed448f33567f21c657cac952",
+      "bytes": 1348
+    },
+    "bundle-publish.log": {
+      "sha256": "3c7d6a819c2fa10a100f6acde5bd3d79c03cba683072661d52b3359ae4b7e313",
+      "bytes": 231
+    },
+    "bundle-negative.log": {
+      "sha256": "9deb484875856503cb7b9dba1be1ec76efcf2821b45bb7015964481902bf46d3",
+      "bytes": 359
+    },
+    "local-platform-migration.log": {
+      "sha256": "54971ef5c02cf42bf460e4e486f7646c547325154f93da24b48c6af0ec44d89d",
+      "bytes": 525
+    }
+  },
+  "filesChanged": [
+    "course-content/capstone/c1.md",
+    "course-content/capstone/c2.md",
+    "course-content/capstone/c3.md",
+    "course-content/capstone/c4.md",
+    "course-content/capstone/c5.md",
+    "course-content/capstone/c6.md",
+    "course-content/capstone/c7.md",
+    "course-content/capstone/c8.md",
+    "course-content/capstone/c9.md",
+    "course-content/internal/capstone/c9/lesson-draft.md",
+    "docs/capstone-publishing-evidence.json",
+    "docs/capstone-release-readiness-audit.md",
+    "package.json",
+    "prisma/migrations/20261008190000_capstone_progress/migration.sql",
+    "prisma/schema.prisma",
+    "scripts/build-starter.ts",
+    "scripts/capstone-starter-package.ts",
+    "scripts/check-authored-content.ts",
+    "scripts/check-bundle.ts",
+    "scripts/check-capstone-c1.ts",
+    "scripts/check-capstone-c2.ts",
+    "scripts/check-capstone-c3.ts",
+    "scripts/check-capstone-c4.ts",
+    "scripts/check-capstone-c5.ts",
+    "scripts/check-capstone-c6.ts",
+    "scripts/check-capstone-c7.ts",
+    "scripts/check-capstone-c8.ts",
+    "scripts/check-capstone-c9.ts",
+    "scripts/check-capstone-publishing.ts",
+    "scripts/check-capstone-release.ts",
+    "server/app.ts",
+    "server/routes/capstone.ts",
+    "server/routes/course-assets.ts",
+    "server/services/asset-access.ts",
+    "server/services/capstone-content.ts",
+    "server/services/capstone-progress.ts",
+    "src/App.tsx",
+    "src/components/CapstoneShowcase.tsx",
+    "src/components/CourseResource.tsx",
+    "src/components/MobilePlanComparison.tsx",
+    "src/data/capstoneLessons.ts",
+    "src/data/capstoneProgress.ts",
+    "src/data/capstoneShowcase.ts",
+    "src/data/courseAssets.ts",
+    "src/data/site.ts",
+    "src/pages/AccountPage.tsx",
+    "src/pages/CapstoneLessonPage.tsx",
+    "src/pages/CapstoneOverview.tsx",
+    "src/pages/Pricing.tsx",
+    "src/pages/ProjectsPage.tsx",
+    "starter/aifoundry-capstone-starter.zip",
+    "tests/capstone-publishing.test.ts",
+    "tests/capstone-showcase.test.ts",
+    "tests/product-consistency.test.ts",
+    "tests/projects-center.test.ts"
+  ]
+}

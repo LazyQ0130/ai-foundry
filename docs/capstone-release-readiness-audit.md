@@ -802,3 +802,27 @@ Public claim changed at publishing: Production Product → Deployable AI Product
 Historical NOT VERIFIED cloud evidence remains unchanged. The author Reference has local production-like delivery evidence; cloud deployment is a student exercise for their chosen platform.
 
 Publishing Integration: access, independent progress, protected content and Starter implemented. Integration commit retains the locked showcase status pending final publishing gates.
+
+
+## Final Publishing Audit — 2026-10-08
+
+Current release verdict: **PASS**. Capstone Project Lab is **已开放** in the publishing commit.
+
+| Gate | Result |
+|---|---|
+| Lessons | 9 independent Project Labs |
+| Stage formal lessons | 29 (unchanged) |
+| Stable checklist keys | 61 |
+| Server access | PASS — ACTIVE + explicit project-lab, including administrators |
+| Independent progress | PASS — 0/9 → 9/9, undo and Continue verified |
+| Starter protection | PASS — fixed resource; 17-file allowlist |
+| Bundle leak | PASS — protected bodies/internal artifacts excluded; injection exits 1 |
+| Tests | PASS — 88/88, including real PostgreSQL and HTTP |
+| Typecheck / content checks / build | PASS |
+| Browser | PASS — rendered C1, save/reload, 9/9 overview, Starter download |
+
+Cloud Verification: **WAIVED AS RELEASE BLOCKER BY PRODUCT DECISION**. Historical NOT VERIFIED evidence above and in cloud records remains valid. It does not become PASS. Public delivery claim is **Deployable AI Product**, approximately 18–23 hours with Stage 1–4 or equivalent prerequisites. C9 describes author local production-like verification and student-selected cloud deployment.
+
+Integration commit: 0830120f0471b5e8e4e593999f9608776bfedb9a (locked). Final publishing commit changes public presentation and this release metadata only. No price, payment, bulk entitlement, Stage count, release tag or cloud resource changes.
+
+Detailed matrix, changed-file list and local log hashes: [Publishing evidence](./capstone-publishing-evidence.json).

@@ -1,11 +1,11 @@
 export const capstoneShowcase = {
   title: 'AI Foundry Capstone Project',
-  subtitle: '从问题定义到上线交付的 AI 产品毕业实践',
+  subtitle: '用 9 节 Project Lab，从产品定义开始，独立完成一个可部署的 AI 研究工作台。',
   project: 'AI 研究工作台',
   projectEn: 'AI Research Workspace',
   description: '从研究者的问题出发，亲自完成需求分析、产品范围、技术选型与工程交付，逐步做出能整合个人资料和外部证据、生成可追溯报告的 AI 研究工作台。',
   exitState: '从空白产品蓝图开始，交付一个可以部署、验证、展示并清楚解释取舍的 AI 产品。',
-  status: '暂未解锁',
+  status: '已开放',
   badge: 'Project Lab 专属',
   abilities: [
     { title: '产品架构', desc: '从需求、领域模型到完整 AI 产品架构。' },
@@ -26,5 +26,5 @@ export const capstoneShowcase = {
   ],
   flow: ['Knowledge', 'Research Task', '研究 Agent', 'Evidence', 'Report', 'Human Approval', 'Knowledge Note'],
   technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'pgvector', 'RAG', 'Citation', 'Agent', 'MCP', 'Human-in-the-loop', 'Persistence', 'Eval'],
-  deliverables: ['Production Product', 'GitHub Repository', 'README', 'Architecture Diagram', '3-minute Demo', 'Resume Project Entry'],
+  deliverables: ['Deployable AI Product', 'GitHub Repository', 'README', 'Architecture Diagram', '3-minute Demo', 'Resume Project Entry'],
 } as const

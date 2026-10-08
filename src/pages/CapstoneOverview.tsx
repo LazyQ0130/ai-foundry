@@ -21,6 +21,7 @@ function SectionHeading({ title, sub }: { title: string; sub: string }) {
 export default function CapstoneOverview() {
   const navigate=useNavigate()
   const lab=useCapstone()
+  const phases=['Define','Architect','Ingest','Ground','Orchestrate','Expand Evidence','Control Writes','Evaluate','Deliver']
   const released=String(capstoneShowcase.status)==='已开放'
   const [notice, setNotice] = useState(false)
   const hasProjectLab = useOptionalAuth()?.user?.productEntitlements.includes('project-lab') ?? false
@@ -38,11 +39,13 @@ export default function CapstoneOverview() {
               <p className="mt-3 text-[16px] font-semibold text-slate-700">{capstoneShowcase.subtitle}</p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-700"><LockKeyhole className="h-3.5 w-3.5" />{capstoneShowcase.status}</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-700"><GraduationCap className="h-3.5 w-3.5" />{capstoneShowcase.status}</span>
               <span className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-[12px] font-semibold text-brand-800">{capstoneShowcase.badge}</span>
             </div>
           </div>
           <p className="mt-5 max-w-3xl text-[14px] leading-7 text-slate-600">{capstoneShowcase.description}</p>
+          <p className="mt-3 text-sm font-semibold text-slate-700">9 节 Project Lab · 约 18～23 小时 · 可部署 AI 产品</p>
+          <p className="mt-2 text-sm text-slate-600">建议完成 Stage 1～4，或具备等效的 AI Coding、Full-stack、RAG 与 Agent 基础。</p>
           <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? released ? '已拥有 Project Lab 权益。' : '已拥有 Project Lab 权益；Capstone 当前暂未开放。' : 'Project Lab 专属；开通项目版后可进入毕业项目实战。'}</p>
           {!hasProjectLab && <Link to="/pricing" className="mt-2 inline-block text-[13px] font-medium text-brand-700">查看项目版 <ArrowRight className="inline h-4 w-4" /></Link>}
           <p className="mt-5 max-w-3xl border-l-2 border-brand-500 pl-4 text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">最终目标：</span>{capstoneShowcase.exitState}</p>
@@ -111,8 +114,8 @@ export default function CapstoneOverview() {
             {capstoneShowcase.lessons.map((lesson) => (
               <div key={lesson.code}><button type="button" onClick={() => released ? navigate(lab.data?.access ? "/capstone/lessons/"+lesson.code.toLowerCase() : "/pricing") : setNotice(true)} aria-label={`${lesson.code} ${lesson.title}，${capstoneShowcase.status}`} className="group flex min-h-[112px] w-full flex-col rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-slate-300 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
                 <span className="flex w-full items-center justify-between gap-3">
-                  <span className="text-[11px] font-bold text-slate-500">{lesson.code}</span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600"><LockKeyhole className="h-3 w-3" />{capstoneShowcase.status}</span>
+                  <span className="text-[11px] font-bold text-slate-500">{lesson.code} {phases[Number(lesson.code.slice(1))-1]}</span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600"><BookOpen className="h-3 w-3" />{capstoneShowcase.status}</span>
                 </span>
                 <span className="mt-2 text-[14px] font-semibold leading-5 text-slate-900">{lesson.title}</span>
                 <span className="mt-1 text-[12.5px] leading-5 text-slate-500">{lesson.desc}</span>

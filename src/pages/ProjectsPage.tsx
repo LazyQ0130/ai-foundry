@@ -1,7 +1,7 @@
 import { stageLessonCount } from '../data/courses.js'
 import { stageCompletedCount } from '../data/learningProgress.js'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Clock, Code2, LockKeyhole, Target } from 'lucide-react'
+import { ArrowRight, Clock, Code2, GraduationCap, Target } from 'lucide-react'
 import { Breadcrumb, Progress, SectionHeading, StageChip } from '../components/ui.js'
 import { accentClass, stageStatusLabel } from '../data/courses.js'
 import { useProgress } from '../data/progress.js'
@@ -116,7 +116,7 @@ export default function ProjectsPage() {
                   <span className="chip bg-slate-900 text-white">CAPSTONE 01</span>
                   <span className="chip bg-brand-50 text-brand-700">毕业项目</span>
                   <span className="chip bg-slate-100 text-slate-600">{capstoneShowcase.badge}</span>
-                  <span className="chip border border-slate-200 bg-white text-slate-600"><LockKeyhole className="h-3 w-3" />{capstoneShowcase.status}</span>
+                  <span className="chip border border-slate-200 bg-white text-slate-600"><GraduationCap className="h-3 w-3" />{capstoneShowcase.status}</span>
                 </div>
                 <h3 className="mt-5 text-[22px] font-bold leading-tight text-slate-900 sm:text-[26px]">{capstoneShowcase.project}</h3>
                 <p className="mt-1 text-[13px] font-medium text-slate-500">{capstoneShowcase.projectEn}</p>

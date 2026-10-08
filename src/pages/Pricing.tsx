@@ -106,7 +106,7 @@ export default function Pricing() {
                 ['正式课程', '对应阶段', '29 节', '29 节'],
                 ['阶段项目', '1 个', '4 个', '4 个'],
                 ['Project Lab', '不包含', '不包含', '包含'],
-                ['Capstone', '不包含', '不包含', '项目版专属 · 暂未开放'],
+                ['Capstone', '不包含', '不包含', '项目版专属 · 9 节 Project Lab'],
                 ['后续综合项目', '不包含', '不包含', 'Project Lab 内持续更新'],
                 ['价格', `单阶段 ¥${Math.min(...stagePlans.map(p => p.price))} 起`, `¥${allPlan.price}`, `¥${projectPlan.price} · 只比课程版多 ¥${projectPlan.price - allPlan.price}`],
               ].map(([label, stageValue, fullValue, projectValue], index) => (

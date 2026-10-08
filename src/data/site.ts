@@ -159,7 +159,7 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
     features: [
       { text: '包含全阶段课程版全部权益', highlight: true },
       { text: 'Project Lab 专属访问权', highlight: true },
-      { text: 'Capstone 毕业项目实战（暂未开放）' },
+      { text: 'Capstone 毕业项目实战（9 节 Project Lab）' },
       { text: 'Project Lab 后续新增综合项目实战持续开放，具体内容与更新节奏以上线页面为准' },
       { text: '完整项目作品与交付训练' },
     ],
@@ -184,7 +184,7 @@ export const coursePlanBenefits = [
 
 export const projectPlanBenefits = [
   { icon: 'gem', title: '继续完成综合作品', desc: 'Project Lab 提供课程之后的完整项目交付训练。' },
-  { icon: 'refresh', title: '项目实战持续开放', desc: 'Capstone 当前暂未开放；Project Lab 后续新增综合项目的具体内容与更新时间以上线页面为准。' },
+  { icon: 'refresh', title: '项目实战持续开放', desc: 'Capstone 已开放 9 节 Project Lab，完成从产品定义到可部署 AI 产品的综合实践。' },
 ] as const
 
 /* ------------------------------------------------------------------ */
