@@ -79,3 +79,26 @@ test('proposal provider summarizes persisted report, has no tools, rejects provi
       async () => { throw new Error('provider raw secret') }), /PROPOSAL_PROVIDER_FAILED/)
   } finally { if (previous === undefined) delete process.env.AI_NOTE_MODE; else process.env.AI_NOTE_MODE = previous }
 })
+
+test('real proposal prompt targets a margin below the strict character cap; overlength fails without truncation or retry', async () => {
+  const previous = process.env.AI_NOTE_MODE
+  process.env.AI_NOTE_MODE = 'real'
+  try {
+    for (const length of [1600, 2000, 2300]) {
+      let calls = 0
+      const content = 'x'.repeat(length)
+      const result = generateKnowledgeNoteProposal(report, [], AbortSignal.timeout(3000), async (messages, options) => {
+        calls++
+        const prompt = JSON.stringify(messages)
+        for (const instruction of ['1200-1600', 'HARD maximum of 2000', 'not tokens', 'limitations', 'entities and numbers', 'Human review'])
+          assert.ok(prompt.includes(instruction))
+        assert.equal(options.tools, undefined)
+        assert.equal(options.maxTokens, 1800)
+        return { choices: [{ finish_reason: 'stop', message: { content: JSON.stringify({ title: args.title, content }) } }] }
+      })
+      if (length > 2000) await assert.rejects(result, /PROPOSAL_PROVIDER_FAILED/)
+      else assert.equal((await result).content, content)
+      assert.equal(calls, 1)
+    }
+  } finally { if (previous === undefined) delete process.env.AI_NOTE_MODE; else process.env.AI_NOTE_MODE = previous }
+})

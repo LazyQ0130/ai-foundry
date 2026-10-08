@@ -1,0 +1,1063 @@
+{
+  "phase": "Release Blocker Remediation Phase A",
+  "date": "2026-10-08",
+  "baselineCommit": "8a6145a96b10889420172486d177eb757d68c4d0",
+  "verdict": "BLOCKED",
+  "overallReleaseVerdict": "BLOCKED",
+  "scope": {
+    "cloud": false,
+    "publishing": false,
+    "newCapabilities": false,
+    "releaseTag": false
+  },
+  "dependencyMatrix": [
+    {
+      "chain": "sharp",
+      "severity": "High",
+      "scope": "Runtime",
+      "source": "Direct",
+      "fixed": "0.35.5",
+      "risk": "Patch; native libvips update",
+      "decision": "0.35.4 → 0.35.5; avatar HTTP regression passed"
+    },
+    {
+      "chain": "concurrently → shell-quote",
+      "severity": "Critical (2 affected packages)",
+      "scope": "Dev",
+      "source": "Direct → transitive",
+      "fixed": "concurrently 10.0.6 / shell-quote 1.12.0 (advisory fixed >=1.11.0)",
+      "risk": "Patch / compatible minor",
+      "decision": "10.0.5 → 10.0.6, lock resolves shell-quote 1.12.0"
+    },
+    {
+      "chain": "postcss → source-map-js",
+      "severity": "High",
+      "scope": "Dev",
+      "source": "Transitive",
+      "fixed": "1.2.2",
+      "risk": "Patch",
+      "decision": "Lock update 1.2.1 → 1.2.2"
+    },
+    {
+      "chain": "tailwindcss → chokidar → braces; tailwindcss → fast-glob → micromatch → braces",
+      "severity": "High (5 affected packages)",
+      "scope": "Dev",
+      "source": "Direct Tailwind / transitive remainder",
+      "fixed": "No published braces patch; npm proposes Tailwind 4.3.3",
+      "risk": "Major CSS compiler/plugin/configuration migration",
+      "decision": "BLOCKED; keep Tailwind 3.4.19, no unsafe overrides or major migration"
+    },
+    {
+      "chain": "tailwindcss / postcss-nested → postcss-selector-parser",
+      "severity": "Moderate (2 affected packages)",
+      "scope": "Dev",
+      "source": "Transitive",
+      "fixed": "7.1.6; parent range requires older major",
+      "risk": "Major transitive override or Tailwind migration",
+      "decision": "Retain, disclose; not disguised as zero vulnerabilities"
+    },
+    {
+      "chain": "react-router-dom → react-router",
+      "severity": "Moderate (2 affected packages)",
+      "scope": "Runtime",
+      "source": "Direct → transitive",
+      "fixed": "7.18.0+; npm proposes 7.18.4",
+      "risk": "React Router 6 → 7 major",
+      "decision": "Retain, disclose; no unrelated routing migration"
+    }
+  ],
+  "platform": {
+    "beforeProduction": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 1,
+      "critical": 0,
+      "total": 3
+    },
+    "beforeFull": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 7,
+      "critical": 2,
+      "total": 13
+    },
+    "afterProduction": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 0,
+      "total": 2
+    },
+    "afterFull": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 0,
+      "total": 9
+    },
+    "verification": [
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run check",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 1
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 1
+      }
+    ],
+    "tests": 84,
+    "avatarHttpRegression": "PASS",
+    "setupFailure": {
+      "category": "PRISMA_CLIENT_NOT_GENERATED_AFTER_CI",
+      "resolved": "npm run db:generate then full rerun"
+    },
+    "finalBundleCheck": {
+      "exit": 0,
+      "publicFiles": 339,
+      "protectedLessons": 30,
+      "internalArtifacts": 191
+    }
+  },
+  "diagnostic": {
+    "runs": 5,
+    "providerCalls": 15,
+    "decisionFailures": 1,
+    "category": "INVALID_RESPONSE",
+    "details": "HTTP 200 stop output rejected by exact planner ready contract. Original historical failure had insufficient diagnostics; same historical cause cannot be proved.",
+    "safeCalls": [
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 823,
+        "category": "NONE",
+        "run": 1,
+        "turn": 0
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 597,
+        "category": "NONE",
+        "run": 1,
+        "turn": 1
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 529,
+        "category": "NONE",
+        "run": 1,
+        "turn": 2
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 1556,
+        "category": "NONE",
+        "run": 2,
+        "turn": 0
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 638,
+        "category": "NONE",
+        "run": 2,
+        "turn": 1
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 512,
+        "category": "NONE",
+        "run": 2,
+        "turn": 2
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 772,
+        "category": "NONE",
+        "run": 3,
+        "turn": 0
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 645,
+        "category": "NONE",
+        "run": 3,
+        "turn": 1
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 628,
+        "category": "NONE",
+        "run": 3,
+        "turn": 2
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 809,
+        "category": "NONE",
+        "run": 1,
+        "turn": 0
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 653,
+        "category": "NONE",
+        "run": 1,
+        "turn": 1
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 652,
+        "category": "NONE",
+        "run": 1,
+        "turn": 2
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 28,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 386,
+        "category": "NONE",
+        "run": 1,
+        "turn": 3
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 625,
+        "category": "NONE",
+        "run": 2,
+        "turn": 0
+      },
+      {
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 29,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 406,
+        "category": "INVALID_RESPONSE",
+        "run": 2,
+        "turn": 1,
+        "adapterError": "INVALID_MODEL_TURN",
+        "detail": "Stop output rejected by exact ready decision contract; JSON syntax versus field/value mismatch was not retained."
+      }
+    ]
+  },
+  "researchFix": {
+    "instructions": "Explicit exact true-only ready JSON; injectable request for deterministic contract tests",
+    "retry": false,
+    "structuralFailureStillObserved": true,
+    "budget": {
+      "modelTurns": 4,
+      "tools": 3,
+      "providerUnits": 10,
+      "deadlineMs": 120000
+    }
+  },
+  "proposal": {
+    "historicalOverlength": 2318,
+    "syntheticOverlength": 2300,
+    "targetCharacters": "1200-1600",
+    "hardContentLimit": 2000,
+    "hardTitleLimit": 120,
+    "repair": false,
+    "truncateRealOutput": false,
+    "maxProviderCalls": 1,
+    "timeoutMs": 30000,
+    "maxTokens": 1800,
+    "realStabilitySamples": {
+      "attempted": 0,
+      "passed": 0,
+      "status": "NOT_RUN",
+      "reason": "Full smoke failed before Proposal. Required after-PASS prerequisite not met."
+    },
+    "realFidelity": "NOT_VERIFIED"
+  },
+  "reference": {
+    "initialSetupResults": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 2
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 2
+      },
+      {
+        "command": "npm run release:check",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --omit=dev --json",
+        "exit": 0
+      },
+      {
+        "command": "npm audit --json",
+        "exit": 0
+      }
+    ],
+    "finalResults": [
+      {
+        "command": "npm run lint",
+        "exit": 0
+      },
+      {
+        "command": "npm run typecheck",
+        "exit": 0
+      },
+      {
+        "command": "npm test",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone",
+        "exit": 0
+      },
+      {
+        "command": "npm run eval:capstone -- --compare-baseline eval/baseline.json",
+        "exit": 0
+      }
+    ],
+    "releaseCheck": {
+      "command": "npm run release:check",
+      "exit": 0
+    },
+    "unitTests": 42,
+    "approvalDatabaseTests": 5,
+    "security": [
+      {
+        "command": "node scripts/c5-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/c6-http-smoke.mjs",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:db",
+        "exit": 0
+      }
+    ],
+    "assembly": {
+      "canonicalSourceFiles": 153,
+      "mismatches": []
+    },
+    "productionVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "fullVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "eval": {
+      "summary": {
+        "totalCases": 25,
+        "matrixCases": 25,
+        "passed": 25,
+        "failed": 0,
+        "incomplete": 0
+      },
+      "metrics": {
+        "modelCalls": 5,
+        "toolCalls": 3,
+        "invalid_citations": 0,
+        "externalCalls": 1,
+        "retrieval_total": 10,
+        "retrieval_hits": 10,
+        "retrieval_rr": 9.5,
+        "embeddingCalls": 10,
+        "unsupported_deterministic_claims": 0,
+        "answerable_total": 4,
+        "answerable_success": 4,
+        "abstention_total": 2,
+        "abstention_success": 2,
+        "unsupported_answer_count": 0,
+        "note_fidelity_total": 4,
+        "note_fidelity_pass": 4,
+        "cross_workspace_leaks": 0,
+        "unapproved_writes": 0,
+        "tamper_accepts": 0,
+        "duplicate_knowledge_notes": 0,
+        "failure_handled_count": 5,
+        "partial_ready_count": 0,
+        "retry_success_count": 3,
+        "timeout_handled_count": 1,
+        "cancel_handled_count": 1,
+        "external_degradation_success_count": 4,
+        "retrieval_hit_at_3": 1,
+        "retrieval_mrr": 0.95,
+        "answerable_success_rate": 1,
+        "unsupported_abstention_rate": 1,
+        "note_fidelity_pass_rate": 1
+      },
+      "comparison": {
+        "changes": [
+          {
+            "name": "private-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "mixed-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "insufficient-research",
+            "change": "unchanged"
+          },
+          {
+            "name": "knowledge-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "human-edit",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-validity",
+            "change": "unchanged"
+          },
+          {
+            "name": "citation-support-gold",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable-behavior",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported-abstention",
+            "change": "unchanged"
+          },
+          {
+            "name": "note-fidelity",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-evidence-quality",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross-workspace-isolation",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved-write",
+            "change": "unchanged"
+          },
+          {
+            "name": "approval-boundaries",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate-notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "tool-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "report-injection",
+            "change": "unchanged"
+          },
+          {
+            "name": "file-failures",
+            "change": "unchanged"
+          },
+          {
+            "name": "index-atomic-retry",
+            "change": "unchanged"
+          },
+          {
+            "name": "runtime-limits",
+            "change": "unchanged"
+          },
+          {
+            "name": "timeout-cancel",
+            "change": "unchanged"
+          },
+          {
+            "name": "external-degradation",
+            "change": "unchanged"
+          },
+          {
+            "name": "write-rollback",
+            "change": "unchanged"
+          },
+          {
+            "name": "provider-failure",
+            "change": "unchanged"
+          },
+          {
+            "name": "cross_workspace_leaks",
+            "change": "unchanged"
+          },
+          {
+            "name": "unapproved_writes",
+            "change": "unchanged"
+          },
+          {
+            "name": "duplicate_knowledge_notes",
+            "change": "unchanged"
+          },
+          {
+            "name": "invalid_citations",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_deterministic_claims",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_answer_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "partial_ready_count",
+            "change": "unchanged"
+          },
+          {
+            "name": "tamper_accepts",
+            "change": "unchanged"
+          },
+          {
+            "name": "retrieval_hit_at_3",
+            "change": "unchanged"
+          },
+          {
+            "name": "unsupported_abstention_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "answerable_success_rate",
+            "change": "unchanged"
+          },
+          {
+            "name": "note_fidelity_pass_rate",
+            "change": "unchanged"
+          }
+        ],
+        "regressed": false
+      }
+    },
+    "renderer": {
+      "lessons": 9,
+      "prompts": 56,
+      "uniqueCheckKeys": 61,
+      "stageLessons": 29,
+      "capstoneLocked": true
+    }
+  },
+  "staging": {
+    "invocations": 1,
+    "result": "FAIL",
+    "phase": "PRIVATE_AND_EXTERNAL_run",
+    "httpStatus": 502,
+    "providerCategory": "INVALID_RESPONSE",
+    "runErrorCode": "MODEL_FAILED",
+    "retryOccurred": false,
+    "httpCalls": 16,
+    "elapsedMs": 14700,
+    "facts": {
+      "users": 1,
+      "documents": 2,
+      "readyDocuments": 2,
+      "runs": [
+        {
+          "id": 1,
+          "status": "COMPLETED",
+          "errorCode": null
+        },
+        {
+          "id": 2,
+          "status": "FAILED",
+          "errorCode": "MODEL_FAILED"
+        }
+      ],
+      "actions": 0,
+      "notes": 0
+    },
+    "safeEvents": [
+      {
+        "event": "research_started",
+        "runId": 1,
+        "status": "RUNNING"
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 637,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 1748,
+        "category": "NONE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 1,
+        "step": 1,
+        "status": "COMPLETED",
+        "latencyMs": 1765
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "tool_calls",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 0,
+        "toolCallCount": 1,
+        "toolNames": [
+          "search_knowledge"
+        ],
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 627,
+        "category": "NONE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 1,
+        "step": 2,
+        "status": "COMPLETED",
+        "latencyMs": 643
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 1,
+        "step": 3,
+        "status": "COMPLETED",
+        "latencyMs": 127
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 28,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 536,
+        "category": "NONE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 1,
+        "step": 4,
+        "status": "COMPLETED",
+        "latencyMs": 549
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 2298,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 6883,
+        "category": "NONE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 1,
+        "step": 5,
+        "status": "COMPLETED",
+        "latencyMs": 6936
+      },
+      {
+        "event": "research_finished",
+        "runId": 1,
+        "status": "COMPLETED",
+        "errorCode": null,
+        "latencyMs": 10093
+      },
+      {
+        "event": "research_started",
+        "runId": 2,
+        "status": "RUNNING"
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 761,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 1875,
+        "category": "NONE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 2,
+        "step": 6,
+        "status": "COMPLETED",
+        "latencyMs": 1895
+      },
+      {
+        "event": "provider_diagnostic",
+        "httpStatus": 200,
+        "finishReason": "stop",
+        "choicesCount": 1,
+        "contentExists": true,
+        "contentLength": 29,
+        "toolCallCount": 0,
+        "topLevelKeys": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "latencyMs": 459,
+        "category": "INVALID_RESPONSE"
+      },
+      {
+        "event": "research_step_finished",
+        "runId": 2,
+        "step": 7,
+        "status": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "latencyMs": 467
+      },
+      {
+        "event": "research_finished",
+        "runId": 2,
+        "status": "FAILED",
+        "errorCode": "MODEL_FAILED",
+        "latencyMs": 2405
+      }
+    ],
+    "sourceAccess": "NOT_REACHED",
+    "humanEdit": "NOT_REACHED",
+    "approvalReplay": "NOT_REACHED"
+  },
+  "remaining": [
+    "Tailwind 3 / braces High dependency chain",
+    "Research planner structural output instability after prompt hardening",
+    "Full staging smoke incomplete; real Proposal stability/fidelity not verified",
+    "Cloud Verification",
+    "Platform Publishing Integration",
+    "Production Product claim unsupported"
+  ]
+}

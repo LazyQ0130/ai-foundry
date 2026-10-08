@@ -333,3 +333,116 @@ title/subtitle/description/exitState/abilities/九课lessons/technologies与叙�
 ## 41. Git
 
 基线main/origin/main：15646e9c457d6bafb5f1d6f4692b98e0e1552ead。审计修复提交消息：`Audit Capstone release readiness`。本文件与证据位于该提交，最终SHA、origin/main一致性和working tree由提交后实际命令核对并在最终回复给出；不把本地SHA当云部署SHA。没有Release Tag或课程发布。
+
+
+# Phase A Remediation Addendum
+
+日期：2026-10-08。基线：8a6145a96b10889420172486d177eb757d68c4d0。
+
+## A. Verdict / Scope
+
+**PHASE A BLOCKED**。整体 Final Release Readiness 继续 **BLOCKED**。
+
+production High 与全部 Critical 已移除，但平台 full audit 的 Tailwind 3 / braces High 链仍在；一次完整真实 Staging Smoke 仍因 planner 结构输出失败。没有将局部成功合并为 PASS。原审计与失败记录全部保留。本附录及安全结构证据见 docs/capstone-phase-a-evidence.json。
+
+没有云部署、production bucket/domain、Production Smoke、Loader、progress、route、entitlement、Pricing、download、课程解锁或 Tag。正式 Stage 仍 29 节，Capstone 仍暂未解锁、Internal Authoring。课程正文未修改：本轮只有依赖、内部指令、验证入口与测试变化，没有引入 Repair 等学生可观察的新流程。
+
+## B. Platform Dependency Remediation Matrix
+
+重新运行 npm audit --omit=dev --json、npm audit --json、npm outdated --json 和 npm ls，依据当前 advisory 与实际 lock。outdated 首次遇到本机 npm cache ENOENT，改用独立 .runtime/blocker-phase-a/npm-cache 后成功获取清单；没有将该错误解释为无过时依赖。
+
+| Package / chain | Severity | Runtime / Dev | Direct / Transitive | Fixed Version | Breaking Risk | Decision |
+|---|---|---|---|---|---|---|
+| sharp | High | Runtime | Direct | 0.35.5 | Patch; native libvips update | 0.35.4 → 0.35.5; avatar HTTP regression passed |
+| concurrently → shell-quote | Critical (2 affected packages) | Dev | Direct → transitive | concurrently 10.0.6 / shell-quote 1.12.0 (advisory fixed >=1.11.0) | Patch / compatible minor | 10.0.5 → 10.0.6, lock resolves shell-quote 1.12.0 |
+| postcss → source-map-js | High | Dev | Transitive | 1.2.2 | Patch | Lock update 1.2.1 → 1.2.2 |
+| tailwindcss → chokidar → braces; tailwindcss → fast-glob → micromatch → braces | High (5 affected packages) | Dev | Direct Tailwind / transitive remainder | No published braces patch; npm proposes Tailwind 4.3.3 | Major CSS compiler/plugin/configuration migration | BLOCKED; keep Tailwind 3.4.19, no unsafe overrides or major migration |
+| tailwindcss / postcss-nested → postcss-selector-parser | Moderate (2 affected packages) | Dev | Transitive | 7.1.6; parent range requires older major | Major transitive override or Tailwind migration | Retain, disclose; not disguised as zero vulnerabilities |
+| react-router-dom → react-router | Moderate (2 affected packages) | Runtime | Direct → transitive | 7.18.0+; npm proposes 7.18.4 | React Router 6 → 7 major | Retain, disclose; no unrelated routing migration |
+
+来源：[sharp advisory](https://github.com/advisories/GHSA-wq5f-xc86-pv6w)、[shell-quote advisory](https://github.com/advisories/GHSA-pqg4-j6r4-53mv)、[source-map-js advisory](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)、[braces advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)。当前 braces advisory 明确 Patched versions: None，npm registry 最新仍 3.0.3；Tailwind 3 最新 3.4.19 仍使用受影响链。
+
+剩余五个 High 为 braces、chokidar、micromatch、fast-glob、tailwindcss 的关联计数，不是五个独立 root advisories。不能以 Dev 为由豁免。没有可发布的兼容 braces 补丁；不将 chokidar 4 强行覆盖 chokidar 3 API，也不随意替换 micromatch 的 brace parser。npm 建议 Tailwind 4.3.3；这涉及 CSS 编译、PostCSS 插件、配置与 utility 行为、整个页面样式和 watcher 回归，需要负责人决定后单独迁移。没有执行 audit fix --force 或 React/Vite/Tailwind/Prisma major。
+
+| Scope | Before | After | Gate |
+|---|---|---|---|
+| Platform production | 2 Moderate / 1 High / 0 Critical | 2 Moderate / 0 High / 0 Critical | High/Critical gate PASS，非零漏洞仍披露 |
+| Platform full | 4 Moderate / 7 High / 2 Critical | 4 Moderate / 5 High / 0 Critical | BLOCKED |
+| Final Reference production | 0 | 0 | PASS |
+| Final Reference full | 0 | 0 | PASS |
+
+sharp 实际用于 server/routes/me.ts 的头像上传：读取 WebP、拒绝非法/动画/超像素输入、旋转裁剪到 512×512、重编码 WebP、写入数据库。升级后 tests/avatar.test.ts 实际经过 HTTP 上传、读取 metadata、隔离、替换、重登录持久化与 reset 路径，PASS；不是只验证库能 import。
+
+## C. MODEL_FAILED Diagnostic / Fix / Remaining Blocker
+
+合成 fixture、真实 qwen3.7-flash、当前真实工具 schema，**最多五组，实际五组、15 次调用、无 retry**。前三组各最多三个 turn；后两组最多四个 turn，第二组在第二个 turn 即失败。只记录 HTTP status、finish reason、choices/content/tool count/length、工具名、JSON 顶层 keys、latency 和 error category；不保存原始正文、prompt、私有 evidence 或凭据。
+
+复现到 HTTP 200 + stop，但 adapter 拒绝 ready decision，归类 **INVALID_RESPONSE / INVALID_MODEL_TURN**。前期诊断没有保存 stop JSON 的字段形状，不能断言是语法错误或具体哪个字段值；诊断脚本最初将 generic rejection 标成 MALFORMED_JSON，证据已纠正为 INVALID_RESPONSE，未把猜测当事实。
+
+最小修复：planner 指令明确 stop 只能返回唯一 ready_to_synthesize=true 字段，不能返回 false/额外字段/正文；增加 request 注入仅供 deterministic contract tests。合法 true 接受，false/extra/malformed 拒绝且每例只有一次调用。未修改 strict tool parser、citation allowed-set 或 runtime limits，未增加 retry/repair。
+
+修复后的真实完整 Smoke 再次出现 **HTTP 200、stop、非空 29 字符、零 tool call、有效 JSON 却不是合法 ready object**，本地安全诊断标记 INVALID_RESPONSE，Run 为 MODEL_FAILED。说明单靠指令补强仍不足以解除稳定性阻断。旧审计缺少同级诊断，不能声称已经证明旧失败是同一个具体输出。没有无限重刷或继续试改。
+
+Research 上限仍为 4 model turns / 3 tools / 10 provider units / 120s deadline；cancel、external query 与 MCP 工具暴露边界保持。
+
+## D. Proposal Contract / Prompt / Fidelity
+
+原真实 2318 字符失败记录保留；本轮 deterministic 2300 字符仍严格失败。真实 content 不 slice、不保存超限、不放宽 2000；title 仍 <=120。新的指令目标 1200–1600 字符，硬上限 2000，优先核心结论、限制、适用条件，不逐条重写 Report、不重复来源，保留实体/数字/不确定性与 Human Review。
+
+没有加入 Proposal Repair：post-run 每次最多一次 provider call、一个 provider unit、共享现有 30s action timeout，maxTokens=1800 只控制成本，不保证字符长度。测试 1600/2000 字符原样接受，2300 拒绝，所有分支调用数为 1；既有额外字段/工具调用/provider failure 测试继续 PASS。
+
+C8 deterministic Note Fidelity 4/4、数字/实体/否定/新增事实负例继续通过，没有改 threshold 或 gold。没有 repair path，因此 repair 特定测试不适用。完整 Smoke 在 Proposal 之前失败，**真实 Proposal 小样本未运行（0 次），真实 Proposal fidelity NOT VERIFIED**；不能以 prompt 改动或 mock fidelity 代替真实证据。原 Proposal contract stability blocker 尚未解除。
+
+## E. One Full Staging Invocation
+
+fresh assembled .runtime/blocker-phase-a/c9；另 fresh assemble 153 源文件逐字节比对，0 mismatch。独立新 PostgreSQL/pgvector 容器；空 capstone_phase_a_staging DB 正式 migrate deploy 六条 migration。与安全回归的 capstone_c9_test、Eval 的 capstone_c8_eval、平台 DB 分离。
+
+最终 Linux Docker runtime 用 real chat / embedding、MCP/Crossref；本地私有 Garage 合成对象前缀，不复用先前失败账号/文件/Run。loopback storage bridge 仅是本地测试 harness，不作为云 HTTPS/IAM 证据。
+
+Runner 补上 Human Edit/version/token 更新，并将私有 Run 限于 Report 验证，只对混合 Run Proposal → Edit → Approve → Replay，目标当前账号总共 exactly one Note；保留 60 HTTP / 480s / staging 两个 Research Run 上限。失败输出带 phase/category/retry/partial side effects，安全日志不打印 cookie/token/signed URL/正文。该新增后半段在本轮真实 Smoke **尚未到达**，C7 HTTP 编辑/审批回归单列通过，不拼接为完整成功。
+
+**Full Staging Smoke: FAIL**，仅一次 invocation，16 HTTP，14700ms。
+
+- Register/Login、TXT/PDF upload → 两个 READY、private retrieval、Private Run/grounded report/citation snapshots 已通过。
+- exact phase：PRIVATE_AND_EXTERNAL_run；HTTP 502；安全 Provider category INVALID_RESPONSE；Run error MODEL_FAILED。
+- retryOccurred=false。
+- 数据库实际状态：1 User，2 READY documents，Run 1 COMPLETED，Run 2 FAILED/MODEL_FAILED，0 ResearchAction，0 KnowledgeNote。
+- 混合报告/MCP/Crossref 完整链、Proposal、Human Edit、Approve/Replay、protected original/anonymous source check 未在这次调用中完成，不标 PASS。
+- 不运行 after-PASS 的五次 Proposal 样本，不伪造 5/5。
+
+## F. Full Verification
+
+| Project / command | Actual result |
+|---|---|
+| Platform npm ci | exit 0 |
+| Platform npm run db:generate | exit 0；fresh ci 后必须生成本 schema client |
+| Platform npm run typecheck | exit 0 |
+| Platform npm test | exit 0，84/84，含 avatar 实际路径 |
+| Platform npm run check | exit 0 |
+| Platform npm run build | exit 0 |
+| Platform npm run check:bundle | exit 0；最终附录后已复验（339 public files） |
+| Platform npm audit --omit=dev / npm audit | exit 1/1，分别 Moderate 留存、High 留存；见矩阵，不隐藏 |
+| Final Reference npm ci | exit 0 |
+| Final Reference npm run lint / npm run typecheck / npm test | exit 0/0/0，42/42 |
+| Final Reference npm run build | exit 0；最终 release:check 又实际 build |
+| Final Reference npm run eval:capstone | exit 0，25/25 |
+| Final Reference npm run eval:capstone -- --compare-baseline eval/baseline.json | exit 0，no regression |
+| Final Reference npm run release:check | 最终版本 exit 0，含 42 tests/build/Eval baseline/audit |
+| Final Reference npm audit --omit=dev / npm audit | exit 0/0，0 vulnerabilities |
+| Final Reference c5-http-smoke / c6-http-smoke | exit 0/0 |
+| Final Reference npm run test:db | exit 0，C7 HTTP + 5 DB transaction tests |
+| Full real staging-smoke | exit 1，FAIL，不重刷 |
+
+C5/C6：unknown/bad/multiple tools、steps/tools/provider budget、timeout/cancel、external disabled/query restriction、MCP extra tool/degradation、isolation 均回归。C7：strict Proposal、Edit/old token、approve/double/concurrent/rollback、reject/tamper/expiry/Bob/replay 均回归。
+
+环境准备失败也保留：fresh root npm ci 后尚未 generate Prisma 导致第一轮 typecheck/test/check/build/bundle 失败，生成后重新完整通过；Reference 最早两次显式 Eval 在空库 migration 前为 EVAL_SETUP_OR_REPORT_ERROR/exit2，migration 后显式 Eval/baseline 和最终 release:check 均通过。不是降低门禁或修改测试换绿。
+
+## G. Remaining Decisions / Cloud / Publishing / Git
+
+本轮 BLOCKED：需决定如何解除 Tailwind 3/braces 无兼容补丁链；Research planner valid stop JSON 结构仍不稳定，必须继续按严格 adapter contract 解决，不能把 false/额外字段当 ready；随后才有新的有预算的独立全链验收和真实 Proposal 样本依据。
+
+Cloud Runtime、Cloud DB、R2、HTTPS MCP、Production Smoke、Cloud backup/rollback 继续 **NOT VERIFIED**。docs/capstone-cloud-verification-checklist.md 与 docs/capstone-publishing-integration-plan.md 未改动。Production Product claim 仍无依据。
+
+本轮修改：package.json、package-lock.json；C6 research-model.ts 与新 research-model.test.ts；C7 knowledge-note-provider.ts / knowledge-note.test.ts；C9 delivery-smoke.mjs；本审计附录；docs/capstone-phase-a-evidence.json。诊断/日志/DB/凭据只在忽略的 .runtime 或本地测试环境，未入 Git。没有删除文件。
+
+提交消息：Remediate Capstone local release blockers。最终 SHA、origin/main 和 working tree 由实际提交后核对，见本轮最终回复；不创建 Tag。
