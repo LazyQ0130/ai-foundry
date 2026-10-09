@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle2, ChevronRight, Circle, Lock, Play } from 'lucide-react'
-import type { LessonStatus, StageStatus } from '../data/courses'
+import type { LessonStatus, StageStatus } from '../data/courses.js'
 
 /* ---------------------------------- 进度条 --------------------------------- */
 

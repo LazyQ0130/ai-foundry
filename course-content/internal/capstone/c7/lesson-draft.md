@@ -24,7 +24,7 @@ checkKeys:
 
 Human-approved Knowledge Write
 
-## 0～12 分钟：报告完成之后，谁决定保存
+## 报告完成之后，谁决定保存
 
 继续自己的 C6 项目，保留已有产品文档。内部课程作者才用标准 C6 Reference 验证。选一个 COMPLETED + grounded Run，读报告和 Citation Snapshot，圈出值得长期保存的一段结论，写下你会修改的限定条件。
 
@@ -45,7 +45,7 @@ Grounded Report → AI Proposal → Human Review
 写权限来自服务器验证过的明确用户动作。模型输出只能成为候选数据；按钮、系统 Prompt 和模型自述“已保存”都不能替代真实授权与数据库事务。
 :::
 
-## 12～28 分钟：两个生命周期
+## 两个生命周期
 
 C4～C6 已完成研究生命周期：检索、报告、引用、COMPLETED。保存笔记是研究完成后的另一个生命周期。用户最终拒绝 Note，也不会把成功研究变成未完成。
 
@@ -59,7 +59,7 @@ Stage 4 Demo 允许 AgentRun 停在 waiting_approval；本产品的 ResearchRun 
 
 本课不把 save_knowledge_note 加进 C6 Research Runtime，也不把审批伪装成 ResearchStep。Run 页面展示独立 Action panel。V1 每个 Run 最多一个 SAVE_KNOWLEDGE_NOTE Action，拒绝后不重新生成第二个；改变主意可以重新研究。
 
-## 28～45 分钟：领域模型与删除语义
+## 领域模型与删除语义
 
 KnowledgeNote 属于 Workspace，保存 title、content、sourceRunId、sourceActionKey 和时间。它独立于 KnowledgeDocument / Chunk / Report。sourceRunId 可空，采用 ON DELETE SET NULL；删研究历史时，Note 继续存在。sourceActionKey 是唯一的来源与幂等提示，不建立删除依赖。
 
@@ -79,7 +79,7 @@ ResearchAction 属于 Run，runId 唯一，canonicalArgs 保存确定性序列�
 读 migration SQL，找到 Workspace→Note、Run→Action、Run→Note 的三条关系，以及 runId / idempotencyKey / sourceActionKey 三处唯一约束。从空库部署 C2→C7 的六份 migration，确认来源删除不会级联删除 Note。
 :::
 
-## 45～65 分钟：Proposal Provider 与持久化内容
+## Proposal Provider 与持久化内容
 
 用户点击「生成知识笔记提议」，客户端只发 {}。服务器按 Session→User→Workspace 查自己的 Run，再读取持久化 Report 和 Citation。只有 COMPLETED、grounded、非空且引用仍与该 Run Snapshot 一致的报告可生成提议；FAILED、CANCELLED、不足证据或没有 Report 都拒绝。
 
@@ -97,7 +97,7 @@ POST /api/research/runs/:runId/knowledge-note-proposal 只接受{}，检查same-
 
 现在检查 Diff：第一次真正创建 KnowledgeNote 的代码还不应出现于 Proposal 路径。Action 持久化后可以刷新读取，但它仍然只是提议。
 
-## 65～90 分钟：Canonical Args、Edit 与 Token
+## Canonical Args、Edit 与 Token
 
 人必须看见服务器即将执行的精确 title、content 和 Source Run。Canonical Args 先 strict parse、trim，再固定字段顺序：
 
@@ -134,7 +134,7 @@ strict拒绝workspaceId/userId/ownerId/runId/toolName等额外字段。测试v1�
 在未刷新前保留 v1 Token。编辑提议保存成 v2，用旧 Token 发真实批准请求，预期 403 且没有 Note。重新读取当前 Action，核对页面文字与 v2 的 canonicalArgs，再继续。不要把 Token 写进日志、Git 或截图。
 :::
 
-## 90～115 分钟：Atomic Execution 与 Idempotency
+## Atomic Execution 与 Idempotency
 
 Approve 只接 {approvalToken}，不再接 title/content。看到 A，提交时改成 B 的 TOCTOU 问题，必须通过“执行数据库中同版本的精确内容”解决。
 
@@ -163,7 +163,7 @@ POST /api/research/actions/:actionId/approve严格只接{approvalToken}，拒绝
 锁使状态判断、版本校验与写入属于同一串行临界区，避免两个事务同时认为“尚未执行”。唯一键表达数据库不允许同一个动作产生两条笔记，即使以后接线出错也不能悄悄重复。只在前端禁用按钮，无法覆盖网络重试或另一个浏览器窗口。
 :::
 
-## 115～130 分钟：人看到的产品流程
+## 人看到的产品流程
 
 Run Detail 的独立 Action panel 展示等待确认、已拒绝、已保存。编辑状态只显示保存修改/取消；先把新文字持久化并重新展示，才能批准。按钮写「批准并保存到知识笔记」，让副作用清楚可见。
 
@@ -179,7 +179,7 @@ Knowledge 区域增加 /knowledge/notes 与详情：Title、Content、Saved At�
 
 :::
 
-## 130～150 分钟：Break → Fix → Re-run
+## Break → Fix → Re-run
 
 :::task{title="实际攻击与故障实验"}
 1. 直接 POST /api/knowledge/notes：没有创建入口，不能绕过 Action。

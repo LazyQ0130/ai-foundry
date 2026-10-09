@@ -42,7 +42,7 @@ Capstone C9 · Production Delivery & Portfolio
 构建不会替你验证 bucket 私有、生产 MCP HTTPS、云代理时限、备份恢复，也不会知道部署的 SHA 是不是你刚测试的版本。
 :::
 
-## 0～25 分钟：先做只读交付审查
+## 先做只读交付审查
 
 先自己检查：C8 结果在哪里？依赖 High/Critical 是否为零？同步 Run 的时限是多少？进程死亡时 RUNNING 会怎样？哪些云配置还没有验证？
 
@@ -64,7 +64,7 @@ Capstone C9 · Production Delivery & Portfolio
 把审查结果中最影响真实用户的三项写进 `docs/deployment-decision.md` 的 Context。区分“必须上线前解决”和“可以接受但必须说明”。High/Critical 依赖、安全归属边界、未验证生产私有存储都不能靠一句“之后优化”放行。
 :::
 
-## 25～45 分钟：部署方案也是产品取舍
+## 部署方案也是产品取舍
 
 | 候选 | 何时适合 | 当前需要证明 |
 |---|---|---|
@@ -84,7 +84,7 @@ ADR 写清 runtime/DB/storage/HTTPS/migration/environments/recovery/rollback/kno
 异步执行确实能缓解长 HTTP 请求，但还要设计任务投递、重复消费、取消、进度、并发与权限。C9 先让现有同步产品可交付，未来排队和吞吐需求出现再迁移。要承认现有同步架构的容量限制，不把它描述成无限扩展。
 :::
 
-## 45～75 分钟：依赖修复与环境隔离
+## 依赖修复与环境隔离
 
 先运行并保存报告到 ignored `.runtime`：
 
@@ -108,7 +108,7 @@ Reference 在 C9 锁定 Next 15.5.27、PostCSS 8.5.23、deepmerge-ts 8.0.2；保
 
 静态 checker 检查缺失/形状/明显不安全配置，不能证明 entropy、TLS 网络、IAM 或 bucket 私有。不要把真实值粘进 Prompt。Provider API key 可以来自同一 provider 账户，应用安全 secret 仍须独立。
 
-## 75～100 分钟：进程死亡以后，谁来处理 RUNNING？
+## 进程死亡以后，谁来处理 RUNNING？
 
 假设模型请求已经发出，Node 被杀了。你不知道第三方是否执行、是否已经计费。自动 Resume 可能重复请求；当前选择 **fail closed**：陈旧执行明确失败，让用户发起一个新 Run。
 
@@ -132,7 +132,7 @@ Reference 在 C9 锁定 Next 15.5.27、PostCSS 8.5.23、deepmerge-ts 8.0.2；保
 不能为实验杀生产进程或篡改生产 DB。Reference 的 `npm run test:recovery` 自带 DB allowlist；先阅读它的 guard。
 :::
 
-## 100～135 分钟：做出真正可运行的容器
+## 做出真正可运行的容器
 
 构建阶段 npm ci → Prisma generate → Next build；runtime 只带生成的运行文件，production、非 root、PORT；release target 单独保留 CLI/schema。build 不需要数据库 Secret，不做 migration。
 
@@ -161,7 +161,7 @@ Staging full smoke 与 Production safe smoke 分开。增加 release:check 复�
 先看 PORT/host 和进程退出码，再看 standalone 中 Prisma engine 与 PDF 资源；不要把 DB migration 加进 build 碰运气。health 成功但登录失败，再查 DB 连接/正式 migration。不要在排错日志输出完整 DATABASE_URL。
 :::
 
-## 135～170 分钟：发布验证不是在线故障注入
+## 发布验证不是在线故障注入
 
 先在隔离 Test/Eval shell 运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；生产 env check 在另一个安全进程进行。
 
@@ -193,7 +193,7 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 
 实际 cloud 不可用时可以完成本地验证，记录 **LOCAL PRODUCTION-LIKE VERIFIED / CLOUD DEPLOYMENT NOT VERIFIED**。这一状态不能勾选“Production Safe Smoke 已通过”，也不能宣称 Production Ready。等真实目标可用再完成该项，无须伪造 URL。
 
-## 170～195 分钟：用事实完成作品集首页
+## 用事实完成作品集首页
 
 到这里再写 README。中文主名 **AI 研究工作台**，副名 AI Research Workspace，说明是 AI 研究 Agent 毕业项目实战。
 
@@ -212,7 +212,7 @@ C8 deterministic实际25/25与Hit@3 10/10只代表固定数据；real词法8/9�
 ```
 :::
 
-## 195～220 分钟：三分钟讲清你做了什么
+## 三分钟讲清你做了什么
 
 Demo 用 synthetic data，提前准备已完成 Run。耗时等待可剪辑，但注明“预先完成的 Run”，不要剪出不存在的实时速度。
 

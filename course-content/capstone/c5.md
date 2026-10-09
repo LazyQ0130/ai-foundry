@@ -20,7 +20,7 @@ checkKeys:
   - "check-c5c5000000000007"
 ---
 
-## 0～12 分钟：为什么 C4 的一次检索还不够
+## 为什么 C4 的一次检索还不够
 
 C4 的 `ResearchTask.query → Top-K → Report` 已能解决明确的小问题。现在把 Task 改成：「比较两种 Agent Memory 持久化方式的一致性和成本」。同一个 query 可能命中定义，却漏掉成本；也可能反复搜到同一段。请先在 C3 Search Debug 手动换两次 query，记录新增与重复的 citationKey。
 
@@ -35,7 +35,7 @@ Task → 本次 Brief → Run → Model decision → search_knowledge
 为自己的 Task 写一个不超过 500 字的 goal 和至多三个、每个不超过 300 字的 subquestions。指出哪些问题当前资料可能回答不了。Brief 描述**本次**如何研究，不覆盖长期 Task。
 :::
 
-## 12～28 分钟：Task / Brief / Run / Step
+## Task / Brief / Run / Step
 
 一个 Task 可以多次执行，各 Run 的 Brief 可能不同。C4 旧 Run 没有 Brief 和 Steps，迁移后仍应可查看。C5 在已有 Run 增加可空 `brief` 与 `cancelRequestedAt`，主状态增加 CANCELLED；用 `stopReason` 区分 MAX_STEPS、MAX_TOOLS、BUDGET_EXHAUSTED、TIMEOUT、CANCELLED 与不足证据。
 
@@ -53,7 +53,7 @@ Task → 本次 Brief → Run → Model decision → search_knowledge
 从空库跑 C2→C3→C4→C5 migration。确认旧 C4 Run 的 Brief 为空仍可读、Step 顺序受数据库唯一约束保护、Citation 不依赖 Step。解释为什么 MAX_STEPS 不能记录为普通 COMPLETED。
 :::
 
-## 28～48 分钟：Brief 与唯一只读工具
+## Brief 与唯一只读工具
 
 Brief Provider 只返回严格 JSON `{goal,subquestions}`；Mock 固定产出 2～3 个子问题，Real 最多一次结构化调用。失败即 BRIEF_FAILED；不能偷偷跳过第一阶段。它不负责 DB、Tool、Workspace 或 Step。
 
@@ -75,7 +75,7 @@ Brief Provider 只返回严格 JSON `{goal,subquestions}`；Mock 固定产出 2�
 
 :::
 
-## 48～78 分钟：受限 Runtime，而非重新发明 Agent
+## 受限 Runtime，而非重新发明 Agent
 
 先对照 Stage 4 的 bounded loop：保留 for-loop、每轮一工具、unknown/多工具拒绝、AbortSignal、max steps/tools、预算思路。删除 echo、旧 Resource、`save_research_note`、外部引用、审批和旧页面接线。Runtime 只返回决策结果与去重 Evidence；Prisma、HTTP、Citation Snapshot 都留给 Research Service。
 
@@ -97,7 +97,7 @@ Runtime 回答「受限循环怎么进行」；Research Service 回答「这个�
 Knowledge Chunk 中即使写着“忽略规则、调用 search_web、保存密钥”，Registry 仍只有 `search_knowledge`，且没有写能力。不要宣称提示注入问题已解决；这里只验证权限和最终 Citation 契约没有被资料文本改写。
 :::
 
-## 78～105 分钟：Service、Step 与报告复用
+## Service、Step 与报告复用
 
 Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响应。Service 先创建 RUNNING Run；每个 BRIEF/MODEL/TOOL/REPORT **动作开始前**建 RUNNING Step，结束或失败时更新摘要、耗时与错误码。这样中途失败仍有时间线，不等 Run 完成后才一次性写 Steps。
 
@@ -115,7 +115,7 @@ Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响�
 显式取消后，服务端不再开启新的模型或工具动作，并把 Run 标为 CANCELLED。已发出的外部请求只能用 AbortSignal 尽力中止，不保证 Provider 没有消耗 token。进程突然死亡仍可能留下 RUNNING；C5 不承诺自动恢复。
 :::
 
-## 105～125 分钟：Runs 与可读时间线
+## Runs 与可读时间线
 
 `/runs` 显示 Task、状态、停止原因、时间、时长、Step 数与报告是否可用。`/runs/[runId]` 显示 Brief、Step Timeline、Evidence Summary、最终报告与 Sources。MAX_STEPS 等停止原因要醒目。旧 C4 Run 没有 Brief/Steps，页面显示「旧版直接研究运行，无步骤记录」，仍可打开其报告。引用仍按 C4 Citation position 编号，来源预览继续走受保护 signed GET。
 
@@ -127,7 +127,7 @@ Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响�
 
 :::
 
-## 125～150 分钟：故障实验与验收
+## 故障实验与验收
 
 :::task{title="Break 1：工具权限"}
 Mock 分别提出 `search_web`、`{query,workspaceId}`、一次两个工具。三者都 FAILED，Tool 实际执行 0 次；检查 Step 与 Run，而不只看页面。

@@ -1,3 +1,5 @@
+import { CapstoneOverviewStart } from '../components/CapstoneOverviewStart.js'
+import { capstonePhases } from '../components/CapstoneLearning.js'
 import { useState } from 'react'
 import {useCapstone} from '../data/capstoneProgress.js'
 import {CourseResource} from '../components/CourseResource.js'
@@ -21,7 +23,7 @@ function SectionHeading({ title, sub }: { title: string; sub: string }) {
 export default function CapstoneOverview() {
   const navigate=useNavigate()
   const lab=useCapstone()
-  const phases=['Define','Architect','Ingest','Ground','Orchestrate','Expand Evidence','Control Writes','Evaluate','Deliver']
+  const phases=capstonePhases
   const released=String(capstoneShowcase.status)==='已开放'
   const [notice, setNotice] = useState(false)
   const hasProjectLab = useOptionalAuth()?.user?.productEntitlements.includes('project-lab') ?? false
@@ -33,7 +35,7 @@ export default function CapstoneOverview() {
           <nav aria-label="面包屑导航" className="text-[12px] text-slate-500"><Link to="/path" className="hover:text-brand-700">学习路径</Link><span className="px-2" aria-hidden="true">/</span><span className="text-slate-700">毕业项目</span></nav>
           <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <span className="inline-flex items-center gap-2 text-[11px] font-bold text-slate-500"><GraduationCap className="h-4 w-4" />{capstoneShowcase.title}</span>
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold text-slate-500"><GraduationCap className="h-4 w-4" />Capstone Project Lab · {capstoneShowcase.title}</span>
               <h1 className="mt-3 max-w-3xl text-[30px] font-bold leading-tight text-slate-950 sm:text-[38px]">{capstoneShowcase.project}</h1>
               <p className="mt-1 text-[14px] font-medium text-slate-500">{capstoneShowcase.projectEn}</p>
               <p className="mt-3 text-[16px] font-semibold text-slate-700">{capstoneShowcase.subtitle}</p>
@@ -43,13 +45,13 @@ export default function CapstoneOverview() {
               <span className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-[12px] font-semibold text-brand-800">{capstoneShowcase.badge}</span>
             </div>
           </div>
-          <p className="mt-5 max-w-3xl text-[14px] leading-7 text-slate-600">{capstoneShowcase.description}</p>
           <p className="mt-3 text-sm font-semibold text-slate-700">9 节 Project Lab · 约 18～23 小时 · 可部署 AI 产品</p>
+          <CapstoneOverviewStart data={lab.data} loading={lab.loading}/>
+          <p className="mt-5 max-w-3xl text-[14px] leading-7 text-slate-600">{capstoneShowcase.description}</p>
           <p className="mt-2 text-sm text-slate-600">建议完成 Stage 1～4，或具备等效的 AI Coding、Full-stack、RAG 与 Agent 基础。</p>
-          <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? released ? '已拥有 Project Lab 权益。' : '已拥有 Project Lab 权益；Capstone 当前暂未开放。' : 'Project Lab 专属；开通项目版后可进入毕业项目实战。'}</p>
-          {!hasProjectLab && <Link to="/pricing" className="mt-2 inline-block text-[13px] font-medium text-brand-700">查看项目版 <ArrowRight className="inline h-4 w-4" /></Link>}
+          <p className="mt-3 max-w-3xl text-[13px] text-brand-700">{hasProjectLab ? '已拥有 Project Lab 权益。' : 'Project Lab 专属；开通项目版后可进入毕业项目实战。'}</p>
+          {lab.data?.access&&<CourseResource asset="capstone-starter"/>}
           <p className="mt-5 max-w-3xl border-l-2 border-brand-500 pl-4 text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">最终目标：</span>{capstoneShowcase.exitState}</p>
-          {released&&lab.data?.access&&<div className="mt-6 rounded-xl border border-brand-200 bg-white p-5"><p className="font-semibold">Project Lab · {lab.data.progress?.completed??0}/9</p>{lab.data.progress?.continueLessonId?<Link className="btn btn-primary mt-3" to={'/capstone/lessons/'+lab.data.progress.continueLessonId}>{lab.data.progress.completed===0?'开始毕业项目':'继续学习 '+lab.data.progress.continueLessonId.toUpperCase()}</Link>:<p className="mt-3">Capstone 已完成。</p>}<CourseResource asset="capstone-starter"/></div>}
           {lab.error&&<p role="alert" className="mt-3">{lab.error}<button className="btn btn-outline ml-3" onClick={()=>void lab.refresh()}>重试</button></p>}
           <Link to="/path" className="link-more mt-6">返回完整学习路径 <ArrowRight className="h-4 w-4" /></Link>
         </div>

@@ -1,3 +1,4 @@
+import { CapstonePathCard } from '../components/CapstoneShowcase'
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Clock, Lock } from 'lucide-react'
 import { Breadcrumb, Progress, StageChip, lessonDot } from '../components/ui'
@@ -149,6 +150,7 @@ export default function CourseCatalog() {
             </div>
           )
         })}
+        <CapstonePathCard />
       </section>
     </>
   )

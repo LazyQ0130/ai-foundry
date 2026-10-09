@@ -24,7 +24,7 @@ checkKeys:
 
 Product Eval & Regression
 
-## 0～15 分钟：现在凭什么相信这个产品
+## 现在凭什么相信这个产品
 
 继续自己的 C7 项目。内部作者从干净 C7 Reference 组装验证；不要覆盖自己的 Product Brief。现在先停止加功能，选一份已经生成的研究报告，回看每条 Citation。
 
@@ -38,7 +38,7 @@ Product Eval & Regression
 Test 验证代码逻辑按预期运行；Product Eval 检查检索、证据、生成、授权和失败处理组合后的产品行为是否达到事先定义的标准。已有 Unit/HTTP/DB Tests 继续保留，Eval 在它们之上组织固定产品矩阵。代码能运行，结论仍可能不受证据支持。
 :::
 
-## 15～35 分钟：定义四层与观察契约
+## 定义四层与观察契约
 
 | 层 | 要证明的事 | 观察 |
 |---|---|---|
@@ -59,7 +59,7 @@ Hard Gates与case pass rate独立；DB断开、fixture缺失、执行抛错不�
 
 :::
 
-## 35～55 分钟：建立可以人工核对的 Gold
+## 建立可以人工核对的 Gold
 
 Reference 用六份非敏感合成资料：persistent memory、短期上下文、人工批准、3 次重试、Model A 实验未改善、PostgreSQL 原子事务。固定十个 Retrieval query，覆盖原文、同义表达、中文和相近文档；另有两个完全无关问题。
 
@@ -79,7 +79,7 @@ Retrieval每例包含id/query/relevantCitationKeys，可选forbidden；答案与
 
 :::
 
-## 55～80 分钟：质量指标不是一个总分
+## 质量指标不是一个总分
 
 Hit@3 表示 Top 3 中至少出现一条 relevant Evidence。MRR 进一步区分正确证据排第一还是第三。不相关问题不计“检索应该什么都不返回”：向量 Top-K 本来可能返回低相关结果，必须另测最终 abstention。
 
@@ -112,7 +112,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 
 :::
 
-## 80～105 分钟：Hard Gates 与真正的 DB 事实
+## Hard Gates 与真正的 DB 事实
 
 至少阻断 cross_workspace_leaks、unapproved_writes、duplicate_knowledge_notes、invalid_citations、unsupported_deterministic_claims。Reference 还阻断 unsupported_answer_count、partial_ready_count、tamper_accepts。
 
@@ -122,7 +122,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 对每个 Hard Gate 说出：哪个请求/数据库查询/产品 primitive 产生 observed；什么情况下 count 加一；case 执行失败时为何不能默认 count0→PASS。若回答不出来，先修 evaluator。
 :::
 
-## 105～125 分钟：Reliability Matrix
+## Reliability Matrix
 
 | 产品边界 | 注入 | 期待事实 |
 |---|---|---|
@@ -145,7 +145,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 
 :::
 
-## 125～145 分钟：报告与 reviewed baseline
+## 报告与 reviewed baseline
 
 先完整跑一次，逐例解释结果，再把安全稳定的聚合指标和 case status 保存为 eval/baseline.json。运行结果放 .runtime 不提交。Baseline 绑定 dataset version、runner version 和 mode；版本不同应拒绝比较，要求人工 review。
 
@@ -160,7 +160,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 
 :::
 
-## 145～165 分钟：让 Eval 自己变红
+## 让 Eval 自己变红
 
 :::task{title="四种故障必须亲自跑"}
 运行下面命令，记录每次 exit code 与 report.overall。前三类应 FAIL；execution-error 应 INCOMPLETE。检查数据库没有因此产生恶意副作用。恢复正常参数再全量运行，结果应回到正常基线。
@@ -179,7 +179,7 @@ npm run eval:capstone -- --compare-baseline eval/baseline.json
 Hit@3 低：查看 safe gold/observed IDs、embedding mode、fixture是否正确。Key 合法但结论错：检查 support 与原文，不重复统计 validity。DB断开：保持INCOMPLETE，不能补零。并发重复：追锁、UNIQUE与事务，不改 expected。Gold自己错了：人工修数据、升版本、重审baseline。不要直接把阈值调低。
 :::
 
-## 165～180 分钟：真实模型评估与保存
+## 真实模型评估与保存
 
 Real Eval 不是再跑一次 smoke。Reference 固定十条语义检索、四份 answerable/irrelevant report、真实 private+Crossref mixed report、Note fidelity 和两条 bounded full workflow。分别记录真实模型与embedding、dimension1024、parser/indexing/dataset/runner版本。
 

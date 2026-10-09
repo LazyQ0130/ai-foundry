@@ -24,8 +24,8 @@ test('Capstone has its own locked showcase data and does not enter course statis
   assert.ok(capstoneShowcase.subtitle.length>10)
 })
 
-test('learning path and home teaser link to the public Capstone overview', () => {
-  assert.match(render(createElement(CapstonePathCard)), /href="\/capstone"/)
+test('learning path loads independent Capstone progress; home teaser links to overview', () => {
+  assert.match(render(createElement(CapstonePathCard)), /正在加载项目进度/)
   assert.match(render(createElement(CapstonePathCard)), /AI 研究工作台/)
   assert.match(render(createElement(CapstoneHomeTeaser)), /AI 研究工作台/)
 })

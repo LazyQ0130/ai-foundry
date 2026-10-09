@@ -1,3 +1,4 @@
+import { CapstonePathCard } from '../components/CapstoneShowcase'
 import { curriculumFormalLessonCount, stageLessonCount } from '../data/courses'
 import { stageCompletedCount } from '../data/learningProgress'
 import { FreeExperience } from '../components/FreeExperience'
@@ -66,6 +67,7 @@ export default function Dashboard() {
               })}
             </div>
           </section>
+          <CapstonePathCard />
         </div>
 
         <aside className="space-y-4">

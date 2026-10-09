@@ -20,7 +20,7 @@ checkKeys:
 
 开始前确认：已完成 Stage 1～4，或能独立验收 Next.js/API、Prisma migration、Session ownership、RAG、bounded Agent、MCP、精确审批与 Eval。缺少其中一项，先回对应阶段补齐。Capstone 是综合毕业实践，建议总计 18 小时～22 小时 45 分钟；云账号、DNS 和 Provider 等待另计。
 
-## 0～6 分钟：一个很容易写出的错误需求
+## 一个很容易写出的错误需求
 
 假设你现在打开 Codex，输入这段话：
 
@@ -36,7 +36,7 @@ AI 可能马上给你页面、数据表和技术方案。但你还没说清谁�
 
 本课会留下三个文件：`docs/product-brief.md`、`docs/user-flow.md`，以及 README 顶部的一句产品定位。当前工程仍是最小 Bootstrap；Auth、数据库、Agent 和 Citation 的实现从后续课程开始。
 
-## 6～16 分钟：先看一个研究者的下午
+## 先看一个研究者的下午
 
 你要调研「AI Agent 在企业知识管理中的应用」。电脑里有三份 PDF、两篇 Markdown 笔记和几段 TXT 资料；还需要补充公开信息。报告交出几天后，同事问：「这句话有什么依据？」你必须重新找到它的来源。
 
@@ -94,7 +94,7 @@ AI 的分析只是候选。拿你的 Before 逐条核对：它如果说「用户
 「用户想完成什么、现在卡在哪里」是问题；「用什么技术实现」是方案。先写问题，后面才有依据决定做哪些功能，也有依据删除哪些功能。
 :::
 
-## 16～24 分钟：选一个主要用户，写一句 JTBD
+## 选一个主要用户，写一句 JTBD
 
 V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息并形成可追溯研究结论的个人研究者。你需要再给他一个具体情境，例如「调研软件技术的开发者」。不用编姓名、年龄、爱好；这些信息帮不了你决定报告、来源和审批流程。
 
@@ -116,7 +116,7 @@ V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息�
 - JTBD 说清触发情境、希望完成的任务和为什么有价值。
 :::
 
-## 24～32 分钟：AI 可以做什么，权限留给谁
+## AI 可以做什么，权限留给谁
 
 这是一款 AI 产品，不能把所有步骤都交给模型。把刚才的流程分成三列：
 
@@ -132,7 +132,7 @@ V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息�
 
 在 `docs/product-brief.md` 的 Problem、Target User、Current Workflow、JTBD 中写入自己的决定；再用一小段话写清这三种职责。此时还不用画数据库，也不用决定 Next.js。
 
-## 32～46 分钟：把 V1 砍到能交付
+## 把 V1 砍到能交付
 
 现在做范围选择。先别看参考答案，把下面的功能池分到 Must、Later、No。Must 的判断标准只有一个：少了它，主要用户还能否完成「私人资料与外部证据 → 可追溯报告 → 自己决定是否保存」？
 
@@ -200,7 +200,7 @@ Must / Later / No：[贴你的分类和理由]
 
 你可以选不同的研究语境，但如果将 OCR 或 Team 放回 Must，要说出它怎样帮助这位主要用户完成 JTBD、会增加什么成本，以及从 V1 删去哪项来换取时间。
 
-## 46～56 分钟：从任务画出页面，不从表名画页面
+## 从任务画出页面，不从表名画页面
 
 现在回到 `docs/user-flow.md`，画 After。先只画用户看得到的动作：
 
@@ -232,7 +232,7 @@ Login → Workspace → Upload Knowledge → Create Research Task
 数据库里将来可能有 ResearchCitation、ResearchStep 等实体，但实体不等于一级页面。先让用户顺着「资料 → 研究 → 报告 → 核对」走通，再决定哪些详情需要展示。
 :::
 
-## 56～66 分钟：写一份能被检验的 Product Brief
+## 写一份能被检验的 Product Brief
 
 你的项目已有 `docs/templates/product-brief.md`。将它复制到 `docs/product-brief.md`，填写 Problem、Target User、Current Workflow、JTBD、MVP、Non-goals、User Flow、Success Criteria、Open Questions。`docs/user-flow.md` 已有 Before；补完 After、失败分支与页面。最后在 README 顶部加一句你自己的产品定位。只改这三个交付文件，不需要把 Bootstrap 改成一个会运行研究的产品。
 
@@ -266,7 +266,7 @@ User Flow：[贴 docs/user-flow.md 内容]
 回到 Before，把每个 MVP 条目连到一个具体痛点或 After 步骤。连不上的先放 Later；不要靠增加技术名词让文档看起来更完整。若 AI 改写了整篇文档，要求它只列问题和证据，再由你亲自修改。
 :::
 
-## 66～75 分钟：检查这次产品决定，保存版本
+## 检查这次产品决定，保存版本
 
 打开三个交付文件，试着不用 RAG、Agent、MCP 这些词，用两句话说明用户、问题和 V1 范围。再检查模板提示有没有留空、Before/After 是否一致、Non-goals 是否真的写了取舍理由。不要把内部 Reference 的句子原样当成自己的研究场景。
 

@@ -20,7 +20,7 @@ checkKeys:
   - "check-c3a3000000000007"
 ---
 
-## 0～10 分钟：一个 Task 还没有资料
+## 一个 Task 还没有资料
 
 C2 中你建立了「研究 Agent Memory」任务。电脑里还有论文 PDF、自己的 Markdown 笔记和一份 TXT。ResearchTask 已知道**你想研究什么**，却不知道**你手里有什么证据**。
 
@@ -46,7 +46,7 @@ Upload → Private Storage → Validate → Parse → Normalize → Chunk
 | Alice/Bob 不串资料 | SQL 内按当前 Workspace 过滤，再做 Top-K |
 | 失败不伪装成功 | Document 状态、错误类别、幂等 Retry |
 
-## 10～25 分钟：先设计生命周期与领域
+## 先设计生命周期与领域
 
 自己画出四个状态，再让 AI 评审：
 
@@ -86,7 +86,7 @@ Document 存元数据、服务端生成的 `objectKey`、原文件哈希、状�
 - `PROCESSING` 的新租约拒绝重入，过期后才可重试。
 :::
 
-## 25～45 分钟：私有原文件与签名上传
+## 私有原文件与签名上传
 
 本项目让 PostgreSQL 保存关系、文本和向量，原始文件放私有对象存储。这是当前产品的取舍：文件生命周期独立，数据库备份不被大文件占满，下载权限可独立控制。本地文件系统开发时能用，但不能当作未来部署的可靠持久存储；PDF 二进制放数据库也不是绝对错误，只是当前不选。
 
@@ -121,7 +121,7 @@ Browser → POST /api/knowledge/documents/:id/process
 不要把「PUT 返回成功」显示成「可搜索」。此时最多证明对象可能已上传；只有完整索引提交并标为 READY 才可检索。原文件不得通过公共 `/uploads` 或永久 URL 暴露。
 :::
 
-## 45～65 分钟：解析与可解释失败
+## 解析与可解释失败
 
 处理阶段重新验证：PDF 的扩展名、MIME 与 `%PDF-` 签名；MD/TXT 的扩展名、允许的类型和严格 UTF-8 decode。不要用 replacement characters 静默吞掉坏编码。PDF 用已验证的 pdfjs-dist 6.4.299 提取每页文本；一页一个 `{ page, text }`。MD/TXT 的 `page = null`。Markdown 在 C3 只是可搜索文本，不做渲染器。
 
@@ -143,7 +143,7 @@ Browser → POST /api/knowledge/documents/:id/process
 先看 Document status/errorCode，再确认 parser 是否有文本、每页的 normalized text 是否非空、Chunk 数量及 page/offset 是否能切回原文。扫描 PDF 在本课应是明确失败，不应生成空 READY。
 :::
 
-## 65～110 分钟：Embedding、事务与 pgvector
+## Embedding、事务与 pgvector
 
 不要复制 Stage 4 整个 Chat/Streaming Provider；只提取聚焦的 Embedding adapter。默认 deterministic Mock 用于测试流程、维度和隔离，不能据它宣称真实语义质量。真实模式可用已验证的 `text-embedding-v4`、1024 维，配置和 Key 只在服务端；真实 Smoke 用非敏感小文件且是 opt-in，标准测试不能依赖云 Key。
 
@@ -167,7 +167,7 @@ Browser → POST /api/knowledge/documents/:id/process
 - Retry 重新生成同一套稳定 Chunk，完成后只有一份。
 :::
 
-## 110～130 分钟：工作区内 Top-K Retrieval
+## 工作区内 Top-K Retrieval
 
 Search Debug 只接受 `query`。服务端从 Session 获取 User，再取得 Workspace，把问题转向量。SQL 必须在 Top-K 前同时筛：Document 的 Workspace、READY 状态、相同 embeddingModel 与 1024 维；随后按向量距离排序并限制 K。**不能全库 Top-K 后在 Node.js 过滤**，那会让其他用户的资料影响结果，甚至泄漏信息。
 
@@ -181,7 +181,7 @@ Search Debug 只接受 `query`。服务端从 Session 获取 User，再取得 Wo
 
 在 UI 实际看一次命中：标题是否是原文件、PDF 是否指向正确页、offset 能否切回 normalized text、preview 是否能让你判断相关性。真实 Embedding Smoke 放在确定性测试全部通过之后，用非敏感小文件，并记录模型与检索结果；没有真实 Key 时标记未运行，不能把 Mock 写成真实语义验收。
 
-## 130～150 分钟：四组 Break 与最终审查
+## 四组 Break 与最终审查
 
 1. **Private Storage**：Alice 上传，匿名不带签名访问对象应拒绝；Alice 的受保护 Route 能取得短时 signed GET，Bob 即使猜到 Document ID 也拿不到。
 2. **Broken Index**：第 N 次 Embedding 失败 → FAILED 且无可检索半索引；Retry → READY 且无重复。

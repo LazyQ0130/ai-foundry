@@ -20,7 +20,7 @@ checkKeys:
   - "check-c6d6000000000007"
 ---
 
-## 0～12 分钟：私人资料回答不了的问题
+## 私人资料回答不了的问题
 
 继续你自己的 C5 项目。保留 Product Brief、User Flow 和产品决定；内部作者验证才使用干净 C5 Reference。先运行一个私人资料不足的 Task，例如「Agent memory persistence 的公开研究有哪些补充线索」。查看 C5 的 ResearchBrief、search_knowledge 命中、停止原因和 Citation Snapshot。
 
@@ -38,7 +38,7 @@ Source Policy → local registry → model proposal → strict tool input
 → ResearchEvidence → GroundedReport → Citation Snapshot → DOI link
 ```
 
-## 12～28 分钟：搜索结果何时成为证据
+## 搜索结果何时成为证据
 
 Crossref 提供 scholarly metadata。题名、DOI、年份说明有一条文献记录；它们不能证明论文的研究结论。摘要可能缺失，也可能含 JATS/XML 标记。即使摘要存在，本课也只读取有限摘录，没有读取全文。
 
@@ -58,7 +58,7 @@ Evidence eligibility 决定一个来源是否具有可引用内容；citationKey
 
 Canonical Reference 仅接 Crossref。其他来源的适配、网页抓取、全文解析需要独立决定。Crossref 的摘要可能受版权保护；应用只保留本次引用所需的有限摘录，不公开镜像完整摘要。
 
-## 28～42 分钟：Source Policy 与查询隐私
+## Source Policy 与查询隐私
 
 来源策略属于本次 Run。同一 Task 可以先只用私人资料，再由用户开启公开研究。旧 Run 迁移后默认 PRIVATE_ONLY。
 
@@ -81,7 +81,7 @@ PRIVATE_AND_EXTERNAL → search_knowledge + search_external_references
 
 查看 SQL 中默认值、CHECK、原有 `(runId,citationKey)` 和 `(runId,position)` 唯一约束。外部来源增加了 provenance 字段，但 Citation 仍属于 Run；私人文档删除不应删除历史快照。
 
-## 42～65 分钟：先证明 Crossref adapter 正确
+## 先证明 Crossref adapter 正确
 
 先查 [Crossref REST API](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) 和 [filters](https://www.crossref.org/documentation/retrieve-metadata/rest-api/rest-api-filters/)，再低频试一条非敏感 query。作者验证使用 `query=agent memory`、`filter=has-abstract:true`、`rows=3`。带 abstract 的 select 请求曾返回 500，去掉 select 后成功；这说明参数组合要实际验证。实时内容可能变化，不把某篇论文永久写成验收前提。
 
@@ -101,7 +101,7 @@ adapter 独立于 MCP、数据库和 Session。固定请求 `https://api.crossre
 测试必须证明 upstream 的恶意 URL 不会被执行或保存；摘要不能可靠清洗时只返回题录。检查真实查询是否含可用摘要，再继续 MCP。如果没有，换非敏感关键词并记录原因。
 :::
 
-## 65～90 分钟：MCP Server / Client 的信任边界
+## MCP Server / Client 的信任边界
 
 ```text
 Research App server
@@ -137,7 +137,7 @@ listTools只确认search_external_references存在；即使远端还返回send_e
 MCP discovery 描述服务器提供什么，本地产品策略决定本次 Run 允许什么。把 listTools 原样交给模型，相当于远端部署者能改变你产品的能力边界。固定本地 Registry 使远端新增能力需要经过一次明确的产品变更。
 :::
 
-## 90～115 分钟：工具、Evidence 与失败降级
+## 工具、Evidence 与失败降级
 :::concept
 
 Planner 的 `plan_research_step` 只是结构化控制协议，不执行 DB/API。PRIVATE_ONLY 仅允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时才增加 search_external_references，发生 unavailable 后移除。外部 query 必须逐字等于服务端 approvedExternalQuery。Adapter 严格解析后，仍通过现有业务 Tool Registry、Workspace 与预算边界。Provider 每轮强制唯一指定 Function，parallel_tool_calls=false，不使用 Planner JSON mode 或自由文本 fallback。Planner 专用 Adapter 兼容 `stop` 或 `tool_calls` 携带恰好一个合法指定 Function；缺失、多次、`length`、过滤或未知 finish 一律拒绝。共享 Provider metadata 不改写，正文始终丢弃。
@@ -162,7 +162,7 @@ Timeline记录External Research、Crossref、实际query、results/claimEvidence
 
 第三方暂时不可用，是产品要表达的结果。已有私人证据时，报告可以继续，但必须说明本次外部资料不可用；没有任何证据时，不生成事实性结论。Step 的 FAILED 与 Run 的 COMPLETED 可以同时成立，分别表达一次动作失败与最终研究有可用输出。
 
-## 115～135 分钟：混合来源报告与历史快照
+## 混合来源报告与历史快照
 
 继续使用 C4 GroundedReport 的严格结构：每个 claim 引用本次 allowed citationKey，服务端填来源字段。外部摘要不享有额外信任。Report Provider 接收两种 eligible evidence，只能根据摘录写陈述；不得暗示读过全文。
 
@@ -178,7 +178,7 @@ Task页面增加默认PRIVATE_ONLY选择与外发关键词提示；Run详情显�
 
 Source URL 是当前 DOI 链接。历史快照回答「当时根据什么写出这句话」。以后 Crossref 更新或来源下线，旧报告仍展示保存的摘录；链接可用性与历史可追溯性是两个不同问题。
 
-## 135～160 分钟：Break → Fix → Re-run
+## Break → Fix → Re-run
 
 :::task{title="六组故障实验"}
 1. 关闭 external，让 mock model 提议外部工具：执行数和外发数均为 0。

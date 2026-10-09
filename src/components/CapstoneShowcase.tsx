@@ -1,37 +1,29 @@
-import { ArrowDown, ArrowRight, GraduationCap } from 'lucide-react'
+import { ArrowDown, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
+import { useCapstone, type CapstoneSummary } from '../data/capstoneProgress.js'
+
+export function CapstoneEntryCard({ data, loading = false, error = '', onRetry }: { data: CapstoneSummary | null; loading?: boolean; error?: string; onRetry?: () => void }) {
+  const completed = data?.progress?.completed ?? 0
+  const label = !data?.access ? '查看项目版' : completed === 9 ? '查看毕业项目' : completed > 0 ? '继续毕业项目' : '开始毕业项目'
+  return <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-card sm:p-6" aria-label="Capstone Project Lab">
+    <span className="chip bg-brand-50 text-brand-700">Stage 1～4 之后 · 毕业项目实战</span>
+    <h3 className="mt-3 text-[22px] font-bold text-slate-900">Capstone Project Lab</h3>
+    <p className="mt-2 text-[16px] font-semibold text-slate-700">AI 研究 Agent 毕业项目实战</p>
+    <p className="mt-2 text-[13px] text-slate-500">AI 研究工作台 · 9 节 · 约 18～23 小时</p>
+    <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-600">把 Stage 1～4 的 AI Coding、全栈、RAG 和 Agent 能力，组合成一个完整的可部署 AI 产品。</p>
+    <div className="mt-5 flex flex-wrap items-center gap-4">
+      {loading ? <p role="status" className="text-sm text-slate-500">正在加载项目进度…</p> : error ? <p role="alert" className="text-sm text-red-600">{error}<button onClick={onRetry} className="btn btn-sm btn-outline ml-3">重试</button></p> : <><Link to={data?.access ? '/capstone' : '/pricing'} className="btn btn-md btn-primary">{label}<ArrowRight className="h-4 w-4" /></Link>{data?.access && <span className="text-sm text-slate-500">毕业项目进度 {completed} / {data.progress?.total ?? 9}</span>}</>}
+    </div>
+  </section>
+}
 
 export function CapstonePathCard() {
-  return (
-    <div className="mt-8 border-t border-slate-200 pt-7">
-      <div className="mx-auto mb-4 grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-slate-400" aria-hidden="true">
-        <ArrowDown className="h-4 w-4" />
-      </div>
-      <Link
-        to="/capstone"
-        className="group grid gap-5 rounded-xl border border-slate-300 bg-slate-50 p-5 shadow-card transition hover:border-brand-300 hover:bg-white hover:shadow-lift sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:p-6"
-        aria-label={`${capstoneShowcase.project}，${capstoneShowcase.status}，查看毕业项目介绍`}
-      >
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="chip bg-slate-900 text-white">CAPSTONE · FINAL PROJECT</span>
-            <span className="chip bg-white text-slate-600 ring-1 ring-slate-200">{capstoneShowcase.badge}</span>
-          </div>
-          <h3 className="mt-3 text-[20px] font-bold text-slate-900">{capstoneShowcase.project}</h3>
-          <p className="mt-1 text-[12px] text-slate-500">{capstoneShowcase.projectEn}</p>
-          <p className="mt-1 text-[14px] font-medium text-slate-700">{capstoneShowcase.subtitle}</p>
-          <p className="mt-2 max-w-3xl text-[13px] leading-6 text-slate-500">前四阶段建立能力，Capstone 将这些能力组合成一个可以部署、验证和展示的 AI 产品。</p>
-        </div>
-        <div className="flex items-center justify-between gap-4 sm:justify-end">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-700">
-            <GraduationCap className="h-3.5 w-3.5" />{capstoneShowcase.status}
-          </span>
-          <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-brand-700 group-hover:text-brand-800">了解毕业项目 <ArrowRight className="h-4 w-4" /></span>
-        </div>
-      </Link>
-    </div>
-  )
+  const lab = useCapstone()
+  return <div className="mt-8 border-t border-slate-200 pt-7">
+    <div className="mx-auto mb-4 grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-slate-400" aria-hidden="true"><ArrowDown className="h-4 w-4" /></div>
+    <CapstoneEntryCard data={lab.data} loading={lab.loading} error={lab.error} onRetry={()=>void lab.refresh()} />
+  </div>
 }
 
 export function CapstoneHomeTeaser() {
