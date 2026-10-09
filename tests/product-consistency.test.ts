@@ -26,7 +26,7 @@ test('formal totals exclude prep and all six Stage 1 lessons complete the stage'
   stage.lessons.forEach(l => { l.status = 'completed' })
   assert.equal(stageCompletedCount(stage),6)
   assert.equal(stageLearningStatus(stage,true),'completed')
-  for(const page of ['ProjectsPage','ProjectPage']) {
+  for(const page of ['CourseCatalog','ProjectPage']) {
     const source=await readFile(`src/pages/${page}.tsx`,'utf8')
     assert.match(source,/stageCompletedCount\(/)
     assert.match(source,/stageLessonCount\(/)
@@ -50,16 +50,16 @@ test('mockups reflect each project and mobile comparison shows entitlements with
   const project={...planTemplates.find(p=>p.id==='all-access-projects')!,price:500}
   const html=render(createElement(MobilePlanComparison,{allAccessPlan:all,projectPlan:project}))
   assert.match(html,/400/);assert.match(html,/500/);assert.match(html,/100/)
-  assert.match(html,/Project Lab/);assert.match(html,/Capstone/);assert.ok(html.includes('暂未开放')||html.includes('9 节'))
+  assert.match(html,/项目工坊/);assert.match(html,/毕业项目/);assert.ok(html.includes('暂未开放')||html.includes('9 节'))
   assert.doesNotMatch(html,/选择课程版|选择项目版|单阶段购买/)
   assert.match(render(createElement(FaqPermalink,{id:'test'})),/复制问题链接/)
 })
 test('pricing and policy copy preserves catalogue pricing, purchase boundaries, and distinct policy versions',async()=>{
   const all=planTemplates.find(plan=>plan.id==='all-access')!
   assert.match(all.desc,/四阶段完整课程/)
-  assert.doesNotMatch(JSON.stringify(all),/Capstone|Project Lab|后续综合项目/)
+  assert.doesNotMatch(JSON.stringify(all),/项目工坊|毕业项目|Capstone|Project Lab|后续综合项目/)
   const project=planTemplates.find(plan=>plan.id==='all-access-projects')!
-  assert.match(JSON.stringify(project),/Capstone|Project Lab|后续新增综合项目/)
+  assert.match(JSON.stringify(project),/项目工坊|后续新增综合项目/)
   const pricing=await readFile('src/pages/Pricing.tsx','utf8')
   assert.match(pricing,/usePlans\(\)/)
   assert.match(pricing,/projectPlan\.price - allPlan\.price/)

@@ -85,7 +85,7 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
     id: 'stage-2',
     tag: '阶段 2',
     title: 'AI 全栈开发',
-    desc: '学习使用现代技术栈，结合 AI 能力构建完整的全栈应用。',
+    desc: '在同一个项目中加入数据库、登录和权限，并部署上线。',
     accent: 'blue',
     meta: '包含 8 节课 · 1 个阶段项目',
     features: [
@@ -117,7 +117,7 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
     id: 'stage-4',
     tag: '阶段 4',
     title: 'Agent 工程进阶',
-    desc: '掌握 Agent 设计与多工具协作，构建更强大的自主 AI 智能体。',
+    desc: '构建受控、可确认、可恢复的 AI Agent。',
     accent: 'orange',
     meta: '包含 8 节课 · 1 个阶段项目',
     features: [
@@ -151,16 +151,16 @@ export const planTemplates: Omit<Plan, 'price'>[] = [
   {
     id: 'all-access-projects',
     tag: '项目版',
-    title: '完整课程 + Project Lab',
-    desc: '完整解锁 Stage 1–4，并加入 Project Lab：毕业项目实战和后续持续新增的综合项目。',
+    title: '完整课程 + 项目工坊',
+    desc: '完整解锁 Stage 1–4，并加入项目工坊：毕业项目实战和后续持续新增的综合项目。',
     badge: '推荐',
     accent: 'brand',
-    meta: '29 节正式课 · 4 个阶段项目 · Project Lab',
+    meta: '29 节正式课 · 4 个阶段项目 · 项目工坊',
     features: [
       { text: '包含全阶段课程版全部权益', highlight: true },
-      { text: 'Project Lab 专属访问权', highlight: true },
-      { text: 'Capstone 毕业项目实战（9 节 Project Lab）' },
-      { text: 'Project Lab 后续新增综合项目实战持续开放，具体内容与更新节奏以上线页面为准' },
+      { text: '项目工坊专属访问权', highlight: true },
+      { text: '毕业项目实战：AI 研究工作台（9 节课）' },
+      { text: '项目工坊后续新增综合项目实战持续开放，具体内容与更新节奏以上线页面为准' },
       { text: '完整项目作品与交付训练' },
     ],
     cta: '选择项目版',
@@ -183,8 +183,8 @@ export const coursePlanBenefits = [
 ] as const
 
 export const projectPlanBenefits = [
-  { icon: 'gem', title: '继续完成综合作品', desc: 'Project Lab 提供课程之后的完整项目交付训练。' },
-  { icon: 'refresh', title: '项目实战持续开放', desc: 'Capstone 已开放 9 节 Project Lab，完成从产品定义到可部署 AI 产品的综合实践。' },
+  { icon: 'gem', title: '继续完成综合作品', desc: '项目工坊提供课程之后的完整项目交付训练。' },
+  { icon: 'refresh', title: '项目实战持续开放', desc: '毕业项目已开放 9 节课，完成从产品定义到可部署 AI 产品的综合实践。' },
 ] as const
 
 /* ------------------------------------------------------------------ */
@@ -419,7 +419,7 @@ export const projects: ProjectDetail[] = [
     supportTemplate: false,
     goalsIntro: '掌握 Agent Loop、工具调用与工作流编排，能够交付一个可控、可恢复的 Agent 产品。',
     goals: [
-      { icon: 'build', title: '实现 Agent Loop', desc: '让 Agent 自主规划并执行任务' },
+      { icon: 'build', title: '实现 Agent Loop', desc: '让 Agent 在权限与预算内选择工具并推进任务' },
       { icon: 'search', title: '设计工具 Schema', desc: '让 Agent 稳定调用外部能力' },
       { icon: 'database', title: '管理运行状态', desc: '支持重试、恢复与人工确认' },
       { icon: 'deploy', title: '评估与运维', desc: '建立评估方式并部署上线' },
@@ -437,7 +437,7 @@ export const projects: ProjectDetail[] = [
     extensions: ['接入 MCP 生态工具', '支持自定义工具插件', '增加成本与调用统计', '实现 Agent 评估集'],
     standardsIntro: '满足以下标准即视为完成。',
     standards: [
-      'Agent 能自主完成一个多步骤任务',
+      'Agent 能在受控条件下完成多步骤任务，写操作需确认',
       '能正确调用至少 3 个工具',
       '任务中断后可以恢复继续执行',
       '服务已部署并可访问',

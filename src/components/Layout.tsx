@@ -19,21 +19,28 @@ function AccountLinks() {
   </> : <><Link to="/login" className="btn btn-sm btn-outline">登录</Link><Link to="/register" className="btn btn-sm btn-primary">开始学习</Link></>}</>
 }
 
-const navLinks = [
-  { to: '/dashboard', label: '我的学习', match: (p: string) => p.startsWith('/dashboard') },
-  { to: '/path', label: '学习路径', match: (p: string) => p.startsWith('/path') },
-  { to: '/guide', label: '课程导读', match: (p: string) => p.startsWith('/guide') },
-  {
-    to: '/courses',
-    label: '课程',
-    match: (p: string) => p.startsWith('/courses') || p.startsWith('/stage') || p.startsWith('/lesson'),
-  },
-  { to: '/projects', label: '项目', match: (p: string) => p.startsWith('/project') },
-  { to: '/pricing', label: '价格', match: (p: string) => p.startsWith('/pricing') },
-]
+type NavItem = { to: string; label: string; match: (p: string) => boolean }
+
+/** Four top-level entries; the first slot is 课程导读 for visitors and 我的学习 once logged in. */
+function navLinksFor(loggedIn: boolean): NavItem[] {
+  return [
+    loggedIn
+      ? { to: '/dashboard', label: '我的学习', match: (p) => p.startsWith('/dashboard') }
+      : { to: '/guide', label: '课程导读', match: (p) => p.startsWith('/guide') },
+    {
+      to: '/courses',
+      label: '课程',
+      match: (p) => p.startsWith('/courses') || p.startsWith('/stage') || p.startsWith('/lesson') || p.startsWith('/project/'),
+    },
+    { to: '/capstone', label: '项目工坊', match: (p) => p.startsWith('/capstone') },
+    { to: '/pricing', label: '价格', match: (p) => p.startsWith('/pricing') },
+  ]
+}
 
 function Navbar() {
   const { pathname } = useLocation()
+  const { user } = useAuth()
+  const navLinks = navLinksFor(Boolean(user))
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -113,11 +120,10 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
   {
     title: '课程',
     links: [
-      { label: '学习路径', to: '/path' },
+      { label: '课程', to: '/courses' },
       { label: '课程导读', to: '/guide' },
-      { label: '课程目录', to: '/courses' },
-      { label: '项目实战', to: '/projects' },
-      { label: 'Capstone 毕业项目', to: '/capstone' },
+      { label: '环境说明', to: '/environment' },
+      { label: '项目工坊', to: '/capstone' },
       { label: '价格方案', to: '/pricing' },
     ],
   },

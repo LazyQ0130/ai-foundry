@@ -9,14 +9,14 @@ import { parseLessonContent } from './lesson-parser.js'
 
 export function requireCapstoneLesson(id: string) {
   const lesson = capstoneLesson(id)
-  if (!lesson) throw new ApiError(404, 'NOT_FOUND', 'Project Lab 课程不存在或未发布')
+  if (!lesson) throw new ApiError(404, 'NOT_FOUND', '项目工坊课程不存在或未发布')
   return lesson
 }
 export async function requireCapstoneAccess(userId?: string, client: Prisma.TransactionClient = db) {
   if (!userId || (await client.user.findUnique({where:{id:userId},select:{status:true}}))?.status !== 'ACTIVE')
     throw new ApiError(401, 'UNAUTHORIZED', '请先登录')
   // Admin follows the same explicit ProductEntitlement rule; no role bypass.
-  if (!await hasProductAccess(userId, PROJECT_LAB_KEY, client)) throw new ApiError(403, 'PROJECT_LAB_ACCESS_REQUIRED', '需要 Project Lab 权益')
+  if (!await hasProductAccess(userId, PROJECT_LAB_KEY, client)) throw new ApiError(403, 'PROJECT_LAB_ACCESS_REQUIRED', '需要项目工坊权益')
 }
 export async function readCapstoneContent(id: string) {
   const lesson = requireCapstoneLesson(id)

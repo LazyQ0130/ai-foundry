@@ -5,8 +5,8 @@ export function MobilePlanComparison({ allAccessPlan, projectPlan }: { allAccess
     ['Stage 1–4', true, true],
     ['29 节正式课程', true, true],
     ['4 个阶段项目', true, true],
-    ['Project Lab', false, true],
-    ['Capstone · 9 节 Project Lab', false, true],
+    ['项目工坊', false, true],
+    ['毕业项目 · 9 节课', false, true],
     ['后续综合项目', false, true],
   ] as const
   return <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white md:hidden" aria-label="移动端方案对比">

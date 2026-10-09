@@ -13,8 +13,8 @@ function NotFound({ slug }: { slug?: string }) {
     <div className="shell py-24 text-center">
       <h1 className="text-[24px] font-bold text-slate-900">没有找到这个阶段</h1>
       <p className="mt-2 text-sm text-slate-500">路径参数：{slug}</p>
-      <Link to="/path" className="btn btn-md btn-primary mt-6">
-        返回学习路径
+      <Link to="/courses" className="btn btn-md btn-primary mt-6">
+        返回课程
       </Link>
     </div>
   )
@@ -85,7 +85,7 @@ export default function StagePage() {
             <Breadcrumb
               items={[
                 { label: '首页', to: '/' },
-                { label: '学习路径', to: '/path' },
+                { label: '课程', to: '/courses' },
                 { label: `${stage.tag}：${stage.title}` },
               ]}
             />
@@ -262,8 +262,8 @@ export default function StagePage() {
           <div className="card p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-[14px] font-semibold text-slate-900">学习进度</h2>
-              <Link to="/path" className="link-more">
-                返回学习路径
+              <Link to="/courses" className="link-more">
+                返回课程
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

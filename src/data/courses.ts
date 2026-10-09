@@ -141,7 +141,7 @@ export const stages: Stage[] = [
         code: '0',
         order: 0,
         title: '开始前准备',
-        desc: '装好 Node.js 和 WorkBuddy，下载 Starter，把个人知识工作台第一次跑起来。',
+        desc: '按环境说明装好运行环境和 AI 开发工具，下载 Starter，把个人知识工作台第一次跑起来。',
         duration: '30 分钟',
         status: 'completed',
         isPreview: true,

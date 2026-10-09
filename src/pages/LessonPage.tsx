@@ -1,23 +1,20 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { LessonLayout } from '../components/LessonLayout'
+import { LessonProgressStrip, LessonTaskCard } from '../components/LessonTaskPanel'
 import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
 import { Link, useParams } from 'react-router-dom'
 import {
   ArrowLeft,
-  ArrowRight,
-  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ClipboardList,
   Clock,
   Lock,
-  Sparkles,
   Target,
 } from 'lucide-react'
-import { Breadcrumb, Progress, Tick, lessonDot } from '../components/ui'
+import { Breadcrumb, Progress, lessonDot } from '../components/ui'
 import { stageLessonCount, type Lesson, type Stage } from '../data/courses'
-import { nextLessonOf, prevLessonOf, stageCompletedCount, stagePercent } from '../data/learningProgress'
+import { nextLessonOf, prevLessonOf, stageCompletedCount } from '../data/learningProgress'
 import type { LessonContent } from '../data/lessonContent'
 const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
 import { api, ApiError, errorMessage } from '../lib/api'
@@ -54,12 +51,12 @@ function LessonSidebar({
   return (
     <div className="flex h-full flex-col">
       <Link
-        to="/path"
+        to="/courses"
         onClick={onNavigate}
         className="inline-flex items-center gap-1.5 px-4 pt-4 text-[13px] text-slate-500 transition hover:text-brand-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        返回学习路径
+        返回课程
       </Link>
 
       <div className="px-4 pt-4">
@@ -156,7 +153,8 @@ function LessonSidebar({
 function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesson; content: LessonContent }) {
   return (
     <article className="lesson-article mx-auto min-w-0 w-full max-w-[740px]">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <Link to={`/stage/${stage.slug}`} className="mb-2 inline-flex items-center gap-1 text-[12px] text-slate-500 sm:hidden"><ChevronLeft className="h-3 w-3" />返回{stage.tag}</Link>
+      <div className="hidden flex-wrap items-start justify-between gap-3 sm:flex">
         <Breadcrumb
           className="pt-1"
           items={[
@@ -178,8 +176,9 @@ function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesso
         <h1 className="lesson-title">
           {lesson.code} {lesson.title}
         </h1>
-        <p className="mt-4 text-[16px] leading-7 text-slate-600">{lesson.desc}</p>
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-slate-500">
+        <p className="mt-3 text-[15px] leading-6 text-slate-600">{lesson.desc}</p>
+        <p className="mt-2 text-[13px] leading-5 text-slate-600"><strong className="font-semibold text-slate-800">本课目标：</strong>{content.meta.objective}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-slate-500">
           <span className="inline-flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.9} />
             预计学习时间 {content.meta.estimatedTime}
@@ -192,6 +191,7 @@ function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesso
       </header>
 
       <Suspense fallback={<p role="status" className="text-base text-slate-600">正在排版课程…</p>}><LessonMarkdown body={content.body}/></Suspense>
+      <nav aria-label="课程翻页" className="mt-8 flex flex-wrap justify-between gap-3 sm:hidden"><NavArrow dir="prev" stage={stage} lesson={lesson} /><NavArrow dir="next" stage={stage} lesson={lesson} /></nav>
     </article>
   )
 }
@@ -232,97 +232,26 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
   const done = lesson.status === 'completed'
   const checked = getChecks(lesson.id, content.meta.checkKeys)
 
-  const percent = stagePercent(stage)
-  const checkedCount = checked.filter(Boolean).length
-
   const next = nextLessonOf(stage, lesson)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-[1360px]:flex min-[1360px]:max-h-[calc(100dvh-96px)] min-[1360px]:flex-col">
       {lesson.isPrep ? <PrepFeedback done={done}/> : <>
-      <div className="card p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-900">
-            <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
-            学习进度
-          </h2>
-          <Link to={`/stage/${stage.slug}`} className="link-more !text-[13px]">
-            查看阶段总览
-            <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-        <p className="mt-3 text-[13px] font-medium text-slate-700">
-          {stage.tag}：{stage.title}
-        </p>
-        <Progress value={percent} className="mt-2.5" />
-        <div className="mt-2 flex items-center justify-between text-[13px] text-slate-400">
-          <span className="tabular-nums">
-            {stageCompletedCount(stage)} / {stageLessonCount(stage)}
-          </span>
-          <span>{percent}%</span>
-        </div>
-      </div> </>}
+      <LessonProgressStrip to={`/stage/${stage.slug}`} label={`${stage.tag} · 学习进度`} completed={stageCompletedCount(stage)} total={stageLessonCount(stage)} /> </>}
 
       {mutationError && <p role="alert" className="text-sm text-red-600">{mutationError}</p>}
       {!user && <Link to="/login" className="block text-sm text-brand-600">登录后同步学习进度</Link>}
       {saving && <p role="status" className="text-xs text-slate-500">正在保存…</p>}
-      {/* 本课目标 */}
-      <div className="card p-4">
-        <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-900">
-          <Target className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
-          本课目标
-        </h2>
-        <p className="mt-2.5 text-[13px] leading-5 text-slate-600">{content.meta.objective}</p>
-      </div>
-
-      {/* 学习任务清单 */}
-      <div className="card p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-900">
-            <ClipboardList className="h-3.5 w-3.5 text-brand-600" strokeWidth={2.2} />
-            学习任务清单
-          </h2>
-          <span className="text-[13px] tabular-nums text-slate-400">
-            {checkedCount}/{checked.length}
-          </span>
-        </div>
-        <ul className="mt-3 space-y-2.5">
-          {content.meta.checklist.map((c, i) => (
-            <li key={c}>
-              <button
-                type="button"
-                disabled={!user || saving}
-                onClick={() => setCheck(lesson.id, content.meta.checkKeys[i], !checked[i])}
-                aria-pressed={checked[i]}
-                className="flex w-full items-start gap-2.5 text-left"
-              >
-                <Tick checked={checked[i]} className="mt-[1px]" />
-                <span
-                  className={`text-[13px] leading-5 transition ${
-                    checked[i] ? 'text-slate-400 line-through' : 'text-slate-600'
-                  }`}
-                >
-                  {i + 1}. {c}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => completeLesson(lesson.id)}
-        disabled={!user || saving || done || checkedCount !== checked.length}
-        title={checkedCount !== checked.length ? '请先完成并勾选全部学习任务' : undefined}
-        className={`btn btn-md w-full ${done ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'btn-primary'}`}
-      >
-        <Check className="h-4 w-4" strokeWidth={2.6} />
-        {done ? '已完成本课' : '标记为完成'}
-      </button>
-      {!done && checkedCount !== checked.length ? (
-        <p className="text-center text-[13px] text-slate-500">完成本地操作并勾选全部任务后，即可标记本课完成。</p>
-      ) : null}
+      {/* Keep the completion action visible while long checklists scroll. */}
+      <LessonTaskCard
+        items={content.meta.checklist}
+        checked={checked}
+        disabled={!user}
+        saving={saving}
+        done={done}
+        onToggle={(i) => setCheck(lesson.id, content.meta.checkKeys[i], !checked[i])}
+        onComplete={() => completeLesson(lesson.id)}
+      />
 
       {done && next && !lesson.isPrep ? (
         <Link to={`/lesson/${stage.slug}/${next.id}`} className="btn btn-md btn-outline w-full">
@@ -358,8 +287,8 @@ function NotFound({ stageSlug, lessonId }: { stageSlug?: string; lessonId?: stri
       <p className="mt-2 text-sm text-slate-500">
         {stageSlug} / {lessonId}
       </p>
-      <Link to="/path" className="btn btn-md btn-primary mt-6">
-        返回学习路径
+      <Link to="/courses" className="btn btn-md btn-primary mt-6">
+        返回课程
       </Link>
     </div>
   )

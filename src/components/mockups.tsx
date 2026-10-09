@@ -1,4 +1,4 @@
-import { BookOpen, FileText, Search, Sparkles } from 'lucide-react'
+import { BookOpen, FileText, Sparkles } from 'lucide-react'
 import { stages, type Stage } from '../data/courses.js'
 
 /** Public curriculum metadata; this is an illustration, not a fabricated user progress record. */
@@ -8,7 +8,6 @@ export function HeroAppMockup({ className = '', stage = stages[0] }: { className
     <div className="p-5 sm:p-6">
       <p className="text-xs font-medium text-brand-600">{stage.title}</p>
       <h3 className="mt-2 text-xl font-semibold text-slate-900">{stage.project.title}</h3>
-      <div className="mt-5 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-400"><Search size={15}/>搜索项目中的资料</div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div><p className="mb-2 text-xs text-slate-500">学习步骤</p><ol className="space-y-2">{stage.lessons.slice(0,4).map(l => <li key={l.id} className="flex gap-2 rounded-lg bg-slate-50 p-2 text-xs leading-5 text-slate-600"><BookOpen size={14} className="mt-1 shrink-0"/>{l.title}</li>)}</ol></div>
         <div className="rounded-xl bg-brand-50 p-4"><Sparkles size={20} className="text-brand-600"/><p className="mt-3 text-sm font-medium">边学边构建</p><p className="mt-2 text-xs leading-6 text-slate-500">{stage.exitState}</p><p className="mt-4 text-xs text-brand-600">运行 · 修改 · 验证</p></div>

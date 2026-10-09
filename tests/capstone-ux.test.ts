@@ -29,7 +29,7 @@ test('Capstone sidebar lists all nine unlocked routes, highlights current lesson
   assert.match(activeLink, /border-brand-600 bg-brand-50/)
   assert.equal((html.match(/aria-label="已完成"/g) ?? []).length, 3)
   assert.match(html, /3 \/ 9/)
-  assert.match(html, /GROUND/)
+  assert.match(html, /证据引用/); assert.doesNotMatch(html, /GROUND|Capstone/)
   assert.doesNotMatch(html, /aria-disabled|暂未开放/)
 })
 
@@ -51,9 +51,9 @@ test('Capstone navigation boundaries and trusted header match C1, C4 and C9', as
 
 test('entry CTA follows independent progress; overview uses continueLessonId including out-of-order study', () => {
   for (const [completed, label] of [[0, '开始毕业项目'], [3, '继续毕业项目'], [9, '查看毕业项目']] as const) {
-    const data = { ...summary, progress: { ...progress, completed } }
+    const data = { ...summary, progress: { ...progress, completed, continueLessonId: completed === 9 ? null : 'c4' } }
     const html = render(h(CapstoneEntryCard, { data }))
-    assert.ok(html.includes(label)); assert.match(html, /href="\/capstone"/)
+    assert.ok(html.includes(label)); assert.match(html, completed === 9 ? /href="\/capstone"/ : /href="\/capstone\/lessons\/c4"/)
   }
   const noAccess = render(h(CapstoneEntryCard, { data: { ...summary, access: false, progress: null } }))
   assert.match(noAccess, /href="\/pricing"/); assert.match(noAccess, /查看项目版/)
@@ -63,18 +63,20 @@ test('entry CTA follows independent progress; overview uses continueLessonId inc
   assert.match(hero, /3 \/ 9/)
   const complete = render(h(CapstoneOverviewStart, { data: { ...summary, progress: { ...progress, completed: 9, continueLessonId: null } }, loading: false }))
   assert.match(complete, /查看毕业项目/)
-  assert.match(render(h(CapstoneOverviewStart, { data: { ...summary, access: false, progress: null }, loading: false })), /href="\/pricing"/)
+  const facts = render(h(CapstoneOverviewStart, { data: { ...summary, access: false, progress: null }, loading: false }))
+  assert.match(facts, /9 节课/); assert.match(facts, /C1 可免费试看/); assert.doesNotMatch(facts, /href=/)
 })
 
 test('Stage and Capstone share responsive shell, sticky directory and constrained reading width', async () => {
   const html = render(h(LessonLayout, { sidebar: () => h('nav', null, '课程目录'), workbench: h('div', null, '任务'), remainingTasks: 2, children: h('article', null, '正文') }))
-  for (const text of ['w-[260px]', 'max-w-[740px]', 'sticky top-20', 'min-[1360px]:hidden', '课程目录', '学习任务与进度']) assert.ok(html.includes(text))
+  for (const text of ['w-[260px]', 'max-w-[740px]', 'sticky top-20', 'min-[1360px]:hidden', '课程目录', '任务与进度']) assert.ok(html.includes(text))
   for (const path of ['src/pages/LessonPage.tsx', 'src/pages/CapstoneLessonPage.tsx']) {
     const source = await readFile(path, 'utf8')
     assert.match(source, /<LessonLayout/); assert.match(source, /<LessonMarkdown/)
   }
   const capstone = await readFile('src/pages/CapstoneLessonPage.tsx', 'utf8')
-  assert.match(capstone, /lab.setCheck/); assert.doesNotMatch(capstone, /useProgress/)
+  assert.match(capstone, /lab.setCheck/); assert.match(capstone, /lab.completeLesson/); assert.doesNotMatch(capstone, /useProgress/)
+  for (const path of ['src/pages/LessonPage.tsx', 'src/pages/CapstoneLessonPage.tsx']) assert.match(await readFile(path, 'utf8'), /<LessonTaskCard/)
 })
 
 test('published 29 + 9 and 61 stable keys; formal/internal bytes match without section time prefixes', async () => {

@@ -59,8 +59,8 @@ function NotFound({ id }: { id?: string }) {
     <div className="shell py-24 text-center">
       <h1 className="text-[24px] font-bold text-slate-900">没有找到这个项目</h1>
       <p className="mt-2 text-sm text-slate-500">项目 id：{id}</p>
-      <Link to="/path" className="btn btn-md btn-primary mt-6">
-        返回学习路径
+      <Link to="/courses" className="btn btn-md btn-primary mt-6">
+        返回课程
       </Link>
     </div>
   )
@@ -70,7 +70,7 @@ function ProjectView({ project }: { project: ProjectDetail }) {
   const { stages } = useProgress()
   const stage = stages.find((item) => item.project.id === project.id)
   const accessible = stage?.lessons.find(l => l.isPublished !== false && l.status !== 'locked' && l.status !== 'completed')
-  const lessonPath = accessible && stage ? `/lesson/${stage.slug}/${accessible.id}` : stage ? `/stage/${stage.slug}` : '/path'
+  const lessonPath = accessible && stage ? `/lesson/${stage.slug}/${accessible.id}` : stage ? `/stage/${stage.slug}` : '/courses'
   const doneCount = stage ? stageCompletedCount(stage) : 0
   const total = stage ? stageLessonCount(stage) : 0
   const percent = total ? Math.round((doneCount / total) * 100) : 0
@@ -253,8 +253,8 @@ function ProjectView({ project }: { project: ProjectDetail }) {
                 <Icon name="trending" className="h-4 w-4 text-brand-600" />
                 关联课程进度
               </h2>
-              <Link to="/path" className="link-more !text-[11.5px]">
-                查看学习路径
+              <Link to="/courses" className="link-more !text-[11.5px]">
+                查看全部课程
                 <ArrowRight className="h-3 w-3" />
               </Link>
             </div>

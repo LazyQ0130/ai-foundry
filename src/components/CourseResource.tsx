@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Download, FileArchive } from 'lucide-react'
 import { courseAssets, isCourseAssetId } from '../data/courseAssets.js'
 
-export function CourseResource({ asset }: { asset: string }) {
+export function CourseResource({ asset, compact = false }: { asset: string; compact?: boolean }) {
   const item = isCourseAssetId(asset) ? courseAssets[asset] : undefined
   const [bytes, setBytes] = useState<number>()
   const [busy, setBusy] = useState(false)
@@ -24,7 +24,7 @@ export function CourseResource({ asset }: { asset: string }) {
       const response = await fetch(item.endpoint, { credentials: 'include' })
       if (!response.ok) {
         setNeedsLogin(response.status === 401)
-        setMessage(response.status === 401 ? asset === 'capstone-starter' ? '请先登录并开通 Project Lab 权益。' : asset === 'stage3-starter' ? '请先登录，再使用你的 Stage 3 权限下载 Starter。' : '登录后即可免费下载 Starter，并保存你的学习进度。' : response.status === 403 ? '当前账号没有此资源的下载权限。' : '下载暂时不可用，请稍后重试。')
+        setMessage(response.status === 401 ? asset === 'capstone-starter' ? '请先登录并开通项目工坊权益。' : asset === 'stage3-starter' ? '请先登录，再使用你的 Stage 3 权限下载 Starter。' : '登录后即可免费下载 Starter，并保存你的学习进度。' : response.status === 403 ? '当前账号没有此资源的下载权限。' : '下载暂时不可用，请稍后重试。')
         return
       }
       const url = URL.createObjectURL(await response.blob())
@@ -36,13 +36,22 @@ export function CourseResource({ asset }: { asset: string }) {
     } catch { setMessage('网络连接失败，请稍后重试。') }
     finally { setBusy(false) }
   }
+  const size = bytes !== undefined ? ` · 约 ${Math.ceil(bytes / 1024)} KB` : ''
+  if (compact) return <div aria-label="课程资源">
+    <div className="flex items-center gap-3">
+      <FileArchive size={20} className="shrink-0 text-slate-400" aria-hidden="true"/>
+      <div className="min-w-0 flex-1"><p className="truncate text-[13px] font-semibold text-slate-800">{item.title}</p><p className="text-[12px] text-slate-500">{item.format}{size}</p></div>
+      <button type="button" className="btn btn-sm btn-outline shrink-0" disabled={busy} onClick={() => void download()}><Download size={14} aria-hidden="true"/>{busy ? '下载中…' : '下载'}</button>
+    </div>
+    {message && <p className="mt-2 text-[12px] text-slate-500" role="status">{message}</p>}
+  </div>
   return <aside className="lesson-resource" aria-label="课程资源">
     <FileArchive size={24} className="lesson-resource-icon" aria-hidden="true"/>
     <div className="lesson-resource-info">
       <div className="lesson-resource-label">课程资源</div>
       <div className="lesson-resource-title">{item.title}</div>
       <div className="lesson-resource-description">{item.description}</div>
-      <div className="lesson-resource-meta">{item.format}{bytes !== undefined ? ` · 约 ${Math.ceil(bytes / 1024)} KB` : ''} · {asset === 'capstone-starter' ? '需 Project Lab 权益' : asset === 'stage3-starter' ? '需 Stage 3 权限' : '免费体验资源'}</div>
+      <div className="lesson-resource-meta">{item.format}{bytes !== undefined ? ` · 约 ${Math.ceil(bytes / 1024)} KB` : ''} · {asset === 'capstone-starter' ? '需项目工坊权益' : asset === 'stage3-starter' ? '需 Stage 3 权限' : '免费体验资源'}</div>
     </div>
     <button type="button" className="lesson-resource-download" disabled={busy} onClick={() => void download()}><Download size={16} aria-hidden="true"/>{busy ? '正在下载…' : '下载 Starter'}</button>
     {needsLogin && <div className="lesson-resource-message flex flex-wrap gap-3"><a href={`/login?next=${encodeURIComponent(window.location.pathname)}`}>登录后继续</a><a href={`/register?next=${encodeURIComponent(window.location.pathname)}`}>注册后继续</a></div>}

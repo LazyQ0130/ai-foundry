@@ -151,8 +151,8 @@ function CoursesSection({ onBuy }: { onBuy: (plan: Plan) => void }) {
         </>
       )}
       <div className="mt-6 rounded-xl border border-brand-100 bg-brand-50/50 p-4">
-        <h3 className="text-sm font-semibold text-slate-900">项目实战 · Project Lab</h3>
-        <p className="mt-2 text-sm text-slate-600">{user?.productEntitlements.includes('project-lab') ? 'Project Lab 已开通。可进入 9 节 Capstone 毕业项目实战。' : 'Project Lab 未开通。阶段项目仍属于对应课程阶段。'}</p>
+        <h3 className="text-sm font-semibold text-slate-900">项目工坊</h3>
+        <p className="mt-2 text-sm text-slate-600">{user?.productEntitlements.includes('project-lab') ? '项目工坊已开通。可进入 9 节毕业项目实战。' : '项目工坊未开通。阶段项目仍属于对应课程阶段。'}</p>
         {!user?.productEntitlements.includes('project-lab') && <Link to="/pricing" className="mt-2 inline-block text-sm text-brand-700">查看项目版</Link>}
       </div>
     </section>

@@ -1,4 +1,5 @@
-import { CapstonePathCard } from '../components/CapstoneShowcase'
+import { CapstoneEntryCard, CapstonePathCard } from '../components/CapstoneShowcase'
+import { useCapstone } from '../data/capstoneProgress'
 import { curriculumFormalLessonCount, stageLessonCount } from '../data/courses'
 import { stageCompletedCount } from '../data/learningProgress'
 import { FreeExperience } from '../components/FreeExperience'
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const totalLessons = curriculumFormalLessonCount()
   const currentStage = learning.kind === 'free' ? stages[0] : learning.stage
   const currentLesson = learning.kind === 'continue' ? learning.lesson : undefined
+  const lab = useCapstone()
+  const hasLab = Boolean(lab.data?.access)
 
   return (
     <>
@@ -24,7 +27,7 @@ export default function Dashboard() {
         <div className="shell py-12 sm:py-16">
           <span className="chip bg-white text-brand-700 ring-1 ring-brand-100">我的学习 · 云端学习进度</span>
           <h1 className="mt-4 text-[32px] font-bold tracking-tight text-slate-900 sm:text-[40px]">{user?.entitlements.length ? '接着上次的进度，继续构建。' : '免费体验 AIFoundry'}</h1>
-          <p className="mt-3 text-[14px] leading-6 text-slate-600">完成一节课后，学习路径和阶段页会同步更新；再次登录仍可继续学习。</p>
+          <p className="mt-3 text-[14px] leading-6 text-slate-600">完成一节课后，课程页和阶段页会同步更新；再次登录仍可继续学习。</p>
         </div>
       </section>
 
@@ -39,17 +42,19 @@ export default function Dashboard() {
               </div>
               <span className={`chip ${accentClass[currentStage.accent].softBg} ${accentClass[currentStage.accent].text}`}>{stageStatusLabel[currentStage.status]}</span>
             </div>
-            <p className="mt-5 max-w-2xl text-[13.5px] leading-6 text-slate-600">{learning.kind === 'continue' ? learning.lesson.desc : learning.kind === 'completed' ? '可以回顾已学课程、查看阶段自检，或了解下一阶段。' : '当前没有可继续的已发布课程，可以回顾已开通内容或查看学习路径。'}</p>
+            <p className="mt-5 max-w-2xl text-[13.5px] leading-6 text-slate-600">{learning.kind === 'continue' ? learning.lesson.desc : learning.kind === 'completed' ? '可以回顾已学课程、查看阶段自检，或了解下一阶段。' : '当前没有可继续的已发布课程，可以回顾已开通内容或查看全部课程。'}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link to={learning.kind === 'continue' ? learning.path : `/stage/${currentStage.slug}`} className="btn btn-lg btn-primary"><Play className="h-4 w-4" />{learning.kind === 'continue' ? '继续学习' : '回顾本阶段'}</Link>
-              <Link to={learning.kind === 'completed' ? `/stage/${currentStage.slug}#cp-1` : '/path'} className="btn btn-lg btn-outline">{learning.kind === 'completed' ? '查看阶段自检' : '查看学习路径'}<ArrowRight className="h-4 w-4" /></Link>
+              <Link to={learning.kind === 'completed' ? `/stage/${currentStage.slug}#cp-1` : '/courses'} className="btn btn-lg btn-outline">{learning.kind === 'completed' ? '查看阶段自检' : '查看全部课程'}<ArrowRight className="h-4 w-4" /></Link>
             </div>
           </section>}
+
+          {hasLab && <CapstoneEntryCard data={lab.data} loading={lab.loading} error={lab.error} onRetry={() => void lab.refresh()} />}
 
           <section>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="h-sec">四阶段学习路径</h2>
-              <Link to="/path" className="link-more">查看完整路径<ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/courses" className="link-more">查看全部课程<ArrowRight className="h-4 w-4" /></Link>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {stages.map((stage) => {
@@ -67,7 +72,7 @@ export default function Dashboard() {
               })}
             </div>
           </section>
-          <CapstonePathCard />
+          {!hasLab && !lab.loading && <CapstonePathCard />}
         </div>
 
         <aside className="space-y-4">
@@ -76,7 +81,7 @@ export default function Dashboard() {
             <h2 className="text-[15px] font-semibold text-slate-900">总体学习进度</h2>
             <div className="mt-5 flex items-center gap-5">
               <Ring percent={overallPercent} size={96} stroke={9}><strong className="text-xl text-slate-900">{overallPercent}%</strong></Ring>
-              <p className="text-[13px] leading-6 text-slate-600">已完成 <strong>{completedLessons}</strong> / {totalLessons} 节课<br />下一步：{currentLesson?.title ?? '查看学习路径'}</p>
+              <p className="text-[13px] leading-6 text-slate-600">已完成 <strong>{completedLessons}</strong> / {totalLessons} 节课<br />下一步：{currentLesson?.title ?? '查看全部课程'}</p>
             </div>
           </section>
           <section className="card p-5">
@@ -86,6 +91,10 @@ export default function Dashboard() {
             </div>
           </section>
           <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 text-[12.5px] leading-6 text-slate-600"><CheckCircle2 className="mb-2 h-5 w-5 text-brand-600" /><strong className="text-slate-900">先完成任务，再标记课程。</strong><br />每节课的清单帮助你确认项目真的跑通。</div>
+          <Link to="/guide" className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-[13px] transition hover:border-brand-200">
+            <span><span className="block font-semibold text-slate-900">课程导读</span><span className="mt-0.5 block text-[12px] text-slate-500">回顾 AI 核心概念和整条学习路线</span></span>
+            <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" />
+          </Link>
         </aside>
       </div>
     </>

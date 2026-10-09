@@ -51,10 +51,13 @@ test('Capstone independent durable progress: 0/9 -> 1/9 -> 9/9; trusted checklis
  let progress=(await student.get('/api/capstone/progress').expect(200)).body.data
  assert.equal(progress.completed,0);assert.equal(progress.total,9);assert.equal(progress.continueLessonId,'c1');assert.equal(curriculumFormalLessonCount(),29)
  await student.post('/api/capstone/progress/lessons/c1/visit').set('Origin',env.APP_ORIGIN).send({}).expect(200)
- await student.post('/api/capstone/progress/lessons/c1/complete').set('Origin',env.APP_ORIGIN).send({}).expect(404)
+ // Completion is explicit and requires every trusted checklist item first.
+ await student.post('/api/capstone/progress/lessons/c1/complete').set('Origin',env.APP_ORIGIN).send({}).expect(400)
  for(const invalid of ['check-arbitrary',capstoneLessons[1].checkKeys[0]])await student.put('/api/capstone/progress/lessons/c1/checks/'+invalid).set('Origin',env.APP_ORIGIN).send({completed:true}).expect(400)
  await student.put('/api/capstone/progress/lessons/c1/checks/'+capstoneLessons[0].checkKeys[0]).set('Origin',env.APP_ORIGIN).send({completed:true,userId:otherId}).expect(400)
  for(const lesson of capstoneLessons){for(const key of lesson.checkKeys)await student.put('/api/capstone/progress/lessons/'+lesson.id+'/checks/'+key).set('Origin',env.APP_ORIGIN).send({completed:true}).expect(200)
+  assert.equal((await student.get('/api/capstone/progress').expect(200)).body.data.completed,lesson.order-1)
+  await student.post('/api/capstone/progress/lessons/'+lesson.id+'/complete').set('Origin',env.APP_ORIGIN).send({}).expect(200)
   progress=(await student.get('/api/capstone/progress').expect(200)).body.data;assert.equal(progress.completed,lesson.order);assert.equal(progress.continueLessonId,lesson.order===9?null:'c'+(lesson.order+1))}
  const stage=(await student.get('/api/progress').expect(200)).body.data
  assert.deepEqual(stage.formalProgress,{completed:0,total:29});assert.equal(stage.completedLessons.length,0)
@@ -63,8 +66,9 @@ test('Capstone independent durable progress: 0/9 -> 1/9 -> 9/9; trusted checklis
  await newSession.post('/api/auth/login').set('Origin',env.APP_ORIGIN).send({phone:user.phone,password:'Capstone-test-123'}).expect(200)
  assert.equal((await newSession.get('/api/capstone/progress').expect(200)).body.data.completed,9)
  await student.put('/api/capstone/progress/lessons/c1/checks/'+capstoneLessons[0].checkKeys[0]).set('Origin',env.APP_ORIGIN).send({completed:false}).expect(200)
- progress=(await student.get('/api/capstone/progress').expect(200)).body.data;assert.equal(progress.completed,8);assert.equal(progress.continueLessonId,'c1')
- assert.equal((await db.capstoneLessonProgress.findUniqueOrThrow({where:{userId_lessonId:{userId:id,lessonId:'c1'}}})).status,'IN_PROGRESS')
+ // Same as Stage lessons: unticking a task after completion keeps the confirmed completion.
+ progress=(await student.get('/api/capstone/progress').expect(200)).body.data;assert.equal(progress.completed,9);assert.equal(progress.continueLessonId,null);assert.equal(progress.checks.c1[capstoneLessons[0].checkKeys[0]],false)
+ assert.equal((await db.capstoneLessonProgress.findUniqueOrThrow({where:{userId_lessonId:{userId:id,lessonId:'c1'}}})).status,'COMPLETED')
 })
 
 test('Capstone real HTTP login -> catalogue -> C1 -> progress -> Starter, revoke next request',async()=>{

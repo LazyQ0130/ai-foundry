@@ -36,12 +36,11 @@ export function LessonLayout({ sidebar, workbench, children, remainingTasks }: {
       trigger.current?.focus()
     }
   }, [drawer])
-  return <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-6 sm:px-6 min-[1360px]:pb-6">
-    <div className="mb-1 flex items-center justify-between gap-2 min-[1360px]:hidden">
+  return <div className="mx-auto w-full max-w-[1440px] px-5 pb-10 pt-3 sm:px-6 min-[1360px]:pb-6">
+    <div className="mb-3 flex items-center justify-between gap-2 min-[1360px]:hidden">
       <button ref={trigger} type="button" aria-expanded={drawer} aria-controls="lesson-directory" onClick={() => setDrawer(true)} className="btn btn-sm btn-outline"><ListChecks className="h-3.5 w-3.5" />课程目录</button>
-      <a href="#lesson-workbench" className="btn btn-sm btn-outline">学习任务与进度</a>
+      <a href="#lesson-workbench" className="btn btn-sm btn-outline">任务与进度{remainingTasks > 0 && <span className="text-xs text-slate-500"> · {remainingTasks} 待确认</span>}</a>
     </div>
-    <p className="mb-4 text-right text-[12px] text-slate-500 min-[1360px]:hidden">{remainingTasks ? `还有 ${remainingTasks} 项任务待确认` : '本课任务已全部确认'}</p>
     <div className="flex gap-6">
       <aside className="hidden w-[260px] shrink-0 min-[1360px]:block">
         <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">{sidebar(() => setDrawer(false), 'desktop')}</div>

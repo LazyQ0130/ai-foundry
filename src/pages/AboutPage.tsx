@@ -21,7 +21,7 @@ export default function AboutPage() {
         <span className="chip bg-white text-brand-700 ring-1 ring-brand-100">产品理念</span>
         <h1 className="mt-5 max-w-3xl text-[34px] font-bold leading-tight tracking-tight text-slate-900 sm:text-[48px]">带着 AI，<br />真正做出软件。</h1>
         <p className="mt-6 max-w-2xl text-[15px] leading-8 text-slate-600">AIFoundry 面向大学生、初级开发者，以及希望通过项目学习 AI 开发的人。我们把学习组织成一个个具体任务，让你从想法出发，经过实现与验证，留下一个可以运行的作品。</p>
-        <Link to="/path" className="btn btn-lg btn-primary mt-7">找到我的学习起点<ArrowRight className="h-4 w-4" /></Link>
+        <Link to="/courses" className="btn btn-lg btn-primary mt-7">找到我的学习起点<ArrowRight className="h-4 w-4" /></Link>
       </div>
     </section>
 
@@ -84,7 +84,7 @@ export default function AboutPage() {
     <section className="shell pb-12">
       <div className="flex flex-col justify-between gap-6 rounded-2xl border border-slate-200 p-6 sm:p-8 lg:flex-row lg:items-center">
         <div><h2 className="text-xl font-semibold text-slate-900">从一个能完成的任务开始。</h2><p className="mt-2 text-sm leading-6 text-slate-500">先找到适合的阶段，再把第一步做出来。</p></div>
-        <div className="flex flex-wrap gap-3"><Link to="/path" className="btn btn-lg btn-primary">查看学习路径<ArrowRight className="h-4 w-4" /></Link><Link to="/faq" className="btn btn-lg btn-outline">查看常见问题</Link></div>
+        <div className="flex flex-wrap gap-3"><Link to="/courses" className="btn btn-lg btn-primary">查看全部课程<ArrowRight className="h-4 w-4" /></Link><Link to="/faq" className="btn btn-lg btn-outline">查看常见问题</Link></div>
       </div>
     </section>
   </>

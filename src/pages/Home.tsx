@@ -1,5 +1,5 @@
 import { curriculumFormalLessonCount } from '../data/courses'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { usePlans } from '../data/pricing'
 import { Link } from 'react-router-dom'
 import {
@@ -19,8 +19,11 @@ import { HeroAppMockup } from '../components/mockups'
 import PurchaseModal from '../components/PurchaseModal'
 import { SectionHeading } from '../components/ui'
 import { accentClass, stages, type Stage } from '../data/courses'
-import { heroStats, homeFeatures } from '../data/site'
+import { heroStats } from '../data/site'
+import sampleLesson from '../data/previews/s1-l1.md?raw'
 import { CapstoneHomeTeaser } from '../components/CapstoneShowcase'
+
+const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
 
 /* ------------------------------- Hero ------------------------------- */
 
@@ -36,7 +39,7 @@ function Hero() {
       <div className="shell relative grid grid-cols-1 items-center gap-8 pb-10 pt-8 lg:grid-cols-[minmax(0,43%)_minmax(0,57%)] lg:pb-5 lg:pt-5">
         <div className="animate-fade-up">
           <span className="chip bg-white text-brand-600 ring-1 ring-brand-100">
-            面向开发者的 AI 原生学习平台
+            面向大学生和初级开发者的 AI 原生开发成长平台
           </span>
           <h1 className="mt-3 text-[34px] font-bold leading-[1.16] tracking-tight text-slate-900 sm:text-[44px]">
             带着 <span className="text-brand-600">AI</span> ，
@@ -49,9 +52,10 @@ function Hero() {
           <p className="mt-1.5 max-w-[420px] text-[13.5px] leading-6 text-slate-500">
             AIFoundry 帮助你通过真实项目，系统掌握 AI 时代的软件开发技能，把想法变成可以上线的产品。
           </p>
+          <p className="mt-2 text-[13px] leading-6 text-slate-600">无需编程基础，会下载、解压文件即可从第 0 课开始。后续阶段按学习路径逐步建立基础。</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/path" className="btn btn-lg btn-primary">
-              查看学习路径
+            <Link to="/courses" className="btn btn-lg btn-primary">
+              查看全部课程
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link to="/stage/stage-1" className="btn btn-lg btn-outline">
@@ -181,7 +185,7 @@ function StageArt({ stage }: { stage: Stage }) {
     )
   }
 
-  const tools = ['搜索工具', '代码执行', '数据库', '第三方服务']
+  const tools = ['搜索知识库', 'MCP 外部资料', '确认后写入', '暂停与恢复']
   return (
     <div className="rounded-md bg-white/75 p-2.5">
       <div className="flex items-center gap-1.5">
@@ -227,10 +231,10 @@ function PathSection() {
     <section className="shell pb-12">
       <SectionHeading
         title="系统化的学习路径"
-        sub="4 个学习阶段、4 个阶段作品；项目版另含 Project Lab 毕业项目实战。"
+        sub="4 个学习阶段、4 个阶段作品；项目版另含项目工坊（毕业项目实战）。"
         right={
-          <Link to="/path" className="link-more">
-            查看完整学习路径
+          <Link to="/courses" className="link-more">
+            查看全部课程
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         }
@@ -247,27 +251,29 @@ function PathSection() {
 
 /* ---------------------------- 为什么选择我们 ---------------------------- */
 
+const stageWorks = [
+  { slug: 'stage-1', title: '个人知识工作台', ability: '搜索、筛选资料，用 Git 保存自己的页面修改。' },
+  { slug: 'stage-2', title: '全栈知识工作台', ability: '登录后管理自己的资料，刷新后数据仍然保留。' },
+  { slug: 'stage-3', title: 'AI 知识工作台 · RAG', ability: '根据上传的资料回答问题，并回到引用来源核对。' },
+  { slug: 'stage-4', title: 'AI 研究 Agent', ability: '查看运行过程，在写入前确认，并恢复暂停的任务。' },
+]
+
 function WhySection() {
-  return (
-    <section id="why" className="shell scroll-mt-24 pb-12">
-      <SectionHeading
-        title="为什么选择 AIFoundry"
-        sub="我们专注于帮助开发者在 AI 时代，真正掌握可以落地的开发能力。"
-      />
-      <Link to="/about" className="link-more mt-4 inline-flex">了解我们的学习方法<ArrowRight className="h-3.5 w-3.5" /></Link>
-      <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {homeFeatures.map((f) => (
-          <div key={f.title} className="card p-5 transition hover:shadow-lift">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-              <Icon name={f.icon} className="h-4 w-4" />
-            </span>
-            <h3 className="mt-3.5 text-[14px] font-semibold text-slate-900">{f.title}</h3>
-            <p className="mt-1.5 text-[12.5px] leading-5 text-slate-500">{f.desc}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
+  return <section id="why" className="shell scroll-mt-24 pb-12">
+    <SectionHeading title="学完，你能做出这些作品" sub="同一个知识工作台，从第一个页面逐步升级为完整的 AI 产品。" />
+    <div className="mt-6 grid gap-5 sm:grid-cols-2">
+      {stageWorks.map((work, index) => <Link key={work.slug} to={`/stage/${work.slug}`} className="card group overflow-hidden transition hover:shadow-lift">
+        <div className="border-b border-slate-100 bg-gradient-to-br from-slate-100 to-blue-50/70 p-3 sm:p-4">
+          <img src={`/course-media/showcase/${work.slug}-generated.webp`} alt={`${work.title}界面效果示意：${work.ability}`} width={1200} height={800} loading="lazy" className="aspect-[3/2] w-full rounded-lg border border-slate-200/80 bg-white object-contain shadow-sm" />
+        </div>
+        <div className="p-5"><p className="text-[12px] text-slate-500">Stage {index + 1} · 界面效果示意</p><h3 className="mt-2 text-[16px] font-semibold text-slate-900">{work.title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{work.ability}</p><span className="link-more mt-3 inline-flex">查看阶段课程 <ArrowRight className="h-3.5 w-3.5" /></span></div>
+      </Link>)}
+    </div>
+    <div className="mt-10"><SectionHeading title="真实课程里，你会这样学" sub="节选自 Stage 1 第 1 课：先提出一个明确需求，再亲手核对页面变化。" />
+      <div className="lesson-article mx-auto mt-5 max-w-[740px]"><Suspense fallback={<p role="status">正在加载课程片段…</p>}><LessonMarkdown body={sampleLesson} /></Suspense></div>
+      <div className="mx-auto mt-5 max-w-[740px]"><Link to="/lesson/stage-1/s1-l1" className="btn btn-md btn-primary">阅读完整体验课 <ArrowRight className="h-4 w-4" /></Link></div>
+    </div>
+  </section>
 }
 
 /* ------------------------------ 学习方案 ------------------------------ */

@@ -21,13 +21,13 @@ test('Dashboard state distinguishes free, learning, completed and later availabl
   if (learning.kind === 'continue') assert.equal(learning.lesson.id, 's1-l2')
 
   const finished = withStatus(stage1, stage1.lessons.map(lesson => lesson.id))
-  const complete = dashboardState([finished], ['stage-1'], '/path')
+  const complete = dashboardState([finished], ['stage-1'], '/courses')
   assert.equal(complete.kind, 'completed')
   if (complete.kind === 'completed') assert.equal(complete.stage.slug, 'stage-1')
-  assert.equal(dashboardState([withStatus(stage1, stage1.lessons.filter(lesson => !lesson.isPrep).map(lesson => lesson.id))], ['stage-1'], '/path').kind, 'completed')
+  assert.equal(dashboardState([withStatus(stage1, stage1.lessons.filter(lesson => !lesson.isPrep).map(lesson => lesson.id))], ['stage-1'], '/courses').kind, 'completed')
 
   const later: Stage = { ...withStatus(stage2), lessons: stage2.lessons.map((lesson, index) => ({ ...lesson, isPublished: index === 0 })) }
-  const continueLater = dashboardState([finished, later], ['stage-1', 'stage-2'], '/path')
+  const continueLater = dashboardState([finished, later], ['stage-1', 'stage-2'], '/courses')
   assert.equal(continueLater.kind, 'continue')
   if (continueLater.kind === 'continue') assert.equal(continueLater.stage.slug, 'stage-2')
 })

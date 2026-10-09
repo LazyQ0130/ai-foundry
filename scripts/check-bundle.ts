@@ -17,6 +17,9 @@ if (!paths.some(name => name.endsWith('.js'))) throw new Error('Build frontend f
 if (paths.some(name => /(?:^|[\\/])course-content(?:[\\/]|$)/.test(name))) throw new Error('Course source directory is publicly exposed')
 if (paths.some(name => /\.zip$/i.test(name) || /(?:^|[\\/])starter(?:[\\/]|$)/.test(name))) throw new Error('Starter attachment must not be in dist/public')
 if (paths.some(name => /(?:^|[\\/])(?:\.env(?:\.[^\\/]*)?|\.runtime|\.git|node_modules)(?:[\\/]|$)/.test(name))) throw new Error('Private environment or generated server directory publicly exposed')
+// Only exact paragraphs from deliberately published excerpts may appear publicly.
+const publicExcerpts = await Promise.all(['c1', 's1-l1'].map(id => readFile(`src/data/previews/${id}.md`, 'utf8')))
+const isPublicExcerpt = (paragraph: string) => publicExcerpts.some(excerpt => excerpt.replace(/\r\n/g, '\n').includes(paragraph.replace(/\r\n/g, '\n')))
 const assets = await Promise.all(paths.filter(name => /\.(?:js|css|html|json|map|md|txt|mjs|ts|tsx|sql)$/i.test(name)).map(async name => ({ name, text: await readFile(name, 'utf8') })))
 // Internal authoring artifacts are never student downloads or frontend imports.
 const internalFiles = [
@@ -34,6 +37,7 @@ for (const name of internalFiles) {
   const markers = source.split(/\r?\n\s*\r?\n/).map(part => part.trim())
     .filter(part => part.length >= 140 && !/^(?:import |export |\{|\/\/|#)/.test(part))
   for (const marker of markers) {
+    if (isPublicExcerpt(marker)) continue
     const found = assets.find(asset => asset.text.includes(marker) || asset.text.includes(JSON.stringify(marker).slice(1, -1)))
     if (found) throw new Error(`Internal Capstone artifact in public output: ${name} (${found.name})`)
   }
@@ -54,6 +58,7 @@ if(names.length!==capstoneStarterFiles.length||names.some(name=>!capstoneStarter
 for(const lesson of capstoneLessons){
  const {body}=await readCapstoneContent(lesson.id)
  for(const part of body.split(/\r?\n\s*\r?\n/).map(p=>p.trim()).filter(p=>p.length>=80)){
+  if (isPublicExcerpt(part)) continue
   if(assets.some(a=>a.text.includes(part)||a.text.includes(JSON.stringify(part).slice(1,-1))))throw new Error('Protected Capstone Markdown in public output: '+lesson.id)
  }
 }
@@ -64,10 +69,11 @@ for (const stage of stages) for (const lesson of stage.lessons) {
   // Sample every substantive paragraph/code block, not just the document header.
   const markers = body.split(/\r?\n\s*\r?\n/).map(part => part.trim()).filter(part => part.length >= 40)
   for (const part of markers) {
+    if (isPublicExcerpt(part)) continue
     const marker = part.slice(0, 80)
     const found = assets.find(asset => asset.text.includes(marker) || asset.text.includes(JSON.stringify(marker).slice(1, -1)))
     if (found) throw new Error(`Protected course body in public output: ${lesson.id} (${found.name})`)
   }
   checked++
 }
-console.info(`PASS: ${paths.length} dist/public files contain no protected Markdown markers; ${checked} Stage content files + ${capstoneLessons.length} protected Capstone labs and ${internalChecked} internal Capstone artifacts checked.`)
+console.info(`PASS: ${paths.length} dist/public files contain only approved excerpts and no other protected Markdown markers; ${checked} Stage content files + ${capstoneLessons.length} protected Capstone labs and ${internalChecked} internal Capstone artifacts checked.`)

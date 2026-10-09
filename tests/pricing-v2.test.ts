@@ -10,9 +10,9 @@ test('pricing v2 defines four stages and two distinct bundles', () => {
   assert.equal(course.featured, undefined)
   assert.equal(project.featured, true)
   assert.equal(project.badge, '推荐')
-  assert.doesNotMatch(JSON.stringify(course), /Project Lab|Capstone|后续综合项目/)
-  assert.match(JSON.stringify(project), /Project Lab/)
-  assert.match(JSON.stringify(project), /Capstone/)
+  assert.doesNotMatch(JSON.stringify(course), /项目工坊|毕业项目|Project Lab|Capstone|后续综合项目/)
+  assert.match(JSON.stringify(project), /项目工坊/)
+  assert.match(JSON.stringify(project), /毕业项目/); assert.doesNotMatch(JSON.stringify(project), /Project Lab|Capstone/)
   assert.match(JSON.stringify(project), /后续新增综合项目/)
 })
 

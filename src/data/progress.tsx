@@ -68,7 +68,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const last = progress.lastLesson
   const value: ProgressContextValue = {
     stages, completedLessons, overallPercent: total ? Math.round(completedLessons/total*100) : 0,
-    lastLessonPath: !auth.user?.entitlements.length ? (progress.completedLessons.includes('s1-l0') ? progress.completedLessons.includes('s1-l1') ? '/stage/stage-1' : '/lesson/stage-1/s1-l1' : '/lesson/stage-1/s1-l0') : last ? '/lesson/'+last.stageSlug+'/'+last.lessonId : '/path',
+    lastLessonPath: !auth.user?.entitlements.length ? (progress.completedLessons.includes('s1-l0') ? progress.completedLessons.includes('s1-l1') ? '/stage/stage-1' : '/lesson/stage-1/s1-l1' : '/lesson/stage-1/s1-l0') : last ? '/lesson/'+last.stageSlug+'/'+last.lessonId : '/courses',
     loading: auth.loading || catalogue.loading || loading || loadedFor !== userId,
     error: auth.error || catalogue.error || error, mutationError, saving,
     refresh: async () => { await Promise.all([auth.refreshUser(), catalogue.refresh(), refresh()]) },
