@@ -1,8 +1,8 @@
 import { curriculumFormalLessonCount, stageLessonCount } from '../data/courses'
-import { useEffect, useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, LogOut, MessageCircle } from 'lucide-react'
-import { api, errorMessage, jsonBody } from '../lib/api'
+import { api, errorMessage } from '../lib/api'
 import { useAuth } from '../auth/AuthProvider'
 import { useCatalogue } from '../data/catalog'
 import { usePlans } from '../data/pricing'
@@ -12,6 +12,7 @@ import type { Plan } from '../data/site'
 import PurchaseModal from '../components/PurchaseModal'
 import ProfileSection from '../components/ProfileSection'
 import EmailSecurity from '../components/EmailSecurity'
+import PasswordSecurity from '../components/PasswordSecurity'
 
 const sourceLabel: Record<string, string> = {
   MANUAL_PURCHASE: '微信购买',
@@ -201,72 +202,13 @@ function LearningSection() {
 /* ----------------------------- 账号与安全 ------------------------------ */
 
 function SecuritySection({ onContact }: { onContact: () => void }) {
-  const { logout, refreshUser } = useAuth()
-  const navigate = useNavigate()
-  const [currentPassword, setCurrent] = useState('')
-  const [newPassword, setNew] = useState('')
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState('')
+  const { logout } = useAuth()
   const [logoutError, setLogoutError] = useState('')
-
-  const submit = async (e: FormEvent) => {
-    e.preventDefault()
-    setPending(true)
-    setError('')
-    try {
-      await api('/auth/password', { method: 'POST', body: jsonBody({ currentPassword, newPassword }) })
-      await refreshUser()
-      navigate('/login')
-    } catch (err) {
-      setError(errorMessage(err))
-    } finally {
-      setPending(false)
-    }
-  }
 
   return (
     <aside className="space-y-4">
       <EmailSecurity />
-      <section className="card p-5">
-        <h2 className="text-[15px] font-semibold text-slate-900">账号与安全</h2>
-        <p className="mt-1.5 text-[12px] leading-5 text-slate-500">修改密码后需要重新登录。</p>
-        <form onSubmit={submit} className="mt-4 space-y-3">
-          <label className="block text-[12.5px] text-slate-600">
-            当前密码
-            <input
-              className="mt-1.5 h-10 w-full rounded-lg border px-3 text-[13px]"
-              type="password"
-              autoComplete="current-password"
-              required
-              minLength={8}
-              maxLength={72}
-              value={currentPassword}
-              onChange={(e) => setCurrent(e.target.value)}
-            />
-          </label>
-          <label className="block text-[12.5px] text-slate-600">
-            新密码
-            <input
-              className="mt-1.5 h-10 w-full rounded-lg border px-3 text-[13px]"
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              maxLength={72}
-              value={newPassword}
-              onChange={(e) => setNew(e.target.value)}
-            />
-          </label>
-          {error && (
-            <p role="alert" className="text-[12.5px] text-red-600">
-              {error}
-            </p>
-          )}
-          <button disabled={pending} className="btn btn-md btn-primary w-full">
-            {pending ? '保存中…' : '修改密码'}
-          </button>
-        </form>
-      </section>
+      <PasswordSecurity />
 
       <section className="card p-5">
         <h2 className="text-[15px] font-semibold text-slate-900">其他</h2>

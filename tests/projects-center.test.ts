@@ -25,10 +25,18 @@ test('course page merges learning path and stage projects: four stages, project 
   assert.equal(stages[3].project.title, 'AI 研究 Agent')
 })
 
-test('top navigation has four entries and old learning-path / projects URLs redirect', () => {
+test('top navigation matches registered public routes and old URLs redirect', () => {
   const nav = layout.slice(layout.indexOf('function navLinksFor'), layout.indexOf('function Navbar'))
-  assert.equal((nav.match(/label: '/g) ?? []).length, 5) // 课程导读 / 我的学习 share the first slot
-  for (const label of ['我的学习', '课程导读', '课程', '项目工坊', '价格']) assert.ok(nav.includes(`label: '${label}'`))
+  // 课程导读 / 我的学习 are alternatives for the same first slot.
+  const labels = [...nav.matchAll(/label: '([^']+)'/g)].map(match => match[1])
+  const hasIntroduction = /path="course-introduction"/.test(app)
+  assert.deepEqual(labels, ['我的学习', '课程导读', ...(hasIntroduction ? ['课程介绍'] : []), '课程', '项目工坊', '价格'])
+  if (hasIntroduction) {
+    assert.match(nav, /to: '\/course-introduction', label: '课程介绍'/)
+    assert.match(app, /path="course-introduction" element=\{<CourseIntroduction \/>\}/)
+  } else {
+    assert.doesNotMatch(nav, /\/course-introduction|课程介绍/)
+  }
   assert.doesNotMatch(nav, /学习路径|label: '项目'/)
   assert.match(app, /path="path" element=\{<Navigate to="\/courses" replace \/>\}/)
   assert.match(app, /path="projects" element=\{<Navigate to="\/courses#projects" replace \/>\}/)
