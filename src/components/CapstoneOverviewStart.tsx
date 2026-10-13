@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { capstoneLessons } from '../data/capstoneLessons.js'
+import { capstoneLessons, capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
 import type { CapstoneSummary } from '../data/capstoneProgress.js'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { CourseResource } from './CourseResource.js'
@@ -32,7 +32,7 @@ export function CapstoneOverviewStart({ data, loading }: { data: CapstoneSummary
     <p className="text-[12px] font-semibold text-slate-500">课程包含</p>
     <dl className="mt-3 grid grid-cols-2 gap-3">
       <div className="rounded-lg bg-slate-50 p-3"><dt className="text-[11px] text-slate-500">课时</dt><dd className="mt-0.5 text-[15px] font-semibold text-slate-900">9 节课</dd></div>
-      <div className="rounded-lg bg-slate-50 p-3"><dt className="text-[11px] text-slate-500">预计时长</dt><dd className="mt-0.5 text-[15px] font-semibold text-slate-900">约 18～23 小时</dd></div>
+      <div className="rounded-lg bg-slate-50 p-3"><dt className="text-[11px] text-slate-500">预计时长</dt><dd className="mt-0.5 text-[15px] font-semibold text-slate-900">{capstoneEstimatedTotalTime}</dd></div>
     </dl>
     <p className="mt-5 text-[12px] font-semibold text-slate-500">最终交付</p>
     <ul className="mt-2 grid gap-1.5 text-[13px] text-slate-700">

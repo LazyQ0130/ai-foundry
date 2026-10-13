@@ -10,7 +10,7 @@ const base='course-content/internal/capstone',overlay=base+'/c8/overlay'
 const read=(file:string)=>readFile(overlay+'/'+file,'utf8')
 const lesson=parseLessonContent(await readFile(base+'/c8/lesson-draft.md','utf8'))
 assert.equal(lesson.meta.checkKeys.length,7);assert.equal(lesson.meta.checklist.length,7)
-assert.match(lesson.meta.estimatedTime,/150.*180/)
+assert.match(lesson.meta.estimatedTime, /360.*600/)
 const html=renderToStaticMarkup(createElement(LessonMarkdown,{body:lesson.body}))
 assert.equal((html.match(/复制提示词/g)??[]).length,7)
 assert.ok(html.includes('证明整个 AI 产品真的可靠'))

@@ -10,7 +10,7 @@ const base='course-content/internal/capstone',overlay=base+'/c9/overlay'
 const read=(file:string)=>readFile(overlay+'/'+file,'utf8')
 const lesson=parseLessonContent(await readFile(base+'/c9/lesson-draft.md','utf8'))
 assert.equal(lesson.meta.checkKeys.length,7);assert.equal(lesson.meta.checklist.length,7)
-assert.match(lesson.meta.estimatedTime,/180.*240/)
+assert.match(lesson.meta.estimatedTime, /360.*600/)
 const html=renderToStaticMarkup(createElement(LessonMarkdown,{body:lesson.body}))
 assert.equal((html.match(/复制提示词/g)??[]).length,7)
 assert.ok(html.includes('把毕业项目真正交付出去'))
@@ -19,7 +19,8 @@ for(const stage of [1,2,3,4])for(const file of await readdir('course-content/sta
  for(const key of parseLessonContent(await readFile(`course-content/stage-${stage}/${file}`,'utf8')).meta.checkKeys)used.add(key)
 for(const prior of ['c1','c2','c3','c4','c5','c6','c7','c8'])for(const key of parseLessonContent(await readFile(`${base}/${prior}/lesson-draft.md`,'utf8')).meta.checkKeys)used.add(key)
 for(const key of lesson.meta.checkKeys){assert.ok(!used.has(key));used.add(key)}
-for(const word of ['Production Ready','NOT VERIFIED','Secret','PROCESS_INTERRUPTED','Hard Gate','8/9','lexical_fidelity_flags=1','Internal Authoring'])assert.ok(lesson.body.includes(word),word)
+for(const word of ['Production Ready','NOT VERIFIED','Secret','PROCESS_INTERRUPTED','Hard Gate','8/9','lexical_fidelity_flags=1'])assert.ok(lesson.body.includes(word),word)
+assert.doesNotMatch(lesson.body,/Internal Authoring|Capstone 暂未解锁|capstone-v1 tag/)
 for(const file of ['Dockerfile','.dockerignore','next.config.ts','eslint.config.mjs','package.json','package-lock.json','.env.production.example',
  'app/api/health/route.ts','lib/server-log.ts','lib/research-service.ts','scripts/check-production-env.mjs','scripts/reconcile-stale-runs.mjs',
  'scripts/release-check.mjs','scripts/production-smoke.mjs','scripts/staging-smoke.mjs','scripts/delivery-smoke.mjs',

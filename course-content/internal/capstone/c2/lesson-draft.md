@@ -1,5 +1,5 @@
 ---
-estimatedTime: "90～120 分钟"
+estimatedTime: "180～300 分钟"
 difficulty: "高级综合实践"
 objective: "从 C1 产品需求推导架构，亲自决定技术与领域边界，复用已学工程能力完成登录、个人工作区与持久化研究任务的第一条 Vertical Slice，并验证服务端归属隔离。"
 checklist:
@@ -94,7 +94,7 @@ C. React + FastAPI
 :::check
 - ADR 写出每个方案的真实优势与代价。
 - 最终选择能回指至少三条 C1 约束。
-- 本课只安装第一条链路需要的组件；pgvector、对象存储、模型、Agent、MCP 尚未安装。
+- 本课只启用第一条链路需要的能力；数据库镜像已带 pgvector 扩展文件，C3 才用 migration 启用它。对象存储、模型、Agent、MCP 尚未接入。
 :::
 
 ### Break 1：Architecture Explosion → Fix
@@ -135,7 +135,24 @@ User
 
 ## 数据层与已学 Auth 的重组
 
-从自己的 C1 项目继续。只有没有可用 C1 项目时，课程作者才用内部干净 C1 Reference 验证；不要覆盖自己的 Product Brief。先让 AI 读现有文件，限制它只建数据层。
+从自己的 C1 项目继续，保留自己的 Product Brief。先准备数据库，再让 AI 读现有文件，限制它只建数据层。
+
+### 先把本地数据库跑起来
+
+Starter 已提供 `compose.yaml`、`infra/`、`scripts/init-local-env.mjs` 和 `docs/local-environment.md`。Windows 先按指南安装 Docker Desktop，启用 WSL 2 和 Linux containers；其他系统使用 Docker + Compose v2。已有 C1 项目只补入这些环境文件，不覆盖自己的代码或产品文档。
+
+在项目根目录运行：
+
+```powershell
+node scripts/init-local-env.mjs
+docker compose --env-file .env.local up -d --wait db eval-db
+docker compose --env-file .env.local exec -T db pg_isready -U capstone -d capstone
+docker compose --env-file .env.local exec -T db psql -U capstone -d capstone -c "SELECT name, default_version FROM pg_available_extensions WHERE name='vector';"
+```
+
+应看到数据库接受连接、vector 0.8.6 可用。开发库是本机 55439/capstone，测试库是独立服务 55440/capstone_c8_eval；本课只用 PostgreSQL 关系数据。随机凭据在被 Git 忽略的 `.env.local`，脚本再次运行不会覆盖。不要把它贴给 AI。
+
+Prisma 安装并写好 schema 后，用 `node --env-file=.env.local node_modules/prisma/build/index.js migrate dev --name init` 创建开发迁移；Next.js 会自动加载 `.env.local`，Prisma CLI 则需要显式加载。隔离测试窗口的变量设置、`migrate deploy`、端口冲突和 Docker 排错详见 starter 的本地环境指南。先证明连接成功，再实现数据层。
 
 :::prompt{title="Prompt 2：建立第一条链路的数据层"}
 
@@ -230,7 +247,7 @@ UI → Route → Validation → Auth → Workspace ownership → Prisma → Post
 
 ## 验收与保存
 
-从空测试库执行正式 migration；运行 lint、typecheck、tests、build 和 HTTP smoke。确认注册、自动 Workspace、创建 Task、刷新后仍在、Bob 看不到、匿名不能写、伪造归属不能写、跨来源写入被拒。检查 `git status`、`git diff`、`git diff --check` 和 migration SQL；确认 `.env`、真实 DATABASE_URL、Cookie secret、测试库配置与日志没有进入 Git。然后保存自己的 C2 版本，提交信息可用 `build first research workspace slice`。
+从空测试库执行正式 migration；运行 lint、typecheck、tests、build 和 HTTP smoke。确认注册、自动 Workspace、创建 Task、刷新后仍在、Bob 看不到、匿名不能写、伪造归属不能写、跨来源写入被拒。检查 `git status`、`git diff`、`git diff --check` 和 migration SQL；确认 `.env`、真实 DATABASE_URL、Session token、测试库配置与日志没有进入 Git。然后保存自己的 C2 版本，提交信息可用 `build first research workspace slice`。
 
 :::deepdive{title="为什么后续仍可能调整架构"}
 当出现真正的团队权限、独立扩缩容或长时后台任务需求时，重新评估边界与运行方式。今天的模块化单体让这些边界先在代码中清晰存在；不靠提前拆服务证明架构成熟。

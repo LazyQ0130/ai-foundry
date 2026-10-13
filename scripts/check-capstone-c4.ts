@@ -10,7 +10,7 @@ const overlay = path.join(c4, 'overlay')
 const lesson = parseLessonContent(await readFile(path.join(c4, 'lesson-draft.md'), 'utf8'))
 assert.equal(lesson.meta.checklist.length, 7)
 assert.equal(lesson.meta.checkKeys.length, 7)
-assert.match(lesson.meta.estimatedTime, /110.*140/)
+assert.match(lesson.meta.estimatedTime, /180.*300/)
 assert.ok((lesson.body.match(/^:::prompt\{title=/gm) ?? []).length >= 6)
 for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning', 'deepdive']) {
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'), `missing ${directive}`)

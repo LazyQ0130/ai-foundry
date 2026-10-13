@@ -1,3 +1,4 @@
+import { capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
 import { CapstoneOverviewStart } from '../components/CapstoneOverviewStart.js'
 import { useCapstone } from '../data/capstoneProgress.js'
 import { Link } from 'react-router-dom'
@@ -42,7 +43,7 @@ export default function CapstoneOverview() {
               <p className="mt-3 max-w-2xl text-[13px] leading-6 text-slate-500"><span className="font-semibold text-slate-700">适合谁：</span>完成 Stage 1～4，或具备等效的 AI Coding、全栈、RAG 与 Agent 基础。</p>
               {access ? <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <a href="#lessons" className="btn btn-lg btn-outline">查看九课路线 <ArrowDown className="h-4 w-4" /></a>
-                <span className="text-[13px] text-slate-500">9 节课 · 约 18～23 小时 · 交付可部署的 AI 产品</span>
+                <span className="text-[13px] text-slate-500">9 节课 · {capstoneEstimatedTotalTime} · 交付可部署的 AI 产品</span>
               </div> : <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/capstone/preview/c1" className="btn btn-lg btn-primary">免费试看 C1 <ArrowRight className="h-4 w-4" /></Link>
                 <Link to="/pricing" className="btn btn-lg btn-outline">查看项目版</Link>
@@ -103,7 +104,7 @@ export default function CapstoneOverview() {
       <section id="lessons" className="shell scroll-mt-20 py-9 sm:py-10">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading title="九课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
-          <span className="mb-1 text-[12px] font-medium text-slate-500">9 节课 · 约 18～23 小时</span>
+          <span className="mb-1 text-[12px] font-medium text-slate-500">9 节课 · {capstoneEstimatedTotalTime}</span>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {capstoneShowcase.lessons.map((lesson) => {

@@ -1,0 +1,54 @@
+name: aifoundry-capstone
+services:
+  db:
+    image: pgvector/pgvector:0.8.6-pg17
+    environment:
+      POSTGRES_USER: capstone
+      POSTGRES_PASSWORD: ${CAPSTONE_DB_PASSWORD:?Run node scripts/init-local-env.mjs first}
+      POSTGRES_DB: capstone
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U capstone -d capstone"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  eval-db:
+    image: pgvector/pgvector:0.8.6-pg17
+    profiles: [eval]
+    environment:
+      POSTGRES_USER: capstone
+      POSTGRES_PASSWORD: ${CAPSTONE_DB_PASSWORD:?Run node scripts/init-local-env.mjs first}
+      POSTGRES_DB: capstone_c8_eval
+    ports:
+      - "127.0.0.1:55440:5432"
+    volumes:
+      - eval-data:/var/lib/postgresql/data
+      - ./infra/eval-init.sql:/docker-entrypoint-initdb.d/10-real-eval.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U capstone -d capstone_c8_eval"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  garage:
+    image: dxflrs/garage:v2.4.1
+    profiles: [storage]
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET:?Run node scripts/init-local-env.mjs first}
+      GARAGE_DEFAULT_ACCESS_KEY: ${S3_ACCESS_KEY_ID:?Run node scripts/init-local-env.mjs first}
+      GARAGE_DEFAULT_SECRET_KEY: ${S3_SECRET_ACCESS_KEY:?Run node scripts/init-local-env.mjs first}
+      GARAGE_DEFAULT_BUCKET: capstone-private
+    ports:
+      - "127.0.0.1:3900:3900"
+    volumes:
+      - ./infra/garage.toml:/etc/garage.toml:ro
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
+volumes:
+  db-data:
+  eval-data:
+  garage-meta:
+  garage-data:

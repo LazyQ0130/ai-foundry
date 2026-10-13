@@ -1,5 +1,5 @@
 ---
-estimatedTime: "130～160 分钟"
+estimatedTime: "240～360 分钟"
 difficulty: "高级综合实践"
 objective: "在自己的 C5 研究产品中增加显式来源策略，通过固定且鉴权的 MCP 工具获得 Crossref 摘要证据，区分题录与可引用证据，保存混合来源快照，并验证隐私、降级与隔离边界。"
 checklist:
@@ -22,7 +22,7 @@ checkKeys:
 
 ## 私人资料回答不了的问题
 
-继续你自己的 C5 项目。保留 Product Brief、User Flow 和产品决定；内部作者验证才使用干净 C5 Reference。先运行一个私人资料不足的 Task，例如「Agent memory persistence 的公开研究有哪些补充线索」。查看 C5 的 ResearchBrief、search_knowledge 命中、停止原因和 Citation Snapshot。
+继续你自己的 C5 项目。保留 Product Brief、User Flow 和产品决定。先运行一个私人资料不足的 Task，例如「Agent memory persistence 的公开研究有哪些补充线索」。查看 C5 的 ResearchBrief、search_knowledge 命中、停止原因和 Citation Snapshot。
 
 私人检索没有找到证据，模型仍可能熟悉相关论文。此时让模型直接补写结论，会失去 C4 建立的追溯链。今天要增加一条可检查的外部证据路径：用户允许公开关键词离开系统，Agent 提议固定只读工具，服务端校验结果，报告引用当时保存的摘要摘录。
 
@@ -56,7 +56,7 @@ Evidence eligibility 决定一个来源是否具有可引用内容；citationKey
 给 AI 一条只有题名、DOI、年份的记录，让它检查「该研究证明长期记忆提高 Agent 的可靠性」是否得到支持。亲自写下拒绝理由，再给一段摘要，标出摘要实际支持的最窄陈述。不要根据论文标题推断结果。
 :::
 
-Canonical Reference 仅接 Crossref。其他来源的适配、网页抓取、全文解析需要独立决定。Crossref 的摘要可能受版权保护；应用只保留本次引用所需的有限摘录，不公开镜像完整摘要。
+本课只接 Crossref，适合有学术文献依据的问题；它不覆盖企业官网、产品价格、财报和即时新闻。行业或竞品研究先由你准备可引用 PDF/MD/TXT，走 C3 的私人资料链路。需要其他外部来源时，在毕业项目完成后单独设计 adapter、授权与证据规则；本课不承诺通用联网研究能力。Crossref 的摘要可能受版权保护；应用只保留本次引用所需的有限摘录，不公开镜像完整摘要。
 
 ## Source Policy 与查询隐私
 
@@ -67,12 +67,18 @@ PRIVATE_ONLY         → search_knowledge
 PRIVATE_AND_EXTERNAL → search_knowledge + search_external_references
 ```
 
-开启时页面明确告知：研究问题中的公开关键词会发送给 Crossref。私人 Chunk、Document、Report draft、用户 ID、Workspace ID 都不能出现在 MCP 参数中。本课进一步限制外部 query 固定为原始研究问题第一句的前 200 字符，服务端校验完全相等；模型不能从私人观察中带入新词。这个限制会牺牲翻译和自动扩词能力，是当前隐私取舍。用户仍须避免在研究问题本身填写私人信息。
+开启前页面展示**实际会发送的 query**，让用户确认后再发起 Run。本课 query 固定为原始研究问题第一句的前 200 字符，服务端校验完全相等；不会自动翻译或扩词。想用英文关键词时，先由你把可公开的英文问题写成新 Task 的第一句，再检查发送预览。
+
+私人 Chunk、Document、Report draft、用户 ID、Workspace ID 都不能进入 MCP 参数；模型也不能从私人观察中带入新词。这个固定边界牺牲了检索灵活性。第一句本身若含私人信息，截到 200 字符也不会让它自动变安全；此时保持 PRIVATE_ONLY。
+
+:::task{title="先判断这个问题是否适合外部摘要"}
+选一个不含私密信息的学术问题，核对发送预览，区分返回的题录数和可引用摘要数。再拿一个“竞品当前价格”问题比较：Crossref 无相关摘要时应说明来源覆盖不足，改用你已收集的私人资料；不要将 metadata-only 修成证据或把无结果改写成确定结论。
+:::
 
 :::prompt{title="Prompt 1：Source Policy 与 Citation Schema"}
 
 ```text
-先读自己的 C5 项目、Run/Citation schema、历史 migration 和 C1 产品文档。我决定每次 Run 默认 PRIVATE_ONLY，用户可显式选择 PRIVATE_AND_EXTERNAL。只新增 sourcePolicy 与严格 POST 输入 {sourcePolicy}，拒绝 userId/workspaceId/ownerId/maxSteps/maxTools/mcpUrl/externalHost/apiKey。旧 Run 保持私人策略。
+先读自己的 C5 项目、Run/Citation schema、历史 migration 和 C1 产品文档。我决定每次 Run 默认 PRIVATE_ONLY，用户可显式选择 PRIVATE_AND_EXTERNAL。只新增 sourcePolicy 与严格 POST 输入 {sourcePolicy}，页面开启外部来源前预览原研究问题第一句前200字符，并提示不会翻译/扩词及私人信息风险；拒绝 userId/workspaceId/ownerId/maxSteps/maxTools/mcpUrl/externalHost/apiKey。旧 Run 保持私人策略。
 扩展现有 ResearchCitation：可空 externalId/sourceUrl/publishedYear/sourceVersion/supportLevel。外部 Citation 的 documentId/chunkId/page/offset 必须为空，sourceType 支持 KNOWLEDGE/CROSSREF。更新现有数据库 CHECK，用正式 migration，不重写历史 migration，不建 ExternalCitation/ExternalDocument。
 先给我解释 migration diff、默认值和旧记录兼容；暂不接 MCP，不操作 Git。
 ```
@@ -138,11 +144,19 @@ MCP discovery 描述服务器提供什么，本地产品策略决定本次 Run �
 :::
 
 ## 工具、Evidence 与失败降级
-:::concept
-
-Planner 的 `plan_research_step` 只是结构化控制协议，不执行 DB/API。PRIVATE_ONLY 仅允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时才增加 search_external_references，发生 unavailable 后移除。外部 query 必须逐字等于服务端 approvedExternalQuery。Adapter 严格解析后，仍通过现有业务 Tool Registry、Workspace 与预算边界。Provider 每轮强制唯一指定 Function，parallel_tool_calls=false，不使用 Planner JSON mode 或自由文本 fallback。Planner 专用 Adapter 兼容 `stop` 或 `tool_calls` 携带恰好一个合法指定 Function；缺失、多次、`length`、过滤或未知 finish 一律拒绝。共享 Provider metadata 不改写，正文始终丢弃。
-
+:::concept{title="先分清决策协议和业务工具"}
+Planner 的 `plan_research_step` 只表达下一步决策，不执行 DB/API。真正的检索仍由服务端 Tool Registry 完成，接受 Workspace 和预算校验。决定怎样查与获准执行什么，是两道检查。
 :::
+
+逐项核对新增外部来源的边界：
+
+| 检查位置 | 规则 |
+|---|---|
+| 来源策略 | PRIVATE_ONLY 只允许 search_knowledge / ready；PRIVATE_AND_EXTERNAL 在外部可用时增加 search_external_references，unavailable 后移除 |
+| 外发 query | 必须逐字等于服务端 approvedExternalQuery；不能带入私人 Evidence 的新词 |
+| 模型协议 | 每轮强制唯一指定 Function，parallel_tool_calls=false；不使用 Planner JSON mode 或自由文本 fallback |
+| Planner Adapter | stop 或 tool_calls 都必须携带恰好一个合法指定 Function；缺失、多次、length、过滤或未知 finish 一律拒绝 |
+| 业务执行 | Adapter 解析后的决策仍经 Tool Registry、可信 Workspace 和预算校验；共享 Provider metadata 不改写，Planner 正文始终丢弃 |
 
 
 现在泛化 `ResearchEvidence = KnowledgeEvidence | ExternalEvidence`。私人 Evidence 保留原始 document/chunk/page/offset；外部 Evidence 带 DOI、sourceUrl、year、adapterVersion 和 CLAIM_EVIDENCE。metadata-only 可以用于解释检索结果数量，但不能进入报告证据集合。
@@ -171,7 +185,7 @@ Timeline记录External Research、Crossref、实际query、results/claimEvidence
 ```text
 泛化C4/C5 Report Provider与citationSnapshots以接受ResearchEvidence union，保持GroundedReport JSON结构、claim上限、未知citationKey拒绝和事务保存规则。metadata-only永远不能成为allowed evidence。模型只返回text/citationKeys，来源元数据由服务端提供。
 私人和外部Citation在同一run中统一position。外部存DOI/sourceUrl/year/sourceVersion/supportLevel和有限excerpt，私人locators为空；保留私人来源打开逻辑。报告页面和Run详情均显示“私人资料”或“Crossref · Abstract”，展示DOI、年份、历史摘录，说明未读全文；外部新窗口链接带noopener noreferrer。旧报告仍读当时snapshot，不重新fetch摘要。
-Task页面增加默认PRIVATE_ONLY选择与外发关键词提示；Run详情显示实际policy、query和外部失败降级。保留loading/empty/error/取消。完成mixed report、refresh snapshot、Alice/Bob/anonymous与strict POST HTTP测试。不操作Git。
+Task页面增加默认PRIVATE_ONLY选择，开启external前预览服务端规则导出的实际query，告知不翻译/扩词及不得含私人信息；Run详情显示实际policy、query和外部失败降级。保留loading/empty/error/取消。完成mixed report、refresh snapshot、Alice/Bob/anonymous与strict POST HTTP测试。不操作Git。
 ```
 
 :::
@@ -231,4 +245,4 @@ git diff --check
 解释 Search Result / Metadata / Evidence、默认关闭、固定 MCP 边界、混合 Citation 和失败降级。你亲自决定证据标准与隐私取舍，AI 可以生成 adapter、SDK glue、UI 和 tests；你必须检查 migration、query外发、allowed set与真实HTTP证据。确认.env、API Key、MCP secret、测试DB、日志未进入Git，再提交自己的版本，例如 `add controlled external research evidence`。
 :::
 
-在 `docs/architecture.md` 更新双工具和来源流，标明 `Write capability / Approval / KnowledgeNote = Not implemented yet`。本课保持 Internal Authoring；C7 再处理写能力与人工确认。
+在 `docs/architecture.md` 更新双工具和来源流，标明 `Write capability / Approval / KnowledgeNote = Not implemented yet`。C7 将接着实现写能力与人工确认；本课先验收只读外部证据链路。

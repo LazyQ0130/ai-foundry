@@ -10,7 +10,7 @@ const draft = await readFile(path.join(c2, 'lesson-draft.md'), 'utf8')
 const lesson = parseLessonContent(draft)
 assert.equal(lesson.meta.checklist.length, 6)
 assert.equal(lesson.meta.checkKeys.length, 6)
-assert.match(lesson.meta.estimatedTime, /90.*120/)
+assert.match(lesson.meta.estimatedTime, /180.*300/)
 assert.equal((lesson.body.match(/^:::prompt\{title=/gm) ?? []).length, 5)
 for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning', 'deepdive']) {
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'), `missing ${directive}`)

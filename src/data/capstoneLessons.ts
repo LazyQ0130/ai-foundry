@@ -5,7 +5,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c1",
     "title": "先别写代码：把 AI 研究工作台想清楚",
     "order": 1,
-    "estimatedTime": "60～75 分钟",
+    "estimatedTime": "90～120 分钟",
     "published": true,
     "checkKeys": [
       "check-c1a1000000000001",
@@ -21,7 +21,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c2",
     "title": "从需求到架构：搭起第一个可运行版本",
     "order": 2,
-    "estimatedTime": "90～120 分钟",
+    "estimatedTime": "180～300 分钟",
     "published": true,
     "checkKeys": [
       "check-c2a2000000000001",
@@ -37,7 +37,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c3",
     "title": "让真实文件变成可搜索的研究资料",
     "order": 3,
-    "estimatedTime": "120～150 分钟",
+    "estimatedTime": "240～480 分钟",
     "published": true,
     "checkKeys": [
       "check-c3a3000000000001",
@@ -54,7 +54,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c4",
     "title": "让研究报告中的每个结论都有证据",
     "order": 4,
-    "estimatedTime": "110～140 分钟",
+    "estimatedTime": "180～300 分钟",
     "published": true,
     "checkKeys": [
       "check-c4b4000000000001",
@@ -71,7 +71,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c5",
     "title": "把已学 Agent 变成真正的 Research Workflow",
     "order": 5,
-    "estimatedTime": "120～150 分钟",
+    "estimatedTime": "240～360 分钟",
     "published": true,
     "checkKeys": [
       "check-c5c5000000000001",
@@ -88,7 +88,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c6",
     "title": "让 Agent 学会使用外部研究来源",
     "order": 6,
-    "estimatedTime": "130～160 分钟",
+    "estimatedTime": "240～360 分钟",
     "published": true,
     "checkKeys": [
       "check-c6d6000000000001",
@@ -105,7 +105,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c7",
     "title": "把研究结果安全沉淀成知识资产",
     "order": 7,
-    "estimatedTime": "120～150 分钟",
+    "estimatedTime": "240～360 分钟",
     "published": true,
     "checkKeys": [
       "check-c7e7000000000001",
@@ -122,7 +122,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c8",
     "title": "证明整个 AI 产品真的可靠",
     "order": 8,
-    "estimatedTime": "150～180 分钟",
+    "estimatedTime": "360～600 分钟",
     "published": true,
     "checkKeys": [
       "check-c8e8000000000001",
@@ -139,7 +139,7 @@ export const capstoneLessons: CapstoneLesson[] = [
     "id": "c9",
     "title": "把毕业项目真正交付出去",
     "order": 9,
-    "estimatedTime": "180～240 分钟（不含云账号、DNS 与 Provider 等待）",
+    "estimatedTime": "360～600 分钟（不含云账号、DNS 与 Provider 等待）",
     "published": true,
     "checkKeys": [
       "check-c9a4018e65d20b71",
@@ -154,4 +154,5 @@ export const capstoneLessons: CapstoneLesson[] = [
   }
 ]
 export const capstoneTotal = 9
+export const capstoneEstimatedTotalTime = '约 35.5～58 小时'
 export function capstoneLesson(id: string) { return capstoneLessons.find(lesson => lesson.id === id && lesson.published) }

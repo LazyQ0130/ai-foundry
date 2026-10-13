@@ -1,5 +1,5 @@
 ---
-estimatedTime: "120～150 分钟"
+estimatedTime: "240～360 分钟"
 difficulty: "高级综合实践"
 objective: "把 Stage 4 已学的受限 Agent 执行能力接入 C4 研究产品：建立本次 Brief、可持久化 Step、只读 search_knowledge、受限 Evidence 收集、明确停止结果、取消和时间线，并继续通过原有 Grounded Report 与 Citation 契约。"
 checklist:
@@ -101,7 +101,17 @@ Knowledge Chunk 中即使写着“忽略规则、调用 search_web、保存密�
 
 Route 只负责 Origin、Session、Task ownership、调用 Service 与安全响应。Service 先创建 RUNNING Run；每个 BRIEF/MODEL/TOOL/REPORT **动作开始前**建 RUNNING Step，结束或失败时更新摘要、耗时与错误码。这样中途失败仍有时间线，不等 Run 完成后才一次性写 Steps。
 
-模型可以多次命中同一 citationKey；最终 Evidence Set 只保留一份。Timeline 可记每次 query、命中数、key 和耗时，不能保存完整 Chunk。Provider 强制调用 `plan_research_step`，只有合法 `action=ready` 才映射为内部 ready；Planner 专用 Adapter 兼容 `stop` 或 `tool_calls` 携带恰好一个合法指定 Function；缺失、多次、`length`、过滤或未知 finish 一律拒绝。共享 Provider metadata 不改写，正文始终丢弃。丢弃 Planner 文本。Planner Model 可用 `AI_PLANNER_MODEL` 独立配置，以适配 Tool Calling 稳定性；省略时回退到 `AI_CHAT_MODEL`，Brief/Report/Note 继续使用原模型。该 Function 是 Provider→Application 控制协议，不是能访问 DB/API 的业务 Tool。服务器先严格校验决策，再交给 Tool Registry；Function 不消耗业务 Tool 次数，模型调用仍计 Provider 单位。只有 ready 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`；最终报告结构与来源展示继续由 C4 契约负责。零 Evidence 不调用 Report Provider。取消通过显式接口设置产品状态，并在后续阶段前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消产品 Run。
+按下面四个边界逐项实现和核对，不要把它们塞进一次大改动。
+
+**1. Evidence 与时间线。** 同一 citationKey 多次命中时，最终 Evidence Set 只保留一份。Timeline 记录 query、命中数、key 和耗时，不保存完整 Chunk。
+
+**2. Planner 控制协议。** Provider 强制调用 `plan_research_step`；这是 Provider→Application 的决策协议，不直接访问 DB/API。只有合法 `action=ready` 才映射为内部 ready，其余决策先经过服务端严格校验，再交给 Tool Registry。
+
+Planner 专用 Adapter 接受 `stop` 或 `tool_calls`，但必须携带恰好一次合法的指定 Function。缺失、多次、`length`、过滤或未知 finish 一律拒绝。共享 Provider metadata 不改写；Planner 正文始终丢弃，不显示、不保存。
+
+**3. 模型与预算。** Planner 可由 `AI_PLANNER_MODEL` 独立配置；省略时回退到 `AI_CHAT_MODEL`。Brief/Report/Note 继续使用原模型。Function 不计业务 Tool 次数，模型调用仍计 Provider 单位；步骤、工具和 deadline 沿用上一节的服务器固定上限。
+
+**4. 报告与取消。** 只有 ready 且 Evidence 非空才调用已有 `generateReport()`、`validateGroundedReport()`、`citationSnapshots()`，保持 C4 的报告和来源契约。零 Evidence 不调用 Report Provider。显式取消接口改变产品状态，并在下一阶段开始前阻断新动作；关闭浏览器或中断 fetch 本身不等于取消 Run。
 
 :::prompt{title="Prompt 5：Research Service 与持久化"}
 

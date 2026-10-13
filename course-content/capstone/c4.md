@@ -1,5 +1,5 @@
 ---
-estimatedTime: "110～140 分钟"
+estimatedTime: "180～300 分钟"
 difficulty: "高级综合实践"
 objective: "将 C3 当前检索结果变成可验证的结构化研究报告：每条结论引用本次 Evidence，保存历史 Citation Snapshot，并在不足、伪造引用、来源变化和跨用户访问时保持诚实与隔离。"
 checklist:
@@ -148,7 +148,7 @@ Alice 有 Task/资料/报告；Bob 猜 Task ID 创建 Run、猜 Run ID 读取报
 
 :::
 
-运行 `npm run lint`、`npm run typecheck`、`npm test`、`npm run build`。用独立 `TEST_DATABASE_URL` 从空库 `prisma migrate deploy`，再执行 HTTP smoke；有可用的非敏感 Provider 配置时只做一次 opt-in 真实集成 smoke。查看 migration SQL、`git status`、`git diff`、`git diff --check`，确保 `.env`、数据库 URL、Cookie secret、日志不入库，再保存自己的 C4 版本。真实一次成功只证明集成可用，报告质量的系统评估属于 C8。
+运行 `npm run lint`、`npm run typecheck`、`npm test`、`npm run build`。用独立 `TEST_DATABASE_URL` 从空库 `prisma migrate deploy`，再执行 HTTP smoke；有可用的非敏感 Provider 配置时只做一次 opt-in 真实集成 smoke。查看 migration SQL、`git status`、`git diff`、`git diff --check`，确保 `.env`、数据库 URL、Session token、日志不入库，再保存自己的 C4 版本。真实一次成功只证明集成可用，报告质量的系统评估属于 C8。
 
 :::check{title="C4 的完成证据"}
 你能展示：Grounded 报告每条 Claim 都引用本次 Evidence；伪造 key 让 Run FAILED；无资料时明确不足；重索引/删除后历史 Snapshot 仍可读；Alice/Bob/匿名隔离。能解释这些证据来自代码、migration 和 HTTP/DB 检查的哪一处。

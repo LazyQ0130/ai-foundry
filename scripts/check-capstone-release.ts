@@ -5,6 +5,7 @@ import {renderToStaticMarkup} from 'react-dom/server'
 import {parseLessonContent} from '../server/services/lesson-parser.js'
 import {LessonMarkdown} from '../src/components/LessonMarkdown.js'
 import {allLessons} from '../src/data/courses.js'
+import {capstoneEstimatedTotalTime} from '../src/data/capstoneLessons.js'
 import {capstoneShowcase} from '../src/data/capstoneShowcase.js'
 const keys=new Set<string>();let prompts=0,checks=0,min=0,max=0
 for(let stage=1;stage<=4;stage++)for(const file of await readdir(`course-content/stage-${stage}`))if(file.endsWith('.md'))for(const key of parseLessonContent(await readFile(`course-content/stage-${stage}/${file}`,'utf8')).meta.checkKeys){assert.ok(!keys.has(key));keys.add(key)}
@@ -23,5 +24,6 @@ assert.equal(allLessons.length,29);assert.ok(['暂未解锁','已开放'].includ
 assert.equal(capstoneShowcase.lessons.length,9)
 assert.ok((await readFile('src/pages/CapstoneOverview.tsx','utf8')).includes('九课毕业路线'))
 assert.ok((await readFile('course-content/internal/capstone/c1/lesson-draft.md','utf8')).includes('已完成 Stage 1～4'))
-assert.equal(min,1080);assert.equal(max,1365)
+assert.equal(min,2130);assert.equal(max,3480)
+assert.equal(capstoneEstimatedTotalTime,`约 ${min/60}～${max/60} 小时`)
 console.log(`PASS: ${prompts} prompts, ${checks} Capstone checkKeys; ${min}–${max} minutes; Project Lab independent, Stage=29`)

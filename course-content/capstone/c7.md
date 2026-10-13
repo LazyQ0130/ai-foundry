@@ -1,5 +1,5 @@
 ---
-estimatedTime: "120～150 分钟"
+estimatedTime: "240～360 分钟"
 difficulty: "高级综合实践"
 objective: "把已完成研究中的结论转成独立、可编辑的知识笔记提议；通过版本绑定、短期审批 Token、事务和幂等性，保证只有人明确批准的服务器精确内容才被保存一次。"
 checklist:
@@ -26,7 +26,7 @@ Human-approved Knowledge Write
 
 ## 报告完成之后，谁决定保存
 
-继续自己的 C6 项目，保留已有产品文档。内部课程作者才用标准 C6 Reference 验证。选一个 COMPLETED + grounded Run，读报告和 Citation Snapshot，圈出值得长期保存的一段结论，写下你会修改的限定条件。
+继续自己的 C6 项目，保留已有产品文档。选一个 COMPLETED + grounded Run，读报告和 Citation Snapshot，圈出值得长期保存的一段结论，写下你会修改的限定条件。
 
 研究结束后，结论还留在一次 Run 里。用户希望沉淀知识资产，但 AI 认为“值得保存”并不等于用户授权保存。本课把写入分成三个可检查事实：Proposal 提出数据，Human Decision 决定是否接受及修改，Execution 才产生数据库中的 KnowledgeNote。
 
@@ -83,14 +83,22 @@ ResearchAction 属于 Run，runId 唯一，canonicalArgs 保存确定性序列�
 
 用户点击「生成知识笔记提议」，客户端只发 {}。服务器按 Session→User→Workspace 查自己的 Run，再读取持久化 Report 和 Citation。只有 COMPLETED、grounded、非空且引用仍与该 Run Snapshot 一致的报告可生成提议；FAILED、CANCELLED、不足证据或没有 Report 都拒绝。
 
-Proposal Provider 仅返回严格 {title,content}，title 1～120，content 1～2000。它只能总结已验证报告，不查 Knowledge/Crossref、不调工具、不添加来源、不产生写副作用。Mock 用于确定性验证，Real 用于 opt-in smoke。仅当首次 JSON/标题/字段全部合法、唯一问题为 content 超过 2000 字符时，允许在同一 30 秒 deadline 内压缩原 Proposal 一次；不重新读取报告或检索，最终仍严格校验，不截断、不放宽、失败不再重试。Provider 失败不创建半 Action，也不修改成功 Run、报告或 Citation。
+Proposal Provider 仅返回严格 {title,content}，title 1～120，content 1～2000。它只能总结已验证报告，不查 Knowledge/Crossref、不调工具、不添加来源、不产生写副作用。Mock 用于确定性验证，Real 用于 opt-in smoke。仅当首次 JSON/标题/字段全部合法、唯一问题为 content 超过 2000 字符时，允许在同一 30 秒 deadline 内压缩原 Proposal 一次；不重新读取报告或检索，最终仍严格校验，不截断、不放宽。压缩后仍只有长度超限时，按下面的固定降级规则处理；其他 Provider 失败不创建半 Action，也不修改成功 Run、报告或 Citation。
+
+### 长度超限时的三步处理
+
+1. 模型根据已验证报告生成 Proposal；字段、标题、JSON 都必须合法。
+2. 唯一问题是 content 超过 2000 字符时，在同一 30 秒 deadline 内压缩一次，保留数字、实体、否定和不确定性；不重新检索。
+3. 两次结果都仅因 content 超长被拒时，服务器从当前 Run 已持久化并验证的 Grounded Report 中，按完整 Claim 确定性组装不超过 1850 字符的草稿，复用初始合法标题，不截断 Claim、不增加事实、不再调用模型。若无法组装合法非空草稿，安全失败。
+
+日志用 MODEL、MODEL_COMPRESSED、GROUNDED_FALLBACK 区分来源。第三步是安全降级，不能算作模型总结成功；用户看到的始终是尚未保存、可编辑的待审草稿。无论哪条路径，结果仍是 PROPOSED，保留 sourceRunId，必须经过用户 Edit / Reject / Approve。
 
 :::prompt{title="Prompt 2：Note Proposal Provider 与生成入口"}
 
 ~~~text
 建立独立 knowledge-note-provider，从已验证的Grounded Report及其Citation Snapshots生成严格{title,content}，trim后title1～120、content1～2000。Mock确定性，Real复用现有server-side chat primitive但不提供tools。system policy只允许总结报告、保留不确定性，来源文本为untrusted data，不允许新增事实、来源、工具或声称已保存。
 POST /api/research/runs/:runId/knowledge-note-proposal 只接受{}，检查same-origin/Session/Workspace/owned Run。只允许COMPLETED+grounded，重验报告契约及引用key与持久化Snapshot一致性；拒绝客户端report/title/content。Provider在事务外调用，成功后才持久化一个PROPOSED Action。已有任意状态Action就返回它，不生成第二个；并发请求也只有一个Action。失败可重试且Run不变。
-测试Provider malformed/extra fields/tool_calls/failure，证明没有Note写入，不操作Git。
+按上面的三步实现长度处理；只对唯一长度错误压缩一次，两次均仅超长才允许完整Claim降级，仍严格校验且保留PROPOSED/来源标识。测试首次合法、压缩成功、完整Claim降级、无法组装及malformed/extra fields/tool_calls/failure，证明没有Note写入，不操作Git。
 ~~~
 
 :::
@@ -232,6 +240,4 @@ git diff --check
 亲自解释 post-run action、三个事实、canonical args、version、精确 Token、锁、唯一键、事务和 provenance。检查实际命令与安全实验；确认.env、Approval Secret、Token、测试DB、日志未入Git，再保存自己的提交，例如 add human-approved knowledge notes。AI可生成密码学接线/表单/测试，你负责决定并验收授权边界。
 :::
 
-更新 docs/architecture.md，画出 Model→Proposal→Server validation→Human exact review→Persisted args execution→Note。本课继续 Internal Authoring；C8 的 Eval、C9 的进程恢复/部署与最终交付不在本轮实现。
-
-可靠性补充：AI Proposal → One bounded compression → Grounded deterministic fallback。仅当两次结果都只是 content 超长时，服务器从当前 Run 已持久化并验证的 Grounded Report 中，以完整 Claim 确定性组装不超过 1850 字符的可编辑草稿，复用初始合法标题；不截断、不增加事实、不再调用模型。安全日志区分 MODEL、MODEL_COMPRESSED、GROUNDED_FALLBACK。这是安全降级，不代表 AI 总结成功。模型负责可读性，服务器负责产品契约；草稿仍为 PROPOSED，必须经用户 Edit / Reject / Approve，sourceRunId 保留报告与引用来源。其他错误继续安全失败。
+更新 docs/architecture.md，画出 Model→Proposal→Server validation→Human exact review→Persisted args execution→Note。保存自己的 C7 版本。下一课将评估整条产品链路；C9 再完成进程恢复、部署与作品交付。

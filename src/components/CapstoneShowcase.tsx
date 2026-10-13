@@ -1,3 +1,4 @@
+import { capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
 import { ArrowDown, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
@@ -12,7 +13,7 @@ export function CapstoneEntryCard({ data, loading = false, error = '', onRetry }
     <span className="chip bg-brand-50 text-brand-700">Stage 1～4 之后 · 毕业项目实战</span>
     <h3 className="mt-3 text-[22px] font-bold text-slate-900">项目工坊 · 毕业项目</h3>
     <p className="mt-2 text-[16px] font-semibold text-slate-700">AI 研究 Agent 毕业项目实战</p>
-    <p className="mt-2 text-[13px] text-slate-500">AI 研究工作台 · 9 节 · 约 18～23 小时</p>
+    <p className="mt-2 text-[13px] text-slate-500">AI 研究工作台 · 9 节 · {capstoneEstimatedTotalTime}</p>
     <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-600">把 Stage 1～4 的 AI Coding、全栈、RAG 和 Agent 能力，组合成一个完整的可部署 AI 产品。</p>
     <div className="mt-5 flex flex-wrap items-center gap-4">
       {loading ? <p role="status" className="text-sm text-slate-500">正在加载项目进度…</p> : error ? <p role="alert" className="text-sm text-red-600">{error}<button onClick={onRetry} className="btn btn-sm btn-outline ml-3">重试</button></p> : <><Link to={target} className="btn btn-md btn-primary">{label}<ArrowRight className="h-4 w-4" /></Link>{data?.access && <span className="text-sm text-slate-500">毕业项目进度 {completed} / {data.progress?.total ?? 9}</span>}</>}

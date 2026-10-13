@@ -1,5 +1,5 @@
 ---
-estimatedTime: "120～150 分钟"
+estimatedTime: "240～480 分钟"
 difficulty: "高级综合实践"
 objective: "让 PDF、Markdown 和 TXT 经私有上传、可观察的处理状态、确定性定位与切片、1024 维索引，成为仅当前 Workspace 可检索的 Evidence，并验证失败恢复和跨用户隔离。"
 checklist:
@@ -19,6 +19,8 @@ checkKeys:
   - "check-c3a3000000000006"
   - "check-c3a3000000000007"
 ---
+
+建议分三次完成：环境与私有上传约 1～2 小时；解析、切片与索引约 2～4 小时；检索、四组故障实验与复验约 1～2 小时。每段先留下可观察结果，失败时在本段排查。
 
 ## 一个 Task 还没有资料
 
@@ -90,7 +92,25 @@ Document 存元数据、服务端生成的 `objectKey`、原文件哈希、状�
 
 本项目让 PostgreSQL 保存关系、文本和向量，原始文件放私有对象存储。这是当前产品的取舍：文件生命周期独立，数据库备份不被大文件占满，下载权限可独立控制。本地文件系统开发时能用，但不能当作未来部署的可靠持久存储；PDF 二进制放数据库也不是绝对错误，只是当前不选。
 
-Reference 使用本地单节点 Garage（S3-compatible）。它是教学基础设施，**不是生产存储承诺**。先配置私有 Bucket 和本地浏览器来源 CORS；Secret 只在服务端。应用数据库保存 objectKey，不保存永久公开 URL。
+本地采用单节点 Garage（S3-compatible）。它是教学基础设施，**不是生产存储承诺**。C2 的数据库镜像已带 pgvector，C3 的正式 migration 要启用 vector 并创建 1024 维列；Windows 不需要自行编译 pgvector。
+
+### 先验收存储，再写上传代码
+
+按 starter 的 `docs/local-environment.md`，使用随包提供的固定配置，在项目根目录执行：
+
+```powershell
+docker compose --env-file .env.local up -d garage
+docker compose --env-file .env.local exec -T garage /garage status
+docker compose --env-file .env.local exec -T garage /garage bucket info capstone-private
+npm install --save-exact @aws-sdk/client-s3@3.1147.0 @aws-sdk/s3-request-presigner@3.1147.0
+node scripts/check-local-storage.mjs
+```
+
+应看到健康节点、私有 bucket，以及 CORS、signed GET、匿名访问拒绝和 PUT preflight 的 PASS。Garage 启动 flags 自动初始化布局和 bucket，检查脚本复用 C3 的固定版本 S3 SDK；安装和权限配置按课程文件执行，不让 AI 临时编写另一套安装方案。
+
+应用的 S3 endpoint 为 `http://127.0.0.1:3900`，region 为 garage，bucket 为 capstone-private，adapter 使用 path style。凭据来自 `.env.local`，只用于服务端。CORS 默认只允许本机 3000 端口；换应用端口时同步 `C3_APP_ORIGIN` 与 `infra/cors.json` 的 AllowedOrigins，再跑检查。完成上传页面后，仍须在浏览器真正上传 TXT，验证 OPTIONS/PUT 和最终 READY。
+
+应用数据库保存 objectKey，不保存永久公开 URL。
 
 ```text
 Browser → POST /api/knowledge/uploads → Session → Workspace
@@ -104,7 +124,7 @@ Browser → POST /api/knowledge/documents/:id/process
 :::prompt{title="Prompt 2：私有存储适配层"}
 
 ```text
-实现一个仅服务端可用的 S3-compatible storage adapter，集中处理 signed PUT、HEAD、GET 和短时 signed GET。配置 endpoint、region、private bucket、access key、secret、path style；Secret 不进入客户端。使用本地 Garage 作为教学测试环境，并提供 bucket/CORS/health 的最小设置说明。签名 PUT 最多 5～10 分钟，GET 最多 5 分钟。数据库只存 objectKey，不存永久 URL。不把 SDK 调用散在 Route，不改成 public uploads、本地持久文件或 BYTEA。列出权限验证方法，不操作 Git。
+实现一个仅服务端可用的 S3-compatible storage adapter，集中处理 signed PUT、HEAD、GET 和短时 signed GET。配置 endpoint、region、private bucket、access key、secret、path style；Secret 不进入客户端。沿用 starter 中已通过检查的 Garage、私有 bucket、CORS 和 S3 环境变量，不生成新的安装方案。签名 PUT 最多 5～10 分钟，GET 最多 5 分钟。数据库只存 objectKey，不存永久 URL。不把 SDK 调用散在 Route，不改成 public uploads、本地持久文件或 BYTEA。列出权限验证方法，不操作 Git。
 ```
 
 :::
@@ -152,7 +172,7 @@ Browser → POST /api/knowledge/documents/:id/process
 :::prompt{title="Prompt 5：Embedding 与原子索引"}
 
 ```text
-实现 focused embedding-provider：默认 deterministic mock、可选真实 text-embedding-v4，严格校验 1024 个有限数值和模型名，服务端超时/错误映射，顺序或很小的有界并发。处理流程先 Parse → Chunk → Embed 全部片段，最后短事务内替换该 Document 的 Chunk 并切到 READY；任一步失败切 FAILED，READY 检索不能看到半索引。加入第 N 个 Embedding 故意失败、Retry 后无重复 Chunk 的确定性测试。PROCESSING 使用有时限 lease；不要加 Queue、Redis、Agent 或 Report，不操作 Git。
+实现 focused embedding-provider：默认 deterministic mock、可选真实 text-embedding-v4，严格校验 1024 个有限数值和模型名，服务端超时/错误映射，顺序或很小的有界并发。处理流程先 Parse → Chunk → Embed 全部片段，再将已验证原始字节封存到新的仅服务端可写 sealed key；全部成功后，最后短事务内替换该 Document 的 Chunk、切换 objectKey 并标 READY；任一步失败切 FAILED，READY 检索不能看到半索引。加入第 N 个 Embedding 故意失败、Retry 后无重复 Chunk 的确定性测试。PROCESSING 使用有时限 lease；不要加 Queue、Redis、Agent 或 Report，不操作 Git。
 ```
 
 :::

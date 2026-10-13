@@ -1,13 +1,13 @@
 ---
-estimatedTime: "180～240 分钟（不含云账号、DNS 与 Provider 等待）"
+estimatedTime: "360～600 分钟（不含云账号、DNS 与 Provider 等待）"
 difficulty: "高级综合实践"
 objective: "把 C1～C8 的研究产品交付成可验证的运行版本，并用真实证据解释产品、架构与局限。"
 checklist:
   - "完成生产就绪审查，选择部署方案并区分已验证与未验证项"
   - "修复依赖阻断项，完成环境隔离与 Secret Inventory"
-  - "验证容器、正式 migration、私有存储、HTTPS 与 MCP"
+  - "验证容器、正式 migration 与私有存储，记录 HTTPS/MCP 的实际验证环境"
   - "验证 stale Run 恢复、幂等和人工审批边界"
-  - "通过 C8 release gate、Staging Full Smoke 与 Production Safe Smoke"
+  - "通过 C8 release gate，完成本地交付验收并如实记录 Staging/Production Smoke 状态"
   - "基于真实证据完成 README、架构图、三分钟 Demo 和简历材料"
   - "完成面试准备与复盘，保存版本并如实记录剩余风险"
 checkKeys:
@@ -28,7 +28,9 @@ Capstone C9 · Production Delivery & Portfolio
 
 这节课的第一个问题是：**换一台机器、换一个用户、遇到一次进程中断，产品还成立吗？** 你需要交付的不只是一个能录屏的页面，还包括别人能运行、你能排查、面试时能拿证据解释的版本。
 
-继续自己的 C8 项目，不覆盖 Product Brief，不重建 RAG/Agent。课程作者验证用 C8 Reference；C9 只增加交付所需的最小工程改动。
+继续自己的 C8 项目，不覆盖 Product Brief，不重建 RAG/Agent。C9 只增加交付所需的最小工程改动。
+
+本课可以先完成可部署作品的本地交付：容器、迁移、私有存储、恢复、完整 Eval 与演示材料都要有实际证据；Staging 和云端 Production 尚未运行的项目如实标记 NOT VERIFIED。完成本地交付不等于获得 Production Ready 结论。选择实际云部署时，再验收下面的 HTTPS、云存储与 Production Safe Smoke，不为了完成课程伪造云端结果。
 
 | 阶段 | 证明什么 | 不能自动证明什么 |
 |---|---|---|
@@ -165,7 +167,7 @@ Staging full smoke 与 Production safe smoke 分开。增加 release:check 复�
 
 先在隔离 Test/Eval shell 运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；生产 env check 在另一个安全进程进行。
 
-可靠性边界：Note Proposal 若唯一错误为超长，可压缩该 Proposal 一次，初次生成与压缩共享 30 秒 deadline；保留数字、实体、否定、不确定性及适用限制，最终仍执行严格长度校验。其他 Provider 错误安全失败，不产生半 Action 或伪报告。
+验收 C7 的 Proposal 三步长度处理：首次生成、同一 deadline 内的一次压缩、两次仅超长时的完整 Claim 草稿降级。区分三个来源标识，保留严格校验与人工审批；具体实现和失败条件回看 C7“长度超限时的三步处理”，不要在交付时另加一套规则。
 
 Staging Full Smoke：Register/Login → synthetic TXT/PDF → READY → private search → Task → private Run → external enabled Run → Grounded Report → Citation/source → Proposal → Human approval → replay → one Note。再检验 bucket anonymous denied、MCP HTTPS、recovery。C8 的破坏性实验只能在 Test/Eval，不能迁到 Production。
 
@@ -177,7 +179,7 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 - anonymous object GET denied，signed GET 可用；真实浏览器 CORS/upload 成立。
 - 生产 HTTPS，MCP HTTPS，没有 local HTTP flag。
 - replay 同一个 Note，不因 recovery 自动写入。
-- C8 25-case 全量 PASS，全部 Hard Gates 和 baseline 不回退。
+- C8 自己已固定并审核的完整矩阵全量 PASS，全部 Hard Gates 和 baseline 不回退；六例入门子集不能代替全量验收。作者参考矩阵为 25-case。
 :::
 
 :::prompt{title="4 · 只读 Release Verification"}
@@ -186,12 +188,12 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 区分 Local production-like、Staging、Production。不得把 localhost、mock storage、静态配置检查算成生产证据。
 逐项验证部署 SHA、private bucket匿名拒绝/签名访问、浏览器CORS、HTTPS/MCP、recovery、approval replay。
 把 Release Matrix 更新建议写出来，不修改文件；未知项明确 NOT VERIFIED。
-保留 C8 real默认词法8/9、optional Judge9/9、lexical_fidelity_flags=1及人工语义复核限制。
+区分自己的实际结果与作者参考记录（词法8/9、optional Judge9/9、lexical_fidelity_flags=1）；作者数字只用于对照，不能复制成我的结果。未运行real时明确NOT RUN，保留人工语义复核限制。
 发现阻断项就说明实际条件，不能用平均分覆盖安全 Hard Gate。不要自动调用付费 Provider，不操作 Git。
 ```
 :::
 
-实际 cloud 不可用时可以完成本地验证，记录 **LOCAL PRODUCTION-LIKE VERIFIED / CLOUD DEPLOYMENT NOT VERIFIED**。这一状态不能勾选“Production Safe Smoke 已通过”，也不能宣称 Production Ready。等真实目标可用再完成该项，无须伪造 URL。
+实际 cloud 不可用时可以完成本地验证，记录 **LOCAL PRODUCTION-LIKE VERIFIED / CLOUD DEPLOYMENT NOT VERIFIED**。这一状态下，验收记录中的 Production Safe Smoke 必须保持 NOT VERIFIED，也不能宣称 Production Ready。等真实目标可用再完成该项，无须伪造 URL。
 
 ## 用事实完成作品集首页
 
@@ -207,7 +209,7 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 结构包括 Demo、Why、What it does、Product Flow、Features、Trust & Safety、Architecture、Eval、Stack、Local Run、Deployment、Known Limitations。
 只写真实事实和真实测过的数字；没有HTTPS部署就明确未部署，不填写假URL。
 画系统图和Trust Boundary，不画无依据的新服务。保留同步执行/no worker/stale fail-closed/provider变化/小数据集/人工判断限制。
-C8 deterministic实际25/25与Hit@3 10/10只代表固定数据；real词法8/9、Judge9/9仍有lexical_fidelity_flags=1和人工语义复核。
+作者参考记录的C8 deterministic 25/25与Hit@3 10/10只代表其固定数据；real词法8/9、Judge9/9仍有lexical_fidelity_flags=1和人工语义复核。这些仅作对照；我的README必须只写我实际运行的矩阵、分数与未验证项。
 禁止虚构用户量、效率、准确率或生产可用性。报告改动供我审核，不操作Git。
 ```
 :::
@@ -248,7 +250,7 @@ Demo 用 synthetic data，提前准备已完成 Run。耗时等待可剪辑，�
 只读审核最终项目：Product/Security/Reliability/Quality/Production/Portfolio/Honesty。
 把每个README/简历数字映射到证据；检查部署SHA、剩余NOT VERIFIED、Secret、dependency High/Critical、C8 Hard Gates、recovery与人工审批边界。
 检查Demo不会暴露私人资料，材料没有虚构URL/准确率/用户数。
-不修改文件、不付费调用、不操作Git、不创建tag、不解锁课程。输出PASS/PASS WITH CHANGES/BLOCKED以及具体剩余动作。
+不修改文件、不付费调用、不操作Git。输出PASS/PASS WITH CHANGES/BLOCKED以及具体剩余动作。
 没有真实云验证就明确CLOUD DEPLOYMENT NOT VERIFIED，不能给Production Ready。
 ```
 :::
@@ -263,12 +265,6 @@ git diff --check
 
 确认 .env、DATABASE_URL、安全 Secret、test DB、logs、signed URLs 都未进入 Git。提交信息可用 `deliver research workspace production version`。固定 SHA；后续 Demo 必须追溯到实际部署 SHA。
 
-:::warning{title="课程发布仍有一道独立审查"}
-C9 仍为 Internal Authoring。Capstone 暂未解锁，正式 Stage 课程仍为29节。不改 entitlement、购买入口、统计，不创建 capstone-v1 tag。下一轮单独执行 Final Capstone Release Readiness Audit。
-:::
-
 毕业项目现在应当既能操作，也能解释：你为什么这样设计、如何证明边界、失败时怎样处理，以及哪些事情还没有被验证。
-
-可靠性补充：AI Proposal → One bounded compression → Grounded deterministic fallback。仅当两次结果都只是 content 超长时，服务器从当前 Run 已持久化并验证的 Grounded Report 中，以完整 Claim 确定性组装不超过 1850 字符的可编辑草稿，复用初始合法标题；不截断、不增加事实、不再调用模型。安全日志区分 MODEL、MODEL_COMPRESSED、GROUNDED_FALLBACK。这是安全降级，不代表 AI 总结成功。模型负责可读性，服务器负责产品契约；草稿仍为 PROPOSED，必须经用户 Edit / Reject / Approve，sourceRunId 保留报告与引用来源。其他错误继续安全失败。
 
 交付验证范围：本课程作者 Reference 已完成 local production-like Docker delivery verification，以及真实 Provider / Embedding / MCP / Crossref 的完整本地 Staging 链路。云部署、HTTPS、云存储浏览器 CORS、备份恢复与应用回滚由你按自己的云平台实操验收；作者 Reference 尚未通过 Render / R2 Production Verification。最终作品定位为 Deployable AI Product（可部署 AI 产品），不要把部署准备当作已经取得云端生产证据。

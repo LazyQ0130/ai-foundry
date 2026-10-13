@@ -826,3 +826,32 @@ Cloud Verification: **WAIVED AS RELEASE BLOCKER BY PRODUCT DECISION**. Historica
 Integration commit: 0830120f0471b5e8e4e593999f9608776bfedb9a (locked). Final publishing commit changes public presentation and this release metadata only. No price, payment, bulk entitlement, Stage count, release tag or cloud resource changes.
 
 Detailed matrix, changed-file list and local log hashes: [Publishing evidence](./capstone-publishing-evidence.json).
+
+
+## Content and Starter consistency re-audit — 2026-10-13
+
+This entry supersedes the current duration and Starter file-count claims in the 2026-10-08 publishing entry. Historical execution and cloud records above are preserved.
+
+| Gate | Current result |
+|---|---|
+| Lessons / status | 9 published lessons; showcase 已开放 |
+| Stage formal lessons | 29, unchanged |
+| Stable checklist keys / copyable prompts | 61 / 56 |
+| Catalogue / lesson / reviewed draft | Titles and order agree with showcase; durations and checkKeys agree; student/draft bytes match |
+| Total planned time | 2130–3480 minutes, approximately 35.5–58 hours; all public duration placements agree |
+| Public C1 | Exact excerpt of published C1; protected remainder and metadata stay out of preview |
+| Starter | 25 exact allowlisted source files; empty product templates plus local DB/pgvector/Garage setup; no completed author answers or credentials |
+| ZIP reproducibility | LF-normalized Capstone source reproduces the shipped ZIP after Git export, including CRLF checkout |
+| Full regression | 98/98 PASS on an isolated export of the staged publishing changes |
+| Typecheck / build / all content checks | PASS, including C1 and C2–C9, release, publishing and Starter checks |
+| Bundle protection | PASS: 191 public output files; approved excerpts only; 9 protected Capstone bodies and 194 internal artifacts checked |
+
+Reviewed fixes: remove author-release language and detached duplicated addenda; teach local installation; qualify Crossref coverage and fixed outbound query; split dense C5/C6 prose; introduce C8 starter cases before the full matrix; align Run/Action lifecycles, Session token terminology, sealed source indexing, failure-injection counts, Note reuse claims and C9 local/cloud acceptance. The profile-aware stop command now covers db, eval-db and garage.
+
+Local infrastructure was rerun against isolated Docker services: PostgreSQL 17 / pgvector 0.8.6 available; 1024-dimensional vectors valid; separate capstone_c8_eval and capstone_c8_real databases present; Garage 2.4.1 signed GET PASS, anonymous object GET denied, and configured-origin PUT preflight PASS. Actual C3 browser upload remains a separate application acceptance step; the infrastructure checker does not certify student application code.
+
+Cloud verification remains NOT VERIFIED and is not relabeled PASS. The course outcome is a Deployable AI Product; learners may complete evidenced local delivery while recording unverified Staging/Production items, and may claim Production Ready only after actual cloud acceptance. Author C8 scores are labelled reference examples rather than student results.
+
+The complete working directory contains unrelated in-progress navigation changes (its broader run was 97/98); those changes are excluded from this publishing commit. The isolated staged-source run passed 98/98, including real HTTP lesson metadata, durable 0/9–9/9 progress and Starter download/access checks.
+
+Capstone ZIP SHA256: 4BEFFD1168170B9A4F334A72F0D68F58CA53EF1C25104F2C8AE7DF8C25B4616E. Code/content candidate tree before this documentation-only addendum: 35ca4ed7f4266333d36740de69ed63a0d561f30b.

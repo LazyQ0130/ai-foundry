@@ -1,5 +1,5 @@
 ---
-estimatedTime: "150～180 分钟"
+estimatedTime: "360～600 分钟"
 difficulty: "高级综合实践"
 objective: "用人工审查的固定数据集、四层 Product Eval、独立 Hard Gates、故障注入和 baseline comparison，证明研究工作台的哪些行为可靠、哪些质量仍待验证。"
 checklist:
@@ -9,7 +9,7 @@ checklist:
   - "已建立跨 Workspace、未批准写入、重复笔记及无效引用 Hard Gates"
   - "已把 C3～C7 失败行为整理成可重复 Reliability Matrix"
   - "已用故障注入验证 FAIL / INCOMPLETE，并建立 reviewed baseline"
-  - "已分别运行 deterministic 和受控 real eval，检查报告、依赖与 Git 并保存 C8"
+  - "已完成 deterministic eval；real 已受控运行或明确标为未验证，检查报告、依赖与 Git 并保存 C8"
 checkKeys:
   - "check-c8e8000000000001"
   - "check-c8e8000000000002"
@@ -26,7 +26,7 @@ Product Eval & Regression
 
 ## 现在凭什么相信这个产品
 
-继续自己的 C7 项目。内部作者从干净 C7 Reference 组装验证；不要覆盖自己的 Product Brief。现在先停止加功能，选一份已经生成的研究报告，回看每条 Citation。
+继续自己的 C7 项目，保留自己的 Product Brief 和验收记录。现在先停止加功能，选一份已经生成的研究报告，回看每条 Citation。
 
 它引用的段落真的支持那句话吗？没有资料时系统会拒答吗？Bob 能看到 Alice 的 Evidence 或外部查询历史吗？Crossref 挂掉会不会被当成研究完成的证据？连点八次批准会产生几条笔记？把自己的答案和证据位置写下来。
 
@@ -37,6 +37,34 @@ Product Eval & Regression
 :::concept{title="Test 与 Eval 回答不同的问题"}
 Test 验证代码逻辑按预期运行；Product Eval 检查检索、证据、生成、授权和失败处理组合后的产品行为是否达到事先定义的标准。已有 Unit/HTTP/DB Tests 继续保留，Eval 在它们之上组织固定产品矩阵。代码能运行，结论仍可能不受证据支持。
 :::
+
+## 先用一个小样例学会评估
+
+建议分三次完成：人工 Gold 与入门样例约 1～2 小时；四层矩阵、指标和 Hard Gates 约 3～5 小时；失败注入、baseline 与复验约 2～3 小时。第一次不必同时理解全部指标，先把“资料→预期→观察→判断”跑通。
+
+先手工新建 `eval/review-notes.md`，写两份无敏感信息的 TXT，每份 2～3 句：
+
+- A：“实验中的 Model A 重试上限为 3 次。与基线相比，没有观察到可靠性改善。”
+- B：“context window 仅保留当前请求内的上下文。本资料未测试跨进程持久记忆。”
+
+为 A 标出“3 次”和“没有改善”的原文位置。下面就是你先人工审核的 Gold；Gold 只是事先写好的预期答案与证据，不是另一种数据库。
+
+| 入门 case | 输入/操作 | 事先写下的预期 | 观察位置 |
+|---|---|---|---|
+| S1 | 查询 Model A 的重试上限 | 找到 A，保留数字 3 | Top 3 片段与 locator |
+| S2 | 报告称“Model A 提高了可靠性” | 即使引用 A 的 key 合法，也应判 unsupported | Claim 与 A 的否定句 |
+| S3 | 问 Model B 的实验结果 | 没有资料支持，不能编造答案 | 拒答状态与报告内容 |
+| S4 | Proposal 尚未批准 | Note 增量为 0 | 受保护接口与数据库计数 |
+| S5 | Bob 请求 Alice 的资料 | 无内容泄漏 | Bob 的 HTTP 响应 |
+| S6 | 同一 Action 批准两次 | 只产生一条 Note | 数据库唯一键与计数 |
+
+先用页面/已有测试完成这些观察，把 expected、observed、PASS/FAIL/INCOMPLETE 写在 review-notes 中。缺资料或数据库不可用写 INCOMPLETE；观察与预期不同写 FAIL。若 S1 命中 A，则该例 Hit@3=1；没有命中则为 0。先理解这个例子，再扩到十个检索问题。
+
+:::task{title="入门检查点：你能解释一次失败吗"}
+亲自将 S2 的“提高了可靠性”与原文“没有改善”对照，说明为什么 citation key 正确仍不够。再核对 S4 的 Note 计数。能解释这两项后，才用下面的 Prompt 把观察自动化；不要先让 AI 给全套指标打分。
+:::
+
+这六例是学习检查点，不是毕业验收全集。后面补齐外部题录、取消、预算、索引失败、篡改和并发等矩阵；C9 仍要求完整 deterministic suite、全部安全门槛和基线回归通过。真实模型评估在确定性通过后可选执行，没有 Key 就写 REAL EVAL NOT RUN，不把它勾成通过。
 
 ## 定义四层与观察契约
 
@@ -52,7 +80,7 @@ Test 验证代码逻辑按预期运行；Product Eval 检查检索、证据、�
 :::prompt{title="Prompt 1：Eval Contract"}
 
 ~~~text
-先读我的C7产品和已有测试，不增加产品功能。根据我写的可靠性承诺建立Product Eval契约：functional/quality/safety/reliability；固定case id、mode、subcases；safe assertion、observed metrics、PASS/FAIL/INCOMPLETE；JSON与Markdown report。
+先读我的C7产品、eval/review-notes.md中的六例人工Gold和已有测试，不增加产品功能。先将六例映射到下面四层，逐项解释expected与observed；确认入门观察可复现后，再设计完整矩阵。根据我写的可靠性承诺建立Product Eval契约：functional/quality/safety/reliability；固定case id、mode、subcases；safe assertion、observed metrics、PASS/FAIL/INCOMPLETE；JSON与Markdown report。
 Hard Gates与case pass rate独立；DB断开、fixture缺失、执行抛错不能按零泄漏算PASS。partial运行不得宣称全量通过。默认mock/deterministic，不依赖AI Key、不调用付费模型。
 只输出设计和文件计划，等我检查后再逐步实现，不操作Git。
 ~~~
@@ -66,7 +94,7 @@ Reference 用六份非敏感合成资料：persistent memory、短期上下文�
 例如 persistent memory 可跨运行并在进程重启后保留；context window 不可跨进程保留。不能引用后者得出前者的结论。Model A 被测试、Model B 未测试；“没有改善”不能变成“改善”；3 不能变成 30。
 
 :::task{title="人工审查 Gold，而不是让 AI 自评自洽"}
-逐条打开 eval/fixtures/gold.mjs。标出 relevantCitationKeys、允许的 paraphrase、forbidden claim；说明每条答案被哪个句子支持。换成自己产品的资料时也必须做这一步。AI 可以提出初稿，不能独自出题、定真相、评分后宣布可靠。
+按下面 Prompt 把已人工核对的预期写成 fixtures，再逐条打开 eval/fixtures/gold.mjs。标出 relevantCitationKeys、允许的 paraphrase、forbidden claim；说明每条答案被哪个句子支持。换成自己产品的资料时也必须做这一步。AI 可以提出初稿，不能独自出题、定真相、评分后宣布可靠。
 :::
 
 :::prompt{title="Prompt 2：Fixed Gold Dataset"}
@@ -140,7 +168,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 ~~~text
 实现固定矩阵Runner，整合Reliability表与已有产品primitive。每例捕获execution error→INCOMPLETE；setup/import/DB/fixture/report失败也写安全INCOMPLETE报告并非零退出。总状态独立计算Hard Gates、Quality Threshold和case pass rate。
 输出.runtime/capstone-eval下JSON与Markdown，含版本、四类结果、计数、Hit@3/abstention/fidelity、model/embedding/tool/external calls、latency及小样本限制。不保存Cookie/approvalToken/APIKey/Secret/Prompt/raw document/chunk/response/vector。
-阈值先看真实Reference baseline再review；不通过时先判product bug/eval bug/dataset bug，不降低阈值求PASS。禁止新migration、新Eval UI后台、Worker或Queue。
+阈值由我依据人工Gold和实际观察先确定并review，不直接复制作者分数；不通过时先判product bug/eval bug/dataset bug，不降低阈值求PASS。禁止新migration、新Eval UI后台、Worker或Queue。
 ~~~
 
 :::
@@ -162,8 +190,8 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 
 ## 让 Eval 自己变红
 
-:::task{title="四种故障必须亲自跑"}
-运行下面命令，记录每次 exit code 与 report.overall。前三类应 FAIL；execution-error 应 INCOMPLETE。检查数据库没有因此产生恶意副作用。恢复正常参数再全量运行，结果应回到正常基线。
+:::task{title="五种故障必须亲自跑"}
+运行下面命令，记录每次 exit code 与 report.overall。前四类应 FAIL；execution-error 应 INCOMPLETE。检查数据库没有因此产生恶意副作用。恢复正常参数再全量运行，结果应回到正常基线。
 :::
 
 ~~~bash
@@ -209,8 +237,8 @@ npx prisma migrate deploy
 npx prisma migrate status
 npm run eval:capstone
 npm run eval:capstone -- --compare-baseline eval/baseline.json
-# 单独配置真实Provider并明确opt-in后
-npm run eval:capstone:real
+# 可选：单独配置真实Provider并明确opt-in后；没有Key则记录REAL EVAL NOT RUN
+# npm run eval:capstone:real
 npm audit --omit=dev
 git status
 git diff
@@ -218,5 +246,5 @@ git diff --check
 ~~~
 
 :::check{title="保存 C8 的证据"}
-解释四层、Gold、人审、Hard Gate、Quality Threshold、FAIL/INCOMPLETE与baseline。核对真实结果而非示例数字；检查 .env、Token、Secret、数据库URL、运行报告/日志不入Git，保存自己的C8提交。更新architecture的Eval章节，继续保持Internal Authoring。C9的production deployment、crash recovery、final README、Demo video和Capstone发布不在本轮实现。
+解释四层、Gold、人审、Hard Gate、Quality Threshold、FAIL/INCOMPLETE与baseline。核对真实结果而非示例数字；检查 .env、Token、Secret、数据库URL、运行报告/日志不入Git，保存自己的C8提交。更新 architecture 的 Eval 章节，记录完整矩阵的真实结果和 real eval 是否运行。C9 将接着完成部署、进程恢复、最终 README 与 Demo；本课先验收评估与回归。
 :::
