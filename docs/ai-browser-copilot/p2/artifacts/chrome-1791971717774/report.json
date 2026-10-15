@@ -1,0 +1,121 @@
+{
+  "time": "2026-10-14T09:55:17.776Z",
+  "scope": "Actual Chrome headless extension document + controlled localhost host-permission fixture. Native toolbar/activeTab grant NOT exercised.",
+  "native": "BLOCKED",
+  "results": [
+    {
+      "name": "Clean-ZIP installed Starter: P1 React remains functional, P2 exercise deliberately disabled",
+      "status": "PASS"
+    },
+    {
+      "name": "Product P1 React regression, exact minimal manifest and real ungranted injection rejection",
+      "status": "PASS",
+      "denied": {
+        "rejected": "Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host.",
+        "tabId": 1428720633,
+        "targetUrl": "http://127.0.0.1:65412/article-a"
+      }
+    },
+    {
+      "name": "Real runtime message → worker → isolated frame0 extraction → response, strict sender policy",
+      "status": "PASS",
+      "context": {
+        "windowId": 1428720628,
+        "tabId": 1428720633,
+        "url": "http://127.0.0.1:65412/article-a"
+      },
+      "documentId": "3E263F6276626AF1D79D9567D88A4846"
+    },
+    {
+      "name": "Actual Side Panel React render, source isolation, same-URL refresh and reread",
+      "status": "PASS",
+      "refreshOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "4a152d31-f8da-4bb7-b820-ccceb52f5925",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "快照代次已失效，请重新读取。"
+        }
+      },
+      "tabOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "921c4db8-a18e-4c9a-ad96-878e23eb6643",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "页面已变化，请重新读取。"
+        }
+      },
+      "viewport390NoOverflow": true
+    },
+    {
+      "name": "Actual worker termination/restart with anonymous storage.session; refresh while worker stopped",
+      "status": "PASS",
+      "beforeTarget": "D7E69B3DCC43D6A73415BC791D18EDB4",
+      "afterTarget": "D7E69B3DCC43D6A73415BC791D18EDB4",
+      "beforeInstance": "2238d30d-019d-43d7-85e3-7fd72d975d49",
+      "afterInstance": {
+        "previousMarker": null,
+        "instance": "986dd54e-17ed-4d43-b51f-037b81eba884"
+      },
+      "unchangedDocument": {
+        "v": 1,
+        "ok": true,
+        "requestId": "e5c3f7e8-915e-4c5d-8fca-0530b3c28037",
+        "data": {
+          "current": true
+        }
+      },
+      "refreshedDocument": {
+        "v": 1,
+        "ok": false,
+        "requestId": "57d09ac4-e636-4791-98c4-03fe04072300",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "快照代次已失效，请重新读取。"
+        }
+      },
+      "session": {
+        "context:v1:1428720633": "3ea7eda6-1e41-47b1-a8be-efda42724bc9",
+        "context:v1:1428720635": "0256948f-6252-4710-a874-dcc4171674d2"
+      }
+    },
+    {
+      "name": "Actual production CSP refuses local API fetch; no P3 transport added",
+      "status": "PASS",
+      "csp": "CSP_BLOCKED"
+    },
+    {
+      "name": "Actual DOM structure, privacy, Unicode bounds, scan limit, empty and non-HTML",
+      "status": "PASS",
+      "fixtures": [
+        "/article-a",
+        "/privacy",
+        "/long",
+        "/scan",
+        "/inline",
+        "/empty",
+        "/not-html"
+      ]
+    },
+    {
+      "name": "Actual Lesson Renderer V2 private preview: 5 prompts, clipboard, foldout, 10 checklist tasks, completion and 1440/390 layout",
+      "status": "PASS",
+      "platformPersistence": "not exercised; preview state only in memory"
+    }
+  ],
+  "browser": "155.0.8059.41",
+  "testedProductFiles": {
+    "manifest.json": "ee94d343fe850b949f1ef6f0442a0681f668bd50052b0a855be180ac7431f455",
+    "sidepanel.html": "10ebfc3b8849caab17f68de3f1326d5d112006fad3442c27e25bcd2796c97636",
+    "background.js": "c697adcceb17f361cca8dad033fb73e243ce019c1f9a584cc69ce4cd321c662a",
+    "chunks/sidepanel-BZDS-3Dq.js": "13bf337bf882cbf45fa31dce135583122f25179df5f797a84d15cf0ba3dbae94",
+    "assets/sidepanel-aLKCj8Pl.css": "61370122fd7c94b5101c960946835d05feb60dfc180dbe361058f74af25a4005"
+  },
+  "extensionIds": {
+    "product": "bghghhokelaaofldkfmiejaonobhmpce",
+    "controlled": "nfcmihmpebhhfmcklngcjepfdijoggca"
+  },
+  "status": "PASS within declared scope"
+}

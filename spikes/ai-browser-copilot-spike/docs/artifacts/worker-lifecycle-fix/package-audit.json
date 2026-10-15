@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "sha256": "c42d91517699e4d4335c3c8bc8330e227a987d48ee7551026c45d9b8b18f6bab",
+  "bytes": 104275,
+  "files": [
+    "assets/sidepanel-OdvY4qma.css",
+    "background.js",
+    "chunks/sidepanel-B1Shp76y.js",
+    "manifest.json",
+    "sidepanel.html"
+  ],
+  "manifest": {
+    "manifest_version": 3,
+    "name": "AI 网页阅读与知识整理助手 · Phase 0",
+    "version": "0.0.2",
+    "minimum_chrome_version": "116",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "sidePanel",
+      "contextMenus",
+      "storage"
+    ],
+    "action": {
+      "default_title": "打开阅读验证侧栏"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:8787"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "side_panel": {
+      "default_path": "sidepanel.html"
+    }
+  },
+  "heuristic_secret_scan_flags": [],
+  "limitation": "Static package audit only; browser permission behavior and model security require separate runtime evidence."
+}

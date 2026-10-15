@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-10-14T04:49:06.791Z",
+  "browser": "155.0.8059.41",
+  "profile": "C:\\Users\\QYF\\Desktop\\AIFoundry\\spikes\\ai-browser-copilot-spike\\.runtime\\network-1791953345576",
+  "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+  "manifestHostPermissions": [],
+  "status": "PASS",
+  "scope": "Actual extension service-worker/document fetch and ungranted injection rejection; NOT native Side Panel, positive activeTab, toolbar, selection or SP-08 full acceptance.",
+  "records": [
+    {
+      "case": "production-no-host-permissions-worker",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "9c8f8877-6a76-470d-9cac-a410f33276a6",
+          "snapshotId": "3bb07682-a671-4672-b42c-fa063cd370b2",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "OPTIONS",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": "POST",
+          "requestedHeaders": "content-type"
+        },
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ]
+    },
+    {
+      "case": "production-no-host-permissions-extension-document",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "92d5ca89-a07f-4723-97ee-22dbf278587a",
+          "snapshotId": "2894ad89-4549-451b-b8b8-f43b2b70c7f3",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ],
+      "limitation": "Standalone extension tab, not a native Side Panel; no UI button was clicked."
+    },
+    {
+      "case": "real-Chrome-no-activeTab-grant",
+      "injection": {
+        "denied": true,
+        "error": "ReferenceError: __name is not defined"
+      },
+      "limitation": "Negative permission test only; no grant was synthesized."
+    },
+    {
+      "case": "explicit-port-manifest-parser",
+      "accepted": true,
+      "id": "bkjkegnojeoijnahboaeagnefhnjlpcp"
+    }
+  ]
+}

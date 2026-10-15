@@ -8,6 +8,9 @@ import { courseAssets, isCourseAssetId, type CourseAssetId } from '../../src/dat
 
 // Fixed server-only allowlist: never resolve any request parameter as a file path.
 const files: Record<CourseAssetId, { path: string; policy: AssetAccess }> = {
+  'stage2-tools': { path: path.resolve('course-tools/aifoundry-stage2-tools.zip'), policy: { access: 'stage-entitlement', stage: 'stage-2' } },
+  'stage3-tools': { path: path.resolve('course-tools/aifoundry-stage3-tools.zip'), policy: { access: 'stage-entitlement', stage: 'stage-3' } },
+  'stage4-tools': { path: path.resolve('course-tools/aifoundry-stage4-tools.zip'), policy: { access: 'stage-entitlement', stage: 'stage-4' } },
   'capstone-starter': {path:path.resolve('starter/aifoundry-capstone-starter.zip'),policy:{access:'project-lab'}},
   'stage1-starter': { path: path.resolve('starter/aifoundry-stage1-starter.zip'), policy: { access: 'authenticated-preview' } },
   'stage3-starter': { path: path.resolve('starter/aifoundry-stage3-starter.zip'), policy: { access: 'stage-entitlement', stage: 'stage-3' } },

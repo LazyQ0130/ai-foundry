@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-10-14T14:04:49+08:00",
+  "acceptance_id": "SP-04",
+  "status": "PASS",
+  "evidence_type": "用户真实Chrome人工操作的文字确认",
+  "raw_confirmation": "1拒绝、2成功、3拒绝、4成功。请更新验收记录，继续带我做下一项测试。",
+  "guided_extension_version": "0.0.2",
+  "items": [
+    {
+      "step": 1,
+      "scenario": "全新IANA标签页未点击工具栏A，直接读取",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "scenario": "同一IANA标签页点击A后读取与Mock",
+      "reported_result": "成功",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "scenario": "同一已授权IANA标签页跨源导航到example.com，未重新点击A就读取",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "scenario": "当前example.com页面重新点击A后读取",
+      "reported_result": "成功",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "没有新增截图、录屏或Network日志",
+    "没有补录实际加载包hash",
+    "按上轮四步操作指导解读用户编号回传；不扩展为其他测试通过"
+  ]
+}

@@ -32,14 +32,14 @@ export async function POST(request: NextRequest) {
     const embeddedAt = performance.now();
     const chunks = await retrieveTopK(session.user.id, query);
     const retrievedAt = performance.now();
-    const matches = chunks.map(chunk => ({ title: chunk.title, position: chunk.position,
+    const citable = citableChunks(chunks);
+    const matches = citable.map(chunk => ({ sourceId: chunk.sourceId, title: chunk.title, position: chunk.position,
       preview: chunk.content.slice(0, 160), similarity: chunk.similarity }));
     if (chunks.length === 0) return NextResponse.json({ ok: true, kind: query.kind, status: "insufficient", answer: noKnowledgeAnswer, sources: [], matches,
       usage: { embeddingTokens: query.usage?.totalTokens ?? null, chatTokens: null },
       latencyMs: { embedding: Math.round(embeddedAt - started), retrieval: Math.round(retrievedAt - embeddedAt), chat: null, total: Math.round(performance.now() - started) },
     }, { headers: aiHeaders });
 
-    const citable = citableChunks(chunks);
     const raw = query.kind === "mock"
       ? { kind: "mock" as const, text: JSON.stringify({ status: "answered", answer: "MOCK：这是基于第一条命中资料生成的示例回答。", sourceIds: [citable[0].sourceId] }), usage: null }
       : await generate(buildCitationPrompt(input.question.trim(), citable), { structured: true, system: citationSystemInstruction });

@@ -34,7 +34,7 @@ test('malformed, duplicate, one-sided and secret-bearing cases are rejected', ()
 const answerable = realCases[0], noAnswer = realCases[8]
 const body = {
   ok: true, status: 'answered', answer: 'Git 保存代码版本。',
-  matches: [{ title: 'Git 学习笔记', position: 0, preview: 'Git 保存版本。' }],
+  matches: [{ sourceId: 'SRC-CHUNK-1', title: 'Git 学习笔记', position: 0, preview: 'Git 保存版本。' }],
   sources: [{ sourceId: 'SRC-CHUNK-1', title: 'Git 学习笔记', position: 0, preview: 'Git 保存版本。' }],
   latencyMs: { embedding: 40, retrieval: 5, chat: 100, total: 145 },
   usage: { embeddingTokens: 4, chatTokens: 20 },
@@ -48,10 +48,10 @@ test('retrieval, status and expected citation document are separate indicators',
   assert.equal(good.verifiedSources, true)
   const wrongSource = assessCase(answerable, 200, { ...body, sources: [{ ...body.sources[0], title: 'Other' }] }, 150)
   assert.equal(wrongSource.errorCategory, 'provider_failure')
-  const missed = assessCase(answerable, 200, { ...body, matches: [{ title: 'Other', position: 0, preview: 'Other' }], sources: [{ sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }] }, 150)
+  const missed = assessCase(answerable, 200, { ...body, matches: [{ sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }], sources: [{ sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }] }, 150)
   assert.equal(missed.errorCategory, 'retrieval_miss')
   const differentCitation = assessCase(answerable, 200, { ...body,
-    matches: [...body.matches, { title: 'Other', position: 0, preview: 'Other' }],
+    matches: [...body.matches, { sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }],
     sources: [{ sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }] }, 150)
   assert.equal(differentCitation.expectedCitationHit, false)
   assert.equal(differentCitation.errorCategory, null, 'citation support needs a human review')
@@ -60,6 +60,51 @@ test('retrieval, status and expected citation document are separate indicators',
   assert.equal(refusal.expectedCitationHit, false)
   assert.equal(assessCase(noAnswer, 200, body, 150).errorCategory, 'missing_refusal')
   assert.equal(assessCase(answerable, 200, { ...body, status: 'insufficient', sources: [] }, 150).errorCategory, 'wrong_refusal')
+})
+
+test('expected citation mismatch is an explicit automatic issue without pretending to judge factual support', () => {
+  const wrong = assessCase(answerable, 200, { ...body,
+    matches: [...body.matches, { sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }],
+    sources: [{ sourceId: 'SRC-CHUNK-2', title: 'Other', position: 0, preview: 'Other' }] }, 150)
+  assert.equal(wrong.verifiedSources, true)
+  assert.equal(wrong.expectedCitationHit, false)
+  assert.equal(wrong.errorCategory, null, 'support judgment stays with the human reviewer')
+  assert.deepEqual(wrong.automaticIssues, ['expected_citation_miss'])
+  const summary = summarize([wrong])
+  assert.equal(summary.automaticFailureCaseCount, 1)
+  assert.equal(summary.automaticIssuesByType.expected_citation_miss, 1)
+  assert.match(reviewMarkdown([wrong]), /expected_citation_miss/)
+  assert.match(reviewMarkdown([wrong], { mode:'mock' }), /Mock.*流程/)
+})
+
+test('source membership uses exact candidate IDs and refuses forged, missing and duplicate identities', () => {
+  const forged = assessCase(answerable, 200, { ...body, sources:[{...body.sources[0],sourceId:'SRC-CHUNK-999999'}] }, 150)
+  assert.equal(forged.errorCategory, 'provider_failure')
+  assert.equal(forged.verifiedSources, false)
+  assert.equal(forged.contractIssue, 'source_not_in_retrieved_set')
+  const missingId = assessCase(answerable, 200, { ...body, matches:[{title:'Git 学习笔记',position:0,preview:'Git 保存版本。'}] }, 150)
+  assert.equal(missingId.contractIssue, 'candidate_source_id_required')
+  const duplicates = assessCase(answerable, 200, { ...body, sources:[body.sources[0],body.sources[0]] }, 150)
+  assert.equal(duplicates.errorCategory,'provider_failure')
+  const duplicateCandidates = assessCase(answerable, 200, { ...body, matches:[body.matches[0],body.matches[0]] }, 150)
+  assert.equal(duplicateCandidates.errorCategory,'provider_failure')
+  const emptyRefusal = assessCase(noAnswer,200,{...body,status:'insufficient',answer:'资料不足',sources:[],matches:[]},150)
+  assert.equal(emptyRefusal.statusMatch,true)
+  assert.equal(emptyRefusal.verifiedSources,false,'no citations cannot be counted as verified citations')
+})
+
+test('all missing usage stays null, while measured zero and partial sums stay distinguishable', () => {
+  const missing = assessCase(answerable,200,{...body,usage:{}},150)
+  const absent = summarize([missing])
+  assert.equal(absent.totalEmbeddingTokensKnown,null)
+  assert.equal(absent.totalChatTokensKnown,null)
+  assert.equal(absent.missingEmbeddingUsageCount,1)
+  const zero = assessCase(answerable,200,{...body,usage:{embeddingTokens:0,chatTokens:0}},150)
+  assert.equal(summarize([zero]).totalEmbeddingTokensKnown,0)
+  const mixed = summarize([missing,assessCase(answerable,200,body,150)])
+  assert.equal(mixed.totalEmbeddingTokensKnown,4)
+  assert.equal(mixed.totalChatTokensKnown,20)
+  assert.equal(mixed.missingChatUsageCount,1)
 })
 
 test('provider errors, null usage, latency and token summaries are honest', () => {
@@ -86,6 +131,6 @@ test('real runner refuses paid calls without explicit confirmation', () => {
     env: { ...process.env, EVAL_MODE: 'real', EVAL_REAL_CONFIRM: '' }, encoding: 'utf8',
   })
   assert.notEqual(run.status, 0)
-  assert.match(run.stderr, /EVAL_REAL_CONFIRM=YES/)
+  assert.match(run.stderr, /REAL_EVAL_CONFIRM_REQUIRED|CHECK_CONFIG_CONFLICT/)
   assert.equal(run.stdout, '')
 })

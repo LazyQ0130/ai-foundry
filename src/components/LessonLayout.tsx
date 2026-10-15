@@ -41,14 +41,13 @@ export function LessonLayout({ sidebar, workbench, children, remainingTasks }: {
       <button ref={trigger} type="button" aria-expanded={drawer} aria-controls="lesson-directory" onClick={() => setDrawer(true)} className="btn btn-sm btn-outline"><ListChecks className="h-3.5 w-3.5" />课程目录</button>
       <a href="#lesson-workbench" className="btn btn-sm btn-outline">任务与进度{remainingTasks > 0 && <span className="text-xs text-slate-500"> · {remainingTasks} 待确认</span>}</a>
     </div>
-    <div className="flex gap-6">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-y-10 min-[1360px]:grid-cols-[260px_minmax(0,1fr)_260px] min-[1360px]:gap-6">
       <aside className="hidden w-[260px] shrink-0 min-[1360px]:block">
         <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">{sidebar(() => setDrawer(false), 'desktop')}</div>
       </aside>
-      <div className="mx-auto min-w-0 max-w-[740px] flex-1">{children}</div>
-      <aside className="hidden w-[260px] shrink-0 min-[1360px]:block"><div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-2">{workbench}</div></aside>
+      <div className="mx-auto w-full min-w-0 max-w-[740px]">{children}</div>
+      <aside id="lesson-workbench" aria-label="学习任务与进度" className="mx-auto w-full min-w-0 max-w-[740px] scroll-mt-20 min-[1360px]:max-w-none"><div className="pb-2 min-[1360px]:sticky min-[1360px]:top-20 min-[1360px]:max-h-[calc(100vh-6rem)] min-[1360px]:overflow-y-auto">{workbench}</div></aside>
     </div>
-    <div id="lesson-workbench" className="mx-auto mt-10 max-w-[740px] scroll-mt-20 min-[1360px]:hidden">{workbench}</div>
     {drawer && <div className="fixed inset-0 z-50 min-[1360px]:hidden">
       <button type="button" aria-label="关闭目录" onClick={() => setDrawer(false)} className="absolute inset-0 bg-slate-900/40" tabIndex={-1} />
       <div ref={panel} id="lesson-directory" role="dialog" aria-modal="true" aria-label="课程目录" className="absolute inset-y-0 left-0 flex w-[280px] max-w-[85vw] flex-col overflow-hidden bg-white shadow-2xl">

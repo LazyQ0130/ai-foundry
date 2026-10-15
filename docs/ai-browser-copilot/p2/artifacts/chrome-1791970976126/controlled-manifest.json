@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "AI 网页阅读与知识整理助手 · P2 [AUTHOR CONTROLLED FIXTURE]",
+  "version": "0.2.0",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_title": "打开 P2 阅读助手侧栏"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'none'"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ]
+}

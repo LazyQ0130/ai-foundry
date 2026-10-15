@@ -141,6 +141,10 @@ User
 
 Starter 已提供 `compose.yaml`、`infra/`、`scripts/init-local-env.mjs` 和 `docs/local-environment.md`。Windows 先按指南安装 Docker Desktop，启用 WSL 2 和 Linux containers；其他系统使用 Docker + Compose v2。已有 C1 项目只补入这些环境文件，不覆盖自己的代码或产品文档。
 
+Docker 在这里用来启动课程预先配好的独立数据库，不要求你现在会制作容器。**先打开 Starter 的 `docs/local-environment.md` 第 1 节做安装前检查**：系统符合官方要求、有安装权限，且 `docker version` 同时显示 Client 与 Server，才执行下面命令。需要 WSL 更新或虚拟化却无法完成时，保留错误并先解决环境；不假装库已启动，也不照陌生教程随意修改 BIOS。Stage 3 的云库路线不能直接替换这里的环境：Capstone 后续还会使用私有存储和严格隔离的 Eval 库。条件不具备时，可先整理本课 Domain Map，数据库与后续运行验收仍标为未完成。
+
+命令在自己的 C1／Capstone 项目根目录执行，确认可见 `package.json`、`compose.yaml`；多窗口如何各自进入目录见[环境页「多终端管理」](/environment#terminals)。
+
 在项目根目录运行：
 
 ```powershell
@@ -151,6 +155,8 @@ docker compose --env-file .env.local exec -T db psql -U capstone -d capstone -c 
 ```
 
 应看到数据库接受连接、vector 0.8.6 可用。开发库是本机 55439/capstone，测试库是独立服务 55440/capstone_c8_eval；本课只用 PostgreSQL 关系数据。随机凭据在被 Git 忽略的 `.env.local`，脚本再次运行不会覆盖。不要把它贴给 AI。
+
+如果某条失败就停在该条：只有 Client 先启动 Docker Desktop；拉取失败查网络；口令错误先核对原 `.env.local`，不生成新密码覆盖已有库。暂停时运行 `docker compose --env-file .env.local stop db eval-db`；恢复用上面的 `up -d --wait db eval-db`。已有数据卷会保留，原账号和资料应仍可读取；不用删卷或 reset 恢复。
 
 Prisma 安装并写好 schema 后，用 `node --env-file=.env.local node_modules/prisma/build/index.js migrate dev --name init` 创建开发迁移；Next.js 会自动加载 `.env.local`，Prisma CLI 则需要显式加载。隔离测试窗口的变量设置、`migrate deploy`、端口冲突和 Docker 排错详见 starter 的本地环境指南。先证明连接成功，再实现数据层。
 

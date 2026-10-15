@@ -22,15 +22,20 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await request(app).get(endpoint).expect(401)
   await request(app).get(stageThreeEndpoint).expect(401)
   await request(app).get(stageFourEndpoint).expect(401)
+  for (const stage of [2, 3, 4]) await request(app).get(`/api/course-assets/stage${stage}-tools`).expect(401)
   await admin.get(stageThreeEndpoint).expect(403)
   await admin.get(stageFourEndpoint).expect(403)
   await request(app).head(endpoint).expect(401)
   await student.get(endpoint).expect(200)
   const grant = (stageSlug: string) => admin.post(`/api/admin/users/${id}/entitlements`).set('Origin', env.APP_ORIGIN).send({ stageSlug, source: 'TEST', note: '附件权限测试' })
   await grant('stage-2').expect(200)
+  await student.get('/api/course-assets/stage2-tools').expect(200)
+  await student.get('/api/course-assets/stage3-tools').expect(403)
+  await student.get('/api/course-assets/stage4-tools').expect(403)
   await student.get(endpoint).expect(200)
   await student.get(stageThreeEndpoint).expect(403)
   await grant('stage-3').expect(200)
+  await student.get('/api/course-assets/stage3-tools').expect(200)
   await student.get(stageFourEndpoint).expect(403)
   const stageThreeZip = await student.get(stageThreeEndpoint).buffer(true).parse((res, callback) => {
     const chunks: Buffer[] = []
@@ -46,6 +51,8 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await admin.post(`/api/admin/users/${secondId}/entitlements`).set('Origin', env.APP_ORIGIN)
     .send({ stageSlug: 'stage-4', source: 'TEST', note: 'Stage 4 独立权限测试' }).expect(200)
   await stageFourOnly.get(stageThreeEndpoint).expect(403)
+  await stageFourOnly.get('/api/course-assets/stage3-tools').expect(403)
+  await stageFourOnly.get('/api/course-assets/stage4-tools').expect(200)
   const stageFourZip = await stageFourOnly.get(stageFourEndpoint).buffer(true).parse((res, callback) => {
     const chunks: Buffer[] = []
     res.on('data', chunk => chunks.push(Buffer.from(chunk)))
@@ -56,8 +63,10 @@ test('Starter downloads allow active preview users, admin and revoked stage acce
   await admin.delete(`/api/admin/users/${secondId}/entitlements/stage-4`).set('Origin', env.APP_ORIGIN)
     .send({ note: '撤销测试' }).expect(200)
   await stageFourOnly.get(stageFourEndpoint).expect(403)
+  await stageFourOnly.get('/api/course-assets/stage4-tools').expect(403)
   await db.user.update({ where: { id: secondId }, data: { status: 'DISABLED' } })
   await stageFourOnly.get(stageFourEndpoint).expect(401)
+  await stageFourOnly.get('/api/course-assets/stage4-tools').expect(401)
   await grant('stage-1').expect(200)
   for (const agent of [student, admin]) {
     const result = await agent.get(endpoint).buffer(true).parse((res, callback) => {

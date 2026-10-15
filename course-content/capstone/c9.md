@@ -96,9 +96,22 @@ npm audit --omit=dev
 npm audit
 ```
 
-outdated 不是漏洞清单。逐项写 direct/transitive、根因、patched version、升级风险。C8 当时继承了 1 moderate / 4 high / 0 critical，条目包含 @prisma/config、deepmerge-ts、next、postcss、prisma；它们不等于五个独立根因。你运行当天的结果才是你项目的事实。
+命令在自己的 Capstone 项目根目录执行，确认可见 `package.json` 与 `package-lock.json`。`.runtime` 被忽略且可能不在文件栏显示，找报告见[环境页操作](/environment#reports)。`npm outdated` 有过期包、`npm audit` 有漏洞时可能非零退出，这是结果的一部分；网络或 registry 错误则是检查未完成，不能当作零漏洞。保存报告前只保留包名、版本、依赖路径和风险，不保存环境变量或凭据。
+
+**直接依赖（direct）**是你在 `package.json` 中明确安装的包；**间接依赖（transitive）**是这些包继续使用的其他包。`outdated` 只说版本是否较旧，不是漏洞清单。逐项写直接／间接路径、漏洞根因、已修复版本（patched version）和升级风险。C8 当时继承了 1 moderate / 4 high / 0 critical，条目包含 @prisma/config、deepmerge-ts、next、postcss、prisma；它们不等于五个独立根因。你运行当天的结果才是你项目的事实。
 
 Reference 在 C9 锁定 Next 15.5.27、PostCSS 8.5.23、deepmerge-ts 8.0.2；保留 Prisma 6.19.3 并对其间接依赖使用明确 override。deepmerge 跨 major override 必须以 generate/migration/HTTP/Eval 回归证明兼容。全量审计中的未修复 braces 开发依赖链通过调整 lint 配置移除；TypeScript 和 React Hooks 检查继续执行。不是隐藏 dev audit，也不是把 Prisma 自动降级。
+
+`overrides` 是根目录 `package.json` 中的一项规则，用来指定某条间接依赖实际安装哪个版本。可以把它理解为“替换零件的版本约定”：能装上不代表和整台机器兼容，也不代表漏洞已经修好。先只读看清路径：
+
+```bash
+npm explain deepmerge-ts
+npm ls prisma @prisma/client deepmerge-ts
+```
+
+第一条应显示谁依赖它，第二条应显示本项目实际安装版本；目标包不存在时，记录“此项目未安装”，不要为了照参考答案而装一个。让 AI 先对照你当天的 audit 和[官方 overrides 规则](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#overrides)说明改哪一条路径、为什么选该版本，再做最小改动；参考版本不是永久安全清单。
+
+**修改与恢复顺序：**先审查 `git status --short`、`git diff`，把已确认的源码保存为本机提交并记录编号；若还有未解释的改动，先在编辑器给将改的依赖配置各留一份本机备份。每次只处理一个根因，让本项目的 npm 更新 `package.json` 和锁文件，不手工删改锁文件中的条目。安装后重跑上面的路径检查和两种 audit，再运行下面要求的全部回归。成功要同时有目标版本生效、审计门槛通过、原功能通过。失败先停止继续升级，对照 Diff，只恢复本次修改的依赖配置与锁文件到保存点（编辑器本地备份，或先查看 `git show 提交编号:package.json` 及对应锁文件，再按保存点恢复这两个文件），执行 `npm ci` 恢复原安装并重验；不回退整个项目、不删锁文件或批量清理目录。秘密与运行报告仍不进入提交。
 
 :::warning{title="不要用 force 换一张绿图"}
 不要执行 `npm audit fix --force`。修复 Next/Prisma/React/MCP 后要重跑 lint、typecheck、test、build、migration、HTTP、Eval 和受控 real smoke。High/Critical 未清零就阻断交付；Moderate 必须修复或记录具体路径、可利用条件和接受理由。
@@ -136,6 +149,8 @@ Reference 在 C9 锁定 Next 15.5.27、PostCSS 8.5.23、deepmerge-ts 8.0.2；保
 
 ## 做出真正可运行的容器
 
+C2 用 Docker **运行别人配好的服务**，这里才用 Docker **构建并运行自己的应用**。先按 Starter 的 `docs/local-environment.md` 第 1 节确认 Docker 有 Client 和 Server；WSL／虚拟化仍失败就先解决环境，不能把宿主机 `npm run build` 当成容器验收。
+
 构建阶段 npm ci → Prisma generate → Next build；runtime 只带生成的运行文件，production、非 root、PORT；release target 单独保留 CLI/schema。build 不需要数据库 Secret，不做 migration。
 
 `.dockerignore` 排除 `.env*`、`.runtime`、node_modules、.git、logs。不是把 env COPY 进去后再删掉，因为镜像层可能已经保留了它。
@@ -156,6 +171,22 @@ Staging full smoke 与 Production safe smoke 分开。增加 release:check 复�
 :::
 
 实际运行 build 后启动容器，验证 health、register/login、受保护 Task 读写。然后用真实 PDF upload/process 检查镜像是否带了解析资源；只在宿主机 PDF test 通过还不够。
+
+按下面顺序把操作落到自己的 `docs/deployment.md`，一次完成一步：
+
+1. AI 生成工件后，先审查 Diff：本课约定 Dockerfile 有 `runtime` 和 `release` 两个 target（分别是应用运行镜像和迁移工具镜像），`.dockerignore` 排除秘密。源码保存后运行 `git rev-parse --short HEAD`，记下实际提交编号。没有这两个 target，先补齐，不照抄命令猜名称。
+2. 在含 Dockerfile 的本项目根目录构建。下面的 `这里换成提交编号` 必须整体换成上一步的编号，不能保留中文占位符：
+
+```bash
+docker build --target runtime -t research-workspace:这里换成提交编号 .
+docker build --target release -t research-workspace-release:这里换成提交编号 .
+```
+
+3. 两条构建都成功后，先让 AI 根据**自己的 ADR 和运行平台**在 runbook 写出并核对实际启动命令：镜像标签、容器名、PORT、网络、配置注入方式与本机测试端口。这里只连接独立测试／Staging 数据和存储；Docker 容器里的 `127.0.0.1` 指容器自身，不能直接照搬宿主机 DB 地址。地址变更必须经项目的环境与 DB guard 核对，不去掉保护条件或让 Eval 连上日常／生产库。不要把生产秘密填进 Dockerfile、镜像或 shell 历史。
+4. 执行已核对的 runbook 启动命令，`docker ps` 应显示**自己这次**的容器在运行。浏览器打开 runbook 写明的本机地址加 `/api/health`，应收到只含安全状态的 `status: ok`；再逐项完成上面的账号、Task、PDF 和后面的 smoke。health 成功只说明进程可响应。
+5. 启动失败先运行 `docker logs 自己的容器名`，仅在本机查看，给 AI 的错误先脱敏。核对 PORT、网络与配置来源；修改源码就重新构建新标签，不反复运行付费 smoke。暂停用 `docker stop 自己的容器名`，原配置可用时用 `docker start 自己的容器名` 恢复；回滚镜像按 runbook 核对 schema 兼容性与备份，不删卷、清库或杀其他项目。
+
+**成功标志：**镜像标签可追溯到提交，容器内真实账号与任务读写、PDF、隔离评估和受控 smoke 都有证据。只有 build 或 health 通过仍未完成本课；本机验证也不等于真实 HTTPS 云部署已通过。
 
 数据库 release 顺序必须是：Build image → backup/verify DB → migrate deploy once → migrate status → deploy app → smoke。生产禁用 migrate dev、db push、reset。确认 pgvector extension version 和 vector(1024) 查询真的可用。
 

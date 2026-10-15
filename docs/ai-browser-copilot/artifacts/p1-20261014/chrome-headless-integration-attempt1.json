@@ -1,0 +1,52 @@
+{
+  "time": "2026-10-14T08:09:41.444Z",
+  "scope": "Actual installed Chrome headless + test-only CDP installation. Extension document loaded as a tab, NOT a native Side Panel. No synthetic toolbar action or activeTab grant.",
+  "nativeToolbar": "BLOCKED",
+  "results": [
+    {
+      "role": "starter",
+      "status": "PASS",
+      "extensionId": "phkhejgempdaahkaojdmfdffkmkhebko",
+      "react": "disabled exercise placeholder",
+      "state": {
+        "listener": false,
+        "panelBehavior": {
+          "openPanelOnActionClick": false
+        },
+        "permissions": {
+          "origins": [],
+          "permissions": [
+            "sidePanel"
+          ]
+        }
+      },
+      "productionOutboundAttempt": "CSP_BLOCKED",
+      "uncaughtPageErrors": [],
+      "nativeToolbar": "not exercised"
+    },
+    {
+      "role": "reference",
+      "status": "PASS",
+      "extensionId": "ppeedpjepfjbgkahjjhpddpnleldddli",
+      "react": "confirmed React state after real DOM click",
+      "state": {
+        "listener": true,
+        "panelBehavior": {
+          "openPanelOnActionClick": false
+        },
+        "permissions": {
+          "origins": [],
+          "permissions": [
+            "sidePanel"
+          ]
+        }
+      },
+      "productionOutboundAttempt": "CSP_BLOCKED",
+      "uncaughtPageErrors": [],
+      "nativeToolbar": "not exercised"
+    }
+  ],
+  "browser": "155.0.8059.41",
+  "status": "FAIL",
+  "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { pressed: false }).nth(13)\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" title=\"请先完成并勾选全部学习任务\" class=\"btn btn-md w-full btn-primary\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+}

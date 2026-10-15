@@ -1,0 +1,90 @@
+
+> ai-browser-copilot-phase0@0.0.0 test
+> vitest run --reporter=verbose tests/coordinator.test.ts
+
+
+ RUN  v5.0.4 C:/Users/QYF/Desktop/AIFoundry/spikes/ai-browser-copilot-spike
+
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > rejects webpage/content-script/external/wrong-page senders before any injection 6ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > rejects unknown fields, restricted pages, missing and inactive tabs 1ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > propagates permission failure without widening permissions or returning old data 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > captures bounded typed data and validates the same snapshot context 2ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > discards delayed extraction after switch-tab 69ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > discards delayed extraction after same-url-reload 64ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > discards delayed extraction after A-B-A 52ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > discards delayed extraction after close-tab 58ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > does not classify malformed extraction as a permission problem 1ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > opens synchronously and consumes a selection once under concurrent takes 3ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > invalid empty selection replaces old pending data 1ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > invalid long selection replaces old pending data 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > invalid iframe selection replaces old pending data 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > enforces TTL with age=59999 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > enforces TTL with age=60000 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > enforces TTL with age=-1 0ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > uses event time before async storage work, not the later completion time 51ms
+ ✓ tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > keeps the latest rapid selection and rejects late publication after navigation 1ms
+ × tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > preserves valid session selections across worker restart and unrelated background navigation 7ms
+   → expected { ok: false, …(3) } to match object { ok: true, data: { text: 'ALPHA' } }
+(3 matching properties omitted from actual)
+ × tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > preserves a captured snapshot across worker sleep/restart when the page has not changed 1ms
+   → expected { ok: false, …(3) } to match object { ok: true, data: { current: true } }
+(3 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > preserves valid session selections across worker restart and unrelated background navigation
+AssertionError: expected { ok: false, …(3) } to match object { ok: true, data: { text: 'ALPHA' } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "data": {
+-     "text": "ALPHA",
+-   },
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/coordinator.test.ts:100:74
+     98|     expect(await h.coordinator.handle(h.request('TAKE_SELECTION'),h.se…
+     99|     await h.select();const restarted=createCoordinator(h.api as unknow…
+    100|     expect(await restarted.handle(h.request('TAKE_SELECTION'),h.sender…
+       |                                                                          ^
+    101|   });
+    102|   it('preserves a captured snapshot across worker sleep/restart when t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/coordinator.test.ts > deterministic Chrome adapter tests (NOT native browser acceptance) > preserves a captured snapshot across worker sleep/restart when the page has not changed
+AssertionError: expected { ok: false, …(3) } to match object { ok: true, data: { current: true } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "data": {
+-     "current": true,
+-   },
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/coordinator.test.ts:106:113
+    104|     const snapshot=Snapshot.parse('data' in result?result.data:undefin…
+    105|     const restarted=createCoordinator(h.api as unknown as Platform,()=…
+    106|     expect(await restarted.handle({...h.request('CHECK_CONTEXT'),conte…
+       |                                                                                                                 ^
+    107|   });
+    108| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  13:51:02
+   Duration  683ms (tests 77%, import 15%, transform 7%, worker 1%)
+

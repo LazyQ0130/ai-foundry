@@ -1,5 +1,5 @@
 import { curriculumFormalLessonCount } from '../data/courses'
-import { lazy, Suspense, useState } from 'react'
+import { useState } from 'react'
 import { usePlans } from '../data/pricing'
 import { Link } from 'react-router-dom'
 import {
@@ -13,6 +13,8 @@ import {
   Wrench,
   Rocket,
   Boxes,
+  PackageCheck,
+  BriefcaseBusiness,
 } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { HeroAppMockup } from '../components/mockups'
@@ -20,10 +22,7 @@ import PurchaseModal from '../components/PurchaseModal'
 import { SectionHeading } from '../components/ui'
 import { accentClass, stages, type Stage } from '../data/courses'
 import { heroStats } from '../data/site'
-import sampleLesson from '../data/previews/s1-l1.md?raw'
 import { CapstoneHomeTeaser } from '../components/CapstoneShowcase'
-
-const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
 
 /* ------------------------------- Hero ------------------------------- */
 
@@ -52,17 +51,17 @@ function Hero() {
           <p className="mt-1.5 max-w-[420px] text-[13.5px] leading-6 text-slate-500">
             AIFoundry 帮助你通过真实项目，系统掌握 AI 时代的软件开发技能，把想法变成可以上线的产品。
           </p>
-          <p className="mt-2 text-[13px] leading-6 text-slate-600">无需编程基础，会下载、解压文件即可从第 0 课开始。后续阶段按学习路径逐步建立基础。</p>
+          <p className="mt-2 text-[13px] leading-6 text-slate-600">无需编程基础，从第 0 课准备环境，再到 1.1 完成第一次修改。体验课正文可直接阅读，下载 Starter 和记录进度需登录。</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/courses" className="btn btn-lg btn-primary">
-              查看全部课程
-              <ArrowRight className="h-4 w-4" />
+            <Link to="/lesson/stage-1/s1-l0" className="btn btn-lg btn-primary">
+              开始免费体验
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
-            <Link to="/stage/stage-1" className="btn btn-lg btn-outline">
-              开始学习
+            <Link to="/courses" className="btn btn-lg btn-outline">
+              了解课程体系
             </Link>
           </div>
-          <Link to="/guide" className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-brand-700 hover:underline">第一次来？先看课程导读 <ArrowRight className="h-3.5 w-3.5" /></Link>
+          <Link to="/guide" className="mt-3 inline-flex min-h-9 items-center gap-1 rounded text-[13px] text-slate-600 transition hover:text-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">第一次来？先看课程导读 <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /></Link>
         </div>
 
         <div className="relative">
@@ -82,7 +81,7 @@ function Hero() {
 
 function StatsBar() {
   return (
-    <section className="shell pb-6 pt-2">
+    <section className="shell pb-10 pt-2 sm:pb-12">
       <div className="card grid divide-y divide-slate-100 overflow-hidden sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {heroStats.map((s) => (
           <div key={s.value} className="flex items-center gap-3.5 px-5 py-3">
@@ -212,10 +211,14 @@ function StagePreviewCard({ stage }: { stage: Stage }) {
   return (
     <Link
       to={`/stage/${stage.slug}`}
-      className="card group flex flex-col overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-lift"
+      aria-label={`查看${stage.tag}课程：${stage.title}`}
+      className="card group flex flex-col overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 motion-reduce:transform-none motion-reduce:transition-none"
     >
       <div className="p-4 pb-3.5">
-        <span className={`chip ${a.softBg} ${a.text}`}>{stage.tag}</span>
+        <div className="flex items-center justify-between gap-2">
+          <span className={`chip ${a.softBg} ${a.text}`}>{stage.tag}</span>
+          <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 text-slate-400 transition group-hover:text-brand-600" />
+        </div>
         <h3 className="mt-2.5 text-[14.5px] font-semibold text-slate-900">{stage.title}</h3>
         <p className="mt-1.5 text-[12.5px] leading-5 text-slate-500">{stage.subtitle}</p>
       </div>
@@ -228,18 +231,18 @@ function StagePreviewCard({ stage }: { stage: Stage }) {
 
 function PathSection() {
   return (
-    <section className="shell pb-12">
+    <section className="shell pb-12 sm:pb-16">
       <SectionHeading
         title="系统化的学习路径"
         sub="4 个学习阶段、4 个阶段作品；项目版另含项目工坊（毕业项目实战）。"
         right={
-          <Link to="/courses" className="link-more">
-            查看全部课程
-            <ArrowRight className="h-3.5 w-3.5" />
+          <Link to="/courses" className="link-more min-h-9 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">
+            查看完整课程目录
+            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
           </Link>
         }
       />
-      <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid gap-4 sm:mt-7 sm:grid-cols-2 xl:grid-cols-4">
         {stages.map((s) => (
           <StagePreviewCard key={s.id} stage={s} />
         ))}
@@ -251,29 +254,100 @@ function PathSection() {
 
 /* ---------------------------- 为什么选择我们 ---------------------------- */
 
-const stageWorks = [
-  { slug: 'stage-1', title: '个人知识工作台', ability: '搜索、筛选资料，用 Git 保存自己的页面修改。' },
-  { slug: 'stage-2', title: '全栈知识工作台', ability: '登录后管理自己的资料，刷新后数据仍然保留。' },
-  { slug: 'stage-3', title: 'AI 知识工作台 · RAG', ability: '根据上传的资料回答问题，并回到引用来源核对。' },
-  { slug: 'stage-4', title: 'AI 研究 Agent', ability: '查看运行过程，在写入前确认，并恢复暂停的任务。' },
-]
-
 function WhySection() {
-  return <section id="why" className="shell scroll-mt-24 pb-12">
+  return <section id="why" className="shell scroll-mt-24 pb-8 sm:pb-10">
     <SectionHeading title="学完，你能做出这些作品" sub="同一个知识工作台，从第一个页面逐步升级为完整的 AI 产品。" />
-    <div className="mt-6 grid gap-5 sm:grid-cols-2">
-      {stageWorks.map((work, index) => <Link key={work.slug} to={`/stage/${work.slug}`} className="card group overflow-hidden transition hover:shadow-lift">
+    <div className="mt-6 grid gap-5 sm:mt-7 sm:grid-cols-2">
+      {stages.map((stage) => <Link key={stage.slug} to={`/project/${stage.project.id}`} aria-label={`查看${stage.project.title}项目介绍`} className="card group overflow-hidden transition hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">
         <div className="border-b border-slate-100 bg-gradient-to-br from-slate-100 to-blue-50/70 p-3 sm:p-4">
-          <img src={`/course-media/showcase/${work.slug}-generated.webp`} alt={`${work.title}界面效果示意：${work.ability}`} width={1200} height={800} loading="lazy" className="aspect-[3/2] w-full rounded-lg border border-slate-200/80 bg-white object-contain shadow-sm" />
+          <img src={`/course-media/showcase/${stage.slug}-generated.webp`} alt={`${stage.project.title}界面效果示意：${stage.project.summary}`} width={1200} height={800} loading="lazy" className="aspect-[3/2] w-full rounded-lg border border-slate-200/80 bg-white object-contain shadow-sm" />
         </div>
-        <div className="p-5"><p className="text-[12px] text-slate-500">Stage {index + 1} · 界面效果示意</p><h3 className="mt-2 text-[16px] font-semibold text-slate-900">{work.title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{work.ability}</p><span className="link-more mt-3 inline-flex">查看阶段课程 <ArrowRight className="h-3.5 w-3.5" /></span></div>
+        <div className="p-5"><p className="text-[12px] text-slate-500">{stage.tag} · 界面效果示意</p><h3 className="mt-2 text-[16px] font-semibold text-slate-900">{stage.project.title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{stage.project.summary}</p><span className="link-more mt-3 inline-flex">查看项目介绍 <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /></span></div>
       </Link>)}
     </div>
-    <div className="mt-10"><SectionHeading title="真实课程里，你会这样学" sub="节选自 Stage 1 第 1 课：先提出一个明确需求，再亲手核对页面变化。" />
-      <div className="lesson-article mx-auto mt-5 max-w-[740px]"><Suspense fallback={<p role="status">正在加载课程片段…</p>}><LessonMarkdown body={sampleLesson} /></Suspense></div>
-      <div className="mx-auto mt-5 max-w-[740px]"><Link to="/lesson/stage-1/s1-l1" className="btn btn-md btn-primary">阅读完整体验课 <ArrowRight className="h-4 w-4" /></Link></div>
-    </div>
   </section>
+}
+
+/* ------------------------------ 核心价值 ------------------------------ */
+
+const productValues = [
+  {
+    number: '01',
+    icon: Sparkles,
+    title: '降低开发门槛',
+    description: '从简单的需求开始，学习与 AI 协作开发，让缺少编程经验的人也能迈出产品开发的第一步。',
+    tutorialFocus: '教你使用 AI 编程工具',
+    foundryFocus: '学会与 AI 协作，从需求开始开发',
+  },
+  {
+    number: '02',
+    icon: PackageCheck,
+    title: '从 Demo 到交付',
+    description: '不止生成代码，更学习需求拆解、功能迭代、问题排查、测试、安全和部署，逐步完成真正可用的项目。',
+    tutorialFocus: '跟着复现 Demo，重点是代码能运行',
+    foundryFocus: '独立构建项目，关注功能、质量与交付',
+  },
+  {
+    number: '03',
+    icon: BriefcaseBusiness,
+    title: '让能力产生价值',
+    description: '通过项目实践积累可展示的作品，为实习求职、独立开发以及探索真实商业项目打下基础。',
+    tutorialFocus: '教完一个项目就结束，看完获得知识',
+    foundryFocus: '从基础逐步进阶，积累可展示的项目经验',
+  },
+]
+
+function ProductValueSection() {
+  return (
+    <section id="product-values" aria-labelledby="product-values-title" className="shell scroll-mt-24 pb-12 sm:pb-16">
+      <div>
+        <p className="text-[12px] font-semibold tracking-widest text-brand-600">AI Foundry 的核心价值</p>
+        <h2 id="product-values-title" className="h-sec mt-3 leading-snug">
+          不止学会使用 AI，更要学会创造产品。
+        </h2>
+        <p className="sub-sec max-w-[800px]">
+          从提出想法，到开发功能，再到完成项目交付。AI Foundry 希望帮你建立的，不是依赖提示词的操作习惯，而是能够借助 AI 独立解决问题的能力。
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:mt-7 lg:grid-cols-3">
+          {productValues.map((value) => (
+            <article key={value.number} className="card flex min-w-0 flex-col p-5 transition-[border-color,box-shadow] duration-200 hover:border-brand-200 hover:shadow-lift motion-reduce:transition-none sm:p-6">
+              <div aria-hidden="true" className="flex items-center justify-between">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                  <value.icon className="h-5 w-5" strokeWidth={1.75} />
+                </span>
+                <span className="text-[13px] font-semibold tabular-nums tracking-widest text-slate-400">{value.number}</span>
+              </div>
+              <h3 className="mt-5 text-[18px] font-semibold tracking-tight text-slate-900">{value.title}</h3>
+              <p className="mb-5 mt-2 text-[13.5px] leading-6 text-slate-600">{value.description}</p>
+              <dl className="mt-auto space-y-3 border-t border-slate-100 pt-4 text-[12px] leading-5">
+                <div>
+                  <dt className="text-slate-500">常见教程侧重</dt>
+                  <dd className="mt-0.5 text-slate-600">{value.tutorialFocus}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-brand-700">AI Foundry 侧重</dt>
+                  <dd className="mt-0.5 font-medium text-slate-800">{value.foundryFocus}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function LearningGoalSection() {
+  return (
+    <section aria-label="学习目标" className="shell pb-12 sm:pb-16">
+      <div className="rounded-2xl border border-slate-100 bg-slate-50 px-5 py-6 text-center sm:px-8 sm:py-8">
+        <p className="mx-auto max-w-[800px] text-[14px] leading-7 text-slate-700">
+          我们的目标不是培养只会使用 AI 工具的人，而是让你有能力把一个想法，逐步变成真正可以运行、使用和交付的产品。
+        </p>
+      </div>
+    </section>
+  )
 }
 
 /* ------------------------------ 学习方案 ------------------------------ */
@@ -283,7 +357,7 @@ function PlansSection() {
   const [consult, setConsult] = useState(false)
 
   if (loading) return <p role="status" className="shell py-12">正在加载课程价格…</p>
-  if (error) return <div role="alert" className="shell py-12">{error}<button onClick={()=>void refresh()} className="btn btn-outline ml-3">重试</button></div>
+  if (error) return <div role="alert" className="shell py-12">{error}<button onClick={()=>void refresh()} className="btn btn-md btn-outline ml-3">重试</button></div>
 
   const stagePlans = plans.filter((p) => p.id.startsWith('stage-'))
   const allPlan = plans.find((p) => p.id === 'all-access')
@@ -293,10 +367,10 @@ function PlansSection() {
   const lessonCount = curriculumFormalLessonCount()
 
   return (
-    <section className="shell pb-12">
+    <section className="shell pb-12 sm:pb-16">
       <div className="card relative overflow-hidden">
         <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-brand-50/70" />
-        <div className="relative flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div className="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="min-w-0">
             <span className="chip bg-brand-50 text-brand-600">学习方案</span>
             <h2 className="mt-3 text-[21px] font-bold leading-snug tracking-tight text-slate-900 sm:text-[23px]">
@@ -328,13 +402,13 @@ function PlansSection() {
             )}
           </div>
 
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex shrink-0 flex-col items-stretch gap-2 sm:items-start lg:items-center">
             <Link to="/pricing" className="btn btn-lg btn-primary">
               查看完整方案
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
-            <button type="button" className="btn btn-lg btn-outline" onClick={() => setConsult(true)}>
-              <MessageCircle className="h-4 w-4" />
+            <button type="button" className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded px-1 text-[13px] text-slate-500 transition hover:text-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600" onClick={() => setConsult(true)}>
+              <MessageCircle aria-hidden="true" className="h-3.5 w-3.5" />
               购买与账号帮助
             </button>
           </div>
@@ -351,8 +425,10 @@ export default function Home() {
     <>
       <Hero />
       <StatsBar />
+      <ProductValueSection />
       <PathSection />
       <WhySection />
+      <LearningGoalSection />
       <PlansSection />
     </>
   )

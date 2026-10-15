@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Shanghai",
+  "counts": {
+    "PASS": 12,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "gate": "GO（仅Phase 0技术可行性）",
+  "cases": [
+    {
+      "id": "SP-01",
+      "scenario": "干净环境加载MV3",
+      "status": "PASS",
+      "result": "初始独立Profile加载截图；最终0.0.2在另一新Profile的安装配置及人工确认补齐。",
+      "evidence": "[加载截图](artifacts/manual-user-20261014-133518/01-extension-loaded.png)；[最终Profile包核对](artifacts/phase0-final-20261014-152950/final-profile-package-check.json)"
+    },
+    {
+      "id": "SP-02",
+      "scenario": "工具栏打开原生Side Panel",
+      "status": "PASS",
+      "result": "真实窗口截图显示工具栏与原生侧栏；新Profile再次由用户执行。",
+      "evidence": "[原生侧栏截图](artifacts/manual-user-20261014-133518/02-toolbar-sidepanel.png)；[本次人工确认](artifacts/phase0-final-20261014-152950/user-evidence.json)"
+    },
+    {
+      "id": "SP-03",
+      "scenario": "授权后读取HTTPS网页",
+      "status": "PASS",
+      "result": "标题、URL、正文对应当前页；0.0.1读取截图与0.0.2重开/新Profile确认。",
+      "evidence": "[读取截图](artifacts/manual-user-20261014-134717/03-read-success.png)；[重开记录](artifacts/manual-user-20261014-150317/user-evidence.json)"
+    },
+    {
+      "id": "SP-04",
+      "scenario": "未授权/跨源撤权",
+      "status": "PASS",
+      "result": "新tab拒绝→点击A成功→同tab跨源后拒绝→重新授权成功。",
+      "evidence": "[四步文字确认](artifacts/manual-user-20261014-140449/user-evidence.json)"
+    },
+    {
+      "id": "SP-05",
+      "scenario": "请求中切tab/旧结果隔离",
+      "status": "PASS",
+      "result": "请求中切tab、A→B→A、同URL刷新均无旧结果恢复；重读后正常。",
+      "evidence": "[四项文字确认](artifacts/manual-user-20261014-143057/user-evidence.json)；[延迟HTTP](artifacts/manual-user-20261014-142318/delay-api-http-check.json)"
+    },
+    {
+      "id": "SP-06",
+      "scenario": "两个HTTPS站点右键划词",
+      "status": "PASS",
+      "result": "Example与IANA选区正确，URL及不同tabId各自对应。",
+      "evidence": "[Example截图](artifacts/manual-user-20261014-141247/06-selection-example.png)；[IANA截图](artifacts/manual-user-20261014-141247/06-selection-iana.png)"
+    },
+    {
+      "id": "SP-07",
+      "scenario": "空/长/过期/失效选区",
+      "status": "PASS",
+      "result": "一次消费、65秒、空覆盖、切tab/刷新/关闭来源、超长拒绝与无关后台tab隔离通过。",
+      "evidence": "[一次消费截图](artifacts/manual-user-20261014-141247/07-consumed-example.png)；[有效期记录](artifacts/manual-user-20261014-141951/user-evidence.json)；[边界记录](artifacts/manual-user-20261014-142318/user-evidence.json)"
+    },
+    {
+      "id": "SP-08",
+      "scenario": "侧栏Mock真实往返",
+      "status": "PASS",
+      "result": "用户明确确认摘要成功；正常Network fetch200/preflight204；重启后仍可用。",
+      "evidence": "[Mock文字确认](artifacts/manual-user-20261014-140054/user-evidence.json)；[Network截图](artifacts/manual-user-20261014-144851/09-network-no-throttling-baseline.png)"
+    },
+    {
+      "id": "SP-09",
+      "scenario": "API故障提示/重试/恢复",
+      "status": "PASS",
+      "result": "504、502、断服务Failed to fetch、客户端超时均反馈且按钮恢复；普通服务/取消限速后成功。",
+      "evidence": "[504截图](artifacts/manual-user-20261014-143413/09-server-timeout-504.png)；[502截图](artifacts/manual-user-20261014-143754/09-invalid-provider-502.png)；[超时恢复确认](artifacts/manual-user-20261014-145526/user-evidence.json)"
+    },
+    {
+      "id": "SP-10",
+      "scenario": "manifest与打包审查",
+      "status": "PASS",
+      "result": "5个必要权限、无host_permissions/常驻content_scripts/popup；包中无.env/API源文件，启发式密钥扫描无命中；5个运行文件一致。",
+      "evidence": "[包审查](artifacts/worker-lifecycle-fix/package-audit.json)；[最终逐文件核对](artifacts/phase0-final-20261014-152950/final-profile-package-check.json)"
+    },
+    {
+      "id": "SP-11",
+      "scenario": "内部页/禁止注入页",
+      "status": "PASS",
+      "result": "chrome://version、新标签页、Web Store拒绝；普通页恢复，无旧正文/摘要。",
+      "evidence": "[四步文字确认](artifacts/manual-user-20261014-140901/user-evidence.json)"
+    },
+    {
+      "id": "SP-12",
+      "scenario": "重开/空闲/重载/干净Profile",
+      "status": "PASS",
+      "result": "完整退出和重开已核验，空闲可用；本次新Profile安装来源与实际操作补齐重载和第二环境。",
+      "evidence": "[退出进程](artifacts/manual-user-20261014-145920/profile-exit-process-check.json)；[空闲确认](artifacts/manual-user-20261014-150910/user-evidence.json)；[本次确认](artifacts/phase0-final-20261014-152950/user-evidence.json)；[新Profile进程](artifacts/phase0-final-20261014-152950/final-profile-process-check.json)"
+    }
+  ],
+  "supplementary_untested_excluded_from_counts": [
+    "Chrome116实际兼容",
+    "真实收费模型/质量",
+    "iframe人工可选场景、复杂SPA/Shadow DOM/登录墙",
+    "正式P1–P8及产品发布验收"
+  ]
+}

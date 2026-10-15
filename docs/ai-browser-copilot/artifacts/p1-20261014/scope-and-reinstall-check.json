@@ -1,0 +1,54 @@
+{
+  "time": "2026-10-14T08:24:12.886555+00:00",
+  "protected": {
+    "tracked_working_files": {
+      "count": 1439,
+      "unchanged": 1435,
+      "changed": [
+        "course-content/stage-2/s2-l3.md",
+        "course-content/stage-3/s3-l4.md",
+        "course-content/stage-4/s4-l4.md",
+        "src/pages/Environment.tsx"
+      ],
+      "status": "EXTERNAL_CHANGES_DETECTED"
+    },
+    "phase0_files": {
+      "count": 273,
+      "unchanged": 273,
+      "changed": [],
+      "status": "PASS"
+    }
+  },
+  "final_zip_reinstall": [
+    {
+      "role": "starter",
+      "status": "PASS",
+      "sourceZipSha256": "393cabd7878113feaad16cf641e1c1b8658189fa8ceae413bf4a3c6355b809db",
+      "filesEqualToFinalSourceZip": 13,
+      "productionFilesEqualToIndependentlyBuiltZip": 5
+    },
+    {
+      "role": "reference",
+      "status": "PASS",
+      "sourceZipSha256": "1ef8601e40a5ba28a22a61747ca1722497493cb80a10d7b3db9254876abba7be",
+      "filesEqualToFinalSourceZip": 13,
+      "productionFilesEqualToIndependentlyBuiltZip": 5
+    }
+  ],
+  "status": "PASS for isolated P1 packages and Phase0 preservation; workspace baseline has separately recorded external changes",
+  "outside_repository_reinstall": [
+    {
+      "role": "starter",
+      "status": "PASS",
+      "productionFilesEqual": 5,
+      "installation": "npm ci and typecheck, WXT production build+zip in fresh system TEMP, outside parent repository configs/dependencies"
+    },
+    {
+      "role": "reference",
+      "status": "PASS",
+      "productionFilesEqual": 5,
+      "installation": "npm ci and typecheck, WXT production build+zip in fresh system TEMP, outside parent repository configs/dependencies"
+    }
+  ],
+  "notes": "P1 writes limited to three new delivery/document roots and private .runtime/system TEMP validation. Four protected paths changed during concurrent workspace work; they were not edited or reverted by this task and are excluded from deliverables. No git staging/commit/push; no database/migration or publish commands executed."
+}

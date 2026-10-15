@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-14T15:29:50+08:00",
+  "raw_confirmation": "都符合预期",
+  "evidence_type": "用户对本轮最后合并实测具体步骤的文字确认，辅以新Profile进程/安装配置/磁盘包只读核验",
+  "instruction_source": "../../manual-final-smoke.md",
+  "fresh_profile": ".runtime/manual-profile-final-20261014-152338",
+  "confirmed_subcases": {
+    "SP-12_D_clean_profile": "PASS",
+    "SP-12_C_extension_reload": "PASS"
+  },
+  "confirmed_context": [
+    "新Profile加载0.0.2并亲自打开原生Side Panel",
+    "当前Example页面读取、Mock和右键选区接收成功，文字及来源正确",
+    "重新读取/Mock后发送另一未消费选区，在同Profile另一个管理窗口重载扩展",
+    "回原Example窗口打开侧栏，旧正文/摘要清除，接收为NO_SELECTION",
+    "重载后重新读取/Mock及新划词接收均恢复成功"
+  ],
+  "limitations": [
+    "本次未附此前要求的两张截图，不声称已收到",
+    "进程/配置/文件hash只证明环境和包来源，不能替代界面结果",
+    "不使用先前已撤回的两组通过声明作为本次PASS依据"
+  ]
+}

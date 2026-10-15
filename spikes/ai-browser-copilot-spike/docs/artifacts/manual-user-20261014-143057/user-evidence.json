@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-14T14:30:57+08:00",
+  "raw_confirmation": "`1隔离正常、2隔离正常、3隔离正常、4恢复成功`",
+  "SP-05": "PASS",
+  "evidence_type": "用户按上轮指导完成真实Chrome人工操作的文字确认",
+  "service_mode": "delay",
+  "items": [
+    {
+      "step": 1,
+      "scenario": "Example请求中切至IANA停留后切回，无旧正文/摘要回来",
+      "reported_result": "隔离正常",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "scenario": "请求中A→B→A，等待后旧正文/摘要不恢复",
+      "reported_result": "隔离正常",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "scenario": "请求中同URL刷新，旧正文/摘要不恢复",
+      "reported_result": "隔离正常",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "scenario": "重新授权读取后保持当前页面，Mock恢复调用",
+      "reported_result": "恢复成功",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "未新增录屏、整窗截图、单次请求Network时序或精确切换耗时",
+    "未单独回传测试前控制调用；第4项恢复成功已明确确认",
+    "不把用户文字确认写成自动点击或CDP原生交互验收"
+  ]
+}

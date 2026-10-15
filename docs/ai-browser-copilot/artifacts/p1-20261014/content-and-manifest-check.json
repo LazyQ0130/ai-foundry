@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "time": "2026-10-14T08:24:12.730Z",
+  "lesson": {
+    "file": "course-content\\internal\\ai-browser-copilot\\p1\\lesson.md",
+    "tasks": 8,
+    "prompts": 4,
+    "canonicalFilesChecked": 39,
+    "actualParser": true,
+    "actualRenderer": true
+  },
+  "manifests": [
+    {
+      "role": "starter",
+      "status": "PASS",
+      "manifest": {
+        "manifest_version": 3,
+        "name": "AI 网页阅读与知识整理助手 · P1",
+        "version": "0.1.0",
+        "minimum_chrome_version": "116",
+        "permissions": [
+          "sidePanel"
+        ],
+        "action": {
+          "default_title": "打开 P1 阅读助手侧栏"
+        },
+        "content_security_policy": {
+          "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'none'"
+        },
+        "background": {
+          "service_worker": "background.js"
+        },
+        "side_panel": {
+          "default_path": "sidepanel.html"
+        }
+      }
+    },
+    {
+      "role": "reference",
+      "status": "PASS",
+      "manifest": {
+        "manifest_version": 3,
+        "name": "AI 网页阅读与知识整理助手 · P1",
+        "version": "0.1.0",
+        "minimum_chrome_version": "116",
+        "permissions": [
+          "sidePanel"
+        ],
+        "action": {
+          "default_title": "打开 P1 阅读助手侧栏"
+        },
+        "content_security_policy": {
+          "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'none'"
+        },
+        "background": {
+          "service_worker": "background.js"
+        },
+        "side_panel": {
+          "default_path": "sidepanel.html"
+        }
+      }
+    }
+  ],
+  "preview": "127.0.0.1 local author-only preview; not a registered production lesson"
+}

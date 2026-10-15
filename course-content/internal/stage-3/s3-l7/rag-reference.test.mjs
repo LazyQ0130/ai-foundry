@@ -196,6 +196,8 @@ try {
   const real = await ask(fullIndexUser.cookie)
   assert.equal(real.status, 200)
   assert.equal(real.body.kind, 'real')
+  assert(real.body.matches.every(match=>/^SRC-CHUNK-[1-9]\d*$/.test(match.sourceId)))
+  assert(real.body.sources.every(source=>real.body.matches.some(match=>match.sourceId===source.sourceId)))
   assert.equal(real.body.matches.length, 1)
   assert.equal(real.body.matches[0].title, '真实 Stub 索引')
   assert.equal(real.body.status, 'answered')

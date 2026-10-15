@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-14T15:09:10+08:00",
+  "raw_confirmation": "空闲后摘要成功、新选区成功，还有多少验证啊怎么这么多",
+  "subcase": "SP-12_B无DevTools空闲65秒后继续使用",
+  "status": "PASS",
+  "SP-12_overall": "BLOCKED",
+  "evidence_type": "用户按前轮具体操作的真实Chrome文字确认",
+  "confirmed_context": [
+    "先重读/Mock成功，所有DevTools关闭，保持tab/URL等待65秒",
+    "不重新读取直接再次摘要成功",
+    "新选区发送/接收成功"
+  ],
+  "limitations": [
+    "无新增截图、计时录屏或worker终止现场记录",
+    "只标空闲后的可用性，不单凭等待时间断言生产worker确已终止"
+  ],
+  "remaining_required_groups": [
+    "扩展重新加载后的状态清除与链路恢复",
+    "第二个干净Profile加载同一包并执行原生链路"
+  ]
+}

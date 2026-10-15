@@ -1,7 +1,8 @@
 import { Crown } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import type { Plan } from '../data/site'
+import type { Plan } from '../data/site.js'
 import { Check } from 'lucide-react'
+import type { ReactNode } from 'react'
 
 const accentChip: Record<Plan['accent'], string> = {
   emerald: 'bg-emerald-50 text-emerald-600',
@@ -28,7 +29,7 @@ function Price({ plan, size = 'md' }: { plan: Plan; size?: 'md' | 'lg' }) {
 
 /* ------------------------------- 重点版（全套） ------------------------------ */
 
-export function FeaturedPlanCard({ plan, size = 'md', onBuy }: { plan: Plan; size?: 'md' | 'lg'; onBuy?: (plan: Plan) => void }) {
+export function FeaturedPlanCard({ plan, size = 'md', onBuy, action }: { plan: Plan; size?: 'md' | 'lg'; onBuy?: (plan: Plan) => void; action?: ReactNode }) {
   return (
     <div className="relative flex flex-col rounded-2xl border-2 border-brand-600 bg-white p-4 shadow-lift sm:p-5">
       <span className="absolute right-3 top-0 -translate-y-1/2 rounded-full rounded-b-none bg-brand-600 px-2.5 py-1 text-[11px] font-medium text-white">
@@ -69,15 +70,15 @@ export function FeaturedPlanCard({ plan, size = 'md', onBuy }: { plan: Plan; siz
         ))}
       </ul>
 
-      <PurchaseButton plan={plan} onBuy={onBuy} featured />
+      {action ?? <PurchaseButton plan={plan} onBuy={onBuy} featured />}
     </div>
   )
 }
 
 /* ------------------------------- 完整版（价格页） ----------------------------- */
 
-export function FullPlanCard({ plan, onBuy }: { plan: Plan; onBuy?: (plan: Plan) => void }) {
-  if (plan.featured) return <FeaturedPlanCard plan={plan} size="lg" onBuy={onBuy} />
+export function FullPlanCard({ plan, onBuy, action }: { plan: Plan; onBuy?: (plan: Plan) => void; action?: ReactNode }) {
+  if (plan.featured) return <FeaturedPlanCard plan={plan} size="lg" onBuy={onBuy} action={action} />
   return (
     <div className="card flex flex-col p-4 sm:p-5">
       <span className={`chip w-fit ${accentChip[plan.accent]}`}>{plan.tag}</span>
@@ -95,7 +96,7 @@ export function FullPlanCard({ plan, onBuy }: { plan: Plan; onBuy?: (plan: Plan)
           </li>
         ))}
       </ul>
-      <PurchaseButton plan={plan} onBuy={onBuy} />
+      {action ?? <PurchaseButton plan={plan} onBuy={onBuy} />}
     </div>
   )
 }

@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-14T14:23:18+08:00",
+  "raw_confirmation": "1截断正常、选区拒绝；2拒绝；3成功；4成功，没有文字或来源异常。请更新验收记录，继续带我做下一项测试。",
+  "evidence_type": "用户按指导完成真实Chrome人工操作的文字确认",
+  "SP-07_overall": "PASS",
+  "items": [
+    {
+      "step": 1,
+      "scenario": "long.html读取6000字符截断及全选超长选区接收",
+      "reported_result": "截断正常、选区拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "scenario": "关闭来源tab后在剩余页授权并接收",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "scenario": "不激活无关后台tab，直接关闭后接收当前选区",
+      "reported_result": "成功",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "scenario": "Ctrl单击Learn more在后台加载，原页接收当前选区",
+      "reported_result": "成功",
+      "status": "PASS"
+    }
+  ],
+  "no_text_or_source_anomaly": "用户明确确认没有文字或来源异常",
+  "limitations": [
+    "无新增截图、录屏、选区字符计数或Console/Network日志",
+    "按上一轮四步指导对应结果，不推断其他场景通过",
+    "SP-07本轮矩阵所需子项完成；iframe拒绝为人工指南可选子项，未声称人工通过"
+  ]
+}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LessonMarkdown } from '../components/LessonMarkdown'
 import preview from '../data/previews/c1.md?raw'
+import { projectPricingPath } from '../lib/projectPricingNavigation'
 
 export default function CapstonePreview() {
   return <div className="shell py-6 sm:py-10">
@@ -22,7 +23,7 @@ export default function CapstonePreview() {
           <li>· 毕业项目进度云端保存，「继续毕业项目」直达下一节未完成的课</li>
           <li>· 毕业项目 Starter 下载</li>
         </ul>
-        <div className="mt-4 flex flex-wrap gap-3"><Link to="/capstone/lessons/c1" className="btn btn-primary">进入完整 C1</Link><Link to="/pricing" className="btn btn-outline">查看项目版</Link></div>
+        <div className="mt-4 flex flex-wrap gap-3"><Link to="/capstone/lessons/c1" className="btn btn-lg btn-primary">进入完整 C1</Link><Link to={projectPricingPath('c1')} className="btn btn-lg btn-outline">查看项目版</Link></div>
       </div>
     </article>
   </div>

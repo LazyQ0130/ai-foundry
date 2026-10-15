@@ -6,8 +6,14 @@ import { useAuth } from '../auth/AuthProvider'
 import { useProgress } from '../data/progress'
 import UserAvatar from './UserAvatar'
 import PurchaseModal from './PurchaseModal'
+import { authPath, isLessonDestination } from '../lib/authNavigation'
+import { projectPricingIntent } from '../lib/projectPricingNavigation'
 
 function AccountLinks() {
+  const location = useLocation()
+  const { pathname } = location
+  const returnTo = isLessonDestination(pathname) || (pathname === '/pricing' && projectPricingIntent(location.search)) ? pathname + location.search + location.hash
+    : pathname === '/login' || pathname === '/register' ? new URLSearchParams(location.search).get('next') : undefined
   const { user, loading } = useAuth()
   const { lastLessonPath, loading: progressLoading, error: progressError } = useProgress()
   return <>{loading ? <span className="text-xs text-slate-400">加载中…</span> : user ? <>
@@ -16,17 +22,18 @@ function AccountLinks() {
     {progressLoading
       ? <button type="button" disabled aria-busy="true" className="btn btn-sm btn-primary shrink-0 whitespace-nowrap">继续学习</button>
       : <Link to={progressError ? '/dashboard' : lastLessonPath} className="btn btn-sm btn-primary shrink-0 whitespace-nowrap">继续学习</Link>}
-  </> : <><Link to="/login" className="btn btn-sm btn-outline">登录</Link><Link to="/register" className="btn btn-sm btn-primary">开始学习</Link></>}</>
+  </> : <><Link to={authPath('login', returnTo)} className="btn btn-sm text-slate-600 hover:bg-slate-50 hover:text-brand-700">登录</Link><Link to={authPath('register', returnTo)} className={`btn btn-sm ${pathname === '/' ? 'btn-outline' : 'btn-primary'}`}>注册账号</Link></>}</>
 }
 
 type NavItem = { to: string; label: string; match: (p: string) => boolean }
 
-/** Four top-level entries; the first slot is 课程导读 for visitors and 我的学习 once logged in. */
+/** The first slot is 课程导读 for visitors and 我的学习 once logged in. */
 function navLinksFor(loggedIn: boolean): NavItem[] {
   return [
     loggedIn
       ? { to: '/dashboard', label: '我的学习', match: (p) => p.startsWith('/dashboard') }
       : { to: '/guide', label: '课程导读', match: (p) => p.startsWith('/guide') },
+    { to: '/course-introduction', label: '课程介绍', match: (p) => p.startsWith('/course-introduction') },
     {
       to: '/courses',
       label: '课程',
@@ -81,7 +88,9 @@ function Navbar() {
 
         <button
           type="button"
-          aria-label="打开菜单"
+          aria-label={open ? '关闭菜单' : '打开菜单'}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
           onClick={() => setOpen((v) => !v)}
           className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 lg:hidden"
         >
@@ -90,7 +99,7 @@ function Navbar() {
       </div>
 
       {open ? (
-        <div className="border-t border-slate-200/70 bg-white lg:hidden">
+        <div id="mobile-navigation" className="border-t border-slate-200/70 bg-white lg:hidden">
           <div className="shell flex flex-col py-3">
             {navLinks.map((l) => (
               <NavLink
@@ -120,6 +129,7 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
   {
     title: '课程',
     links: [
+      { label: '课程介绍', to: '/course-introduction' },
       { label: '课程', to: '/courses' },
       { label: '课程导读', to: '/guide' },
       { label: '环境说明', to: '/environment' },
@@ -248,7 +258,7 @@ export default function Layout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer compact={pathname === '/pricing'} />
+      <Footer compact={pathname === '/' || pathname === '/pricing'} />
     </div>
   )
 }

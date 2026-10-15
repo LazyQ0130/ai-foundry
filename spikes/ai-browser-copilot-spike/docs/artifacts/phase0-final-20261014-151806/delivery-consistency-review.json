@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-10-14T07:21:24.410091+00:00",
+  "source_comparison_file": "source-vs-tested-rebuild.json",
+  "matched_source_files": 34,
+  "qa_script_exception": {
+    "file": "scripts/worker-lifecycle-probe.ts",
+    "only_difference": "输出证据目录从固定路径改为EVIDENCE_DIR或新时间戳目录；不改Chrome生命周期验证逻辑",
+    "exact_single_line_difference_confirmed": true
+  },
+  "production_extension_api_shared_and_tests_match_successful_rebuild": true,
+  "current_zip_sha256": "c42d91517699e4d4335c3c8bc8330e227a987d48ee7551026c45d9b8b18f6bab",
+  "loaded_directory": "C:\\Users\\QYF\\Desktop\\AIFoundry\\spikes\\ai-browser-copilot-spike\\.output\\chrome-mv3",
+  "files": [
+    {
+      "file": "assets/sidepanel-OdvY4qma.css",
+      "same_bytes": true,
+      "sha256": "41af9533e76e6a6bfb2bb686cb862daf42607d171ae33fa4abdc337ac52c8a91"
+    },
+    {
+      "file": "background.js",
+      "same_bytes": true,
+      "sha256": "2d182695701f81f7362fd3039dd8ef93593ea295f2c4580571d01904aa60d6ff"
+    },
+    {
+      "file": "chunks/sidepanel-B1Shp76y.js",
+      "same_bytes": true,
+      "sha256": "ba9f65bf3a48f8794884a90048050d825667200b08bbd12404f0dd0ada7a59ab"
+    },
+    {
+      "file": "manifest.json",
+      "same_bytes": true,
+      "sha256": "06067e1d8686ff37234e1a2d19bfdff01b673ce9a7127dff2629308b6cbfbba8"
+    },
+    {
+      "file": "sidepanel.html",
+      "same_bytes": true,
+      "sha256": "f7741ba4d94d2435292c135a3ec02aadac04bf6bce12d5a570e398ad73d74d1e"
+    }
+  ],
+  "minimal_manifest": {
+    "manifest_version": 3,
+    "name": "AI 网页阅读与知识整理助手 · Phase 0",
+    "version": "0.0.2",
+    "minimum_chrome_version": "116",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "sidePanel",
+      "contextMenus",
+      "storage"
+    ],
+    "action": {
+      "default_title": "打开阅读验证侧栏"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:8787"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "side_panel": {
+      "default_path": "sidepanel.html"
+    }
+  },
+  "all_zip_files_match_loaded_disk": true,
+  "second_profile_installed_extension_verified": false,
+  "note": "没有为最终文档改动重新生成构建产物；第二Profile未测，不将磁盘目录核验冒充其安装或原生运行。"
+}

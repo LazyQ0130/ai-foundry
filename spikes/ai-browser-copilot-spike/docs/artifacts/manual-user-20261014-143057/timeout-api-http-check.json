@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-14T06:32:26.768924+00:00",
+  "mode": "timeout",
+  "exec_session_id": 47091,
+  "previous_delay_session_stopped": 26170,
+  "bind": "127.0.0.1:8787",
+  "command": "npm run api:fault",
+  "environment": {
+    "EXTENSION_ORIGIN": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+    "PROVIDER": "mock",
+    "SPIKE_FAULT": "timeout"
+  },
+  "health": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "provider": "mock",
+      "phase": 0
+    }
+  },
+  "synthetic_request": {
+    "v": 1,
+    "requestId": "7813fa3b-932e-4e31-841b-69acead4a9aa",
+    "snapshot": {
+      "tabId": 1,
+      "url": "https://example.com/",
+      "snapshotId": "6805bddd-b6ea-4383-a3e5-7bb954d2b8e6",
+      "title": "Phase 0 timeout HTTP fixture",
+      "text": "TIMEOUT_PROBE_PUBLIC_FIXTURE",
+      "truncated": false,
+      "capturedAt": "2026-10-14T06:32:24.928Z",
+      "contextToken": "ad072582-1745-43ce-a5df-4baf3438624d"
+    }
+  },
+  "response_status": 504,
+  "response": {
+    "code": "PROVIDER_TIMEOUT"
+  },
+  "elapsed_ms": 1825,
+  "cors_allow_origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+  "health_after_timeout": 200,
+  "scope": "真实HTTP验证504和服务可用；不是Chrome侧栏故障UI验收"
+}

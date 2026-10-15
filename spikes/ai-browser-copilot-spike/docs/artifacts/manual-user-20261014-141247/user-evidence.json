@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-10-14T14:12:47+08:00",
+  "evidence_type": "用户真实Chrome人工操作回传及四张侧栏截图",
+  "raw_confirmation": "结果如图，成功",
+  "SP-06": "PASS",
+  "SP-07_once_consumption": "PASS",
+  "SP-07_overall": "BLOCKED",
+  "extension_id": "hijkflihajcoealnhjnepmgabohaimcn",
+  "images": [
+    {
+      "step": 1,
+      "original_path": "C:\\Users\\QYF\\AppData\\Local\\Temp\\codex-clipboard-bf275603-ea44-410e-94be-264b0c9a416d.png",
+      "archived_file": "06-selection-example.png",
+      "bytes": 50526,
+      "sha256": "17f110a57be2a528c721cec5efa3f5851992bd790a76c6d50a49f8cc0cc98e69",
+      "visible_result": "Example选区接收成功",
+      "visible_url": "https://example.com/",
+      "visible_tabId": 1183769424,
+      "visible_extension_version": "0.0.2",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "original_path": "C:\\Users\\QYF\\AppData\\Local\\Temp\\codex-clipboard-f7b92609-d2d9-431c-9cde-60f3484b27fe.png",
+      "archived_file": "07-consumed-example.png",
+      "bytes": 36142,
+      "sha256": "f7c988cf7ebb9c29217ee122f0e169846495cc5b67b67515f0951a8dc7fc417a",
+      "visible_result": "NO_SELECTION：没有有效选区，请重新选择。",
+      "visible_url": null,
+      "visible_tabId": null,
+      "visible_extension_version": "0.0.2",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "original_path": "C:\\Users\\QYF\\AppData\\Local\\Temp\\codex-clipboard-fec08906-7640-4f25-99af-f9ba2ba90812.png",
+      "archived_file": "06-selection-iana.png",
+      "bytes": 60604,
+      "sha256": "2573399e49866f332b0a4144fd3c43e79aabc080b11d82df06683d20a7e17bdd",
+      "visible_result": "IANA选区接收成功",
+      "visible_url": "https://www.iana.org/help/example-domains",
+      "visible_tabId": 1183769425,
+      "visible_extension_version": "0.0.2",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "original_path": "C:\\Users\\QYF\\AppData\\Local\\Temp\\codex-clipboard-feb4d797-22b7-47e0-8e00-e448d5f194ef.png",
+      "archived_file": "07-consumed-iana.png",
+      "bytes": 36005,
+      "sha256": "d077d6ac4f1bea05734276b1dfdf325748b36c485bf60b59d12234e203eada89",
+      "visible_result": "NO_SELECTION：没有有效选区，请重新选择。",
+      "visible_url": null,
+      "visible_tabId": null,
+      "visible_extension_version": "0.0.2",
+      "status": "PASS"
+    }
+  ],
+  "observations": [
+    "两站选区成功界面可见各自URL与不同tabId",
+    "Example为中文短选区，IANA为不同英文段落",
+    "两次重复接收截图均显示NO_SELECTION且无旧选区",
+    "截图为侧栏局部；真实右键操作步骤依用户按指导完成并回传成功确认"
+  ],
+  "limitations": [
+    "没有整窗录屏、菜单展开截图或Network日志",
+    "不将本组推断为过期、空/长选区或切页失效已通过",
+    "没有补录加载包hash"
+  ]
+}

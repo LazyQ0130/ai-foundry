@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-14T06:37:02.960789+00:00",
+  "mode": "invalid-provider",
+  "listener_pid": 22092,
+  "previous_timeout_session": 47091,
+  "command": "npm run api:fault",
+  "environment": {
+    "EXTENSION_ORIGIN": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+    "PROVIDER": "mock",
+    "SPIKE_FAULT": "invalid-provider"
+  },
+  "bind": "127.0.0.1:8787",
+  "startup_note": "切换工具调用被中断，未取得新exec session返回；随后独立检查监听PID命令为本spike的scripts/fault-api.ts，并以两次实际HTTP502确认模式已生效，无重复启动。",
+  "health": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "provider": "mock",
+      "phase": 0
+    }
+  },
+  "synthetic_request": {
+    "v": 1,
+    "requestId": "f1bfdbaf-1e05-44de-b331-34c16be9ee2c",
+    "snapshot": {
+      "tabId": 1,
+      "url": "https://example.com/",
+      "snapshotId": "28957101-f63d-46f1-932e-ad64021bc293",
+      "title": "Phase 0 invalid-provider HTTP fixture",
+      "text": "INVALID_PROVIDER_PUBLIC_FIXTURE",
+      "truncated": false,
+      "capturedAt": "2026-10-14T06:37:02.891Z",
+      "contextToken": "233a1095-d886-45fc-81e3-22bb14c1a778"
+    }
+  },
+  "responses": [
+    {
+      "status": 502,
+      "body": {
+        "code": "INVALID_PROVIDER_RESPONSE"
+      },
+      "cors_allow_origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+      "elapsed_ms": 48
+    },
+    {
+      "status": 502,
+      "body": {
+        "code": "INVALID_PROVIDER_RESPONSE"
+      },
+      "cors_allow_origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+      "elapsed_ms": 10
+    }
+  ],
+  "health_after": 200,
+  "scope": "真实API拒绝非法Provider输出；侧栏只应收到HTTP502，不声称裸非法JSON到达侧栏，也不代替Chrome UI验收"
+}

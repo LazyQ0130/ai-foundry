@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-10-14T08:45:32.067288+00:00",
+  "source": "human explicitly performed new Chrome Profile install and native toolbar/confirmation after reopen; current conversation reply",
+  "user_confirmation": "新 Profile 安装成功、关闭重开成功、无新增错误 p1-chrome-acceptance-20261014-164206",
+  "accepted": {
+    "P1-19": "PASS: fresh Profile installation and close/reopen succeeded, no new errors reported"
+  },
+  "read_only_corroboration": {
+    "profile": "C:\\Users\\QYF\\Desktop\\p1-chrome-acceptance-20261014-164206",
+    "profile_exists": true,
+    "chrome_last_version": "155.0.8059.41",
+    "matching_installations": [
+      {
+        "settings_file": "Secure Preferences",
+        "extension_id": "hkfoaciebiiiimpicpjcbibnknfofepe",
+        "installed_path": "C:\\Users\\QYF\\Desktop\\AIFoundry\\.runtime\\p1-final-package-recheck-20261014\\reference\\.output\\chrome-mv3",
+        "location": 4,
+        "settings_file_sha256": "eb8582345d064d712e233a691115786006706d3384b24eed8ef1cdcd68508be6"
+      }
+    ],
+    "manifest": {
+      "manifest_version": 3,
+      "name": "AI 网页阅读与知识整理助手 · P1",
+      "version": "0.1.0",
+      "minimum_chrome_version": "116",
+      "permissions": [
+        "sidePanel"
+      ],
+      "action": {
+        "default_title": "打开 P1 阅读助手侧栏"
+      },
+      "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'none'"
+      },
+      "background": {
+        "service_worker": "background.js"
+      },
+      "side_panel": {
+        "default_path": "sidepanel.html"
+      }
+    },
+    "production_files_equal_delivered_zip": [
+      {
+        "file": "manifest.json",
+        "sha256": "94977555e5e57a9d3686a3fba2b87b86855b97824cad28e01bf01f450a837685"
+      },
+      {
+        "file": "sidepanel.html",
+        "sha256": "6d0157297551783c90c4c0a0584848ca0e36b05c1644924be6aaf537a23821a5"
+      },
+      {
+        "file": "background.js",
+        "sha256": "18fbde09563b675a35f1f224cf6d71f1688df6ab0b37028838013208382d838c"
+      },
+      {
+        "file": "chunks/sidepanel-DvhB7Yd8.js",
+        "sha256": "2192e2e5d212cb2ec2345950cf4ff9f3b6329ef3d9f2ad5f387bd6278c19ecd5"
+      },
+      {
+        "file": "assets/sidepanel-CjTTY9qX.css",
+        "sha256": "1ac787ab7e473cce8ad09ed26ca5d0f0a58dd61828965ea5c8fdfe8df4fb5367"
+      }
+    ],
+    "reference_chrome_zip_sha256": "d65626d570ea03ee45325ec855b7efa84d9a114fb50256766aca7c9cabba24d3"
+  },
+  "evidence_boundary": "Native clicks and successful reopen are human-confirmed; profile metadata and package bytes corroborate target/installation/version only. No synthetic action was dispatched. Browser history/account data were not saved. No claim of Chrome116, real model, P2 or platform publishing tests.",
+  "final_result": {
+    "scope": "P1 only",
+    "status": "GO",
+    "pass": 20,
+    "fail": 0,
+    "blocked": 0
+  }
+}

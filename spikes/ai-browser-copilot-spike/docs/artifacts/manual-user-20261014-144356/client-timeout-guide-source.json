@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-14T06:45:25.244602+00:00",
+  "official_source": "https://developer.chrome.com/docs/devtools/settings/throttling",
+  "source_facts": [
+    "DevTools Settings的Throttling中可新增Network throttling profile",
+    "下载和上传速度单位Kbps；延迟单位毫秒",
+    "保存后从Network面板限速下拉选择profile"
+  ],
+  "chosen_test_settings": {
+    "name": "Phase0-3000ms",
+    "download_Kbps": 10000,
+    "upload_Kbps": 10000,
+    "latency_ms": 3000
+  },
+  "local_implementation": "extension/src/api-client.ts默认2500ms时调用AbortController.abort；sidepanel/main.tsx将AbortError显示API_TIMEOUT",
+  "scope": "官方文档核对与人工测试准备；Chrome侧栏限速/超时结果仍待用户验证"
+}

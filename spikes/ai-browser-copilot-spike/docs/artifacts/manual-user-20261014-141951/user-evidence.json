@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-14T14:19:51+08:00",
+  "evidence_type": "用户按上轮指导进行真实Chrome人工操作的文字确认",
+  "raw_confirmation": "1拒绝、2拒绝、3拒绝、4拒绝，都没有旧选中文字残留。请更新验收记录，继续带我做下一项测试。",
+  "extension_version_context": "0.0.2",
+  "SP-07_overall": "BLOCKED",
+  "SP-07_subcases": [
+    {
+      "step": 1,
+      "scenario": "发送后保持原页等待至少65秒再接收",
+      "reported_result": "拒绝，无旧选中文字残留",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "scenario": "有效选区未消费，空白处右键发送空选区覆盖后再接收",
+      "reported_result": "拒绝，无旧选中文字残留",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "scenario": "发送后切换标签页再切回接收",
+      "reported_result": "拒绝，无旧选中文字残留",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "scenario": "发送后同URL刷新，点击A后再接收",
+      "reported_result": "拒绝，无旧选中文字残留",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "未新增截图、计时录屏、确切错误码、Console/Network日志",
+    "按用户四项对应确认，不单凭文字推断实际worker终止",
+    "超长选区、关闭来源tab、无关后台tab变化仍待测"
+  ]
+}

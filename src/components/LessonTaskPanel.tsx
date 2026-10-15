@@ -1,6 +1,7 @@
 import { Check, ClipboardList } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Tick } from './ui'
+import { Tick } from './ui.js'
 
 /** Progress strip shown at the top of every lesson workbench (Stage and Capstone). */
 export function LessonProgressStrip({ to, label, completed, total }: { to: string; label: string; completed: number; total: number }) {
@@ -12,10 +13,11 @@ export function LessonProgressStrip({ to, label, completed, total }: { to: strin
 }
 
 /** Checklist plus explicit completion, shared by Stage and Capstone lessons. */
-export function LessonTaskCard({ items, checked, disabled, saving, done, onToggle, onComplete }: {
+export function LessonTaskCard({ items, checked, disabled, disabledAction, saving, done, onToggle, onComplete }: {
   items: string[]
   checked: boolean[]
   disabled: boolean
+  disabledAction?: ReactNode
   saving: boolean
   done: boolean
   onToggle: (index: number) => void
@@ -44,6 +46,10 @@ export function LessonTaskCard({ items, checked, disabled, saving, done, onToggl
       </ul>
     </div>
     <div className="shrink-0 border-t border-brand-100 bg-brand-50/40 p-4">
+      {disabled ? <>
+        <p className="text-[13px] leading-6 text-slate-600">当前任务仅供阅读核对；登录后即可勾选任务并记录完成状态。</p>
+        {disabledAction}
+      </> : <>
       <button
         type="button"
         onClick={onComplete}
@@ -55,6 +61,7 @@ export function LessonTaskCard({ items, checked, disabled, saving, done, onToggl
         {done ? '已完成本课' : '标记为完成'}
       </button>
       {!done && !allChecked ? <p className="text-center text-[13px] text-slate-500">完成本地操作并勾选全部任务后，即可标记本课完成。</p> : null}
+      </>}
     </div>
   </div>
 }

@@ -56,7 +56,7 @@ test('entry CTA follows independent progress; overview uses continueLessonId inc
     assert.ok(html.includes(label)); assert.match(html, completed === 9 ? /href="\/capstone"/ : /href="\/capstone\/lessons\/c4"/)
   }
   const noAccess = render(h(CapstoneEntryCard, { data: { ...summary, access: false, progress: null } }))
-  assert.match(noAccess, /href="\/pricing"/); assert.match(noAccess, /查看项目版/)
+  assert.match(noAccess, /href="\/pricing\?plan=all-access-projects&amp;next=%2Fcapstone#plan-all-access-projects"/); assert.match(noAccess, /查看项目版/)
   const hero = render(h(CapstoneOverviewStart, { data: { ...summary, progress: { ...progress, continueLessonId: 'c7' } }, loading: false }))
   assert.match(hero, /href="\/capstone\/lessons\/c7"/)
   assert.ok(hero.includes(capstoneLessons[6].title))

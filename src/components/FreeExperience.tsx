@@ -16,6 +16,6 @@ export function FreeExperience({ prepDone, firstDone }: { prepDone: boolean; fir
     <p className="mt-3 text-sm leading-6 text-slate-600">{complete ? '你已经跑起 Starter，并完成第一次真实 AI Coding 修改。接下来你会继续学习需求表达、Bug 修复、代码改动检查、Git 保存与独立完成一个功能。' : '从跑起一个真实项目开始，用 AI 完成你的第一次代码修改。'}</p>
     <ol className="my-4 space-y-2 text-sm text-slate-600"><li>{prepDone ? '✓' : '○'} 第 0 课 · 准备开发环境</li><li>{firstDone ? '✓' : '○'} 1.1 · 第一次让 AI 改一个真实项目</li></ol>
     <div className="flex flex-wrap gap-3"><Link className="btn btn-md btn-primary" to={complete ? '/stage/stage-1' : prepDone ? '/lesson/stage-1/s1-l1' : '/lesson/stage-1/s1-l0'}>{complete ? '查看 Stage 1 完整内容' : prepDone ? '继续免费体验' : '开始免费体验'}</Link>{complete && <Link className="btn btn-md btn-outline" to="/pricing">查看学习方案</Link>}</div>
-    {!complete && <p className="mt-3 text-xs text-slate-500">{prepDone ? 'Starter 已准备好，下一步让 AI 真正修改它。' : '无需购买，登录即可开始。'}</p>}
+    {!complete && <p className="mt-3 text-xs leading-5 text-slate-500">{prepDone ? 'Starter 已准备好，下一步让 AI 真正修改它。' : '正文可直接阅读；下载 Starter 和记录进度需登录，无需购买。'}</p>}
   </section>
 }

@@ -1,3 +1,4 @@
+import { learningSupport } from '../data/learningSupport'
 import { FaqPermalink } from '../components/FaqPermalink'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
@@ -69,7 +70,7 @@ export default function FaqPage() {
         <section className="rounded-2xl border border-brand-100 bg-brand-50/60 p-6 sm:p-7">
           <MessageCircle className="h-6 w-6 text-brand-600" aria-hidden="true" />
           <h2 className="mt-3 text-lg font-semibold text-slate-900">还没找到答案？</h2>
-          <p className="mt-2 text-[13px] leading-6 text-slate-600">购买、退款、课程开通或账号问题，可联系管理员处理。课程采用自主阅读方式，不提供人工答疑或代码排错服务。</p>
+          <p className="mt-2 text-[13px] leading-6 text-slate-600">{learningSupport.short}</p>
           <button type="button" className="btn btn-md btn-primary mt-5" onClick={() => setContact(true)}>联系管理员<ArrowRight className="h-4 w-4" /></button>
         </section>
       </div>

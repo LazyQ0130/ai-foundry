@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-10-14T15:03:17+08:00",
+  "raw_confirmation": "都符合预期",
+  "subcase": "SP-12_A1同Profile重开后旧状态清除及功能恢复",
+  "status": "PASS",
+  "SP-12_overall": "BLOCKED",
+  "evidence_type": "用户按上轮四步真实Chrome操作的文字确认，辅以原Profile退出后新建browser root进程核验",
+  "confirmed_context": [
+    "打开原测试Profile并点击工具栏A，无旧正文/摘要，Mock初始禁用",
+    "不先读取而接收关闭前未消费选区，NO_SELECTION",
+    "重新读取及Mock成功，来源为当前Example",
+    "新选区右键发送接收成功，再接收NO_SELECTION"
+  ],
+  "process_check": "same-profile-reopen-process-check.json",
+  "limitations": [
+    "无新增UI截图/录屏/Network记录",
+    "原生操作结果依用户文字确认，进程检查不替代UI验收",
+    "空闲使用、扩展重载和第二Profile未据此标PASS"
+  ]
+}

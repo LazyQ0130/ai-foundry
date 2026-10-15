@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { api, ApiError, errorMessage, jsonBody } from '../lib/api.js'
+import { authPath } from '../lib/authNavigation.js'
 
 export type User = { id: string; nickname: string; phoneMasked: string; phoneVerified: boolean; email: string | null; emailVerifiedAt: string | null; role: 'ADMIN' | 'STUDENT'; avatarUrl: string | null; entitlements: string[]; productEntitlements: string[]; createdAt: string; lastLoginAt: string | null }
 type Auth = {
@@ -43,8 +44,8 @@ export function RequireAuth({ children, admin = false }: { children: ReactNode; 
   const { user, loading, error, refreshUser } = useAuth()
   const location = useLocation()
   if (loading) return <p className="shell py-20" role="status">正在确认登录状态…</p>
-  if (error) return <div className="shell py-20" role="alert">{error} <button onClick={() => void refreshUser()} className="btn btn-outline">重试</button></div>
-  if (!user) return <Navigate to={`/login?next=${encodeURIComponent(location.pathname + location.search)}`} replace />
+  if (error) return <div className="shell py-20" role="alert">{error} <button onClick={() => void refreshUser()} className="btn btn-md btn-outline">重试</button></div>
+  if (!user) return <Navigate to={authPath('login', location.pathname + location.search + location.hash)} replace />
   if (admin && user.role !== 'ADMIN') return <div className="shell py-20">需要管理员权限。</div>
   return <>{children}</>
 }

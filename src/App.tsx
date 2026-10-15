@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import Admin from './pages/Admin'
 import CourseCatalog from './pages/CourseCatalog'
 import CourseGuide from './pages/CourseGuide'
+import CourseIntroduction from './pages/CourseIntroduction'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import LessonPage from './pages/LessonPage'
@@ -53,6 +54,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="guide" element={<CourseGuide />} />
+        <Route path="course-introduction" element={<CourseIntroduction />} />
         <Route path="environment" element={<Suspense fallback={<p className="shell py-12">正在加载环境说明…</p>}><Environment /></Suspense>} />
         <Route path="capstone" element={<CapstoneOverview />} />
         <Route path="capstone/preview/c1" element={<Suspense fallback={<p role="status" className="shell py-12">正在加载免费节选…</p>}><CapstonePreview /></Suspense>} />

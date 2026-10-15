@@ -4,6 +4,7 @@ import { allowAiRequest, allowProviderWork } from "@/lib/ai-rate-limit";
 import { aiErrorResponse, aiFailure, aiHeaders } from "@/lib/ai-http";
 import { embed } from "@/lib/ai-provider";
 import { retrieveTopK } from "@/lib/knowledge-retrieval";
+import { sourceIdForChunk } from "@/lib/knowledge-source-id";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     const query = await embed(input.question.trim());
     const chunks = await retrieveTopK(session.user.id, query);
     return NextResponse.json({ ok: true, kind: query.kind,
-      matches: chunks.map(chunk => ({ title: chunk.title, position: chunk.position, preview: chunk.content.slice(0, 160), similarity: chunk.similarity })),
+      matches: chunks.map(chunk => ({ sourceId: sourceIdForChunk(chunk.chunkId), title: chunk.title, position: chunk.position, preview: chunk.content.slice(0, 160), similarity: chunk.similarity })),
       usage: { embeddingTokens: query.usage?.totalTokens ?? null },
     }, { headers: aiHeaders });
   } catch (error) { return aiErrorResponse(error); }

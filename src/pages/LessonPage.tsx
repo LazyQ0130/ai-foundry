@@ -2,7 +2,8 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { LessonLayout } from '../components/LessonLayout'
 import { LessonProgressStrip, LessonTaskCard } from '../components/LessonTaskPanel'
 import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
-import { Link, useParams } from 'react-router-dom'
+import { ExperienceNextStep, LessonSignInActions } from '../components/LessonContinuation'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import {
   ArrowLeft,
   ChevronDown,
@@ -190,6 +191,16 @@ function LessonArticle({ stage, lesson, content }: { stage: Stage; lesson: Lesso
         </div>
       </header>
 
+      {lesson.isPrep && <aside aria-label="免费体验说明" className="mb-6 rounded-xl border border-brand-100 bg-brand-50/50 p-4 text-[13px] leading-6 text-slate-600">
+        <h2 className="font-semibold text-slate-900">免费体验分两步</h2>
+        <p className="mt-1">第 0 课先准备环境、跑起项目，1.1 再让 AI 完成第一次修改。正文可直接阅读；下载 Starter、勾选任务和保存进度需登录，无需购买。</p>
+      </aside>}
+      {lesson.id === 's1-l1' && !stage.lessons.some(item => item.isPrep && item.status === 'completed') && <aside aria-label="首次体验准备" className="mb-6 rounded-xl border border-brand-100 bg-brand-50/50 p-4 text-[13px] leading-6 text-slate-600">
+        <h2 className="font-semibold text-slate-900">第一次来？先完成第 0 课准备</h2>
+        <p className="mt-1">本课会修改已在本地运行的 Starter。如果还没安装工具、下载并启动项目，请先完成准备；已经准备好，可以直接往下读。</p>
+        <Link to="/lesson/stage-1/s1-l0" className="link-more mt-2 min-h-9 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">前往第 0 课：开始前准备 <ChevronRight aria-hidden="true" className="h-3.5 w-3.5" /></Link>
+      </aside>}
+
       <Suspense fallback={<p role="status" className="text-base text-slate-600">正在排版课程…</p>}><LessonMarkdown body={content.body}/></Suspense>
       <nav aria-label="课程翻页" className="mt-8 flex flex-wrap justify-between gap-3 sm:hidden"><NavArrow dir="prev" stage={stage} lesson={lesson} /><NavArrow dir="next" stage={stage} lesson={lesson} /></nav>
     </article>
@@ -229,6 +240,8 @@ function NavArrow({ dir, stage, lesson }: { dir: 'prev' | 'next'; stage: Stage; 
 function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; content: LessonContent }) {
   const { getChecks, setCheck, completeLesson, saving, mutationError } = useProgress()
   const { user } = useAuth()
+  const location = useLocation()
+  const returnTo = `${location.pathname}${location.search}#lesson-workbench`
   const done = lesson.status === 'completed'
   const checked = getChecks(lesson.id, content.meta.checkKeys)
 
@@ -240,18 +253,20 @@ function Workbench({ stage, lesson, content }: { stage: Stage; lesson: Lesson; c
       <LessonProgressStrip to={`/stage/${stage.slug}`} label={`${stage.tag} · 学习进度`} completed={stageCompletedCount(stage)} total={stageLessonCount(stage)} /> </>}
 
       {mutationError && <p role="alert" className="text-sm text-red-600">{mutationError}</p>}
-      {!user && <Link to="/login" className="block text-sm text-brand-600">登录后同步学习进度</Link>}
       {saving && <p role="status" className="text-xs text-slate-500">正在保存…</p>}
       {/* Keep the completion action visible while long checklists scroll. */}
       <LessonTaskCard
         items={content.meta.checklist}
         checked={checked}
         disabled={!user}
+        disabledAction={!user ? <LessonSignInActions returnTo={returnTo} /> : undefined}
         saving={saving}
         done={done}
         onToggle={(i) => setCheck(lesson.id, content.meta.checkKeys[i], !checked[i])}
         onComplete={() => completeLesson(lesson.id)}
       />
+
+      {!done && (lesson.isPrep || (lesson.id === 's1-l1' && !user?.entitlements.includes(stage.slug))) && <ExperienceNextStep preparation={!!lesson.isPrep} />}
 
       {done && next && !lesson.isPrep ? (
         <Link to={`/lesson/${stage.slug}/${next.id}`} className="btn btn-md btn-outline w-full">

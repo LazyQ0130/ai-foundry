@@ -15,10 +15,29 @@ function fixture(completed: number, owned = false): Stage {
     })),
   }
 }
-function render(stage: Stage, purchasable = true) {
+function render(stage: Stage, purchasable = true, placement?: 'combined' | 'hero' | 'purchase') {
   return renderToStaticMarkup(createElement(StaticRouter, { location: '/' },
-    createElement(StageAccessActions, { stage, purchasable, onPurchase: () => {} })))
+    createElement(StageAccessActions, { stage, purchasable, placement, onPurchase: () => {} })))
 }
+
+test('stage hero prioritizes the free route while purchase lives in a single separate card', () => {
+  const hero = render(fixture(0), true, 'hero')
+  assert.match(hero, /<a[^>]*class="[^"]*btn-primary"[^>]*href="\/lesson\/stage-1\/s1-l0"/)
+  assert.match(hero, /href="\/\#stage-access"/)
+  assert.doesNotMatch(hero, /<button|开通本阶段|¥99/)
+  const purchase = render(fixture(0), true, 'purchase')
+  assert.equal((purchase.match(/<button/g) ?? []).length, 1)
+  assert.match(purchase, /开通本阶段/)
+  assert.doesNotMatch(purchase, /开始免费体验|继续免费体验/)
+  assert.match(render(fixture(1), true, 'hero'), /href="\/lesson\/stage-1\/s1-l1"/)
+  const completed = render(fixture(2), true, 'hero')
+  assert.match(completed, /查看课程安排/)
+  assert.doesNotMatch(completed, /s1-l0|s1-l1|<button/)
+  const noPreview = fixture(0)
+  noPreview.lessons = []
+  assert.match(render(noPreview, true, 'hero'), /查看课程安排/)
+  assert.doesNotMatch(render(noPreview, true, 'hero'), /免费体验/)
+})
 
 test('StageAccess offers the first preview to an unentitled new learner', () => {
   const html = render(fixture(0))

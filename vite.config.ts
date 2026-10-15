@@ -6,6 +6,8 @@ export default defineConfig({
   build: { emptyOutDir: false },
   server: {
     port: 5173,
+    // QA/browser profiles are not frontend source; locked Cookie files cannot be watched.
+    watch: { ignored: ['**/.runtime/**'] },
     fs: { deny: ['.env', '.env.*', '**/.env*', '**/.runtime/**', '**/starter/**', '**/course-content/**', '**/server/**', '**/prisma/**'] },
     proxy: { '/api': 'http://127.0.0.1:3001' },
   },

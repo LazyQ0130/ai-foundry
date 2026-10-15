@@ -9,15 +9,16 @@ import type {LessonContent} from '../data/lessonContent.js'
 import {LessonLayout} from '../components/LessonLayout.js'
 import {CapstoneSidebar,CapstoneLessonHeader,CapstoneLessonNavigation} from '../components/CapstoneLearning.js'
 import {LessonProgressStrip,LessonTaskCard} from '../components/LessonTaskPanel.js'
+import {projectPricingPath} from '../lib/projectPricingNavigation.js'
 const LessonMarkdown=lazy(()=>import('../components/LessonMarkdown.js').then(m=>({default:m.LessonMarkdown})))
 export default function CapstoneLessonPage(){
  const {lessonId=''}=useParams(),{user}=useAuth(),lab=useCapstone()
  const [loaded,setLoaded]=useState<{id:string;owner:string;content:LessonContent}|null>(null),[error,setError]=useState('')
  useEffect(()=>{let active=true;const controller=new AbortController();const load=()=>{setLoaded(null);setError('');void api<{content:LessonContent}>('/capstone/lessons/'+encodeURIComponent(lessonId),{signal:controller.signal}).then(data=>{if(active)setLoaded({id:lessonId,owner:user?.id??'',content:data.content})}).catch(e=>{if(active)setError(errorMessage(e))})};load();window.addEventListener('focus',load);return()=>{active=false;controller.abort();window.removeEventListener('focus',load)}},[lessonId,user?.id])
  const meta=capstoneLessons.find(l=>l.id===lessonId),content=loaded?.id===lessonId&&loaded.owner===(user?.id??'')?loaded.content:null
- if(error||lab.error)return <div className="shell py-16" role="alert"><p>{error||lab.error}</p><Link className="btn btn-outline mt-5" to="/capstone">返回项目工坊</Link><Link className="btn btn-primary ml-3" to="/pricing">查看项目版</Link></div>
+ if(error||lab.error)return <div className="shell py-16" role="alert"><p>{error||lab.error}</p><div className="mt-5 flex flex-wrap gap-3"><Link className="btn btn-md btn-outline" to="/capstone">返回项目工坊</Link><Link className="btn btn-md btn-primary" to={projectPricingPath(lessonId)}>查看项目版</Link></div></div>
  if(!content||lab.loading)return <p className="shell py-16" role="status">正在加载项目工坊…</p>
- if(!lab.data?.access)return <div className="shell py-16">需要项目工坊权益。<Link to="/pricing">查看项目版</Link></div>
+ if(!lab.data?.access)return <div className="shell py-16">需要项目工坊权益。<Link to={projectPricingPath(lessonId)}>查看项目版</Link></div>
  if(!meta)return <div className="shell py-16">没有找到这节课。<Link to="/capstone">返回项目工坊</Link></div>
  const progress=lab.data.progress
  const checked=content.meta.checkKeys.map(key=>progress?.checks[lessonId]?.[key]??false),done=progress?.completedLessons.includes(lessonId)??false

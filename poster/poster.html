@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>AIFoundry 课程海报</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { }
+  body {
+    font-family: "Microsoft YaHei","PingFang SC","Hiragino Sans GB",-apple-system,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color:#0F172A;
+  }
+  .poster {
+    position:relative; width:1242px; height:1656px; overflow:hidden;
+    background:#ffffff; display:flex; flex-direction:column;
+  }
+  /* ---------- 顶部光带 ---------- */
+  .topwash {
+    position:absolute; left:0; right:0; top:0; height:620px;
+    background:
+      radial-gradient(720px 380px at 88% -60px, rgba(37,99,235,.20), rgba(37,99,235,0) 70%),
+      radial-gradient(560px 320px at 6% 0px, rgba(96,165,250,.22), rgba(96,165,250,0) 72%),
+      linear-gradient(180deg,#EEF4FF 0%, #F7FAFF 62%, #FFFFFF 100%);
+  }
+  .gridmask {
+    position:absolute; left:0; right:0; top:0; height:620px; opacity:.5;
+    background-image:linear-gradient(rgba(37,99,235,.075) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(37,99,235,.075) 1px, transparent 1px);
+    background-size:52px 52px;
+    -webkit-mask-image:linear-gradient(180deg,#000 0%, rgba(0,0,0,.25) 58%, transparent 100%);
+            mask-image:linear-gradient(180deg,#000 0%, rgba(0,0,0,.25) 58%, transparent 100%);
+  }
+  .wrap { position:relative; padding:0 66px; display:flex; flex-direction:column; flex:1; }
+
+  /* ---------- 头部 ---------- */
+  header { padding-top:58px; }
+  .brandrow { display:flex; align-items:center; justify-content:space-between; }
+  .brandrow img.lock { height:52px; display:block; }
+  .studio {
+    display:flex; align-items:center; gap:9px;
+    padding:7px 15px 7px 11px; border-radius:999px;
+    background:rgba(255,255,255,.78); border:1px solid #DCE7FB;
+    font-size:14.5px; font-weight:600; color:#475569; letter-spacing:.2px;
+  }
+  .studio img { height:23px; display:block; }
+  .studio b { color:#1D4ED8; font-weight:700; }
+
+  h1.slogan {
+    margin-top:44px; font-size:82px; line-height:1.14; font-weight:800;
+    letter-spacing:-1.5px; color:#0B1B33;
+  }
+  h1.slogan .hl {
+    background:linear-gradient(96deg,#2563EB 6%, #38BDF8 96%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .subhead { margin-top:22px; font-size:27px; line-height:1.5; font-weight:600; color:#334155; letter-spacing:-.2px; }
+  .desc { margin-top:14px; max-width:1000px; font-size:18.5px; line-height:1.72; color:#64748B; }
+  .chips { margin-top:24px; display:flex; gap:10px; }
+  .chip {
+    display:inline-flex; align-items:center; gap:7px;
+    padding:9px 16px; border-radius:10px; font-size:16px; font-weight:700;
+    background:rgba(255,255,255,.9); border:1px solid #C9DCFB; color:#1D4ED8;
+  }
+  .chip .dot { width:7px; height:7px; border-radius:50%; background:#22C55E; }
+  .chip.gray { color:#475569; border-color:#E2E8F0; }
+
+  /* ---------- 数据条 ---------- */
+  .stats { margin-top:30px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .stat {
+    background:#fff; border:1px solid #E6EDF9; border-radius:16px; padding:18px 22px;
+    box-shadow:0 10px 24px -18px rgba(37,99,235,.5);
+  }
+  .stat .num { font-size:34px; font-weight:800; color:#1D4ED8; letter-spacing:-.6px; line-height:1.1; }
+  .stat .lb { margin-top:5px; font-size:15px; color:#64748B; }
+
+  /* ---------- 路径 ---------- */
+  .section-head { display:flex; align-items:flex-end; justify-content:space-between; margin-top:46px; }
+  .section-head h2 { font-size:31px; font-weight:800; letter-spacing:-.6px; color:#0B1B33; }
+  .section-head p { font-size:16px; color:#64748B; margin-top:8px; }
+  .legend { font-size:15px; color:#94A3B8; white-space:nowrap; }
+
+  .stages { margin-top:20px; display:flex; flex-direction:column; gap:13px; }
+  .stage {
+    position:relative; display:flex; align-items:center; gap:20px;
+    background:#fff; border:1px solid #E8EEF8; border-left:5px solid var(--c);
+    border-radius:14px; padding:18px 24px 18px 22px;
+    box-shadow:0 8px 22px -18px rgba(15,23,42,.35);
+  }
+  .stage .no {
+    flex:0 0 auto; width:58px; height:58px; border-radius:13px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:var(--bg); color:var(--c);
+  }
+  .stage .no small { font-size:10.5px; font-weight:700; letter-spacing:.6px; opacity:.85; }
+  .stage .no b { font-size:26px; font-weight:800; line-height:1; margin-top:2px; }
+  .stage .body { flex:1; min-width:0; }
+  .stage .t1 { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .stage .t1 b { font-size:23px; font-weight:800; color:#0F172A; letter-spacing:-.3px; }
+  .stage .t1 .lv { font-size:13px; font-weight:700; color:var(--c); background:var(--bg); padding:3px 9px; border-radius:7px; }
+  .stage .t1 .ls { font-size:14px; color:#94A3B8; }
+  .stage .t2 { margin-top:8px; font-size:16.5px; color:#475569; line-height:1.55; }
+  .stage .t2 em { font-style:normal; font-weight:700; color:#1E293B; }
+  .stage .price { flex:0 0 auto; text-align:right; padding-left:12px; }
+  .stage .price b { font-size:27px; font-weight:800; color:#1D4ED8; letter-spacing:-.5px; }
+  .stage .price b i { font-size:16px; font-style:normal; font-weight:700; }
+  .stage .price span { display:block; font-size:12.5px; color:#94A3B8; margin-top:2px; }
+
+  .chain {
+    margin-top:18px; display:flex; align-items:center; justify-content:center; gap:11px;
+    font-size:14.5px; font-weight:600; color:#64748B;
+    background:#F6F9FF; border:1px dashed #CBDBF6; border-radius:12px; padding:12px 18px;
+  }
+  .chain .arw { color:#9CB6E8; }
+  .chain b { color:#1D4ED8; }
+
+  /* ---------- 学习方式 ---------- */
+  .flow { margin-top:22px; display:flex; align-items:center; gap:0; }
+  .flow .fl {
+    flex:1; text-align:center; padding:13px 0; border-radius:11px;
+    background:#F3F7FF; border:1px solid #E1EAFB;
+    font-size:16px; font-weight:700; color:#1E3A8A;
+  }
+  .flow .gt { width:26px; text-align:center; color:#A9BFE6; font-size:16px; font-weight:800; }
+
+  /* ---------- 转化 ---------- */
+  .cta {
+    position:relative; margin-top:26px; border-radius:20px; overflow:hidden;
+    background:linear-gradient(120deg,#1D4ED8 0%, #2563EB 46%, #3B82F6 100%);
+    padding:26px 34px; color:#fff; display:flex; align-items:center; justify-content:space-between;
+    box-shadow:0 22px 46px -26px rgba(29,78,216,.85);
+  }
+  .cta .deco { position:absolute; right:-70px; top:-90px; width:290px; height:290px; border-radius:50%; background:rgba(255,255,255,.10); }
+  .cta .deco2 { position:absolute; right:60px; bottom:-120px; width:230px; height:230px; border-radius:50%; background:rgba(255,255,255,.07); }
+  .cta .left { position:relative; }
+  .cta .pt { display:flex; align-items:baseline; gap:2px; }
+  .cta .pt .lead { font-size:19px; font-weight:700; opacity:.92; margin-right:10px; align-self:center; }
+  .cta .pt .cur { font-size:20px; font-weight:700; opacity:.9; }
+  .cta .pt .big { font-size:46px; font-weight:800; letter-spacing:-1px; line-height:1; }
+  .cta .pt .tail { font-size:16px; opacity:.9; margin-left:4px; }
+  .cta .ln { margin-top:11px; font-size:17px; line-height:1.6; opacity:.94; }
+  .cta .ln b { color:#FFF; background:rgba(255,255,255,.18); padding:2px 8px; border-radius:6px; font-weight:700; }
+  .cta .right { position:relative; text-align:right; padding-left:20px; border-left:1px solid rgba(255,255,255,.28); }
+  .cta .right .k { font-size:14px; opacity:.85; letter-spacing:2px; }
+  .cta .right .v { font-size:30px; font-weight:800; letter-spacing:-.4px; margin-top:6px; }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    margin-top:auto; padding:20px 0 26px; display:flex; align-items:center; justify-content:space-between;
+    border-top:1px solid #EDF1F8;
+  }
+  footer .made { display:flex; align-items:center; gap:12px; }
+  footer .made .tx { font-size:16px; color:#94A3B8; }
+  footer .made .tx b { color:#334155; font-weight:700; }
+  footer .made img { height:36px; display:block; }
+  footer .note { font-size:14.5px; color:#94A3B8; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="topwash"></div>
+  <div class="gridmask"></div>
+
+  <div class="wrap">
+    <!-- ============ 头部 ============ -->
+    <header>
+      <div class="brandrow">
+        <img class="lock" src="assets/aifoundry-lockup.png" alt="AIFoundry" />
+        <div class="studio">
+          <img src="assets/fy-icon.png" alt="FY工作室" />
+          <span><b>FY 工作室</b> 出品</span>
+        </div>
+      </div>
+
+      <h1 class="slogan">带着 <span class="hl">AI</span>，<br />真正做出软件。</h1>
+      <p class="subhead">从第一个 AI 辅助项目，到全栈、RAG 与 Agent 开发。</p>
+      <p class="desc">AIFoundry 是面向大学生与初级开发者的 AI 原生开发成长平台 —— 用真实项目贯穿四个阶段，把想法一步步做成可以上线的产品。</p>
+
+      <div class="chips">
+        <span class="chip"><span class="dot"></span>零基础友好</span>
+        <span class="chip gray">会下载、解压文件即可从第 0 课开始</span>
+        <span class="chip gray">一次购买 · 永久阅读</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="num">4 个</div><div class="lb">学习阶段，从入门到进阶</div></div>
+        <div class="stat"><div class="num">29 节</div><div class="lb">正式课程，任务驱动式学习</div></div>
+        <div class="stat"><div class="num">4 个</div><div class="lb">阶段项目，每个都能交付</div></div>
+      </div>
+    </header>
+
+    <!-- ============ 路径 ============ -->
+    <div class="section-head">
+      <div>
+        <h2>一条持续演进的学习路径</h2>
+        <p>四个阶段做的是同一个产品，从第一个页面一路升级为 AI Agent。</p>
+      </div>
+    </div>
+
+    <div class="stages">
+      <div class="stage" style="--c:#059669; --bg:#ECFDF5;">
+        <div class="no"><small>STAGE</small><b>1</b></div>
+        <div class="body">
+          <div class="t1"><b>AI 原生开发入门</b><span class="lv">初级</span><span class="ls">6 节课</span></div>
+          <div class="t2"><em>项目 · 个人知识工作台：</em>带搜索与筛选的小型前端产品，亲手让 AI 改出真实页面，并学会验证与保存版本。</div>
+        </div>
+        <div class="price"><b><i>¥</i>99</b><span>单阶段</span></div>
+      </div>
+
+      <div class="stage" style="--c:#2563EB; --bg:#EFF6FF;">
+        <div class="no"><small>STAGE</small><b>2</b></div>
+        <div class="body">
+          <div class="t1"><b>AI 全栈开发</b><span class="lv">中级</span><span class="ls">8 节课</span></div>
+          <div class="t2"><em>项目 · 全栈知识工作台：</em>在同一个项目里加入数据库、注册登录与权限隔离，最后部署到线上。</div>
+        </div>
+        <div class="price"><b><i>¥</i>199</b><span>单阶段</span></div>
+      </div>
+
+      <div class="stage" style="--c:#7C3AED; --bg:#F5F3FF;">
+        <div class="no"><small>STAGE</small><b>3</b></div>
+        <div class="body">
+          <div class="t1"><b>AI 应用开发</b><span class="lv">中级</span><span class="ls">7 节课</span></div>
+          <div class="t2"><em>项目 · AI 知识工作台：</em>接入真实模型与向量检索，做出会流式回答、带着来源可核对的 RAG 问答。</div>
+        </div>
+        <div class="price"><b><i>¥</i>269</b><span>单阶段</span></div>
+      </div>
+
+      <div class="stage" style="--c:#EA580C; --bg:#FFF7ED;">
+        <div class="no"><small>STAGE</small><b>4</b></div>
+        <div class="body">
+          <div class="t1"><b>Agent 工程进阶</b><span class="lv">高级</span><span class="ls">8 节课</span></div>
+          <div class="t2"><em>项目 · AI 研究 Agent：</em>让 AI 在受控条件下调用工具、写入前人工确认，并支持暂停与恢复。</div>
+        </div>
+        <div class="price"><b><i>¥</i>299</b><span>单阶段</span></div>
+      </div>
+    </div>
+
+    <div class="chain">
+      <b>个人知识工作台</b><span class="arw">→</span><b>全栈知识工作台</b><span class="arw">→</span><b>AI 知识工作台</b><span class="arw">→</span><b>AI 研究 Agent</b>
+      <span style="color:#94A3B8;font-weight:500;margin-left:6px;">同一个产品，四次能力跃迁</span>
+    </div>
+
+    <!-- ============ 学习方式 ============ -->
+    <div class="flow">
+      <div class="fl">任务</div><div class="gt">→</div>
+      <div class="fl">Prompt</div><div class="gt">→</div>
+      <div class="fl">构建</div><div class="gt">→</div>
+      <div class="fl">验证</div><div class="gt">→</div>
+      <div class="fl">交付</div>
+    </div>
+
+    <!-- ============ 转化 ============ -->
+    <div class="cta">
+      <div class="deco"></div><div class="deco2"></div>
+      <div class="left">
+        <div class="pt"><span class="lead">单阶段</span><span class="cur">¥</span><span class="big">99</span><span class="tail">起</span></div>
+        <div class="ln">全阶段课程版 <b>¥599</b> · 项目版 <b>¥699</b>（含项目工坊 · 毕业项目实战）</div>
+      </div>
+      <div class="right">
+        <div class="k">课程网站</div>
+        <div class="v">aifoundry.top</div>
+      </div>
+    </div>
+
+    <!-- ============ 页脚 ============ -->
+    <footer>
+      <div class="made">
+        <span class="tx">出品：<b>FY 工作室</b></span>
+        <img src="assets/fy-icon.png" alt="FY工作室" />
+      </div>
+      <div class="note">AIFoundry · AI 原生开发成长平台</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

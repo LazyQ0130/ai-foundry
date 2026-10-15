@@ -1,9 +1,13 @@
+import { learningSupport } from '../data/learningSupport'
 import { useState } from 'react'
 import { MobilePlanComparison } from '../components/MobilePlanComparison'
 import { usePlans } from '../data/pricing'
 import type { Plan } from '../data/site'
 import PurchaseModal from '../components/PurchaseModal'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { projectPlanAnchor, projectPricingIntent } from '../lib/projectPricingNavigation'
+import { ProjectPlanContext } from '../components/ProjectPlanContext'
+import { useAuth } from '../auth/AuthProvider'
 import { ArrowRight } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { FullPlanCard } from '../components/PlanCard'
@@ -12,8 +16,12 @@ import { pricingHighlights } from '../data/site'
 export default function Pricing() {
   const { plans, loading, error, refresh } = usePlans()
   const [selected, setSelected] = useState<Plan | null>(null)
+  const location = useLocation()
+  const intent = projectPricingIntent(location.search)
+  const { user } = useAuth()
+  const projectAccess = !!user?.productEntitlements.includes('project-lab')
   if(loading) return <p role="status" className="shell py-20">正在加载课程价格…</p>
-  if(error) return <div role="alert" className="shell py-20">{error}<button className="btn btn-outline ml-3" onClick={()=>void refresh()}>重试</button></div>
+  if(error) return <div role="alert" className="shell py-20">{error}<button className="btn btn-md btn-outline ml-3" onClick={()=>void refresh()}>重试</button></div>
   if(!plans.length) return <p className="shell py-20">暂无已发布课程。</p>
   const allPlan = plans.find((p)=>p.id==='all-access')
   const projectPlan = plans.find((p)=>p.id==='all-access-projects')
@@ -67,9 +75,12 @@ export default function Pricing() {
         {allPlan && projectPlan && <>
           <h2 className="h-sec mt-10">一次解锁完整路径</h2>
           <p className="sub-sec">两种方案都包含完整四阶段课程与 4 个阶段项目；项目版另外开放项目工坊。</p>
-          <div className="mt-5 grid gap-5 md:grid-cols-2">
+          <div className={`mt-5 grid gap-5 md:grid-cols-2 ${intent ? 'items-start' : ''}`}>
             <FullPlanCard plan={allPlan} onBuy={setSelected} />
-            <FullPlanCard plan={projectPlan} onBuy={setSelected} />
+            <div id={projectPlanAnchor} className="scroll-mt-20">
+              {intent && <ProjectPlanContext intent={intent} access={projectAccess} />}
+              <FullPlanCard plan={projectPlan} onBuy={setSelected} action={intent && projectAccess ? <p role="status" className="mt-5 text-sm font-semibold text-emerald-700">✓ 已开通项目工坊</p> : undefined} />
+            </div>
           </div>
         </>}
       </section>
@@ -127,7 +138,7 @@ export default function Pricing() {
       }
       {/* ------------------------------ 常见问题 ------------------------------ */}
       <section id="faq" className="shell scroll-mt-24 pb-10">
-        <p className="mb-6 text-[12px] leading-5 text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见<Link to="/terms" className="text-brand-600">《用户协议》</Link>。课程不含人工答疑，第三方工具及 API 费用由学员自行承担。</p>
+        <p className="mb-6 text-[12px] leading-5 text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见<Link to="/terms" className="text-brand-600">《用户协议》</Link>。{learningSupport.short}第三方工具及 API 费用由学员自行承担。</p>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="h-sec">购买前还有疑问？</h2>
@@ -140,7 +151,8 @@ export default function Pricing() {
         </div>
 
       </section>
-      {selected && <PurchaseModal plan={selected} onClose={()=>setSelected(null)} />}
+      {intent && !projectPlan && <section id={projectPlanAnchor} className="shell scroll-mt-20 pb-10"><ProjectPlanContext intent={intent} access={projectAccess} /><p className="text-sm text-slate-600">项目版当前暂未开放购买，请稍后再查看。</p></section>}
+      {selected && <PurchaseModal plan={selected} returnTo={selected.id === 'all-access-projects' ? intent?.returnTo : undefined} onClose={()=>setSelected(null)} />}
     </>
   )
 }

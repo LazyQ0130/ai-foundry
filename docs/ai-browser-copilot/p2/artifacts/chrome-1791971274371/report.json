@@ -1,0 +1,105 @@
+{
+  "time": "2026-10-14T09:47:54.373Z",
+  "scope": "Actual Chrome headless extension document + controlled localhost host-permission fixture. Native toolbar/activeTab grant NOT exercised.",
+  "native": "BLOCKED",
+  "results": [
+    {
+      "name": "Product P1 React regression, exact minimal manifest and real ungranted injection rejection",
+      "status": "PASS",
+      "denied": {
+        "rejected": "Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host.",
+        "tabId": 102257007,
+        "targetUrl": "http://127.0.0.1:51209/article-a"
+      }
+    },
+    {
+      "name": "Real runtime message → worker → isolated frame0 extraction → response, strict sender policy",
+      "status": "PASS",
+      "context": {
+        "windowId": 102257004,
+        "tabId": 102257007,
+        "url": "http://127.0.0.1:51209/article-a"
+      },
+      "documentId": "05A7C2BD008B7C5D5416609BA928C60C"
+    },
+    {
+      "name": "Actual Side Panel React render, source isolation, same-URL refresh and reread",
+      "status": "PASS",
+      "refreshOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "d7002785-f7a3-4054-b068-b338ab1b56ec",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "快照代次已失效，请重新读取。"
+        }
+      },
+      "tabOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "1119e5bb-fa38-4887-ab47-5e723b35a0de",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "页面已变化，请重新读取。"
+        }
+      },
+      "viewport390NoOverflow": true
+    },
+    {
+      "name": "Actual worker termination/restart with anonymous storage.session; refresh while worker stopped",
+      "status": "PASS",
+      "beforeTarget": "4DEB64DBD451778FA1DFCAD1D0B4A839",
+      "afterTarget": "4DEB64DBD451778FA1DFCAD1D0B4A839",
+      "beforeInstance": "3f1412b1-7598-4f20-9e3c-f967f43f0af5",
+      "afterInstance": {
+        "previousMarker": null,
+        "instance": "41cb32a3-1e3b-4570-aab1-f296fc634596"
+      },
+      "unchangedDocument": {
+        "v": 1,
+        "ok": true,
+        "requestId": "bda8faed-c582-4184-b2ae-b4ff60e6160f",
+        "data": {
+          "current": true
+        }
+      },
+      "refreshedDocument": {
+        "v": 1,
+        "ok": false,
+        "requestId": "5e3e05c2-8a8f-4d85-a70f-e02ed202f787",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "快照代次已失效，请重新读取。"
+        }
+      },
+      "session": {
+        "context:v1:102257007": "3da6898a-8172-4b08-973b-e0caf4bab703",
+        "context:v1:102257009": "25c5a734-0794-4e11-8ab8-7a192bf8cf37"
+      }
+    },
+    {
+      "name": "Actual production CSP refuses local API fetch; no P3 transport added",
+      "status": "PASS",
+      "csp": "CSP_BLOCKED"
+    },
+    {
+      "name": "Actual DOM structure, privacy, Unicode bounds, scan limit, empty and non-HTML",
+      "status": "PASS",
+      "fixtures": [
+        "/article-a",
+        "/privacy",
+        "/long",
+        "/scan",
+        "/inline",
+        "/empty",
+        "/not-html"
+      ]
+    }
+  ],
+  "browser": "155.0.8059.41",
+  "extensionIds": {
+    "product": "gfkhokkefpcboklifjanpfbilfbabapm",
+    "controlled": "fnfkflcinldlfnfckfhgcddgljafefan"
+  },
+  "status": "PASS within declared scope"
+}

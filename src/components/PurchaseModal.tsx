@@ -1,5 +1,7 @@
+import { learningSupport } from '../data/learningSupport'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { authPath } from '../lib/authNavigation'
 import { useAuth, type User } from '../auth/AuthProvider'
 import { api, errorMessage } from '../lib/api'
 import { useCatalogue } from '../data/catalog'
@@ -11,9 +13,11 @@ import { Modal } from './AdminControls'
  * 传入 plan：购买指定方案（价格页使用）。
  * 不传 plan：纯咨询场景（首页「购买与账号帮助」），不显示价格与付款步骤。
  */
-export default function PurchaseModal({ plan, onClose }: { plan?: Plan; onClose: () => void }) {
+export default function PurchaseModal({ plan, returnTo, onClose }: { plan?: Plan; returnTo?: string; onClose: () => void }) {
   const { user, applyUser } = useAuth()
   const { purchase, loading, error, refresh } = useCatalogue()
+  const location = useLocation()
+  const authReturnTo = location.pathname + location.search + location.hash
   const [message, setMessage] = useState('')
   const [qrFailed, setQrFailed] = useState(false)
   const [checking, setChecking] = useState(false)
@@ -41,10 +45,11 @@ export default function PurchaseModal({ plan, onClose }: { plan?: Plan; onClose:
     </div>
     {plan ? <>
       <p className="mt-4 text-[12px] font-medium text-slate-700">① 加微信确认 → ② 注册账号 → ③ 发送手机号和付款凭据 → ④ 管理员核实开通</p>
-      <p className="mt-3 text-[12px] leading-5 text-slate-600">注册手机号：{user?.phoneMasked ?? '尚未登录'}。付款不会自动开通；付款前请与管理员确认，开通后可在个人中心查看权限。{!user && <Link to="/register?next=/pricing" className="ml-1 text-brand-700">注册账号</Link>}</p>
-      <p className="mt-3 text-[11px] leading-5 text-slate-500">首次开通后 72 小时内可申请退款；课程不含人工答疑，第三方工具及 API 费用自理。请阅读<Link to="/terms" className="text-brand-700">《用户协议》及退款说明</Link>、<Link to="/privacy" className="text-brand-700">《隐私政策》</Link>，保留付款与沟通记录。</p>
+      <p className="mt-3 text-[12px] leading-5 text-slate-600">注册手机号：{user?.phoneMasked ?? '尚未登录'}。付款不会自动开通；付款前请与管理员确认，开通后可在个人中心查看权限。{!user && <><Link to={authPath('register', authReturnTo)} className="ml-1 text-brand-700">注册账号</Link><Link to={authPath('login', authReturnTo)} className="ml-3 text-brand-700">已有账号？登录</Link></>}</p>
+      <p className="mt-3 text-[11px] leading-5 text-slate-500">首次开通后 72 小时内可申请退款；{learningSupport.short}第三方工具及 API 费用自理。请阅读<Link to="/terms" className="text-brand-700">《用户协议》及退款说明</Link>、<Link to="/privacy" className="text-brand-700">《隐私政策》</Link>，保留付款与沟通记录。</p>
       <div className="mt-4 flex flex-wrap items-center gap-3"><button type="button" className="text-[12px] text-brand-700 underline" onClick={() => setMessage('请在微信向管理员发送付款凭据、购买方案和完整注册手机号。此按钮仅展示操作指引，不会提交开通申请或确认到账。请以管理员核实结果和个人中心课程权限为准。')}>已付款？查看开通指引</button>{user && <><button type="button" className="btn btn-sm btn-outline" disabled={checking} onClick={() => void checkAccess()}>{checking ? '正在查询…' : '查询是否已开通'}</button><Link to="/account" className="text-[12px] text-brand-700">前往个人中心</Link></>}</div>
       {message && <p role="status" className="mt-3 text-[12px] leading-5 text-slate-600">{message}</p>}{checkError && <p role="alert" className="mt-3 text-sm text-red-600">{checkError}</p>}
+      {returnTo && <p className="mt-4 border-t border-slate-100 pt-3 text-[13px] leading-6 text-slate-600">已保留原课程去向。<Link to={returnTo} onClick={onClose} className="ml-1 text-brand-700">{user && isPlanOpen(plan.id, user.entitlements, user.productEntitlements) ? '返回原课程继续学习 →' : '返回原课程 →'}</Link></p>}
     </> : <p className="mt-4 text-[13px] leading-6 text-slate-600">添加管理员微信，说明购买、退款、课程开通或账号问题；涉及已购课程时，请提供注册手机号和相关记录。</p>}
   </Modal>
 }

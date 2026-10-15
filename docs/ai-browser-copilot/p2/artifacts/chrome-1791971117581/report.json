@@ -1,0 +1,53 @@
+{
+  "time": "2026-10-14T09:45:17.582Z",
+  "scope": "Actual Chrome headless extension document + controlled localhost host-permission fixture. Native toolbar/activeTab grant NOT exercised.",
+  "native": "BLOCKED",
+  "results": [
+    {
+      "name": "Product P1 React regression, exact minimal manifest and real ungranted injection rejection",
+      "status": "PASS",
+      "denied": {
+        "rejected": "Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host.",
+        "tabId": 1633186477,
+        "targetUrl": "http://127.0.0.1:56146/article-a"
+      }
+    },
+    {
+      "name": "Real runtime message → worker → isolated frame0 extraction → response, strict sender policy",
+      "status": "PASS",
+      "context": {
+        "windowId": 1633186474,
+        "tabId": 1633186477,
+        "url": "http://127.0.0.1:56146/article-a"
+      },
+      "documentId": "3C8A80643441B38CC00D392503D15C80"
+    },
+    {
+      "name": "Actual Side Panel React render, source isolation, same-URL refresh and reread",
+      "status": "PASS",
+      "refreshOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "a1e86db4-439e-4775-9b9a-24c36716a489",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "快照代次已失效，请重新读取。"
+        }
+      },
+      "tabOldResponse": {
+        "v": 1,
+        "ok": false,
+        "requestId": "e0cb7bbe-7c0e-4fa5-9250-15f48a9000d4",
+        "error": {
+          "code": "TAB_CHANGED",
+          "message": "页面已变化，请重新读取。"
+        }
+      },
+      "viewport390NoOverflow": true
+    }
+  ],
+  "browser": "155.0.8059.41",
+  "status": "FAIL",
+  "error": "AssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'087AE978BF0B4467C849F9D2F929509E'",
+  "stack": "AssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'087AE978BF0B4467C849F9D2F929509E'\n    at file:///C:/Users/QYF/Desktop/AIFoundry/docs/ai-browser-copilot/p2/browser.mjs:141:34"
+}

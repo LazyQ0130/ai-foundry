@@ -1,0 +1,39 @@
+✔ contracts reject extra keys, wrong version, executable payload and inconsistent text (6.3858ms)
+✔ URL policy rejects chrome/file/pdf schemes and Chrome Web Store (0.1262ms)
+✔ capture then CHECK_CONTEXT: strict response, true document and anonymous session data (7.5746ms)
+✔ sender rejection: wrong extension, no injection or storage (0.3157ms)
+✔ sender rejection: extension tab, no injection or storage (0.1835ms)
+✔ sender rejection: wrong entry, no injection or storage (0.2117ms)
+✔ context rejection: active tab (0.3803ms)
+✔ context rejection: window (0.2683ms)
+✔ context rejection: URL (0.2766ms)
+✔ context rejection: loading (0.3374ms)
+✔ unauthorized injection is rejected, never successful empty text (0.3613ms)
+✔ empty and unsupported extraction return distinct controlled failures (0.5886ms)
+✔ same URL generation invalidation while injection is pending rejects old result (2.3879ms)
+✔ documentId catches same-URL replacement even when URL and token are unchanged (3.3982ms)
+✔ coordinator timeout returns and late injection cannot produce another response (7.4605ms)
+✔ tokens survive reconstructed worker, serialize writes, clean closed tabs (0.3304ms)
+✔ storage rejection does not poison subsequent leases (0.4295ms)
+✔ client commits only validated CAPTURE + CHECK and removes old body on error (2.4518ms)
+✔ late client success and late error cannot overwrite a newer page (2.6619ms)
+✔ client rejects malformed response and mismatched correlation IDs (1.1217ms)
+✔ final context check catches a URL change during CHECK_CONTEXT response (0.4242ms)
+✔ closed tab and unavailable session storage have separate actionable errors (0.3579ms)
+✔ stalled backend context lookup is bounded (17.0658ms)
+✔ late context resolution after client timeout starts no new CAPTURE (25.2534ms)
+✔ context lookup resolving after invalidation starts no CAPTURE (0.4376ms)
+✔ backend context lookup resolving after timeout starts no injection (23.1714ms)
+✔ injection completing after timeout starts no later probe (18.3294ms)
+✔ client handles stalled context and send timeout; next attempt recovers (27.4738ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 392.3949
+
+
+exit_code=0

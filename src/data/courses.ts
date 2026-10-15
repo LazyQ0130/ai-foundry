@@ -71,6 +71,8 @@ export interface Stage {
     id: string
     title: string
     desc: string
+    /** 首页等概览使用的简短成果说明，阶段项目信息统一维护于此。 */
+    summary: string
   }
 }
 
@@ -225,6 +227,7 @@ export const stages: Stage[] = [
     project: {
       id: 'assistant',
       title: '个人知识工作台',
+      summary: '搜索、筛选资料，用 Git 保存自己的页面修改。',
       desc: '完成一个能在本地运行、带搜索与筛选的小型前端产品，亲自验证自己决定的功能，并用本地 Git 保存可恢复的完成版本。',
     },
   },
@@ -349,6 +352,7 @@ export const stages: Stage[] = [
     project: {
       id: 'fullstack',
       title: '全栈知识工作台',
+      summary: '登录后管理自己的资料，刷新后数据仍然保留。',
       desc: 'Stage 1 的产品升级为有真实数据库、账号系统、个人数据和线上地址的完整 Web 产品。完成后保存一个可恢复的阶段版本（stage-2-complete）。',
     },
   },
@@ -463,6 +467,7 @@ export const stages: Stage[] = [
     project: {
       id: 'rag',
       title: 'AI 知识工作台',
+      summary: '根据自己的文本资料回答问题，并回到引用来源核对。',
       desc: '在 Stage 2 全栈知识工作台上，用粘贴的文本建立个人知识文档，完成模型调用、结构化建议、流式体验、向量检索、带真实引用的 RAG 和小型评估。完成后保存阶段版本（stage-3-complete）。',
     },
   },
@@ -587,6 +592,7 @@ export const stages: Stage[] = [
     project: {
       id: 'agent',
       title: 'AI 研究 Agent',
+      summary: '查看运行过程，在写入前确认，并恢复暂停的任务。',
       desc: '把 RAG 知识库升级成可以调用只读/写入工具、经过人工确认、支持多步任务与恢复的 AI 研究 Agent。完成后保存一个可恢复的阶段版本（stage-4-complete）。',
     },
   },

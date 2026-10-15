@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-14T14:09:01+08:00",
+  "acceptance_id": "SP-11",
+  "status": "PASS",
+  "evidence_type": "用户真实Chrome人工操作的文字确认",
+  "raw_confirmation": "1拒绝、2拒绝、3拒绝、4成功，没有旧正文或摘要残留。请更新验收记录，继续带我做下一项测试。",
+  "guided_extension_version": "0.0.2",
+  "items": [
+    {
+      "step": 1,
+      "scenario": "chrome://version读取",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "scenario": "Chrome新标签页读取",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "scenario": "Chrome Web Store点击A后读取",
+      "reported_result": "拒绝",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "scenario": "example.com点击A后重新读取与Mock",
+      "reported_result": "成功",
+      "status": "PASS"
+    }
+  ],
+  "no_stale_body_or_summary": "用户明确确认没有旧正文或摘要残留",
+  "limitations": [
+    "无新增截图、录屏、Console或Network日志",
+    "未补录实际加载包hash",
+    "仅按上轮四步指导对应用户编号，不作为其他项目通过证据"
+  ]
+}

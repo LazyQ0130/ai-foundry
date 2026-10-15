@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowRight, BookOpen, Check, Clock, Flag, Lock, Play, Users } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, Clock, Flag, Lock, Users } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { StageArchMockup } from '../components/mockups'
 import { Breadcrumb, Progress, Ring } from '../components/ui'
@@ -111,10 +111,10 @@ export default function StagePage() {
               </span>
             </div>
 
-            <div className="mt-7 flex flex-wrap items-end gap-3">
-              <StageAccess stage={stage} />
-              <Link to={`/project/${stage.project.id}`} className="btn btn-lg btn-outline">
-                查看阶段项目
+            <div className="mt-7">
+              <StageAccess stage={stage} placement="hero" />
+              <Link to={`/project/${stage.project.id}`} className="link-more mt-4">
+                查看阶段项目 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function StagePage() {
           </div>
 
           {/* 课程列表 */}
-          <div>
+          <div id="stage-lessons" className="scroll-mt-24">
             <h2 className="h-sec">课程列表（{total} 节正式课）</h2>
             <p className="sub-sec">
               {stage.lessons.some(lesson => lesson.isPrep) && '另含第 0 课：开始前准备，不计入正式课程进度。'}
@@ -253,12 +253,12 @@ export default function StagePage() {
               })}
             </div>
           </div>
-          <div className="card p-5"><h2 className="mb-2 text-lg font-semibold">把所学用在阶段项目中</h2><p className="mb-4 text-sm leading-6 text-slate-600">{stage.project.desc}</p><StageAccess stage={stage} /></div>
+          <div className="card p-5"><h2 className="mb-2 text-lg font-semibold">把所学用在阶段项目中</h2><p className="mb-4 text-sm leading-6 text-slate-600">{stage.project.desc}</p><Link to={`/project/${stage.project.id}`} className="link-more">查看阶段项目介绍 <ArrowRight className="h-3.5 w-3.5" /></Link></div>
         </div>
 
         {/* ------------------------------ 右侧栏 ------------------------------ */}
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <div className="card p-5"><h2 className="mb-3 text-sm font-semibold">{locked ? '开通与学习' : '已开通本阶段'}</h2><StageAccess stage={stage} />{locked && <p className="mt-3 text-xs leading-5 text-slate-500">微信联系管理员确认方案，付款核实后人工开通。</p>}</div>
+          {locked && <div id="stage-access" className="card scroll-mt-24 p-5"><h2 className="mb-3 text-sm font-semibold">开通本阶段</h2><StageAccess stage={stage} placement="purchase" /><p className="mt-3 text-xs leading-5 text-slate-500">包含本阶段正式课程与阶段项目。微信联系管理员确认方案，付款核实后人工开通。</p></div>}
           <div className="card p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-[14px] font-semibold text-slate-900">学习进度</h2>
@@ -306,9 +306,8 @@ export default function StagePage() {
             </p>
             <p className="mt-2.5 text-[12px] leading-5 text-slate-500">{upNext.desc}</p>
 
-            <div className="mt-4"><StageAccess stage={stage} /></div>
-            <Link to={`/courses`} className="btn btn-md btn-outline mt-2 w-full">
-              查看课程详情
+            <Link to="#stage-lessons" className="link-more mt-4">
+              查看课程列表
             </Link>
           </div>}
 
@@ -332,17 +331,6 @@ export default function StagePage() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="rounded-2xl border border-brand-200 bg-brand-50/70 p-5">
-            <span className={`inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white ${a.solid}`}>
-              <Play className="h-4 w-4 fill-current" strokeWidth={0} />
-            </span>
-            <h3 className="mt-3 text-[13.5px] font-semibold text-slate-900">阶段成果</h3>
-            <p className="mt-1.5 text-[12px] leading-5 text-slate-600">{stage.project.desc}</p>
-            <Link to={`/project/${stage.project.id}`} className="btn btn-md btn-primary mt-4 w-full">
-              打开项目
-            </Link>
           </div>
 
           <div className="card p-5">

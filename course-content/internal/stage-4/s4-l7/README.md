@@ -7,7 +7,7 @@ node scripts/assemble-stage4-reference.mjs 7 a .runtime/stage4-l7-a-new
 node scripts/assemble-stage4-reference.mjs 7 b .runtime/stage4-l7-b-new
 ```
 
-A/B 各运行 `npm ci`、`npx prisma generate`、`npm test`、`npm run build`。为 Eval 单独创建本机 PostgreSQL `stage4_l7` 并部署已有五次 migration。进程环境 `TEST_DATABASE_URL` 必须精确指向 `127.0.0.1:55433/stage4_l7`；Runner 拒绝其他数据库和 `NODE_ENV=production`。
+A/B 各运行 `npm ci`、`npx prisma generate`、`npm test`、`npm run build`。Docker db healthy 且日常 `DATABASE_URL` 指向 `127.0.0.1:55433/stage4_learning` 后，运行 `node scripts/prepare-agent-eval.mjs`，工具沿用编码后的凭据，只创建／沿用固定的 `stage4_l7` 并部署已有五次 migration。四条 PASS 全部出现才继续；不改日常 `.env`，不清库。`npm run eval:agent` 使用 `scripts/run-agent-eval.mjs`，在独立子进程设置测试地址后启动原 Runner。如显式填写 `TEST_DATABASE_URL`，也必须精确指向 `127.0.0.1:55433/stage4_l7`；拒绝配置冲突、其他数据库和 `NODE_ENV=production`。具体双系统步骤、配置和排障见对外 s4-l7 正文。
 
 在装配目录运行：
 

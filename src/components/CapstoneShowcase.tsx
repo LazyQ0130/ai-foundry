@@ -3,12 +3,13 @@ import { ArrowDown, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { useCapstone, type CapstoneSummary } from '../data/capstoneProgress.js'
+import { projectPricingPath } from '../lib/projectPricingNavigation.js'
 
 export function CapstoneEntryCard({ data, loading = false, error = '', onRetry }: { data: CapstoneSummary | null; loading?: boolean; error?: string; onRetry?: () => void }) {
   const completed = data?.progress?.completed ?? 0
   const label = !data?.access ? '查看项目版' : completed === 9 ? '查看毕业项目' : completed > 0 ? '继续毕业项目' : '开始毕业项目'
   const continueId = data?.progress?.continueLessonId
-  const target = !data?.access ? '/pricing' : continueId ? '/capstone/lessons/' + continueId : '/capstone'
+  const target = !data?.access ? projectPricingPath() : continueId ? '/capstone/lessons/' + continueId : '/capstone'
   return <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-card sm:p-6" aria-label="项目工坊">
     <span className="chip bg-brand-50 text-brand-700">Stage 1～4 之后 · 毕业项目实战</span>
     <h3 className="mt-3 text-[22px] font-bold text-slate-900">项目工坊 · 毕业项目</h3>
@@ -31,13 +32,16 @@ export function CapstonePathCard() {
 
 export function CapstoneHomeTeaser() {
   return (
-    <Link to="/capstone" className="mt-5 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/80 px-4 py-3.5 transition hover:border-brand-300 hover:bg-white sm:flex-row sm:items-center sm:justify-between" aria-label={`${capstoneShowcase.project}，${capstoneShowcase.status}，查看介绍`}>
+    <Link to="/capstone" className="group mt-5 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/80 px-4 py-3.5 transition hover:border-brand-300 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 sm:flex-row sm:items-center sm:justify-between" aria-label={`查看项目工坊：${capstoneShowcase.project}，${capstoneShowcase.status}`}>
       <span className="min-w-0">
         <span className="mr-2 text-[11px] font-semibold text-slate-500">毕业项目</span>
         <span className="text-[13.5px] font-semibold text-slate-800">{capstoneShowcase.project}</span>
         <span className="mt-1 block text-[12px] leading-5 text-slate-500">{capstoneShowcase.projectEn} · 项目工坊专属毕业项目</span>
       </span>
-      <span className="inline-flex shrink-0 items-center gap-1.5 text-[12.5px] font-semibold text-slate-700">{capstoneShowcase.status} <ArrowRight className="h-4 w-4" /></span>
+      <span className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1">
+        <span className="text-[12px] text-slate-500">{capstoneShowcase.status}</span>
+        <span className="inline-flex items-center gap-1 text-[12.5px] font-medium text-brand-600 group-hover:text-brand-700">查看项目工坊 <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /></span>
+      </span>
     </Link>
   )
 }

@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-10-14T04:51:49.306Z",
+  "browser": "155.0.8059.41",
+  "profile": "C:\\Users\\QYF\\Desktop\\AIFoundry\\spikes\\ai-browser-copilot-spike\\.runtime\\network-1791953507385",
+  "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+  "manifestHostPermissions": [],
+  "status": "PASS",
+  "scope": "Actual extension networking, ungranted injection rejection, and controlled DOM extraction; NOT native Side Panel, positive activeTab, toolbar, selection or SP-08 full acceptance.",
+  "records": [
+    {
+      "case": "production-no-host-permissions-worker",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "9a500249-9d29-4c8d-b626-14ba85f3341f",
+          "snapshotId": "86c81baa-0e0b-4fac-914e-e4c78b359177",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "OPTIONS",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": "POST",
+          "requestedHeaders": "content-type"
+        },
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ]
+    },
+    {
+      "case": "production-no-host-permissions-extension-document",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "432e9f58-95e1-400b-a9c0-755eb8bd04fb",
+          "snapshotId": "1b6c3f9c-f464-407b-b543-331e85272021",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ],
+      "limitation": "Standalone extension tab, not a native Side Panel; no UI button was clicked."
+    },
+    {
+      "case": "real-Chrome-no-activeTab-grant",
+      "injection": {
+        "denied": true,
+        "error": "Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host."
+      },
+      "limitation": "Negative permission test only; no grant was synthesized."
+    },
+    {
+      "case": "actual-Chrome-DOM-extractor-fixtures",
+      "results": [
+        {
+          "fixture": "article-a.html",
+          "status": "PASS",
+          "length": 77,
+          "truncated": false,
+          "title": "Phase 0 文章 A"
+        },
+        {
+          "fixture": "long.html",
+          "status": "PASS",
+          "length": 6000,
+          "truncated": true,
+          "title": "Phase 0 long fixture"
+        },
+        {
+          "fixture": "empty.html",
+          "status": "PASS",
+          "length": 0,
+          "truncated": false,
+          "title": "Phase 0 empty fixture"
+        }
+      ],
+      "limitation": "Direct execution on controlled DOM; not chrome.scripting authorization or native user interaction."
+    },
+    {
+      "case": "explicit-port-manifest-parser",
+      "accepted": true,
+      "id": "dfpfccjgbhoodlpahhgebnfamfhiaicj"
+    }
+  ]
+}

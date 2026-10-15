@@ -1,3 +1,4 @@
+import { learningSupport } from './learningSupport'
 export const faqCategories = [
   { id: 'getting-started', title: '开始学习', description: '选对起点，做好准备。' },
   { id: 'purchase', title: '购买开通', description: '了解方案、购买方式与课程权益。' },
@@ -18,8 +19,8 @@ export type Faq = {
 export const faqs: Faq[] = [
   { id: 'refund', category: 'purchase', q: '可以申请退款吗？',
     a: '对应购买方案首次开通后 72 小时内，可通过管理员微信提出退款申请。请提供购买账号、所购方案和付款记录，用于确认订单及申请时间；退款处理完成后，对应课程权限将关闭。已付款但尚未开通、重复付款或服务与约定不符等情况，也可以联系管理员核实处理。具体规则以《用户协议》为准，且不影响依法享有的其他权利。', link: { to: '/terms', label: '查看完整服务与退款说明' } },
-  { id: 'self-study', category: 'learning', q: '是否包含人工答疑或辅导？',
-    a: '不包含。课程以文字讲解、自主阅读和动手实践为主，不提供人工答疑、一对一辅导、作业批改或代码排错。购买、退款、课程访问和账号问题仍可联系管理员处理。' },
+  { id: 'self-study', category: 'learning', q: '学习中遇到问题，怎么获得帮助？',
+    a: `${learningSupport.guidance}${learningSupport.contact}` },
   { id: 'start-from-zero', category: 'getting-started', q: '零基础从哪里开始？',
     a: '建议从「AI 原生开发入门」开始，先认识开发流程、搭建环境，再尝试用 AI 完成一个小功能。按课程任务一步一步操作，不必一开始就进入全栈、RAG 或 Agent 等后续阶段。',
     link: { to: '/stage/stage-1', label: '了解入门阶段' } },
@@ -54,7 +55,7 @@ export const faqs: Faq[] = [
   { id: 'sync-progress', category: 'learning', q: '进度是否跨设备保存？',
     a: '登录后的课程访问、任务勾选和完成记录会保存到账号中。更换设备后使用同一账号登录，即可读取已保存的进度。操作时保持网络连接，若出现保存失败提示，请重试并确认结果。' },
   { id: 'troubleshooting', category: 'learning', q: '遇到报错怎么办？',
-    a: '先查看本课的检查清单和排查建议，核对环境、操作步骤与预期结果。使用 AI 辅助排查时，描述刚做了什么、完整报错和希望得到的结果；分享前去掉密码、密钥等敏感信息。课程不提供人工答疑或代码排错服务；课程访问或账号异常可联系管理员。' },
+    a: '先查看本课的检查清单和排查建议，核对环境、操作步骤与预期结果。使用 AI 辅助排查时，描述刚做了什么、完整报错和希望得到的结果；分享前去掉密码、密钥等敏感信息。也可以沿本课路线向 AI 继续提问，深入理解相关知识。购买、退款、课程访问、账号问题或服务纠纷可联系负责人。' },
   { id: 'edit-profile', category: 'account', q: '如何修改头像和昵称？',
     a: '在个人中心点击「修改昵称」即可编辑保存。点击「更换头像」选择 JPG、PNG 或 WebP 静态图片，调整位置和缩放后保存，也可以恢复默认头像。原图最大 5MB、2500 万像素。',
     link: { to: '/account', label: '编辑个人资料' } },

@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-10-14T06:25:15.974220+00:00",
+  "mode": "delay",
+  "exec_session_id": 26170,
+  "old_normal_api_session_stopped": 25050,
+  "bind": "127.0.0.1:8787",
+  "command": "npm run api:fault",
+  "environment": {
+    "EXTENSION_ORIGIN": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+    "PROVIDER": "mock",
+    "SPIKE_FAULT": "delay"
+  },
+  "health": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "provider": "mock",
+      "phase": 0
+    }
+  },
+  "synthetic_request": {
+    "v": 1,
+    "requestId": "ea05db70-95c1-44df-870c-96a4d4899d84",
+    "snapshot": {
+      "tabId": 1,
+      "url": "https://example.com/",
+      "snapshotId": "810c6a49-8346-49b1-8f0e-08ac23780e26",
+      "title": "Phase 0 delay HTTP probe",
+      "text": "DELAY_PROBE_PUBLIC_FIXTURE",
+      "truncated": false,
+      "capturedAt": "2026-10-14T06:25:14.741Z",
+      "contextToken": "2a171bca-137a-4ddb-9f9e-ce08a9b73f17"
+    }
+  },
+  "response_status": 200,
+  "response": {
+    "requestId": "ea05db70-95c1-44df-870c-96a4d4899d84",
+    "snapshotId": "810c6a49-8346-49b1-8f0e-08ac23780e26",
+    "provider": "mock",
+    "text": "[MOCK] Phase 0 delay HTTP probe\nDELAY_PROBE_PUBLIC_FIXTURE\n输入字符数：26"
+  },
+  "elapsed_ms": 1232,
+  "cors_allow_origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+  "wrong_origin": {
+    "status": 403,
+    "body": {
+      "code": "ORIGIN_DENIED"
+    }
+  },
+  "scope": "真实HTTP服务和延迟验证；不冒充Chrome按钮、切页或刷新验收"
+}

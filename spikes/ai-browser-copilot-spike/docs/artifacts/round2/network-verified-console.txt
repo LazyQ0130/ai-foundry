@@ -1,0 +1,80 @@
+
+> ai-browser-copilot-phase0@0.0.0 test:network
+> tsx scripts/network-probe.ts
+
+{
+  "timestamp": "2026-10-14T04:49:35.974Z",
+  "browser": "155.0.8059.41",
+  "profile": "C:\\Users\\QYF\\Desktop\\AIFoundry\\spikes\\ai-browser-copilot-spike\\.runtime\\network-1791953374141",
+  "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+  "manifestHostPermissions": [],
+  "status": "PASS",
+  "scope": "Actual extension service-worker/document fetch and ungranted injection rejection; NOT native Side Panel, positive activeTab, toolbar, selection or SP-08 full acceptance.",
+  "records": [
+    {
+      "case": "production-no-host-permissions-worker",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "03de6f0c-5c85-4cdb-9871-5b0bfefbada5",
+          "snapshotId": "b6e94236-139a-4622-ac6c-e1bf4fd0030f",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "OPTIONS",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": "POST",
+          "requestedHeaders": "content-type"
+        },
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ]
+    },
+    {
+      "case": "production-no-host-permissions-extension-document",
+      "value": {
+        "status": 200,
+        "body": {
+          "requestId": "ac96e59d-b3ae-4f41-b350-2fc09447739a",
+          "snapshotId": "d193ad84-df51-48c9-b37f-1caee818d5a0",
+          "provider": "mock",
+          "text": "[MOCK] Headless network fixture\nControlled fixture; not captured from a webpage.\n输入字符数：48"
+        },
+        "idsMatch": true
+      },
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/ai/summary",
+          "origin": "chrome-extension://hijkflihajcoealnhjnepmgabohaimcn",
+          "requestedMethod": null,
+          "requestedHeaders": null
+        }
+      ],
+      "limitation": "Standalone extension tab, not a native Side Panel; no UI button was clicked."
+    },
+    {
+      "case": "real-Chrome-no-activeTab-grant",
+      "injection": {
+        "denied": true,
+        "error": "Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host."
+      },
+      "limitation": "Negative permission test only; no grant was synthesized."
+    },
+    {
+      "case": "explicit-port-manifest-parser",
+      "accepted": true,
+      "id": "cahjojikamjkjpfkblcndkkjbalfknkm"
+    }
+  ]
+}

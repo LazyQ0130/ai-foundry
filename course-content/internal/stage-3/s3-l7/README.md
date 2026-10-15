@@ -6,9 +6,15 @@
 
 装配：`starter/stage-1/` 静态外壳 + `common/` + `implementation-a/` 或 `implementation-b/`，并把本目录的 `eval/`、`scripts/` 放到装配项目根目录；不要混用两份页面。Prisma 与 Client 固定 6.19.3。登录、同源、每用户 AI 限流和 Key 服务端边界继续沿用。Key 只放入被 Git 忽略的 `.env`，不提交。独立云 PostgreSQL 的 pgvector 权限与增量 migration 仍未验收。
 
-`eval/knowledge-pack.json` 是固定的三篇非敏感资料；`eval/rag-cases.json` 是 8 条可答、4 条无答案的固定题目。明确入库知识包后要等待至少 60 秒，让同账号入库请求离开限流窗口。`scripts/rag-eval.mjs` 只通过现有 `/api/knowledge/ask` 顺序运行，不复制 Embedding、SQL、Prompt 或 Provider；12 题之间至少等待 13 秒，不自动重试。真实模式须显式 `EVAL_REAL_CONFIRM=YES`，账号、密码和本地 URL 只从环境变量读取。详细 JSON 和人工复核 Markdown 只写到运行目录的 `.runtime/`；终端只输出计数、耗时和 Token 摘要。人工逐条判断来源是否支持答案，不由模型给自己打分。
+`eval/knowledge-pack.json` 是固定的三篇非敏感资料；`eval/rag-cases.json` 是 8 条可答、4 条无答案的固定题目。明确入库知识包后要等待至少 60 秒，让同账号入库请求离开限流窗口。`scripts/rag-eval.mjs` 只通过现有 `/api/knowledge/ask` 顺序运行，不复制 Embedding、SQL、Prompt 或 Provider；12 题之间至少等待 13 秒，不自动重试。运行入口为 `node scripts/run-rag-eval.mjs`，共享加载器先加载 Next 开发环境，再读取被 Git 忽略的 `.env.course-checks`；同名配置冲突即失败。设置 EVAL_MODE、EVAL_BASE_URL、EVAL_USERNAME、EVAL_PASSWORD、EVAL_REAL_CONFIRM，具体准备与排障见对外 s3-l7 正文。真实模式须显式 `EVAL_REAL_CONFIRM=YES`，凭据不写入代码或终端输出。详细 JSON 和人工复核 Markdown 只写到运行目录的 `.runtime/`；终端只输出计数、耗时和 Token 摘要。人工逐条判断来源是否支持答案，不由模型给自己打分。
 
 `eval/rag-eval-core.test.mjs` 验证题集格式、重复 ID、两类题目、指标、失败分类、null usage 和摘要；继承的 reference tests 回归 3.1～3.6 与 Resource、Alice/Bob 隔离。结果见 `docs/stage-3-l7-validation.md`。独立云 PostgreSQL pgvector extension 权限和增量 migration 仍未验收。
+
+2026-10-15 Mock 追因修复：哈希向量不表达语义，非空知识库的 Mock 固定引用实际 Top-1、返回同一句占位回答，不判断知识是否足够。保留此限制和固定题集，不按题目关键词造正确答案。三文档各一块、Top-3 全取时，retrievalHit=8/8 不证明排序正确；本轮引用 2/8、拒答 0/4 仍如实保留，不能宣称质量通过。
+
+3.6、3.7 和 Stage 4 Starter 的 `/retrieve`、`/ask` 候选 matches 同步增加真实 sourceId；Evaluator 按 ID 成员资格及标题／位置／预览核对来源，拒绝假 ID、缺 ID、重复与状态不一致，空引用不计入 verifiedSourceResponses。候选缺 ID 立即 EVAL_CANDIDATE_IDS_REQUIRED 停止，修复原 3.6 接口并重启后再决定完整重跑，不兼容猜测或伪造旧报告。JSON schemaVersion=2；automaticIssues 及其汇总明确暴露 expected_citation_miss，不用它代替人工 support 分类；终端与人工表同样显示。全缺测用量总计为 null，部分已知值与缺测计数并列。Mock scope=mock_pipeline_only；命令结束、自动检查通过、人工来源支持是三种不同结论，所有失败仍保留。
+
+2026-10-15 连续路线复核：工具入口已与 Stage 3 下载包同步，真实模式未确认时在导入 Runner 前拒绝；运行前复制旧报告至 ignored `.runtime/stage3-eval-history/` 唯一目录，不删除当前报告或覆盖已有存档。Runner 在成功响应 kind 与本轮模式不符／缺失时立即报 EVAL_RESPONSE_MODE_MISMATCH，不继续下一题；429/502/504 仍逐题记录且不重试。对外课程使用不同的新 Mock／真实评估账号，保持同一题集和知识包版本，防止旧文档混入；云路线迁移／故障恢复与本机应用地址见公开环境页 Stage 3 全程路线。存档或中断的一轮不能当成新完整报告。
 
 ## 干净装配与验证
 

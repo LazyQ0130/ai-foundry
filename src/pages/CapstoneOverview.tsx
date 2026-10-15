@@ -6,6 +6,7 @@ import { ArrowDown, ArrowRight, BookOpen, Boxes, Check, FileCheck2, GraduationCa
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { stages } from '../data/courses.js'
 import { useOptionalAuth } from '../auth/AuthProvider.js'
+import { projectPricingPath } from '../lib/projectPricingNavigation.js'
 
 const futureDirections = ['AI SaaS 产品', '知识库 Agent', 'AI 工作流自动化', '研究 Agent', '多模态 AI 应用'] as const
 
@@ -46,7 +47,7 @@ export default function CapstoneOverview() {
                 <span className="text-[13px] text-slate-500">9 节课 · {capstoneEstimatedTotalTime} · 交付可部署的 AI 产品</span>
               </div> : <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/capstone/preview/c1" className="btn btn-lg btn-primary">免费试看 C1 <ArrowRight className="h-4 w-4" /></Link>
-                <Link to="/pricing" className="btn btn-lg btn-outline">查看项目版</Link>
+                <Link to={projectPricingPath()} className="btn btn-lg btn-outline">查看项目版</Link>
               </div>}
               {lab.error && <p role="alert" className="mt-4 text-sm text-red-600">{lab.error}<button className="btn btn-sm btn-outline ml-3" onClick={() => void lab.refresh()}>重试</button></p>}
             </div>
@@ -113,8 +114,8 @@ export default function CapstoneOverview() {
             const locked = !access && !preview
             const done = progress?.completedLessons.includes(id)
             const current = access && progress?.continueLessonId === id
-            const to = access ? `/capstone/lessons/${id}` : preview ? '/capstone/preview/c1' : '/pricing'
-            const action = preview ? '免费试看' : done ? '回顾本课' : current ? (progress?.completed ? '继续学习' : '开始学习') : access ? '进入本课' : ''
+            const to = access ? `/capstone/lessons/${id}` : preview ? '/capstone/preview/c1' : projectPricingPath(id)
+            const action = preview ? '免费试看' : done ? '回顾本课' : current ? (progress?.completed ? '继续学习' : '开始学习') : access ? '进入本课' : '查看所需项目版'
             return <Link key={lesson.code} aria-label={`${lesson.code} ${lesson.title}，${preview ? '免费节选' : '项目工坊'}`} to={to} className={`group flex min-h-[132px] flex-col rounded-lg border bg-white p-4 transition sm:last:col-span-2 lg:last:col-span-1 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${preview || current ? 'border-brand-300 ring-1 ring-brand-100' : 'border-slate-200 hover:border-brand-200'}`}>
               <span className="flex items-center justify-between gap-2">
                 <span className="text-[12px] font-semibold text-slate-500">{lesson.code} · {lesson.phase}</span>
@@ -130,7 +131,7 @@ export default function CapstoneOverview() {
         </div>
         {!access && <div className="mt-5 flex flex-col gap-3 rounded-xl border border-brand-200 bg-brand-50/60 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">C2–C9 需要项目工坊权益。</span>项目版包含完整四阶段课程和全部 9 节毕业项目。</p>
-          <Link to="/pricing" className="btn btn-md btn-primary shrink-0">获取项目工坊权益 <ArrowRight className="h-4 w-4" /></Link>
+          <Link to={projectPricingPath()} className="btn btn-md btn-primary shrink-0">获取项目工坊权益 <ArrowRight className="h-4 w-4" /></Link>
         </div>}
       </section>
 

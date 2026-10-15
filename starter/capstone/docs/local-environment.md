@@ -4,9 +4,16 @@
 
 ## 1. Windows 先准备 Docker
 
-安装 [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/)，启用 WSL 2 后端并切到 Linux containers。按安装器要求重启，启动 Docker Desktop，等引擎就绪。在 PowerShell 验证：
+Docker 负责启动本指南配好的数据库和存储服务，不要求现在学习镜像制作。先做三项检查，再下载安装：
+
+1. Windows 按 Win+R，输入 `winver`，记下系统版本；在「设置 → 系统 → 系统信息」查看处理器与内存，对照 [Docker 官方安装要求](https://docs.docker.com/desktop/setup/install/windows-install/)。不要把“能打开安装器”当成系统一定兼容。
+2. 按 Ctrl+Shift+Esc 打开任务管理器，进入「性能 → CPU」，查看“虚拟化”是否已启用。这是查看状态，不修改系统；未启用、设备受学校／公司管理或没有所需权限时，先联系设备管理者或按设备厂商的官方说明处理。没有通用于所有电脑的 BIOS 操作步骤，课程不要求盲改。
+3. 在普通 PowerShell 运行 `wsl --version`、`wsl --status`，对照官方要求。提示需要更新时，在开始菜单右键 PowerShell →「以管理员身份运行」，执行 `wsl --update`；尚未安装则按[微软 WSL 安装说明](https://learn.microsoft.com/en-us/windows/wsl/install)执行 `wsl --install --no-distribution`。完成要求的重启后重新检查。失败就记录错误类别，不反复安装、不删发行版。
+
+系统条件满足后安装 [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/)，选择 WSL 2 后端，使用 Linux containers。按安装器要求重启，从开始菜单打开 Docker Desktop，等引擎就绪。在**新的普通 PowerShell** 验证：
 
 ```powershell
+wsl --version
 wsl --status
 docker version
 docker compose version
@@ -14,6 +21,8 @@ node --version
 ```
 
 `docker version` 必须同时有 Client 和 Server；只有 Client 时先启动引擎。Node 要 >=20.19。macOS/Linux 使用 Docker Desktop 或 Docker Engine + Compose v2，后续 `node` 和 `docker compose` 命令相同；只有下文的环境变量语法区分 shell。
+
+**安装成功标志：**WSL 满足当前官方最低版本，Docker 有 Server、Compose 有版本号、Node 符合要求。重启只完成一部分时，回到这组只读检查，不重复生成项目配置。若虚拟化／WSL／权限仍阻断，可以先完成产品文档；环境、数据库与后续验收保持未完成。Stage 3 的单云数据库方案不能替代 Capstone 的数据库、Garage 与 Eval 隔离边界。
 
 Windows 跟课用 Linux 容器里的 pgvector，避免在 Windows PostgreSQL 上现场编译扩展。若已有原生 PostgreSQL，也先按这套独立容器完成课程；不要把数据库 URL 指向课程平台或已有业务库。
 
@@ -40,7 +49,7 @@ node --env-file=.env.local node_modules/prisma/build/index.js migrate status
 npm run dev
 ```
 
-上面的 `migrate dev` 用于 C2 创建开发迁移，需要先完成本课 schema。测试库只部署已写好的迁移。在**单独的 PowerShell 窗口**切换测试环境，再运行测试（替换成你项目中已实现的测试命令）：
+上面的 `migrate dev` 用于 C2 创建开发迁移，需要先完成本课 schema。测试库只部署已写好的迁移。日常窗口 A 保持开发服务；另开测试窗口 B，重新 `cd` 到同一 Capstone 根目录，确认 `package.json`、`compose.yaml` 都存在。在 B 执行下面的 PowerShell 命令切换测试环境，再运行测试（替换成你项目中已实现的测试命令）：
 
 ```powershell
 $env:TEST_DATABASE_URL = node --env-file=.env.local -p 'process.env.TEST_DATABASE_URL'
