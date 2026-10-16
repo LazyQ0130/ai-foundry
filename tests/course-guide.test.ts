@@ -29,7 +29,7 @@ test('guide provides twelve sections, core concepts, and both free next steps', 
   assert.equal(guideSections.length, 12)
   assert.equal(guideConcepts.length, 13)
   for (const term of ['LLM', 'RAG', 'Agent', 'MCP', 'Skill', 'Eval']) assert.match(html, new RegExp(term))
-  assert.match(html, /href="\/lesson\/stage-1\/s1-l1"/)
+  assert.match(html, /href="\/lesson\/stage-1\/s1-l0"/)
   assert.match(html, /href="\/courses"/)
   assert.doesNotMatch(html, /LessonProgress|LessonCheck|entitlement|购买|¥599|¥699/)
 })

@@ -13,7 +13,11 @@ courseRoutes.get('/stages', async (_req, res) => {
       return { ...meta, status: 'locked', price: row.price, isPublished: row.isPublished, isPurchasable: row.isPurchasable,
         lessons: meta.lessons.map((lesson) => ({ ...lesson, status: 'locked', isPreview: row.lessons.find(l => l.id === lesson.id)?.isPreview ?? false, isPublished: row.lessons.find(l => l.id === lesson.id)?.isPublished ?? false })) }
     }),
-    purchase: { wechatQrUrl: env.WECHAT_QR_URL, wechatContact: env.WECHAT_CONTACT, allAccessPrice: env.ALL_ACCESS_PRICE, allAccessProjectsPrice: env.ALL_ACCESS_PROJECTS_PRICE },
+    purchase: { wechatQrUrl: env.WECHAT_QR_URL, wechatContact: env.WECHAT_CONTACT, allAccessPrice: env.ALL_ACCESS_PRICE, allAccessProjectsPrice: env.ALL_ACCESS_PROJECTS_PRICE,
+      paymentMethods: [
+        { id: 'ALIPAY', label: '支付宝', qrUrl: env.ALIPAY_PAYMENT_QR_URL, recipient: env.ALIPAY_PAYMENT_NAME },
+        { id: 'WECHAT', label: '微信支付', qrUrl: env.WECHAT_PAYMENT_QR_URL, recipient: env.WECHAT_PAYMENT_NAME },
+      ] },
   } })
 })
 courseRoutes.get('/lessons/:lessonId', async (req, res) => {

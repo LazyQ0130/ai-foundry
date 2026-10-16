@@ -258,7 +258,7 @@ export default function StagePage() {
 
         {/* ------------------------------ 右侧栏 ------------------------------ */}
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          {locked && <div id="stage-access" className="card scroll-mt-24 p-5"><h2 className="mb-3 text-sm font-semibold">开通本阶段</h2><StageAccess stage={stage} placement="purchase" /><p className="mt-3 text-xs leading-5 text-slate-500">包含本阶段正式课程与阶段项目。微信联系管理员确认方案，付款核实后人工开通。</p></div>}
+          {locked && <div id="stage-access" className="card scroll-mt-24 p-5"><h2 className="mb-3 text-sm font-semibold">开通本阶段</h2><StageAccess stage={stage} placement="purchase" /><p className="mt-3 text-xs leading-5 text-slate-500">包含本阶段正式课程与阶段项目。登录后选择方案，扫码付款并备注注册手机号和课程方案，管理员核实后开通。</p></div>}
           <div className="card p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-[14px] font-semibold text-slate-900">学习进度</h2>

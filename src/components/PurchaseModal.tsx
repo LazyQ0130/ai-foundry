@@ -1,55 +1,111 @@
-import { learningSupport } from '../data/learningSupport'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { authPath } from '../lib/authNavigation'
+import { authDestination, authPath } from '../lib/authNavigation'
 import { useAuth, type User } from '../auth/AuthProvider'
-import { api, errorMessage } from '../lib/api'
+import { api, ApiError, errorMessage, jsonBody } from '../lib/api'
+import { purchaseAuthReturn, purchaseStatusLabels, retryImageUrl, type Purchase } from '../lib/purchases'
 import { useCatalogue } from '../data/catalog'
+import { learningSupport } from '../data/learningSupport'
 import type { Plan } from '../data/site'
 import { isPlanOpen } from '../data/planAccess'
 import { Modal } from './AdminControls'
+import PaymentProofForm from './PaymentProofForm'
 
-/**
- * 传入 plan：购买指定方案（价格页使用）。
- * 不传 plan：纯咨询场景（首页「购买与账号帮助」），不显示价格与付款步骤。
- */
-export default function PurchaseModal({ plan, returnTo, onClose }: { plan?: Plan; returnTo?: string; onClose: () => void }) {
-  const { user, applyUser } = useAuth()
+function ContactInfo() {
   const { purchase, loading, error, refresh } = useCatalogue()
-  const location = useLocation()
-  const authReturnTo = location.pathname + location.search + location.hash
-  const [message, setMessage] = useState('')
-  const [qrFailed, setQrFailed] = useState(false)
-  const [checking, setChecking] = useState(false)
-  const [checkError, setCheckError] = useState('')
-  const checkAccess = async () => {
-    setChecking(true); setCheckError('')
-    try {
-      const current = await api<User>('/me'); applyUser(current)
-      const opened = isPlanOpen(plan?.id ?? '', current.entitlements, current.productEntitlements)
-      setMessage(opened ? '方案已开通！可在个人中心查看课程及项目实战权益。' : plan?.id === 'all-access-projects' ? '当前尚未完整开通项目版。若已付款，请通过微信发送注册手机号、购买方案和付款凭据，由管理员核实。' : '当前尚未开通。若已付款，请通过微信发送注册手机号、购买方案和付款凭据，由管理员核实。')
-    } catch (e) { setCheckError(errorMessage(e)) } finally { setChecking(false) }
-  }
-  const retryContact = () => { setQrFailed(false); void refresh() }
+  const [failed, setFailed] = useState(false)
+  const [attempt, setAttempt] = useState(0)
+  return <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+    {loading ? <p role="status">正在加载联系信息…</p> : error ? <p role="alert">联系信息暂时无法加载。</p> : <>
+      {purchase.wechatQrUrl && !failed && <img src={retryImageUrl(purchase.wechatQrUrl, attempt)} alt="管理员联系微信二维码" className="mx-auto h-40 w-40 object-contain" onError={() => setFailed(true)} />}
+      {failed && <p role="alert" className="text-sm">联系二维码加载失败。</p>}
+      {purchase.wechatContact && <p className="mt-2 break-all text-sm">管理员微信：<span className="select-all font-semibold">{purchase.wechatContact}</span></p>}
+      {!purchase.wechatQrUrl && !purchase.wechatContact && <p role="status" className="text-sm">管理员暂未配置联系信息，请稍后查看。</p>}
+    </>}
+    {(error || failed) && <button type="button" className="btn btn-sm btn-outline mt-3" onClick={() => { setFailed(false); setAttempt((value) => value + 1); if (error) void refresh() }}>重新加载联系信息</button>}
+  </div>
+}
 
-  return <Modal title={plan ? `购买 ${plan.tag} · ${plan.title}` : '购买与账号帮助'} onClose={onClose} wide={!!plan}>
-    <div className={plan ? 'grid gap-4 sm:grid-cols-[minmax(0,1fr)_220px]' : ''}>
-      {plan && <div className="min-w-0"><p className="text-[28px] font-bold leading-none text-brand-600">¥{plan.price}</p><p className="mt-3 text-[13px] leading-5 text-slate-700">所购阶段课程永久开放阅读。{plan.id === 'all-access-projects' ? '项目版另含项目工坊，后续综合项目实战持续开放，内容与节奏以上线页面为准。' : ''}</p><p className="mt-3 hidden text-[12px] leading-5 text-slate-600 sm:block">扫码添加管理员，确认课程范围、付款方式与开通安排。</p></div>}
-      <div className="min-w-0 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-center">
-        {loading ? <p role="status" className="py-16 text-sm text-slate-500">正在加载联系信息…</p> : error ? <div role="alert" className="py-8 text-sm text-slate-600"><p>联系信息暂时无法加载。</p><button type="button" onClick={retryContact} className="btn btn-sm btn-outline mt-3">重新加载</button></div> : <>
-          {purchase.wechatQrUrl && !qrFailed ? <img src={purchase.wechatQrUrl} alt="管理员联系微信二维码" className="mx-auto h-44 w-44 max-w-full object-contain" onError={() => setQrFailed(true)} /> : qrFailed ? <div role="alert" className="py-6 text-sm text-slate-600">二维码加载失败<button type="button" onClick={retryContact} className="btn btn-sm btn-outline mt-3 w-full">重新加载二维码</button></div> : null}
-          {purchase.wechatContact && <div className="mt-2 text-[12px] text-slate-700">微信号：<span className="select-all break-all font-semibold">{purchase.wechatContact}</span><button type="button" className="ml-2 text-brand-700 underline" onClick={() => void navigator.clipboard.writeText(purchase.wechatContact)}>复制</button></div>}
-          {!purchase.wechatQrUrl && !purchase.wechatContact && <p role="status" className="py-8 text-sm text-slate-500">管理员暂未配置联系信息，请稍后再来查看。</p>}
+export default function PurchaseModal({ plan, purchaseId, returnTo, onClose }: { plan?: Plan; purchaseId?: string; returnTo?: string; onClose: () => void }) {
+  const { user, applyUser } = useAuth()
+  const { purchase: config, loading: configLoading, error: configError, refresh } = useCatalogue()
+  const location = useLocation()
+  const [purchase, setPurchase] = useState<Purchase | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [revision, setRevision] = useState(0)
+  const [method, setMethod] = useState<'ALIPAY' | 'WECHAT'>('ALIPAY')
+  const [failedQr, setFailedQr] = useState(false)
+  const [qrAttempt, setQrAttempt] = useState(0)
+  const [expandedQr, setExpandedQr] = useState(false)
+  const [message, setMessage] = useState('')
+  const [checking, setChecking] = useState(false)
+  const checkout = !!plan || !!purchaseId
+  const owned = !!user && !!plan && isPlanOpen(plan.id, user.entitlements, user.productEntitlements)
+  const safeReturnTo = returnTo ? authDestination(returnTo, 'STUDENT') : undefined
+  const learningReturnTo = safeReturnTo && /^\/(?:lesson\/|stage\/|capstone(?:\/|$))/.test(safeReturnTo) ? safeReturnTo : undefined
+  const learningTo = learningReturnTo || (purchase?.planId === 'all-access-projects' || plan?.id === 'all-access-projects' ? '/capstone' : (purchase?.planId || plan?.id || '').startsWith('stage-') ? `/stage/${purchase?.planId || plan?.id}` : '/dashboard')
+  const authReturnTo = plan ? purchaseAuthReturn(plan.id, location.pathname, location.search, location.hash, safeReturnTo) : location.pathname + location.search + location.hash
+  useEffect(() => {
+    if (!checkout || !user || owned) return
+    let alive = true
+    setLoading(true); setError(''); setPurchase(null)
+    const request = purchaseId ? api<Purchase>(`/purchases/${purchaseId}`) : api<Purchase>('/purchases/prepare', { method: 'POST', body: jsonBody({ planId: plan!.id }) })
+    void request.then((row) => { if (alive) { setPurchase(row); if (row.paymentMethod) setMethod(row.paymentMethod) } }).catch(async (e) => {
+      if (!alive) return
+      if (e instanceof ApiError && e.code === 'ALREADY_OWNED') {
+        try { const current = await api<User>('/me'); if (alive) applyUser(current) }
+        catch (refreshError) { if (alive) setError(errorMessage(refreshError)) }
+      } else setError(errorMessage(e))
+    }).finally(() => { if (alive) setLoading(false) })
+    return () => { alive = false }
+  }, [checkout, user?.id, owned, plan?.id, purchaseId, revision])
+  useEffect(() => { setFailedQr(false); setExpandedQr(false) }, [method])
+  const payment = config.paymentMethods.find((item) => item.id === method)
+  const copyRemark = async () => {
+    if (!purchase) return
+    try {
+      await navigator.clipboard.writeText(purchase.paymentRemark)
+      setMessage('付款备注已复制')
+    } catch { setMessage('复制失败，请长按或选中上方完整备注手动复制') }
+  }
+  const check = async () => {
+    if (!purchase) return
+    setChecking(true); setError('')
+    try {
+      const row = await api<Purchase>(`/purchases/${purchase.id}`)
+      setPurchase(row)
+      const current = await api<User>('/me'); applyUser(current)
+      setMessage(row.status === 'PENDING' ? '申请仍在等待管理员核实，可稍后刷新查看。' : '')
+    } catch (e) { setError(errorMessage(e)) } finally { setChecking(false) }
+  }
+  return <Modal title={checkout ? '购买与开通' : '购买与账号帮助'} onClose={onClose} wide={checkout}>
+    {!checkout ? <><ContactInfo /><p className="mt-4 text-sm leading-6 text-slate-600">添加管理员微信，说明购买、退款、课程开通或账号问题；涉及付款时，请提供注册手机号、购买方案和付款记录。</p></> : <>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-brand-50 p-4"><div className="min-w-0"><p className="text-sm font-semibold text-slate-900">{purchase?.planName || (plan && `${plan.tag} · ${plan.title}`)}</p><p className="mt-1 text-xs leading-5 text-slate-600">所购阶段课程永久开放阅读。{(purchase?.planId || plan?.id) === 'all-access-projects' && '项目版另含项目工坊。'}</p></div><strong className="text-2xl text-brand-700">¥{purchase?.price ?? plan?.price ?? '—'}</strong></div>
+      {owned ? <div className="mt-5"><p role="status" className="text-sm font-semibold text-emerald-700">此方案已开通，可直接开始学习。</p><Link to={learningTo} onClick={onClose} className="btn btn-md btn-primary mt-4">前往学习</Link></div> : !user ? <div className="mt-5 rounded-xl border p-5"><h3 className="font-semibold">请先登录，再扫码付款</h3><p className="mt-2 text-sm leading-6 text-slate-600">登录后生成“完整注册手机号｜课程方案”付款备注，便于核对并开通正确账号。已保留所选方案及原课程去向。</p><div className="mt-4 flex gap-3"><Link className="btn btn-md btn-primary" to={authPath('login', authReturnTo)}>登录付款</Link><Link className="btn btn-md btn-outline" to={authPath('register', authReturnTo)}>注册账号</Link></div></div> : loading ? <p role="status" className="py-8 text-sm">正在加载付款信息…</p> : purchase && <>
+        <p className="mt-3 text-xs leading-6 text-slate-600 sm:mt-4">复制备注 → 扫码付款 → 管理员核实后开通</p>
+        <div className="mt-3 rounded-xl border border-brand-200 p-3 sm:p-4"><p className="text-xs font-semibold text-brand-700">付款务必备注：注册手机号＋购买的课程方案</p><p className="mt-2 select-all break-all text-sm font-semibold">{purchase.paymentRemark}</p><button type="button" className="btn btn-sm btn-outline mt-3" onClick={() => void copyRemark()}>一键复制付款备注</button></div>
+        {purchase.status === 'DRAFT' && <>
+          <div className="mt-4 flex gap-2" role="group" aria-label="选择扫码付款方式">{config.paymentMethods.map((item) => <button type="button" key={item.id} aria-pressed={method === item.id} onClick={() => setMethod(item.id)} className={`btn btn-md flex-1 ${method === item.id ? 'btn-primary' : 'btn-outline'}`}>{item.label}</button>)}</div>
+          <div className="mt-3 rounded-xl border bg-slate-50 p-3 text-center sm:p-4">
+            {configLoading ? <p role="status">正在加载收款信息…</p> : configError ? <p role="alert" className="text-sm">收款信息暂时无法加载。</p> : !payment?.qrUrl ? <p role="status" className="text-sm">此付款方式暂未配置收款码，请选择其他方式或联系管理员。</p> : failedQr ? <p role="alert" className="text-sm">收款码加载失败，请重试或联系管理员。</p> : <>
+              <button type="button" aria-label={`放大${payment.label}收款码`} onClick={() => setExpandedQr((value) => !value)} className="mx-auto block max-w-full"><img src={retryImageUrl(payment.qrUrl, qrAttempt)} alt={`${payment.label}收款码，收款方：${payment.recipient}`} className={`mx-auto h-auto max-w-full bg-white object-contain ${expandedQr ? 'w-[440px]' : 'w-56 min-[360px]:w-64'}`} onError={() => setFailedQr(true)} /></button>
+              <p className="mt-3 text-sm font-semibold">收款方：{payment.recipient}</p><p className="mt-1 text-xs text-slate-500">核对收款方及金额 ¥{purchase.price}，付款时填写上方完整备注。</p>
+              <div className="mt-3 flex justify-center gap-4 text-xs text-brand-700"><button type="button" className="underline" onClick={() => setExpandedQr((value) => !value)}>{expandedQr ? '收起' : '放大收款码'}</button><a href={payment.qrUrl} download={`AIFoundry-${payment.id}.png`} target="_blank" rel="noreferrer" className="underline">保存收款码</a></div>
+            </>}
+            {(configError || failedQr || !payment?.qrUrl) && <button type="button" className="btn btn-sm btn-outline mt-3" onClick={() => { setFailedQr(false); setQrAttempt((value) => value + 1); if (configError || !payment?.qrUrl) void refresh() }}>重新加载收款码</button>}
+          </div>
+          <p className="mt-4 text-sm leading-6 text-slate-600">付款后无需提交截图。管理员根据付款备注中的注册手机号和课程方案核实后开通，可在<Link to="/account" onClick={onClose} className="text-brand-700">个人中心</Link>查看课程权限。</p>
         </>}
-      </div>
-    </div>
-    {plan ? <>
-      <p className="mt-4 text-[12px] font-medium text-slate-700">① 加微信确认 → ② 注册账号 → ③ 发送手机号和付款凭据 → ④ 管理员核实开通</p>
-      <p className="mt-3 text-[12px] leading-5 text-slate-600">注册手机号：{user?.phoneMasked ?? '尚未登录'}。付款不会自动开通；付款前请与管理员确认，开通后可在个人中心查看权限。{!user && <><Link to={authPath('register', authReturnTo)} className="ml-1 text-brand-700">注册账号</Link><Link to={authPath('login', authReturnTo)} className="ml-3 text-brand-700">已有账号？登录</Link></>}</p>
-      <p className="mt-3 text-[11px] leading-5 text-slate-500">首次开通后 72 小时内可申请退款；{learningSupport.short}第三方工具及 API 费用自理。请阅读<Link to="/terms" className="text-brand-700">《用户协议》及退款说明</Link>、<Link to="/privacy" className="text-brand-700">《隐私政策》</Link>，保留付款与沟通记录。</p>
-      <div className="mt-4 flex flex-wrap items-center gap-3"><button type="button" className="text-[12px] text-brand-700 underline" onClick={() => setMessage('请在微信向管理员发送付款凭据、购买方案和完整注册手机号。此按钮仅展示操作指引，不会提交开通申请或确认到账。请以管理员核实结果和个人中心课程权限为准。')}>已付款？查看开通指引</button>{user && <><button type="button" className="btn btn-sm btn-outline" disabled={checking} onClick={() => void checkAccess()}>{checking ? '正在查询…' : '查询是否已开通'}</button><Link to="/account" className="text-[12px] text-brand-700">前往个人中心</Link></>}</div>
-      {message && <p role="status" className="mt-3 text-[12px] leading-5 text-slate-600">{message}</p>}{checkError && <p role="alert" className="mt-3 text-sm text-red-600">{checkError}</p>}
-      {returnTo && <p className="mt-4 border-t border-slate-100 pt-3 text-[13px] leading-6 text-slate-600">已保留原课程去向。<Link to={returnTo} onClick={onClose} className="ml-1 text-brand-700">{user && isPlanOpen(plan.id, user.entitlements, user.productEntitlements) ? '返回原课程继续学习 →' : '返回原课程 →'}</Link></p>}
-    </> : <p className="mt-4 text-[13px] leading-6 text-slate-600">添加管理员微信，说明购买、退款、课程开通或账号问题；涉及已购课程时，请提供注册手机号和相关记录。</p>}
+        {purchase.status !== 'DRAFT' && <div role="status" className="mt-4 rounded-xl border border-brand-100 bg-brand-50 p-4"><h3 className="font-semibold">{purchaseStatusLabels[purchase.status]}</h3><p className="mt-2 break-all text-xs">申请编号：{purchase.id}</p><p className="mt-2 text-sm leading-6">{purchase.status === 'APPROVED' ? '管理员已核实并开通对应权益。' : purchase.status === 'NEEDS_INFO' ? '请按管理员反馈补充信息后重新提交，无需再次付款。' : '已收到付款申请，管理员核实后开通。请勿重复付款。'}</p>{purchase.reviewNote && <p className="mt-2 whitespace-pre-wrap break-words text-sm">管理员反馈：{purchase.reviewNote}</p>}</div>}
+        {purchase.status === 'NEEDS_INFO' && <PaymentProofForm purchase={purchase} method={method} onUpdated={(row) => { setPurchase(row); setMessage(''); window.dispatchEvent(new Event('purchases:updated')) }} />}
+        {purchase.status !== 'DRAFT' && <div className="mt-4 flex flex-wrap gap-3"><button type="button" disabled={checking} onClick={() => void check()} className="btn btn-sm btn-outline">{checking ? '正在查询…' : '刷新申请状态'}</button>{purchase.status === 'APPROVED' ? <Link to={learningTo} onClick={onClose} className="btn btn-sm btn-primary">前往学习</Link> : <Link to="/account" onClick={onClose} className="btn btn-sm btn-outline">个人中心查看记录</Link>}</div>}
+      </>}
+      {error && <div role="alert" className="mt-4 text-sm text-red-600">{error}<button type="button" className="ml-3 underline" onClick={() => setRevision((value) => value + 1)}>重新加载付款信息</button></div>}
+      {message && <p role="status" className="mt-3 text-sm text-brand-700">{message}</p>}
+      <details className="mt-5 border-t pt-4"><summary className="cursor-pointer text-sm text-brand-700">有问题？联系管理员</summary><div className="mt-3"><ContactInfo /></div></details>
+      <p className="mt-4 text-xs leading-5 text-slate-500">付款不会自动开通，管理员核实后开通。首次开通后 72 小时内可申请退款；{learningSupport.short}第三方工具及 API 费用自理。请阅读<Link to="/terms" className="text-brand-700">《用户协议》及退款说明</Link>、<Link to="/privacy" className="text-brand-700">《隐私政策》</Link>，保留付款记录。</p>
+      {safeReturnTo && <p className="mt-3 text-xs text-slate-500">已保留原课程去向。<Link to={safeReturnTo} onClick={onClose} className="ml-2 text-brand-700">返回原页面 →</Link></p>}
+    </>}
   </Modal>
 }

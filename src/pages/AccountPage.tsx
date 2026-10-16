@@ -13,9 +13,10 @@ import PurchaseModal from '../components/PurchaseModal'
 import ProfileSection from '../components/ProfileSection'
 import EmailSecurity from '../components/EmailSecurity'
 import PasswordSecurity from '../components/PasswordSecurity'
+import PurchaseHistory from '../components/PurchaseHistory'
 
 const sourceLabel: Record<string, string> = {
-  MANUAL_PURCHASE: '微信购买',
+  MANUAL_PURCHASE: '扫码付款',
   GIFT: '赠送',
   COMPENSATION: '补偿',
   TEST: '测试',
@@ -62,7 +63,7 @@ function CoursesSection({ onBuy }: { onBuy: (plan: Plan) => void }) {
     return () => {
       alive = false
     }
-  }, [])
+  }, [user?.entitlements.join('|')])
 
   const owned = new Set(user?.entitlements ?? [])
   const locked = stages.filter((stage) => !owned.has(stage.slug))
@@ -260,6 +261,7 @@ export default function AccountPage() {
         <div className="space-y-5">
           <ProfileSection />
           <CoursesSection onBuy={setSelected} />
+          <PurchaseHistory />
           <LearningSection />
         </div>
         <SecuritySection onContact={() => setConsult(true)} />

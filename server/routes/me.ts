@@ -54,7 +54,7 @@ meRoutes.delete('/avatar', requireAuth, async (req, res) => {
   res.json({ data: await publicUser(user) })
 })
 
-/** 已开通的课程权限，含开通时间与来源。没有订单系统，这条记录就是用户的购买凭据。 */
+/** 已开通的课程权限，含开通时间与来源。付款申请另行记录，此接口用于展示实际生效的课程权限。 */
 meRoutes.get('/entitlements', requireAuth, async (req, res) => {
   const rows = await db.entitlement.findMany({
     where: { userId: req.user!.id, status: 'ACTIVE' },

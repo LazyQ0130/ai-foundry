@@ -5,8 +5,10 @@ import { usersRoutes } from './users.js'
 import { entitlementRoutes } from './entitlements.js'
 import { auditRoutes } from './audit.js'
 import { adminCourseRoutes } from './courses.js'
+import { adminPurchaseRoutes } from './purchases.js'
 export const adminRoutes = Router()
 adminRoutes.use(requireAuth, requireAdmin)
 adminRoutes.use('/users', usersRoutes, entitlementRoutes)
 adminRoutes.use('/audit', auditRoutes)
 adminRoutes.use('/courses', adminCourseRoutes)
+adminRoutes.use('/purchases', adminPurchaseRoutes)

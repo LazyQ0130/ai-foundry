@@ -1,5 +1,5 @@
 import { learningSupport } from '../data/learningSupport'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MobilePlanComparison } from '../components/MobilePlanComparison'
 import { usePlans } from '../data/pricing'
 import type { Plan } from '../data/site'
@@ -12,6 +12,7 @@ import { ArrowRight } from 'lucide-react'
 import { Icon } from '../components/Icon'
 import { FullPlanCard } from '../components/PlanCard'
 import { pricingHighlights } from '../data/site'
+import { authDestination } from '../lib/authNavigation'
 
 export default function Pricing() {
   const { plans, loading, error, refresh } = usePlans()
@@ -20,8 +21,17 @@ export default function Pricing() {
   const intent = projectPricingIntent(location.search)
   const { user } = useAuth()
   const projectAccess = !!user?.productEntitlements.includes('project-lab')
-  if(loading) return <p role="status" className="shell py-20">正在加载课程价格…</p>
-  if(error) return <div role="alert" className="shell py-20">{error}<button className="btn btn-md btn-outline ml-3" onClick={()=>void refresh()}>重试</button></div>
+  const reopened = useRef(false)
+  const purchaseParams = new URLSearchParams(location.search)
+  const purchasePlanId = purchaseParams.get('purchase')
+  const purchaseReturnTo = purchaseParams.get('purchaseReturnTo')
+  useEffect(() => {
+    if (reopened.current || loading || error || !purchasePlanId) return
+    const plan = plans.find((item) => item.id === purchasePlanId)
+    if (plan) { reopened.current = true; setSelected(plan) }
+  }, [purchasePlanId, loading, error, plans])
+  if(loading && !plans.length) return <p role="status" className="shell py-20">正在加载课程价格…</p>
+  if(error && !plans.length) return <div role="alert" className="shell py-20">{error}<button className="btn btn-md btn-outline ml-3" onClick={()=>void refresh()}>重试</button></div>
   if(!plans.length) return <p className="shell py-20">暂无已发布课程。</p>
   const allPlan = plans.find((p)=>p.id==='all-access')
   const projectPlan = plans.find((p)=>p.id==='all-access-projects')
@@ -138,7 +148,7 @@ export default function Pricing() {
       }
       {/* ------------------------------ 常见问题 ------------------------------ */}
       <section id="faq" className="shell scroll-mt-24 pb-10">
-        <p className="mb-6 text-[12px] leading-5 text-slate-500">微信付款，管理员确认后开通。首次开通后 72 小时内可申请退款，具体处理方式见<Link to="/terms" className="text-brand-600">《用户协议》</Link>。{learningSupport.short}第三方工具及 API 费用由学员自行承担。</p>
+        <p className="mb-6 text-[12px] leading-5 text-slate-500">支持支付宝 / 微信扫码付款，备注注册手机号和购买方案，由管理员核实后开通。首次开通后 72 小时内可申请退款，具体处理方式见<Link to="/terms" className="text-brand-600">《用户协议》</Link>。{learningSupport.short}第三方工具及 API 费用由学员自行承担。</p>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="h-sec">购买前还有疑问？</h2>
@@ -152,7 +162,7 @@ export default function Pricing() {
 
       </section>
       {intent && !projectPlan && <section id={projectPlanAnchor} className="shell scroll-mt-20 pb-10"><ProjectPlanContext intent={intent} access={projectAccess} /><p className="text-sm text-slate-600">项目版当前暂未开放购买，请稍后再查看。</p></section>}
-      {selected && <PurchaseModal plan={selected} returnTo={selected.id === 'all-access-projects' ? intent?.returnTo : undefined} onClose={()=>setSelected(null)} />}
+      {selected && <PurchaseModal key={selected.id} plan={selected} returnTo={purchaseReturnTo ? authDestination(purchaseReturnTo, 'STUDENT') : selected.id === 'all-access-projects' ? intent?.returnTo : undefined} onClose={()=>setSelected(null)} />}
     </>
   )
 }

@@ -62,7 +62,53 @@ model User {
   checks         LessonCheck[]
   adminActions   AdminAuditLog[] @relation("Admin")
   receivedActions AdminAuditLog[] @relation("Target")
+  purchases      Purchase[] @relation("PurchaseOwner")
+  purchaseReviews Purchase[] @relation("PurchaseReviewer")
   @@index([createdAt])
+}
+
+enum PurchaseStatus {
+  DRAFT
+  PENDING
+  NEEDS_INFO
+  APPROVED
+}
+
+enum PaymentMethod {
+  ALIPAY
+  WECHAT
+}
+
+model Purchase {
+  id             String @id @default(cuid())
+  userId         String
+  planId         String
+  planName       String
+  price          Int
+  paymentRemark  String
+  status         PurchaseStatus @default(DRAFT)
+  paymentMethod  PaymentMethod?
+  transactionId  String @default("")
+  note           String @default("")
+  reviewNote     String @default("")
+  reviewedById   String?
+  reviewedAt     DateTime?
+  submittedAt    DateTime?
+  version        Int @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User @relation("PurchaseOwner", fields: [userId], references: [id])
+  reviewer       User? @relation("PurchaseReviewer", fields: [reviewedById], references: [id])
+  proof          PurchaseProof?
+  @@index([userId, createdAt])
+  @@index([status, submittedAt])
+}
+
+model PurchaseProof {
+  purchaseId String @id
+  data       Bytes
+  version    String
+  purchase   Purchase @relation(fields: [purchaseId], references: [id])
 }
 
 // Short-lived verification secrets are stored as keyed hashes, never plaintext.

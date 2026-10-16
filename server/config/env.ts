@@ -11,6 +11,10 @@ const schema = z.object({
   TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
   WECHAT_QR_URL: z.string().refine((value) => !value || /^\/(?!\/)/.test(value) || /^https:\/\//.test(value), 'Use a same-origin path or HTTPS URL').default('/wechat-contact.jpg'),
   WECHAT_CONTACT: z.string().default(''),
+  ALIPAY_PAYMENT_QR_URL: z.string().refine((value) => !value || /^\/(?!\/)/.test(value) || /^https:\/\//.test(value), 'Use a same-origin path or HTTPS URL').default('/payment-alipay.png'),
+  WECHAT_PAYMENT_QR_URL: z.string().refine((value) => !value || /^\/(?!\/)/.test(value) || /^https:\/\//.test(value), 'Use a same-origin path or HTTPS URL').default('/payment-wechat.png'),
+  ALIPAY_PAYMENT_NAME: z.string().default('FY工作室'),
+  WECHAT_PAYMENT_NAME: z.string().default('FY工作室'),
   ALL_ACCESS_PRICE: z.coerce.number().int().min(0).max(1000000).default(599),
   ALL_ACCESS_PROJECTS_PRICE: z.coerce.number().int().min(0).max(1000000).default(699),
 })

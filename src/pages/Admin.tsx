@@ -9,6 +9,7 @@ import {
 import { BrandLockup } from '../components/Icon'
 import { stages } from '../data/courses'
 import CoursesSection from '../components/AdminCourses'
+import AdminPurchases from '../components/AdminPurchases'
 
 import { api, errorMessage } from '../lib/api'
 import { AccessModal, DetailModal, actionLabels, formatTime, type AdminUser, type Activity } from '../components/AdminControls'
@@ -17,11 +18,12 @@ type AdminState = { users: AdminUser[]; activity: Activity[] }
 type Stats = { total: number; enrolled: number; disabled: number; thisWeek: number; allAccess: number }
 type Filters = { tab: string; accessFilter: string; statusFilter: string; sortNewest: boolean }
 const sectionNames: Record<string, string> = {
-  overview: '概览', users: '用户管理', courses: '课程管理', entitlements: '权限记录', settings: '设置',
+  overview: '概览', users: '用户管理', courses: '课程管理', purchases: '付款申请', entitlements: '权限记录', settings: '设置',
 }
 const navItems = [
   { id: 'overview', label: '概览', icon: Home },
   { id: 'users', label: '用户管理', icon: UserRound },
+  { id: 'purchases', label: '付款申请', icon: ClipboardList },
   { id: 'courses', label: '课程管理', icon: BookOpen },
   { id: 'entitlements', label: '权限记录', icon: ClipboardList },
   { id: 'settings', label: '设置', icon: Settings },
@@ -131,7 +133,7 @@ export default function Admin() {
   useEffect(() => { setPage(1); setQueryValue('') }, [section])
   useEffect(() => {
     let alive = true
-    if (!['users','overview','entitlements'].includes(section)) { setLoading(false); return }
+    if (!['users','overview','entitlements'].includes(section)) { setLoading(false); setError(''); return }
     setLoading(true); setError('')
     const timer = window.setTimeout(async () => {
       const params = new URLSearchParams({ page: String(page), pageSize: '20', query })
@@ -169,7 +171,7 @@ export default function Admin() {
       <header className="sticky top-0 z-40 flex h-[70px] items-center gap-5 border-b border-slate-200 bg-white px-4 sm:px-6">
         <button type="button" aria-label="打开后台菜单" onClick={() => setMenuOpen((value) => !value)} className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden"><Menu className="h-5 w-5" /></button>
         <Link to="/admin/users" className="flex shrink-0 items-center gap-1.5"><BrandLockup /><span className="hidden text-[18px] font-bold text-slate-900 sm:inline">管理后台</span></Link>
-        <label className="ml-2 hidden h-11 w-full max-w-[445px] items-center gap-2 rounded-lg bg-slate-100 px-3 text-slate-500 md:flex"><Search className="h-5 w-5" /><input value={query} onChange={(event) => { setQuery(event.target.value); if (!['users','entitlements'].includes(section)) navigate('/admin/users') }} placeholder="搜索注册手机号..." className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-slate-400" /></label>
+        <label className="ml-2 hidden h-11 w-full max-w-[445px] items-center gap-2 rounded-lg bg-slate-100 px-3 text-slate-500 md:flex"><Search className="h-5 w-5" /><input value={query} onChange={(event) => { setQuery(event.target.value); if (!['users','entitlements','purchases'].includes(section)) navigate('/admin/users') }} placeholder="搜索注册手机号..." className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-slate-400" /></label>
         <div className="ml-auto flex shrink-0 items-center gap-3"><div className="relative"><button type="button" aria-label="通知" onClick={() => setNotificationsOpen((value) => !value)} className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100"><Bell className="h-5 w-5" /></button>{notificationsOpen ? <div className="absolute right-0 top-11 z-50 w-56 rounded-xl border border-slate-200 bg-white p-4 text-[12px] text-slate-500 shadow-xl">暂无新通知</div> : null}</div><span className="grid h-9 w-9 place-items-center rounded-full bg-blue-50 text-brand-700"><ShieldCheck className="h-5 w-5" /></span><span className="hidden text-[13px] font-semibold text-slate-800 sm:inline">管理员</span><button className="whitespace-nowrap text-xs text-slate-500" onClick={()=>void logout().catch((e)=>setError(errorMessage(e)))}>退出</button></div>
       </header>
       {menuOpen ? <button type="button" aria-label="关闭菜单" className="fixed inset-0 z-20 bg-slate-900/30 lg:hidden" onClick={() => setMenuOpen(false)} /> : null}
@@ -181,6 +183,7 @@ export default function Admin() {
         {section === 'users' && <UsersSection users={data.users} stats={stats} query={query} setQuery={setQuery} onFilters={onFilters} onView={(u)=>void view(u)} onAccess={(u)=>void view(u,true)} onToggleStatus={(u)=>void toggleStatus(u)} />}
         {section === 'overview' && <OverviewSection {...data} stats={stats} />}
         {section === 'courses' && <CoursesSection />}
+        {section === 'purchases' && <AdminPurchases query={query} />}
         {section === 'entitlements' && <><label className="sr-only" htmlFor="audit-query">搜索手机号</label><input id="audit-query" value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="搜索手机号" className="mb-4 h-10 rounded-lg border px-3"/><EntitlementsSection activity={data.activity}/></>}
         {section === 'settings' && <SettingsSection />}
         {['users','entitlements'].includes(section) && <div className="mt-4 flex items-center justify-end gap-3 text-sm"><button disabled={page<=1} className="btn btn-sm btn-outline" onClick={()=>setPage((p)=>p-1)}>上一页</button><span>{page} / {Math.max(1,pages)}</span><button disabled={page>=pages} className="btn btn-sm btn-outline" onClick={()=>setPage((p)=>p+1)}>下一页</button></div>}

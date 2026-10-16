@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { db } from '../../db.js'
 import { idSchema, noteSchema, slugSchema } from '../../utils/validation.js'
 import { ApiError } from '../../middleware/error.js'
-import { PROJECT_LAB_KEY } from '../../services/entitlement.js'
+import { grantPlanEntitlements, PROJECT_LAB_KEY } from '../../services/entitlement.js'
 
 export const entitlementRoutes = Router()
 const grantSchema = z.object({ source: z.enum(['MANUAL_PURCHASE', 'GIFT', 'COMPENSATION', 'TEST', 'OTHER']), note: noteSchema.default('') })
@@ -14,12 +14,7 @@ for (const all of [false, true]) entitlementRoutes.post(`/:id/entitlements${all 
     await tx.$queryRaw`SELECT id FROM "User" WHERE id = ${id} FOR UPDATE`
     const user = await tx.user.findUnique({ where: { id } })
     if (!user) throw new ApiError(404, 'NOT_FOUND', '用户不存在')
-    const stages = await tx.stage.findMany({ where: all ? { slug: { in: ['stage-1', 'stage-2', 'stage-3', 'stage-4'] } } : { slug: (input as z.infer<typeof grantSchema> & { stageSlug: string }).stageSlug } })
-    if (stages.length !== (all ? 4 : 1)) throw new ApiError(404, 'NOT_FOUND', '课程阶段不存在')
-    for (const stage of stages) {
-      const data = { status: 'ACTIVE' as const, grantedAt: new Date(), grantedByUserId: req.user!.id, revokedAt: null, revokedByUserId: null, source: input.source, note: input.note }
-      await tx.entitlement.upsert({ where: { userId_stageId: { userId: id, stageId: stage.id } }, create: { userId: id, stageId: stage.id, ...data }, update: data })
-    }
+    const stages = await grantPlanEntitlements(tx, id, all ? ['stage-1', 'stage-2', 'stage-3', 'stage-4'] : [(input as z.infer<typeof grantSchema> & { stageSlug: string }).stageSlug], req.user!.id, input)
     await tx.adminAuditLog.create({ data: { adminUserId: req.user!.id, targetUserId: id, action: all ? 'GRANT_ALL_ACCESS' : 'GRANT_ENTITLEMENT', detail: input.note, metadata: { stages: stages.map((s) => s.slug), source: input.source } } })
   })
   res.json({ data: { success: true } })
@@ -46,11 +41,7 @@ entitlementRoutes.post('/:id/entitlements/projects', async (req, res) => {
   await db.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "User" WHERE id = ${id} FOR UPDATE`
     if (!await tx.user.findUnique({ where: { id }, select: { id: true } })) throw new ApiError(404, 'NOT_FOUND', '用户不存在')
-    const stages = await tx.stage.findMany({ where: { slug: { in: ['stage-1', 'stage-2', 'stage-3', 'stage-4'] } }, orderBy: { order: 'asc' } })
-    if (stages.length !== 4) throw new ApiError(404, 'NOT_FOUND', '课程阶段不存在')
-    const data = { status: 'ACTIVE' as const, grantedAt: new Date(), grantedByUserId: req.user!.id, revokedAt: null, revokedByUserId: null, source: input.source, note: input.note }
-    for (const stage of stages) await tx.entitlement.upsert({ where: { userId_stageId: { userId: id, stageId: stage.id } }, create: { userId: id, stageId: stage.id, ...data }, update: data })
-    await tx.productEntitlement.upsert({ where: { userId_productKey: { userId: id, productKey: PROJECT_LAB_KEY } }, create: { userId: id, productKey: PROJECT_LAB_KEY, ...data }, update: data })
+    const stages = await grantPlanEntitlements(tx, id, ['stage-1', 'stage-2', 'stage-3', 'stage-4'], req.user!.id, input, true)
     await tx.adminAuditLog.create({ data: { adminUserId: req.user!.id, targetUserId: id, action: 'GRANT_ALL_ACCESS_PROJECTS', detail: input.note, metadata: { stages: stages.map((s) => s.slug), products: [PROJECT_LAB_KEY], source: input.source } } })
   })
   res.json({ data: { success: true } })

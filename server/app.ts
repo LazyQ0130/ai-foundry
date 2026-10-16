@@ -13,6 +13,7 @@ import { courseAssetRoutes } from './routes/course-assets.js'
 import { capstoneRoutes } from './routes/capstone.js'
 import { progressRoutes } from './routes/progress.js'
 import { createEmailRoutes } from './routes/email.js'
+import { purchasesRoutes } from './routes/purchases.js'
 
 export const app = express()
 app.disable('x-powered-by')
@@ -33,6 +34,7 @@ app.use('/api', optionalAuth)
 app.use('/api/auth', authRoutes)
 app.use('/api/auth', createEmailRoutes())
 app.use('/api/me', meRoutes)
+app.use('/api/purchases', purchasesRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api', courseRoutes)
 app.use('/api', courseAssetRoutes)

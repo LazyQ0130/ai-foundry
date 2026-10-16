@@ -65,9 +65,11 @@ test('pricing and policy copy preserves catalogue pricing, purchase boundaries, 
   assert.match(pricing,/projectPlan\.price - allPlan\.price/)
   const terms=render(createElement(PolicyPage,{kind:'terms'}))
   const privacy=render(createElement(PolicyPage,{kind:'privacy'}))
-  assert.match(terms,/2026-10-04\.1/);assert.match(terms,/首次开通后 72 小时内，可通过管理员微信提出退款申请/)
-  assert.match(privacy,/2026-09-26\.2/);assert.doesNotMatch(privacy,/2026-10-04\.1/)
-  assert.match(await readFile('server/services/auth.ts','utf8'),/TERMS_VERSION = '2026-10-04\.1'/)
+  assert.match(terms,/2026-10-16\.1/);assert.match(terms,/首次开通后 72 小时内，可通过管理员微信提出退款申请/)
+  assert.match(terms,/备注完整注册手机号和购买方案/);assert.match(terms,/不承诺具体处理时长/)
+  assert.match(privacy,/2026-10-16\.2/);assert.doesNotMatch(privacy,/2026-10-16\.1/)
+  assert.match(privacy,/付款申请与凭据/);assert.match(privacy,/仅本人及有权限的管理员可查看/)
+  assert.match(await readFile('server/services/auth.ts','utf8'),/TERMS_VERSION = '2026-10-16\.1'/)
   for(const file of ['src/pages/Pricing.tsx','src/components/PurchaseModal.tsx','src/pages/PolicyPage.tsx','src/data/help.ts']) {
     assert.doesNotMatch(await readFile(file,'utf8'),/无理由退款|无理由全额退款|三天无理由/)
   }
