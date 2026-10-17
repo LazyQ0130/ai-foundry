@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server.js'
-import * as curriculum from '../src/data/courses.js'
+import * as curriculum from '../server/data/courses.js'
 import { StageAccessActions } from '../src/components/StageAccessActions.js'
 import type { Stage } from '../src/data/courses.js'
 

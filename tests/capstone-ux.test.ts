@@ -8,17 +8,18 @@ import { CapstoneSidebar, CapstoneLessonHeader, CapstoneLessonNavigation } from 
 import { CapstoneEntryCard } from '../src/components/CapstoneShowcase.js'
 import { CapstoneOverviewStart } from '../src/components/CapstoneOverviewStart.js'
 import { LessonLayout } from '../src/components/LessonLayout.js'
-import { capstoneLessons } from '../src/data/capstoneLessons.js'
+import { capstoneLessons } from '../server/data/capstoneLessons.js'
+import { capstoneOutline } from '../server/services/capstone-outline.js'
 import type { CapstoneProgress, CapstoneSummary } from '../src/data/capstoneProgress.js'
 import { curriculumFormalLessonCount } from '../src/data/courses.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 
 const render = (node: ReturnType<typeof h>) => renderToStaticMarkup(h(StaticRouter, { location: '/' }, node))
 const progress: CapstoneProgress = { completed: 3, total: 9, completedLessons: ['c1', 'c2', 'c3'], inProgressLessons: ['c4'], checks: {}, continueLessonId: 'c4' }
-const summary: CapstoneSummary = { access: true, lessons: capstoneLessons, progress }
+const summary: CapstoneSummary = { access: true, lessons: capstoneOutline(), progress }
 
 test('Capstone sidebar lists all nine unlocked routes, highlights current lesson and displays server progress', () => {
-  const html = render(h(CapstoneSidebar, { currentLessonId: 'c4', progress }))
+  const html = render(h(CapstoneSidebar, { currentLessonId: 'c4', progress, lessons: summary.lessons }))
   for (const lesson of capstoneLessons) {
     assert.match(html, new RegExp(`href="/capstone/lessons/${lesson.id}"`))
     assert.ok(html.includes(lesson.title))

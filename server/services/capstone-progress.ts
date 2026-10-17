@@ -1,5 +1,5 @@
 import { db } from '../db.js'
-import { capstoneLessons, capstoneTotal } from '../../src/data/capstoneLessons.js'
+import { capstoneLessons, capstoneTotal } from '../data/capstoneLessons.js'
 export async function getCapstoneProgress(userId: string) {
   const [rows, checks] = await db.$transaction([
     db.capstoneLessonProgress.findMany({where:{userId}}), db.capstoneCheck.findMany({where:{userId}}),

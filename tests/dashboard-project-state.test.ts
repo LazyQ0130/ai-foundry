@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { stages, type Stage } from '../src/data/courses.js'
+import { stages, type Stage } from '../server/data/courses.js'
 import { dashboardState } from '../src/data/dashboardState.js'
 import { getProject, projects } from '../src/data/site.js'
 

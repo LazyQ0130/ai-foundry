@@ -4,9 +4,9 @@ import {createElement} from 'react'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {parseLessonContent} from '../server/services/lesson-parser.js'
 import {LessonMarkdown} from '../src/components/LessonMarkdown.js'
-import {allLessons} from '../src/data/courses.js'
-import {capstoneEstimatedTotalTime} from '../src/data/capstoneLessons.js'
-import {capstoneShowcase} from '../src/data/capstoneShowcase.js'
+import {allLessons} from '../server/data/courses.js'
+import {capstoneEstimatedTotalTime} from '../server/data/capstoneLessons.js'
+import {capstoneShowcase} from '../server/data/capstoneShowcase.js'
 const keys=new Set<string>();let prompts=0,checks=0,min=0,max=0
 for(let stage=1;stage<=4;stage++)for(const file of await readdir(`course-content/stage-${stage}`))if(file.endsWith('.md'))for(const key of parseLessonContent(await readFile(`course-content/stage-${stage}/${file}`,'utf8')).meta.checkKeys){assert.ok(!keys.has(key));keys.add(key)}
 for(let i=1;i<=9;i++){

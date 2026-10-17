@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
 const draftPath = path.join('course-content', 'internal', 'capstone', 'c1', 'lesson-draft.md')
 const draft = await readFile(draftPath, 'utf8')

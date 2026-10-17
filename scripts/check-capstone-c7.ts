@@ -4,8 +4,8 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { LessonMarkdown } from '../src/components/LessonMarkdown.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
-import { allLessons } from '../src/data/courses.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { allLessons } from '../server/data/courses.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
 const base = 'course-content/internal/capstone'
 const overlay = `${base}/c7/overlay`

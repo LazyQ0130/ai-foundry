@@ -1,8 +1,9 @@
 import { capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
+import { CapstoneOutline } from '../components/CapstoneOutline.js'
 import { CapstoneOverviewStart } from '../components/CapstoneOverviewStart.js'
 import { useCapstone } from '../data/capstoneProgress.js'
 import { Link } from 'react-router-dom'
-import { ArrowDown, ArrowRight, BookOpen, Boxes, Check, FileCheck2, GraduationCap, LockKeyhole, ShieldCheck } from 'lucide-react'
+import { ArrowDown, ArrowRight, BookOpen, Boxes, FileCheck2, GraduationCap, ShieldCheck } from 'lucide-react'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { stages } from '../data/courses.js'
 import { useOptionalAuth } from '../auth/AuthProvider.js'
@@ -26,7 +27,6 @@ export default function CapstoneOverview() {
   // Entitlement from the session is known immediately, so owners never see a flash of purchase CTAs.
   const hasProjectLab = useOptionalAuth()?.user?.productEntitlements.includes('project-lab') ?? false
   const access = lab.data ? lab.data.access : hasProjectLab
-  const progress = lab.data?.progress
 
   return (
     <div>
@@ -107,28 +107,7 @@ export default function CapstoneOverview() {
           <SectionHeading title="九课毕业路线" sub="每一课完成一个产品增量，最后交付可验证的完整作品。" />
           <span className="mb-1 text-[12px] font-medium text-slate-500">9 节课 · {capstoneEstimatedTotalTime}</span>
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {capstoneShowcase.lessons.map((lesson) => {
-            const id = lesson.code.toLowerCase()
-            const preview = !access && id === 'c1'
-            const locked = !access && !preview
-            const done = progress?.completedLessons.includes(id)
-            const current = access && progress?.continueLessonId === id
-            const to = access ? `/capstone/lessons/${id}` : preview ? '/capstone/preview/c1' : projectPricingPath(id)
-            const action = preview ? '免费试看' : done ? '回顾本课' : current ? (progress?.completed ? '继续学习' : '开始学习') : access ? '进入本课' : '查看所需项目版'
-            return <Link key={lesson.code} aria-label={`${lesson.code} ${lesson.title}，${preview ? '免费节选' : '项目工坊'}`} to={to} className={`group flex min-h-[132px] flex-col rounded-lg border bg-white p-4 transition sm:last:col-span-2 lg:last:col-span-1 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${preview || current ? 'border-brand-300 ring-1 ring-brand-100' : 'border-slate-200 hover:border-brand-200'}`}>
-              <span className="flex items-center justify-between gap-2">
-                <span className="text-[12px] font-semibold text-slate-500">{lesson.code} · {lesson.phase}</span>
-                {preview ? <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">免费节选</span>
-                  : done ? <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600"><Check className="h-3.5 w-3.5" />已完成</span>
-                  : locked ? <LockKeyhole aria-label="需项目工坊权益" className="h-3.5 w-3.5 text-slate-400" /> : null}
-              </span>
-              <span className="mt-2 text-[14px] font-semibold leading-5 text-slate-900">{lesson.title}</span>
-              <span className="mt-1 text-[12.5px] leading-5 text-slate-500">{lesson.desc}</span>
-              {action && <span className="mt-auto pt-3 text-[13px] font-semibold text-brand-700">{action} →</span>}
-            </Link>
-          })}
-        </div>
+        <CapstoneOutline data={lab.data} allowed={hasProjectLab} loading={lab.loading} />
         {!access && <div className="mt-5 flex flex-col gap-3 rounded-xl border border-brand-200 bg-brand-50/60 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[13.5px] leading-6 text-slate-700"><span className="font-semibold text-slate-900">C2–C9 需要项目工坊权益。</span>项目版包含完整四阶段课程和全部 9 节毕业项目。</p>
           <Link to={projectPricingPath()} className="btn btn-md btn-primary shrink-0">获取项目工坊权益 <ArrowRight className="h-4 w-4" /></Link>

@@ -6,7 +6,8 @@ import {unzipSync} from 'fflate'
 import {app} from '../server/app.js'
 import {db} from '../server/db.js'
 import {env} from '../server/config/env.js'
-import {capstoneLessons} from '../src/data/capstoneLessons.js'
+import {capstoneLessons} from '../server/data/capstoneLessons.js'
+import {capstoneOutline} from '../server/services/capstone-outline.js'
 import {curriculumFormalLessonCount} from '../src/data/courses.js'
 import {createCapstoneStarterZip,capstoneStarterFiles} from '../scripts/capstone-starter-package.js'
 const asset='/api/course-assets/capstone-starter'
@@ -20,12 +21,13 @@ test('Capstone access matrix: anonymous, ordinary, Stage-only, Project Lab, revo
  for(const endpoint of endpoints){await request(app).get(endpoint).expect(401);await student.get(endpoint).expect(403);await admin.get(endpoint).expect(403)}
  await request(app).head(asset).expect(401)
  const publicMeta=(await request(app).get('/api/capstone').expect(200)).body.data
- assert.equal(publicMeta.access,false);assert.equal(publicMeta.progress,null);assert.equal(publicMeta.lessons.length,9)
- assert.deepEqual(publicMeta.lessons,capstoneLessons.map(({id,title,order,estimatedTime})=>({id,title,order,estimatedTime})))
+ assert.equal(publicMeta.access,false);assert.equal(publicMeta.progress,null);assert.deepEqual(publicMeta.lessons,[])
  assert.ok(!JSON.stringify(publicMeta).includes('checkKeys'));assert.ok(!JSON.stringify(publicMeta).includes('contentPath'))
  await admin.post('/api/admin/users/'+id+'/entitlements/all').set('Origin',env.APP_ORIGIN).send(input).expect(200)
  for(const endpoint of endpoints)await student.get(endpoint).expect(403)
+ assert.deepEqual((await student.get('/api/capstone').expect(200)).body.data.lessons,[])
  await admin.post('/api/admin/users/'+id+'/products/project-lab').set('Origin',env.APP_ORIGIN).send(input).expect(200)
+ assert.deepEqual((await student.get('/api/capstone').expect(200)).body.data.lessons,capstoneOutline())
  for(const endpoint of endpoints){const response=await student.get(endpoint).expect(200);assert.equal(response.headers['cache-control'],'private, no-store')}
  for(const lesson of capstoneLessons){const response=await student.get('/api/capstone/lessons/'+lesson.id).expect(200);assert.deepEqual(response.body.data.content.meta.checkKeys,lesson.checkKeys);assert.equal(response.body.data.content.meta.estimatedTime,lesson.estimatedTime)}
  for(const invalid of ['c10','unknown','__proto__','%2e%2e%2f.env','%2e%2e%5c.env','c1%2f..%2fc9'])await student.get('/api/capstone/lessons/'+invalid).expect(404)
@@ -35,10 +37,12 @@ test('Capstone access matrix: anonymous, ordinary, Stage-only, Project Lab, revo
  assert.deepEqual(Object.keys(unzipSync(zip.body)).sort(),capstoneStarterFiles.map(f=>'aifoundry-capstone-starter/'+f).sort())
  await student.get('/api/lessons/c1').expect(404)
  await admin.delete('/api/admin/users/'+id+'/products/project-lab').set('Origin',env.APP_ORIGIN).send({note:'immediate revoke'}).expect(200)
+ assert.deepEqual((await student.get('/api/capstone').expect(200)).body.data.lessons,[])
  for(const endpoint of endpoints)await student.get(endpoint).expect(403)
  await student.put('/api/capstone/progress/lessons/c1/checks/'+first.checkKeys[0]).set('Origin',env.APP_ORIGIN).send({completed:true}).expect(403)
  await admin.post('/api/admin/users/'+id+'/products/project-lab').set('Origin',env.APP_ORIGIN).send(input).expect(200)
  await db.user.update({where:{id},data:{status:'DISABLED'}})
+ assert.deepEqual((await student.get('/api/capstone').expect(200)).body.data.lessons,[])
  for(const endpoint of endpoints)await student.get(endpoint).expect(401)
  // Admin receives no role bypass, but explicit Project Lab entitlement works.
  const adminId=(await admin.get('/api/me').expect(200)).body.data.id

@@ -44,6 +44,8 @@ function LessonList({ stage }: { stage: Stage }) {
 }
 
 function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open: boolean; onToggle: () => void; showProgress: boolean }) {
+  const { user } = useAuth()
+  const canExpand = !!user?.entitlements.includes(stage.slug) && !!stage.outlineAccess
   const a = accentClass[stage.accent]
   const done = stageCompletedCount(stage)
   const total = stageLessonCount(stage)
@@ -77,8 +79,8 @@ function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open
         </dl>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link to={`/stage/${stage.slug}`} className="btn btn-md btn-primary">进入阶段<ArrowRight className="h-4 w-4" /></Link>
-          <button type="button" onClick={onToggle} aria-expanded={open} aria-controls={listId} className="btn btn-md btn-outline">
-            {open ? '收起课程列表' : `展开 ${total} 节课`}<ChevronDown className={`h-4 w-4 transition ${open ? 'rotate-180' : ''}`} />
+          <button type="button" disabled={!canExpand} onClick={canExpand ? onToggle : undefined} aria-expanded={canExpand && open} aria-controls={canExpand ? listId : undefined} className="btn btn-md btn-outline">
+            {!canExpand ? '开通后查看逐课内容' : open ? '收起课程列表' : `展开 ${total} 节课`}<ChevronDown className={`h-4 w-4 transition ${canExpand && open ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
@@ -91,7 +93,7 @@ function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open
       </div>
     </div>
 
-    {open && <div id={listId}><LessonList stage={stage} /></div>}
+    {canExpand && open && <div id={listId}><LessonList stage={stage} /></div>}
   </article>
 }
 

@@ -1,4 +1,4 @@
-import { stages } from '../src/data/courses.js'
+import { stages } from '../server/data/courses.js'
 import { readLessonContent } from '../server/services/course-content.js'
 import { assertCatalogue } from '../server/services/catalogue.js'
 import { db } from '../server/db.js'

@@ -2,16 +2,16 @@ import { Router } from 'express'
 import { z } from 'zod'
 import { db } from '../db.js'
 import { ApiError } from '../middleware/error.js'
-import { capstoneLessons } from '../../src/data/capstoneLessons.js'
+import { capstoneOutline } from '../services/capstone-outline.js'
 import { getCapstoneContent, requireCapstoneAccess, requireCapstoneLesson } from '../services/capstone-content.js'
 import { getCapstoneProgress } from '../services/capstone-progress.js'
 export const capstoneRoutes = Router()
-capstoneRoutes.use((_req,res,next)=>{res.setHeader('Cache-Control','private, no-store');next()})
+capstoneRoutes.use((_req,res,next)=>{res.setHeader('Cache-Control','private, no-store');res.vary('Cookie');next()})
 capstoneRoutes.get('/',async(req,res)=>{
   const userId=req.user?.id
   let access=false
   try {await requireCapstoneAccess(userId);access=true} catch(error) {if(!(error instanceof ApiError))throw error}
-  res.json({data:{access,lessons:capstoneLessons.filter(l=>l.published).map(({id,title,order,estimatedTime})=>({id,title,order,estimatedTime})),progress:access?await getCapstoneProgress(userId!):null}})
+  res.json({data:{access,lessons:access?capstoneOutline():[],progress:access?await getCapstoneProgress(userId!):null}})
 })
 capstoneRoutes.get('/lessons/:lessonId',async(req,res)=>res.json({data:await getCapstoneContent(req.params.lessonId,req.user?.id)}))
 capstoneRoutes.get('/progress',async(req,res)=>{await requireCapstoneAccess(req.user?.id);res.json({data:await getCapstoneProgress(req.user!.id)})})

@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, existsSync } from 'node:fs'
 import { stages, curriculumFormalLessonCount } from '../src/data/courses.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 import { planTemplates, projects } from '../src/data/site.js'
 
 const coursePage = readFileSync('src/pages/CourseCatalog.tsx', 'utf8')
@@ -18,7 +18,8 @@ test('course page merges learning path and stage projects: four stages, project 
   assert.match(coursePage, /stageLessonCount\(stage\)/)
   assert.match(coursePage, /to=\{`\/project\/\$\{stage\.project\.id\}`\}/)
   assert.match(coursePage, /id="projects"/)
-  assert.match(coursePage, /aria-expanded=\{open\}/)
+  assert.match(coursePage, /aria-expanded=\{canExpand && open\}/)
+  assert.match(coursePage, /disabled=\{!canExpand\}/)
   for (const stage of stages) assert.ok(projects.some((project) => project.id === stage.project.id))
   assert.equal(projects.length, 4)
   assert.ok(projects.every((project) => project.id !== 'capstone'))

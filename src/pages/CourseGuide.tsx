@@ -21,6 +21,15 @@ function Flow({ items }: { items: string[] }) {
   )}</ol>
 }
 
+function GuideFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return <figure className="max-w-[760px]">
+    <a href={src} target="_blank" rel="noreferrer" aria-label={`查看大图：${caption}`} className="block overflow-hidden rounded-xl border border-slate-200 bg-[#faf9f5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">
+      <img src={src} alt={alt} width={1672} height={941} loading="lazy" decoding="async" className="h-auto w-full" />
+    </a>
+    <figcaption className="mt-2 flex flex-wrap justify-between gap-x-3 gap-y-1 text-[12px] leading-5 text-slate-500"><span>{caption}</span><span>点击图片查看大图</span></figcaption>
+  </figure>
+}
+
 function LandscapeMap() {
   const groups = [
     { title: '基础模型', items: ['LLM', 'Multimodal Model'] },
@@ -54,16 +63,46 @@ export default function CourseGuide() {
     <div className="shell grid min-w-0 gap-8 py-7 lg:grid-cols-[minmax(0,1fr)_220px] xl:gap-10">
       <main className="min-w-0 space-y-10 pb-12 lg:max-w-[850px]"><Toc mobile />
         <Section index={0}><p className={prose}>过去，许多软件时代的任务主要沿着这一条路完成：</p><Flow items={['人理解任务', '自己操作软件', '完成大量步骤', '得到结果']} /><p className={prose}>现在，越来越多任务开始由人定义目标，让 AI 生成内容或调用能力，再由人判断、约束和验收：</p><Flow items={['定义目标', '提供 Context', 'AI / 工具协作', '判断与约束', '完成交付']} /><p className={prose}>AI 最值得关注的地方，不只是“它能回答问题”，而是它正在成为一种新的生产力接口。这不表示它已经能稳定替代所有知识工作。</p></Section>
-        <Section index={1}><p className={prose}>AI 降低了一些执行工作的门槛。做网站时，你可以先说明需求，让 AI 协助实现，观察页面、检查代码、发现问题并继续修正；不必在第一次动手前把 HTML、CSS、JavaScript 与框架全部学完。</p><p className={prose}>但需求判断、Debug、验证、架构理解、权限、安全和交付仍需要人负责。<strong className="text-slate-900">AI 降低的是很多“执行动作”的门槛，而不是做好一个产品的门槛。</strong></p></Section>
+        <Section index={1}>
+          <p className={prose}>AI 降低了一些执行工作的门槛。做网站时，你可以先说明需求，让 AI 协助实现，观察页面、检查代码、发现问题并继续修正；不必在第一次动手前把 HTML、CSS、JavaScript 与框架全部学完。</p>
+          <p className={prose}>但需求判断、Debug、验证、架构理解、权限、安全和交付仍需要人负责。你要明确需求和验收条件，判断 AI 提出的方案，并在它偏离目标时及时纠正。练习 Prompt，就从说清目标、背景、约束和验证方式开始。</p>
+          <GuideFigure src="/course-media/guide/01-collaboration.webp" alt="人确定目标和约束，AI 协助实现，人检查结果并验收；发现问题后返回目标与需求，继续修正。" caption="人机分工：人负责目标、判断和验收，AI 协助实现。" />
+          <p className={prose}><strong className="text-slate-900">学习 AI Coding，要逐步具备定义问题、指导 AI、判断方案、验证结果和解释交付的能力。</strong>例如给页面加搜索：先确定搜哪些内容、没有结果时显示什么，再检查 AI 的实现是否符合这些条件。</p>
+        </Section>
         <Section index={2}><p className={prose}>先用这张地图定位概念：基础模型提供理解与生成能力，应用把资料与工具接进来，Agent 参与受控的多步行动，连接机制让能力更容易复用。</p><LandscapeMap /><aside className="rounded-xl border-l-4 border-brand-500 bg-brand-50 px-4 py-3 text-sm leading-6 text-brand-900"><strong>如果你现在大部分词都没听懂，非常正常。</strong>导读的目的不是让你现在记住这些知识，而是先拥有一张地图。后面的四个阶段，会让你一个个真正使用它们。</aside></Section>
         <Section index={3}><p className={prose}>这些词会在项目里反复出现。此处只需要知道各自解决什么问题，不需要背定义。</p><div className="grid gap-2 md:grid-cols-2">{guideConcepts.map(concept => <article key={concept.name} className="min-w-0 rounded-xl border border-slate-200 p-3.5"><h3 className="text-[14px] font-semibold text-slate-900">{concept.name}</h3><p className="mt-0.5 text-[12px] font-medium text-brand-700">{concept.short}</p><p className="mt-2 text-[13px] leading-6 text-slate-600">{concept.detail}</p></article>)}</div><div className="overflow-x-auto rounded-xl border border-slate-200"><table className="w-full min-w-[420px] text-left text-[12.5px]"><caption className="px-3 py-2 text-left text-sm font-semibold text-slate-900">概念速查</caption><thead className="bg-slate-50 text-slate-700"><tr><th className="px-3 py-2">概念</th><th className="px-3 py-2">一句话理解</th></tr></thead><tbody>{guideConcepts.map(c => <tr key={c.name} className="border-t border-slate-100"><th scope="row" className="px-3 py-1.5 font-medium text-slate-800">{c.name === 'Human-in-the-loop' ? 'HITL' : c.name}</th><td className="px-3 py-1.5 text-slate-600">{c.short}</td></tr>)}</tbody></table></div></Section>
         <Section index={4}><div className="grid gap-3 md:grid-cols-3">{[['会 ChatGPT = 会 AI？', '聊天只是入口。真实产品还需要 Context、数据、RAG、Tool、权限与 Eval。'], ['AI 会写代码，技术不用学？', 'AI 降低写代码的门槛，不降低做产品的门槛。目标是能带着 AI 完成真实软件。'], ['工具学得越多越好？', '工具变化很快。需求、构建、Debug、数据、验证与交付的方法更值得学习。']].map(([title, body], i) => <article key={title} className="rounded-xl border border-slate-200 p-4"><p className="text-xs font-semibold text-brand-600">误区 {i + 1}</p><h3 className="mt-1 text-sm font-semibold text-slate-900">{title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{body}</p></article>)}</div><p className={prose}>比记住二十个热门工具更有用的是反复走完一条可迁移的过程：需求 → AI 协作 → 构建 → Debug → 数据 → AI 能力 → Tool → Agent → Eval → Delivery。工具会变，解决问题的方法值得留下。</p></Section>
         <Section index={5}><p className={prose}>Agent 很吸引人，但它最终仍运行在软件系统中。页面、API、服务端、数据库、用户、权限、模型和工具都要协作。如果跳过这些基础，很容易复制出 Agent Demo，却不知道它为什么能运行、哪里有风险。</p><p className={prose}>因此先带着 AI 修改真实项目，再做完整软件、接入模型，最后让 AI 在受控条件下调用工具并完成多步任务。</p></Section>
         <Section index={6}><p className={prose}>AIFoundry 的阶段顺序是一条能力升级路线：会使用 AI → 带 AI 做功能 → 做完整软件 → 做 AI 应用 → 做受控 Agent。项目工坊则让你重新组合这些能力，交付更完整的作品。</p><ol className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">{guideRoadmap.map((item, i) => <li key={item.stage} className="min-w-0 rounded-xl border border-brand-100 bg-white p-3.5 shadow-sm"><p className="text-xs font-bold text-brand-600">{item.stage} <span className="ml-1 text-slate-400">{String(i + 1).padStart(2, '0')}</span></p><h3 className="mt-1 text-sm font-semibold text-slate-900">{item.name}</h3><p className="mt-2 text-[12px] text-brand-700">{item.lead}</p><p className="mt-3 text-[12px] leading-5 text-slate-600">从“{item.from}”到<strong className="text-slate-900">“{item.to}”</strong></p><p className="mt-2 border-t border-slate-100 pt-2 text-[11.5px] leading-5 text-slate-500">{item.skills}</p></li>)}</ol><div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-[13px] leading-6 text-slate-600"><strong className="text-slate-900">项目工坊</strong>：从跟着课程完成阶段项目，到重新组合能力、交付完整 AI 产品。它是属于<a className="text-brand-700 underline" href="/pricing">项目版</a>的课程后综合项目实战专区。</div></Section>
-        <Section index={7}><p className={prose}>我们做 AIFoundry，源于一个简单观察：AI 资料已经很多，但有人看完 Prompt、RAG、Agent、MCP 教程，真正要从零做产品时，仍不知道第一步该做什么。</p><p className={prose}>所以我们尽量把关键概念放进真实项目。课程整体遵循这样的实践逻辑：</p><Flow items={['先看到结果', '动手', '理解原因', '遇到失败', '修好并验证', '看 Git diff', '保存版本']} /><p className={prose}>我们希望收获的不只是“听懂了”，而是做出来、出错、修好、验证并完成交付。</p></Section>
-        <Section index={8}><div className="grid gap-2 sm:grid-cols-2">{[['AI 协作能力', '描述需求 · 提供 Context · 拆任务 · 判断结果 · AI Debug · 检查修改'], ['软件产品能力', '页面 · API · 数据库 · 登录 · 权限 · 部署'], ['AI 应用能力', 'LLM · Structured Output · Streaming · Embedding · RAG · Citation · Eval'], ['Agent 工程能力', 'Tool · MCP · Workflow · Human Approval · Persistence · Agent Eval']].map(([title, body]) => <div key={title} className="rounded-xl border border-slate-200 p-4"><h3 className="text-sm font-semibold text-slate-900">{title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{body}</p></div>)}</div><p className={prose}>这些内容不是为了背术语，而是逐渐建立独立完成 AI 产品的能力。职业机会与收入取决于很多课程之外的因素。</p></Section>
+        <Section index={7}>
+          <p className={prose}>我们做 AIFoundry，源于一个简单观察：AI 资料已经很多，但有人看完 Prompt、RAG、Agent、MCP 教程，真正要从零做产品时，仍不知道第一步该做什么。</p>
+          <p className={prose}>所以我们尽量把关键概念放进真实项目。课程整体遵循这样的实践逻辑：</p>
+          <Flow items={['先看到结果', '动手并理解原因', '说明选择理由', '遇到失败', '修好并验证', '保留验证证据', '看 Git diff', '保存版本']} />
+          <p className={prose}>功能跑通是起点。还要检查空输入、请求失败等异常情况，读懂关键代码、检查它是否清晰易维护，并关注当前任务涉及的性能和成本。例如接入 AI 后，回答是否有依据、等待是否过长、模型调用是否超出预算，都需要实际验证。保留下来的测试结果、截图和修改记录，能帮助你解释做了什么、为什么这样做，以及结果是否符合目标。</p>
+          <GuideFigure src="/course-media/guide/02-verification.webp" alt="从可运行的搜索页面，到正常、空输入和请求失败三类检查，再保存截图、测试记录和代码修改作为验证证据。" caption="验证过程：跑通功能，检查正常与异常场景，再留下证据。" />
+        </Section>
+        <Section index={8}>
+          <p className={prose}>下面这些能力会随着四个阶段和项目实践逐步建立，不需要在入门前就掌握。你可以用自己做过的修改、方案说明和验证记录，检查学到了什么。</p>
+          <div className="grid gap-2 sm:grid-cols-2">{[
+            ['AI 协作能力', '需求 · Context · 拆任务 · AI Debug · 检查修改', '能把需求拆成可执行的小任务；遇到报错时，能根据复现步骤和错误信息定位范围，指导 AI 修正。'],
+            ['软件产品能力', '页面 · API · 数据库 · 登录 · 权限 · 部署', '能讲清页面如何调用 API、数据存在哪里、模块之间怎样依赖，以及自己负责的部分如何影响整条流程。'],
+            ['AI 应用能力', 'LLM · Structured Output · Streaming · RAG · Citation · Eval', '能解释为什么选择 RAG 等方案、与替代方案有什么取舍，并用实际检索和回答案例展示效果与局限。'],
+            ['Agent 工程能力', 'Tool · MCP · Workflow · Human Approval · Persistence · Agent Eval', '能说明哪些步骤由 AI 决定、哪些动作需要人确认，并用执行记录和评估结果检查行为、成本与边界。'],
+          ].map(([title, body, outcome]) => <div key={title} className="rounded-xl border border-slate-200 p-4"><h3 className="text-sm font-semibold text-slate-900">{title}</h3><p className="mt-2 text-[12px] leading-6 text-brand-700">{body}</p><p className="mt-2 text-[13px] leading-6 text-slate-600">{outcome}</p></div>)}</div>
+          <p className={prose}>逐步练习讲清项目中的判断和贡献：哪些由你完成，哪些由 AI 协助，哪些能力来自现成工具。职业机会与收入取决于很多课程之外的因素。</p>
+        </Section>
         <Section index={9}><div className="overflow-hidden rounded-xl border border-slate-200 text-[13px]"><div className="grid grid-cols-2 bg-slate-50 font-semibold text-slate-900"><div className="p-3">AIFoundry 不是</div><div className="border-l border-slate-200 p-3">更希望做的是</div></div>{[['AI 工具大全', '建立可迁移的 AI 开发能力'], ['Prompt 咒语合集', '学会描述需求和验证结果'], ['速成专家班', '用项目逐步建立能力'], ['固定项目照抄', '理解并完成真实构建过程'], ['保就业 / 保赚钱', '提供学习路径和实践环境']].map(([a, b]) => <div key={a} className="grid grid-cols-2 border-t border-slate-100 text-slate-600"><div className="p-3">{a}</div><div className="border-l border-slate-100 p-3">{b}</div></div>)}</div></Section>
-        <Section index={10}><ol className="space-y-3">{[['边读边做', '读一点，马上动手，看到结果后再继续。不要攒完整个阶段才统一操作。'], ['验证 AI 的修改', '至少运行、测试、观察页面、看报错与 diff；不要直接相信生成的代码。'], ['缩小报错范围', '先复现，读第一条错误，定位范围，让 AI 只修当前问题，再次验证。'], ['做过再复习', '不必背所有概念。真正使用过以后，再回来复习定义。']].map(([title, body], i) => <li key={title} className="flex gap-3 rounded-lg border border-slate-200 p-3"><span className="text-xs font-bold text-brand-600">{String(i + 1).padStart(2, '0')}</span><div><h3 className="text-sm font-semibold text-slate-900">{title}</h3><p className="mt-1 text-[13px] leading-6 text-slate-600">{body}</p></div></li>)}</ol></Section>
+        <Section index={10}>
+          <p className={prose}>读一点，马上动手，看到结果后再继续。每做一个小功能，就练习下面的过程；真正使用过的概念，再回来复习。</p>
+          <GuideFigure src="/course-media/guide/03-retrospective.webp" alt="项目复盘依次说明背景、挑战、方案与取舍、结果与证据；比较备选方案，并在结果中保留已知限制。" caption="复盘框架：从为什么做，讲到如何选择、如何验证。" />
+          <ol className="space-y-3">{[
+            ['动手前，写清目标与验收条件', '给 AI 任务背景、需要完成的行为和约束。例如新增 API 时，先说清输入、返回结果，以及无权限或输入错误时应怎样处理。'],
+            ['执行中，检查方案和修改', '先理解 AI 准备怎么做、为什么这样选，再分步实现。查看修改是否符合目标、是否改到了无关内容；必要时比较更简单的替代方案。'],
+            ['出错时，先复现并缩小范围', '记录触发步骤，读第一条相关错误，判断问题可能在页面、API 还是数据。把错误信息、已做的检查和当前判断一起交给 AI，修好后再次验证。'],
+            ['完成后，验证并保存证据', '运行功能，检查正常和异常场景，观察页面与日志，查看 Git diff 并保存版本。记录实际测试结果和已知限制，指标只写自己测过的。'],
+            ['收尾时，做一次简短复盘', '按“背景 → 挑战 → 方案与取舍 → 结果与证据”说明这次修改。写清自己完成、AI 协助和复用已有能力的部分，以及尚未解决的问题；涉及其他模块时，说明输入从哪里来、输出交给谁。'],
+          ].map(([title, body], i) => <li key={title} className="flex gap-3 rounded-lg border border-slate-200 p-3"><span className="shrink-0 text-xs font-bold text-brand-600">{String(i + 1).padStart(2, '0')}</span><div className="min-w-0"><h3 className="text-sm font-semibold text-slate-900">{title}</h3><p className="mt-1 text-[13px] leading-6 text-slate-600">{body}</p></div></li>)}</ol>
+        </Section>
         <Section index={11}><div className="rounded-2xl border border-brand-200 bg-brand-50 p-5 sm:p-7"><h3 className="text-xl font-bold text-slate-900">你不需要先把这些概念全部学会。</h3><p className="mt-3 max-w-2xl text-[14px] leading-7 text-slate-600">接下来真正重要的是开始动手。在 Stage 1，你会先带着 AI 改一个真实项目，从第一次看到页面发生变化开始。</p><div className="mt-5 flex flex-wrap gap-3"><Link to="/lesson/stage-1/s1-l0" className="btn btn-lg btn-primary">从第 0 课开始免费体验 <ArrowRight className="h-4 w-4" /></Link><Link to="/courses" className="btn btn-lg btn-outline">查看全部课程</Link></div></div></Section>
       </main><Toc />
     </div>

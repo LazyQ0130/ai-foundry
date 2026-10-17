@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import argon2 from 'argon2'
 import { db } from '../server/db.js'
-import { stages } from '../src/data/courses.js'
+import { stages } from '../server/data/courses.js'
 
 export async function seed() {
   for (const item of stages) {

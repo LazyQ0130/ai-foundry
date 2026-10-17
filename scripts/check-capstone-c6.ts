@@ -2,8 +2,8 @@ import assert from 'node:assert/strict'
 import { access, readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
-import { allLessons } from '../src/data/courses.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { allLessons } from '../server/data/courses.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
 const base = 'course-content/internal/capstone'
 const overlay = `${base}/c6/overlay`

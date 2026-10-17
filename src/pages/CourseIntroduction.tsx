@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, Bot, Code2, Database, ChevronDown, GraduationCap, Layers, Users } from 'lucide-react'
-import { accentClass, formalLessons, stages, totalLessons } from '../data/courses'
+import { ArrowRight, BookOpen, Bot, Code2, Database, Layers, Users } from 'lucide-react'
+import { accentClass, formalLessons, stages as publicStages, totalLessons } from '../data/courses'
+import { useAuth } from '../auth/AuthProvider'
+import { useCatalogue } from '../data/catalog'
+import { CourseOutline } from '../components/CourseOutline'
+import { CapstoneOutline } from '../components/CapstoneOutline'
+import { useCapstone } from '../data/capstoneProgress'
 import { capstoneShowcase } from '../data/capstoneShowcase'
 import { learningSupport } from '../data/learningSupport'
 
@@ -8,7 +13,6 @@ const sections = [
   ['studio', 'FY 工作室'],
   ['curriculum', '四阶段课程'],
   ['practice', '项目实战'],
-  ['showcase', '学员成果'],
 ] as const
 
 const stageIcons = [Code2, Database, BookOpen, Bot]
@@ -21,6 +25,10 @@ function Actions() {
 }
 
 export default function CourseIntroduction() {
+  const auth = useAuth()
+  const catalogue = useCatalogue()
+  const lab = useCapstone()
+  const stages = catalogue.stages.length ? catalogue.stages : publicStages
   return <>
     <section className="border-b border-slate-200 bg-gradient-to-b from-[#E9F2FE] to-slate-50/60">
       <div className="shell py-12 sm:py-16">
@@ -88,18 +96,7 @@ export default function CourseIntroduction() {
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {stage.abilities.map(ability => <div key={ability.title} className="rounded-xl bg-slate-50 p-3 sm:min-h-[108px]"><h4 className="text-sm font-semibold text-slate-800">{ability.title}</h4><p className="mt-1 text-[13px] leading-5 text-slate-600">{ability.desc}</p></div>)}
                 </div>
-                <details className="group mt-4 border-t border-slate-100 pt-4">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded text-sm font-semibold text-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 [&::-webkit-details-marker]:hidden"><span>展开学习起点与逐课内容</span><ChevronDown aria-hidden="true" className="h-4 w-4 shrink-0 transition group-open:rotate-180" /></summary>
-                <dl className="mt-4 grid gap-3 text-sm leading-7 sm:grid-cols-2">
-                  <div><dt className="font-semibold text-slate-800">开始前</dt><dd className="text-slate-600">{stage.enterState}</dd></div>
-                  <div><dt className="font-semibold text-slate-800">完成后</dt><dd className="text-slate-600">{stage.exitState}</dd></div>
-                </dl>
-                  <ol className="mt-4 divide-y divide-slate-100">
-                    {lessons.map(lesson => <li key={lesson.id} className="flex gap-3 py-3"><span className="w-7 shrink-0 text-xs leading-6 text-slate-400">{lesson.code}</span><div><h4 className="text-sm font-medium text-slate-800">{lesson.title}</h4><p className="mt-1 text-[13px] leading-6 text-slate-600">{lesson.desc}</p></div></li>)}
-                  </ol>
-                  {stage.id === 1 && <p className="mt-3 rounded-lg bg-brand-50 p-3 text-xs leading-6 text-slate-600">另含第 0 课「开始前准备」：安装运行环境与 AI 开发工具，下载项目模板并第一次启动工作台。</p>}
-                  <Link to={`/stage/${stage.slug}`} className="btn btn-md btn-outline mt-4">进入阶段详情页<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-                </details>
+                <CourseOutline stage={stage} allowed={!!auth.user?.entitlements.includes(stage.slug)} loading={auth.loading || catalogue.loading} />
               </div>
             </article>
           })}
@@ -115,20 +112,11 @@ export default function CourseIntroduction() {
         <h3 className="mt-4 text-2xl font-bold text-slate-900">{capstoneShowcase.project}</h3>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">{capstoneShowcase.description}</p>
         <p className="mt-3 text-xs leading-6 text-slate-500">适合完成四阶段课程或具备等效基础的学习者。共 {capstoneShowcase.lessons.length} 节课，需包含项目工坊权益的学习方案。</p>
-        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {capstoneShowcase.lessons.map(lesson => <li key={lesson.code} className="rounded-xl border border-brand-100 bg-white p-4"><span className="text-xs font-semibold text-brand-700">{lesson.code} · {lesson.phase}</span><h4 className="mt-2 text-sm font-semibold text-slate-800">{lesson.title}</h4><p className="mt-2 text-[13px] leading-6 text-slate-600">{lesson.desc}</p></li>)}
-        </ol>
+        <CapstoneOutline data={lab.data} allowed={!!auth.user?.productEntitlements.includes('project-lab')} loading={lab.loading} />
+        {lab.error && <p role="alert" className="mt-3 text-sm text-red-600">{lab.error}<button type="button" onClick={() => void lab.refresh()} className="btn btn-sm btn-outline ml-3">重试</button></p>}
         <div className="mt-6"><h4 className="text-sm font-semibold text-slate-800">最终交付</h4><ul className="mt-3 flex flex-wrap gap-2">{capstoneShowcase.deliverables.map(item => <li key={item} className="rounded-lg border border-brand-100 bg-white px-3 py-2 text-xs text-slate-700">{item}</li>)}</ul></div>
         <Link to="/capstone" className="btn btn-md btn-primary mt-6">查看项目工坊<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
       </article>
-    </section>
-
-    <section id="showcase" className="shell scroll-mt-24 pb-12 sm:pb-16">
-      <h2 className="h-sec">学员成果</h2>
-      <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
-        <GraduationCap aria-hidden="true" className="mx-auto h-8 w-8 text-slate-400" />
-        <p className="mt-3 text-sm text-slate-500">学员作品将陆续展示。</p>
-      </div>
     </section>
 
     <section className="shell pb-12">

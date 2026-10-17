@@ -1,26 +1,45 @@
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
-import {capstoneLessons} from '../src/data/capstoneLessons.js'
+import {capstoneLessons} from '../server/data/capstoneLessons.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 import {readCapstoneContent} from '../server/services/capstone-content.js'
 import {unzipSync} from 'fflate'
 import {capstoneStarterFiles} from './capstone-starter-package.js'
-import { stages } from '../src/data/courses.js'
+import { stages } from '../server/data/courses.js'
 import { readLessonContent } from '../server/services/course-content.js'
 
 async function files(directory: string, skipGenerated = false): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })
   return (await Promise.all(entries.filter(entry => !skipGenerated || !['node_modules', '.next', '.runtime', '.git'].includes(entry.name)).map(entry => entry.isDirectory() ? files(path.join(directory, entry.name), skipGenerated) : [path.join(directory, entry.name)]))).flat()
 }
-const paths = [...await files('dist'), ...await files('public')]
+const buildDirectory = process.env.BUNDLE_DIR || 'dist'
+const buildPaths = await files(buildDirectory)
+const publicPaths = await files('public')
+const paths = [...buildPaths, ...publicPaths]
+const exposedPaths = [...buildPaths.map(name => path.relative(buildDirectory, name)), ...publicPaths.map(name => path.relative('public', name))]
 if (!paths.some(name => name.endsWith('.js'))) throw new Error('Build frontend first')
 if (paths.some(name => /(?:^|[\\/])course-content(?:[\\/]|$)/.test(name))) throw new Error('Course source directory is publicly exposed')
 if (paths.some(name => /\.zip$/i.test(name) || /(?:^|[\\/])starter(?:[\\/]|$)/.test(name))) throw new Error('Starter attachment must not be in dist/public')
-if (paths.some(name => /(?:^|[\\/])(?:\.env(?:\.[^\\/]*)?|\.runtime|\.git|node_modules)(?:[\\/]|$)/.test(name))) throw new Error('Private environment or generated server directory publicly exposed')
+if (exposedPaths.some(name => /(?:^|[\\/])(?:\.env(?:\.[^\\/]*)?|\.runtime|\.git|node_modules)(?:[\\/]|$)/.test(name))) throw new Error('Private environment or generated server directory publicly exposed')
 // Only exact paragraphs from deliberately published excerpts may appear publicly.
 const publicExcerpts = await Promise.all(['c1', 's1-l1'].map(id => readFile(`src/data/previews/${id}.md`, 'utf8')))
 const isPublicExcerpt = (paragraph: string) => publicExcerpts.some(excerpt => excerpt.replace(/\r\n/g, '\n').includes(paragraph.replace(/\r\n/g, '\n')))
 const assets = await Promise.all(paths.filter(name => /\.(?:js|css|html|json|map|md|txt|mjs|ts|tsx|sql)$/i.test(name)).map(async name => ({ name, text: await readFile(name, 'utf8') })))
+for (const lesson of capstoneShowcase.lessons.slice(1)) {
+  for (const marker of [lesson.title, lesson.desc]) {
+    if (assets.some(asset => asset.text.includes(marker) || asset.text.includes(JSON.stringify(marker).slice(1, -1))))
+      throw new Error(`Protected Project Lab outline in public output: ${lesson.code}`)
+  }
+}
+for (const stage of stages) {
+  const protectedMarkers = [stage.enterState, stage.exitState, ...stage.lessons.filter(lesson => !lesson.isPreview).map(lesson => lesson.desc)]
+  for (const marker of protectedMarkers) {
+    if (!marker) continue
+    const found = assets.find(asset => asset.text.includes(marker) || asset.text.includes(JSON.stringify(marker).slice(1, -1)))
+    if (found) throw new Error(`Protected course outline in public output: ${stage.slug} (${found.name})`)
+  }
+}
 // Internal authoring artifacts are never student downloads or frontend imports.
 const internalFiles = [
   ...await files('course-content/internal/capstone', true),

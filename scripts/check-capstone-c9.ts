@@ -4,8 +4,8 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { LessonMarkdown } from '../src/components/LessonMarkdown.js'
-import { allLessons } from '../src/data/courses.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { allLessons } from '../server/data/courses.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 const base='course-content/internal/capstone',overlay=base+'/c9/overlay'
 const read=(file:string)=>readFile(overlay+'/'+file,'utf8')
 const lesson=parseLessonContent(await readFile(base+'/c9/lesson-draft.md','utf8'))

@@ -1,5 +1,5 @@
 import { db } from '../db.js'
-import { stages, formalLessons, curriculumFormalLessonCount } from '../../src/data/courses.js'
+import { stages, formalLessons, curriculumFormalLessonCount } from '../data/courses.js'
 
 export async function getProgress(userId: string) {
   const [progress, checks, entitlements, published] = await db.$transaction([

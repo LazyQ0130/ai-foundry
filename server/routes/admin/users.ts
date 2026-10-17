@@ -5,7 +5,7 @@ import { db } from '../../db.js'
 import { maskPhone } from '../../services/auth.js'
 import { idSchema, noteSchema, pageSchema, slugSchema } from '../../utils/validation.js'
 import { ApiError } from '../../middleware/error.js'
-import { totalLessons } from '../../../src/data/courses.js'
+import { totalLessons } from '../../data/courses.js'
 
 export const usersRoutes = Router()
 const include = { entitlements: { where: { status: 'ACTIVE' as const }, include: { stage: true } }, productEntitlements: { where: { status: 'ACTIVE' as const }, select: { productKey: true } }, progress: true } satisfies Prisma.UserInclude

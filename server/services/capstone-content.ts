@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { db } from '../db.js'
 import { ApiError } from '../middleware/error.js'
 import { hasProductAccess, PROJECT_LAB_KEY } from './entitlement.js'
-import { capstoneLesson } from '../../src/data/capstoneLessons.js'
+import { capstoneLesson } from '../data/capstoneLessons.js'
 import { parseLessonContent } from './lesson-parser.js'
 
 export function requireCapstoneLesson(id: string) {

@@ -46,7 +46,8 @@ test('generic workshop intent returns to overview; unsafe and unknown targets ar
 test('context explains the precise course and plan boundary and owners receive continuation instead of purchase', () => {
   const intent = projectPricingIntent(new URL(projectPricingPath('c2'), 'http://localhost').search)!
   const guest = render(h(ProjectPlanContext, { intent, access: false }))
-  assert.match(guest, /C2 · 从需求到架构/)
+  assert.match(guest, /C2 · 项目工坊第 2 课/)
+  assert.doesNotMatch(guest, /从需求到架构：搭起第一个可运行版本/)
   assert.match(guest, /单阶段和全阶段课程版均不含项目工坊/)
   assert.match(guest, /href="\/capstone\/lessons\/c2"/)
   const owner = render(h(ProjectPlanContext, { intent, access: true }))

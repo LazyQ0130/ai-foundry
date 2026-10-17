@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { z } from 'zod'
 import { db } from '../../db.js'
 import { idSchema, slugSchema } from '../../utils/validation.js'
-import { stages } from '../../../src/data/courses.js'
+import { stages } from '../../data/courses.js'
 export const adminCourseRoutes = Router()
 adminCourseRoutes.get('/', async (_req, res) => {
   const rows = await db.stage.findMany({ include: { lessons: true }, orderBy: { order: 'asc' } })

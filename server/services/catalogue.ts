@@ -1,4 +1,4 @@
-import { stages } from '../../src/data/courses.js'
+import { stages } from '../data/courses.js'
 import { db } from '../db.js'
 
 export async function assertCatalogue() {

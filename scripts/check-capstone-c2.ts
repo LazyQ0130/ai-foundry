@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile, readdir, access } from 'node:fs/promises'
 import path from 'node:path'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
 const base = path.join('course-content', 'internal', 'capstone')
 const c2 = path.join(base, 'c2')

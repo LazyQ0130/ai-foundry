@@ -5,7 +5,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server.js'
 import { CapstoneHomeTeaser, CapstonePathCard } from '../src/components/CapstoneShowcase.js'
-import { capstoneShowcase } from '../src/data/capstoneShowcase.js'
+import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 import { stages, curriculumFormalLessonCount } from '../src/data/courses.js'
 import CapstoneOverview from '../src/pages/CapstoneOverview.js'
 
@@ -30,13 +30,17 @@ test('learning path loads independent Capstone progress; home teaser links to ov
   assert.match(render(createElement(CapstoneHomeTeaser)), /AI 研究工作台/)
 })
 
-test('Capstone overview lists nine locked lessons without lesson or purchase links', async () => {
+test('Capstone overview hides the nine-lesson outline until Project Lab is open', async () => {
   const html = render(createElement(CapstoneOverview))
   assert.match(html, /毕业项目 · 项目工坊专属/)
   assert.match(html, /<h1[^>]*>AI 研究工作台<\/h1>/)
   assert.ok(html.includes(capstoneShowcase.subtitle))
   assert.match(html, /AI Research Workspace/)
-  assert.equal((html.match(/aria-label="C[1-9] /g) ?? []).length, 9)
+  assert.equal((html.match(/aria-label="C[1-9] /g) ?? []).length, 0)
+  for (const lesson of capstoneShowcase.lessons.slice(1)) {
+    assert.ok(!html.includes(lesson.title))
+    assert.ok(!html.includes(lesson.desc))
+  }
   if(String(capstoneShowcase.status)==='暂未解锁')assert.equal((html.match(/暂未解锁/g) ?? []).length>=10,true)
   else {assert.match(html,/9 节课/);assert.match(html,/获取项目工坊权益/);assert.doesNotMatch(html,/Project Lab|Capstone/);assert.match(html,/href="\/capstone\/preview\/c1"/);assert.doesNotMatch(html,/暂未解锁|暂未开放|Production Product|Deployable AI Product/)}
   assert.doesNotMatch(html, /href="\/lesson\/|立即学习|购买|¥\d|已完成 \d+%/)

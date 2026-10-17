@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { capstoneLessons, capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
+import { capstoneEstimatedTotalTime } from '../data/capstoneLessons.js'
 import type { CapstoneSummary } from '../data/capstoneProgress.js'
 import { capstoneShowcase } from '../data/capstoneShowcase.js'
 import { CourseResource } from './CourseResource.js'
@@ -12,7 +12,7 @@ export function CapstoneOverviewStart({ data, loading }: { data: CapstoneSummary
   if (loading) return <div className={card}><p role="status" className="text-sm text-slate-500">正在加载项目进度…</p></div>
   const progress = data?.progress
   if (data?.access && progress) {
-    const current = capstoneLessons.find(l => l.id === progress.continueLessonId)
+    const current = data.lessons.find(l => l.id === progress.continueLessonId)
     return <div className={card}>
       <p className="text-[12px] font-semibold text-brand-600">我的毕业项目</p>
       <p className="mt-2 flex items-center justify-between gap-3 text-sm font-semibold text-slate-700"><span>毕业项目进度</span><span>{progress.completed} / {progress.total}</span></p>
