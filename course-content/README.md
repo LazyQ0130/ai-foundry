@@ -14,6 +14,8 @@
 
 Stage 4 使用独立 Stage 4 entitlement；ACTIVE 登录且拥有 ACTIVE Stage 4 entitlement 的学员可下载 Stage 4 Starter，不要求同时拥有 Stage 3 entitlement。环境信息统一链接 `/environment`，正文不重复维护推荐模型名或工具下载地址。Stage 3/4 开发 Prompt 使用练习骨架与折叠参考答案，技术和安全边界不可因练习形式而删减。
 
+工程思维训练的作者底稿见 [工程任务单](../docs/templates/engineering-task-sheet.md)，审查依据见 [V1.1 优化报告](../docs/teaching-optimization-v1.1-report.md)。学生所需格式直接放在 1.6、2.8、3.7、4.7 页面，不要求访问内部 docs；4.8 复用原演示稿，Capstone 复用现有产品定义、ADR、评估与复盘。Stage 2～4 新增挑战均为选做，不新增进度键，不替代原验收或固定基准，不机械复制到每课。
+
 P1 操作说明的公共回链为 `/environment#console`、`#network`、`#accounts`。Stage 2/3/4 验收工具使用各自 `stage2-tools`、`stage3-tools`、`stage4-tools` 固定资源 ID，按对应阶段独立权益下载；只包含 `course-tools/` 白名单中的工具脚本和 README，不包含完成应用、测试秘密或评估案例答案。`npm run build:starter` 同时生成三份 `course-tools/aifoundry-stageN-tools.zip`，`check:starter` 检查字节一致性。部署需携带这些 ZIP 与原 Starter ZIP，不放进 `public` 或前端 bundle。独立 Node 入口加载项目实际本机环境，再加载被 Git 忽略的 `.env.course-checks`；详细报告仅放被忽略的 `.runtime`。双账号配图明确标为 AI 生成的概念示意，不作为真实界面截图。
 
 Stage 2 工具还包含 s2-l7 隔离故障辅助：`fault-project.mjs` 在当前项目的 `.runtime/s2-l7-fault-demo` 建立代码快照，以同一学习库的新随机 schema 应用已有三次迁移，不复制原秘密配置、不覆盖已有副本；仅允许在匹配标记的副本改名／恢复 Resource 表。`fault-proxy.mjs` 只监听本机 3007，转发副本 3008，以真实响应演示延迟、保存后读取失败和正文中断；先校验 Origin 后转换到内部应用地址，保留 Session 与 ownerId 保护。正文中断先发送响应头，避免 Chromium 自动重发 POST。工具不清库、不删除目录，结束必须恢复表并停止自己的服务。详细操作与恢复方法在 s2-l7，维护时同步 Stage 2 README 和固定 ZIP 白名单。
