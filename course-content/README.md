@@ -14,7 +14,7 @@
 
 Stage 4 使用独立 Stage 4 entitlement；ACTIVE 登录且拥有 ACTIVE Stage 4 entitlement 的学员可下载 Stage 4 Starter，不要求同时拥有 Stage 3 entitlement。环境信息统一链接 `/environment`，正文不重复维护推荐模型名或工具下载地址。Stage 3/4 开发 Prompt 使用练习骨架与折叠参考答案，技术和安全边界不可因练习形式而删减。
 
-工程思维训练的作者底稿见 [工程任务单](../docs/templates/engineering-task-sheet.md)，审查依据见 [V1.1 优化报告](../docs/teaching-optimization-v1.1-report.md)。学生所需格式直接放在 1.6、2.8、3.7、4.7 页面，不要求访问内部 docs；4.8 复用原演示稿，Capstone 复用现有产品定义、ADR、评估与复盘。Stage 2～4 新增挑战均为选做，不新增进度键，不替代原验收或固定基准，不机械复制到每课。
+工程思维训练的作者底稿见 [工程任务单](../docs/templates/engineering-task-sheet.md)，审查与修订依据见 [V1.1 优化报告](../docs/teaching-optimization-v1.1-report.md)和 [V1.2 收尾报告](../docs/teaching-optimization-v1.2-report.md)。学生所需格式直接放在 1.6、2.8、3.7、4.7 页面，不要求访问内部 docs；4.8 复用原演示稿，Capstone 复用现有产品定义、ADR、评估与复盘。Stage 2 的基础分工判断、Stage 3 的固定题分析和 Stage 4 的安全边界解释融入原总结／评估；V1.1 全栈实操、三题探索、自主失败实验仍为进阶选做。不新增进度键，不替代原验收或固定基准，不重复填写任务单或机械复制到每课。
 
 P1 操作说明的公共回链为 `/environment#console`、`#network`、`#accounts`。Stage 2/3/4 验收工具使用各自 `stage2-tools`、`stage3-tools`、`stage4-tools` 固定资源 ID，按对应阶段独立权益下载；只包含 `course-tools/` 白名单中的工具脚本和 README，不包含完成应用、测试秘密或评估案例答案。`npm run build:starter` 同时生成三份 `course-tools/aifoundry-stageN-tools.zip`，`check:starter` 检查字节一致性。部署需携带这些 ZIP 与原 Starter ZIP，不放进 `public` 或前端 bundle。独立 Node 入口加载项目实际本机环境，再加载被 Git 忽略的 `.env.course-checks`；详细报告仅放被忽略的 `.runtime`。双账号配图明确标为 AI 生成的概念示意，不作为真实界面截图。
 
