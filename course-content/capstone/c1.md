@@ -134,6 +134,10 @@ V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息�
 
 在 `docs/product-brief.md` 的 Problem、Target User、Current Workflow、JTBD 中写入自己的决定；再用一小段话写清这三种职责。此时还不用画数据库，也不用决定 Next.js。
 
+![从研究问题确定最小用户流程与范围](/course-media/capstone/c1-scope-guide.webp "从研究问题确定最小用户流程与范围（教学示意）")
+
+看图核对：沿着一个研究任务检查 V1 范围。图中灰色方向只供以后评估，不能写成当前已经提供的功能。
+
 ## 把 V1 砍到能交付
 
 现在做范围选择。先别看参考答案，把下面的功能池分到 Must、Later、No。Must 的判断标准只有一个：少了它，主要用户还能否完成「私人资料与外部证据 → 可追溯报告 → 自己决定是否保存」？

@@ -58,3 +58,21 @@ test('all new Stage 1/2 figures decode and are captioned in the correct lesson',
     assert.ok(meta.width! >= 1200 && meta.height! >= 650)
   }
 })
+
+test('advanced teaching figures are delivered, captioned and present in every Capstone lesson', async () => {
+  const figures = JSON.parse(await readFile('docs/course-advanced-visuals.json', 'utf8')) as { lesson: string; asset: string; caption: string; readingNote: string }[]
+  assert.equal(figures.length, 17)
+  assert.equal(new Set(figures.map(item => item.asset)).size, figures.length)
+  for (const figure of figures) {
+    const source = await readFile(`course-content/${figure.lesson}`, 'utf8')
+    const { body } = parseLessonContent(source)
+    const html = renderToStaticMarkup(createElement(LessonMarkdown, { body }))
+    assert.ok(html.includes(`src="/${figure.asset.slice('public/'.length)}"`), figure.lesson)
+    assert.ok(source.includes(figure.caption + '（教学示意）'))
+    assert.ok(source.includes(figure.readingNote))
+    const metadata = await sharp(figure.asset).metadata()
+    assert.equal(metadata.format, 'webp')
+    assert.ok(metadata.width! >= 1200 && metadata.height! >= 650, figure.asset)
+  }
+  for (let i = 1; i <= 9; i++) assert.ok(figures.some(item => item.lesson === `capstone/c${i}.md`))
+})

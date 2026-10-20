@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
+import { assertCapstoneLessonImages } from './check-capstone-images.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
@@ -14,7 +15,8 @@ for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'), `missing ${directive}`)
 }
 assert.doesNotMatch(lesson.body, /<\/?[A-Za-z][^>]*>/, 'raw HTML or MDX is not allowed in the draft')
-assert.doesNotMatch(lesson.body, /:::resource\b|!\[[^\]]*\]\([^)]*\)/, 'draft must not reference unavailable assets')
+assert.doesNotMatch(lesson.body, /:::resource\b/, 'draft must not reference unavailable resources')
+await assertCapstoneLessonImages('c1', lesson.body)
 
 const used = new Set<string>()
 for (const stage of [1, 2, 3, 4]) {

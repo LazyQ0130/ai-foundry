@@ -12,7 +12,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c2",
-    "title": "项目工坊第 2 课",
+    "title": "从需求到架构：搭起第一个可运行版本",
     "order": 2,
     "estimatedTime": "180～300 分钟",
     "published": true,
@@ -21,7 +21,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c3",
-    "title": "项目工坊第 3 课",
+    "title": "让真实文件变成可搜索的研究资料",
     "order": 3,
     "estimatedTime": "240～480 分钟",
     "published": true,
@@ -30,7 +30,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c4",
-    "title": "项目工坊第 4 课",
+    "title": "让研究报告中的每个结论都有证据",
     "order": 4,
     "estimatedTime": "180～300 分钟",
     "published": true,
@@ -39,7 +39,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c5",
-    "title": "项目工坊第 5 课",
+    "title": "把已学 Agent 变成真正的 Research Workflow",
     "order": 5,
     "estimatedTime": "240～360 分钟",
     "published": true,
@@ -48,7 +48,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c6",
-    "title": "项目工坊第 6 课",
+    "title": "让 Agent 学会使用外部研究来源",
     "order": 6,
     "estimatedTime": "240～360 分钟",
     "published": true,
@@ -57,7 +57,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c7",
-    "title": "项目工坊第 7 课",
+    "title": "把研究结果安全沉淀成知识资产",
     "order": 7,
     "estimatedTime": "240～360 分钟",
     "published": true,
@@ -66,7 +66,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c8",
-    "title": "项目工坊第 8 课",
+    "title": "证明整个 AI 产品真的可靠",
     "order": 8,
     "estimatedTime": "360～600 分钟",
     "published": true,
@@ -75,7 +75,7 @@ export const capstoneLessons: CapstoneLesson[] = [
   },
   {
     "id": "c9",
-    "title": "项目工坊第 9 课",
+    "title": "把毕业项目真正交付出去",
     "order": 9,
     "estimatedTime": "360～600 分钟（不含云账号、DNS 与 Provider 等待）",
     "published": true,

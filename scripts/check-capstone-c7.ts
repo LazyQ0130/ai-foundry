@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { access, readFile, readdir } from 'node:fs/promises'
+import { assertCapstoneLessonImages } from './check-capstone-images.js'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { LessonMarkdown } from '../src/components/LessonMarkdown.js'
@@ -23,7 +24,8 @@ for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning
 for (const word of ['ResearchAction', 'KnowledgeNote', 'canonicalArgs', 'expectedVersion', 'approvalToken', 'FOR UPDATE',
   'Promise.all', 'rollback', 'sourceActionKey', 'Alice', 'Bob', 'Stage 4', 'COMPLETED', 'C8', 'C9'])
   assert.ok(lesson.body.includes(word), word)
-assert.doesNotMatch(lesson.body, /:::resource\b|!\[[^\]]*\]\([^)]*\)/)
+assert.doesNotMatch(lesson.body, /:::resource\b/)
+await assertCapstoneLessonImages('c7', lesson.body)
 const used = new Set<string>()
 for (const stage of [1, 2, 3, 4]) for (const file of await readdir(`course-content/stage-${stage}`)) {
   if (file.endsWith('.md')) for (const key of parseLessonContent(await readFile(`course-content/stage-${stage}/${file}`, 'utf8')).meta.checkKeys) used.add(key)

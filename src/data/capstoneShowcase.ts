@@ -36,49 +36,49 @@ export const capstoneShowcase = {
     {
       "code": "C2",
       "phase": "",
-      "title": "项目工坊第 2 课",
+      "title": "从需求到架构：搭起第一个可运行版本",
       "desc": ""
     },
     {
       "code": "C3",
       "phase": "",
-      "title": "项目工坊第 3 课",
+      "title": "让真实文件变成可搜索的研究资料",
       "desc": ""
     },
     {
       "code": "C4",
       "phase": "",
-      "title": "项目工坊第 4 课",
+      "title": "让研究报告中的每个结论都有证据",
       "desc": ""
     },
     {
       "code": "C5",
       "phase": "",
-      "title": "项目工坊第 5 课",
+      "title": "把已学 Agent 变成真正的 Research Workflow",
       "desc": ""
     },
     {
       "code": "C6",
       "phase": "",
-      "title": "项目工坊第 6 课",
+      "title": "让 Agent 学会使用外部研究来源",
       "desc": ""
     },
     {
       "code": "C7",
       "phase": "",
-      "title": "项目工坊第 7 课",
+      "title": "把研究结果安全沉淀成知识资产",
       "desc": ""
     },
     {
       "code": "C8",
       "phase": "",
-      "title": "项目工坊第 8 课",
+      "title": "证明整个 AI 产品真的可靠",
       "desc": ""
     },
     {
       "code": "C9",
       "phase": "",
-      "title": "项目工坊第 9 课",
+      "title": "把毕业项目真正交付出去",
       "desc": ""
     }
   ],

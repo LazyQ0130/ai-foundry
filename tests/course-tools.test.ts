@@ -25,7 +25,7 @@ test('course tools packages contain only their exact script/README allowlists an
     const source = await createCourseToolsZip(stage)
     assert.deepEqual(Buffer.from(source), await readFile(`course-tools/aifoundry-stage${stage}-tools.zip`))
     const files = unzipSync(source), prefix = `aifoundry-stage${stage}-tools/`
-    const expected = ['README.md', 'scripts/course-env.mjs', 'scripts/course-checks.mjs', ...(stage === 2 ? ['scripts/fault-project.mjs', 'scripts/fault-proxy-core.mjs', 'scripts/fault-proxy.mjs'] : stage === 3 ? ['scripts/run-rag-eval.mjs'] : ['scripts/prepare-agent-eval.mjs', 'scripts/run-agent-eval.mjs'])]
+    const expected = ['README.md', 'scripts/course-env.mjs', 'scripts/course-checks.mjs', ...(stage === 2 ? ['scripts/fault-project.mjs', 'scripts/fault-proxy-core.mjs', 'scripts/fault-proxy.mjs'] : stage === 3 ? ['scripts/run-rag-eval.mjs'] : ['scripts/prepare-agent-eval.mjs', 'scripts/run-agent-eval.mjs', 'scripts/check-persisted-run.mjs'])]
     assert.deepEqual(Object.keys(files).map(name => name.slice(prefix.length)).sort(), expected.sort())
     for (const name of Object.keys(files)) {
       assert.ok(name.startsWith(prefix))
@@ -48,12 +48,17 @@ test('learner command guards refuse remote HTTP targets and wrong Agent DBs whil
     assert.equal(target.pathname, '/stage4_l7')
     assert.equal(target.password, 'p%40ss%23%27')
     assert.equal(target.search, '?schema=public')
+    const persistence = new URL(agentDatabase('stage4_checks'))
+    assert.equal(persistence.pathname, '/stage4_checks')
+    assert.equal(persistence.password, target.password)
+    assert.throws(() => agentDatabase('stage4_learning'))
     assert.ok(process.env.DATABASE_URL.endsWith('/stage4_learning?schema=public'))
     for (const value of ['postgresql://a:b@host:55433/stage4_l7', 'postgresql://a:b@127.0.0.1:5432/stage4_l7', 'postgresql://a:b@127.0.0.1:55433/stage4_learning', 'postgresql://a:b@127.0.0.1:55433/stage4_l7?schema=production']) {
       process.env.TEST_DATABASE_URL = value
       assert.throws(() => agentDatabase())
     }
     process.env.TEST_DATABASE_URL = 'postgresql://a:b@127.0.0.1:55433/stage4_l7'
+    assert.throws(() => agentDatabase('stage4_checks'))
     process.env.NODE_ENV = 'production'
     assert.throws(() => agentDatabase())
   } finally {

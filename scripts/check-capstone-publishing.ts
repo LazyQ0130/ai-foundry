@@ -8,6 +8,7 @@ import {createCapstoneStarterZip,capstoneStarterFiles} from './capstone-starter-
 import {unzipSync} from 'fflate'
 import {parse as parseYaml} from 'yaml'
 import {parseEnv} from 'node:util'
+import {assertCapstoneLessonImages} from './check-capstone-images.js'
 assert.equal(curriculumFormalLessonCount(),29);assert.equal(allLessons.length,29);assert.equal(capstoneLessons.length,9)
 assert.deepEqual((await readdir('course-content/capstone')).sort(),capstoneLessons.map(l=>l.id+'.md').sort())
 const keys=new Set<string>();for(const lesson of capstoneLessons){
@@ -18,6 +19,7 @@ const keys=new Set<string>();for(const lesson of capstoneLessons){
  assert.equal(parsed.meta.estimatedTime,lesson.estimatedTime,'Catalogue duration drift '+lesson.id)
  assert.doesNotMatch(parsed.body,/Internal Authoring|Capstone 暂未解锁|capstone-v1 tag|Final Capstone Release Readiness Audit|继续保持Internal/,'Author release workflow leaked into '+lesson.id)
  assert.doesNotMatch(parsed.body,/可靠性补充：/,'Detached author addendum in '+lesson.id)
+ await assertCapstoneLessonImages(lesson.id, parsed.body)
  for(const key of lesson.checkKeys){assert.ok(!keys.has(key));keys.add(key)}
 }
 assert.equal(keys.size,61)

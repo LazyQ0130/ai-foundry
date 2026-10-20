@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { access, readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
+import { assertCapstoneLessonImages } from './check-capstone-images.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { allLessons } from '../server/data/courses.js'
 import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
@@ -15,7 +16,8 @@ assert.match(lesson.meta.estimatedTime, /240.*360/)
 assert.ok((lesson.body.match(/^:::prompt\{title=/gm) ?? []).length >= 7)
 for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning', 'deepdive'])
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'))
-assert.doesNotMatch(lesson.body, /:::resource\b|!\[[^\]]*\]\([^)]*\)/)
+assert.doesNotMatch(lesson.body, /:::resource\b/)
+await assertCapstoneLessonImages('c6', lesson.body)
 for (const word of ['Crossref', 'PRIVATE_ONLY', 'PRIVATE_AND_EXTERNAL', 'REFERENCE_METADATA', 'CLAIM_EVIDENCE',
   'search_external_references', 'Citation Snapshot', 'Alice', 'Bob', 'Stage 4', 'Git']) assert.ok(lesson.body.includes(word), word)
 const used = new Set<string>()

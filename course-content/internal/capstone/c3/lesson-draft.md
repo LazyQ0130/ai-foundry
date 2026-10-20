@@ -163,6 +163,10 @@ Browser → POST /api/knowledge/documents/:id/process
 先看 Document status/errorCode，再确认 parser 是否有文本、每页的 normalized text 是否非空、Chunk 数量及 page/offset 是否能切回原文。扫描 PDF 在本课应是明确失败，不应生成空 READY。
 :::
 
+![私有文件到工作区 Evidence 的处理与失败恢复](/course-media/capstone/c3-evidence-guide.webp "私有文件到工作区 Evidence 的处理与失败恢复（教学示意）")
+
+看图核对：私有原文件、解析定位、分块和向量是不同层次。失败记录可供排查与重试，不能作为 ready Evidence 进入检索。
+
 ## Embedding、事务与 pgvector
 
 不要复制 Stage 4 整个 Chat/Streaming Provider；只提取聚焦的 Embedding adapter。默认 deterministic Mock 用于测试流程、维度和隔离，不能据它宣称真实语义质量。真实模式可用已验证的 `text-embedding-v4`、1024 维，配置和 Key 只在服务端；真实 Smoke 用非敏感小文件且是 opt-in，标准测试不能依赖云 Key。

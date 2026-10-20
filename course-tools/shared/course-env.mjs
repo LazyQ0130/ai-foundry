@@ -51,16 +51,17 @@ export function sessionCookie(headers) {
   if (!attributes.includes('httponly') || !attributes.includes('samesite=lax') || !attributes.includes('path=/')) fail('COOKIE_ATTRIBUTES_FAILED')
   return candidates[0].trim().split(';')[0]
 }
-export function agentDatabase() {
+export function agentDatabase(databaseName = 'stage4_l7') {
+  if (!['stage4_l7', 'stage4_checks'].includes(databaseName)) fail('AGENT_TEST_DATABASE_REQUIRED')
   if (process.env.NODE_ENV === 'production') fail('PRODUCTION_REFUSED')
   let url
   try { url = new URL(process.env.TEST_DATABASE_URL || process.env.DATABASE_URL) } catch { fail('DATABASE_CONFIG_REQUIRED') }
   if (url.protocol !== 'postgresql:' || url.hostname !== '127.0.0.1' || url.port !== '55433' || url.hash) fail('AGENT_TEST_DATABASE_REQUIRED')
   if (process.env.TEST_DATABASE_URL) {
-    if (url.pathname !== '/stage4_l7') fail('AGENT_TEST_DATABASE_REQUIRED')
+    if (url.pathname !== `/${databaseName}`) fail('AGENT_TEST_DATABASE_REQUIRED')
   } else {
     if (url.pathname !== '/stage4_learning') fail('AGENT_LEARNING_DATABASE_REQUIRED')
-    url.pathname = '/stage4_l7'
+    url.pathname = `/${databaseName}`
   }
   if (url.searchParams.has('schema') && url.searchParams.get('schema') !== 'public') fail('PUBLIC_SCHEMA_REQUIRED')
   return url.toString()

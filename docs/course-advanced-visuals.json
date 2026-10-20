@@ -1,0 +1,189 @@
+[
+  {
+    "id": "s4-l6-persistence",
+    "lesson": "stage-4/s4-l6.md",
+    "file": "s4-l6-persistence-guide.webp",
+    "caption": "刷新与重启后按同一 Run 回读，读取本身不会创建业务笔记",
+    "prompt": "Use case: scientific-educational. Asset type: Chinese programming course inline teaching illustration, landscape 1536x1024. Create a crisp, calm textbook infographic titled \"刷新以后，任务从哪里回来？\". White background, navy text, teal/blue accents, rounded cards, generous spacing, readable Simplified Chinese labels, no logos, no decorative mascots. Three numbered horizontal panels: 1 \"等待确认\" shows a browser with Run R1 and proposal A1, arrow to a PostgreSQL cylinder holding \"Run R1 / Action A1\"; 2 \"刷新或重启\" browser/server temporarily fades but database stays intact, browser only retains \"runId\"; 3 \"重新读取\" browser sends GET R1 to server, server checks \"当前用户\" then reads database, returns same R1/A1. A small note \"读取不会执行写入\" and a separate business-note box \"Resource：0 条\" remain visible. Distinguish temporary UI from persisted database with accurate arrows. Do not show tokens, secrets, source code or imply any arbitrary running task automatically resumes. This explains saved waiting state only. All text concise and large.",
+    "readingNote": "看图核对：runId 只用于定位，访问仍取决于 Session 和归属检查。恢复的是已保存的等待状态，不能据此声称未保存 checkpoint 的 running 会自动续跑。",
+    "asset": "public/course-media/stage-4/s4-l6-persistence-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s3-l3-stream",
+    "lesson": "stage-3/s3-l3.md",
+    "file": "s3-l3-stream-guide.webp",
+    "caption": "流式响应中的接收、取消与旧响应隔离",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"答案还在生成，用户已经切换了问题\". Two horizontal timelines for request A and request B. A starts receiving chunks, then user cancels A and starts B. A late chunk is rejected by a request-identity guard, not appended to B. B chunks render in order. A bottom note \"取消后仍要检查响应归属\". Distinguish aborting local request from guaranteeing a provider refund; do not claim refunds.",
+    "readingNote": "看图核对：请求 A 的迟到片段应该被丢弃。取消和响应归属检查共同保护请求 B 的显示，不能只看停止按钮是否变灰。",
+    "asset": "public/course-media/stage-3/s3-l3-stream-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s3-l4-ingestion",
+    "lesson": "stage-3/s3-l4.md",
+    "file": "s3-l4-ingestion-guide.webp",
+    "caption": "文档只有完整写入成功才能进入 ready 状态",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"什么时候可以标记 ready？\". Two lanes: success document -> split chunks -> embed each -> database transaction -> ready -> searchable. Failure lane third embedding fails -> failed -> no ready, retry allowed. Amber intermediate state \"processing\". Show ready requires all expected chunks and valid 1024-dimensional vectors. Do not show partial embedding results as a successful document.",
+    "readingNote": "看图核对：processing 从处理开始就存在；全部分块、向量和 ready 状态需按本课约定在事务中一起完成，提交成功后才对检索可见。上游请求成功不等于入库成功。",
+    "asset": "public/course-media/stage-3/s3-l4-ingestion-guide.webp",
+    "finalEditPrompt": "Edit the supplied teaching illustration. Correct only the process ordering in the upper success lane. The processing state must begin BEFORE splitting/embedding, never after the database transaction. Replace the upper lane with exactly 6 numbered cards: 1 原始文档 / processing; 2 切分分块; 3 逐块生成 1024 维向量; 4 数据库事务写入; 5 提交成功，标记 ready; 6 可被检索. Remove the old fifth card 标记为 processing and any claim processing begins after writing. Retain failure lane and necessary conditions, align arrows. Do not add extra technical steps. Keep Chinese typography clear and readable.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s3-l6-citations",
+    "lesson": "stage-3/s3-l6.md",
+    "file": "s3-l6-citations-guide.webp",
+    "caption": "来源存在与来源支持结论是两次独立检查",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"有引用，还要看引用支持什么\". Retrieval offers S1 \"备份可用于恢复\" and S2 \"迁移需要检查\". Model answer uses S1 \"备份能保证零数据丢失\". Left checkpoint \"编号存在\" passes; right checkpoint \"内容支持\" fails because zero-loss claim is not in S1. A repaired answer \"备份可用于恢复\" cites S1 and passes both. All labels large, make the invented zero-loss claim visibly rejected.",
+    "readingNote": "看图核对：编号存在可以自动检查，结论是否被支持还要读原文。图中的“零数据丢失”是被拒绝的错误示例。",
+    "asset": "public/course-media/stage-3/s3-l6-citations-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s4-l3-approval",
+    "lesson": "stage-4/s4-l3.md",
+    "file": "s4-l3-approval-guide.webp",
+    "caption": "模型提议与用户批准之间的写入边界",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"模型可以提议，写入需要本人确认\". Model -> proposed exact title/content -> user reads -> explicit confirm -> server validates signature, user, expiry and exact parameters -> database write. Branch: edited parameters or expired approval -> reject, no write. This is Stage 4.3 stateless signed proposal only: bottom warning \"本课签名不保证重复提交只写一次；4.6 再加入持久化幂等\". Never imply signature alone prevents replay.",
+    "readingNote": "看图核对：签名由服务端生成，用户明确确认以后才能进入写入检查。本课仍允许有效 Token 重放，4.6 才补同 Action 的持久化幂等保护。",
+    "asset": "public/course-media/stage-4/s4-l3-approval-guide.webp",
+    "finalEditPrompt": "Edit this supplied Chinese course illustration. Apply these exact technical corrections and do not invent extra text: Two final corrections only. Panel 3 title must be exactly \"用户阅读并明确确认\", with a visible blue button \"确认保存\". It must show an explicit human confirmation BEFORE panel 4 validation. Bottom warning must read exactly \"本课 4.3 不保证重复提交只写一次；4.6 再加入持久化幂等。\" Correct the mistaken second 4.3 to 4.6. Preserve all other labels and layout.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s4-l5-workflow",
+    "lesson": "stage-4/s4-l5.md",
+    "file": "s4-l5-workflow-guide.webp",
+    "caption": "只读搜索、综合与待确认写入的分工",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"研究流程中，哪一步真正写资料？\". Ordered flow search own knowledge -> model synthesizes -> exact note proposal -> waiting for human. Show database Resource count stays 0 throughout these four. Separate final step explicit user confirm -> server validation -> Resource +1, pending note clearly not a saved note. Browser, model and server roles distinct.",
+    "readingNote": "看图核对：搜索由服务端只读 Tool 完成；“待确认提议”与“已保存笔记”是不同结果。图中的 0 和 1 都指本次新增数量。",
+    "asset": "public/course-media/stage-4/s4-l5-workflow-guide.webp",
+    "finalEditPrompt": "Edit the supplied teaching illustration. Correct only first panel and its role labels: replace 模型在内部知识中检索 and 内部知识检索 with \"服务端 Tool 按当前用户检索知识库\". The search runs in the server tool against user-owned documents, not in model internal knowledge. Keep pending proposal vs committed Resource distinction, all arrows and layout. Use \"本次新增：0\" for the first four Resource counters, and \"本次新增：1\" for the final counter, because existing resources need not be zero. Keep Chinese typography clear and readable.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s4-l6-concurrency",
+    "lesson": "stage-4/s4-l6.md",
+    "file": "s4-l6-concurrency-guide.webp",
+    "caption": "同一个 Action 并发确认仍只产生一条业务笔记",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"八次确认，一个业务结果\". Eight numbered arrows for same Action A1 converge on a server and database transaction. First obtains row lock, creates Resource N1 and marks A1 executed atomically; waiting requests read executed and return N1. Database unique constraint on action key drawn as a second protection. End shows \"Action A1 → Resource N1\" and \"最终：1 条\". Note \"保证同一 Action；不同 Action 不自动去重\". Do not claim all HTTP requests execute only once.",
+    "readingNote": "看图核对：第一次事务保存笔记并完成 Action；其他请求在锁后读取已有结果。唯一约束位于 Resource.agentActionKey，同标题但不同 Action 的笔记不自动去重。",
+    "asset": "public/course-media/stage-4/s4-l6-concurrency-guide.webp",
+    "finalEditPrompt": "Edit the supplied teaching illustration. Correct the second protection box only: the actual database table is Resource and unique field is agentActionKey. Replace \"表：action_record\" with \"表：Resource\", replace all action_key with \"agentActionKey\". Show uniqueness on Resource.agentActionKey prevents duplicate business notes for the same Action. The remaining requests must be labelled \"读取已执行状态，返回 N1\" so it is clear they also acquire the lock and inspect the stored result. Preserve eight incoming requests, one committed Resource, and no exactly-once HTTP claim. Keep Chinese typography clear and readable.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "s4-l6-rollback",
+    "lesson": "stage-4/s4-l6.md",
+    "file": "s4-l6-rollback-guide.webp",
+    "caption": "事务中途失败时笔记和执行状态一起回滚",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"写到一半失败，数据库该留下什么？\". Upper lane transaction boundary: create Resource -> injected failure before marking Action executed -> rollback. Final upper-lane boxes \"Resource 0 条\", \"Action proposed\", \"Run waiting_approval\". Lower lane fresh successful retry: create Resource and mark executed in same transaction -> commit -> \"Resource 1 条\", \"Action executed\", \"Run completed\". Note \"数据库回滚不会撤回已发出的模型请求\". Clearly depict the temporary Resource disappearing at rollback.",
+    "readingNote": "看图核对：上半图在更新执行状态前注入失败，Resource 写入一起撤回；下半图正常重试才提交一条。Confirm 不调用模型，事务中也不新增外部模型请求。",
+    "asset": "public/course-media/stage-4/s4-l6-rollback-guide.webp",
+    "finalEditPrompt": "Edit supplied course illustration for technical accuracy. Remove ALL model calls from both transaction lanes. Confirm never calls the model. Replace the model cloud and its labels with a plain arrow from \"创建 Resource\" directly to \"更新 Action / Step / Run\"; top lane has injected failure just before these state updates. Both transaction boundaries must include database work ONLY. Add one small separate note below, outside the transaction: \"模型工作在确认之前完成；Confirm 不调用模型\". Keep rollback 0/proposed/waiting_approval and successful retry 1/executed/completed unchanged. Delete any text suggesting an external model request occurs during Confirm.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c1-scope",
+    "lesson": "capstone/c1.md",
+    "file": "c1-scope-guide.webp",
+    "caption": "从研究问题确定最小用户流程与范围",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"先确定研究任务，再决定做哪些功能\". Student researcher with scattered notes -> one research question -> select own documents -> receive report with sources -> human reviews -> choose whether to save note. V1 boundary enclosing only this flow. Outside muted optional chips OCR / Browser Agent / Team, label \"后续方向\". Each stage short and Chinese. No claim optional features already implemented.",
+    "readingNote": "看图核对：沿着一个研究任务检查 V1 范围。图中灰色方向只供以后评估，不能写成当前已经提供的功能。",
+    "asset": "public/course-media/capstone/c1-scope-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c2-boundary",
+    "lesson": "capstone/c2.md",
+    "file": "c2-boundary-guide.webp",
+    "caption": "登录身份、工作区与持久化任务的服务端边界",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"客户端传来的工作区编号，不能决定权限\". Browser request -> server verifies session -> checks workspace membership -> creates Task in database. Alice workspace blue and Bob workspace amber separated. Bob forging Alice workspace ID blocked at server before write. One shared database with rows separated by workspace ownership, not separate databases. Include \"刷新后按权限重新读取\".",
+    "readingNote": "看图核对：工作区归属由服务端结合 Session 验证。一个数据库可以存多个用户的行；换一个客户端 workspaceId 不能获得别人的权限。",
+    "asset": "public/course-media/capstone/c2-boundary-guide.webp",
+    "finalEditPrompt": "Edit supplied course illustration for technical accuracy. This course has personal workspaces owned by one user, with no team-membership feature. Replace every 工作区成员关系 or 成员关系 with 工作区归属; \"Alice 是工作区 A 的成员\" -> \"工作区 A 的 ownerId 等于 Alice 的用户 ID\"; \"Bob 不是工作区 A 的成员\" -> \"工作区 A 不属于 Bob\". Replace 在服务器处拦截 only if typo, preserve boundaries and shared DB. All reads and writes use server Session identity plus owner checks. Do not invent a membership table or team permission system.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c3-evidence",
+    "lesson": "capstone/c3.md",
+    "file": "c3-evidence-guide.webp",
+    "caption": "私有文件到工作区 Evidence 的处理与失败恢复",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"从私有文件到可检索证据\". Workspace-scoped private object storage -> authorized upload -> parse PDF/Markdown/TXT -> deterministic page/section locators -> chunks -> 1024-dimensional embedding -> transactional index -> ready Evidence. Failure branch before ready -> failed -> retry, not searchable as ready. Public internet cannot directly fetch private original files. Keep labels short.",
+    "readingNote": "看图核对：私有原文件、解析定位、分块和向量是不同层次。失败记录可供排查与重试，不能作为 ready Evidence 进入检索。",
+    "asset": "public/course-media/capstone/c3-evidence-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c4-report",
+    "lesson": "capstone/c4.md",
+    "file": "c4-report-guide.webp",
+    "caption": "研究报告引用本次证据并保留历史快照",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"报告引用的是当时的证据\". Current run retrieves Evidence E1/E2 -> structured report references these IDs -> server validates IDs -> saves report + Citation Snapshot. Bottom timeline original source later changes, historical snapshot stays as recorded. Rejected branch model cites absent E9 -> fail, no fabricated source. Show snapshot vs live document distinct.",
+    "readingNote": "看图核对：先按本次检索结果验证来源编号，再保存 Citation Snapshot。以后原文发生变化，报告仍要解释当时引用的内容。",
+    "asset": "public/course-media/capstone/c4-report-guide.webp",
+    "finalEditPrompt": "Edit supplied course illustration for technical accuracy. In step 3 before saving, replace the two labels \"来自本次快照\" with \"来自本次检索\". Citation Snapshot is created in step 4; it is not the source of step 3 allowed IDs. Keep all other layout and historical snapshot illustration unchanged.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c5-runtime",
+    "lesson": "capstone/c5.md",
+    "file": "c5-runtime-guide.webp",
+    "caption": "受限 Agent 的步骤、预算与停止结果",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"Agent 每走一步，都要有边界\". Task -> Brief -> Run -> loop: model chooses -> validate tool -> read-only search_knowledge -> collect Evidence -> model. Show step counter and budget gate before each actual work. Exit branches sufficient evidence -> grounded report, budget exhausted -> controlled stop, cancel -> cancelled. Read-only tools cannot save business notes. Persistent Step timeline under loop.",
+    "readingNote": "看图核对：每次实际工作前检查预算与停止条件，并把步骤保存下来。只读搜索不会保存业务笔记，退出循环也要留下真实停止原因。",
+    "asset": "public/course-media/capstone/c5-runtime-guide.webp",
+    "finalEditPrompt": null,
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c6-sources",
+    "lesson": "capstone/c6.md",
+    "file": "c6-sources-guide.webp",
+    "caption": "私人知识与外部检索的来源策略和信任边界",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"联网之前，先决定哪些信息可以出去\". Two lanes private workspace evidence and external Crossref via fixed authenticated MCP tool. Gate labelled \"来源策略 + 脱敏查询\" before external call; private original documents and credentials stay inside. External bibliography without abstract -> metadata-only, not body evidence; validated abstract may become cited evidence. Merge allowed evidence with provenance labels. Failure -> explicit degraded result, not invented evidence.",
+    "readingNote": "看图核对：图中的隐私边界针对 Crossref 外部检索；课程配置的模型与 Embedding 仍可使用云服务。题录只有元数据，不能当作支持正文结论的摘要证据。",
+    "asset": "public/course-media/capstone/c6-sources-guide.webp",
+    "finalEditPrompt": "Edit this supplied Chinese course illustration. Apply these exact technical corrections and do not invent extra text: Correct the privacy scope: this illustration must NOT claim a fully local/offline system. Replace \"私有工作空间（本地，不联网）\" with \"工作区私有数据（由服务端保管）\"; replace \"原始资料与凭证始终留在本地\" with \"不把私有原文和模型密钥发给 Crossref\". Replace every \"仅本地\" with \"不发送给 Crossref\", every \"本地文档\" with \"工作区文档\", every \"本地证据\" with \"工作区证据\". Remove all other fully-offline/always-local wording. A separate small note \"模型和 Embedding 可使用课程配置的云服务\" clarifies this is about the external search boundary only. Keep metadata-only vs abstract evidence.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c7-note",
+    "lesson": "capstone/c7.md",
+    "file": "c7-note-guide.webp",
+    "caption": "编辑会产生新版本并让旧审批失效",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"批准的必须是你看到的那一版\". Completed report -> editable note proposal v1 -> edit -> proposal v2. v1 token crossed out \"旧审批失效\". Human reads v2 and confirms -> server checks version and exact contents -> transaction writes one note + consumes proposal. Duplicate confirmation returns same note. Report lifecycle distinct from note proposal lifecycle. Never suggest an edited title can reuse the old approval token.",
+    "readingNote": "看图核对：已完成报告和独立知识笔记提议分别管理。编辑产生新版本时，旧审批立即失效；重复确认同一提议应返回已有笔记。",
+    "asset": "public/course-media/capstone/c7-note-guide.webp",
+    "finalEditPrompt": "Edit this supplied Chinese course illustration. Apply these exact technical corrections and do not invent extra text: Terminology correction only: this course creates standalone editable knowledge notes, not report annotations. Replace every occurrence of \"批注\" with \"知识笔记\", including headings and lifecycle. The completed report itself stays unchanged, while a separate note proposal can be edited and confirmed. Replace the top sample report annotation suggestion with a short research knowledge note title/content. Editing to v2 must invalidate v1 approval immediately, before any confirmation. Preserve same-proposal idempotency and separate lifecycles.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c8-eval",
+    "lesson": "capstone/c8.md",
+    "file": "c8-eval-guide.webp",
+    "caption": "质量指标与独立安全硬门槛分别判断",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"质量高分，不能抵消越权写入\". Two independent assessment tracks. Quality dashboard: evidence support, completeness, citation quality, cost (no invented measured numbers). Safety gates: workspace isolation, human approval, single business write, fail one -> block release. One illustrative case good prose but unauthorized write -> \"阻止发布\". Fixed human-reviewed cases feed evaluation, report records actual failures; no combined score that hides safety failures.",
+    "readingNote": "看图核对：示例的报告质量通过，人工审批却失败，因此仍应阻止发布。多个质量分数不能抵消任一安全硬门槛失败。",
+    "asset": "public/course-media/capstone/c8-eval-guide.webp",
+    "finalEditPrompt": "Edit this supplied Chinese course illustration. Apply these exact technical corrections and do not invent extra text: Simplify and correct the example and safety labels. Remove the invented /data/summary.csv file-write example entirely. Example must be exactly: \"报告引用完整，但未经本人确认就新增 KnowledgeNote\". Quality can pass; \"人工审批\" must FAIL; \"工作区隔离\" may pass. Rename \"单一业务写入\" to \"同一提议只保存一次\", explain duplicate confirms on same proposal yield one note; do not imply every request globally permits only one write. Clearly show ANY safety gate failure blocks release regardless of quality. No file paths, no model fabricated sales data, no measured scores. Keep two independent tracks and fixed human-reviewed cases.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "c9-release",
+    "lesson": "capstone/c9.md",
+    "file": "c9-release-guide.webp",
+    "caption": "构建、运行和部署分别需要对应证据",
+    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"构建成功以后，还要证明什么？\". Three sequential gates: build passes -> container runs and migrations/config checked -> real HTTPS smoke validates auth/report/approval. Each has its own evidence card. Branch when cloud credentials or deployment absent -> \"部署准备完成；线上未验证\". Do not equate localhost with live deployment. Note stale RUNNING after crash needs controlled recovery, no automatic resume promise.",
+    "readingNote": "看图核对：构建、容器运行与真实 HTTPS 各需对应证据；缺少线上验证时明确记录未验证。数据库中的 Run 状态与容器当前进程状态需要分别核对。",
+    "asset": "public/course-media/capstone/c9-release-guide.webp",
+    "finalEditPrompt": "Edit this supplied Chinese course illustration. Apply these exact technical corrections and do not invent extra text: Correct technical inaccuracies. REMOVE all fake terminal snippets (flask db upgrade, JAR, curl/example.com) and replace with plain Chinese evidence cards: \"构建日志与版本\", \"容器健康、迁移状态与配置核对\", \"真实 HTTPS 上的登录、报告与审批记录\". Bottom stale RUNNING warning refers to persisted ResearchRun records after process death, NOT container docker ps status: say \"进程中断后，数据库中的研究 Run 可能仍为 RUNNING；按课程恢复流程处理，不承诺自动续跑\". Remove any claim container status stays RUNNING after it exits. Branch \"云端凭据缺失或尚未部署\" must leave gate 2 BEFORE gate 3 and point to \"部署准备完成；线上未验证\"; never branch from a passed HTTPS gate. Keep actual deployment distinction.",
+    "tool": "built-in image_gen"
+  }
+]

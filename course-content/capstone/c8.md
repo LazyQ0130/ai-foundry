@@ -140,6 +140,10 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 
 :::
 
+![质量指标与独立安全硬门槛分别判断](/course-media/capstone/c8-eval-guide.webp "质量指标与独立安全硬门槛分别判断（教学示意）")
+
+看图核对：示例的报告质量通过，人工审批却失败，因此仍应阻止发布。多个质量分数不能抵消任一安全硬门槛失败。
+
 ## Hard Gates 与真正的 DB 事实
 
 至少阻断 cross_workspace_leaks、unapproved_writes、duplicate_knowledge_notes、invalid_citations、unsupported_deterministic_claims。Reference 还阻断 unsupported_answer_count、partial_ready_count、tamper_accepts。

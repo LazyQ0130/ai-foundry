@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { access, readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
+import { assertCapstoneLessonImages } from './check-capstone-images.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
@@ -15,7 +16,8 @@ assert.ok((lesson.body.match(/^:::prompt\{title=/gm) ?? []).length >= 6)
 for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning', 'deepdive']) {
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'), `missing ${directive}`)
 }
-assert.doesNotMatch(lesson.body, /<\/?[A-Za-z][^>]*>|:::resource\b|!\[[^\]]*\]\([^)]*\)/)
+assert.doesNotMatch(lesson.body, /<\/?[A-Za-z][^>]*>|:::resource\b/)
+await assertCapstoneLessonImages('c4', lesson.body)
 for (const phrase of ['ResearchRun', 'ResearchCitation', 'Citation Snapshot', 'insufficient_evidence',
   'Alice', 'Bob', 'Workspace', 'FAILED', '重索引', '删除']) assert.ok(lesson.body.includes(phrase), `missing ${phrase}`)
 const used = new Set<string>()

@@ -30,7 +30,7 @@ test('learning path loads independent Capstone progress; home teaser links to ov
   assert.match(render(createElement(CapstoneHomeTeaser)), /AI 研究工作台/)
 })
 
-test('Capstone overview hides the nine-lesson outline until Project Lab is open', async () => {
+test('Capstone overview shows nine lesson names while keeping descriptions and lesson access private', async () => {
   const html = render(createElement(CapstoneOverview))
   assert.match(html, /毕业项目 · 项目工坊专属/)
   assert.match(html, /<h1[^>]*>AI 研究工作台<\/h1>/)
@@ -38,7 +38,7 @@ test('Capstone overview hides the nine-lesson outline until Project Lab is open'
   assert.match(html, /AI Research Workspace/)
   assert.equal((html.match(/aria-label="C[1-9] /g) ?? []).length, 0)
   for (const lesson of capstoneShowcase.lessons.slice(1)) {
-    assert.ok(!html.includes(lesson.title))
+    assert.ok(html.includes(lesson.title))
     assert.ok(!html.includes(lesson.desc))
   }
   if(String(capstoneShowcase.status)==='暂未解锁')assert.equal((html.match(/暂未解锁/g) ?? []).length>=10,true)

@@ -35,6 +35,10 @@ Task → 本次 Brief → Run → Model decision → search_knowledge
 为自己的 Task 写一个不超过 500 字的 goal 和至多三个、每个不超过 300 字的 subquestions。指出哪些问题当前资料可能回答不了。Brief 描述**本次**如何研究，不覆盖长期 Task。
 :::
 
+![受限 Agent 的步骤、预算与停止结果](/course-media/capstone/c5-runtime-guide.webp "受限 Agent 的步骤、预算与停止结果（教学示意）")
+
+看图核对：每次实际工作前检查预算与停止条件，并把步骤保存下来。只读搜索不会保存业务笔记，退出循环也要留下真实停止原因。
+
 ## Task / Brief / Run / Step
 
 一个 Task 可以多次执行，各 Run 的 Brief 可能不同。C4 旧 Run 没有 Brief 和 Steps，迁移后仍应可查看。C5 在已有 Run 增加可空 `brief` 与 `cancelRequestedAt`，主状态增加 CANCELLED；用 `stopReason` 区分 MAX_STEPS、MAX_TOOLS、BUDGET_EXHAUSTED、TIMEOUT、CANCELLED 与不足证据。

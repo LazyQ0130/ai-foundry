@@ -40,6 +40,10 @@ ResearchTask（长期问题）
 Retrieval Result 是当前候选；Citation 是报告声称某结论依赖某个候选；Citation Snapshot 是运行完成时服务器保存的标题、摘录、页码、偏移、内容哈希和索引版本。只保存 chunkId，原文删除或重索引后就无法解释历史报告。
 :::
 
+![研究报告引用本次证据并保留历史快照](/course-media/capstone/c4-report-guide.webp "研究报告引用本次证据并保留历史快照（教学示意）")
+
+看图核对：先按本次检索结果验证来源编号，再保存 Citation Snapshot。以后原文发生变化，报告仍要解释当时引用的内容。
+
 ## 先定 Task / Run / Citation 的生命周期
 
 一个 Task 可以在不同日期多次运行。同一个问题的第二次报告可能基于新资料。C4 的 Run 只需要 RUNNING、COMPLETED、FAILED；无证据可记为 COMPLETED + INSUFFICIENT_EVIDENCE。不要加入 C5 的 Step、暂停、恢复、工具调用或审批状态。

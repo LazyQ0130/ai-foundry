@@ -9,10 +9,10 @@ import { capstoneShowcase as privateShowcase } from '../server/data/capstoneShow
 import { capstoneLessons as publicLessons } from '../src/data/capstoneLessons.js'
 import { capstoneShowcase as publicShowcase } from '../src/data/capstoneShowcase.js'
 
-test('public Project Lab metadata contains no protected lesson titles, descriptions or internal checklist keys', () => {
+test('public Project Lab metadata exposes names without descriptions or internal checklist keys', () => {
   const publicText = JSON.stringify({ publicLessons, publicShowcase })
   for (const lesson of privateShowcase.lessons.slice(1)) {
-    assert.ok(!publicText.includes(lesson.title), lesson.code)
+    assert.ok(publicText.includes(lesson.title), lesson.code)
     assert.ok(!publicText.includes(lesson.desc), lesson.code)
   }
   assert.ok(publicLessons.every(lesson => lesson.checkKeys.length === 0 && lesson.contentPath === ''))
@@ -25,7 +25,10 @@ test('Project Lab outline requires both current account permission and server ac
   for (const html of [render(false), render(true, true), render(true, false, { ...data, access: false })]) {
     assert.match(html, /项目工坊逐课内容/)
     assert.doesNotMatch(html, /href="\/capstone\/lessons\//)
-    for (const lesson of data.lessons) assert.ok(!html.includes(lesson.title), lesson.id)
+    for (const lesson of data.lessons) {
+      assert.ok(html.includes(lesson.title), lesson.id)
+      assert.ok(!html.includes(lesson.desc), lesson.id)
+    }
   }
   const owned = render(true)
   for (const lesson of data.lessons) {

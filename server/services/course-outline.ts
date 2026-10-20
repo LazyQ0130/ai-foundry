@@ -1,6 +1,6 @@
 import type { Stage } from '../../src/data/courses.js'
 
-/** Only the server may return full learning outlines, after checking stage rights. */
+/** Lesson names are public; only the server returns paid outlines after checking stage rights. */
 export function catalogueStage(stage: Stage, outlineAccess: boolean): Stage {
   return {
     ...stage,
@@ -10,7 +10,7 @@ export function catalogueStage(stage: Stage, outlineAccess: boolean): Stage {
     checkpoints: outlineAccess ? stage.checkpoints : [],
     lessons: stage.lessons.map(lesson => outlineAccess || (lesson.isPreview && lesson.isPublished !== false) ? { ...lesson } : {
       id: lesson.id, code: lesson.code, order: lesson.order,
-      title: `第 ${lesson.code} 课`, desc: '开通本阶段后查看逐课内容', duration: '',
+      title: lesson.title, desc: '', duration: '',
       status: 'locked', isPreview: false, isPublished: lesson.isPublished, isPrep: lesson.isPrep,
     }),
   }

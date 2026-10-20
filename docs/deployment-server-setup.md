@@ -48,7 +48,7 @@ Caddy（Docker 容器，--network host，自动 HTTPS）
 
 | 项 | 位置 |
 | --- | --- |
-| 代码 | `/opt/aifoundry`（`git clone` 自 `github.com/LazyQ0130/ai-foundry`，仓库为 public） |
+| 代码 | 主仓库 `/opt/aifoundry`；实际运行目录通过 `systemctl show -p WorkingDirectory --value aifoundry` 查询，每次发布使用独立目录 |
 | Node 运行时 | `/opt/node`（v22.23.3），已软链到 `/usr/local/bin/{node,npm,npx}` |
 | 环境变量 | `/opt/aifoundry/.env`（600 权限，已被 `.gitignore` 忽略，`git pull` 不会覆盖） |
 | 数据库密码 | `/opt/aifoundry/.dbpass`（600） |
@@ -155,15 +155,24 @@ systemctl restart aifoundry
 curl -s -o /dev/null -w "%{http_code}\n" https://aifoundry.top/
 ```
 
-> **必须**在 `/opt/aifoundry` 目录下启动服务：服务端读取 Starter ZIP 用的是
-> 相对路径 `starter/aifoundry-stage1-starter.zip`。systemd 单元里已经设好
-> `WorkingDirectory=/opt/aifoundry`。
+> 上面的原地更新命令保留为历史记录。当前实际使用独立发布目录：先查询 systemd 的 `WorkingDirectory`，确认在线提交；在新的 `/opt/aifoundry-release-<提交>` worktree 构建和验证，然后备份数据库，再切换 systemd drop-in 的工作目录并重启。旧发布目录和 drop-in 配置保留供回退。服务须在对应发布目录启动，Starter ZIP 等资源使用该目录下的相对路径。
+
+### 2026-10-20：公开课程名称与教学插图
+
+游客可以展开查看四阶段课程及项目工坊的真实课名；付费逐课说明、学习起点和终点由服务端按权益返回，正文和进度接口继续校验权限。新增 Stage 3、Stage 4 和 C1–C9 教学图，以及 Stage 4 独立测试库的持久化、并发确认和回滚验证工具。本次不涉及生产数据库结构、课程 ID 或进度标识变更。
+
+课程发布检查逐课核对九张项目工坊插图的固定路径、WebP 解码和教学示意图注；构建扫描继续检查付费说明、课程正文、内部资料和凭据是否进入公开产物。新发布目录从空的 `dist` 构建，避免旧哈希资源继续公开历史内容。
 
 ### 备份与恢复
 
 ```bash
-# 手动备份（脚本每天 03:35 自动跑一次，保留 14 天）
-/opt/aifoundry/backup.sh
+# 发布前手动备份（不调用带保留期清理的定时脚本）
+set -euo pipefail
+umask 077
+backup="/opt/aifoundry/backups/aif-predeploy-$(date -u +%Y%m%dT%H%M%SZ).sql.gz"
+docker exec aifoundry-db pg_dump -U aifoundry -d aifoundry | gzip -9 > "$backup"
+gzip -t "$backup"
+sha256sum "$backup"
 
 # 恢复（会覆盖现有数据，谨慎）
 gunzip -c /opt/aifoundry/backups/aif-<时间戳>.sql.gz | \

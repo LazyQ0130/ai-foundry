@@ -55,6 +55,7 @@ const components = {
   img: ({ src, alt, title }) => src ? <span className="lesson-figure" role="group" aria-label={alt}>
     <img src={src} alt={alt ?? ''} loading="lazy" referrerPolicy="no-referrer"/>
     {(title || alt) && <span className="lesson-caption">{title || alt}</span>}
+    <a className="lesson-image-expand" href={src} target="_blank" rel="noopener noreferrer" aria-label={`${alt || '课程配图'}，在新窗口查看原图`}>查看原图 ↗</a>
   </span> : <span className="lesson-caption">{alt}</span>,
   table: ({ children }) => <div className="lesson-table" tabIndex={0} role="region" aria-label="课程表格"><table>{children}</table></div>,
   'lesson-callout': Callout,

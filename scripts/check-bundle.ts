@@ -27,7 +27,7 @@ const publicExcerpts = await Promise.all(['c1', 's1-l1'].map(id => readFile(`src
 const isPublicExcerpt = (paragraph: string) => publicExcerpts.some(excerpt => excerpt.replace(/\r\n/g, '\n').includes(paragraph.replace(/\r\n/g, '\n')))
 const assets = await Promise.all(paths.filter(name => /\.(?:js|css|html|json|map|md|txt|mjs|ts|tsx|sql)$/i.test(name)).map(async name => ({ name, text: await readFile(name, 'utf8') })))
 for (const lesson of capstoneShowcase.lessons.slice(1)) {
-  for (const marker of [lesson.title, lesson.desc]) {
+  for (const marker of [lesson.desc]) {
     if (assets.some(asset => asset.text.includes(marker) || asset.text.includes(JSON.stringify(marker).slice(1, -1))))
       throw new Error(`Protected Project Lab outline in public output: ${lesson.code}`)
   }

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFile, readdir, access } from 'node:fs/promises'
 import path from 'node:path'
+import { assertCapstoneLessonImages } from './check-capstone-images.js'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { capstoneShowcase } from '../server/data/capstoneShowcase.js'
 
@@ -16,7 +17,8 @@ for (const directive of ['prompt', 'task', 'concept', 'check', 'stuck', 'warning
   assert.match(lesson.body, new RegExp(`^:::${directive}(?:\\{|$)`, 'm'), `missing ${directive}`)
 }
 assert.doesNotMatch(lesson.body, /<\/?[A-Za-z][^>]*>/, 'raw HTML or MDX is not allowed')
-assert.doesNotMatch(lesson.body, /:::resource\b|!\[[^\]]*\]\([^)]*\)/, 'unavailable resource or image')
+assert.doesNotMatch(lesson.body, /:::resource\b/, 'unavailable resource')
+await assertCapstoneLessonImages('c2', lesson.body)
 for (const phrase of ['Architecture Explosion', 'workspaceId', 'Alice', 'Bob', 'migration', 'Vertical Slice']) {
   assert.ok(lesson.body.includes(phrase), `missing teaching evidence: ${phrase}`)
 }

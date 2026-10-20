@@ -194,6 +194,10 @@ docker build --target release -t research-workspace-release:这里换成提交�
 先看 PORT/host 和进程退出码，再看 standalone 中 Prisma engine 与 PDF 资源；不要把 DB migration 加进 build 碰运气。health 成功但登录失败，再查 DB 连接/正式 migration。不要在排错日志输出完整 DATABASE_URL。
 :::
 
+![构建、运行和部署分别需要对应证据](/course-media/capstone/c9-release-guide.webp "构建、运行和部署分别需要对应证据（教学示意）")
+
+看图核对：构建、容器运行与真实 HTTPS 各需对应证据；缺少线上验证时明确记录未验证。数据库中的 Run 状态与容器当前进程状态需要分别核对。
+
 ## 发布验证不是在线故障注入
 
 先在隔离 Test/Eval shell 运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；生产 env check 在另一个安全进程进行。

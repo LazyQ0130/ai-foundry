@@ -12,26 +12,32 @@ import { stages as publicStages } from '../src/data/courses.js'
 import { catalogueStage } from '../server/services/course-outline.js'
 import { CourseOutline } from '../src/components/CourseOutline.js'
 
-test('public curriculum omits learning starts, paid lesson text and checkpoints', () => {
+test('public curriculum exposes names while omitting paid descriptions, duration and checkpoints', () => {
   for (const original of canonical) {
     const stage = publicStages.find(s => s.slug === original.slug)!
     const text = JSON.stringify({ enterState: stage.enterState, exitState: stage.exitState, lessons: stage.lessons, checkpoints: stage.checkpoints })
     assert.equal(stage.outlineAccess, false)
     assert.equal(stage.lessons.length, original.lessons.length)
     assert.deepEqual(stage.checkpoints, [])
-    for (const marker of [original.enterState, original.exitState, ...original.lessons.filter(l => !l.isPreview).flatMap(l => [l.title, l.desc])]) assert.ok(!text.includes(marker), marker)
+    for (const marker of [original.enterState, original.exitState, ...original.lessons.filter(l => !l.isPreview).map(l => l.desc)]) assert.ok(!text.includes(marker), marker)
+    for (const lesson of stage.lessons) {
+      assert.equal(lesson.title, original.lessons.find(l => l.id === lesson.id)!.title)
+      if (!lesson.isPreview) { assert.equal(lesson.desc, ''); assert.equal(lesson.duration, ''); assert.equal(lesson.status, 'locked') }
+    }
   }
   assert.equal(publicStages[0].lessons[1].title, canonical[0].lessons[1].title)
 })
 
-test('outline control renders no details or private text until both client and server allow access', () => {
+test('outline always renders names but guards private text during denial, loading and account changes', () => {
   const stage = catalogueStage(canonical[1], true)
   const render = (allowed: boolean, loading = false, data = stage) => renderToStaticMarkup(createElement(StaticRouter, { location: '/course-introduction' }, createElement(CourseOutline, { stage: data, allowed, loading })))
   for (const html of [render(false), render(true, true), render(true, false, publicStages[1])]) {
-    assert.doesNotMatch(html, /<details|<summary/)
-    assert.match(html, /disabled=""/)
+    assert.match(html, /<details/)
     assert.ok(!html.includes(stage.enterState))
-    assert.ok(!html.includes(stage.lessons[0].title))
+    for (const lesson of stage.lessons) {
+      assert.ok(html.includes(lesson.title))
+      assert.ok(!html.includes(lesson.desc))
+    }
   }
   const owned = render(true)
   assert.match(owned, /<details/)
@@ -56,7 +62,13 @@ test('catalogue outline requires the corresponding active stage right, including
       assert.equal(row.outlineAccess, false)
       const original = canonical.find(s => s.slug === row.slug)!
       assert.notEqual(row.enterState, original.enterState)
-      for (const lesson of row.lessons.filter(l => !l.isPreview)) assert.notEqual(lesson.title, original.lessons.find(l => l.id === lesson.id)!.title)
+      assert.deepEqual(row.checkpoints, [])
+      for (const lesson of row.lessons.filter(l => !l.isPreview)) {
+        assert.equal(lesson.title, original.lessons.find(l => l.id === lesson.id)!.title)
+        assert.equal(lesson.desc, '')
+        assert.equal(lesson.duration, '')
+        assert.equal(lesson.status, 'locked')
+      }
     }
   }
   try {
@@ -80,7 +92,10 @@ test('catalogue outline requires the corresponding active stage right, including
     try {
       await db.lesson.update({ where: { id: preview.id }, data: { isPreview: false } })
       const hidden = (await read(request(app)))[0].lessons.find(l => l.id === preview.id)!
-      assert.notEqual(hidden.title, canonical[0].lessons.find(l => l.id === preview.id)!.title)
+      assert.equal(hidden.title, canonical[0].lessons.find(l => l.id === preview.id)!.title)
+      assert.equal(hidden.desc, '')
+      assert.equal(hidden.isPreview, false)
+      await request(app).get('/api/lessons/' + preview.id).expect(401)
     } finally { await db.lesson.update({ where: { id: preview.id }, data: { isPreview: preview.isPreview } }) }
   } finally { await db.$disconnect() }
 })

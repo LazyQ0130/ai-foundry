@@ -29,9 +29,9 @@ function LessonList({ stage }: { stage: Stage }) {
           <span className={`block text-[13px] ${isLocked ? 'text-slate-400' : isActive ? 'font-semibold text-brand-700' : 'font-medium text-slate-800'}`}>
             {l.title}{l.isPublished === false ? ' · 即将上线' : l.isPreview ? ' · 免费体验' : ''}
           </span>
-          <span className={`mt-0.5 block text-[11.5px] ${isLocked ? 'text-slate-400' : 'text-slate-500'}`}>{l.desc}</span>
+          {stage.outlineAccess && <span className={`mt-0.5 block text-[11.5px] ${isLocked ? 'text-slate-400' : 'text-slate-500'}`}>{l.desc}</span>}
         </span>
-        <span className="hidden shrink-0 items-center gap-1.5 text-[11.5px] text-slate-400 sm:inline-flex"><Clock className="h-3 w-3" strokeWidth={2} />{l.duration}</span>
+        {stage.outlineAccess && <span className="hidden shrink-0 items-center gap-1.5 text-[11.5px] text-slate-400 sm:inline-flex"><Clock className="h-3 w-3" strokeWidth={2} />{l.duration}</span>}
         {isLocked ? <Lock className="h-3.5 w-3.5 shrink-0 text-slate-300" /> : <ArrowRight className="h-3.5 w-3.5 shrink-0 text-slate-300" />}
       </>
       return <li key={l.id}>
@@ -44,8 +44,6 @@ function LessonList({ stage }: { stage: Stage }) {
 }
 
 function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open: boolean; onToggle: () => void; showProgress: boolean }) {
-  const { user } = useAuth()
-  const canExpand = !!user?.entitlements.includes(stage.slug) && !!stage.outlineAccess
   const a = accentClass[stage.accent]
   const done = stageCompletedCount(stage)
   const total = stageLessonCount(stage)
@@ -79,8 +77,8 @@ function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open
         </dl>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link to={`/stage/${stage.slug}`} className="btn btn-md btn-primary">进入阶段<ArrowRight className="h-4 w-4" /></Link>
-          <button type="button" disabled={!canExpand} onClick={canExpand ? onToggle : undefined} aria-expanded={canExpand && open} aria-controls={canExpand ? listId : undefined} className="btn btn-md btn-outline">
-            {!canExpand ? '开通后查看逐课内容' : open ? '收起课程列表' : `展开 ${total} 节课`}<ChevronDown className={`h-4 w-4 transition ${canExpand && open ? 'rotate-180' : ''}`} />
+          <button type="button" onClick={onToggle} aria-expanded={open} aria-controls={listId} className="btn btn-md btn-outline">
+            {open ? '收起课程列表' : `展开 ${total} 节课`}<ChevronDown className={`h-4 w-4 transition ${open ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
@@ -93,7 +91,7 @@ function StageCard({ stage, open, onToggle, showProgress }: { stage: Stage; open
       </div>
     </div>
 
-    {canExpand && open && <div id={listId}><LessonList stage={stage} /></div>}
+    {open && <div id={listId}><LessonList stage={stage} /></div>}
   </article>
 }
 

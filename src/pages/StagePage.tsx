@@ -171,14 +171,14 @@ export default function StagePage() {
                           <span className="chip bg-brand-600 text-white">继续学习</span>
                         ) : null}
                       </div>
-                      <p className={`mt-1 text-[12px] leading-5 ${isLocked ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {stage.outlineAccess && <p className={`mt-1 text-[12px] leading-5 ${isLocked ? 'text-slate-400' : 'text-slate-500'}`}>
                         {lesson.desc}
-                      </p>
+                      </p>}
                     </div>
-                    <span className="hidden shrink-0 items-center gap-1.5 text-[12px] text-slate-400 sm:inline-flex">
+                    {stage.outlineAccess && <span className="hidden shrink-0 items-center gap-1.5 text-[12px] text-slate-400 sm:inline-flex">
                       <Clock className="h-3.5 w-3.5" strokeWidth={1.9} />
                       {lesson.duration}
-                    </span>
+                    </span>}
                     <span
                       className={`chip shrink-0 ${
                         lesson.status === 'completed'

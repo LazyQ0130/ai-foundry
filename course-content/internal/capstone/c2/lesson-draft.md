@@ -227,6 +227,10 @@ UI → Route → Validation → Auth → Workspace ownership → Prisma → Post
 先确认 POST 的 201 和返回的 Task ID，再看新的 GET 是否返回同一 ID；检查 `DATABASE_URL` 是否指向迁移过的测试库、写入是否真正 await、列表是否按当前 Workspace 过滤。不要用前端内存列表当作持久化证据。
 :::
 
+![登录身份、工作区与持久化任务的服务端边界](/course-media/capstone/c2-boundary-guide.webp "登录身份、工作区与持久化任务的服务端边界（教学示意）")
+
+看图核对：工作区归属由服务端结合 Session 验证。一个数据库可以存多个用户的行；换一个客户端 workspaceId 不能获得别人的权限。
+
 ## Break 2，伪造归属与双用户隔离
 
 正常 POST 只发送 `{ "title": "Agent Memory", "query": "比较不同实现方案" }`。现在故意加上 `workspaceId`、`userId` 或 `ownerId`，试图写进另一个人的工作区。严格输入应返回 400；即使实现选择忽略额外字段，也绝不能用它决定归属。正确链路是 **Server Session → User → Workspace**。
