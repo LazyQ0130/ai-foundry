@@ -23,6 +23,7 @@ import { SectionHeading } from '../components/ui'
 import { accentClass, stages, type Stage } from '../data/courses'
 import { heroStats } from '../data/site'
 import { CapstoneHomeTeaser } from '../components/CapstoneShowcase'
+import StudentProjectShowcase from '../components/StudentProjectShowcase'
 
 /* ------------------------------- Hero ------------------------------- */
 
@@ -252,22 +253,6 @@ function PathSection() {
   )
 }
 
-/* ---------------------------- 为什么选择我们 ---------------------------- */
-
-function WhySection() {
-  return <section id="why" className="shell scroll-mt-24 pb-8 sm:pb-10">
-    <SectionHeading title="学完，你能做出这些作品" sub="同一个知识工作台，从第一个页面逐步升级为完整的 AI 产品。" />
-    <div className="mt-6 grid gap-5 sm:mt-7 sm:grid-cols-2">
-      {stages.map((stage) => <Link key={stage.slug} to={`/project/${stage.project.id}`} aria-label={`查看${stage.project.title}项目介绍`} className="card group overflow-hidden transition hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">
-        <div className="border-b border-slate-100 bg-gradient-to-br from-slate-100 to-blue-50/70 p-3 sm:p-4">
-          <img src={`/course-media/showcase/${stage.slug}-generated.webp`} alt={`${stage.project.title}界面效果示意：${stage.project.summary}`} width={1200} height={800} loading="lazy" className="aspect-[3/2] w-full rounded-lg border border-slate-200/80 bg-white object-contain shadow-sm" />
-        </div>
-        <div className="p-5"><p className="text-[12px] text-slate-500">{stage.tag} · 界面效果示意</p><h3 className="mt-2 text-[16px] font-semibold text-slate-900">{stage.project.title}</h3><p className="mt-2 text-[13px] leading-6 text-slate-600">{stage.project.summary}</p><span className="link-more mt-3 inline-flex">查看项目介绍 <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /></span></div>
-      </Link>)}
-    </div>
-  </section>
-}
-
 /* ------------------------------ 核心价值 ------------------------------ */
 
 const productValues = [
@@ -427,7 +412,7 @@ export default function Home() {
       <StatsBar />
       <ProductValueSection />
       <PathSection />
-      <WhySection />
+      <StudentProjectShowcase />
       <LearningGoalSection />
       <PlansSection />
     </>

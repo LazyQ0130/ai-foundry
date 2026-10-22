@@ -106,7 +106,7 @@ export default function CourseIntroduction() {
 
     <section id="practice" className="shell scroll-mt-24 py-12 sm:py-16">
       <h2 className="h-sec">项目实战</h2>
-      <p className="sub-sec">综合实战从需求开始，练习独立交付完整产品。四个阶段项目的作品示意可在<Link to="/#why" className="text-brand-700 underline underline-offset-4">首页作品区</Link>查看。</p>
+      <p className="sub-sec">综合实战从需求开始，练习独立交付完整产品。更多项目可以在<Link to="/#why" className="text-brand-700 underline underline-offset-4">首页学员项目展示区</Link>查看。</p>
       <article className="mt-8 rounded-2xl border border-brand-200 bg-brand-50/60 p-6 sm:p-8">
         <span className="chip bg-white text-brand-700"><Layers aria-hidden="true" className="mr-1 h-3.5 w-3.5" />综合实战 · 项目工坊专属</span>
         <h3 className="mt-4 text-2xl font-bold text-slate-900">{capstoneShowcase.project}</h3>
