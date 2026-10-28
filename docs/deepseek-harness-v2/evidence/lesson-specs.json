@@ -1,0 +1,1670 @@
+[
+  {
+    "id": "H01",
+    "title": "为什么有了大模型，还需要 Harness？",
+    "module": "Harness 整体认知",
+    "pre": "能说明一次模型 API 请求的输入与输出",
+    "stage": "s3-l1,s4-l1",
+    "problem": "模型提出“搜索资料并保存结论”，谁来执行、记住进度并阻止未获准的动作？",
+    "goal": "用可追踪证据划分模型决策与运行环境执行的职责。",
+    "concepts": "LLM、Agent、Harness、能力 seam",
+    "terms": "Harness、Runtime、Capability Seam",
+    "case": "研究助理能提议查档案，工作台还须提供工具、日志与审批；提议不是执行授权。",
+    "docs": [
+      "README.zh.md",
+      "SAFETY.zh.md",
+      "docs/architecture.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent/src/index.ts",
+        "export interface AgentFactory",
+        "先看创建/恢复的公开契约，认识宿主责任"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async step(",
+        "再看模型结果如何进入工具执行"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "async prepare(",
+        "最后看动作如何在执行前被拒绝"
+      ]
+    ],
+    "chain": "ReactLoopAgent.step → preparedCall.stream/llm.stream → tools.execute → ToolExecutionPipeline.prepare；图中 Harness 是职责集合。",
+    "structures": "AgentFactory、StreamChunk、PreToolDecision；不把三者画成三个独立进程。",
+    "explain": "用无工具回答和带 tool-call 回答并排追踪：前者可完成，后者仍需宿主分派。",
+    "trade": "官方实现：loop 也是插件。设计思考：可替换性增加组合验证成本，不能据此断言比所有框架更好。",
+    "tests": [
+      "packages/core/agent-loop/tests/tool-calls.spec.ts"
+    ],
+    "lab": "练习卡 L01：将“产生调用、执行调用、记录结果、批准写入”四项分给模型与 Runtime；运行 lab M1 核对两条轨迹。",
+    "question": "为什么在系统提示词里写“不要越权”不能代替工具策略？",
+    "answer": "提示词影响模型提议；执行器必须对不可信提议独立检查，工具返回内容也不是新授权。",
+    "risk": "开发者预览未安全审计；三层关系是教学抽象，不能把 Harness 等同沙箱。",
+    "accept": "交一张职责图及一次被拒绝调用的轨迹，指出模型与执行器各自的证据位置。",
+    "time": "55–75 分钟",
+    "bridge": "由 Stage 4 最小循环进入仓库地图；H02 找到各职责所在包。"
+  },
+  {
+    "id": "H02",
+    "title": "从零读懂 DeepSeek Harness 仓库结构",
+    "module": "Harness 整体认知",
+    "pre": "H01；能识别 import/export 与 package.json",
+    "stage": "s1-l4,s1-l5,s2-l8",
+    "problem": "仓库有大量包，直接从根目录逐个读会迷路，怎样围绕一次功能找入口？",
+    "goal": "从用户能力反查服务、提供方、消费方与测试。",
+    "concepts": "Monorepo、workspace、包边界、Host/Client",
+    "terms": "Service Definition、Provider、Consumer",
+    "case": "找一家医院的挂号台、科室协议和实际诊室；目录是地图，不能只凭包名判断运行依赖。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/development.zh.md",
+      "docs/capability-seams.zh.md"
+    ],
+    "routes": [
+      [
+        "package.json",
+        "\"packageManager\"",
+        "先核对工具链与 workspace 层级"
+      ],
+      [
+        "tsconfig.base.json",
+        "\"@deepseek-ai/cordis\"",
+        "再看包名如何映射到源码"
+      ],
+      [
+        "packages/core/tool-executor-native/src/index.ts",
+        "export class NativeToolExecutor",
+        "沿一个小提供方回到 tools seam"
+      ]
+    ],
+    "chain": "package workspace → tsconfig paths → native executor → tools pipeline；区分构建依赖和运行服务注入。",
+    "structures": "package.json workspaces、Context 声明合并、inject、ToolExecutor。",
+    "explain": "从 native executor 的 describe/execute 看“提供方”而非扫描全部 core；只打开定义、消费方与相邻 tests。",
+    "trade": "官方采用两层 packages/<领域>/<包>。Host/Client 类型检查分离是声明合并冲突的工程边界。",
+    "tests": [
+      "scripts/verify-package-paths.spec.ts"
+    ],
+    "lab": "练习卡 L02：为一次工具执行列出三角色包、两个 import 和一个测试，不安装整个仓库。",
+    "question": "npm 包名和目录名不相同时，应该信搜索结果还是凭名称猜路径？",
+    "answer": "先查 package.json 和 tsconfig paths，再验证真实源码及导出；目录邻近不代表调用。",
+    "risk": "不得混用旧版单层 packages 布局；Node 要求来自锁定 package.json。",
+    "accept": "路径查找脚本验证三条文件存在；手写一条“入口→接口→实现→测试”路线。",
+    "time": "60–80 分钟",
+    "bridge": "H01 的职责在此落到文件；H03 把文件连成时序。"
+  },
+  {
+    "id": "H03",
+    "title": "一个 Agent 请求的完整执行流程",
+    "module": "Harness 整体认知",
+    "pre": "H02；会读异步函数",
+    "stage": "s3-l1,s3-l3,s4-l1",
+    "problem": "用户提交后出现流式文字、工具卡片和下一次模型调用，这些阶段究竟由谁连接？",
+    "goal": "按持久事实与实时通知两条线复述一次请求。",
+    "concepts": "Inbox、Turn、Step、请求组装、流式 settlement",
+    "terms": "Settlement、Projection、Request Series",
+    "case": "餐厅点单进入待办篮，厨师一轮可多次取料；屏幕进度不等于已归档的账单。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/agent-lifecycle.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent-loop/src/index.ts",
+        "private async initializeAgent(",
+        "先看创建完成后才放行工作的边界"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async turn():",
+        "再读轮次打开和结束"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async step(",
+        "逐段看流与工具"
+      ],
+      [
+        "packages/core/session/src/index.ts",
+        "deriveMessages():",
+        "最后核对下一请求从哪里取得历史"
+      ]
+    ],
+    "chain": "initializeAgent → sessions.announce → agents.announce → turn → preStep → step → prepareRequest/buildRequest → stream → tools.execute → 下一 step。",
+    "structures": "SessionEventMap、GenerateOptions、AssistantStreamAttempt、ToolBatchResult。",
+    "explain": "以一次只读搜索为主线标注 turn/start、step/start、assistant/message、tool/call、tool/result、step/end、turn/end。",
+    "trade": "实时 chunk 服务于体验；durable settlement 服务于重建。硬退出可能发生在 settlement 之前。",
+    "tests": [
+      "packages/core/agent-loop/tests/loop.spec.ts",
+      "packages/core/agent-loop/tests/request-reconstruction.spec.ts"
+    ],
+    "lab": "练习卡 L03：给固定 Mock 轨迹排序，找出 tool/result 后还欠的下一请求；运行 M1。",
+    "question": "实时 chunk 到达但进程在 settlement 前退出，能保证日志已有完整回答吗？",
+    "answer": "不能。已提交 message/attempt 才是持久来源；live stream 不能等价为逐 chunk 持久化。",
+    "risk": "一条请求不必等于一个 turn；middleware 可以阻止首个 step。",
+    "accept": "事件顺序正确且将 5 个实时扩展点与会话记录分开解释。",
+    "time": "75–100 分钟",
+    "bridge": "H04 定位启动组合；H09–H12 再拆开精读，不在本讲穷尽错误分支。"
+  },
+  {
+    "id": "H04",
+    "title": "Profile、运行入口与环境配置",
+    "module": "Harness 整体认知",
+    "pre": "H03；理解环境变量与服务端凭据",
+    "stage": "s1-l0,s2-l8,s3-l1",
+    "problem": "同一个 dsh 为什么能启动 Web、Headless 或 SDK，而工具集合还可以不同？",
+    "goal": "在不启动模型的前提下解释启动配置的来源和覆盖顺序。",
+    "concepts": "Profile、Harness home、启动器、patch overlay",
+    "terms": "Profile、Bundle、Patch、HMR",
+    "case": "同一套厨房用不同班次菜单开工；菜单组合不是复制一套厨房代码。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/subsystems/boot.zh.md",
+      "docs/development.zh.md"
+    ],
+    "routes": [
+      [
+        "apps/cli/src/bin.ts",
+        "",
+        "先识别支持的产品入口"
+      ],
+      [
+        "apps/cli/src/profile-boot.ts",
+        "",
+        "再查 profile runner 如何交给 boot"
+      ],
+      [
+        "packages/boot/app-boot/src/profile.ts",
+        "export function resolveProfileDir",
+        "核对 home/profile 路径及非法名称拒绝"
+      ],
+      [
+        "packages/bundle/base/cordis.patch.yml",
+        "",
+        "观察声明配置而不执行"
+      ]
+    ],
+    "chain": "CLI 参数 → profile runner → profile discovery/composition → Loader 插件树；源码启动须先有构建产物。",
+    "structures": "Profile、ProfileLayer、dsh.profile.bundles、dsh.bundle.patch。",
+    "explain": "对照 web 与 sdk-minimal：后者不叠 base；展示变量名而不用真实 key，也不运行 npx 最新版。",
+    "trade": "版本隔离优先；“相同命令”不表示相同 profile 或运行树。",
+    "tests": [
+      "packages/boot/app-boot/tests/profile.spec.ts",
+      "packages/boot/app-boot/tests/config-dump.spec.ts"
+    ],
+    "lab": "练习卡 L04：只用内存配置合成三层菜单并说明缺项；运行 M1 的 route fixture，不读本机 home。",
+    "question": "sdk-minimal 能否按“base 加 SDK”来画？",
+    "answer": "不能；锁定版把它作为显式完整组合的例外，需要单独跟踪其 bundle。",
+    "risk": "本轮不安装、不读取个人 DSH home；绝不打印凭据值。",
+    "accept": "准确列出层优先级、sdk-minimal 例外与构建前提；解释非法 profile 名的拒绝。",
+    "time": "60–85 分钟",
+    "bridge": "H05–H07 解释树如何运行；H08 才精读 patch 算法。"
+  },
+  {
+    "id": "H05",
+    "title": "一切皆插件——Cordis 设计思想",
+    "module": "Cordis 与插件架构",
+    "pre": "H04；基础 TypeScript interface",
+    "stage": "s1-l4,s3-l1",
+    "problem": "模型服务、工具与存储若都写死在一个类里，更换能力为什么会牵连多处？",
+    "goal": "用 Context 服务查询与 inject 说明模块怎样依赖接口。",
+    "concepts": "Plugin、Service、Context、依赖注入",
+    "terms": "Dependency Injection、Side Effect",
+    "case": "办公楼统一插座让设备可替换；Context 不替设备完成工作，inject 也不是把所有对象复制进去。",
+    "docs": [
+      "docs/cordis-primer.zh.md",
+      "docs/cordis-tutorial/index.zh.md"
+    ],
+    "routes": [
+      [
+        "vendor/cordis/src/context.ts",
+        "export class Context",
+        "先看服务容器与代理入口"
+      ],
+      [
+        "vendor/cordis/src/service.ts",
+        "class Service",
+        "再看服务声明与挂载"
+      ],
+      [
+        "packages/core/tool-executor-native/src/index.ts",
+        "export const inject",
+        "用短插件核对真实依赖"
+      ]
+    ],
+    "chain": "插件声明 inject → registry 等待服务 → apply/Service 初始化 → ctx.tools.setExecutor；卸载由 effect 回收。",
+    "structures": "Context、Service、Plugin、InjectKey；类型声明和运行时存在性分开。",
+    "explain": "先把写死的 mailer 参数化，再回到 native executor；教学参数注入不能冒称完整 Cordis。",
+    "trade": "可替换的是服务契约及组合，不保证任意插件彼此兼容。",
+    "tests": [
+      "packages/core/tools/tests/tools.spec.ts"
+    ],
+    "lab": "练习卡 L05：写一个只依赖日志接口的计数插件，替换内存日志实现；运行 M2。",
+    "question": "声明合并让 ctx.foo 在编译时存在，是否证明运行时已挂载？",
+    "answer": "不证明；声明合并只扩展类型，服务还须注册且满足 inject 与作用域。",
+    "risk": "不要把 Context 当全局单例；不要把 inject 解释成自动导入 npm 包。",
+    "accept": "更换假日志服务后插件代码不变；指出一个真实 inject 与服务 key。",
+    "time": "70–95 分钟",
+    "bridge": "H06 解释服务间事件；H07 解释依赖撤走后的生命周期。"
+  },
+  {
+    "id": "H06",
+    "title": "事件系统与插件间通信机制",
+    "module": "Cordis 与插件架构",
+    "pre": "H05；Promise 与返回值",
+    "stage": "s3-l3,s4-l3",
+    "problem": "日志观察、等待初始化和拦截工具都叫事件，为什么不能都用 emit？",
+    "goal": "根据顺序、等待与短路需求选择正确分发模式。",
+    "concepts": "emit、parallel、serial、bail、waterfall",
+    "terms": "Waterfall、Hook、Continuation、Bail Value",
+    "case": "快递签收观察 vs 多道检查站；Waterfall 像一层层包装的服务台，回程按相反顺序返回。",
+    "docs": [
+      "docs/cordis-primer.zh.md",
+      "docs/event-producer-consumer.zh.md"
+    ],
+    "routes": [
+      [
+        "vendor/cordis/src/events.ts",
+        "export function isBailed",
+        "先明确哪些返回值会停止"
+      ],
+      [
+        "vendor/cordis/src/events.ts",
+        "async serial(...args",
+        "再看按序 await 与 bail"
+      ],
+      [
+        "vendor/cordis/src/events.ts",
+        "waterfall(...args",
+        "最后跟踪 next 闭包"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "carrier, 'tools/pre-execute'",
+        "回到真实策略事件"
+      ]
+    ],
+    "chain": "EventsService.waterfall → snapshot callbacks → next → listener A → listener B → fallback → B → A；不调用 next 则下游不运行。",
+    "structures": "DispatchMode、Events 声明合并、next 回调、PreToolDecision。",
+    "explain": "用 A-before/B-before/body/B-after/A-after 的确定性轨迹；serial 返回 0 会 bail，而 false 不会。",
+    "trade": "waterfall 本身不自动 await，但可返回 Promise；serial 也有短路，不是保证所有监听器必执行。",
+    "tests": [
+      "packages/core/agent-loop/tests/serial-listener-review.spec.ts",
+      "packages/core/tools/tests/tools.spec.ts"
+    ],
+    "lab": "练习卡 L06：实现环绕与拒绝两条路径；运行 M2，再运行官方 Cordis probe 对照。",
+    "question": "观察工具的 listener 忘记 next() 会发生什么？0 与 false 对 bail 是否相同？",
+    "answer": "前者可能截断后续策略与默认实现；0 是 bail 值，false 不是。",
+    "risk": "不要把 Waterfall 讲成上一个数值自动传给下一个函数；异步由返回类型决定。",
+    "accept": "两条轨迹完全匹配；能说明 serial、emit 的返回值与等待差异。",
+    "time": "80–110 分钟",
+    "bridge": "H07 接着看 listener 与插件卸载；H14 再用 Waterfall 研究真实执行策略。"
+  },
+  {
+    "id": "H07",
+    "title": "插件生命周期、服务依赖与资源回收",
+    "module": "Cordis 与插件架构",
+    "pre": "H06；try/finally",
+    "stage": "s1-l3,s3-l3",
+    "problem": "热重载后监听器触发两次、关闭后还在写日志，泄漏从哪里来？",
+    "goal": "将每次注册与其所有者、释放函数和等待边界配对。",
+    "concepts": "Fiber、Scope、effect、disposer、依赖失效",
+    "terms": "Lifecycle、Side Effect、Quiescence",
+    "case": "会议室借钥匙、开灯、登记都应有归还动作；收回钥匙不等于正在进行的会议已结束。",
+    "docs": [
+      "docs/cordis-primer.zh.md",
+      "docs/subsystems/scope.zh.md"
+    ],
+    "routes": [
+      [
+        "vendor/cordis/src/fiber.ts",
+        "export class Fiber",
+        "先看插件生命周期的承载者"
+      ],
+      [
+        "vendor/cordis/src/registry.ts",
+        "export class RegistryService",
+        "再看依赖管理"
+      ],
+      [
+        "vendor/cordis/src/events.ts",
+        "register(label:",
+        "跟踪 on 的注册如何成为 effect"
+      ],
+      [
+        "packages/core/agent-loop/src/index.ts",
+        "private async initializeAgent(",
+        "用 Agent 销毁的等待边界检验直觉"
+      ]
+    ],
+    "chain": "ctx.on → fiber.effect → disposer；Agent dispose → cancel → idle/drain → registry/session removal → scope.dispose。",
+    "structures": "Fiber、FiberState、EffectMeta、AgentHandle.dispose；agent scope 与 Cordis isolation 不可混称。",
+    "explain": "先画资源归属表，再按释放时仍需用到日志/服务的要求讨论顺序，不承诺所有 effect 都全局逆序。",
+    "trade": "卸载要保留正在 drain 的工作所需资源；具体先后须跟实现，不凭 RAII 类比猜。",
+    "tests": [
+      "packages/core/agent-loop/tests/resource-lifecycle.spec.ts",
+      "packages/core/agent-loop/tests/shutdown-drain.spec.ts",
+      "packages/core/scope/tests/scope.spec.ts"
+    ],
+    "lab": "练习卡 L07：模拟 mount→emit→dispose→emit，断言第二次不触发且重复 dispose 不新增事件；运行 M2。",
+    "question": "取消 signal 已置位，为什么还可能要等待工具 promise？",
+    "answer": "工具已经开始，须等待它静止并清理；signal 不会自动撤销副作用，也不是资源释放凭证。",
+    "risk": "Scope 有多种含义；本讲分别标注 Cordis fiber 与 agent 注册作用域。",
+    "accept": "每个 listener、provider、Agent handle 都有 owner/disposer；指出一个 shutdown 测试。",
+    "time": "80–110 分钟",
+    "bridge": "H08 用生命周期解释配置重载；H09 开始研究 Agent 的所有权。"
+  },
+  {
+    "id": "H08",
+    "title": "Profile、Bundle、Patch 与动态能力组合",
+    "module": "Cordis 与插件架构",
+    "pre": "H04–H07",
+    "stage": "s1-l5,s2-l8",
+    "problem": "希望只替换一个模型后端，却发现配置里另外两个字段消失了，patch 到底如何覆盖？",
+    "goal": "按固定顺序手算一棵可审查的插件树。",
+    "concepts": "条目 id、配置替换、preset patch、isolate、HMR",
+    "terms": "Patch、Bundle、Realm",
+    "case": "装配清单的后层替换整张零件规格单，不能默认逐字段深合并。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/subsystems/boot.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/boot/app-boot/src/profile.ts",
+        "export function bundlePatchFiles",
+        "先从 manifest 得到有序 patch 列表"
+      ],
+      [
+        "packages/boot/app-boot/src/index.ts",
+        "export function renderConfigDump",
+        "再找与 boot 一致的展开核查入口"
+      ],
+      [
+        "vendor/include/src/index.ts",
+        "export function applyEntryPatches",
+        "精读按 id 定位与 config 替换"
+      ],
+      [
+        "packages/bundle/base/cordis.patch.yml",
+        "",
+        "核对真实组装行"
+      ]
+    ],
+    "chain": "ordered bundles → profile patch → home patch → --patch overlay → applyEntryPatches → Loader；preset patch 在 config.plugins 内作用。",
+    "structures": "ProfileLayer、PatchOptions、EntryOptions、config.plugins、isolate map。",
+    "explain": "给三份小 YAML，手算替换后 temperature 是否仍在；先看算法，再用 base 的真实行做例子。",
+    "trade": "配置开放提高灵活性，也可能因移除安全插件改变边界；dump-config 是检查工具，不等于安全审计。",
+    "tests": [
+      "packages/boot/app-boot/tests/user-patches.spec.ts",
+      "packages/boot/app-boot/tests/config-reload.spec.ts"
+    ],
+    "lab": "练习卡 L08：实现教学版整 config 替换，验证后层覆盖与未知目标诊断；扩展 M2 的 fixture。官方对不匹配目标报告 warn，不擅自改称 throw。",
+    "question": "用 patch 只写 config.model，能默认继承旧 config.provider 吗？",
+    "answer": "不能按深合并推断；课程示例应给出完整替换配置，并核对实际 patch 操作。",
+    "risk": "HMR 默认随 profile 不同；sdk-minimal 不包含 base；不对个人配置做实验。",
+    "accept": "提交三层输入与唯一结果，说明覆盖丢字段和组合改变权限的风险。",
+    "time": "85–115 分钟",
+    "bridge": "H04 只认识层次，本讲计算算法；H09 进入组装后的运行对象。"
+  },
+  {
+    "id": "H09",
+    "title": "Agent 实例创建、注册和所有权",
+    "module": "Agent 核心运行引擎",
+    "pre": "H07–H08；会读 async/await",
+    "stage": "s2-l6,s4-l6",
+    "problem": "创建中途 setup 失败时，Session 已登记但 Agent 没发布，谁负责回滚？",
+    "goal": "解释 create/resume 的发布边界与调用者所有权。",
+    "concepts": "AgentRegistry、AgentFactory、AgentHandle、初始化事务",
+    "terms": "Ownership、Publication、Rollback",
+    "case": "新员工入职先预留工位、配置权限，全部就绪才发门卡；失败必须撤销已申请资源。",
+    "docs": [
+      "docs/subsystems/core.zh.md",
+      "packages/core/agent-loop/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent/src/index.ts",
+        "export interface AgentHandle",
+        "先读调用方必须持有的 handle"
+      ],
+      [
+        "packages/core/agent/src/index.ts",
+        "async create(options:",
+        "再看 registry 委托而不自建 loop"
+      ],
+      [
+        "packages/core/agent-loop/src/index.ts",
+        "private async initializeAgent(",
+        "按发布事务读 setup 与 announce"
+      ],
+      [
+        "packages/core/agent-loop/src/index.ts",
+        "async createAgent(ownerCtx:",
+        "最后追 session preparation"
+      ]
+    ],
+    "chain": "AgentRegistry.create → factory.createAgent(ownerCtx) → sessions.prepare/persistence → initializeAgent → session announce → setup.commit → agents.enter/announce → 返回 handle。",
+    "structures": "CreateAgentOptions、AgentSetupCommit、FactoryOwnership、SessionPreparation。",
+    "explain": "分“未发布准备、可见发布、失败撤销”三段画状态；caller fiber 拥有 handle，非 factory 注册上下文。",
+    "trade": "运行所有权是生命周期概念，不能直接等同平台多租户权限。",
+    "tests": [
+      "packages/core/agent-loop/tests/agent.spec.ts",
+      "packages/core/agent-loop/tests/scope-lifecycle.spec.ts"
+    ],
+    "lab": "L09：给 setup/announce 各注入一次确定性异常，列回收台账；为 M3 增加失败不发布 fixture。",
+    "question": "只删 registry 项是否等于 Agent 已完全销毁？",
+    "answer": "不是；还须取消并 drain、释放 Session/write handle 和 agent scope，处理未发布失败。",
+    "risk": "身份关联不代表可共享所有权；不要按静态工厂位置推测生命周期 owner。",
+    "accept": "两种失败均无半发布对象；说明 session/created 与 agent/created 的先后及测试位置。",
+    "time": "90–120 分钟",
+    "bridge": "H10 在成功发布后研究驱动循环；恢复细节留给 H18。"
+  },
+  {
+    "id": "H10",
+    "title": "深入 Agent Loop——Turn、Step 与执行循环",
+    "module": "Agent 核心运行引擎",
+    "pre": "H03、H09；受限循环",
+    "stage": "s4-l1,s4-l5",
+    "problem": "一次输入触发多次模型请求，为什么某次 turn 又可能没有 step？",
+    "goal": "从 inbox 和停止条件推导 Turn/Step 的边界。",
+    "concepts": "next-turn、next-step、followup、steer、inject、turn-stopping",
+    "terms": "Turn、Step、Inbox、Wakeup",
+    "case": "工单是一轮，查一次资料是一小步；仅加入参考材料不一定叫醒工作人员。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/subsystems/core.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "send(message:",
+        "先读三种输入如何入队"
+      ],
+      [
+        "packages/core/agent-loop/src/inbox.ts",
+        "export class",
+        "再读 claim 与持久投影"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async turn():",
+        "逐段追轮次/步骤/停止"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async step(",
+        "核对工具导致的下一请求"
+      ]
+    ],
+    "chain": "send→inbox→wakeDriver/kick→turn/start→preStep→step/start→step→step/end→serial turn-stopping→turn/end；inject 不自行唤醒。",
+    "structures": "Phase、InboxTarget、PreparedStep、TurnEndReason、StepEndReason。",
+    "explain": "先复习模型提议/Runtime 控制，再用直答、工具续步、首输入被拒绝三轨迹，最后读 max-tokens sticky 分支。",
+    "trade": "步骤定义为模型请求及其工具阶段；同一步内部可以有多个失败重试 attempt。",
+    "tests": [
+      "packages/core/agent-loop/tests/loop.spec.ts",
+      "packages/core/agent-loop/tests/inbox.spec.ts",
+      "packages/core/agent-loop/tests/interception.spec.ts"
+    ],
+    "lab": "L10：用 M3 跑直答、工具续步、空输入和拒绝四种事件序列，断言不会空耗模型调用。",
+    "question": "首个 pre-step 拒绝后能否仍有 turn/start、turn/end？",
+    "answer": "可以；turn 在 claim 前打开，拒绝关闭 blocked turn，未进入 step。",
+    "risk": "Step 不等于 token/chunk；不要把教学版 maxSteps 当成锁定版 loop 必有同名配置。",
+    "accept": "四种轨迹通过且正确解释 next-step 与 next-turn；在 turn 函数圈出三个退出分支。",
+    "time": "100–140 分钟（建议两段）",
+    "bridge": "H11 拆请求准备；H12 拆模型流；H20 研究异常分支。"
+  },
+  {
+    "id": "H11",
+    "title": "系统提示词、上下文与模型请求组装",
+    "module": "Agent 核心运行引擎",
+    "pre": "H10；RAG Context 与 Schema",
+    "stage": "s3-l5,s3-l6,s4-l2",
+    "problem": "工具或工作目录变化后，本轮模型究竟看到了哪一版指令与能力？",
+    "goal": "从 assembly、prepared capability 和日志重建一次冻结请求。",
+    "concepts": "PromptAssembly、模型选择快照、runtime context、request/header",
+    "terms": "Admission、Projection、Immutable Snapshot",
+    "case": "打印出车清单前先确认车辆能载什么；旧清单不能证明这次真实出车的载荷。",
+    "docs": [
+      "docs/subsystems/system-prompt.zh.md",
+      "packages/core/agent-loop/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/system-prompt/src/index.ts",
+        "async assemble(",
+        "先看片段与 schema 汇总输入输出"
+      ],
+      [
+        "packages/core/system-prompt/src/index.ts",
+        "refreshContext(",
+        "区分每次尝试刷新事实与重新组装"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private async prepareRequest(",
+        "读适配器能力绑定"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "private buildRequest(",
+        "最后读 header/context 与冻结历史"
+      ]
+    ],
+    "chain": "tools.resolve→systemPrompt.assemble→pre-step→llm.prepareCall→systemPrompt.project→提交消息→buildRequest→session.deriveMessages→冻结请求。",
+    "structures": "AssembleContext.modelSelection、PromptAssembly、PreparedLlmCall、EpochHeader、GenerateOptions。",
+    "explain": "用“工具列表刚变化”的例子区分声明 schema、step admission 与执行定义；先输入输出，再解释 system 更新分支。",
+    "trade": "关键事实：取消发生于异步准备阶段时不提交 system/users；重试不重跑 assembly/pre-step，runtime facts 可刷新。",
+    "tests": [
+      "packages/core/agent-loop/tests/request-freeze.spec.ts",
+      "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+      "packages/core/agent-loop/tests/request-reconstruction.spec.ts"
+    ],
+    "lab": "L11：给 M3 输入两个时间点的工具清单，冻结入场版本；尝试篡改并验证历史不变。",
+    "question": "能否把旧 request/context 当作当前 route 支持 system 更新的依据？",
+    "answer": "不能，应使用本次 prepareCall 绑定的能力；日志记录本次实际请求封装。",
+    "risk": "系统指令可更新不意味着修改旧日志；纯投影与原事件分开。",
+    "accept": "准确说明 assemble、refresh、prepare、commit、freeze 的顺序，并给取消前后的日志差异。",
+    "time": "100–140 分钟（含可选深读）",
+    "bridge": "H10 的一步在此展开；H12 解释冻结请求怎样进入 adapter。"
+  },
+  {
+    "id": "H12",
+    "title": "LLM 适配器、消息结构与流式响应",
+    "module": "Agent 核心运行引擎",
+    "pre": "H11；AsyncIterable 与取消",
+    "stage": "s3-l1,s3-l2,s3-l3",
+    "problem": "不同模型的 SSE 和工具参数片段不同，Loop 为什么无需处理每家协议？",
+    "goal": "追踪统一消息/流契约与 Provider 协议的转换边界。",
+    "concepts": "LlmRuntime、LlmAdapter、StreamChunk、prepared call",
+    "terms": "Provider、Adapter、Attempt、Settlement",
+    "case": "插头转换器转接口但不能凭空增加电器能力；流片段像分批快递，还须组装后核验。",
+    "docs": [
+      "docs/subsystems/llm-streaming.zh.md",
+      "packages/llm/llm-deepseek/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/llm/llm/src/types.ts",
+        "export",
+        "先认识公共流与请求词汇"
+      ],
+      [
+        "packages/llm/llm/src/index.ts",
+        "async prepareCall(",
+        "再看一次性绑定约束"
+      ],
+      [
+        "packages/llm/llm-deepseek/src/adapter.ts",
+        "",
+        "再看具体 adapter"
+      ],
+      [
+        "packages/llm/llm-deepseek/src/sse.ts",
+        "",
+        "最后跟协议片段处理"
+      ],
+      [
+        "packages/core/agent-loop/src/assistant-stream.ts",
+        "",
+        "回到 message/attempt settlement"
+      ]
+    ],
+    "chain": "prepareCall → bound stream → llm/stream waterfall → adapter → 协议 chunk → AssistantStreamAttempt → assistant/message 或 assistant/attempt。",
+    "structures": "GenerateOptions、StreamChunk、FinishReason、PreparedLlmCall、ContentBlock。",
+    "explain": "用工具参数被拆为两段的 Mock，先拼装再验证；失败 finish chunk 与抛异常分开讲。",
+    "trade": "prepareCall 只能发起一次且不得换 config；相同 adapter 实例拥有的 replayState 才可复用。",
+    "tests": [
+      "packages/llm/llm/tests/assistant-stream.spec.ts",
+      "packages/llm/llm-deepseek/tests/prepared-call.spec.ts",
+      "packages/llm/llm-deepseek/tests/stream.spec.ts"
+    ],
+    "lab": "L12：M3 发送文本片段、工具参数片段与失败尾帧；断言半截 JSON 不执行。",
+    "question": "工具参数字符串流到一半就能调用工具吗？",
+    "answer": "不能；须满足完整流协议、完成拼装与执行阶段校验。",
+    "risk": "统一接口不保证不同 Provider 的工具/图片/推理语义相同；不要混用其他版本 SDK 字段。",
+    "accept": "完成一个公共 chunk→消息→工具提议的转换表，区分终态 error chunk 与基础设施 throw。",
+    "time": "95–125 分钟",
+    "bridge": "H13 消费组装出的工具提议；H26 再扩展 Provider 工程。"
+  },
+  {
+    "id": "H13",
+    "title": "Tool Registry、Schema 与工具可见性",
+    "module": "工具执行与安全机制",
+    "pre": "H07、H11–H12；严格输入校验",
+    "stage": "s3-l2,s4-l1,s4-l2",
+    "problem": "同名工具在不同 Agent 下含义不同，模型看见的 schema 如何与执行定义保持一致？",
+    "goal": "推导作用域、限制交集与 step admission 共同决定的工具集合。",
+    "concepts": "ToolsService、shadowing、restrict、resolve、output schema",
+    "terms": "Registry、Scope、Admission",
+    "case": "公司通讯录有全局联系人和部门同名分机；能在名册中找到，不等于每个请求都可拨打。",
+    "docs": [
+      "docs/subsystems/tools.zh.md",
+      "docs/subsystems/scope.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/tools/src/index.ts",
+        "register(definition:",
+        "先看注册契约和 output 必填"
+      ],
+      [
+        "packages/core/tools/src/index.ts",
+        "restrict(filter:",
+        "再看限制仅适用于 scoped context"
+      ],
+      [
+        "packages/core/tools/src/index.ts",
+        "private view(",
+        "计算继承与覆盖"
+      ],
+      [
+        "packages/core/tools/src/index.ts",
+        "async resolve(",
+        "最后核对每步固定能力集"
+      ],
+      [
+        "packages/core/tools/src/contracts.ts",
+        "export interface ToolDefinition",
+        "核对接口字段而非猜 schema"
+      ]
+    ],
+    "chain": "注册定义→scope chain view→step resolve→executor.describe→prompt schema；执行时携带同一 toolSet。",
+    "structures": "ToolDefinition.output、ToolRestriction、ResolvedToolSet、ToolRegistrationOptions.when。",
+    "explain": "用全局 search 与子级 search 计算可见表；用声明正确而执行返回不合 schema 的例子讲 output contract。",
+    "trade": "run_code 名称保留给 PTC；restrict 不是任意隔离边界，scope 自有注册的规则须单独算。",
+    "tests": [
+      "packages/core/tools/tests/scoped.spec.ts",
+      "packages/core/tools/tests/activation.spec.ts",
+      "packages/core/tools/tests/schema.spec.ts"
+    ],
+    "lab": "L13：M4 计算全局/子级/deny 的可见集，并让隐形工具调用被拒绝。",
+    "question": "删掉 prompt 里的工具说明就能作为权限拒绝吗？",
+    "answer": "不能；展示与执行查找必须同受能力集合/策略约束，恶意模型仍可构造名字。",
+    "risk": "注册成功不代表模型必调用；Schema 不是业务授权。",
+    "accept": "画三层可见表并解释三个冲突；未知和隐藏工具执行计数必须为零。",
+    "time": "90–125 分钟",
+    "bridge": "H14 研究已可见调用的完整流水线；H15 再看策略与 OS 边界。"
+  },
+  {
+    "id": "H14",
+    "title": "工具执行流水线与 Hook 机制",
+    "module": "工具执行与安全机制",
+    "pre": "H06、H13",
+    "stage": "s4-l1,s4-l3",
+    "problem": "工具抛错、策略改写结果、用户拒绝或观察器报错，模型最后应该看到哪份结果？",
+    "goal": "按准备、分派与结算追踪唯一权威工具结果。",
+    "concepts": "ToolExecutionPipeline、batch、pre/execute/post、finalizeContent",
+    "terms": "Hook、Monotonic Guard、Authoritative Result",
+    "case": "办理业务先审核、再处理、再交付回执；事后收据被改写不会撤销已经完成的转账。",
+    "docs": [
+      "docs/tool-execution-pipeline.zh.md",
+      "docs/subsystems/tools.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/tool-executor-native/src/index.ts",
+        "execute(input:",
+        "先看默认执行器委托"
+      ],
+      [
+        "packages/core/tools/src/batch.ts",
+        "",
+        "再看原始批次与日志责任"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "async prepare(",
+        "跟 pre 与 guard"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "async dispatch(",
+        "跟 around 与 body"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "async complete(",
+        "最后读 post/project/finalize/result"
+      ]
+    ],
+    "chain": "NativeToolExecutor→executeToolBatch→prepare(pre/ask/guard)→dispatch(around/body)→projectContent→post→finalizeContent→tools/result→记录 tool/result。",
+    "structures": "ScheduledToolPreparation、ToolRunContext、ToolExecutionResult、ToolExecutionToken。",
+    "explain": "分四段解释函数输入、内部状态、输出变体、错误归一化；画正常/拒绝/throw 三色路径。",
+    "trade": "tools/result 是冻结后的同步观察通知，观察器失败被容纳；不能通过其返回值重新批准。",
+    "tests": [
+      "packages/core/tools/tests/tools.spec.ts",
+      "packages/core/agent-loop/tests/tool-order.spec.ts",
+      "packages/core/agent-loop/tests/tool-executors.spec.ts"
+    ],
+    "lab": "L14：M4 注入 pre deny、body throw、post block；比较 body 次数与最终回执。",
+    "question": "post-execute 把成功改成 isError，是否证明文件没有写过？",
+    "answer": "不证明；body 已运行，post 改的是结果。副作用回滚必须另有事务/补偿机制。",
+    "risk": "非所有错误都走同一 post 路径；final-result 与 post-result 必须分别读。",
+    "accept": "三条轨迹及权威结果一致；指出 tools/result observer throw 不替换结果的源码。",
+    "time": "110–150 分钟（建议拆两段）",
+    "bridge": "H15 只展开安全决策，避免重复本讲所有 pipeline 阶段。"
+  },
+  {
+    "id": "H15",
+    "title": "审批、权限、守卫与沙箱",
+    "module": "工具执行与安全机制",
+    "pre": "H14；可信身份与写入确认",
+    "stage": "s2-l6,s4-l3,s4-l6",
+    "problem": "用户点了允许以后，为什么仍可能拒绝？沙箱开启又是否等于网络隔离？",
+    "goal": "区分审批决定、不可放宽守卫和文件效果隔离的责任。",
+    "concepts": "allow/deny/ask、approval、guards、confine、enforcement",
+    "terms": "Sandbox、Monotonic、Fail Closed",
+    "case": "访客同意条款不等于有机房门禁；审批像单次通行确认，守卫像不可跳过的禁入规则。",
+    "docs": [
+      "SAFETY.zh.md",
+      "docs/subsystems/approval.zh.md",
+      "docs/subsystems/sandbox.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "private async serviceAsk(",
+        "先看缺少审批渠道如何拒绝"
+      ],
+      [
+        "packages/core/tools/src/index.ts",
+        "checkGuards(",
+        "再读 guard 无法被 allow 放宽"
+      ],
+      [
+        "packages/interaction/user-approval/src/index.ts",
+        "",
+        "读审批请求生命周期"
+      ],
+      [
+        "packages/sandbox/sandbox-policy/src/index.ts",
+        "resolve(request:",
+        "看策略解析"
+      ],
+      [
+        "packages/sandbox/sandbox/src/index.ts",
+        "abstract confine(",
+        "看后端包装契约与 partial"
+      ]
+    ],
+    "chain": "pre ask→approval.request→allowed-once→checkGuards→body；shell consumer resolve policy→danger-full-access bypass 或 sandbox.confine→subprocess。",
+    "structures": "PreToolDecision、ApprovalOutcome、SandboxMode、SandboxEnforcement、ConfinedArgv。",
+    "explain": "固定案例：审批允许但 guard deny，body=0；接着讨论 Windows partial 的含义，不在宿主做真实逃逸。",
+    "trade": "SandboxMode 的词汇约束文件效果，网络与进程可见性不在该定义范围；partial 不得当 full。",
+    "tests": [
+      "packages/interaction/user-approval/tests/approval.spec.ts",
+      "packages/sandbox/sandbox-policy/tests/policy.spec.ts",
+      "packages/core/tools/tests/tools.spec.ts"
+    ],
+    "lab": "L15：M4 模拟无渠道、拒绝、允许后守卫拒绝、允许后执行四种结果；所有资源使用内存。",
+    "question": "一次 allowed-once 能否覆盖 owner guard 的 deny？",
+    "answer": "不能；准入通过后仍检查单调 guard。未审计实现也不能宣传为已验证生产安全方案。",
+    "risk": "HMAC 与幂等事务是 Stage 4 实现，不能直接说 Harness 使用同一方案。",
+    "accept": "四路径 body 次数 0/0/0/1；能说清 full/partial 与既有副作用不能取消。",
+    "time": "110–150 分钟",
+    "bridge": "H16 看真实消费者如何使用这些能力；H28 扩展浏览器/桌面。"
+  },
+  {
+    "id": "H16",
+    "title": "文件、Shell、Web 与 MCP 能力接入",
+    "module": "工具执行与安全机制",
+    "pre": "H13–H15；HTTP、MCP 与工具区别",
+    "stage": "s2-l2,s4-l2,s4-l4",
+    "problem": "四种工具都进入同一注册表，底层却分别访问文件、进程和远端服务器，边界如何保留？",
+    "goal": "按 Definition/Provider/Consumer 三角色定位能力，并对比远端信任。",
+    "concepts": "fs seam、shell、web、MCP bridge",
+    "terms": "Capability Seam、Transport、Tool Discovery",
+    "case": "同一前台接不同窗口；前台统一办理流程，不能让外部窗口自行授予内部权限。",
+    "docs": [
+      "docs/capability-seams.zh.md",
+      "docs/subsystems/filesystem.zh.md",
+      "docs/subsystems/mcp.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/fs/tool-fs/src/index.ts",
+        "",
+        "先看面向模型的文件消费者"
+      ],
+      [
+        "packages/shell/bash-sandbox/src/index.ts",
+        "",
+        "再看 shell 如何消费沙箱"
+      ],
+      [
+        "packages/web/tool-web/src/index.ts",
+        "",
+        "再对比 Web seam"
+      ],
+      [
+        "packages/mcp/mcp-client/src/index.ts",
+        "export async function apply",
+        "看每服务器插件入口"
+      ],
+      [
+        "packages/mcp/mcp-client/src/tools.ts",
+        "export function createMcpToolDefinition",
+        "落到工具适配及结果契约"
+      ]
+    ],
+    "chain": "模型→统一 tools pipeline→tool-fs/fs provider；shell/sandbox/subprocess；tool-web/web provider；MCP definition→SDK client.callTool。",
+    "structures": "ToolDefinition、MCP tool inputSchema、serverName、ToolExecution、callTool result。",
+    "explain": "用四列三角色图，不在一讲深挖所有实现；先复习 MCP 协议与本地 Tool，再对照 publicToolName。",
+    "trade": "MCP client 不提供通用 ctx.mcp；工具名来自 serverName + rawName，能力接入不等于信任远端内容。",
+    "tests": [
+      "packages/mcp/mcp-client/tests/tool-definition.spec.ts",
+      "packages/mcp/mcp-client/tests/protocol.spec.ts"
+    ],
+    "lab": "L16：把虚构远端搜索接到 M4 本地白名单，远端多声明 write 工具也不能增加执行计数。",
+    "question": "远端 tools/list 列出 write 能否当作本地批准？",
+    "answer": "不能；发现是能力描述，本地注册、作用域与执行策略继续生效，返回文本是不可信内容。",
+    "risk": "Shell 不能据危险字符串示例访问私人文件；H16 只做 Mock 接线。",
+    "accept": "三角色表覆盖四家族；解释 MCP 两个服务命名差异并用拒绝轨迹验收。",
+    "time": "100–135 分钟",
+    "bridge": "H27 深挖 MCP 重连资源；H17 改读长期记录。"
+  },
+  {
+    "id": "H17",
+    "title": "Session、事件日志与事件溯源",
+    "module": "Session 与运行可靠性",
+    "pre": "H10–H12；Run/Step 持久化",
+    "stage": "s2-l3,s4-l6",
+    "problem": "只保存 messages 数组，能解释一次工具为何没执行、模型看见哪版 schema 吗？",
+    "goal": "从不可变事件推导模型消息与业务投影，区分日志和读视图。",
+    "concepts": "SessionEventMap、seq、surface、deriveMessages、projection registry",
+    "terms": "Event Sourcing、Session Projection、Fold",
+    "case": "银行流水是事实，余额是计算结果；类比不承诺金融级账务原子性。",
+    "docs": [
+      "docs/subsystems/session.zh.md",
+      "docs/subsystems/session-projection.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/session/src/types.ts",
+        "interface SessionEventMap",
+        "先识别事件词汇与模型可见事件"
+      ],
+      [
+        "packages/core/session/src/index.ts",
+        "append<T",
+        "再看提交与快照边界"
+      ],
+      [
+        "packages/core/session/src/surface.ts",
+        "",
+        "读 surface 操作而非筛 messages"
+      ],
+      [
+        "packages/core/session/src/index.ts",
+        "deriveMessages():",
+        "再看派生与缓存"
+      ],
+      [
+        "packages/session/session-projection/src/index.ts",
+        "export class SessionProjectionRegistry",
+        "最后看插件投影注册与 snapshot"
+      ]
+    ],
+    "chain": "Session.append→lossless snapshot/验证→追加 log→surface apply→session/event→已注册 fold；deriveMessages 从 surface + message projection 得到历史。",
+    "structures": "SessionEvent、SessionSeq、SurfaceOp、ProjectionDefinition、ProjectionSnapshot。",
+    "explain": "按六条带 seq 事件算两份视图：模型消息与步骤状态；强调事件 projection 和消息 projection 是两种扩展点。",
+    "trade": "内存 append 成功不是磁盘 flush 承诺；会话日志不是平台登录 Session。",
+    "tests": [
+      "packages/core/session/tests/surface.spec.ts",
+      "packages/core/session/tests/message-projections.spec.ts",
+      "packages/session/session-projection/tests/registry.spec.ts"
+    ],
+    "lab": "L17：M5 重建事件日志并比较两种投影；破坏 seq 必须拒绝，原事件不变。",
+    "question": "所有 SessionEvent 都能直接传给模型吗？",
+    "answer": "不能；模型历史由 surface 节点和纯消息投影派生，审计事件不必是消息。",
+    "risk": "事件溯源不代表无限重放外部副作用；snapshot 不是另一个真源。",
+    "accept": "两个投影与预期一致，能定位 deriveMessages 并说明 append/flush 区别。",
+    "time": "100–140 分钟",
+    "bridge": "H18 用同一日志恢复和 fork；H19 研究投影替换。"
+  },
+  {
+    "id": "H18",
+    "title": "会话恢复、历史回放与 Fork",
+    "module": "Session 与运行可靠性",
+    "pre": "H09、H17",
+    "stage": "s1-l5,s4-l6",
+    "problem": "进程退出后能从哪里继续？复制父会话后，子会话是否拥有父级后台进程？",
+    "goal": "区分恢复执行、纯历史回放与固定前缀 Fork 的语义。",
+    "concepts": "SessionHandle、write lease、interrupted tail、fork prefix",
+    "terms": "Replay、Fork、Idempotency、Generation",
+    "case": "从会议记录恢复讨论、阅读旧记录、复制一份议题继续是三种动作；记录不会恢复会议室里原有设备。",
+    "docs": [
+      "docs/subsystems/persistence.zh.md",
+      "packages/core/session/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/session/session-persistence/src/handle.ts",
+        "export interface SessionHandle extends",
+        "先读 read/append/flush/close 契约"
+      ],
+      [
+        "packages/session/session-persistence-jsonl/src/index.ts",
+        "async open(",
+        "再读读写打开与代际选择"
+      ],
+      [
+        "packages/core/session/src/repair.ts",
+        "export",
+        "看缺失结果和尾部修复"
+      ],
+      [
+        "packages/core/session/src/fork.ts",
+        "export",
+        "看 fork prefix 规则"
+      ],
+      [
+        "packages/core/agent-loop/src/index.ts",
+        "async resume(ownerCtx:",
+        "最后进入恢复发布"
+      ]
+    ],
+    "chain": "persistence.open(write)→读取当前逻辑事件→修复未闭合尾→sessions.prepare→initializeAgent→恢复队列；fork 使用 seed + inheritedEventCount 创建新身份。",
+    "structures": "SessionHandle、SessionSeedEventState、SessionAlreadyOwnedError、inheritedEventCount、ToolCallRecovery。",
+    "explain": "用“tool/call 已写但 result 缺失”的日志，要求标 outcome unknown，不能悄悄重执行写工具。",
+    "trade": "JSONL 历史迁移发布后继 generation，不原地覆盖旧文件；句柄单写者不等于所有外部动作 exactly-once。",
+    "tests": [
+      "packages/core/session/tests/repair.spec.ts",
+      "packages/core/session/tests/fork.spec.ts",
+      "packages/session/session-persistence-jsonl/tests/lease.spec.ts",
+      "packages/core/agent-loop/tests/resume.spec.ts"
+    ],
+    "lab": "L18：M5 从同一前缀派生子分支，父日志保持不变；未知写结果不得自动重做。",
+    "question": "Replay 为什么通常不应重新发 HTTP 写请求？",
+    "answer": "Replay 重建历史/投影；重发是新的副作用，必须有独立授权与幂等设计。",
+    "risk": "不保证恢复浏览器登录、OS 进程或原内存 promise；绝不调用迁移脚本触碰个人数据。",
+    "accept": "父子前缀与 seq 断言通过，解释只读 open 与写 open 的差异和 lease 冲突。",
+    "time": "110–150 分钟",
+    "bridge": "H19 在不改变事实日志的前提下减少模型上下文；H20 讨论取消与重试。"
+  },
+  {
+    "id": "H19",
+    "title": "上下文管理、Compaction 与 Token 优化",
+    "module": "Session 与运行可靠性",
+    "pre": "H11、H17–H18；Context Window",
+    "stage": "s3-l5,s3-l7,s4-l1",
+    "problem": "长任务超过窗口，简单删除早期消息为什么可能拆开工具调用与结果？",
+    "goal": "比较剪枝、图片省略和摘要压缩对可重建历史的不同影响。",
+    "concepts": "CompactionEngine、pressure、replace、tool pairing",
+    "terms": "Compaction、Shadowed Range、Token Estimate",
+    "case": "带原始凭证的会议纪要替代桌面上铺开的文件；纪要会遗漏信息，原档案仍需保留。",
+    "docs": [
+      "docs/subsystems/compaction.zh.md",
+      "packages/compaction/compaction-basic/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/compaction/compaction/src/index.ts",
+        "export",
+        "先看能力契约"
+      ],
+      [
+        "packages/compaction/compaction-basic/src/index.ts",
+        "class BasicCompactionEngine",
+        "再看自动策略与 overflow"
+      ],
+      [
+        "packages/compaction/compaction-basic/src/region.ts",
+        "compactSurfaceRegion",
+        "精读选择、再校验、提交替换"
+      ],
+      [
+        "packages/compaction/compaction-tool-result-pruner/src/index.ts",
+        "",
+        "比较工具结果剪枝"
+      ],
+      [
+        "packages/compaction/compaction-image-offload/src/index.ts",
+        "",
+        "比较图片纯投影"
+      ]
+    ],
+    "chain": "pre-step pressure/request-error overflow→compactIfNeeded→选择范围→compaction/start→summary→user/message replace→compaction/end；原 log 不删除。",
+    "structures": "CompactionResult、shadowedSeqs、surface POSITION span、CompactionTrigger、TokenUsage。",
+    "explain": "画原事件序号与模型可见顺序双轨；replace 后 startSeq 数值可大于 endSeq，不能按数值区间理解。",
+    "trade": "压缩成本和失真需评估；token 数可能是估算，不能承诺压缩固定节费比。",
+    "tests": [
+      "packages/compaction/compaction-basic/tests/compaction-basic.spec.ts",
+      "packages/compaction/compaction-basic/tests/manual-compaction.spec.ts"
+    ],
+    "lab": "L19：M5 用固定摘要器比较保留全文、剪枝、摘要的字符预算与关键事实覆盖；记录不确定信息。",
+    "question": "compaction/summary 本身是否自动成为模型消息？",
+    "answer": "不是；它是记账事件，模型可见替换由另一 user/message 的 surfaceOp 实现。",
+    "risk": "不把摘要当原始证据；失败/遗留锁不应伪装压缩完成。",
+    "accept": "三策略都保持日志哈希不变、tool pairing 不破坏；说明 summary 与 replacement 的两条记录。",
+    "time": "110–150 分钟",
+    "bridge": "H20 处理压缩或流失败后的控制；H29 再评估性能与质量。"
+  },
+  {
+    "id": "H20",
+    "title": "取消、重试、异常处理与故障恢复",
+    "module": "Session 与运行可靠性",
+    "pre": "H14、H18–H19；AbortSignal",
+    "stage": "s3-l3,s4-l5,s4-l6",
+    "problem": "用户点击停止时工具可能已经开始；重试模型失败又怎样避免重复加入用户消息？",
+    "goal": "按故障阶段区分可重试请求、取消与未知副作用。",
+    "concepts": "LlmFailure、request-error、retry policy、drain、repair",
+    "terms": "Idempotency、Retry、Quiescence",
+    "case": "撤销未发货订单与拦截已上路包裹不同；通知停止不能让已送达包裹消失。",
+    "docs": [
+      "docs/subsystems/core.zh.md",
+      "packages/llm/llm-retry/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "cancel(cause:",
+        "先看取消 cause 与 inbox 处理"
+      ],
+      [
+        "packages/core/agent-loop/src/agent.ts",
+        "'agent/request-error'",
+        "再看同一步 request attempt 重试"
+      ],
+      [
+        "packages/llm/llm-retry/src/index.ts",
+        "",
+        "核对实际 retry 插件政策"
+      ],
+      [
+        "packages/core/tools/src/pipeline.ts",
+        "private async dispatchToolBody(",
+        "看已开始工具的等待"
+      ],
+      [
+        "packages/core/session/src/repair.ts",
+        "export",
+        "最后对照缺失结果的修复"
+      ]
+    ],
+    "chain": "失败 finish→assistant/attempt→request-error→retry/throw；cancel→abort→工具 drain→step/end→turn/end；硬退出之后由 repair 处理未闭合历史。",
+    "structures": "AgentCancelCause、RequestErrorAction、LlmFailure、ToolBatchExecutionError。",
+    "explain": "用故障点表分准备前、stream 中、body 前、body 后；逐格回答日志、重试与副作用。",
+    "trade": "模型请求重试与写工具重试不同；重试不重新 assembly/pre-step，已进入的用户消息只提交一次。",
+    "tests": [
+      "packages/core/agent-loop/tests/cancel.spec.ts",
+      "packages/core/agent-loop/tests/request-error.spec.ts",
+      "packages/core/agent-loop/tests/shutdown-drain.spec.ts"
+    ],
+    "lab": "L20：M5 模拟迟到结果、请求失败重试与未知写结果；取消后后续 body=0。",
+    "question": "为什么同一 prompt 的两次请求不是严格幂等的外部操作？",
+    "answer": "模型可能不同、计费可能发生，工具副作用更不自动幂等；幂等要针对业务结果定义并实现。",
+    "risk": "不承诺自动回滚或 exactly-once；网络超时不等于上游未执行。",
+    "accept": "故障表每格有结果与证据；同一步重试不重复用户消息，取消停止后续动作。",
+    "time": "110–150 分钟",
+    "bridge": "H21 将所有权、取消传播扩展到子代理树。"
+  },
+  {
+    "id": "H21",
+    "title": "Subagent、任务委派与多智能体协作",
+    "module": "复杂智能体系统",
+    "pre": "H09、H18、H20",
+    "stage": "s4-l5,s4-l6",
+    "problem": "父 Agent 委派任务后，谁拥有子会话、如何回传、取消后谁负责清理？",
+    "goal": "用 activation 的所有权和 delivery 区分新建、Fork 与外部执行。",
+    "concepts": "SubagentRuntime、activation、provider capabilities、child catalog",
+    "terms": "Delegation、Activation、Lineage",
+    "case": "主编给记者分配资料核查；记者收到的是任务材料，不一定复制主编整本笔记。",
+    "docs": [
+      "docs/subsystems/subagent.zh.md",
+      "docs/subsystems/agent-team.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/subagent/subagent/src/index.ts",
+        "async startActivation(",
+        "先读统一准入入口"
+      ],
+      [
+        "packages/subagent/subagent/src/index.ts",
+        "async sendMessage(",
+        "再看消息与父子约束"
+      ],
+      [
+        "packages/subagent/subagent-spawn-in-process/src/index.ts",
+        "readonly inheritsParentContext",
+        "核对 spawn 不继承对话"
+      ],
+      [
+        "packages/subagent/subagent-fork-in-process/src/index.ts",
+        "",
+        "再对照 fork provider"
+      ]
+    ],
+    "chain": "tool/Workflow→startActivation→capability 校验→local prepareContinuable 或 external start→结果 settlement→parent/caller delivery→dispose descendants。",
+    "structures": "SubagentActivationSpec、SubagentActivation、SubagentCapabilities、SubagentResult。",
+    "explain": "先跑一父两子 Mock，再换 delivery；目录中的历史 child 不一定可继续，unknown descriptor 不能授予能力。",
+    "trade": "Agent Teams 是需显式启用的实验扩展，只做边界介绍；本课主线仍是 subagent seam。",
+    "tests": [
+      "packages/subagent/subagent/tests/activation-policy.spec.ts",
+      "packages/subagent/subagent/tests/parent-result.spec.ts",
+      "packages/subagent/subagent/tests/external-lifecycle.spec.ts"
+    ],
+    "lab": "L21：M6 创建两子任务，取消父级后拒绝新子任务并等待清理；比较 caller/parent 的通知数。",
+    "question": "spawn 与 fork 是否默认拥有同样的父上下文？",
+    "answer": "不是；spawn provider 明确不继承父对话；fork 要按其 seed 规则讨论，不能只看“子代理”名称。",
+    "risk": "模型分工不保证正确性或隔离；深度和数量预算不能替代业务权限。",
+    "accept": "父子清理轨迹与回传数准确；指明能力不支持时在哪一层拒绝。",
+    "time": "110–150 分钟",
+    "bridge": "H22 使用 subagent 编排；H23 看外部载体怎样驱动这些服务。"
+  },
+  {
+    "id": "H22",
+    "title": "Workflow、Jobs、Goal 与任务调度",
+    "module": "复杂智能体系统",
+    "pre": "H21；Run 状态与预算",
+    "stage": "s4-l5,s4-l6",
+    "problem": "脚本编排、后台进程、同会话长期目标和定时触发为什么不能都称为一个任务队列？",
+    "goal": "根据生命周期选择四种任务抽象，并画清它们的组合。",
+    "concepts": "WorkflowEngine、JobRegistry、GoalService、ScheduleService",
+    "terms": "Workflow、Job、Goal Round、Schedule",
+    "case": "项目执行方案、后台印刷任务、持续交付目标、日历提醒分别解决不同问题。",
+    "docs": [
+      "docs/subsystems/workflow.zh.md",
+      "docs/subsystems/jobs.zh.md",
+      "docs/subsystems/goal.zh.md",
+      "docs/subsystems/schedule.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/workflow/workflow/src/runtime-types.ts",
+        "interface WorkflowStartRequest",
+        "先读脚本请求契约"
+      ],
+      [
+        "packages/workflow/workflow-ptc/src/index.ts",
+        "start(request:",
+        "看实际 PTC 引擎"
+      ],
+      [
+        "packages/jobs/jobs/src/index.ts",
+        "export abstract class JobRegistry",
+        "对比后台执行注册"
+      ],
+      [
+        "packages/goal/goal/src/index.ts",
+        "create(agent:",
+        "看修订化目标"
+      ],
+      [
+        "packages/schedule/schedule/src/index.ts",
+        "async create(",
+        "最后只读定时触发契约"
+      ]
+    ],
+    "chain": "WorkflowEngine.start→PTC→subagent activation；生产方→jobs；goal-round-driver→Agent 续跑；schedule runtime→delivery/Session，四者不是硬编码单链。",
+    "structures": "WorkflowStartRequest、WorkflowResult、JobStatus、GoalRef(id,revision)、ScheduleRecord。",
+    "explain": "拆三段：脚本 35 分钟、Job/Goal 对比 30 分钟、Schedule 20 分钟；phases 只是进度注释，非 DAG。",
+    "trade": "同一步/同一 turn 结束不保证所有 Job settled；Goal revision 支持精确变更而非自动业务 exactly-once。",
+    "tests": [
+      "packages/workflow/workflow-ptc/tests/meta.spec.ts",
+      "packages/jobs/jobs/tests/service.spec.ts",
+      "packages/goal/goal/tests/projection.spec.ts",
+      "packages/schedule/schedule/tests/recovery.spec.ts"
+    ],
+    "lab": "L22：M6 对四个场景分类，使用虚拟时钟与内存队列验证调度；不创建系统定时器。",
+    "question": "WorkflowMeta.phases 是否决定脚本执行顺序？",
+    "answer": "不是；它是展示信息，脚本与引擎 helper 决定实际结构。",
+    "risk": "不能把 Harness Workflow 说成 Stage 4 固定短 Workflow 的同名实现；不声称分布式可靠调度已验证。",
+    "accept": "四种抽象各给一个入口、终态和故障；脚本 fatal 错误不能被当作普通 null 成功。",
+    "time": "130–180 分钟（建议三段）",
+    "bridge": "H21 提供执行单元，本讲提供编排；H24 统一审查各生命周期。"
+  },
+  {
+    "id": "H23",
+    "title": "CLI、Web UI、SDK 与远程通信",
+    "module": "复杂智能体系统",
+    "pre": "H04、H17、H21–H22；HTTP 与流",
+    "stage": "s2-l2,s3-l3,s4-l6",
+    "problem": "界面重连后看到的状态来自哪里？SDK 与网页是不是各写一套 Agent？",
+    "goal": "追踪一个控制动作与一条状态订阅穿过载体边界。",
+    "concepts": "profile launcher、controller、JSON-RPC、Session follow",
+    "terms": "Carrier、Remote、Snapshot/Delta",
+    "case": "柜台、手机银行和机器接口共享后端业务，但登录方式与通信协议不同。",
+    "docs": [
+      "docs/architecture.zh.md",
+      "docs/subsystems/web-server.zh.md",
+      "packages/sdk/client/README.zh.md"
+    ],
+    "routes": [
+      [
+        "apps/cli/src/profile-boot.ts",
+        "",
+        "先回到统一启动器"
+      ],
+      [
+        "packages/api/session-controller/src/agent.ts",
+        "",
+        "再读创建/恢复的 Web 业务适配"
+      ],
+      [
+        "packages/api/session-controller/src/assistant-stream.ts",
+        "",
+        "看实时流消费与版本"
+      ],
+      [
+        "packages/sdk/client/src/launch.ts",
+        "",
+        "对照 SDK 如何启动 profile"
+      ],
+      [
+        "packages/sdk/client/src/client.ts",
+        "",
+        "最后读客户端通信生命周期"
+      ]
+    ],
+    "chain": "Web controller→AgentRegistry/SessionProjection；agent/assistant-stream→Web follow；SDK client→SDK profile server→JSON-RPC 控制/事件。",
+    "structures": "SessionId、ProjectionSnapshot、stream revision、SDK client 生命周期；协议以源码字段为准。",
+    "explain": "从 cancel 控制向内读，再从 session/event 向外读；不要把所有 transport 都归作 WebSocket。",
+    "trade": "共享领域能力不代表共享公开传输；Web live stream 的唯一远端消费者与 SDK durable event 分清。",
+    "tests": [
+      "packages/api/session-controller/tests/transport.host.spec.ts",
+      "packages/api/session-controller/tests/assistant-stream.host.spec.ts"
+    ],
+    "lab": "L23：给 M6 的事件适配器做断连/重连 fixture，基于 snapshot 重建，过滤旧 revision。",
+    "question": "UI 显示完成能否代替持久化确认？",
+    "answer": "不能；需核对领域终态与持久边界，实时 UI 只是消费方。",
+    "risk": "本轮不连用户账户/现有服务器，不修改平台路由；不得凭界面反推领域事实。",
+    "accept": "一条控制链与一条订阅链均有端点源码和失败路径；说明重连从何处获得状态。",
+    "time": "100–140 分钟",
+    "bridge": "H24 把控制、状态、测试合为架构证据；扩展课再实现小插件。"
+  },
+  {
+    "id": "H24",
+    "title": "大型 Agent 系统测试与综合架构分析",
+    "module": "复杂智能体系统",
+    "pre": "H01–H23；Mock 与故障注入",
+    "stage": "s3-l7,s4-l7,s4-l8",
+    "problem": "有很多绿色测试，怎样判断它们是否验证了真正的产品边界？",
+    "goal": "为一条跨模块链建立事实、测试与限制的证据矩阵。",
+    "concepts": "contract regression、property test、snapshot/replay、benchmark",
+    "terms": "Coverage、Invariant、Gate",
+    "case": "消防演练不能只看所有人走过楼梯，还要验证出口、断电与人数；覆盖到代码不等于证明业务成立。",
+    "docs": [
+      "docs/testing.zh.md",
+      "docs/development.zh.md",
+      "SAFETY.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/agent-loop/tests/contract-regressions.spec.ts",
+        "",
+        "先看必须长期维持的约定"
+      ],
+      [
+        "packages/core/agent-loop/tests/mock-adapter.ts",
+        "",
+        "看确定性替身边界"
+      ],
+      [
+        "vitest.config.ts",
+        "",
+        "再查测试纳入/跳过规则"
+      ],
+      [
+        "scripts/run-gates.ts",
+        "",
+        "最后看依赖门禁"
+      ],
+      [
+        "benchmarks/AGENTS.md",
+        "",
+        "对比性能门禁规范（只读引用）"
+      ]
+    ],
+    "chain": "需求不变量→Mock/contract→包集成→持久回放→载体 smoke→性能门禁；真实 API e2e 另列，不拿缺密钥 skip 当通过。",
+    "structures": "测试输入、assert、gate dependency、coverage include/exclude、benchmark budget。",
+    "explain": "选“审批允许但 guard 拒绝”或“取消后不再执行”做证据审计；要求学生寻找可反驳假设。",
+    "trade": "锁定仓库追求按文件覆盖门禁，但这不等于安全审计、语义正确性或跨平台全验证。",
+    "tests": [
+      "packages/core/agent-loop/tests/contract-regressions.spec.ts",
+      "packages/core/tools/tests/properties.spec.ts"
+    ],
+    "lab": "L24：运行 M1–M6，全链报告列成功、拒绝、取消、未知写结果；给一项未经测试的结论降级。",
+    "question": "没有 API Key 的 e2e 被跳过后，能写“真实模型集成已通过”吗？",
+    "answer": "不能，必须列为未验证并保留具体 skip 原因；Mock 是固定行为证据。",
+    "risk": "快照录制可能包含敏感数据；禁止用私人会话与真实凭据作为教学 fixture。",
+    "accept": "综合报告四个硬门槛全通过：越权 0、未批准写入 0、取消后新动作 0、虚报验证 0。",
+    "time": "120–165 分钟",
+    "bridge": "核心结课；H25–H30 按兴趣和先修分支进入。"
+  },
+  {
+    "id": "H25",
+    "title": "自己编写一个 Cordis 插件",
+    "module": "高级拓展",
+    "pre": "H05–H08、H13、H24",
+    "stage": "s1-l6,s3-l2",
+    "problem": "怎样扩展一项小能力，同时让加载、重复注册与卸载行为都能验证？",
+    "goal": "完成一个可重复挂载/卸载且无外部副作用的插件。",
+    "concepts": "apply、inject、ctx.effect、ToolDefinition.output",
+    "terms": "Plugin Lifecycle、Disposer",
+    "case": "给工具箱增加一个单位换算器，退还工具箱时不留下多余附件。",
+    "docs": [
+      "docs/cookbook/adding-a-package.zh.md",
+      "docs/cookbook/adding-a-tool.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/core/tool-executor-native/src/index.ts",
+        "export function apply",
+        "先读最短真实插件"
+      ],
+      [
+        "packages/core/tools/src/contracts.ts",
+        "export interface ToolDefinition",
+        "再查当前工具契约"
+      ],
+      [
+        "packages/core/tools/src/index.ts",
+        "register(definition:",
+        "读输出 schema 与重复注册验证"
+      ],
+      [
+        "vendor/cordis/src/events.ts",
+        "register(label:",
+        "核对 effect 所有权"
+      ]
+    ],
+    "chain": "apply(inject tools)→tools.register→step resolve→execute/output.render→dispose 自动注销。",
+    "structures": "ToolDefinition、output.schema/render、ToolRegistrationOptions、disposer。",
+    "explain": "用纯内存字符计数器；教学版不缩写成过时的 register(name, fn)，代码明确标“教学简化”。",
+    "trade": "优先小插件，不 fork loop；可扩展不表示无需检查输出与执行限制。",
+    "tests": [
+      "packages/core/tools/tests/tools.spec.ts",
+      "packages/core/tools/tests/scoped.spec.ts"
+    ],
+    "lab": "L25：基于 M2 的插件契约补 count_words，覆盖空字符串、重复注册、卸载后不可见；正式制课再做锁定仓库包级插件。",
+    "question": "只提供 execute 而不提供 output 契约能否按本版本注册？",
+    "answer": "不能；本版本 register 要求 output schema/render，须按锁定接口实现。",
+    "risk": "交付教学插件不能冒称已运行官方完整 Loader；库级 probe 与产品级构建分别记账。",
+    "accept": "三类 fixture 全过，并给出未来包级集成测试命令与未执行状态。",
+    "time": "100–140 分钟",
+    "bridge": "从概念转小扩展；H26–H28 选择具体能力 seam。"
+  },
+  {
+    "id": "H26",
+    "title": "多模型适配与 Provider 工程",
+    "module": "高级拓展",
+    "pre": "H12、H24；认证与 SSE",
+    "stage": "s3-l1,s3-l2,s3-l3,s3-l7",
+    "problem": "同名 model、不同能力与认证来源并存时，怎样避免路由和 replayState 串用？",
+    "goal": "设计符合现有 seam 的能力声明、路由与错误转换。",
+    "concepts": "adapter registration、model info、call defaults、replay ownership",
+    "terms": "Provider/Adapter、Capability Negotiation",
+    "case": "车队调度先确认车辆身份、容量和驾驶资格；不能仅凭车名认为性能相同。",
+    "docs": [
+      "docs/cookbook/adding-an-llm-adapter.zh.md",
+      "docs/subsystems/llm-streaming.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/llm/llm/src/index.ts",
+        "async prepareCall(",
+        "先看绑定的公共约束"
+      ],
+      [
+        "packages/llm/llm-deepseek/src/adapter.ts",
+        "",
+        "看官方专用 provider"
+      ],
+      [
+        "packages/llm/llm-pi-ai/src/adapter.ts",
+        "",
+        "再对比多 provider adapter"
+      ],
+      [
+        "packages/llm/llm/src/retry-policy.ts",
+        "",
+        "最后看失败与重试事实"
+      ]
+    ],
+    "chain": "registered provider→exact-model info→resolve defaults→prepared call→protocol adapter→统一 finish；跨 adapter 移除不属于它的 replay state。",
+    "structures": "LlmModelInfo、PreparedLlmCall、LlmFailure、LlmCallConfigAdapterDefaults。",
+    "explain": "给只支持文本的 Mock provider 与支持工具的 provider 做能力矩阵；不可用能力要显式失败，不静默假装成功。",
+    "trade": "默认值须记入请求可重建封装；Provider API 变化须另开课程版本，不能用最新 npm 覆盖。",
+    "tests": [
+      "packages/llm/llm-deepseek/tests/prepared-call.spec.ts",
+      "packages/llm/llm-pi-ai/tests/protocol-roundtrip.spec.ts"
+    ],
+    "lab": "L26：扩展 M3 的两套 provider fixture，跨 adapter 切换剥离私有 replayState，并拒绝重复 dispatch。",
+    "question": "两个 provider 共用同一 adapter 实例与两个不同 adapter 实例能一概处理 replayState 吗？",
+    "answer": "不能；须按当前 adapter 所有权规则判断，保留与剥离不是按字符串碰巧相同决定。",
+    "risk": "不提供真实模型性能排名；本课能力与错误工程不等于供应商质量测评。",
+    "accept": "路由、能力不足、默认值、私有状态、一次性 dispatch 五项 fixture 有确定性预期。",
+    "time": "120–160 分钟",
+    "bridge": "H12 的公共词汇在此扩展到 provider 实现；H29 测量行为与成本。"
+  },
+  {
+    "id": "H27",
+    "title": "MCP 深度集成与自定义能力",
+    "module": "高级拓展",
+    "pre": "H16、H20、H24",
+    "stage": "s4-l4,s4-l7",
+    "problem": "远端重连和工具列表更新期间，如何避免旧连接覆盖新工具、资源串到别的 Agent？",
+    "goal": "解释每服务器连接生命周期与工具/资源的作用域发布。",
+    "concepts": "connection generation、discovery、resources、server instructions",
+    "terms": "Generation、Transport、Projection",
+    "case": "换班接线员只有完成交接才能接管名录；旧接线员的迟到消息不能覆盖新班表。",
+    "docs": [
+      "docs/subsystems/mcp.zh.md",
+      "packages/mcp/mcp-client/README.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/mcp/mcp-client/src/index.ts",
+        "export async function apply",
+        "先看插件拥有的资源"
+      ],
+      [
+        "packages/mcp/mcp-client/src/connection.ts",
+        "export function startConnection",
+        "精读连接 generation/reconnect"
+      ],
+      [
+        "packages/mcp/mcp-client/src/tools.ts",
+        "export function createMcpToolDefinition",
+        "读规范 JSON 与呈现分离"
+      ],
+      [
+        "packages/mcp/mcp-resources/src/index.ts",
+        "",
+        "最后看共享资源工具与 serverName 选择"
+      ]
+    ],
+    "chain": "apply→startConnection→SDK transport/handshake→discovery→成功后发布新一代工具与指令→callTool；资源在调用者 scope 按 serverName 分派。",
+    "structures": "ConnectionHandle、ToolDisposers、MCP CallToolResult、PreparedProjection、资源 provider。",
+    "explain": "先模拟 A 连接迟到、B 连接已激活，再观察失败刷新保留上代目录；区分 canonical JSON 与模型文本。",
+    "trade": "外部服务器指令可进入 scoped prompt，但它不是本地权限授权；binary 内容需按实际投影规则处理。",
+    "tests": [
+      "packages/mcp/mcp-client/tests/reconnect.spec.ts",
+      "packages/mcp/mcp-client/tests/negotiation-lifecycle.spec.ts",
+      "packages/mcp/mcp-client/tests/tool-definition.spec.ts"
+    ],
+    "lab": "L27：M4/M6 的内存 MCP fixture 重连三次，验证旧 generation 结果被忽略、卸载后清单为空。",
+    "question": "重新发现失败后是否可以先删除全部旧工具再显示成功？",
+    "answer": "不应据此虚报；锁定实现保留上一代工具并记录故障，只有成功发现才发布替代。",
+    "risk": "不把 stdio 当沙箱；服务命令和环境本身也是执行边界。",
+    "accept": "工具命名无碰撞、迟到不覆盖、资源按 scope、卸载无泄漏四项证据。",
+    "time": "120–165 分钟",
+    "bridge": "H16 只建能力地图，本讲聚焦协议桥接可靠性；H28 用浏览器消费者检验生命周期。"
+  },
+  {
+    "id": "H28",
+    "title": "Browser Use、Computer Use 与执行边界",
+    "module": "高级拓展",
+    "pre": "H15、H21、H27",
+    "stage": "s3-l3,s4-l3,s4-l7",
+    "problem": "Fork 一段会话会不会复制浏览器登录？多个 Agent 能否同时独占同一个桌面？",
+    "goal": "区分浏览器 Session 资源所有权和共享桌面输入边界。",
+    "concepts": "BrowserUse registry、SessionResources、CUA provider、app grants",
+    "terms": "Computer Use、Resource Ownership、Irreversible Input",
+    "case": "借一台专用浏览器像借独立办公桌，控制整个桌面像多人共用同一键盘；记录不能复原桌面。",
+    "docs": [
+      "docs/subsystems/browser-use.zh.md",
+      "docs/subsystems/computer-use.zh.md",
+      "SAFETY.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/experimental/browser-use-runtime/src/index.ts",
+        "export class SessionResources",
+        "先看精确 Agent 所有的资源"
+      ],
+      [
+        "packages/experimental/browser-use-runtime/src/index.ts",
+        "private closeEntry(",
+        "再看在途操作与释放"
+      ],
+      [
+        "packages/computer-use/computer-use/src/index.ts",
+        "export class ComputerUseRegistry",
+        "对比只注册 provider 名称"
+      ],
+      [
+        "packages/experimental/computer-use-cua-driver-mcp/src/index.ts",
+        "",
+        "最后看具体桌面提供方接入"
+      ]
+    ],
+    "chain": "browser provider→agent/created 初始化→SessionResources.run→工具 pipeline→owner dispose；computer-use provider 注册不预留整桌面。",
+    "structures": "OwnedSessionResource、SessionResourceOptions、ComputerUseProviderName、provider 授权状态。",
+    "explain": "用虚构画布作为桌面，展示 observation→action→verification；禁止操作学生真实浏览器和私人窗口。",
+    "trade": "浏览器 reload/fork 不恢复 profile/登录；attached 外部浏览器清理时断开而非关闭；桌面 input 取消不可撤回。",
+    "tests": [
+      "packages/experimental/browser-use-runtime/tests/agent-disposal.spec.ts",
+      "packages/computer-use/computer-use/tests/registry.spec.ts"
+    ],
+    "lab": "L28：M6 的虚构画布记录一次 click，取消后不得新增 click；fork 只有日志，没有登录态。",
+    "question": "把 click 结果标为 cancelled 是否证明用户界面从未收到输入？",
+    "answer": "不证明；已经交付的输入不可撤回，应另行观察验证，不把取消当回滚。",
+    "risk": "实验性平台覆盖不同；本轮未运行真实桌面、浏览器连接或安全逃逸测试。",
+    "accept": "资源归属图标明 launched/attached/shared desktop 三种清理；虚构画布不触及宿主。",
+    "time": "110–150 分钟",
+    "bridge": "H29 追踪这些操作的观测与性能，H30 解释工程门禁。"
+  },
+  {
+    "id": "H29",
+    "title": "Agent 可观测性、评估和性能分析",
+    "module": "高级拓展",
+    "pre": "H19、H24、H26",
+    "stage": "s3-l7,s4-l7",
+    "problem": "回答变慢究竟是模型、工具、持久化还是 UI？看平均时延为什么可能掩盖安全失败？",
+    "goal": "建立分阶段观测与不可被平均分掩盖的行为评估。",
+    "concepts": "SessionTelemetry、redaction、token meter、benchmarks",
+    "terms": "Observability、Evaluation、Attribution",
+    "case": "物流总耗时要拆为揽收、运输和派送；“平均送达快”不能抵消送错地址。",
+    "docs": [
+      "docs/subsystems/session-telemetry.zh.md",
+      "docs/subsystems/token-meter.zh.md",
+      "docs/testing.zh.md"
+    ],
+    "routes": [
+      [
+        "packages/session/session-telemetry/src/index.ts",
+        "abstract emit(",
+        "先读遥测记录 seam"
+      ],
+      [
+        "packages/session/session-telemetry/src/coordinator.ts",
+        "",
+        "再看采集生命周期"
+      ],
+      [
+        "packages/session/session-telemetry/src/coordinator.ts",
+        "private redact(",
+        "核对部署挂载的脱敏扩展点"
+      ],
+      [
+        "packages/llm/token-meter/src/index.ts",
+        "",
+        "看用量来源"
+      ],
+      [
+        "benchmarks/AGENTS.md",
+        "",
+        "再看固定输入的性能门禁规范"
+      ]
+    ],
+    "chain": "Session settlement/领域事件→telemetry coordinator→redact→provider/export；usage 与耗时按观测来源记账；固定 fixture 驱动 bench。",
+    "structures": "SessionTelemetryRecord、TokenUsage、耗时单位、错误类别、样本集版本。",
+    "explain": "给一张时序含模型/工具/等待审批/flush，要求分拆耗时；对性能基准、行为 Eval 和真实集成分别记状态。脱敏 waterfall 的默认 fallback 原样返回，仓库此 seam 不自带规则。",
+    "trade": "缺 usage 是不可用而非 0；tracing 不证明模型语义正确；脱敏依赖部署挂载规则，默认无自动隐私保证。",
+    "tests": [
+      "packages/session/session-telemetry/tests/redact.spec.ts",
+      "packages/session/session-telemetry/tests/telemetry.spec.ts"
+    ],
+    "lab": "L29：M1–M6 产出只含虚构字段的报告；统计拒绝率/动作数和时序，不在本轮跑真实 API 基准。",
+    "question": "90% 任务成功但发生一次越权写入，平均分能否判通过？",
+    "answer": "不能；安全硬门槛独立计数，任一次即失败；质量/性能指标另看。",
+    "risk": "不得记录完整私人 prompt、凭据或原始敏感工具结果；不虚构 token 精度。",
+    "accept": "报告包含样本/版本/缺失值/四硬门槛；区分估算与 provider usage。",
+    "time": "110–150 分钟",
+    "bridge": "H24 建证据方法，本讲落实观测；H30 回到可维护的仓库与 CI。"
+  },
+  {
+    "id": "H30",
+    "title": "大型 TypeScript Monorepo、类型系统与 CI 工程",
+    "module": "高级拓展",
+    "pre": "H02、H24；泛型和声明合并补课",
+    "stage": "s1-l4,s1-l5,s2-l8,s4-l8",
+    "problem": "源码在编辑器没报错却构建失败，为什么 Host 与 Client 不合成一个 ts.Program？",
+    "goal": "解释源码、生成声明、构建产物与 CI 依赖的不同真源。",
+    "concepts": "project references、declaration merging、Typert、build faces、gate DAG",
+    "terms": "Branded Type、Aggregate Program、Generated Artifact",
+    "case": "两份专业图纸共享零件编号，但图层规则不同；合成一张图会出现同名标注冲突。",
+    "docs": [
+      "docs/development.zh.md",
+      "docs/testing.zh.md",
+      "docs/subsystems/typert.zh.md"
+    ],
+    "routes": [
+      [
+        "tsconfig.host.json",
+        "",
+        "先看 Host aggregate 的引用"
+      ],
+      [
+        "tsconfig.client.json",
+        "",
+        "再看 Client aggregate 的引用"
+      ],
+      [
+        "scripts/generate-typert.ts",
+        "",
+        "看类型反射生成阶段"
+      ],
+      [
+        "scripts/run-gates.ts",
+        "",
+        "最后算门禁依赖和失败传播"
+      ],
+      [
+        ".github/workflows/ci.yml",
+        "",
+        "核对实际 CI 入口"
+      ]
+    ],
+    "chain": "Host source types→Typert declarations→各 face 包编译→Host/Desktop bundle→Client compile/bundle→Web→aggregate check/consumer gates；按真实 DAG 而非任意并行。",
+    "structures": "Context 合并声明、branded id、project references、DSH_BUILD_FACE、gate dependencies。",
+    "explain": "先造同名 ctx 服务声明冲突，再解释隔离 program；用源码路径与 lib 产物分别画箭头。",
+    "trade": "build:check 不负责补产物；100% coverage 不能替代行为测试；原生插件和平台 smoke 需要独立环境。",
+    "tests": [
+      "scripts/verify-package-paths.spec.ts"
+    ],
+    "lab": "L30：给六节点构建 DAG 排序，删一份生成声明时明确失败；将课程更新变更映射到所需复验层级。",
+    "question": "tsconfig paths 能否解决同一个 ts.Program 中的 Host/Client Context 声明冲突？",
+    "answer": "不能；模块解析与 program 内声明合并是不同问题，需保持 aggregate 边界。",
+    "risk": "不在 AI Foundry 根目录安装 Harness 工具链；不把 typecheck 成功当作可运行 bundle。",
+    "accept": "给出无环构建顺序、三种错误分类与更新复验计划；所有未运行的 CI 均标明。",
+    "time": "120–165 分钟",
+    "bridge": "收束到维护规范；后续正式教材从 H01 单讲研发，不自动发布。"
+  }
+]

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1640" viewBox="0 0 640 1640" role="img" aria-labelledby="title desc">
+<title id="title">Agent Loop：Turn 与 Step</title><desc id="desc">Turn 在输入领取前打开。准入拒绝或首条空输入可不进入 Step；正常 Step 包含模型请求和可选工具批次；还欠请求或有 next-step 输入则继续。turn-stopping 可以补入工作，最后记录 turn/end。</desc>
+<defs><marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#187A91" stroke-width="2"/></marker><marker id="back" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M11 1 L2 6 L11 11" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs>
+<rect width="640" height="1640" fill="#F3F9F8" rx="24"/>
+<g font-family="Microsoft YaHei,Arial,sans-serif">
+<text x="320" y="64" text-anchor="middle" font-size="34" font-weight="700" fill="#15394B">Agent Loop：Turn 与 Step</text>
+<text x="320" y="110" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">AI Foundry · 源码基线 f3803c9</text>
+<rect x="96" y="150" width="448" height="88" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="205" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">turn/start：打开轮次</text>
+<path d="M320 242 V292" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="96" y="300" width="448" height="136" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="347" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">领取 Inbox 输入</text>
+<text x="320" y="390" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">resolve / assemble / preStep</text>
+<path d="M320 440 V492" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<text x="426" y="474" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">允许进入</text>
+<rect x="96" y="500" width="448" height="88" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="555" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">step/start</text>
+<path d="M320 592 V642" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="96" y="650" width="448" height="180" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="698" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">模型请求与流式结算</text>
+<text x="320" y="748" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">prepare → stream → settle</text>
+<text x="320" y="794" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">有工具则经执行器处理批次</text>
+<path d="M320 834 V882" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="96" y="890" width="448" height="80" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="941" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">step/end</text>
+<path d="M320 974 V1022" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="96" y="1030" width="448" height="116" rx="18" fill="#FFF0D7" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="1077" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">还欠请求，或有</text>
+<text x="320" y="1121" text-anchor="middle" font-size="30" font-weight="400" fill="#15394B">next-step 输入？</text>
+<path d="M548 1088 H612 V370 H550" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<text x="566" y="1020" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">是</text>
+<path d="M320 1150 V1198" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<text x="386" y="1180" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">否</text>
+<rect x="96" y="1206" width="448" height="104" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="1252" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">agent/turn-stopping</text>
+<text x="320" y="1289" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">新增输入则再进入 preStep</text>
+<path d="M548 1258 H612 V1090" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)" stroke-dasharray="8 6"/>
+<path d="M320 1314 V1354" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="96" y="1362" width="448" height="80" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="1413" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">turn/end：关闭轮次</text>
+<rect x="48" y="1482" width="544" height="116" rx="18" fill="#FFF0D7" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="1527" text-anchor="middle" font-size="30" font-weight="700" fill="#15394B">另一条合法路径：零 Step</text>
+<text x="320" y="1571" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">首个 preStep 拒绝 / 输入改写为空</text>
+</g>
+</svg>

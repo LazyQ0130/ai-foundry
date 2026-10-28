@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-28",
+  "timezone": "Asia/Shanghai",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "30 lessons with all 20 numbered fields",
+      "status": "PASS",
+      "detail": {
+        "lessonCount": 30,
+        "fieldCount": 600
+      }
+    },
+    {
+      "name": "selected source range",
+      "status": "PASS",
+      "detail": "2–5 distinct main files per lesson"
+    },
+    {
+      "name": "fixed source references and exact anchors",
+      "status": "PASS",
+      "detail": {
+        "references": 239,
+        "errors": []
+      }
+    },
+    {
+      "name": "30 lesson figures within pedagogical budget",
+      "status": "PASS",
+      "detail": {
+        "planned": 56
+      }
+    },
+    {
+      "name": "4 real original diagrams with editable SVG",
+      "status": "PASS",
+      "detail": [
+        {
+          "id": "H01-01",
+          "width": 1280,
+          "height": 2000,
+          "sha256": "106a850467bc0d69a7c35bb12df6385186cfd14a374d5df50b907ced7dd604cd"
+        },
+        {
+          "id": "H03-01",
+          "width": 1280,
+          "height": 2320,
+          "sha256": "26a089dbe581a5612c0d5b34d5d6b74f55735651f13efef4a6eef8f68c7ef4fe"
+        },
+        {
+          "id": "H06-01",
+          "width": 1280,
+          "height": 1972,
+          "sha256": "ec584a8c5081ae0b8e909050c6d3a758e659aafcbab1bbee7e8540bb4fbffacc"
+        },
+        {
+          "id": "H10-01",
+          "width": 1280,
+          "height": 3280,
+          "sha256": "b7cb5bce1942cc9f141c6830f90da0ed777738179ad21dd026168030c70bc615"
+        }
+      ]
+    },
+    {
+      "name": "actual renderer image QA",
+      "status": "PASS",
+      "detail": {
+        "viewports": [
+          1440,
+          390,
+          320
+        ],
+        "screens": 12,
+        "manual": {
+          "status": "PASS",
+          "scope": "Four original diagrams visually inspected; representative 320px H06/H10 and 1440px H03 renderer screenshots inspected; H06/H10 rechecked after font adjustment",
+          "findings": "Chinese glyphs, direction labels, key branches, captions and expand links legible; no clipping found. All 12 viewport overflow/load checks automated.",
+          "reviewer": "same author, separate visual review pass; not independent external review",
+          "date": "2026-10-28"
+        }
+      }
+    },
+    {
+      "name": "archive integrity",
+      "status": "PASS",
+      "detail": {
+        "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+        "method": "Git blob SHA-1 over archive bytes matched against git ls-tree",
+        "archiveSha256": "d87675213f81980b0718d0d2997b6e46e5940b588cb45351dabfc217272b6b66",
+        "matchedBlobs": 19874,
+        "declaredLineEndingMatches": [
+          {
+            "path": "apps/desktop/cli/dsh.cmd",
+            "transform": "declared CRLF worktree to canonical LF",
+            "gitBlob": "73af33537af9d5220784917ed361caf8ab3c9b03"
+          },
+          {
+            "path": "apps/desktop/scripts/node-bin/node.cmd",
+            "transform": "declared CRLF worktree to canonical LF",
+            "gitBlob": "da28a16afcfe3c8226c8429e5c3266631453f9d5"
+          },
+          {
+            "path": "apps/desktop/scripts/windows-sign.cmd",
+            "transform": "declared CRLF worktree to canonical LF",
+            "gitBlob": "8afed8833e44c8a9ba2634b8e3e4d30bb205f8eb"
+          }
+        ],
+        "mismatches": [],
+        "nonBlobEntries": [],
+        "status": "PASS"
+      }
+    },
+    {
+      "name": "existing 29 formal lessons plus prep unchanged",
+      "status": "PASS",
+      "detail": {
+        "audited": 30,
+        "changed": []
+      }
+    },
+    {
+      "name": "limited actual source probes",
+      "status": "PASS",
+      "detail": {
+        "scope": "Cordis, detached Session and native in-memory tools pipeline; not upstream Vitest suite, full AgentLoop, native sandbox or real Provider",
+        "checks": 6
+      }
+    },
+    {
+      "name": "local delivery links and images",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "labs executable acceptance",
+      "status": "PASS",
+      "detail": {
+        "command": [
+          "node",
+          "--test",
+          "docs/deepseek-harness-v2/labs/acceptance.test.mjs"
+        ],
+        "exitCode": 0,
+        "tests": 24,
+        "log": "labs-validation.txt"
+      }
+    },
+    {
+      "name": "renderer executable acceptance",
+      "status": "PASS",
+      "detail": {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "--test",
+          "tests/lesson-renderer.test.ts"
+        ],
+        "exitCode": 0,
+        "tests": 9,
+        "log": "renderer-validation.txt"
+      }
+    },
+    {
+      "name": "scope executable acceptance",
+      "status": "PASS",
+      "detail": {
+        "command": [
+          "D:\\Program Files\\python.exe",
+          "-X",
+          "utf8",
+          "docs/deepseek-harness-v2/scripts/snapshot.py",
+          "after"
+        ],
+        "exitCode": 0,
+        "tests": null,
+        "log": "scope-validation.txt"
+      }
+    },
+    {
+      "name": "no publication integration",
+      "status": "PASS",
+      "detail": "Research assets remain under docs; baseline hash check covers existing platform files"
+    }
+  ],
+  "notRun": [
+    "full official Vitest/snapshot/API e2e",
+    "native sandbox and OS isolation",
+    "real browser/desktop integration",
+    "real Provider/API semantic evaluation",
+    "cross-process restore/lease runtime",
+    "independent external reviewer",
+    "publication/integration/routes/entitlements/migrations"
+  ]
+}

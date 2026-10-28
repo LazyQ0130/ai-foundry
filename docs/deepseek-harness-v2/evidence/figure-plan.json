@@ -1,0 +1,978 @@
+[
+  {
+    "id": "H01-01",
+    "lesson": "H01",
+    "kind": "关系对比",
+    "title": "LLM、Agent 与 Harness",
+    "purpose": "区分提议、循环执行与工作台能力",
+    "structure": "三层职责；模型输出为提议；Runtime 受控执行；日志/策略/适配器为环境能力",
+    "alt": "LLM、Agent 与 Harness：三层职责，模型输出为提议，Runtime 受控执行，日志/策略/适配器为环境能力",
+    "caption": "LLM、Agent 与 Harness。区分提议、循环执行与工作台能力。",
+    "status": "GENERATED_SAMPLE",
+    "sourceRefs": [
+      "S001",
+      "S002",
+      "S003"
+    ]
+  },
+  {
+    "id": "H02-01",
+    "lesson": "H02",
+    "kind": "架构",
+    "title": "源码导航地图",
+    "purpose": "围绕问题选包",
+    "structure": "apps/CLI 入口；packages 两层域；vendor；tests；实线导入与虚线查找",
+    "alt": "源码导航地图：apps/CLI 入口，packages 两层域，vendor，tests，实线导入与虚线查找",
+    "caption": "源码导航地图。围绕问题选包。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S004",
+      "S005",
+      "S006"
+    ]
+  },
+  {
+    "id": "H03-01",
+    "lesson": "H03",
+    "kind": "架构",
+    "title": "整体执行架构",
+    "purpose": "看清控制与持久事实两条线",
+    "structure": "Profile/Bundle 组合；AgentLoop；LLM；Tools；Session；通知与写入分开",
+    "alt": "整体执行架构：Profile/Bundle 组合，AgentLoop，LLM，Tools，Session，通知与写入分开",
+    "caption": "整体执行架构。看清控制与持久事实两条线。",
+    "status": "GENERATED_SAMPLE",
+    "sourceRefs": [
+      "S007",
+      "S008",
+      "S002",
+      "S009"
+    ]
+  },
+  {
+    "id": "H03-02",
+    "lesson": "H03",
+    "kind": "时序",
+    "title": "一次只读搜索",
+    "purpose": "串起一个请求",
+    "structure": "用户、loop、adapter、executor、Session；两次请求与一次工具结果",
+    "alt": "一次只读搜索：用户、loop、adapter、executor、Session，两次请求与一次工具结果",
+    "caption": "一次只读搜索。串起一个请求。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S007",
+      "S008",
+      "S002",
+      "S009"
+    ]
+  },
+  {
+    "id": "H04-01",
+    "lesson": "H04",
+    "kind": "流程",
+    "title": "启动与配置来源",
+    "purpose": "避免命令相同就误认为配置相同",
+    "structure": "CLI 参数；Harness home；Profile；构建产物；sdk-minimal 例外",
+    "alt": "启动与配置来源：CLI 参数，Harness home，Profile，构建产物，sdk-minimal 例外",
+    "caption": "启动与配置来源。避免命令相同就误认为配置相同。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S010",
+      "S011",
+      "S012",
+      "S013"
+    ]
+  },
+  {
+    "id": "H05-01",
+    "lesson": "H05",
+    "kind": "场景对照",
+    "title": "写死依赖与服务契约",
+    "purpose": "建立注入直觉",
+    "structure": "写死 new provider；接口消费；Context key；inject 等待；类比边界",
+    "alt": "写死依赖与服务契约：写死 new provider，接口消费，Context key，inject 等待，类比边界",
+    "caption": "写死依赖与服务契约。建立注入直觉。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S014",
+      "S015",
+      "S016"
+    ]
+  },
+  {
+    "id": "H05-02",
+    "lesson": "H05",
+    "kind": "架构",
+    "title": "Context 与 Service",
+    "purpose": "区分类型声明和运行时注册",
+    "structure": "Context proxy；Service key；消费者；服务未挂载时等待",
+    "alt": "Context 与 Service：Context proxy，Service key，消费者，服务未挂载时等待",
+    "caption": "Context 与 Service。区分类型声明和运行时注册。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S014",
+      "S015",
+      "S016"
+    ]
+  },
+  {
+    "id": "H06-01",
+    "lesson": "H06",
+    "kind": "时序",
+    "title": "Cordis 事件分发机制",
+    "purpose": "解释 next 的环绕与返回",
+    "structure": "A before→B before→fallback→B after→A after；不 next 短路",
+    "alt": "Cordis 事件分发机制：A before→B before→fallback→B after→A after，不 next 短路",
+    "caption": "Cordis 事件分发机制。解释 next 的环绕与返回。",
+    "status": "GENERATED_SAMPLE",
+    "sourceRefs": [
+      "S017",
+      "S018",
+      "S019",
+      "S020"
+    ]
+  },
+  {
+    "id": "H06-02",
+    "lesson": "H06",
+    "kind": "对比",
+    "title": "五种分发模式",
+    "purpose": "选择等待与短路语义",
+    "structure": "emit；parallel；serial；bail；waterfall；0 是 bail/false 不是",
+    "alt": "五种分发模式：emit，parallel，serial，bail，waterfall，0 是 bail/false 不是",
+    "caption": "五种分发模式。选择等待与短路语义。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S017",
+      "S018",
+      "S019",
+      "S020"
+    ]
+  },
+  {
+    "id": "H07-01",
+    "lesson": "H07",
+    "kind": "时序",
+    "title": "插件挂载与依赖撤走",
+    "purpose": "揭示生命周期",
+    "structure": "依赖就绪；apply；effect；撤依赖；等待工作；dispose",
+    "alt": "插件挂载与依赖撤走：依赖就绪，apply，effect，撤依赖，等待工作，dispose",
+    "caption": "插件挂载与依赖撤走。揭示生命周期。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S021",
+      "S022",
+      "S023",
+      "S007"
+    ]
+  },
+  {
+    "id": "H07-02",
+    "lesson": "H07",
+    "kind": "状态",
+    "title": "资源归属与释放台账",
+    "purpose": "防止监听器与进程泄漏",
+    "structure": "owner fiber；注册项；disposer；drain；scope；不假设全局逆序",
+    "alt": "资源归属与释放台账：owner fiber，注册项，disposer，drain，scope，不假设全局逆序",
+    "caption": "资源归属与释放台账。防止监听器与进程泄漏。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S021",
+      "S022",
+      "S023",
+      "S007"
+    ]
+  },
+  {
+    "id": "H08-01",
+    "lesson": "H08",
+    "kind": "层叠",
+    "title": "Bundle 与 Patch 优先级",
+    "purpose": "手算最后配置",
+    "structure": "空树；有序 bundle；profile；home；overlay；整 config 替换",
+    "alt": "Bundle 与 Patch 优先级：空树，有序 bundle，profile，home，overlay，整 config 替换",
+    "caption": "Bundle 与 Patch 优先级。手算最后配置。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S024",
+      "S025",
+      "S026",
+      "S013"
+    ]
+  },
+  {
+    "id": "H08-02",
+    "lesson": "H08",
+    "kind": "对比",
+    "title": "全局、agent scope 与 isolate",
+    "purpose": "区分三种边界",
+    "structure": "服务 realm；agent 可见性；插件所有权；边界不等价",
+    "alt": "全局、agent scope 与 isolate：服务 realm，agent 可见性，插件所有权，边界不等价",
+    "caption": "全局、agent scope 与 isolate。区分三种边界。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S024",
+      "S025",
+      "S026",
+      "S013"
+    ]
+  },
+  {
+    "id": "H09-01",
+    "lesson": "H09",
+    "kind": "状态",
+    "title": "Agent 发布事务",
+    "purpose": "解释半初始化回滚",
+    "structure": "prepare；Session announce；setup/commit；Agent announce；失败 unwind",
+    "alt": "Agent 发布事务：prepare，Session announce，setup/commit，Agent announce，失败 unwind",
+    "caption": "Agent 发布事务。解释半初始化回滚。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S027",
+      "S028",
+      "S007",
+      "S029"
+    ]
+  },
+  {
+    "id": "H09-02",
+    "lesson": "H09",
+    "kind": "所有权",
+    "title": "调用者与 Factory",
+    "purpose": "防止推错 owner",
+    "structure": "caller fiber；factory 注册；unpublished handle；存储句柄；所有权箭头",
+    "alt": "调用者与 Factory：caller fiber，factory 注册，unpublished handle，存储句柄，所有权箭头",
+    "caption": "调用者与 Factory。防止推错 owner。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S027",
+      "S028",
+      "S007",
+      "S029"
+    ]
+  },
+  {
+    "id": "H10-01",
+    "lesson": "H10",
+    "kind": "流程",
+    "title": "Agent Loop 的 Turn / Step",
+    "purpose": "推导零步与多步轮次",
+    "structure": "turn/start；claim/preStep；拒绝或空输入零步；step；工具续步；turn-stopping；turn/end",
+    "alt": "Agent Loop 的 Turn / Step：turn/start，claim/preStep，拒绝或空输入零步，step，工具续步，turn-stopping，turn/end",
+    "caption": "Agent Loop 的 Turn / Step。推导零步与多步轮次。",
+    "status": "GENERATED_SAMPLE",
+    "sourceRefs": [
+      "S030",
+      "S031",
+      "S008",
+      "S002"
+    ]
+  },
+  {
+    "id": "H10-02",
+    "lesson": "H10",
+    "kind": "对比",
+    "title": "三种 Inbox 输入",
+    "purpose": "区分排队和唤醒",
+    "structure": "followup/steer/inject；next-turn/next-step；wakeup；context 等待唤醒",
+    "alt": "三种 Inbox 输入：followup/steer/inject，next-turn/next-step，wakeup，context 等待唤醒",
+    "caption": "三种 Inbox 输入。区分排队和唤醒。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S030",
+      "S031",
+      "S008",
+      "S002"
+    ]
+  },
+  {
+    "id": "H11-01",
+    "lesson": "H11",
+    "kind": "流程",
+    "title": "模型请求的准入与冻结",
+    "purpose": "明确真实输入版本",
+    "structure": "selection snapshot；resolve/assemble；prepareCall；提交消息；header/context；freeze",
+    "alt": "模型请求的准入与冻结：selection snapshot，resolve/assemble，prepareCall，提交消息，header/context，freeze",
+    "caption": "模型请求的准入与冻结。明确真实输入版本。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S032",
+      "S033",
+      "S034",
+      "S035"
+    ]
+  },
+  {
+    "id": "H11-02",
+    "lesson": "H11",
+    "kind": "双轨",
+    "title": "Prompt 与 Runtime Context",
+    "purpose": "区分刷新与重组",
+    "structure": "system/message；runtime-context user/message；重试保持 assembly；刷新事实；新 series",
+    "alt": "Prompt 与 Runtime Context：system/message，runtime-context user/message，重试保持 assembly，刷新事实，新 series",
+    "caption": "Prompt 与 Runtime Context。区分刷新与重组。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S032",
+      "S033",
+      "S034",
+      "S035"
+    ]
+  },
+  {
+    "id": "H12-01",
+    "lesson": "H12",
+    "kind": "适配",
+    "title": "统一流与 Provider 协议",
+    "purpose": "展示边界翻译",
+    "structure": "GenerateOptions；adapter；SSE；StreamChunk；assembler",
+    "alt": "统一流与 Provider 协议：GenerateOptions，adapter，SSE，StreamChunk，assembler",
+    "caption": "统一流与 Provider 协议。展示边界翻译。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S036",
+      "S037",
+      "S038",
+      "S039",
+      "S040"
+    ]
+  },
+  {
+    "id": "H12-02",
+    "lesson": "H12",
+    "kind": "状态",
+    "title": "流式 Attempt 结算",
+    "purpose": "避免把 chunk 当持久事实",
+    "structure": "start/chunk/end；assistant/message；assistant/attempt；硬退出前未结算",
+    "alt": "流式 Attempt 结算：start/chunk/end，assistant/message，assistant/attempt，硬退出前未结算",
+    "caption": "流式 Attempt 结算。避免把 chunk 当持久事实。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S036",
+      "S037",
+      "S038",
+      "S039",
+      "S040"
+    ]
+  },
+  {
+    "id": "H13-01",
+    "lesson": "H13",
+    "kind": "集合",
+    "title": "作用域工具可见性",
+    "purpose": "手算 shadow/restrict",
+    "structure": "全局、祖先、自有注册；限制交集；保留 run_code",
+    "alt": "作用域工具可见性：全局、祖先、自有注册，限制交集，保留 run_code",
+    "caption": "作用域工具可见性。手算 shadow/restrict。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S041",
+      "S042",
+      "S043",
+      "S044",
+      "S045"
+    ]
+  },
+  {
+    "id": "H13-02",
+    "lesson": "H13",
+    "kind": "契约",
+    "title": "Schema 到执行的固定集合",
+    "purpose": "防止描述与执行错配",
+    "structure": "resolve；ResolvedToolSet；describe；prompt；executable；output schema",
+    "alt": "Schema 到执行的固定集合：resolve，ResolvedToolSet，describe，prompt，executable，output schema",
+    "caption": "Schema 到执行的固定集合。防止描述与执行错配。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S041",
+      "S042",
+      "S043",
+      "S044",
+      "S045"
+    ]
+  },
+  {
+    "id": "H14-01",
+    "lesson": "H14",
+    "kind": "流程",
+    "title": "工具执行全流水线",
+    "purpose": "拆开准备执行结算",
+    "structure": "tool/call；pre；ask；guard；around/body；project；post；finalize；tools/result；tool/result",
+    "alt": "工具执行全流水线：tool/call，pre，ask，guard，around/body，project，post，finalize，tools/result，tool/result",
+    "caption": "工具执行全流水线。拆开准备执行结算。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S046",
+      "S047",
+      "S003",
+      "S048",
+      "S049"
+    ]
+  },
+  {
+    "id": "H14-02",
+    "lesson": "H14",
+    "kind": "时序",
+    "title": "正常、拒绝与结果改写",
+    "purpose": "辨认副作用发生时点",
+    "structure": "body 是否运行；post block；observer throw 容纳；权威结果",
+    "alt": "正常、拒绝与结果改写：body 是否运行，post block，observer throw 容纳，权威结果",
+    "caption": "正常、拒绝与结果改写。辨认副作用发生时点。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S046",
+      "S047",
+      "S003",
+      "S048",
+      "S049"
+    ]
+  },
+  {
+    "id": "H15-01",
+    "lesson": "H15",
+    "kind": "决策",
+    "title": "审批与单调守卫",
+    "purpose": "说明允许后仍会拒绝",
+    "structure": "ask；无渠道拒绝；allowed-once；guard deny；body=0",
+    "alt": "审批与单调守卫：ask，无渠道拒绝，allowed-once，guard deny，body=0",
+    "caption": "审批与单调守卫。说明允许后仍会拒绝。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S050",
+      "S051",
+      "S052",
+      "S053",
+      "S054"
+    ]
+  },
+  {
+    "id": "H15-02",
+    "lesson": "H15",
+    "kind": "边界",
+    "title": "沙箱模式与实际强制执行",
+    "purpose": "避免生产安全过度承诺",
+    "structure": "三模式；confine/bypass；full/partial；网络不在定义范围；未审计",
+    "alt": "沙箱模式与实际强制执行：三模式，confine/bypass，full/partial，网络不在定义范围，未审计",
+    "caption": "沙箱模式与实际强制执行。避免生产安全过度承诺。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S050",
+      "S051",
+      "S052",
+      "S053",
+      "S054"
+    ]
+  },
+  {
+    "id": "H16-01",
+    "lesson": "H16",
+    "kind": "矩阵",
+    "title": "四类能力三角色",
+    "purpose": "定位真实消费者",
+    "structure": "fs/shell/web/MCP；definition/provider/consumer；同一 pipeline",
+    "alt": "四类能力三角色：fs/shell/web/MCP，definition/provider/consumer，同一 pipeline",
+    "caption": "四类能力三角色。定位真实消费者。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S055",
+      "S056",
+      "S057",
+      "S058",
+      "S059"
+    ]
+  },
+  {
+    "id": "H16-02",
+    "lesson": "H16",
+    "kind": "时序",
+    "title": "MCP 工具接线",
+    "purpose": "区分发现与授权",
+    "structure": "serverName；list；本地注册；call；SDK；结果投影；不可信数据",
+    "alt": "MCP 工具接线：serverName，list，本地注册，call，SDK，结果投影，不可信数据",
+    "caption": "MCP 工具接线。区分发现与授权。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S055",
+      "S056",
+      "S057",
+      "S058",
+      "S059"
+    ]
+  },
+  {
+    "id": "H17-01",
+    "lesson": "H17",
+    "kind": "双轨",
+    "title": "日志与模型可见 Surface",
+    "purpose": "解释事件溯源",
+    "structure": "seq 事实日志；surface append/replace；deriveMessages；非消息事件",
+    "alt": "日志与模型可见 Surface：seq 事实日志，surface append/replace，deriveMessages，非消息事件",
+    "caption": "日志与模型可见 Surface。解释事件溯源。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S060",
+      "S061",
+      "S062",
+      "S009",
+      "S063"
+    ]
+  },
+  {
+    "id": "H17-02",
+    "lesson": "H17",
+    "kind": "架构",
+    "title": "Session Projection 注册与读取",
+    "purpose": "区分两类投影",
+    "structure": "纯 fold；registry handle；snapshot；message projection；不改原事件",
+    "alt": "Session Projection 注册与读取：纯 fold，registry handle，snapshot，message projection，不改原事件",
+    "caption": "Session Projection 注册与读取。区分两类投影。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S060",
+      "S061",
+      "S062",
+      "S009",
+      "S063"
+    ]
+  },
+  {
+    "id": "H18-01",
+    "lesson": "H18",
+    "kind": "对比",
+    "title": "Replay、Resume 与 Fork",
+    "purpose": "避免重放副作用",
+    "structure": "重建视图；获取写句柄继续；复制固定前缀新身份",
+    "alt": "Replay、Resume 与 Fork：重建视图，获取写句柄继续，复制固定前缀新身份",
+    "caption": "Replay、Resume 与 Fork。避免重放副作用。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S064",
+      "S065",
+      "S066",
+      "S067",
+      "S068"
+    ]
+  },
+  {
+    "id": "H18-02",
+    "lesson": "H18",
+    "kind": "时序",
+    "title": "写租约与中断尾修复",
+    "purpose": "明确恢复边界",
+    "structure": "open(write)；lease conflict；未知工具结果；step/end；turn/end；generation",
+    "alt": "写租约与中断尾修复：open(write)，lease conflict，未知工具结果，step/end，turn/end，generation",
+    "caption": "写租约与中断尾修复。明确恢复边界。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S064",
+      "S065",
+      "S066",
+      "S067",
+      "S068"
+    ]
+  },
+  {
+    "id": "H19-01",
+    "lesson": "H19",
+    "kind": "对比",
+    "title": "截断、剪枝与摘要压缩",
+    "purpose": "比较保留信息与成本",
+    "structure": "完整日志；tool pairing；prune；image offload；summary replace",
+    "alt": "截断、剪枝与摘要压缩：完整日志，tool pairing，prune，image offload，summary replace",
+    "caption": "截断、剪枝与摘要压缩。比较保留信息与成本。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S069",
+      "S070",
+      "S071",
+      "S072",
+      "S073"
+    ]
+  },
+  {
+    "id": "H19-02",
+    "lesson": "H19",
+    "kind": "双轨",
+    "title": "Compaction 的位置跨度",
+    "purpose": "理解 seq 非数值区间",
+    "structure": "start/end position；shadowedSeqs；高 seq 摘要落旧位置；记账与替换分开",
+    "alt": "Compaction 的位置跨度：start/end position，shadowedSeqs，高 seq 摘要落旧位置，记账与替换分开",
+    "caption": "Compaction 的位置跨度。理解 seq 非数值区间。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S069",
+      "S070",
+      "S071",
+      "S072",
+      "S073"
+    ]
+  },
+  {
+    "id": "H20-01",
+    "lesson": "H20",
+    "kind": "故障树",
+    "title": "四阶段取消与恢复",
+    "purpose": "定位可撤销边界",
+    "structure": "准备前；stream 中；body 前；body 后；drain；unknown",
+    "alt": "四阶段取消与恢复：准备前，stream 中，body 前，body 后，drain，unknown",
+    "caption": "四阶段取消与恢复。定位可撤销边界。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S074",
+      "S075",
+      "S076",
+      "S077",
+      "S066"
+    ]
+  },
+  {
+    "id": "H20-02",
+    "lesson": "H20",
+    "kind": "时序",
+    "title": "同 Step 的模型重试",
+    "purpose": "避免重复用户消息",
+    "structure": "attempt 失败；request-error；retry；不再 preStep/assemble；新 prepared call",
+    "alt": "同 Step 的模型重试：attempt 失败，request-error，retry，不再 preStep/assemble，新 prepared call",
+    "caption": "同 Step 的模型重试。避免重复用户消息。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S074",
+      "S075",
+      "S076",
+      "S077",
+      "S066"
+    ]
+  },
+  {
+    "id": "H21-01",
+    "lesson": "H21",
+    "kind": "所有权",
+    "title": "父子 Activation 树",
+    "purpose": "定位取消传播",
+    "structure": "parent；local/external；delivery parent/caller；depth；dispose descendants",
+    "alt": "父子 Activation 树：parent，local/external，delivery parent/caller，depth，dispose descendants",
+    "caption": "父子 Activation 树。定位取消传播。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S078",
+      "S079",
+      "S080",
+      "S081"
+    ]
+  },
+  {
+    "id": "H21-02",
+    "lesson": "H21",
+    "kind": "对比",
+    "title": "Spawn 与 Fork",
+    "purpose": "避免默认继承误解",
+    "structure": "fresh context；seed prefix；历史 descriptor unknown；继续能力",
+    "alt": "Spawn 与 Fork：fresh context，seed prefix，历史 descriptor unknown，继续能力",
+    "caption": "Spawn 与 Fork。避免默认继承误解。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S078",
+      "S079",
+      "S080",
+      "S081"
+    ]
+  },
+  {
+    "id": "H22-01",
+    "lesson": "H22",
+    "kind": "矩阵",
+    "title": "四种任务抽象",
+    "purpose": "防止把一切叫队列",
+    "structure": "Workflow/Job/Goal/Schedule；触发、持有、结果、恢复",
+    "alt": "四种任务抽象：Workflow/Job/Goal/Schedule，触发、持有、结果、恢复",
+    "caption": "四种任务抽象。防止把一切叫队列。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S082",
+      "S083",
+      "S084",
+      "S085",
+      "S086"
+    ]
+  },
+  {
+    "id": "H22-02",
+    "lesson": "H22",
+    "kind": "时序",
+    "title": "编排与续跑的组合",
+    "purpose": "看清非线性关系",
+    "structure": "PTC→subagent；Job 可晚于 turn；Goal round；Schedule delivery；phases 非 DAG",
+    "alt": "编排与续跑的组合：PTC→subagent，Job 可晚于 turn，Goal round，Schedule delivery，phases 非 DAG",
+    "caption": "编排与续跑的组合。看清非线性关系。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S082",
+      "S083",
+      "S084",
+      "S085",
+      "S086"
+    ]
+  },
+  {
+    "id": "H23-01",
+    "lesson": "H23",
+    "kind": "架构",
+    "title": "CLI、Web 与 SDK 载体",
+    "purpose": "识别共享能力和不同协议",
+    "structure": "统一 profile；controller；JSON-RPC；SessionProjection；live follow",
+    "alt": "CLI、Web 与 SDK 载体：统一 profile，controller，JSON-RPC，SessionProjection，live follow",
+    "caption": "CLI、Web 与 SDK 载体。识别共享能力和不同协议。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S011",
+      "S087",
+      "S088",
+      "S089",
+      "S090"
+    ]
+  },
+  {
+    "id": "H23-02",
+    "lesson": "H23",
+    "kind": "时序",
+    "title": "断连重连与状态重建",
+    "purpose": "区分 snapshot 和增量",
+    "structure": "subscription；revision；断连；snapshot；旧帧过滤；durable settlement",
+    "alt": "断连重连与状态重建：subscription，revision，断连，snapshot，旧帧过滤，durable settlement",
+    "caption": "断连重连与状态重建。区分 snapshot 和增量。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S011",
+      "S087",
+      "S088",
+      "S089",
+      "S090"
+    ]
+  },
+  {
+    "id": "H24-01",
+    "lesson": "H24",
+    "kind": "测试图谱",
+    "title": "证据层级与门禁",
+    "purpose": "避免覆盖率迷信",
+    "structure": "unit/contract/property/replay/API/GUI/bench；skip 非 pass",
+    "alt": "证据层级与门禁：unit/contract/property/replay/API/GUI/bench，skip 非 pass",
+    "caption": "证据层级与门禁。避免覆盖率迷信。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S091",
+      "S092",
+      "S093",
+      "S094",
+      "S095"
+    ]
+  },
+  {
+    "id": "H24-02",
+    "lesson": "H24",
+    "kind": "矩阵",
+    "title": "核心架构风险审查",
+    "purpose": "完成跨模块综合判断",
+    "structure": "准入、所有权、持久、取消、未知副作用；事实与设计思考",
+    "alt": "核心架构风险审查：准入、所有权、持久、取消、未知副作用，事实与设计思考",
+    "caption": "核心架构风险审查。完成跨模块综合判断。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S091",
+      "S092",
+      "S093",
+      "S094",
+      "S095"
+    ]
+  },
+  {
+    "id": "H25-01",
+    "lesson": "H25",
+    "kind": "生命周期",
+    "title": "一个插件的验收闭环",
+    "purpose": "使实践可复验",
+    "structure": "inject；register；execute/output；重复名拒绝；dispose 后不可见",
+    "alt": "一个插件的验收闭环：inject，register，execute/output，重复名拒绝，dispose 后不可见",
+    "caption": "一个插件的验收闭环。使实践可复验。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S096",
+      "S045",
+      "S041",
+      "S023"
+    ]
+  },
+  {
+    "id": "H26-01",
+    "lesson": "H26",
+    "kind": "矩阵",
+    "title": "Provider 能力与默认值",
+    "purpose": "避免 API 表面兼容误判",
+    "structure": "route；model；modalities；tool/system update；defaults；replay owner",
+    "alt": "Provider 能力与默认值：route，model，modalities，tool/system update，defaults，replay owner",
+    "caption": "Provider 能力与默认值。避免 API 表面兼容误判。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S037",
+      "S038",
+      "S097",
+      "S098"
+    ]
+  },
+  {
+    "id": "H26-02",
+    "lesson": "H26",
+    "kind": "时序",
+    "title": "Prepared Call 的一次性绑定",
+    "purpose": "保护真实请求封装",
+    "structure": "prepare；freeze config；single dispatch；第二次/变 config 拒绝",
+    "alt": "Prepared Call 的一次性绑定：prepare，freeze config，single dispatch，第二次/变 config 拒绝",
+    "caption": "Prepared Call 的一次性绑定。保护真实请求封装。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S037",
+      "S038",
+      "S097",
+      "S098"
+    ]
+  },
+  {
+    "id": "H27-01",
+    "lesson": "H27",
+    "kind": "时序",
+    "title": "MCP Generation 与重连",
+    "purpose": "阻止迟到旧连接发布",
+    "structure": "A old；B current；成功发现后替换；失败保留上一代；dispose",
+    "alt": "MCP Generation 与重连：A old，B current，成功发现后替换，失败保留上一代，dispose",
+    "caption": "MCP Generation 与重连。阻止迟到旧连接发布。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S058",
+      "S099",
+      "S059",
+      "S100"
+    ]
+  },
+  {
+    "id": "H27-02",
+    "lesson": "H27",
+    "kind": "架构",
+    "title": "资源、工具与服务器指令",
+    "purpose": "区分三条接入路径",
+    "structure": "shared resources provider；scoped tools；literal instructions；owner cleanup",
+    "alt": "资源、工具与服务器指令：shared resources provider，scoped tools，literal instructions，owner cleanup",
+    "caption": "资源、工具与服务器指令。区分三条接入路径。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S058",
+      "S099",
+      "S059",
+      "S100"
+    ]
+  },
+  {
+    "id": "H28-01",
+    "lesson": "H28",
+    "kind": "边界",
+    "title": "启动、附加与共享桌面",
+    "purpose": "明确资源所有权差异",
+    "structure": "launched 关闭；attached 断开；桌面不预留；不恢复登录态",
+    "alt": "启动、附加与共享桌面：launched 关闭，attached 断开，桌面不预留，不恢复登录态",
+    "caption": "启动、附加与共享桌面。明确资源所有权差异。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S101",
+      "S102",
+      "S103",
+      "S104"
+    ]
+  },
+  {
+    "id": "H28-02",
+    "lesson": "H28",
+    "kind": "流程",
+    "title": "观察、操作、验证",
+    "purpose": "解释取消不能撤回输入",
+    "structure": "fixture observation；grant；action；late cancellation；verify；禁止虚构真实截图",
+    "alt": "观察、操作、验证：fixture observation，grant，action，late cancellation，verify，禁止虚构真实截图",
+    "caption": "观察、操作、验证。解释取消不能撤回输入。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S101",
+      "S102",
+      "S103",
+      "S104"
+    ]
+  },
+  {
+    "id": "H29-01",
+    "lesson": "H29",
+    "kind": "时序",
+    "title": "延迟归因与缺失用量",
+    "purpose": "避免把未观测记为零",
+    "structure": "模型、工具、审批等待、flush；provider usage/估算/缺失",
+    "alt": "延迟归因与缺失用量：模型、工具、审批等待、flush，provider usage/估算/缺失",
+    "caption": "延迟归因与缺失用量。避免把未观测记为零。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S105",
+      "S106",
+      "S107",
+      "S108",
+      "S095"
+    ]
+  },
+  {
+    "id": "H29-02",
+    "lesson": "H29",
+    "kind": "指标",
+    "title": "评估与安全硬门槛",
+    "purpose": "避免平均掩盖失败",
+    "structure": "质量指标；拒绝/越权/重复写/取消；脱敏规则默认不自带",
+    "alt": "评估与安全硬门槛：质量指标，拒绝/越权/重复写/取消，脱敏规则默认不自带",
+    "caption": "评估与安全硬门槛。避免平均掩盖失败。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S105",
+      "S106",
+      "S107",
+      "S108",
+      "S095"
+    ]
+  },
+  {
+    "id": "H30-01",
+    "lesson": "H30",
+    "kind": "依赖图",
+    "title": "Host / Client 构建图",
+    "purpose": "解释类型冲突与生成阶段",
+    "structure": "two programs；Typert；references；host bundle；client bundle；gates",
+    "alt": "Host / Client 构建图：two programs，Typert，references，host bundle，client bundle，gates",
+    "caption": "Host / Client 构建图。解释类型冲突与生成阶段。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S109",
+      "S110",
+      "S111",
+      "S094",
+      "S112"
+    ]
+  },
+  {
+    "id": "H30-02",
+    "lesson": "H30",
+    "kind": "流程",
+    "title": "课程版本更新与证据失效",
+    "purpose": "把维护变成可执行流程",
+    "structure": "旧 commit→diff→受影响 H/图/实验→重核行号→复验→独立版本；不自动升级",
+    "alt": "课程版本更新与证据失效：旧 commit→diff→受影响 H/图/实验→重核行号→复验→独立版本，不自动升级",
+    "caption": "课程版本更新与证据失效。把维护变成可执行流程。",
+    "status": "PLANNED",
+    "sourceRefs": [
+      "S109",
+      "S110",
+      "S111",
+      "S094",
+      "S112"
+    ]
+  }
+]

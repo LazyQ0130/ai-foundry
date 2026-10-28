@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1160" viewBox="0 0 640 1160" role="img" aria-labelledby="title desc">
+<title id="title">DeepSeek Harness 执行架构</title><desc id="desc">Profile 和 Bundle 组装插件树；AgentLoop 通过 Inbox 驱动 Turn 与 Step，并调用 LLM、工具和 Session。能力连线不表示固定执行顺序。</desc>
+<defs><marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#187A91" stroke-width="2"/></marker><marker id="back" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M11 1 L2 6 L11 11" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs>
+<rect width="640" height="1160" fill="#F3F9F8" rx="24"/>
+<g font-family="Microsoft YaHei,Arial,sans-serif">
+<text x="320" y="64" text-anchor="middle" font-size="34" font-weight="700" fill="#15394B">DeepSeek Harness 执行架构</text>
+<text x="320" y="110" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">AI Foundry · 源码基线 f3803c9</text>
+<rect x="48" y="148" width="544" height="112" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="192" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">Profile / Bundle / Patch</text>
+<text x="320" y="234" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">在启动时组合插件树</text>
+<path d="M320 264 V326" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)"/>
+<text x="440" y="304" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">组装</text>
+<rect x="48" y="332" width="544" height="140" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="320" y="379" text-anchor="middle" font-size="34" font-weight="700" fill="#15394B">AgentLoop + Inbox</text>
+<text x="320" y="428" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">Turn / Step · 请求与工具阶段</text>
+<path d="M48 402 H28 V986" fill="none" stroke="#187A91" stroke-width="3"/>
+<rect x="80" y="548" width="512" height="118" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="336" y="592" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">LLM 适配器</text>
+<text x="336" y="636" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">prepareCall / stream</text>
+<path d="M30 606 H76" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)" marker-start="url(#back)"/>
+<rect x="80" y="724" width="512" height="118" rx="18" fill="#D9F4E9" stroke="#187A91" stroke-width="2"/>
+<text x="336" y="768" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">工具系统</text>
+<text x="336" y="812" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">Registry → Executor → Pipeline</text>
+<path d="M30 782 H76" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)" marker-start="url(#back)"/>
+<rect x="80" y="900" width="512" height="118" rx="18" fill="#DDEDF5" stroke="#187A91" stroke-width="2"/>
+<text x="336" y="944" text-anchor="middle" font-size="32" font-weight="700" fill="#15394B">Session</text>
+<text x="336" y="988" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">事件日志 → Surface → 模型历史</text>
+<path d="M30 958 H76" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#arr)" marker-start="url(#back)"/>
+<text x="320" y="1070" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">连线：能力调用 / 数据往返，非步骤顺序</text>
+<text x="320" y="1116" text-anchor="middle" font-size="28" font-weight="400" fill="#15394B">此图省略作用域、提示词与具体策略插件</text>
+</g>
+</svg>

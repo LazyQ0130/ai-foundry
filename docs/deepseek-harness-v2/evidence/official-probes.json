@@ -1,0 +1,59 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "kind": "actual-source-library-probes",
+  "scope": "Cordis, detached Session and native in-memory tools pipeline; not upstream Vitest suite, full AgentLoop, native sandbox or real Provider",
+  "checks": [
+    {
+      "name": "actual waterfall wraps returned Promise",
+      "status": "PASS",
+      "observed": {
+        "trace": [
+          "A before",
+          "B before",
+          "body",
+          "B after",
+          "A after"
+        ],
+        "result": "[ok!]"
+      }
+    },
+    {
+      "name": "no next short-circuits fallback",
+      "status": "PASS",
+      "observed": {
+        "denied": "denied",
+        "bodyCalls": 0
+      }
+    },
+    {
+      "name": "serial false continues and zero bails",
+      "status": "PASS",
+      "observed": [
+        "false",
+        "zero"
+      ]
+    },
+    {
+      "name": "plugin disposal removes owned listener",
+      "status": "PASS",
+      "observed": {
+        "hits": 1
+      }
+    },
+    {
+      "name": "actual Session derives messages and excludes attempt; outer array detached",
+      "status": "PASS",
+      "observed": {
+        "messageCount": 1
+      }
+    },
+    {
+      "name": "actual native pipeline: successful body, monotonic denial, frozen result, missing approval denies",
+      "status": "PASS",
+      "observed": {
+        "bodies": 1,
+        "deniedError": true
+      }
+    }
+  ]
+}

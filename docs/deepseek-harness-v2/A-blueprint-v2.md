@@ -1,0 +1,3277 @@
+# 《深入 DeepSeek Harness：从 Agent 原理到复杂智能体架构》研发蓝图 V2.0
+
+作者基线：2026-10-28；源码 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；文档状态：内部研发设计，非正式 30 讲正文。
+
+## 定位与学习成果
+
+课程以真实源码的问题驱动阅读为主。学员完成后应能用证据解释一次请求如何组装、执行、受策略约束并恢复；能够定位扩展点、追踪资源所有权、辨别日志与投影，并对未经验证的结论保留边界。阅读不追求全仓覆盖，也不以重新翻译官方文档或复刻完整 Agent 产品作为成果。
+
+核心 H01–H24 构成六个四讲模块，拓展 H25–H30 分支深化。先宏观追踪，再建立插件语言，然后逐段进入引擎、工具、日志、协作与工程门禁。H03 是导航级主线，H10/H11/H12 才分别细读循环、请求与流；H16 是能力地图，H27 才细读 MCP；H24 建证据方法，H29 才做观测归因，避免重复。
+
+入学不以购买 Stage 1–4 为条件。可通过免费随文基础回顾及本目录 Mock 实验补足必需知识；原课链接仅供已有权限者选学，不复制受保护大段正文。TypeScript 的 import/export、联合类型、泛型、async/await、AsyncIterable、try/finally 为额外阅读门槛，H02/H05/H12 提供 10–20 分钟可选补课卡。
+
+## 先修图谱与学习路线
+
+```mermaid
+flowchart TD
+  S1[需求、复现、diff 与版本] --> H2[H01-H04 全貌与入口]
+  S2[HTTP、校验、持久化与身份] --> H5[H05-H08 插件与组合]
+  H2 --> H5 --> H9[H09-H12 核心引擎]
+  S3[Provider、流、Context 与评估] --> H9
+  H9 --> H13[H13-H16 工具与边界]
+  S4[受限 Loop、审批、MCP、Run/Step] --> H13
+  H13 --> H17[H17-H20 日志与可靠性]
+  H17 --> H21[H21-H24 协作与综合证据]
+  H21 --> H25[H25 插件]
+  H21 --> H26[H26 Provider]
+  H21 --> H27[H27 MCP]
+  H27 --> H28[H28 浏览器/桌面]
+  H21 --> H29[H29 可观测性]
+  H21 --> H30[H30 Monorepo/CI]
+```
+
+每个模块以一项零 API 费用的小实验验收。按逐讲区间加总，核心约 37.5–51.3 小时，拓展约 11.3–15.5 小时；这是含阅读和实验的估算，非课时承诺。H10/H11/H14/H15/H18/H19/H20 建议分两次，H22 分三段，不以压缩安全或异常分支来凑课时。
+
+## 30 讲目录
+
+| 编号 | 模块 | 课题 | 预计时长 |
+| --- | --- | --- | --- |
+
+| [H01](#h01) | Harness 整体认知 | 为什么有了大模型，还需要 Harness？ | 55–75 分钟 |
+
+| [H02](#h02) | Harness 整体认知 | 从零读懂 DeepSeek Harness 仓库结构 | 60–80 分钟 |
+
+| [H03](#h03) | Harness 整体认知 | 一个 Agent 请求的完整执行流程 | 75–100 分钟 |
+
+| [H04](#h04) | Harness 整体认知 | Profile、运行入口与环境配置 | 60–85 分钟 |
+
+| [H05](#h05) | Cordis 与插件架构 | 一切皆插件——Cordis 设计思想 | 70–95 分钟 |
+
+| [H06](#h06) | Cordis 与插件架构 | 事件系统与插件间通信机制 | 80–110 分钟 |
+
+| [H07](#h07) | Cordis 与插件架构 | 插件生命周期、服务依赖与资源回收 | 80–110 分钟 |
+
+| [H08](#h08) | Cordis 与插件架构 | Profile、Bundle、Patch 与动态能力组合 | 85–115 分钟 |
+
+| [H09](#h09) | Agent 核心运行引擎 | Agent 实例创建、注册和所有权 | 90–120 分钟 |
+
+| [H10](#h10) | Agent 核心运行引擎 | 深入 Agent Loop——Turn、Step 与执行循环 | 100–140 分钟（建议两段） |
+
+| [H11](#h11) | Agent 核心运行引擎 | 系统提示词、上下文与模型请求组装 | 100–140 分钟（含可选深读） |
+
+| [H12](#h12) | Agent 核心运行引擎 | LLM 适配器、消息结构与流式响应 | 95–125 分钟 |
+
+| [H13](#h13) | 工具执行与安全机制 | Tool Registry、Schema 与工具可见性 | 90–125 分钟 |
+
+| [H14](#h14) | 工具执行与安全机制 | 工具执行流水线与 Hook 机制 | 110–150 分钟（建议拆两段） |
+
+| [H15](#h15) | 工具执行与安全机制 | 审批、权限、守卫与沙箱 | 110–150 分钟 |
+
+| [H16](#h16) | 工具执行与安全机制 | 文件、Shell、Web 与 MCP 能力接入 | 100–135 分钟 |
+
+| [H17](#h17) | Session 与运行可靠性 | Session、事件日志与事件溯源 | 100–140 分钟 |
+
+| [H18](#h18) | Session 与运行可靠性 | 会话恢复、历史回放与 Fork | 110–150 分钟 |
+
+| [H19](#h19) | Session 与运行可靠性 | 上下文管理、Compaction 与 Token 优化 | 110–150 分钟 |
+
+| [H20](#h20) | Session 与运行可靠性 | 取消、重试、异常处理与故障恢复 | 110–150 分钟 |
+
+| [H21](#h21) | 复杂智能体系统 | Subagent、任务委派与多智能体协作 | 110–150 分钟 |
+
+| [H22](#h22) | 复杂智能体系统 | Workflow、Jobs、Goal 与任务调度 | 130–180 分钟（建议三段） |
+
+| [H23](#h23) | 复杂智能体系统 | CLI、Web UI、SDK 与远程通信 | 100–140 分钟 |
+
+| [H24](#h24) | 复杂智能体系统 | 大型 Agent 系统测试与综合架构分析 | 120–165 分钟 |
+
+| [H25](#h25) | 高级拓展 | 自己编写一个 Cordis 插件 | 100–140 分钟 |
+
+| [H26](#h26) | 高级拓展 | 多模型适配与 Provider 工程 | 120–160 分钟 |
+
+| [H27](#h27) | 高级拓展 | MCP 深度集成与自定义能力 | 120–165 分钟 |
+
+| [H28](#h28) | 高级拓展 | Browser Use、Computer Use 与执行边界 | 110–150 分钟 |
+
+| [H29](#h29) | 高级拓展 | Agent 可观测性、评估和性能分析 | 110–150 分钟 |
+
+| [H30](#h30) | 高级拓展 | 大型 TypeScript Monorepo、类型系统与 CI 工程 | 120–165 分钟 |
+
+
+## 逐讲设计的阅读约定
+
+以下每讲 20 个字段均为研发规格。源码入口是固定 Commit 的真实链接，引用编号可在 B 报告及 source-index.json 中查回；链接行区间是阅读锚点，函数较长时继续读到函数结尾。具体调用链只描述选定主线，不宣称所有组合都必经同一实现。字段 11 同时包含数据结构、分段精读与设计取舍。字段 15 的答案是思考题要点，实践完整参考方案另见 G。
+
+验证层级：`STATIC_VERIFIED` 是文件、符号、相关逻辑及测试位置的静态核对；实际执行证据只认 evidence 中的记录。禁止把“定位了测试”写成“官方测试通过”。
+
+
+## H01
+
+### 1. 课程编号
+
+H01（核心）。
+
+### 2. 课程名称
+
+为什么有了大模型，还需要 Harness？
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+能说明一次模型 API 请求的输入与输出。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 5 分钟：复述一次服务端模型调用：输入、输出、Key 在哪层；再回顾谁检查工具提议。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：从一次 API/受限循环增加运行环境职责。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+模型提出“搜索资料并保存结论”，谁来执行、记住进度并阻止未获准的动作？
+
+### 7. 本节唯一核心目标
+
+用可追踪证据划分模型决策与运行环境执行的职责。
+
+### 8. 重点技术概念
+
+LLM、Agent、Harness、能力 seam。
+
+### 9. 需要额外解释的难懂术语
+
+Harness、Runtime、Capability Seam。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+研究助理能提议查档案，工作台还须提供工具、日志与审批；提议不是执行授权。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S113 · README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/README.zh.md#L1-L10)、[S114 · SAFETY.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L1-L10)、[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)。
+
+1. [S001 · packages/core/agent/src/index.ts:175](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/index.ts#L175-L202) — `export interface AgentFactory`；先看创建/恢复的公开契约，认识宿主责任。
+2. [S002 · packages/core/agent-loop/src/agent.ts:435](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；再看模型结果如何进入工具执行。
+3. [S003 · packages/core/tools/src/pipeline.ts:190](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L190-L217) — `async prepare(`；最后看动作如何在执行前被拒绝。
+
+**重要数据结构：**AgentFactory、StreamChunk、PreToolDecision；不把三者画成三个独立进程。
+
+**关键代码分段讲法：**用无工具回答和带 tool-call 回答并排追踪：前者可完成，后者仍需宿主分派。
+
+**实际调用链：**ReactLoopAgent.step → preparedCall.stream/llm.stream → tools.execute → ToolExecutionPipeline.prepare；图中 Harness 是职责集合。
+
+**设计取舍：**官方实现：loop 也是插件。设计思考：可替换性增加组合验证成本，不能据此断言比所有框架更好。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→3 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H01-01 关系对比《LLM、Agent 与 Harness》：区分提议、循环执行与工作台能力。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L01：将“产生调用、执行调用、记录结果、批准写入”四项分给模型与 Runtime；运行 lab M1 核对两条轨迹。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h01)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+为什么在系统提示词里写“不要越权”不能代替工具策略？
+
+参考答案：提示词影响模型提议；执行器必须对不可信提议独立检查，工具返回内容也不是新授权。
+
+### 16. 关键风险及常见误解
+
+开发者预览未安全审计；三层关系是教学抽象，不能把 Harness 等同沙箱。
+
+### 17. 验收方式
+
+交一张职责图及一次被拒绝调用的轨迹，指出模型与执行器各自的证据位置。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S116 · packages/core/agent-loop/tests/tool-calls.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-calls.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+55–75 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+由 Stage 4 最小循环进入仓库地图；H02 找到各职责所在包。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H02
+
+### 1. 课程编号
+
+H02（核心）。
+
+### 2. 课程名称
+
+从零读懂 DeepSeek Harness 仓库结构
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H01；能识别 import/export 与 package.json。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)。基础回顾约 5 分钟：拿一份三文件 diff 找入口、实现和测试，回忆包名与路径查找；不要求重新部署。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：从小项目定位提升到两层 workspace 与 compiler face。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+仓库有大量包，直接从根目录逐个读会迷路，怎样围绕一次功能找入口？
+
+### 7. 本节唯一核心目标
+
+从用户能力反查服务、提供方、消费方与测试。
+
+### 8. 重点技术概念
+
+Monorepo、workspace、包边界、Host/Client。
+
+### 9. 需要额外解释的难懂术语
+
+Service Definition、Provider、Consumer。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+找一家医院的挂号台、科室协议和实际诊室；目录是地图，不能只凭包名判断运行依赖。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L1-L10)、[S118 · docs/capability-seams.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/capability-seams.zh.md#L1-L10)。
+
+1. [S004 · package.json:7](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/package.json#L7-L34) — `"packageManager"`；先核对工具链与 workspace 层级。
+2. [S005 · tsconfig.base.json:117](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.base.json#L117-L144) — `"@deepseek-ai/cordis"`；再看包名如何映射到源码。
+3. [S006 · packages/core/tool-executor-native/src/index.ts:8](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L8-L35) — `export class NativeToolExecutor`；沿一个小提供方回到 tools seam。
+
+**重要数据结构：**package.json workspaces、Context 声明合并、inject、ToolExecutor。
+
+**关键代码分段讲法：**从 native executor 的 describe/execute 看“提供方”而非扫描全部 core；只打开定义、消费方与相邻 tests。
+
+**实际调用链：**package workspace → tsconfig paths → native executor → tools pipeline；区分构建依赖和运行服务注入。
+
+**设计取舍：**官方采用两层 packages/<领域>/<包>。Host/Client 类型检查分离是声明合并冲突的工程边界。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→3 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H02-01 架构《源码导航地图》：围绕问题选包。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L02：为一次工具执行列出三角色包、两个 import 和一个测试，不安装整个仓库。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h02)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+npm 包名和目录名不相同时，应该信搜索结果还是凭名称猜路径？
+
+参考答案：先查 package.json 和 tsconfig paths，再验证真实源码及导出；目录邻近不代表调用。
+
+### 16. 关键风险及常见误解
+
+不得混用旧版单层 packages 布局；Node 要求来自锁定 package.json。
+
+### 17. 验收方式
+
+路径查找脚本验证三条文件存在；手写一条“入口→接口→实现→测试”路线。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S119 · scripts/verify-package-paths.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/verify-package-paths.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+60–80 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H01 的职责在此落到文件；H03 把文件连成时序。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H03
+
+### 1. 课程编号
+
+H03（核心）。
+
+### 2. 课程名称
+
+一个 Agent 请求的完整执行流程
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H02；会读异步函数。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l3](/lesson/stage-3/s3-l3)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 6 分钟：画 Browser→Server→Provider 的已知链，补上旧受限 Loop 的一次工具往返。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：引入 live event 与 durable settlement 双线。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户提交后出现流式文字、工具卡片和下一次模型调用，这些阶段究竟由谁连接？
+
+### 7. 本节唯一核心目标
+
+按持久事实与实时通知两条线复述一次请求。
+
+### 8. 重点技术概念
+
+Inbox、Turn、Step、请求组装、流式 settlement。
+
+### 9. 需要额外解释的难懂术语
+
+Settlement、Projection、Request Series。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+餐厅点单进入待办篮，厨师一轮可多次取料；屏幕进度不等于已归档的账单。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S120 · docs/agent-lifecycle.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/agent-lifecycle.zh.md#L1-L10)。
+
+1. [S007 · packages/core/agent-loop/src/index.ts:465](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；先看创建完成后才放行工作的边界。
+2. [S008 · packages/core/agent-loop/src/agent.ts:327](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L327-L354) — `private async turn():`；再读轮次打开和结束。
+3. [S002 · packages/core/agent-loop/src/agent.ts:435](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；逐段看流与工具。
+4. [S009 · packages/core/session/src/index.ts:999](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L999-L1026) — `deriveMessages():`；最后核对下一请求从哪里取得历史。
+
+**重要数据结构：**SessionEventMap、GenerateOptions、AssistantStreamAttempt、ToolBatchResult。
+
+**关键代码分段讲法：**以一次只读搜索为主线标注 turn/start、step/start、assistant/message、tool/call、tool/result、step/end、turn/end。
+
+**实际调用链：**initializeAgent → sessions.announce → agents.announce → turn → preStep → step → prepareRequest/buildRequest → stream → tools.execute → 下一 step。
+
+**设计取舍：**实时 chunk 服务于体验；durable settlement 服务于重建。硬退出可能发生在 settlement 之前。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H03-01 架构《整体执行架构》：看清控制与持久事实两条线；H03-02 时序《一次只读搜索》：串起一个请求。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L03：给固定 Mock 轨迹排序，找出 tool/result 后还欠的下一请求；运行 M1。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h03)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+实时 chunk 到达但进程在 settlement 前退出，能保证日志已有完整回答吗？
+
+参考答案：不能。已提交 message/attempt 才是持久来源；live stream 不能等价为逐 chunk 持久化。
+
+### 16. 关键风险及常见误解
+
+一条请求不必等于一个 turn；middleware 可以阻止首个 step。
+
+### 17. 验收方式
+
+事件顺序正确且将 5 个实时扩展点与会话记录分开解释。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S121 · packages/core/agent-loop/tests/loop.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/loop.spec.ts#L1-L28)
+- [S122 · packages/core/agent-loop/tests/request-reconstruction.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/request-reconstruction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+75–100 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H04 定位启动组合；H09–H12 再拆开精读，不在本讲穷尽错误分支。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H04
+
+### 1. 课程编号
+
+H04（核心）。
+
+### 2. 课程名称
+
+Profile、运行入口与环境配置
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H03；理解环境变量与服务端凭据。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l0](/lesson/stage-1/s1-l0)、[s2-l8](/lesson/stage-2/s2-l8)、[s3-l1](/lesson/stage-3/s3-l1)。基础回顾约 5 分钟：辨认 package.json 脚本、环境变量名和构建产物；重申凭据只在服务端。
+
+旧课深度：命令、Node 项目与本地运行准备；不计正式 29 课。本讲增量：新增具名 profile、home 与有序组合。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同一个 dsh 为什么能启动 Web、Headless 或 SDK，而工具集合还可以不同？
+
+### 7. 本节唯一核心目标
+
+在不启动模型的前提下解释启动配置的来源和覆盖顺序。
+
+### 8. 重点技术概念
+
+Profile、Harness home、启动器、patch overlay。
+
+### 9. 需要额外解释的难懂术语
+
+Profile、Bundle、Patch、HMR。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+同一套厨房用不同班次菜单开工；菜单组合不是复制一套厨房代码。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S123 · docs/subsystems/boot.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/boot.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L1-L10)。
+
+1. [S010 · apps/cli/src/bin.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L1-L28) — `RunCliOptions、runCli`；先识别支持的产品入口。
+2. [S011 · apps/cli/src/profile-boot.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L1-L28) — `homePatchPath、initializeProfileFromDefault、prepareProfile、ResolvedProfileRuntime、RunProfileOptions、runProfile`；再查 profile runner 如何交给 boot。
+3. [S012 · packages/boot/app-boot/src/profile.ts:165](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L165-L192) — `export function resolveProfileDir`；核对 home/profile 路径及非法名称拒绝。
+4. [S013 · packages/bundle/base/cordis.patch.yml:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L1-L28) — `声明配置/模块入口（无可调用函数）`；观察声明配置而不执行。
+
+**重要数据结构：**Profile、ProfileLayer、dsh.profile.bundles、dsh.bundle.patch。
+
+**关键代码分段讲法：**对照 web 与 sdk-minimal：后者不叠 base；展示变量名而不用真实 key，也不运行 npx 最新版。
+
+**实际调用链：**CLI 参数 → profile runner → profile discovery/composition → Loader 插件树；源码启动须先有构建产物。
+
+**设计取舍：**版本隔离优先；“相同命令”不表示相同 profile 或运行树。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H04-01 流程《启动与配置来源》：避免命令相同就误认为配置相同。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L04：只用内存配置合成三层菜单并说明缺项；运行 M1 的 route fixture，不读本机 home。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h04)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+sdk-minimal 能否按“base 加 SDK”来画？
+
+参考答案：不能；锁定版把它作为显式完整组合的例外，需要单独跟踪其 bundle。
+
+### 16. 关键风险及常见误解
+
+本轮不安装、不读取个人 DSH home；绝不打印凭据值。
+
+### 17. 验收方式
+
+准确列出层优先级、sdk-minimal 例外与构建前提；解释非法 profile 名的拒绝。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S124 · packages/boot/app-boot/tests/profile.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/profile.spec.ts#L1-L28)
+- [S125 · packages/boot/app-boot/tests/config-dump.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/config-dump.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+60–85 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H05–H07 解释树如何运行；H08 才精读 patch 算法。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H05
+
+### 1. 课程编号
+
+H05（核心）。
+
+### 2. 课程名称
+
+一切皆插件——Cordis 设计思想
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H04；基础 TypeScript interface。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s3-l1](/lesson/stage-3/s3-l1)。基础回顾约 4 分钟：对比 Stage 3 把 Provider 封装为函数与把具体实现写死在 Route。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：从参数/模块边界进入 Context 服务注入。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+模型服务、工具与存储若都写死在一个类里，更换能力为什么会牵连多处？
+
+### 7. 本节唯一核心目标
+
+用 Context 服务查询与 inject 说明模块怎样依赖接口。
+
+### 8. 重点技术概念
+
+Plugin、Service、Context、依赖注入。
+
+### 9. 需要额外解释的难懂术语
+
+Dependency Injection、Side Effect。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+办公楼统一插座让设备可替换；Context 不替设备完成工作，inject 也不是把所有对象复制进去。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-primer.zh.md#L1-L10)、[S127 · docs/cordis-tutorial/index.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-tutorial/index.zh.md#L1-L10)。
+
+1. [S014 · vendor/cordis/src/context.ts:42](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/context.ts#L42-L69) — `export class Context`；先看服务容器与代理入口。
+2. [S015 · vendor/cordis/src/service.ts:11](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/service.ts#L11-L38) — `class Service`；再看服务声明与挂载。
+3. [S016 · packages/core/tool-executor-native/src/index.ts:27](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L27-L35) — `export const inject`；用短插件核对真实依赖。
+
+**重要数据结构：**Context、Service、Plugin、InjectKey；类型声明和运行时存在性分开。
+
+**关键代码分段讲法：**先把写死的 mailer 参数化，再回到 native executor；教学参数注入不能冒称完整 Cordis。
+
+**实际调用链：**插件声明 inject → registry 等待服务 → apply/Service 初始化 → ctx.tools.setExecutor；卸载由 effect 回收。
+
+**设计取舍：**可替换的是服务契约及组合，不保证任意插件彼此兼容。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→3 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H05-01 场景对照《写死依赖与服务契约》：建立注入直觉；H05-02 架构《Context 与 Service》：区分类型声明和运行时注册。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L05：写一个只依赖日志接口的计数插件，替换内存日志实现；运行 M2。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h05)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+声明合并让 ctx.foo 在编译时存在，是否证明运行时已挂载？
+
+参考答案：不证明；声明合并只扩展类型，服务还须注册且满足 inject 与作用域。
+
+### 16. 关键风险及常见误解
+
+不要把 Context 当全局单例；不要把 inject 解释成自动导入 npm 包。
+
+### 17. 验收方式
+
+更换假日志服务后插件代码不变；指出一个真实 inject 与服务 key。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+70–95 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H06 解释服务间事件；H07 解释依赖撤走后的生命周期。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H06
+
+### 1. 课程编号
+
+H06（核心）。
+
+### 2. 课程名称
+
+事件系统与插件间通信机制
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H05；Promise 与返回值。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l3](/lesson/stage-4/s4-l3)。基础回顾约 5 分钟：回顾异步等待和审批回调：观察结果、等待结果、否决动作的需求有何不同。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：新增五种分发语义和 next 环绕。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+日志观察、等待初始化和拦截工具都叫事件，为什么不能都用 emit？
+
+### 7. 本节唯一核心目标
+
+根据顺序、等待与短路需求选择正确分发模式。
+
+### 8. 重点技术概念
+
+emit、parallel、serial、bail、waterfall。
+
+### 9. 需要额外解释的难懂术语
+
+Waterfall、Hook、Continuation、Bail Value。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+快递签收观察 vs 多道检查站；Waterfall 像一层层包装的服务台，回程按相反顺序返回。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-primer.zh.md#L1-L10)、[S129 · docs/event-producer-consumer.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/event-producer-consumer.zh.md#L1-L10)。
+
+1. [S017 · vendor/cordis/src/events.ts:13](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/events.ts#L13-L40) — `export function isBailed`；先明确哪些返回值会停止。
+2. [S018 · vendor/cordis/src/events.ts:204](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/events.ts#L204-L231) — `async serial(...args`；再看按序 await 与 bail。
+3. [S019 · vendor/cordis/src/events.ts:234](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/events.ts#L234-L261) — `waterfall(...args`；最后跟踪 next 闭包。
+4. [S020 · packages/core/tools/src/pipeline.ts:200](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L200-L227) — `carrier, 'tools/pre-execute'`；回到真实策略事件。
+
+**重要数据结构：**DispatchMode、Events 声明合并、next 回调、PreToolDecision。
+
+**关键代码分段讲法：**用 A-before/B-before/body/B-after/A-after 的确定性轨迹；serial 返回 0 会 bail，而 false 不会。
+
+**实际调用链：**EventsService.waterfall → snapshot callbacks → next → listener A → listener B → fallback → B → A；不调用 next 则下游不运行。
+
+**设计取舍：**waterfall 本身不自动 await，但可返回 Promise；serial 也有短路，不是保证所有监听器必执行。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H06-01 时序《Cordis 事件分发机制》：解释 next 的环绕与返回；H06-02 对比《五种分发模式》：选择等待与短路语义。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L06：实现环绕与拒绝两条路径；运行 M2，再运行官方 Cordis probe 对照。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h06)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+观察工具的 listener 忘记 next() 会发生什么？0 与 false 对 bail 是否相同？
+
+参考答案：前者可能截断后续策略与默认实现；0 是 bail 值，false 不是。
+
+### 16. 关键风险及常见误解
+
+不要把 Waterfall 讲成上一个数值自动传给下一个函数；异步由返回类型决定。
+
+### 17. 验收方式
+
+两条轨迹完全匹配；能说明 serial、emit 的返回值与等待差异。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S130 · packages/core/agent-loop/tests/serial-listener-review.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/serial-listener-review.spec.ts#L1-L28)
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+80–110 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H07 接着看 listener 与插件卸载；H14 再用 Waterfall 研究真实执行策略。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H07
+
+### 1. 课程编号
+
+H07（核心）。
+
+### 2. 课程名称
+
+插件生命周期、服务依赖与资源回收
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H06；try/finally。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l3](/lesson/stage-1/s1-l3)、[s3-l3](/lesson/stage-3/s3-l3)。基础回顾约 5 分钟：回顾取消请求与旧 generation 数据隔离：停止信号后仍可能有迟到响应。
+
+旧课深度：复现、定位、最小修复与复验，未涉及并发资源生命周期。本讲增量：新增 fiber/effect 所有权和资源 drain。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+热重载后监听器触发两次、关闭后还在写日志，泄漏从哪里来？
+
+### 7. 本节唯一核心目标
+
+将每次注册与其所有者、释放函数和等待边界配对。
+
+### 8. 重点技术概念
+
+Fiber、Scope、effect、disposer、依赖失效。
+
+### 9. 需要额外解释的难懂术语
+
+Lifecycle、Side Effect、Quiescence。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+会议室借钥匙、开灯、登记都应有归还动作；收回钥匙不等于正在进行的会议已结束。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-primer.zh.md#L1-L10)、[S131 · docs/subsystems/scope.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/scope.zh.md#L1-L10)。
+
+1. [S021 · vendor/cordis/src/fiber.ts:184](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L184-L211) — `export class Fiber`；先看插件生命周期的承载者。
+2. [S022 · vendor/cordis/src/registry.ts:195](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/registry.ts#L195-L222) — `export class RegistryService`；再看依赖管理。
+3. [S023 · vendor/cordis/src/events.ts:254](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/events.ts#L254-L281) — `register(label:`；跟踪 on 的注册如何成为 effect。
+4. [S007 · packages/core/agent-loop/src/index.ts:465](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；用 Agent 销毁的等待边界检验直觉。
+
+**重要数据结构：**Fiber、FiberState、EffectMeta、AgentHandle.dispose；agent scope 与 Cordis isolation 不可混称。
+
+**关键代码分段讲法：**先画资源归属表，再按释放时仍需用到日志/服务的要求讨论顺序，不承诺所有 effect 都全局逆序。
+
+**实际调用链：**ctx.on → fiber.effect → disposer；Agent dispose → cancel → idle/drain → registry/session removal → scope.dispose。
+
+**设计取舍：**卸载要保留正在 drain 的工作所需资源；具体先后须跟实现，不凭 RAII 类比猜。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H07-01 时序《插件挂载与依赖撤走》：揭示生命周期；H07-02 状态《资源归属与释放台账》：防止监听器与进程泄漏。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L07：模拟 mount→emit→dispose→emit，断言第二次不触发且重复 dispose 不新增事件；运行 M2。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h07)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+取消 signal 已置位，为什么还可能要等待工具 promise？
+
+参考答案：工具已经开始，须等待它静止并清理；signal 不会自动撤销副作用，也不是资源释放凭证。
+
+### 16. 关键风险及常见误解
+
+Scope 有多种含义；本讲分别标注 Cordis fiber 与 agent 注册作用域。
+
+### 17. 验收方式
+
+每个 listener、provider、Agent handle 都有 owner/disposer；指出一个 shutdown 测试。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S132 · packages/core/agent-loop/tests/resource-lifecycle.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/resource-lifecycle.spec.ts#L1-L28)
+- [S133 · packages/core/agent-loop/tests/shutdown-drain.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/shutdown-drain.spec.ts#L1-L28)
+- [S134 · packages/core/scope/tests/scope.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/scope/tests/scope.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+80–110 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H08 用生命周期解释配置重载；H09 开始研究 Agent 的所有权。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H08
+
+### 1. 课程编号
+
+H08（核心）。
+
+### 2. 课程名称
+
+Profile、Bundle、Patch 与动态能力组合
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H04–H07。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)。基础回顾约 4 分钟：回顾 git diff 的最小范围和环境配置：一个配置字段改变可能影响哪些能力？
+
+旧课深度：保存/比较/局部恢复版本，未教授事件日志 Fork。本讲增量：新增整 config 替换与可审查插件树。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+希望只替换一个模型后端，却发现配置里另外两个字段消失了，patch 到底如何覆盖？
+
+### 7. 本节唯一核心目标
+
+按固定顺序手算一棵可审查的插件树。
+
+### 8. 重点技术概念
+
+条目 id、配置替换、preset patch、isolate、HMR。
+
+### 9. 需要额外解释的难懂术语
+
+Patch、Bundle、Realm。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+装配清单的后层替换整张零件规格单，不能默认逐字段深合并。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S123 · docs/subsystems/boot.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/boot.zh.md#L1-L10)。
+
+1. [S024 · packages/boot/app-boot/src/profile.ts:54](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L54-L81) — `export function bundlePatchFiles`；先从 manifest 得到有序 patch 列表。
+2. [S025 · packages/boot/app-boot/src/index.ts:633](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L633-L660) — `export function renderConfigDump`；再找与 boot 一致的展开核查入口。
+3. [S026 · vendor/include/src/index.ts:57](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L57-L84) — `export function applyEntryPatches`；精读按 id 定位与 config 替换。
+4. [S013 · packages/bundle/base/cordis.patch.yml:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L1-L28) — `声明配置/模块入口（无可调用函数）`；核对真实组装行。
+
+**重要数据结构：**ProfileLayer、PatchOptions、EntryOptions、config.plugins、isolate map。
+
+**关键代码分段讲法：**给三份小 YAML，手算替换后 temperature 是否仍在；先看算法，再用 base 的真实行做例子。
+
+**实际调用链：**ordered bundles → profile patch → home patch → --patch overlay → applyEntryPatches → Loader；preset patch 在 config.plugins 内作用。
+
+**设计取舍：**配置开放提高灵活性，也可能因移除安全插件改变边界；dump-config 是检查工具，不等于安全审计。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H08-01 层叠《Bundle 与 Patch 优先级》：手算最后配置；H08-02 对比《全局、agent scope 与 isolate》：区分三种边界。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L08：实现教学版整 config 替换，验证后层覆盖与未知目标诊断；扩展 M2 的 fixture。官方对不匹配目标报告 warn，不擅自改称 throw。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h08)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+用 patch 只写 config.model，能默认继承旧 config.provider 吗？
+
+参考答案：不能按深合并推断；课程示例应给出完整替换配置，并核对实际 patch 操作。
+
+### 16. 关键风险及常见误解
+
+HMR 默认随 profile 不同；sdk-minimal 不包含 base；不对个人配置做实验。
+
+### 17. 验收方式
+
+提交三层输入与唯一结果，说明覆盖丢字段和组合改变权限的风险。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S135 · packages/boot/app-boot/tests/user-patches.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/user-patches.spec.ts#L1-L28)
+- [S136 · packages/boot/app-boot/tests/config-reload.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/config-reload.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+85–115 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H04 只认识层次，本讲计算算法；H09 进入组装后的运行对象。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H09
+
+### 1. 课程编号
+
+H09（核心）。
+
+### 2. 课程名称
+
+Agent 实例创建、注册和所有权
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H07–H08；会读 async/await。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l6](/lesson/stage-2/s2-l6)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：对比 ownerId 业务授权和 Run 的执行状态，指出二者都不等同对象生命周期 owner。
+
+旧课深度：可信 Session 推导 owner、SQL 内授权，未讲 Agent 生命周期所有权。本讲增量：新增 factory caller 所有权与发布事务。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+创建中途 setup 失败时，Session 已登记但 Agent 没发布，谁负责回滚？
+
+### 7. 本节唯一核心目标
+
+解释 create/resume 的发布边界与调用者所有权。
+
+### 8. 重点技术概念
+
+AgentRegistry、AgentFactory、AgentHandle、初始化事务。
+
+### 9. 需要额外解释的难懂术语
+
+Ownership、Publication、Rollback。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+新员工入职先预留工位、配置权限，全部就绪才发门卡；失败必须撤销已申请资源。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S137 · docs/subsystems/core.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/core.zh.md#L1-L10)、[S138 · packages/core/agent-loop/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/README.zh.md#L1-L10)。
+
+1. [S027 · packages/core/agent/src/index.ts:164](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/index.ts#L164-L191) — `export interface AgentHandle`；先读调用方必须持有的 handle。
+2. [S028 · packages/core/agent/src/index.ts:416](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/index.ts#L416-L443) — `async create(options:`；再看 registry 委托而不自建 loop。
+3. [S007 · packages/core/agent-loop/src/index.ts:465](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；按发布事务读 setup 与 announce。
+4. [S029 · packages/core/agent-loop/src/index.ts:717](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L717-L744) — `async createAgent(ownerCtx:`；最后追 session preparation。
+
+**重要数据结构：**CreateAgentOptions、AgentSetupCommit、FactoryOwnership、SessionPreparation。
+
+**关键代码分段讲法：**分“未发布准备、可见发布、失败撤销”三段画状态；caller fiber 拥有 handle，非 factory 注册上下文。
+
+**实际调用链：**AgentRegistry.create → factory.createAgent(ownerCtx) → sessions.prepare/persistence → initializeAgent → session announce → setup.commit → agents.enter/announce → 返回 handle。
+
+**设计取舍：**运行所有权是生命周期概念，不能直接等同平台多租户权限。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H09-01 状态《Agent 发布事务》：解释半初始化回滚；H09-02 所有权《调用者与 Factory》：防止推错 owner。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L09：给 setup/announce 各注入一次确定性异常，列回收台账；为 M3 增加失败不发布 fixture。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h09)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+只删 registry 项是否等于 Agent 已完全销毁？
+
+参考答案：不是；还须取消并 drain、释放 Session/write handle 和 agent scope，处理未发布失败。
+
+### 16. 关键风险及常见误解
+
+身份关联不代表可共享所有权；不要按静态工厂位置推测生命周期 owner。
+
+### 17. 验收方式
+
+两种失败均无半发布对象；说明 session/created 与 agent/created 的先后及测试位置。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S139 · packages/core/agent-loop/tests/agent.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/agent.spec.ts#L1-L28)
+- [S140 · packages/core/agent-loop/tests/scope-lifecycle.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/scope-lifecycle.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+90–120 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H10 在成功发布后研究驱动循环；恢复细节留给 H18。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H10
+
+### 1. 课程编号
+
+H10（核心）。
+
+### 2. 课程名称
+
+深入 Agent Loop——Turn、Step 与执行循环
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H03、H09；受限循环。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l1](/lesson/stage-4/s4-l1)、[s4-l5](/lesson/stage-4/s4-l5)。基础回顾约 7 分钟：复述 Stage 4 的模型提议、Runtime 执行、步骤/工具预算、停止条件。
+
+旧课深度：单工具受限 Loop、参数/步骤/预算/取消；未讲 Turn/Step/Inbox。本讲增量：新增 Turn/Step/Attempt、Inbox 与零步轮次。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+一次输入触发多次模型请求，为什么某次 turn 又可能没有 step？
+
+### 7. 本节唯一核心目标
+
+从 inbox 和停止条件推导 Turn/Step 的边界。
+
+### 8. 重点技术概念
+
+next-turn、next-step、followup、steer、inject、turn-stopping。
+
+### 9. 需要额外解释的难懂术语
+
+Turn、Step、Inbox、Wakeup。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+工单是一轮，查一次资料是一小步；仅加入参考材料不一定叫醒工作人员。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S137 · docs/subsystems/core.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/core.zh.md#L1-L10)。
+
+1. [S030 · packages/core/agent-loop/src/agent.ts:170](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L170-L197) — `send(message:`；先读三种输入如何入队。
+2. [S031 · packages/core/agent-loop/src/inbox.ts:73](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/inbox.ts#L73-L100) — `export class`；再读 claim 与持久投影。
+3. [S008 · packages/core/agent-loop/src/agent.ts:327](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L327-L354) — `private async turn():`；逐段追轮次/步骤/停止。
+4. [S002 · packages/core/agent-loop/src/agent.ts:435](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；核对工具导致的下一请求。
+
+**重要数据结构：**Phase、InboxTarget、PreparedStep、TurnEndReason、StepEndReason。
+
+**关键代码分段讲法：**先复习模型提议/Runtime 控制，再用直答、工具续步、首输入被拒绝三轨迹，最后读 max-tokens sticky 分支。
+
+**实际调用链：**send→inbox→wakeDriver/kick→turn/start→preStep→step/start→step→step/end→serial turn-stopping→turn/end；inject 不自行唤醒。
+
+**设计取舍：**步骤定义为模型请求及其工具阶段；同一步内部可以有多个失败重试 attempt。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H10-01 流程《Agent Loop 的 Turn / Step》：推导零步与多步轮次；H10-02 对比《三种 Inbox 输入》：区分排队和唤醒。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L10：用 M3 跑直答、工具续步、空输入和拒绝四种事件序列，断言不会空耗模型调用。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h10)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+首个 pre-step 拒绝后能否仍有 turn/start、turn/end？
+
+参考答案：可以；turn 在 claim 前打开，拒绝关闭 blocked turn，未进入 step。
+
+### 16. 关键风险及常见误解
+
+Step 不等于 token/chunk；不要把教学版 maxSteps 当成锁定版 loop 必有同名配置。
+
+### 17. 验收方式
+
+四种轨迹通过且正确解释 next-step 与 next-turn；在 turn 函数圈出三个退出分支。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S121 · packages/core/agent-loop/tests/loop.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/loop.spec.ts#L1-L28)
+- [S141 · packages/core/agent-loop/tests/inbox.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/inbox.spec.ts#L1-L28)
+- [S142 · packages/core/agent-loop/tests/interception.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/interception.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟（建议两段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H11 拆请求准备；H12 拆模型流；H20 研究异常分支。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H11
+
+### 1. 课程编号
+
+H11（核心）。
+
+### 2. 课程名称
+
+系统提示词、上下文与模型请求组装
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H10；RAG Context 与 Schema。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l5](/lesson/stage-3/s3-l5)、[s3-l6](/lesson/stage-3/s3-l6)、[s4-l2](/lesson/stage-4/s4-l2)。基础回顾约 6 分钟：从单轮 RAG 的 Question+Context+Schema 出发，问这次模型究竟看到了什么。
+
+旧课深度：owner-filtered Top-K 与单轮 RAG Context，未讲事件 Surface。本讲增量：新增 assembly、prepared capability、日志封装与冻结。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+工具或工作目录变化后，本轮模型究竟看到了哪一版指令与能力？
+
+### 7. 本节唯一核心目标
+
+从 assembly、prepared capability 和日志重建一次冻结请求。
+
+### 8. 重点技术概念
+
+PromptAssembly、模型选择快照、runtime context、request/header。
+
+### 9. 需要额外解释的难懂术语
+
+Admission、Projection、Immutable Snapshot。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+打印出车清单前先确认车辆能载什么；旧清单不能证明这次真实出车的载荷。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S143 · docs/subsystems/system-prompt.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/system-prompt.zh.md#L1-L10)、[S138 · packages/core/agent-loop/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/README.zh.md#L1-L10)。
+
+1. [S032 · packages/core/system-prompt/src/index.ts:619](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/system-prompt/src/index.ts#L619-L646) — `async assemble(`；先看片段与 schema 汇总输入输出。
+2. [S033 · packages/core/system-prompt/src/index.ts:587](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/system-prompt/src/index.ts#L587-L614) — `refreshContext(`；区分每次尝试刷新事实与重新组装。
+3. [S034 · packages/core/agent-loop/src/agent.ts:613](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L613-L640) — `private async prepareRequest(`；读适配器能力绑定。
+4. [S035 · packages/core/agent-loop/src/agent.ts:656](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L656-L683) — `private buildRequest(`；最后读 header/context 与冻结历史。
+
+**重要数据结构：**AssembleContext.modelSelection、PromptAssembly、PreparedLlmCall、EpochHeader、GenerateOptions。
+
+**关键代码分段讲法：**用“工具列表刚变化”的例子区分声明 schema、step admission 与执行定义；先输入输出，再解释 system 更新分支。
+
+**实际调用链：**tools.resolve→systemPrompt.assemble→pre-step→llm.prepareCall→systemPrompt.project→提交消息→buildRequest→session.deriveMessages→冻结请求。
+
+**设计取舍：**关键事实：取消发生于异步准备阶段时不提交 system/users；重试不重跑 assembly/pre-step，runtime facts 可刷新。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H11-01 流程《模型请求的准入与冻结》：明确真实输入版本；H11-02 双轨《Prompt 与 Runtime Context》：区分刷新与重组。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L11：给 M3 输入两个时间点的工具清单，冻结入场版本；尝试篡改并验证历史不变。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h11)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+能否把旧 request/context 当作当前 route 支持 system 更新的依据？
+
+参考答案：不能，应使用本次 prepareCall 绑定的能力；日志记录本次实际请求封装。
+
+### 16. 关键风险及常见误解
+
+系统指令可更新不意味着修改旧日志；纯投影与原事件分开。
+
+### 17. 验收方式
+
+准确说明 assemble、refresh、prepare、commit、freeze 的顺序，并给取消前后的日志差异。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S144 · packages/core/agent-loop/tests/request-freeze.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/request-freeze.spec.ts#L1-L28)
+- [S145 · packages/core/agent-loop/tests/system-prompt-admission.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/system-prompt-admission.spec.ts#L1-L28)
+- [S122 · packages/core/agent-loop/tests/request-reconstruction.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/request-reconstruction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟（含可选深读）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H10 的一步在此展开；H12 解释冻结请求怎样进入 adapter。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H12
+
+### 1. 课程编号
+
+H12（核心）。
+
+### 2. 课程名称
+
+LLM 适配器、消息结构与流式响应
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H11；AsyncIterable 与取消。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l2](/lesson/stage-3/s3-l2)、[s3-l3](/lesson/stage-3/s3-l3)。基础回顾约 6 分钟：复习流式六状态、坏 JSON 和迟到片段，先预测半截工具参数是否能执行。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：新增 adapter 公共流、attempt 与持久 settlement。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+不同模型的 SSE 和工具参数片段不同，Loop 为什么无需处理每家协议？
+
+### 7. 本节唯一核心目标
+
+追踪统一消息/流契约与 Provider 协议的转换边界。
+
+### 8. 重点技术概念
+
+LlmRuntime、LlmAdapter、StreamChunk、prepared call。
+
+### 9. 需要额外解释的难懂术语
+
+Provider、Adapter、Attempt、Settlement。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+插头转换器转接口但不能凭空增加电器能力；流片段像分批快递，还须组装后核验。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S146 · docs/subsystems/llm-streaming.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/llm-streaming.zh.md#L1-L10)、[S147 · packages/llm/llm-deepseek/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/README.zh.md#L1-L10)。
+
+1. [S036 · packages/llm/llm/src/types.ts:34](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L34-L61) — `export`；先认识公共流与请求词汇。
+2. [S037 · packages/llm/llm/src/index.ts:290](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L290-L317) — `async prepareCall(`；再看一次性绑定约束。
+3. [S038 · packages/llm/llm-deepseek/src/adapter.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/adapter.ts#L1-L28) — `DeepSeekAdapter`；再看具体 adapter。
+4. [S039 · packages/llm/llm-deepseek/src/sse.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/sse.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；最后跟协议片段处理。
+5. [S040 · packages/core/agent-loop/src/assistant-stream.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/assistant-stream.ts#L1-L28) — `AssistantStreamAttempt`；回到 message/attempt settlement。
+
+**重要数据结构：**GenerateOptions、StreamChunk、FinishReason、PreparedLlmCall、ContentBlock。
+
+**关键代码分段讲法：**用工具参数被拆为两段的 Mock，先拼装再验证；失败 finish chunk 与抛异常分开讲。
+
+**实际调用链：**prepareCall → bound stream → llm/stream waterfall → adapter → 协议 chunk → AssistantStreamAttempt → assistant/message 或 assistant/attempt。
+
+**设计取舍：**prepareCall 只能发起一次且不得换 config；相同 adapter 实例拥有的 replayState 才可复用。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H12-01 适配《统一流与 Provider 协议》：展示边界翻译；H12-02 状态《流式 Attempt 结算》：避免把 chunk 当持久事实。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L12：M3 发送文本片段、工具参数片段与失败尾帧；断言半截 JSON 不执行。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h12)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+工具参数字符串流到一半就能调用工具吗？
+
+参考答案：不能；须满足完整流协议、完成拼装与执行阶段校验。
+
+### 16. 关键风险及常见误解
+
+统一接口不保证不同 Provider 的工具/图片/推理语义相同；不要混用其他版本 SDK 字段。
+
+### 17. 验收方式
+
+完成一个公共 chunk→消息→工具提议的转换表，区分终态 error chunk 与基础设施 throw。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S148 · packages/llm/llm/tests/assistant-stream.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/tests/assistant-stream.spec.ts#L1-L28)
+- [S149 · packages/llm/llm-deepseek/tests/prepared-call.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/tests/prepared-call.spec.ts#L1-L28)
+- [S150 · packages/llm/llm-deepseek/tests/stream.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/tests/stream.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+95–125 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H13 消费组装出的工具提议；H26 再扩展 Provider 工程。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H13
+
+### 1. 课程编号
+
+H13（核心）。
+
+### 2. 课程名称
+
+Tool Registry、Schema 与工具可见性
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H07、H11–H12；严格输入校验。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l2](/lesson/stage-3/s3-l2)、[s4-l1](/lesson/stage-4/s4-l1)、[s4-l2](/lesson/stage-4/s4-l2)。基础回顾约 5 分钟：复习 Stage 4 白名单和 strict 参数；区分 Schema 合法与用户有权。
+
+旧课深度：严格 Schema 验模型 JSON，不把建议直接写业务数据；未讲工具 output 契约。本讲增量：新增层级可见表、step admission 与 output contract。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同名工具在不同 Agent 下含义不同，模型看见的 schema 如何与执行定义保持一致？
+
+### 7. 本节唯一核心目标
+
+推导作用域、限制交集与 step admission 共同决定的工具集合。
+
+### 8. 重点技术概念
+
+ToolsService、shadowing、restrict、resolve、output schema。
+
+### 9. 需要额外解释的难懂术语
+
+Registry、Scope、Admission。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+公司通讯录有全局联系人和部门同名分机；能在名册中找到，不等于每个请求都可拨打。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S151 · docs/subsystems/tools.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/tools.zh.md#L1-L10)、[S131 · docs/subsystems/scope.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/scope.zh.md#L1-L10)。
+
+1. [S041 · packages/core/tools/src/index.ts:128](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L128-L155) — `register(definition:`；先看注册契约和 output 必填。
+2. [S042 · packages/core/tools/src/index.ts:162](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L162-L189) — `restrict(filter:`；再看限制仅适用于 scoped context。
+3. [S043 · packages/core/tools/src/index.ts:199](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L199-L226) — `private view(`；计算继承与覆盖。
+4. [S044 · packages/core/tools/src/index.ts:264](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L264-L291) — `async resolve(`；最后核对每步固定能力集。
+5. [S045 · packages/core/tools/src/contracts.ts:26](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/contracts.ts#L26-L53) — `export interface ToolDefinition`；核对接口字段而非猜 schema。
+
+**重要数据结构：**ToolDefinition.output、ToolRestriction、ResolvedToolSet、ToolRegistrationOptions.when。
+
+**关键代码分段讲法：**用全局 search 与子级 search 计算可见表；用声明正确而执行返回不合 schema 的例子讲 output contract。
+
+**实际调用链：**注册定义→scope chain view→step resolve→executor.describe→prompt schema；执行时携带同一 toolSet。
+
+**设计取舍：**run_code 名称保留给 PTC；restrict 不是任意隔离边界，scope 自有注册的规则须单独算。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H13-01 集合《作用域工具可见性》：手算 shadow/restrict；H13-02 契约《Schema 到执行的固定集合》：防止描述与执行错配。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L13：M4 计算全局/子级/deny 的可见集，并让隐形工具调用被拒绝。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h13)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+删掉 prompt 里的工具说明就能作为权限拒绝吗？
+
+参考答案：不能；展示与执行查找必须同受能力集合/策略约束，恶意模型仍可构造名字。
+
+### 16. 关键风险及常见误解
+
+注册成功不代表模型必调用；Schema 不是业务授权。
+
+### 17. 验收方式
+
+画三层可见表并解释三个冲突；未知和隐藏工具执行计数必须为零。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S152 · packages/core/tools/tests/scoped.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/scoped.spec.ts#L1-L28)
+- [S153 · packages/core/tools/tests/activation.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/activation.spec.ts#L1-L28)
+- [S154 · packages/core/tools/tests/schema.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/schema.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+90–125 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H14 研究已可见调用的完整流水线；H15 再看策略与 OS 边界。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H14
+
+### 1. 课程编号
+
+H14（核心）。
+
+### 2. 课程名称
+
+工具执行流水线与 Hook 机制
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H06、H13。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l1](/lesson/stage-4/s4-l1)、[s4-l3](/lesson/stage-4/s4-l3)。基础回顾约 5 分钟：回顾 unknown/坏参数/未批准写入时工具计数为零，写提议与实际 execute 分开。
+
+旧课深度：单工具受限 Loop、参数/步骤/预算/取消；未讲 Turn/Step/Inbox。本讲增量：新增三阶段流水线和结果归一化/冻结。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+工具抛错、策略改写结果、用户拒绝或观察器报错，模型最后应该看到哪份结果？
+
+### 7. 本节唯一核心目标
+
+按准备、分派与结算追踪唯一权威工具结果。
+
+### 8. 重点技术概念
+
+ToolExecutionPipeline、batch、pre/execute/post、finalizeContent。
+
+### 9. 需要额外解释的难懂术语
+
+Hook、Monotonic Guard、Authoritative Result。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+办理业务先审核、再处理、再交付回执；事后收据被改写不会撤销已经完成的转账。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S155 · docs/tool-execution-pipeline.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/tool-execution-pipeline.zh.md#L1-L10)、[S151 · docs/subsystems/tools.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/tools.zh.md#L1-L10)。
+
+1. [S046 · packages/core/tool-executor-native/src/index.ts:19](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L19-L35) — `execute(input:`；先看默认执行器委托。
+2. [S047 · packages/core/tools/src/batch.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/batch.ts#L1-L28) — `executeToolBatch`；再看原始批次与日志责任。
+3. [S003 · packages/core/tools/src/pipeline.ts:190](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L190-L217) — `async prepare(`；跟 pre 与 guard。
+4. [S048 · packages/core/tools/src/pipeline.ts:295](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L295-L322) — `async dispatch(`；跟 around 与 body。
+5. [S049 · packages/core/tools/src/pipeline.ts:336](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L336-L363) — `async complete(`；最后读 post/project/finalize/result。
+
+**重要数据结构：**ScheduledToolPreparation、ToolRunContext、ToolExecutionResult、ToolExecutionToken。
+
+**关键代码分段讲法：**分四段解释函数输入、内部状态、输出变体、错误归一化；画正常/拒绝/throw 三色路径。
+
+**实际调用链：**NativeToolExecutor→executeToolBatch→prepare(pre/ask/guard)→dispatch(around/body)→projectContent→post→finalizeContent→tools/result→记录 tool/result。
+
+**设计取舍：**tools/result 是冻结后的同步观察通知，观察器失败被容纳；不能通过其返回值重新批准。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H14-01 流程《工具执行全流水线》：拆开准备执行结算；H14-02 时序《正常、拒绝与结果改写》：辨认副作用发生时点。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L14：M4 注入 pre deny、body throw、post block；比较 body 次数与最终回执。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h14)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+post-execute 把成功改成 isError，是否证明文件没有写过？
+
+参考答案：不证明；body 已运行，post 改的是结果。副作用回滚必须另有事务/补偿机制。
+
+### 16. 关键风险及常见误解
+
+非所有错误都走同一 post 路径；final-result 与 post-result 必须分别读。
+
+### 17. 验收方式
+
+三条轨迹及权威结果一致；指出 tools/result observer throw 不替换结果的源码。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L1-L28)
+- [S156 · packages/core/agent-loop/tests/tool-order.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-order.spec.ts#L1-L28)
+- [S157 · packages/core/agent-loop/tests/tool-executors.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟（建议拆两段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H15 只展开安全决策，避免重复本讲所有 pipeline 阶段。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H15
+
+### 1. 课程编号
+
+H15（核心）。
+
+### 2. 课程名称
+
+审批、权限、守卫与沙箱
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H14；可信身份与写入确认。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l6](/lesson/stage-2/s2-l6)、[s4-l3](/lesson/stage-4/s4-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：复习精确参数签名、Stage 4.3 replay 缺口与 4.6 业务幂等。
+
+旧课深度：可信 Session 推导 owner、SQL 内授权，未讲 Agent 生命周期所有权。本讲增量：新增独立 guard 与平台沙箱，不冒称相同 HMAC 实现。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户点了允许以后，为什么仍可能拒绝？沙箱开启又是否等于网络隔离？
+
+### 7. 本节唯一核心目标
+
+区分审批决定、不可放宽守卫和文件效果隔离的责任。
+
+### 8. 重点技术概念
+
+allow/deny/ask、approval、guards、confine、enforcement。
+
+### 9. 需要额外解释的难懂术语
+
+Sandbox、Monotonic、Fail Closed。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+访客同意条款不等于有机房门禁；审批像单次通行确认，守卫像不可跳过的禁入规则。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S114 · SAFETY.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L1-L10)、[S158 · docs/subsystems/approval.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/approval.zh.md#L1-L10)、[S159 · docs/subsystems/sandbox.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/sandbox.zh.md#L1-L10)。
+
+1. [S050 · packages/core/tools/src/pipeline.ts:432](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L432-L459) — `private async serviceAsk(`；先看缺少审批渠道如何拒绝。
+2. [S051 · packages/core/tools/src/index.ts:393](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L393-L412) — `checkGuards(`；再读 guard 无法被 allow 放宽。
+3. [S052 · packages/interaction/user-approval/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L1-L28) — `ApprovalPolicy、setApprovalPolicy、ApprovalRequest、Config、ApprovalService`；读审批请求生命周期。
+4. [S053 · packages/sandbox/sandbox-policy/src/index.ts:197](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-policy/src/index.ts#L197-L217) — `resolve(request:`；看策略解析。
+5. [S054 · packages/sandbox/sandbox/src/index.ts:192](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/index.ts#L192-L197) — `abstract confine(`；看后端包装契约与 partial。
+
+**重要数据结构：**PreToolDecision、ApprovalOutcome、SandboxMode、SandboxEnforcement、ConfinedArgv。
+
+**关键代码分段讲法：**固定案例：审批允许但 guard deny，body=0；接着讨论 Windows partial 的含义，不在宿主做真实逃逸。
+
+**实际调用链：**pre ask→approval.request→allowed-once→checkGuards→body；shell consumer resolve policy→danger-full-access bypass 或 sandbox.confine→subprocess。
+
+**设计取舍：**SandboxMode 的词汇约束文件效果，网络与进程可见性不在该定义范围；partial 不得当 full。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H15-01 决策《审批与单调守卫》：说明允许后仍会拒绝；H15-02 边界《沙箱模式与实际强制执行》：避免生产安全过度承诺。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L15：M4 模拟无渠道、拒绝、允许后守卫拒绝、允许后执行四种结果；所有资源使用内存。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h15)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+一次 allowed-once 能否覆盖 owner guard 的 deny？
+
+参考答案：不能；准入通过后仍检查单调 guard。未审计实现也不能宣传为已验证生产安全方案。
+
+### 16. 关键风险及常见误解
+
+HMAC 与幂等事务是 Stage 4 实现，不能直接说 Harness 使用同一方案。
+
+### 17. 验收方式
+
+四路径 body 次数 0/0/0/1；能说清 full/partial 与既有副作用不能取消。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S160 · packages/interaction/user-approval/tests/approval.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/tests/approval.spec.ts#L1-L28)
+- [S161 · packages/sandbox/sandbox-policy/tests/policy.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-policy/tests/policy.spec.ts#L1-L28)
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H16 看真实消费者如何使用这些能力；H28 扩展浏览器/桌面。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H16
+
+### 1. 课程编号
+
+H16（核心）。
+
+### 2. 课程名称
+
+文件、Shell、Web 与 MCP 能力接入
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H13–H15；HTTP、MCP 与工具区别。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l2](/lesson/stage-2/s2-l2)、[s4-l2](/lesson/stage-4/s4-l2)、[s4-l4](/lesson/stage-4/s4-l4)。基础回顾约 6 分钟：用一句话区分 Tool 能力与 MCP 协议；复述本地白名单与外部结果不可信。
+
+旧课深度：POST/JSON、服务端校验与 HTTP 验收，未涉及 JSON-RPC。本讲增量：新增四类 seam 与每服务器 MCP 适配。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+四种工具都进入同一注册表，底层却分别访问文件、进程和远端服务器，边界如何保留？
+
+### 7. 本节唯一核心目标
+
+按 Definition/Provider/Consumer 三角色定位能力，并对比远端信任。
+
+### 8. 重点技术概念
+
+fs seam、shell、web、MCP bridge。
+
+### 9. 需要额外解释的难懂术语
+
+Capability Seam、Transport、Tool Discovery。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+同一前台接不同窗口；前台统一办理流程，不能让外部窗口自行授予内部权限。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S118 · docs/capability-seams.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/capability-seams.zh.md#L1-L10)、[S162 · docs/subsystems/filesystem.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/filesystem.zh.md#L1-L10)、[S163 · docs/subsystems/mcp.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/mcp.zh.md#L1-L10)。
+
+1. [S055 · packages/fs/tool-fs/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/tool-fs/src/index.ts#L1-L28) — `Config、apply`；先看面向模型的文件消费者。
+2. [S056 · packages/shell/bash-sandbox/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/shell/bash-sandbox/src/index.ts#L1-L28) — `Config、SandboxBashExecutor`；再看 shell 如何消费沙箱。
+3. [S057 · packages/web/tool-web/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/web/tool-web/src/index.ts#L1-L28) — `Config、apply`；再对比 Web seam。
+4. [S058 · packages/mcp/mcp-client/src/index.ts:154](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/index.ts#L154-L181) — `export async function apply`；看每服务器插件入口。
+5. [S059 · packages/mcp/mcp-client/src/tools.ts:225](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/tools.ts#L225-L252) — `export function createMcpToolDefinition`；落到工具适配及结果契约。
+
+**重要数据结构：**ToolDefinition、MCP tool inputSchema、serverName、ToolExecution、callTool result。
+
+**关键代码分段讲法：**用四列三角色图，不在一讲深挖所有实现；先复习 MCP 协议与本地 Tool，再对照 publicToolName。
+
+**实际调用链：**模型→统一 tools pipeline→tool-fs/fs provider；shell/sandbox/subprocess；tool-web/web provider；MCP definition→SDK client.callTool。
+
+**设计取舍：**MCP client 不提供通用 ctx.mcp；工具名来自 serverName + rawName，能力接入不等于信任远端内容。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H16-01 矩阵《四类能力三角色》：定位真实消费者；H16-02 时序《MCP 工具接线》：区分发现与授权。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L16：把虚构远端搜索接到 M4 本地白名单，远端多声明 write 工具也不能增加执行计数。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h16)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+远端 tools/list 列出 write 能否当作本地批准？
+
+参考答案：不能；发现是能力描述，本地注册、作用域与执行策略继续生效，返回文本是不可信内容。
+
+### 16. 关键风险及常见误解
+
+Shell 不能据危险字符串示例访问私人文件；H16 只做 Mock 接线。
+
+### 17. 验收方式
+
+三角色表覆盖四家族；解释 MCP 两个服务命名差异并用拒绝轨迹验收。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S164 · packages/mcp/mcp-client/tests/tool-definition.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/tests/tool-definition.spec.ts#L1-L28)
+- [S165 · packages/mcp/mcp-client/tests/protocol.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/tests/protocol.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–135 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H27 深挖 MCP 重连资源；H17 改读长期记录。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H17
+
+### 1. 课程编号
+
+H17（核心）。
+
+### 2. 课程名称
+
+Session、事件日志与事件溯源
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H10–H12；Run/Step 持久化。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l3](/lesson/stage-2/s2-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：复习 PostgreSQL 的 Run/Step/Action，刷新恢复不靠浏览器记忆。
+
+旧课深度：PostgreSQL/Prisma、刷新重启回读，未采用 Session 事件溯源。本讲增量：从领域表对比追加事实、Surface 与纯投影。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+只保存 messages 数组，能解释一次工具为何没执行、模型看见哪版 schema 吗？
+
+### 7. 本节唯一核心目标
+
+从不可变事件推导模型消息与业务投影，区分日志和读视图。
+
+### 8. 重点技术概念
+
+SessionEventMap、seq、surface、deriveMessages、projection registry。
+
+### 9. 需要额外解释的难懂术语
+
+Event Sourcing、Session Projection、Fold。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+银行流水是事实，余额是计算结果；类比不承诺金融级账务原子性。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S166 · docs/subsystems/session.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/session.zh.md#L1-L10)、[S167 · docs/subsystems/session-projection.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/session-projection.zh.md#L1-L10)。
+
+1. [S060 · packages/core/session/src/types.ts:287](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L287-L314) — `interface SessionEventMap`；先识别事件词汇与模型可见事件。
+2. [S061 · packages/core/session/src/index.ts:806](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L806-L833) — `append<T`；再看提交与快照边界。
+3. [S062 · packages/core/session/src/surface.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L1-L28) — `SessionMessageProjectionContext、SessionMessageProjection、isSurfaceEligibleType、isSurfaceEvent、isAppendSurfaceEvent、isReplacementSurfaceEvent、deriveEventMessage、validateSessionEvent`；读 surface 操作而非筛 messages。
+4. [S009 · packages/core/session/src/index.ts:999](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L999-L1026) — `deriveMessages():`；再看派生与缓存。
+5. [S063 · packages/session/session-projection/src/index.ts:259](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/src/index.ts#L259-L286) — `export class SessionProjectionRegistry`；最后看插件投影注册与 snapshot。
+
+**重要数据结构：**SessionEvent、SessionSeq、SurfaceOp、ProjectionDefinition、ProjectionSnapshot。
+
+**关键代码分段讲法：**按六条带 seq 事件算两份视图：模型消息与步骤状态；强调事件 projection 和消息 projection 是两种扩展点。
+
+**实际调用链：**Session.append→lossless snapshot/验证→追加 log→surface apply→session/event→已注册 fold；deriveMessages 从 surface + message projection 得到历史。
+
+**设计取舍：**内存 append 成功不是磁盘 flush 承诺；会话日志不是平台登录 Session。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H17-01 双轨《日志与模型可见 Surface》：解释事件溯源；H17-02 架构《Session Projection 注册与读取》：区分两类投影。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L17：M5 重建事件日志并比较两种投影；破坏 seq 必须拒绝，原事件不变。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h17)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+所有 SessionEvent 都能直接传给模型吗？
+
+参考答案：不能；模型历史由 surface 节点和纯消息投影派生，审计事件不必是消息。
+
+### 16. 关键风险及常见误解
+
+事件溯源不代表无限重放外部副作用；snapshot 不是另一个真源。
+
+### 17. 验收方式
+
+两个投影与预期一致，能定位 deriveMessages 并说明 append/flush 区别。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S168 · packages/core/session/tests/surface.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/tests/surface.spec.ts#L1-L28)
+- [S169 · packages/core/session/tests/message-projections.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/tests/message-projections.spec.ts#L1-L28)
+- [S170 · packages/session/session-projection/tests/registry.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/tests/registry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H18 用同一日志恢复和 fork；H19 研究投影替换。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H18
+
+### 1. 课程编号
+
+H18（核心）。
+
+### 2. 课程名称
+
+会话恢复、历史回放与 Fork
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H09、H17。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l5](/lesson/stage-1/s1-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：复述 checkpoint Resume：只读阶段可以重做，未知写结果不能随意重发。
+
+旧课深度：保存/比较/局部恢复版本，未教授事件日志 Fork。本讲增量：新增 SessionHandle、lease、历史回放与固定前缀 Fork。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+进程退出后能从哪里继续？复制父会话后，子会话是否拥有父级后台进程？
+
+### 7. 本节唯一核心目标
+
+区分恢复执行、纯历史回放与固定前缀 Fork 的语义。
+
+### 8. 重点技术概念
+
+SessionHandle、write lease、interrupted tail、fork prefix。
+
+### 9. 需要额外解释的难懂术语
+
+Replay、Fork、Idempotency、Generation。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+从会议记录恢复讨论、阅读旧记录、复制一份议题继续是三种动作；记录不会恢复会议室里原有设备。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S171 · docs/subsystems/persistence.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/persistence.zh.md#L1-L10)、[S172 · packages/core/session/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/README.zh.md#L1-L10)。
+
+1. [S064 · packages/session/session-persistence/src/handle.ts:59](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-persistence/src/handle.ts#L59-L86) — `export interface SessionHandle extends`；先读 read/append/flush/close 契约。
+2. [S065 · packages/session/session-persistence-jsonl/src/index.ts:388](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-persistence-jsonl/src/index.ts#L388-L415) — `async open(`；再读读写打开与代际选择。
+3. [S066 · packages/core/session/src/repair.ts:15](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L15-L42) — `export`；看缺失结果和尾部修复。
+4. [S067 · packages/core/session/src/fork.ts:21](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/fork.ts#L21-L30) — `export`；看 fork prefix 规则。
+5. [S068 · packages/core/agent-loop/src/index.ts:754](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L754-L781) — `async resume(ownerCtx:`；最后进入恢复发布。
+
+**重要数据结构：**SessionHandle、SessionSeedEventState、SessionAlreadyOwnedError、inheritedEventCount、ToolCallRecovery。
+
+**关键代码分段讲法：**用“tool/call 已写但 result 缺失”的日志，要求标 outcome unknown，不能悄悄重执行写工具。
+
+**实际调用链：**persistence.open(write)→读取当前逻辑事件→修复未闭合尾→sessions.prepare→initializeAgent→恢复队列；fork 使用 seed + inheritedEventCount 创建新身份。
+
+**设计取舍：**JSONL 历史迁移发布后继 generation，不原地覆盖旧文件；句柄单写者不等于所有外部动作 exactly-once。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H18-01 对比《Replay、Resume 与 Fork》：避免重放副作用；H18-02 时序《写租约与中断尾修复》：明确恢复边界。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L18：M5 从同一前缀派生子分支，父日志保持不变；未知写结果不得自动重做。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h18)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+Replay 为什么通常不应重新发 HTTP 写请求？
+
+参考答案：Replay 重建历史/投影；重发是新的副作用，必须有独立授权与幂等设计。
+
+### 16. 关键风险及常见误解
+
+不保证恢复浏览器登录、OS 进程或原内存 promise；绝不调用迁移脚本触碰个人数据。
+
+### 17. 验收方式
+
+父子前缀与 seq 断言通过，解释只读 open 与写 open 的差异和 lease 冲突。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S173 · packages/core/session/tests/repair.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/tests/repair.spec.ts#L1-L28)
+- [S174 · packages/core/session/tests/fork.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/tests/fork.spec.ts#L1-L28)
+- [S175 · packages/session/session-persistence-jsonl/tests/lease.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-persistence-jsonl/tests/lease.spec.ts#L1-L28)
+- [S176 · packages/core/agent-loop/tests/resume.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/resume.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H19 在不改变事实日志的前提下减少模型上下文；H20 讨论取消与重试。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H19
+
+### 1. 课程编号
+
+H19（核心）。
+
+### 2. 课程名称
+
+上下文管理、Compaction 与 Token 优化
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H11、H17–H18；Context Window。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l5](/lesson/stage-3/s3-l5)、[s3-l7](/lesson/stage-3/s3-l7)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 5 分钟：回顾 Context Window、RAG 候选和 Token Usage；比较成本与事实是否保留。
+
+旧课深度：owner-filtered Top-K 与单轮 RAG Context，未讲事件 Surface。本讲增量：新增压缩事件、投影替换与位置跨度。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+长任务超过窗口，简单删除早期消息为什么可能拆开工具调用与结果？
+
+### 7. 本节唯一核心目标
+
+比较剪枝、图片省略和摘要压缩对可重建历史的不同影响。
+
+### 8. 重点技术概念
+
+CompactionEngine、pressure、replace、tool pairing。
+
+### 9. 需要额外解释的难懂术语
+
+Compaction、Shadowed Range、Token Estimate。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+带原始凭证的会议纪要替代桌面上铺开的文件；纪要会遗漏信息，原档案仍需保留。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S177 · docs/subsystems/compaction.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/compaction.zh.md#L1-L10)、[S178 · packages/compaction/compaction-basic/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/README.zh.md#L1-L10)。
+
+1. [S069 · packages/compaction/compaction/src/index.ts:16](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/index.ts#L16-L43) — `export`；先看能力契约。
+2. [S070 · packages/compaction/compaction-basic/src/index.ts:112](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L112-L139) — `class BasicCompactionEngine`；再看自动策略与 overflow。
+3. [S071 · packages/compaction/compaction-basic/src/region.ts:173](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L173-L200) — `compactSurfaceRegion`；精读选择、再校验、提交替换。
+4. [S072 · packages/compaction/compaction-tool-result-pruner/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-tool-result-pruner/src/index.ts#L1-L28) — `ToolResultPruner`；比较工具结果剪枝。
+5. [S073 · packages/compaction/compaction-image-offload/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-image-offload/src/index.ts#L1-L28) — `apply`；比较图片纯投影。
+
+**重要数据结构：**CompactionResult、shadowedSeqs、surface POSITION span、CompactionTrigger、TokenUsage。
+
+**关键代码分段讲法：**画原事件序号与模型可见顺序双轨；replace 后 startSeq 数值可大于 endSeq，不能按数值区间理解。
+
+**实际调用链：**pre-step pressure/request-error overflow→compactIfNeeded→选择范围→compaction/start→summary→user/message replace→compaction/end；原 log 不删除。
+
+**设计取舍：**压缩成本和失真需评估；token 数可能是估算，不能承诺压缩固定节费比。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H19-01 对比《截断、剪枝与摘要压缩》：比较保留信息与成本；H19-02 双轨《Compaction 的位置跨度》：理解 seq 非数值区间。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L19：M5 用固定摘要器比较保留全文、剪枝、摘要的字符预算与关键事实覆盖；记录不确定信息。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h19)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+compaction/summary 本身是否自动成为模型消息？
+
+参考答案：不是；它是记账事件，模型可见替换由另一 user/message 的 surfaceOp 实现。
+
+### 16. 关键风险及常见误解
+
+不把摘要当原始证据；失败/遗留锁不应伪装压缩完成。
+
+### 17. 验收方式
+
+三策略都保持日志哈希不变、tool pairing 不破坏；说明 summary 与 replacement 的两条记录。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S179 · packages/compaction/compaction-basic/tests/compaction-basic.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/tests/compaction-basic.spec.ts#L1-L28)
+- [S180 · packages/compaction/compaction-basic/tests/manual-compaction.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/tests/manual-compaction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H20 处理压缩或流失败后的控制；H29 再评估性能与质量。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H20
+
+### 1. 课程编号
+
+H20（核心）。
+
+### 2. 课程名称
+
+取消、重试、异常处理与故障恢复
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H14、H18–H19；AbortSignal。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：按 Stage 3 取消与 Stage 4 paused Resume 列出迟到、失败、已发生写入三种情况。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：新增 request attempt 重试、drain 与 repair。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户点击停止时工具可能已经开始；重试模型失败又怎样避免重复加入用户消息？
+
+### 7. 本节唯一核心目标
+
+按故障阶段区分可重试请求、取消与未知副作用。
+
+### 8. 重点技术概念
+
+LlmFailure、request-error、retry policy、drain、repair。
+
+### 9. 需要额外解释的难懂术语
+
+Idempotency、Retry、Quiescence。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+撤销未发货订单与拦截已上路包裹不同；通知停止不能让已送达包裹消失。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S137 · docs/subsystems/core.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/core.zh.md#L1-L10)、[S181 · packages/llm/llm-retry/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/README.zh.md#L1-L10)。
+
+1. [S074 · packages/core/agent-loop/src/agent.ts:191](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L191-L218) — `cancel(cause:`；先看取消 cause 与 inbox 处理。
+2. [S075 · packages/core/agent-loop/src/agent.ts:549](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L549-L576) — `'agent/request-error'`；再看同一步 request attempt 重试。
+3. [S076 · packages/llm/llm-retry/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L1-L28) — `Config、RetryInternals、apply`；核对实际 retry 插件政策。
+4. [S077 · packages/core/tools/src/pipeline.ts:258](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L258-L285) — `private async dispatchToolBody(`；看已开始工具的等待。
+5. [S066 · packages/core/session/src/repair.ts:15](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L15-L42) — `export`；最后对照缺失结果的修复。
+
+**重要数据结构：**AgentCancelCause、RequestErrorAction、LlmFailure、ToolBatchExecutionError。
+
+**关键代码分段讲法：**用故障点表分准备前、stream 中、body 前、body 后；逐格回答日志、重试与副作用。
+
+**实际调用链：**失败 finish→assistant/attempt→request-error→retry/throw；cancel→abort→工具 drain→step/end→turn/end；硬退出之后由 repair 处理未闭合历史。
+
+**设计取舍：**模型请求重试与写工具重试不同；重试不重新 assembly/pre-step，已进入的用户消息只提交一次。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H20-01 故障树《四阶段取消与恢复》：定位可撤销边界；H20-02 时序《同 Step 的模型重试》：避免重复用户消息。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L20：M5 模拟迟到结果、请求失败重试与未知写结果；取消后后续 body=0。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h20)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+为什么同一 prompt 的两次请求不是严格幂等的外部操作？
+
+参考答案：模型可能不同、计费可能发生，工具副作用更不自动幂等；幂等要针对业务结果定义并实现。
+
+### 16. 关键风险及常见误解
+
+不承诺自动回滚或 exactly-once；网络超时不等于上游未执行。
+
+### 17. 验收方式
+
+故障表每格有结果与证据；同一步重试不重复用户消息，取消停止后续动作。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S182 · packages/core/agent-loop/tests/cancel.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/cancel.spec.ts#L1-L28)
+- [S183 · packages/core/agent-loop/tests/request-error.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/request-error.spec.ts#L1-L28)
+- [S133 · packages/core/agent-loop/tests/shutdown-drain.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/shutdown-drain.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H21 将所有权、取消传播扩展到子代理树。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H21
+
+### 1. 课程编号
+
+H21（核心）。
+
+### 2. 课程名称
+
+Subagent、任务委派与多智能体协作
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H09、H18、H20。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 5 分钟：回顾短期 Workflow 状态和父任务需要的预算/取消；不假设已学多智能体。
+
+旧课深度：现有工具组成短期有停止条件的 Workflow，非 Harness 模型脚本 PTC。本讲增量：首次引入 activation/provider/delivery 与父子所有权。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+父 Agent 委派任务后，谁拥有子会话、如何回传、取消后谁负责清理？
+
+### 7. 本节唯一核心目标
+
+用 activation 的所有权和 delivery 区分新建、Fork 与外部执行。
+
+### 8. 重点技术概念
+
+SubagentRuntime、activation、provider capabilities、child catalog。
+
+### 9. 需要额外解释的难懂术语
+
+Delegation、Activation、Lineage。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+主编给记者分配资料核查；记者收到的是任务材料，不一定复制主编整本笔记。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S184 · docs/subsystems/subagent.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/subagent.zh.md#L1-L10)、[S185 · docs/subsystems/agent-team.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/agent-team.zh.md#L1-L10)。
+
+1. [S078 · packages/subagent/subagent/src/index.ts:271](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L271-L298) — `async startActivation(`；先读统一准入入口。
+2. [S079 · packages/subagent/subagent/src/index.ts:312](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L312-L339) — `async sendMessage(`；再看消息与父子约束。
+3. [S080 · packages/subagent/subagent-spawn-in-process/src/index.ts:46](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-spawn-in-process/src/index.ts#L46-L59) — `readonly inheritsParentContext`；核对 spawn 不继承对话。
+4. [S081 · packages/subagent/subagent-fork-in-process/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-fork-in-process/src/index.ts#L1-L28) — `Config、apply`；再对照 fork provider。
+
+**重要数据结构：**SubagentActivationSpec、SubagentActivation、SubagentCapabilities、SubagentResult。
+
+**关键代码分段讲法：**先跑一父两子 Mock，再换 delivery；目录中的历史 child 不一定可继续，unknown descriptor 不能授予能力。
+
+**实际调用链：**tool/Workflow→startActivation→capability 校验→local prepareContinuable 或 external start→结果 settlement→parent/caller delivery→dispose descendants。
+
+**设计取舍：**Agent Teams 是需显式启用的实验扩展，只做边界介绍；本课主线仍是 subagent seam。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H21-01 所有权《父子 Activation 树》：定位取消传播；H21-02 对比《Spawn 与 Fork》：避免默认继承误解。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L21：M6 创建两子任务，取消父级后拒绝新子任务并等待清理；比较 caller/parent 的通知数。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h21)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+spawn 与 fork 是否默认拥有同样的父上下文？
+
+参考答案：不是；spawn provider 明确不继承父对话；fork 要按其 seed 规则讨论，不能只看“子代理”名称。
+
+### 16. 关键风险及常见误解
+
+模型分工不保证正确性或隔离；深度和数量预算不能替代业务权限。
+
+### 17. 验收方式
+
+父子清理轨迹与回传数准确；指明能力不支持时在哪一层拒绝。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S186 · packages/subagent/subagent/tests/activation-policy.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/tests/activation-policy.spec.ts#L1-L28)
+- [S187 · packages/subagent/subagent/tests/parent-result.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/tests/parent-result.spec.ts#L1-L28)
+- [S188 · packages/subagent/subagent/tests/external-lifecycle.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/tests/external-lifecycle.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H22 使用 subagent 编排；H23 看外部载体怎样驱动这些服务。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H22
+
+### 1. 课程编号
+
+H22（核心）。
+
+### 2. 课程名称
+
+Workflow、Jobs、Goal 与任务调度
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H21；Run 状态与预算。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：先复述 Stage 4 Workflow 是既有能力按状态衔接，不是新增一堆同名 Tool。
+
+旧课深度：现有工具组成短期有停止条件的 Workflow，非 Harness 模型脚本 PTC。本讲增量：再对比 Harness 脚本编排、Job、Goal 与 Schedule。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+脚本编排、后台进程、同会话长期目标和定时触发为什么不能都称为一个任务队列？
+
+### 7. 本节唯一核心目标
+
+根据生命周期选择四种任务抽象，并画清它们的组合。
+
+### 8. 重点技术概念
+
+WorkflowEngine、JobRegistry、GoalService、ScheduleService。
+
+### 9. 需要额外解释的难懂术语
+
+Workflow、Job、Goal Round、Schedule。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+项目执行方案、后台印刷任务、持续交付目标、日历提醒分别解决不同问题。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S189 · docs/subsystems/workflow.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/workflow.zh.md#L1-L10)、[S190 · docs/subsystems/jobs.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/jobs.zh.md#L1-L10)、[S191 · docs/subsystems/goal.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/goal.zh.md#L1-L10)、[S192 · docs/subsystems/schedule.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/schedule.zh.md#L1-L10)。
+
+1. [S082 · packages/workflow/workflow/src/runtime-types.ts:19](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/runtime-types.ts#L19-L46) — `interface WorkflowStartRequest`；先读脚本请求契约。
+2. [S083 · packages/workflow/workflow-ptc/src/index.ts:134](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L161) — `start(request:`；看实际 PTC 引擎。
+3. [S084 · packages/jobs/jobs/src/index.ts:88](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs/src/index.ts#L88-L115) — `export abstract class JobRegistry`；对比后台执行注册。
+4. [S085 · packages/goal/goal/src/index.ts:305](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/index.ts#L305-L332) — `create(agent:`；看修订化目标。
+5. [S086 · packages/schedule/schedule/src/index.ts:256](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/schedule/schedule/src/index.ts#L256-L283) — `async create(`；最后只读定时触发契约。
+
+**重要数据结构：**WorkflowStartRequest、WorkflowResult、JobStatus、GoalRef(id,revision)、ScheduleRecord。
+
+**关键代码分段讲法：**拆三段：脚本 35 分钟、Job/Goal 对比 30 分钟、Schedule 20 分钟；phases 只是进度注释，非 DAG。
+
+**实际调用链：**WorkflowEngine.start→PTC→subagent activation；生产方→jobs；goal-round-driver→Agent 续跑；schedule runtime→delivery/Session，四者不是硬编码单链。
+
+**设计取舍：**同一步/同一 turn 结束不保证所有 Job settled；Goal revision 支持精确变更而非自动业务 exactly-once。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H22-01 矩阵《四种任务抽象》：防止把一切叫队列；H22-02 时序《编排与续跑的组合》：看清非线性关系。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L22：M6 对四个场景分类，使用虚拟时钟与内存队列验证调度；不创建系统定时器。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h22)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+WorkflowMeta.phases 是否决定脚本执行顺序？
+
+参考答案：不是；它是展示信息，脚本与引擎 helper 决定实际结构。
+
+### 16. 关键风险及常见误解
+
+不能把 Harness Workflow 说成 Stage 4 固定短 Workflow 的同名实现；不声称分布式可靠调度已验证。
+
+### 17. 验收方式
+
+四种抽象各给一个入口、终态和故障；脚本 fatal 错误不能被当作普通 null 成功。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S193 · packages/workflow/workflow-ptc/tests/meta.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/tests/meta.spec.ts#L1-L28)
+- [S194 · packages/jobs/jobs/tests/service.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs/tests/service.spec.ts#L1-L28)
+- [S195 · packages/goal/goal/tests/projection.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/tests/projection.spec.ts#L1-L28)
+- [S196 · packages/schedule/schedule/tests/recovery.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/schedule/schedule/tests/recovery.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+130–180 分钟（建议三段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H21 提供执行单元，本讲提供编排；H24 统一审查各生命周期。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H23
+
+### 1. 课程编号
+
+H23（核心）。
+
+### 2. 课程名称
+
+CLI、Web UI、SDK 与远程通信
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H04、H17、H21–H22；HTTP 与流。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l2](/lesson/stage-2/s2-l2)、[s3-l3](/lesson/stage-3/s3-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 5 分钟：复习 HTTP 请求响应、流式取消和刷新回读，区分页面状态与服务端事实。
+
+旧课深度：POST/JSON、服务端校验与 HTTP 验收，未涉及 JSON-RPC。本讲增量：新增载体适配、JSON-RPC 和远程投影。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+界面重连后看到的状态来自哪里？SDK 与网页是不是各写一套 Agent？
+
+### 7. 本节唯一核心目标
+
+追踪一个控制动作与一条状态订阅穿过载体边界。
+
+### 8. 重点技术概念
+
+profile launcher、controller、JSON-RPC、Session follow。
+
+### 9. 需要额外解释的难懂术语
+
+Carrier、Remote、Snapshot/Delta。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+柜台、手机银行和机器接口共享后端业务，但登录方式与通信协议不同。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L1-L10)、[S197 · docs/subsystems/web-server.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/web-server.zh.md#L1-L10)、[S198 · packages/sdk/client/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sdk/client/README.zh.md#L1-L10)。
+
+1. [S011 · apps/cli/src/profile-boot.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L1-L28) — `homePatchPath、initializeProfileFromDefault、prepareProfile、ResolvedProfileRuntime、RunProfileOptions、runProfile`；先回到统一启动器。
+2. [S087 · packages/api/session-controller/src/agent.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/agent.ts#L1-L28) — `ApiSessionNotFound、ApiSessionSubagentOwnership、ApiSessionCwdConflict、ApiSessionPresetConflict、ApiSessionCreateRequest、ApiSessionCreated、ApiSessionAgentError、ApiSessionAgentResult、h`；再读创建/恢复的 Web 业务适配。
+3. [S088 · packages/api/session-controller/src/assistant-stream.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/assistant-stream.ts#L1-L28) — `SessionAssistantStreamAccumulator`；看实时流消费与版本。
+4. [S089 · packages/sdk/client/src/launch.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sdk/client/src/launch.ts#L1-L28) — `RuntimeProcessOptions、DshNodeLaunch、resolveDshBinFromManifests、installedDshBin、resolveDshNodeLaunchFromManifests、resolveDshLaunch`；对照 SDK 如何启动 profile。
+5. [S090 · packages/sdk/client/src/client.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sdk/client/src/client.ts#L1-L28) — `TransportClosedError、RequestTimeoutError、SdkProtocolError、NotificationSubscription、HarnessClient、createProcessHarnessClient、isRecord`；最后读客户端通信生命周期。
+
+**重要数据结构：**SessionId、ProjectionSnapshot、stream revision、SDK client 生命周期；协议以源码字段为准。
+
+**关键代码分段讲法：**从 cancel 控制向内读，再从 session/event 向外读；不要把所有 transport 都归作 WebSocket。
+
+**实际调用链：**Web controller→AgentRegistry/SessionProjection；agent/assistant-stream→Web follow；SDK client→SDK profile server→JSON-RPC 控制/事件。
+
+**设计取舍：**共享领域能力不代表共享公开传输；Web live stream 的唯一远端消费者与 SDK durable event 分清。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H23-01 架构《CLI、Web 与 SDK 载体》：识别共享能力和不同协议；H23-02 时序《断连重连与状态重建》：区分 snapshot 和增量。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L23：给 M6 的事件适配器做断连/重连 fixture，基于 snapshot 重建，过滤旧 revision。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h23)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+UI 显示完成能否代替持久化确认？
+
+参考答案：不能；需核对领域终态与持久边界，实时 UI 只是消费方。
+
+### 16. 关键风险及常见误解
+
+本轮不连用户账户/现有服务器，不修改平台路由；不得凭界面反推领域事实。
+
+### 17. 验收方式
+
+一条控制链与一条订阅链均有端点源码和失败路径；说明重连从何处获得状态。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S199 · packages/api/session-controller/tests/transport.host.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/tests/transport.host.spec.ts#L1-L28)
+- [S200 · packages/api/session-controller/tests/assistant-stream.host.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/tests/assistant-stream.host.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H24 把控制、状态、测试合为架构证据；扩展课再实现小插件。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H24
+
+### 1. 课程编号
+
+H24（核心）。
+
+### 2. 课程名称
+
+大型 Agent 系统测试与综合架构分析
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H01–H23；Mock 与故障注入。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l7](/lesson/stage-3/s3-l7)、[s4-l7](/lesson/stage-4/s4-l7)、[s4-l8](/lesson/stage-4/s4-l8)。基础回顾约 7 分钟：回顾固定 Eval、成功/该拒绝都应 PASS、三个旧安全硬门槛。
+
+旧课深度：固定题集、自动指标及人工支持度，未做框架级性能与生命周期测试。本讲增量：新增框架级 contract/property/snapshot/bench 证据层。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+有很多绿色测试，怎样判断它们是否验证了真正的产品边界？
+
+### 7. 本节唯一核心目标
+
+为一条跨模块链建立事实、测试与限制的证据矩阵。
+
+### 8. 重点技术概念
+
+contract regression、property test、snapshot/replay、benchmark。
+
+### 9. 需要额外解释的难懂术语
+
+Coverage、Invariant、Gate。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+消防演练不能只看所有人走过楼梯，还要验证出口、断电与人数；覆盖到代码不等于证明业务成立。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S201 · docs/testing.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/testing.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L1-L10)、[S114 · SAFETY.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L1-L10)。
+
+1. [S091 · packages/core/agent-loop/tests/contract-regressions.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/contract-regressions.spec.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；先看必须长期维持的约定。
+2. [S092 · packages/core/agent-loop/tests/mock-adapter.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/mock-adapter.ts#L1-L28) — `textResponse、maxTokensResponse、toolCallResponse、HangAfter、MockAdapter`；看确定性替身边界。
+3. [S093 · vitest.config.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vitest.config.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；再查测试纳入/跳过规则。
+4. [S094 · scripts/run-gates.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/run-gates.ts#L1-L28) — `Mode、Gate、GateResult、ConcurrencyDefault、runAggregate、cliGateOptions、defaultConcurrency、ciWorkerEnvironment、gatesForMode、RunGatesOptions、runGates、runGate、parsePidPpidLines、taskkillA`；最后看依赖门禁。
+5. [S095 · benchmarks/AGENTS.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/benchmarks/AGENTS.md#L1-L18) — `声明配置/模块入口（无可调用函数）`；对比性能门禁规范（只读引用）。
+
+**重要数据结构：**测试输入、assert、gate dependency、coverage include/exclude、benchmark budget。
+
+**关键代码分段讲法：**选“审批允许但 guard 拒绝”或“取消后不再执行”做证据审计；要求学生寻找可反驳假设。
+
+**实际调用链：**需求不变量→Mock/contract→包集成→持久回放→载体 smoke→性能门禁；真实 API e2e 另列，不拿缺密钥 skip 当通过。
+
+**设计取舍：**锁定仓库追求按文件覆盖门禁，但这不等于安全审计、语义正确性或跨平台全验证。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H24-01 测试图谱《证据层级与门禁》：避免覆盖率迷信；H24-02 矩阵《核心架构风险审查》：完成跨模块综合判断。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L24：运行 M1–M6，全链报告列成功、拒绝、取消、未知写结果；给一项未经测试的结论降级。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h24)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+没有 API Key 的 e2e 被跳过后，能写“真实模型集成已通过”吗？
+
+参考答案：不能，必须列为未验证并保留具体 skip 原因；Mock 是固定行为证据。
+
+### 16. 关键风险及常见误解
+
+快照录制可能包含敏感数据；禁止用私人会话与真实凭据作为教学 fixture。
+
+### 17. 验收方式
+
+综合报告四个硬门槛全通过：越权 0、未批准写入 0、取消后新动作 0、虚报验证 0。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S091 · packages/core/agent-loop/tests/contract-regressions.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/contract-regressions.spec.ts#L1-L28)
+- [S202 · packages/core/tools/tests/properties.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/properties.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–165 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+核心结课；H25–H30 按兴趣和先修分支进入。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H25
+
+### 1. 课程编号
+
+H25（拓展）。
+
+### 2. 课程名称
+
+自己编写一个 Cordis 插件
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H05–H08、H13、H24。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l6](/lesson/stage-1/s1-l6)、[s3-l2](/lesson/stage-3/s3-l2)。基础回顾约 3 分钟：回顾 Stage 1 自选小功能的边界和 Stage 3 strict Schema；插件 API 复用 H05–H13。
+
+旧课深度：独立功能交付与范围控制，未编写 Cordis 插件。本讲增量：把复现/验收方式用于可卸载纯插件。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+怎样扩展一项小能力，同时让加载、重复注册与卸载行为都能验证？
+
+### 7. 本节唯一核心目标
+
+完成一个可重复挂载/卸载且无外部副作用的插件。
+
+### 8. 重点技术概念
+
+apply、inject、ctx.effect、ToolDefinition.output。
+
+### 9. 需要额外解释的难懂术语
+
+Plugin Lifecycle、Disposer。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+给工具箱增加一个单位换算器，退还工具箱时不留下多余附件。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S203 · docs/cookbook/adding-a-package.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cookbook/adding-a-package.zh.md#L1-L10)、[S204 · docs/cookbook/adding-a-tool.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cookbook/adding-a-tool.zh.md#L1-L10)。
+
+1. [S096 · packages/core/tool-executor-native/src/index.ts:33](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L33-L35) — `export function apply`；先读最短真实插件。
+2. [S045 · packages/core/tools/src/contracts.ts:26](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/contracts.ts#L26-L53) — `export interface ToolDefinition`；再查当前工具契约。
+3. [S041 · packages/core/tools/src/index.ts:128](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L128-L155) — `register(definition:`；读输出 schema 与重复注册验证。
+4. [S023 · vendor/cordis/src/events.ts:254](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/events.ts#L254-L281) — `register(label:`；核对 effect 所有权。
+
+**重要数据结构：**ToolDefinition、output.schema/render、ToolRegistrationOptions、disposer。
+
+**关键代码分段讲法：**用纯内存字符计数器；教学版不缩写成过时的 register(name, fn)，代码明确标“教学简化”。
+
+**实际调用链：**apply(inject tools)→tools.register→step resolve→execute/output.render→dispose 自动注销。
+
+**设计取舍：**优先小插件，不 fork loop；可扩展不表示无需检查输出与执行限制。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H25-01 生命周期《一个插件的验收闭环》：使实践可复验。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L25：基于 M2 的插件契约补 count_words，覆盖空字符串、重复注册、卸载后不可见；正式制课再做锁定仓库包级插件。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h25)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+只提供 execute 而不提供 output 契约能否按本版本注册？
+
+参考答案：不能；本版本 register 要求 output schema/render，须按锁定接口实现。
+
+### 16. 关键风险及常见误解
+
+交付教学插件不能冒称已运行官方完整 Loader；库级 probe 与产品级构建分别记账。
+
+### 17. 验收方式
+
+三类 fixture 全过，并给出未来包级集成测试命令与未执行状态。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L1-L28)
+- [S152 · packages/core/tools/tests/scoped.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/scoped.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+从概念转小扩展；H26–H28 选择具体能力 seam。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H26
+
+### 1. 课程编号
+
+H26（拓展）。
+
+### 2. 课程名称
+
+多模型适配与 Provider 工程
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H12、H24；认证与 SSE。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l2](/lesson/stage-3/s3-l2)、[s3-l3](/lesson/stage-3/s3-l3)、[s3-l7](/lesson/stage-3/s3-l7)。基础回顾约 5 分钟：回顾 Provider Key、Mock/real 标识、结构化输出和流式错误；不复习向量库。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：扩展能力协商、默认值、路由和 replay owner。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同名 model、不同能力与认证来源并存时，怎样避免路由和 replayState 串用？
+
+### 7. 本节唯一核心目标
+
+设计符合现有 seam 的能力声明、路由与错误转换。
+
+### 8. 重点技术概念
+
+adapter registration、model info、call defaults、replay ownership。
+
+### 9. 需要额外解释的难懂术语
+
+Provider/Adapter、Capability Negotiation。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+车队调度先确认车辆身份、容量和驾驶资格；不能仅凭车名认为性能相同。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S205 · docs/cookbook/adding-an-llm-adapter.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cookbook/adding-an-llm-adapter.zh.md#L1-L10)、[S146 · docs/subsystems/llm-streaming.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/llm-streaming.zh.md#L1-L10)。
+
+1. [S037 · packages/llm/llm/src/index.ts:290](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L290-L317) — `async prepareCall(`；先看绑定的公共约束。
+2. [S038 · packages/llm/llm-deepseek/src/adapter.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/adapter.ts#L1-L28) — `DeepSeekAdapter`；看官方专用 provider。
+3. [S097 · packages/llm/llm-pi-ai/src/adapter.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-pi-ai/src/adapter.ts#L1-L28) — `PiAiAdapterOptions、PiAiAuthInjection、PiAiAdapter`；再对比多 provider adapter。
+4. [S098 · packages/llm/llm/src/retry-policy.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/retry-policy.ts#L1-L28) — `BackoffConfig、NormalRetryPolicyConfig、AlwaysRetryPolicyConfig、RetryPolicyConfig、ResolvedRetryBackoff、ResolvedNormalRetryPolicy、ResolvedAlwaysRetryPolicy、ResolvedRetryPolicy、resolve`；最后看失败与重试事实。
+
+**重要数据结构：**LlmModelInfo、PreparedLlmCall、LlmFailure、LlmCallConfigAdapterDefaults。
+
+**关键代码分段讲法：**给只支持文本的 Mock provider 与支持工具的 provider 做能力矩阵；不可用能力要显式失败，不静默假装成功。
+
+**实际调用链：**registered provider→exact-model info→resolve defaults→prepared call→protocol adapter→统一 finish；跨 adapter 移除不属于它的 replay state。
+
+**设计取舍：**默认值须记入请求可重建封装；Provider API 变化须另开课程版本，不能用最新 npm 覆盖。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H26-01 矩阵《Provider 能力与默认值》：避免 API 表面兼容误判；H26-02 时序《Prepared Call 的一次性绑定》：保护真实请求封装。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L26：扩展 M3 的两套 provider fixture，跨 adapter 切换剥离私有 replayState，并拒绝重复 dispatch。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h26)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+两个 provider 共用同一 adapter 实例与两个不同 adapter 实例能一概处理 replayState 吗？
+
+参考答案：不能；须按当前 adapter 所有权规则判断，保留与剥离不是按字符串碰巧相同决定。
+
+### 16. 关键风险及常见误解
+
+不提供真实模型性能排名；本课能力与错误工程不等于供应商质量测评。
+
+### 17. 验收方式
+
+路由、能力不足、默认值、私有状态、一次性 dispatch 五项 fixture 有确定性预期。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S149 · packages/llm/llm-deepseek/tests/prepared-call.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/tests/prepared-call.spec.ts#L1-L28)
+- [S206 · packages/llm/llm-pi-ai/tests/protocol-roundtrip.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-pi-ai/tests/protocol-roundtrip.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–160 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H12 的公共词汇在此扩展到 provider 实现；H29 测量行为与成本。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H27
+
+### 1. 课程编号
+
+H27（拓展）。
+
+### 2. 课程名称
+
+MCP 深度集成与自定义能力
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H16、H20、H24。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l4](/lesson/stage-4/s4-l4)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 6 分钟：回顾 Stage 4 受控 Streamable HTTP、服务间凭据与远端不可扩权。
+
+旧课深度：本地 deterministic Streamable HTTP MCP、白名单/凭据/坏结果，未讲多服务器重连和资源注册。本讲增量：扩展 generation 重连、resources 与服务器指令。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+远端重连和工具列表更新期间，如何避免旧连接覆盖新工具、资源串到别的 Agent？
+
+### 7. 本节唯一核心目标
+
+解释每服务器连接生命周期与工具/资源的作用域发布。
+
+### 8. 重点技术概念
+
+connection generation、discovery、resources、server instructions。
+
+### 9. 需要额外解释的难懂术语
+
+Generation、Transport、Projection。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+换班接线员只有完成交接才能接管名录；旧接线员的迟到消息不能覆盖新班表。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S163 · docs/subsystems/mcp.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/mcp.zh.md#L1-L10)、[S207 · packages/mcp/mcp-client/README.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/README.zh.md#L1-L10)。
+
+1. [S058 · packages/mcp/mcp-client/src/index.ts:154](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/index.ts#L154-L181) — `export async function apply`；先看插件拥有的资源。
+2. [S099 · packages/mcp/mcp-client/src/connection.ts:127](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/connection.ts#L127-L154) — `export function startConnection`；精读连接 generation/reconnect。
+3. [S059 · packages/mcp/mcp-client/src/tools.ts:225](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/tools.ts#L225-L252) — `export function createMcpToolDefinition`；读规范 JSON 与呈现分离。
+4. [S100 · packages/mcp/mcp-resources/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-resources/src/index.ts#L1-L28) — `McpResourceRequest、McpResourceProvider、McpResourceRuntime`；最后看共享资源工具与 serverName 选择。
+
+**重要数据结构：**ConnectionHandle、ToolDisposers、MCP CallToolResult、PreparedProjection、资源 provider。
+
+**关键代码分段讲法：**先模拟 A 连接迟到、B 连接已激活，再观察失败刷新保留上代目录；区分 canonical JSON 与模型文本。
+
+**实际调用链：**apply→startConnection→SDK transport/handshake→discovery→成功后发布新一代工具与指令→callTool；资源在调用者 scope 按 serverName 分派。
+
+**设计取舍：**外部服务器指令可进入 scoped prompt，但它不是本地权限授权；binary 内容需按实际投影规则处理。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H27-01 时序《MCP Generation 与重连》：阻止迟到旧连接发布；H27-02 架构《资源、工具与服务器指令》：区分三条接入路径。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L27：M4/M6 的内存 MCP fixture 重连三次，验证旧 generation 结果被忽略、卸载后清单为空。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h27)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+重新发现失败后是否可以先删除全部旧工具再显示成功？
+
+参考答案：不应据此虚报；锁定实现保留上一代工具并记录故障，只有成功发现才发布替代。
+
+### 16. 关键风险及常见误解
+
+不把 stdio 当沙箱；服务命令和环境本身也是执行边界。
+
+### 17. 验收方式
+
+工具命名无碰撞、迟到不覆盖、资源按 scope、卸载无泄漏四项证据。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S208 · packages/mcp/mcp-client/tests/reconnect.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/tests/reconnect.spec.ts#L1-L28)
+- [S209 · packages/mcp/mcp-client/tests/negotiation-lifecycle.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/tests/negotiation-lifecycle.spec.ts#L1-L28)
+- [S164 · packages/mcp/mcp-client/tests/tool-definition.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/tests/tool-definition.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–165 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H16 只建能力地图，本讲聚焦协议桥接可靠性；H28 用浏览器消费者检验生命周期。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H28
+
+### 1. 课程编号
+
+H28（拓展）。
+
+### 2. 课程名称
+
+Browser Use、Computer Use 与执行边界
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H15、H21、H27。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l3](/lesson/stage-4/s4-l3)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 5 分钟：回顾取消不能保证请求未到达、用户批准不等于系统全权。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：首次明确 launched/attached/shared desktop 的资源差异。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+Fork 一段会话会不会复制浏览器登录？多个 Agent 能否同时独占同一个桌面？
+
+### 7. 本节唯一核心目标
+
+区分浏览器 Session 资源所有权和共享桌面输入边界。
+
+### 8. 重点技术概念
+
+BrowserUse registry、SessionResources、CUA provider、app grants。
+
+### 9. 需要额外解释的难懂术语
+
+Computer Use、Resource Ownership、Irreversible Input。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+借一台专用浏览器像借独立办公桌，控制整个桌面像多人共用同一键盘；记录不能复原桌面。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S210 · docs/subsystems/browser-use.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/browser-use.zh.md#L1-L10)、[S211 · docs/subsystems/computer-use.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/computer-use.zh.md#L1-L10)、[S114 · SAFETY.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L1-L10)。
+
+1. [S101 · packages/experimental/browser-use-runtime/src/index.ts:60](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/experimental/browser-use-runtime/src/index.ts#L60-L87) — `export class SessionResources`；先看精确 Agent 所有的资源。
+2. [S102 · packages/experimental/browser-use-runtime/src/index.ts:185](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/experimental/browser-use-runtime/src/index.ts#L185-L197) — `private closeEntry(`；再看在途操作与释放。
+3. [S103 · packages/computer-use/computer-use/src/index.ts:16](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/computer-use/computer-use/src/index.ts#L16-L43) — `export class ComputerUseRegistry`；对比只注册 provider 名称。
+4. [S104 · packages/experimental/computer-use-cua-driver-mcp/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/experimental/computer-use-cua-driver-mcp/src/index.ts#L1-L28) — `Config、apply`；最后看具体桌面提供方接入。
+
+**重要数据结构：**OwnedSessionResource、SessionResourceOptions、ComputerUseProviderName、provider 授权状态。
+
+**关键代码分段讲法：**用虚构画布作为桌面，展示 observation→action→verification；禁止操作学生真实浏览器和私人窗口。
+
+**实际调用链：**browser provider→agent/created 初始化→SessionResources.run→工具 pipeline→owner dispose；computer-use provider 注册不预留整桌面。
+
+**设计取舍：**浏览器 reload/fork 不恢复 profile/登录；attached 外部浏览器清理时断开而非关闭；桌面 input 取消不可撤回。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H28-01 边界《启动、附加与共享桌面》：明确资源所有权差异；H28-02 流程《观察、操作、验证》：解释取消不能撤回输入。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L28：M6 的虚构画布记录一次 click，取消后不得新增 click；fork 只有日志，没有登录态。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h28)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+把 click 结果标为 cancelled 是否证明用户界面从未收到输入？
+
+参考答案：不证明；已经交付的输入不可撤回，应另行观察验证，不把取消当回滚。
+
+### 16. 关键风险及常见误解
+
+实验性平台覆盖不同；本轮未运行真实桌面、浏览器连接或安全逃逸测试。
+
+### 17. 验收方式
+
+资源归属图标明 launched/attached/shared desktop 三种清理；虚构画布不触及宿主。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S212 · packages/experimental/browser-use-runtime/tests/agent-disposal.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/experimental/browser-use-runtime/tests/agent-disposal.spec.ts#L1-L28)
+- [S213 · packages/computer-use/computer-use/tests/registry.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/computer-use/computer-use/tests/registry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H29 追踪这些操作的观测与性能，H30 解释工程门禁。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H29
+
+### 1. 课程编号
+
+H29（拓展）。
+
+### 2. 课程名称
+
+Agent 可观测性、评估和性能分析
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H19、H24、H26。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l7](/lesson/stage-3/s3-l7)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 6 分钟：回顾 RAG 人工支持度、行为 Eval、延迟和 Token Usage，缺值不能记零。
+
+旧课深度：固定题集、自动指标及人工支持度，未做框架级性能与生命周期测试。本讲增量：新增分阶段归因、脱敏配置与性能门禁。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+回答变慢究竟是模型、工具、持久化还是 UI？看平均时延为什么可能掩盖安全失败？
+
+### 7. 本节唯一核心目标
+
+建立分阶段观测与不可被平均分掩盖的行为评估。
+
+### 8. 重点技术概念
+
+SessionTelemetry、redaction、token meter、benchmarks。
+
+### 9. 需要额外解释的难懂术语
+
+Observability、Evaluation、Attribution。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+物流总耗时要拆为揽收、运输和派送；“平均送达快”不能抵消送错地址。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S214 · docs/subsystems/session-telemetry.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/session-telemetry.zh.md#L1-L10)、[S215 · docs/subsystems/token-meter.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/token-meter.zh.md#L1-L10)、[S201 · docs/testing.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/testing.zh.md#L1-L10)。
+
+1. [S105 · packages/session/session-telemetry/src/index.ts:162](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-telemetry/src/index.ts#L162-L174) — `abstract emit(`；先读遥测记录 seam。
+2. [S106 · packages/session/session-telemetry/src/coordinator.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-telemetry/src/coordinator.ts#L1-L28) — `SessionTelemetryCapture、SessionTelemetryCaptureOptions、SessionTelemetryCoordinator`；再看采集生命周期。
+3. [S107 · packages/session/session-telemetry/src/coordinator.ts:205](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-telemetry/src/coordinator.ts#L205-L232) — `private redact(`；核对部署挂载的脱敏扩展点。
+4. [S108 · packages/llm/token-meter/src/index.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/index.ts#L1-L28) — `TokenMeter`；看用量来源。
+5. [S095 · benchmarks/AGENTS.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/benchmarks/AGENTS.md#L1-L18) — `声明配置/模块入口（无可调用函数）`；再看固定输入的性能门禁规范。
+
+**重要数据结构：**SessionTelemetryRecord、TokenUsage、耗时单位、错误类别、样本集版本。
+
+**关键代码分段讲法：**给一张时序含模型/工具/等待审批/flush，要求分拆耗时；对性能基准、行为 Eval 和真实集成分别记状态。脱敏 waterfall 的默认 fallback 原样返回，仓库此 seam 不自带规则。
+
+**实际调用链：**Session settlement/领域事件→telemetry coordinator→redact→provider/export；usage 与耗时按观测来源记账；固定 fixture 驱动 bench。
+
+**设计取舍：**缺 usage 是不可用而非 0；tracing 不证明模型语义正确；脱敏依赖部署挂载规则，默认无自动隐私保证。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H29-01 时序《延迟归因与缺失用量》：避免把未观测记为零；H29-02 指标《评估与安全硬门槛》：避免平均掩盖失败。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L29：M1–M6 产出只含虚构字段的报告；统计拒绝率/动作数和时序，不在本轮跑真实 API 基准。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h29)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+90% 任务成功但发生一次越权写入，平均分能否判通过？
+
+参考答案：不能；安全硬门槛独立计数，任一次即失败；质量/性能指标另看。
+
+### 16. 关键风险及常见误解
+
+不得记录完整私人 prompt、凭据或原始敏感工具结果；不虚构 token 精度。
+
+### 17. 验收方式
+
+报告包含样本/版本/缺失值/四硬门槛；区分估算与 provider usage。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S216 · packages/session/session-telemetry/tests/redact.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-telemetry/tests/redact.spec.ts#L1-L28)
+- [S217 · packages/session/session-telemetry/tests/telemetry.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-telemetry/tests/telemetry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H24 建证据方法，本讲落实观测；H30 回到可维护的仓库与 CI。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H30
+
+### 1. 课程编号
+
+H30（拓展）。
+
+### 2. 课程名称
+
+大型 TypeScript Monorepo、类型系统与 CI 工程
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H02、H24；泛型和声明合并补课。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)、[s4-l8](/lesson/stage-4/s4-l8)。基础回顾约 5 分钟：回顾 package.json、diff、构建与部署证据；区分源码与已部署产物。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：首次解释双 ts.Program、声明合并和生成契约图。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+源码在编辑器没报错却构建失败，为什么 Host 与 Client 不合成一个 ts.Program？
+
+### 7. 本节唯一核心目标
+
+解释源码、生成声明、构建产物与 CI 依赖的不同真源。
+
+### 8. 重点技术概念
+
+project references、declaration merging、Typert、build faces、gate DAG。
+
+### 9. 需要额外解释的难懂术语
+
+Branded Type、Aggregate Program、Generated Artifact。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+两份专业图纸共享零件编号，但图层规则不同；合成一张图会出现同名标注冲突。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S117 · docs/development.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L1-L10)、[S201 · docs/testing.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/testing.zh.md#L1-L10)、[S218 · docs/subsystems/typert.zh.md:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/typert.zh.md#L1-L10)。
+
+1. [S109 · tsconfig.host.json:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.host.json#L1-L28) — `声明配置/模块入口（无可调用函数）`；先看 Host aggregate 的引用。
+2. [S110 · tsconfig.client.json:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.client.json#L1-L28) — `声明配置/模块入口（无可调用函数）`；再看 Client aggregate 的引用。
+3. [S111 · scripts/generate-typert.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/generate-typert.ts#L1-L28) — `TypertGenerationStage、TypertGenerationError、generateWorkspaceTypert、formatGenerationFailure、main`；看类型反射生成阶段。
+4. [S094 · scripts/run-gates.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/run-gates.ts#L1-L28) — `Mode、Gate、GateResult、ConcurrencyDefault、runAggregate、cliGateOptions、defaultConcurrency、ciWorkerEnvironment、gatesForMode、RunGatesOptions、runGates、runGate、parsePidPpidLines、taskkillA`；最后算门禁依赖和失败传播。
+5. [S112 · .github/workflows/ci.yml:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/.github/workflows/ci.yml#L1-L28) — `声明配置/模块入口（无可调用函数）`；核对实际 CI 入口。
+
+**重要数据结构：**Context 合并声明、branded id、project references、DSH_BUILD_FACE、gate dependencies。
+
+**关键代码分段讲法：**先造同名 ctx 服务声明冲突，再解释隔离 program；用源码路径与 lib 产物分别画箭头。
+
+**实际调用链：**Host source types→Typert declarations→各 face 包编译→Host/Desktop bundle→Client compile/bundle→Web→aggregate check/consumer gates；按真实 DAG 而非任意并行。
+
+**设计取舍：**build:check 不负责补产物；100% coverage 不能替代行为测试；原生插件和平台 smoke 需要独立环境。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H30-01 依赖图《Host / Client 构建图》：解释类型冲突与生成阶段；H30-02 流程《课程版本更新与证据失效》：把维护变成可执行流程。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L30：给六节点构建 DAG 排序，删一份生成声明时明确失败；将课程更新变更映射到所需复验层级。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h30)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+tsconfig paths 能否解决同一个 ts.Program 中的 Host/Client Context 声明冲突？
+
+参考答案：不能；模块解析与 program 内声明合并是不同问题，需保持 aggregate 边界。
+
+### 16. 关键风险及常见误解
+
+不在 AI Foundry 根目录安装 Harness 工具链；不把 typecheck 成功当作可运行 bundle。
+
+### 17. 验收方式
+
+给出无环构建顺序、三种错误分类与更新复验计划；所有未运行的 CI 均标明。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S119 · scripts/verify-package-paths.spec.ts:1](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/verify-package-paths.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–165 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+收束到维护规范；后续正式教材从 H01 单讲研发，不自动发布。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
