@@ -1,0 +1,7 @@
+PASS reference + 6 edges
+[static-type] native-package -> tools-package
+[static-value] native-package -> tools-package
+[build-reference] native-project -> tools-project
+[runtime-call] ToolsService.execute -> NativeToolExecutor.execute
+[runtime-registration] native.apply -> ToolsService.setExecutor
+[runtime-call] NativeToolExecutor.execute -> executeToolBatch

@@ -1,0 +1,49 @@
+{
+  "locate": {
+    "packageName": "@deepseek-ai/dsh-tool-executor-native",
+    "implementation": "packages/core/tool-executor-native/src/index.ts",
+    "contract": "packages/core/tools/src/executor.ts",
+    "symbol": "ToolExecutor",
+    "consumer": "packages/core/agent-loop/src/agent.ts",
+    "test": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+    "testCase": "shares the registry and selects an independent executor through the preset scope chain"
+  },
+  "edges": [
+    {
+      "id": "R1",
+      "kind": "static-type",
+      "from": "native-package",
+      "to": "tools-package"
+    },
+    {
+      "id": "R2",
+      "kind": "static-value",
+      "from": "native-package",
+      "to": "tools-package"
+    },
+    {
+      "id": "R3",
+      "kind": "build-reference",
+      "from": "native-project",
+      "to": "tools-project"
+    },
+    {
+      "id": "R4",
+      "kind": "runtime-call",
+      "from": "ToolsService.execute",
+      "to": "NativeToolExecutor.execute"
+    },
+    {
+      "id": "R5",
+      "kind": "runtime-registration",
+      "from": "native.apply",
+      "to": "ToolsService.setExecutor"
+    },
+    {
+      "id": "R6",
+      "kind": "runtime-call",
+      "from": "NativeToolExecutor.execute",
+      "to": "executeToolBatch"
+    }
+  ]
+}

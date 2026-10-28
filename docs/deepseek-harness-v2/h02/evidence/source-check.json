@@ -1,0 +1,1545 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "date": "2026-10-29",
+  "lessonSha256": "2d2131d701e357c0584678c51213abc010c30db1a2184ac415d4249e42d23658",
+  "method": "exact blob identity vs fixed Git tree; line bounds; explicit claim needles; six relation-card lines; author semantic review separately recorded",
+  "references": [
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L15",
+      "path": "SAFETY.zh.md",
+      "start": 5,
+      "end": 15,
+      "sha256": "d021947c09c83eb352961cf12c95f4b5781d3987663e78c4a8b621d2e3be07a3",
+      "excerpt": [
+        "## 实验性状态",
+        "",
+        "DeepSeek Harness 是实验性的开发者预览软件。它尚未接受安全审计，不得视为安全或可用于生产环境的软件。",
+        "",
+        "本项目可以执行模型生成的代码与命令、加载第三方插件，并访问向其开放的网络、进程、凭据和文件。错误的模型输出、缺陷、配置错误、恶意输入或不可信插件可能损坏宿主计算机、修改或删除文件、泄露数据或凭据，或造成其他非预期影响。",
+        "",
+        "## 沙箱限制",
+        "",
+        "沙箱、审批提示与权限控制可以降低风险，但不保证隔离，也不能保证防止损害。即使限制得到正确执行，也无法保护本项目获准访问的资源。",
+        "",
+        "不要把 DeepSeek Harness 当作不可信工作负载唯一的安全控制措施。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/README.zh.md#L5-L20",
+      "path": "apps/cli/README.zh.md",
+      "start": 5,
+      "end": 20,
+      "sha256": "52a3d6faef82968bc3ce8352d8010adebb1489a1accc9d402dd2e937d82cfba7",
+      "excerpt": [
+        "`dsh` 是唯一受支持的 Node 应用启动器；profile 由多个插件组合包 patch 层按顺序叠加而成，其上再应用用户自己的覆盖配置。SDK 与 ACP（Agent Client Protocol）都是 profile，而不是独立的公开可执行命令。Python 运行时 wheel 包中也包含同一个命令；SDK 默认使用 `sdk`，极简示例选择 `sdk-minimal`。[`src/args.ts`](src/args.ts) 负责命令语法，[`src/bin.ts`](src/bin.ts) 只加载选中的运行器。无效命令、来自其他模式的选项，以及致命的配置或启动错误都会以非零状态退出。",
+        "",
+        "## 入口模式",
+        "",
+        "| 命令 | 用途 |",
+        "|---|---|",
+        "| `dsh <name>` / `dsh --profile <name>` | 启动位于 `$DSH_HOME/profiles/<name>` 的指定 profile。 |",
+        "| `dsh --profile <name> --from-default-profile <template>` | 用随附模板的全新副本替换自定义 profile，然后启动它。 |",
+        "| `dsh --profile acp` | 通过 ACP stdio 为自动化客户端提供服务，直至断开连接。 |",
+        "| `dsh --profile headless \"job\"` | 运行一个全新的持久化会话，打印最终答案并退出。 |",
+        "| `dsh --profile sdk` | 通过 JSON-RPC stdio 为 SDK 客户端提供服务，直至关闭或断开连接。 |",
+        "| `dsh --profile sdk-minimal` | 以独立极简 agent（智能体）配置树为 SDK 客户端提供服务。 |",
+        "| `dsh web` | 启动 Web profile。 |",
+        "| `dsh plugin --profile <name> <pnpm args>` | 通过在 profile 目录中转发给 pnpm 来管理该 profile 的插件。 |",
+        "",
+        "运行命令时所在的目录将作为默认 workspace 根目录。`web`、`headless`、`sdk`、`sdk-minimal` 和 `acp` profile 在首次使用时会从随附模板自动初始化。使用 `--from-default-profile` 可以基于这些模板之一，在非内置名称处创建或重置其他 profile；通过 `dsh plugin` 则可以初始化一个以 base 为基础的 profile。`desktop` 名称保留给 Electron 持有的 profile，因此 CLI（命令行界面）会拒绝针对它的启动和配置 dump 请求。npm CLI 也会拒绝其插件管理请求；[Desktop 内置命令](../desktop/README.zh.md#bundled-command-runtime)可以使用该安装的运行时管理已初始化的 Desktop profile。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/package.json#L13-L20",
+      "path": "apps/cli/package.json",
+      "start": 13,
+      "end": 20,
+      "sha256": "97750bfdb62d59955156f60ca7af0b7498bcd9e537ad800059222c231ab65209",
+      "excerpt": [
+        "  \"type\": \"module\",",
+        "  \"bin\": {",
+        "    \"dsh\": \"lib/bin.js\"",
+        "  },",
+        "  \"files\": [",
+        "    \"lib/*.js\",",
+        "    \"lib/types/*.d.ts\"",
+        "  ],"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L26-L48",
+      "path": "apps/cli/src/bin.ts",
+      "start": 26,
+      "end": 48,
+      "sha256": "7081b6503a635eb6c6d9c3e4619e740afe157252b246aa17acbf1a1ceec54c88",
+      "excerpt": [
+        "export async function runCli(options: RunCliOptions = {}): Promise<void> {",
+        "  const version = getDshRuntimeVersion()",
+        "  const { manageDesktopProfile, ...profileOptions } = options",
+        "  const invocation = parseDshArgs(process.argv.slice(2), version, manageDesktopProfile)",
+        "",
+        "  switch (invocation.mode) {",
+        "    case 'profile': {",
+        "      const { runProfile } = await import('./profile-boot.ts')",
+        "      try {",
+        "        await runProfile({",
+        "          environment: loadLayeredEnv('dsh'),",
+        "          profile: invocation.profile,",
+        "          fromDefaultProfile: invocation.fromDefaultProfile,",
+        "          patchFiles: invocation.patches,",
+        "          args: invocation.args,",
+        "          ...profileOptions,",
+        "        })",
+        "      } catch (error) {",
+        "        if (!(error instanceof StartupError)) throw error",
+        "        await reportStartupFailure(error, { home: resolveDshHome(), version, profile: invocation.profile })",
+        "        process.exit(1)",
+        "      }",
+        "      break"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L76-L78",
+      "path": "apps/cli/src/bin.ts",
+      "start": 76,
+      "end": 78,
+      "sha256": "7081b6503a635eb6c6d9c3e4619e740afe157252b246aa17acbf1a1ceec54c88",
+      "excerpt": [
+        "if (import.meta.main) {",
+        "  await runCli()",
+        "}"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/desktop-host/src/index.ts#L22-L36",
+      "path": "apps/desktop-host/src/index.ts",
+      "start": 22,
+      "end": 36,
+      "sha256": "514f5ead12dbe398ddd5de4f4e59721b332ae4e845c590d63a676a99fbe2e4b1",
+      "excerpt": [
+        "async function main(): Promise<void> {",
+        "  const runId = randomUUID() as PluginOperationRunId",
+        "  if (process.connected) process.send?.({ type: 'starting', runId }, (error) => { if (error !== null) console.error(error) })",
+        "  const runtimeDir = process.argv[2] as string",
+        "  const projectDir = process.argv[3] as string",
+        "  installOfficeEngineResolution(runtimeDir)",
+        "  const installAnchor = join(runtimeDir, 'node_modules', '@deepseek-ai', 'dsh', 'package.json')",
+        "  const profile = loadProfileDirectory('dsh', projectDir, installAnchor)",
+        "  reportSkippedBundles('dsh', profile)",
+        "  const application = runProfile({",
+        "    environment: loadLayeredEnv('dsh'),",
+        "    profile: 'desktop',",
+        "    resolvedProfile: { profile, installAnchor },",
+        "    patchFiles: [],",
+        "    args: ['--no-open', '--host', '127.0.0.1', '--port', '0'],"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/desktop/package.json#L1-L17",
+      "path": "apps/desktop/package.json",
+      "start": 1,
+      "end": 17,
+      "sha256": "e986ebcfa4f1034e2837c638ee75dd17c540eb55d07a85d9eab1b4c6d0f6554e",
+      "excerpt": [
+        "{",
+        "  \"name\": \"@deepseek-ai/dsh-desktop\",",
+        "  \"description\": \"Electron desktop shell for a bundled dsh runtime and external plugins\",",
+        "  \"version\": \"0.2.2-alpha.2\",",
+        "  \"private\": true,",
+        "  \"license\": \"MIT\",",
+        "  \"author\": {",
+        "    \"name\": \"Hangzhou DeepSeek Artificial Intelligence Co., Ltd.\"",
+        "  },",
+        "  \"type\": \"module\",",
+        "  \"main\": \"lib/main.js\",",
+        "  \"scripts\": {",
+        "    \"test:installer\": \"node scripts/test-windows-installer.mjs\",",
+        "    \"build\": \"tsc -b && pnpm run bundle\",",
+        "    \"bundle\": \"tsdown --config-loader native\",",
+        "    \"dev\": \"tsx scripts/dev.ts\",",
+        "    \"start\": \"tsx scripts/dev.ts --skip-build\","
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/plugin-market-generator/README.zh.md#L1-L5",
+      "path": "apps/plugin-market-generator/README.zh.md",
+      "start": 1,
+      "end": 5,
+      "sha256": "c7e0df3116c6cf3d3642b4105f382dc83e538c30a0b4c692eb44ff7121f63c0a",
+      "excerpt": [
+        "# 插件市场索引生成器",
+        "",
+        "[English](README.md) | 中文",
+        "",
+        "[插件市场索引](../../.agents/notes/implemented/feature/2026-10-02-plugin-market-index-format.zh.md)文件的参考生成器。它读取一份由 npm 包名和 Git 仓库 URL 组成的纯文本列表，写出一个 `index.json`，DSH 的 **发现** 页面无需额外请求即可展示该文件。它是独立的 Node 程序，不是 Cordis 应用，也从不安装或运行其所描述包的代码。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/web/index.html#L14-L18",
+      "path": "apps/web/index.html",
+      "start": 14,
+      "end": 18,
+      "sha256": "c7baf480b9a88e198d92eb0f6e439092a290e9693848f98c29a7a8e7d422b553",
+      "excerpt": [
+        "  <body>",
+        "    <div id=\"root\"></div>",
+        "    <script type=\"module\" src=\"/src/main.ts\"></script>",
+        "  </body>",
+        "</html>"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/web/package.json#L1-L27",
+      "path": "apps/web/package.json",
+      "start": 1,
+      "end": 27,
+      "sha256": "d673ff57ce9e280501fa41201558259ddd28425ae1764d07ee225f63aa3df02c",
+      "excerpt": [
+        "{",
+        "  \"name\": \"@deepseek-ai/dsh-web-frontend\",",
+        "  \"description\": \"Web application entry: vite build over the @deepseek-ai/dsh-client-web shell library; dist/ served by apps/cli's dsh web\",",
+        "  \"version\": \"0.2.2-alpha.2\",",
+        "  \"publishConfig\": {",
+        "    \"access\": \"public\"",
+        "  },",
+        "  \"repository\": {",
+        "    \"type\": \"git\",",
+        "    \"url\": \"git+https://github.com/deepseek-ai/deepseek-harness.git\",",
+        "    \"directory\": \"apps/web\"",
+        "  },",
+        "  \"type\": \"module\",",
+        "  \"exports\": {",
+        "    \"./dist/*\": \"./dist/*\",",
+        "    \"./package.json\": \"./package.json\"",
+        "  },",
+        "  \"files\": [",
+        "    \"dist\",",
+        "    \"!dist/**/*.map\",",
+        "    \"!dist/preview.html\",",
+        "    \"!dist/preview\"",
+        "  ],",
+        "  \"scripts\": {",
+        "    \"build\": \"vite build\",",
+        "    \"dev\": \"vite\",",
+        "    \"watch\": \"vite build --watch --no-emptyOutDir\","
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/web/src/main.ts#L1-L20",
+      "path": "apps/web/src/main.ts",
+      "start": 1,
+      "end": 20,
+      "sha256": "fde2d8134e55b2f463c19453e255bb64fda2e46380ff405b6a6d27f1398e208c",
+      "excerpt": [
+        "/** Browser entry for the Web client. */",
+        "import '@deepseek-ai/dsh-client-ui-theme/brand-font.css'",
+        "import { AppWebEntry, applyIndexInjections } from '@deepseek-ai/dsh-client-web'",
+        "",
+        "interface DesktopBootGlobal {",
+        "  dshDesktopBoot?: {",
+        "    failed(message: string): Promise<void>",
+        "    ready(): Promise<{ injections: Parameters<typeof applyIndexInjections>[0]; streamBaseUrl: string }>",
+        "  }",
+        "}",
+        "const desktop = (globalThis as DesktopBootGlobal).dshDesktopBoot",
+        "const reportFailure = (reason: unknown): void => {",
+        "  if (desktop === undefined) throw reason",
+        "  void desktop.failed(reason instanceof Error ? reason.message : String(reason)).catch(console.error)",
+        "}",
+        "",
+        "try {",
+        "  const el = document.getElementById('root')",
+        "  if (el === null) throw new Error('web app: missing #root')",
+        "  const entry = new AppWebEntry(el)"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L55-L65",
+      "path": "docs/architecture.zh.md",
+      "start": 55,
+      "end": 65,
+      "sha256": "491fe1b1d21e40ab2c9c5ee0bbf69dc3e24c6a6ef8830d5dfd647b2ce8bfe1d2",
+      "excerpt": [
+        "## 核心包",
+        "",
+        "| 包 | 职责 | `ctx` 键 |",
+        "|---|---|---|",
+        "| [`core/session`](subsystems/session.zh.md) | 仅追加的 `SessionEvent` 日志和内存存储 | `ctx.sessions` |",
+        "| [`core/system-prompt`](subsystems/system-prompt.zh.md) | 提示词片段与工具 schema 的组装 | `ctx.systemPrompt` |",
+        "| [`core/tools`](subsystems/tools.zh.md) | 作用域化的工具注册表和带把关的执行流水线 | `ctx.tools` |",
+        "| [`core/agent`](subsystems/core.zh.md) | `Agent` 接口、活跃 agent 注册表和 `agent/*` 事件 | `ctx.agents` |",
+        "| [`core/agent-loop`](subsystems/core.zh.md) | 实现该接口的默认驱动器 | `ctx.agentLoop` |",
+        "| [`core/scope`](subsystems/scope.zh.md) | 按 agent 划分作用域的注册原语 | 库，无 ctx 键 |",
+        "| [`llm/llm`](subsystems/llm-streaming.zh.md) | 消息与流式词汇表，以及适配器 seam | `ctx.llm` |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L63-L81",
+      "path": "docs/development.zh.md",
+      "start": 63,
+      "end": 81,
+      "sha256": "6f12f3d6c136d880ff322f490b4f5ab0fc34c18b28d1eede890805cb35861b96",
+      "excerpt": [
+        "仓库使用相互隔离的 Host 与 Client aggregate。普通包只登记进其中一个 aggregate；Host 包进入 `tsconfig.host.json`，Client 包进入 `tsconfig.client.json`；`host/webserver`、`compaction/compaction` 与 `typert/registry` 三个包被两个 aggregate 同时引用，作为共享 leaf，让两侧对同一份源码做类型检查。",
+        "",
+        "| 文件 | 角色 | 是否构成 program？ |",
+        "|---|---|---|",
+        "| `tsconfig.json` | solution 根：`extends` base、`files: []`、引用两个 aggregate。它是 tsserver 发现入口，也是显式执行整张 Project Reference 图时的入口；经继承的 `paths` 充当 tsx 运行 `scripts/` 时的解析配置。 | 否 |",
+        "| `tsconfig.host.json` | Host aggregate：Host 包、示例、测试、脚本和 website，以及 `api/remotes` 的 Host 特例 project。 | 是 |",
+        "| `tsconfig.client.json` | Client aggregate：`packages/client/*` 包及其测试、`apps/web`，以及 `api/remotes` 的 Client 特例 project。 | 是 |",
+        "| `tsconfig.base.json` | 共享 compilerOptions 与源码 `paths` 映射。同时是各 vitest 配置让 vite-tsconfig-paths 指向的解析门面：它没有 `include`，因此其 `paths` 适用于任何 importer。 | 否 |",
+        "| `tsconfig.base.client.json` | 浏览器编译设置（`jsx`、DOM lib、`types: []`），由 Client aggregate 和每个 `packages/client/*` 包 extends。 | 否 |",
+        "",
+        "Host 和 Client aggregate 类型检查为 Node 老生代堆设置 8 GiB 上限。这是单个编译进程的上限；并发构建步骤还需要额外内存。`pnpm run build:official --serial` 阻止构建步骤重叠，即使设置了 `DSH_GATE_CONCURRENCY` 也不例外；DSH 发布 workflow 使用此选项。",
+        "",
+        "Host 与 Client 保持两个 aggregate program，是因为两侧在相同键下以不同服务对 cordis `Context` 接口做声明合并；单一 program 同时看到两份合并会报冲突。这种冲突只存在于 `ts.Program` 内部——模块解析永远不会触发它——所以 solution 可以同时引用两个 aggregate，一个 paths 门面也可以横跨两侧。由此推出三条纪律：",
+        "",
+        "- `tsconfig.base.json` 永不添加 `include` 或 `files`：它们会泄漏进每个 extends 它的包项目，并收窄门面的全匹配范围。",
+        "- 构造全仓 `ts.Program` 的脚本显式以 `tsconfig.host.json` 或 `tsconfig.client.json` 为种子——根 solution 永不作为种子，因为把两个 aggregate 展平进一个 program 会撞上 `Context` 合并冲突。",
+        "- 新包只登记进一个 aggregate；只有上述拆分包同时携带两个 leaf 配置，共享 leaf 因两侧需要对同一份源码做类型检查而登记进两个 aggregate。包同时具有 Node loader 入口和 browser 入口并不构成拆分理由；普通 Client 插件的两份运行时产物都在 Client 构建阶段生成。",
+        "",
+        "拆分 Host/Client tsconfig 的包有七个：`api/remotes`、`api/gateway`、`api/session-controller`、`api/workspace-controller`、`client/connection`、`session-query/session-log-export` 与 `experimental/liveshare-protocol`。`api/remotes` 的 Host 入口进入 Host Typert 图，而 Client 入口导入生成的 `/remote` 声明；`session-log-export` 则让 Node archive 生产代码不进入浏览器 controller；`liveshare-protocol` 把 Node 线路编解码放在 Host leaf、浏览器查看页载体放在 Client leaf。每个拆分包根 `tsconfig.json` 因此只作为 solution，两个 aggregate 和直接消费方分别引用 `tsconfig.host.json` 或 `tsconfig.client.json`。workspace `constraints` 门禁遍历可达的 Project Reference 图，并按各引用 project 自身的 compiler face 检查：只有单一配置的目标可由任一 face 引用，拆分配置的目标则必须引用匹配的 leaf，不得引用 solution 根或另一侧 leaf；该门禁按「两个 leaf 配置同时存在」自动发现拆分包，所以新拆分的包会自动纳入管辖。[`api-remotes` README](../packages/api/remotes/README.zh.md) 与 [`session-log-export` README](../packages/session-query/session-log-export/README.zh.md)分别说明其拆分。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/module-graph.zh.md#L1-L8",
+      "path": "docs/module-graph.zh.md",
+      "start": 1,
+      "end": 8,
+      "sha256": "95547ab1f0250f840e4007b637ce3827faaef0c005dbb3e6f26f99f0389d750f",
+      "excerpt": [
+        "<!-- 由 scripts/gen-module-graph.ts 生成——请勿手工编辑。",
+        "     运行 `pnpm run gen-module-graph` 重新生成。 -->",
+        "",
+        "# 共享实例依赖关系图",
+        "",
+        "[English](module-graph.md) | 中文",
+        "",
+        "`@deepseek-ai/dsh-*` harness 包之间的 peer 依赖关系。peer 表示消费端需要提供共享实例，不包括普通运行时 dependency 或仅开发期关系。该图按 `packages/<group>/<pkg>` 层级分组；边 `a --> b` 表示包 `a` peer 依赖包 `b`。名称中的 `@deepseek-ai/dsh-` 前缀已移除。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/package.json#L1-L18",
+      "path": "package.json",
+      "start": 1,
+      "end": 18,
+      "sha256": "d0fd7a2084d455b1651815bfbf9034e8b7dfb6571513727bec5d6cbc175a0b45",
+      "excerpt": [
+        "{",
+        "  \"name\": \"@deepseek-ai/dsh-root\",",
+        "  \"version\": \"0.2.2-alpha.2\",",
+        "  \"license\": \"MIT\",",
+        "  \"private\": true,",
+        "  \"type\": \"module\",",
+        "  \"packageManager\": \"pnpm@11.28.5\",",
+        "  \"engines\": {",
+        "    \"node\": \">=24.9.0\"",
+        "  },",
+        "  \"workspaces\": [",
+        "    \"vendor/*\",",
+        "    \"packages/*/*\",",
+        "    \"native/system\",",
+        "    \"native/system/packages/*\",",
+        "    \"apps/*\",",
+        "    \"website\"",
+        "  ],"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L10-L31",
+      "path": "packages/README.zh.md",
+      "start": 10,
+      "end": 31,
+      "sha256": "9ff9c938f57975e949fdfedf87dae5b5fc887ba5aa206ca7df7bdab7df400859",
+      "excerpt": [
+        "## 概述",
+        "",
+        "harness 由 `packages/` 下的 npm 包组装而成，按能力系列分组：会话与 agent loop（智能体循环）、面向模型的工具、shell 与文件系统执行、Web 访问、subagent 等等。把本页当作顶层地图使用：先找到拥有某能力的组，再打开其 README 查看包列表。每个包都以 `@deepseek-ai/dsh-*` 为作用域、只属于一个组；每个组的 README 都是该能力系列的权威包映射。",
+        "",
+        "## 目录",
+        "",
+        "- [包分组](#package-groups)",
+        "- [发布预期](#release-expectations)",
+        "- [依赖](#dependencies)",
+        "- [包 README 约定](#package-readme-contracts)",
+        "- [开发备注](#dev-note)",
+        "",
+        "-----",
+        "",
+        "<a id=\"package-groups\"></a>",
+        "## 包分组",
+        "",
+        "每个包只属于一个组；新包加入现有组，新组则更新其自身 README 与本表。",
+        "",
+        "| 组 | 职责 |",
+        "|---|---|",
+        "| [`core/`](core/README.zh.md) | 产品 API 主干：会话、提示词、工具、agent 服务与具体循环 |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L25-L82",
+      "path": "packages/README.zh.md",
+      "start": 25,
+      "end": 82,
+      "sha256": "9ff9c938f57975e949fdfedf87dae5b5fc887ba5aa206ca7df7bdab7df400859",
+      "excerpt": [
+        "## 包分组",
+        "",
+        "每个包只属于一个组；新包加入现有组，新组则更新其自身 README 与本表。",
+        "",
+        "| 组 | 职责 |",
+        "|---|---|",
+        "| [`core/`](core/README.zh.md) | 产品 API 主干：会话、提示词、工具、agent 服务与具体循环 |",
+        "| [`api/`](api/README.zh.md) | Remote BFF 装配与 Typert RPC 网关 |",
+        "| [`typert/`](typert/README.zh.md) | 类型图生成、产物加载与运行时注册表 |",
+        "| [`goal/`](goal/README.zh.md) | 同会话 goal 的持久化与生命周期 |",
+        "| [`schedule/`](schedule/README.zh.md) | Host 拥有的定时后续操作 |",
+        "| [`feedback/`](feedback/README.zh.md) | 人类反馈的采集与命令 |",
+        "| [`telemetry/`](telemetry/README.zh.md) | 共享 Cordis OTel 上报通道 |",
+        "| [`identity/`](identity/README.zh.md) | 共享匿名身份 |",
+        "| [`llm/`](llm/README.zh.md) | LLM（大语言模型）能力系列：抽象服务 + 提供方适配器 |",
+        "| [`subprocess/`](subprocess/README.zh.md) | 子进程能力系列：Service Definition + 本地进程树提供方 |",
+        "| [`ssh/`](ssh/README.zh.md) | POSIX 远端连接及配套文件系统、子进程与沙箱提供方 |",
+        "| [`shell/`](shell/README.zh.md) | Bash 能力系列：执行器 seam、本地实现、面向模型的工具 |",
+        "| [`terminal/`](terminal/README.zh.md) | 持久 PTY 服务：限定所有者范围的会话与本地 shell 后端 |",
+        "| [`ptc-runtime/`](ptc-runtime/README.zh.md) | PTC 执行能力族：Service Definition + 沙箱 Node 提供方 + PTC mode Consumer |",
+        "| [`computer-use/`](computer-use/README.zh.md) | 按名称独占注册桌面提供方 |",
+        "| [`browser-use/`](browser-use/README.zh.md) | 按名称独占注册浏览器提供方 |",
+        "| [`sandbox/`](sandbox/README.zh.md) | 进程限制 seam；bwrap、Landlock、Seatbelt 后端 |",
+        "| [`deliverables/`](deliverables/README.zh.md) | 轮次交付物：显式文件交付与记录的工作区改动 |",
+        "| [`fs/`](fs/README.zh.md) | 文件系统能力系列：seam、本地实现、面向模型的文件工具、发现工具 |",
+        "| [`lsp/`](lsp/README.zh.md) | LSP 能力系列：seam、通用 stdio 提供方和 `lsp` 工具 |",
+        "| [`skill/`](skill/README.zh.md) | skill（技能）能力系列：提供方注册表、本地提供方、面向模型的目录／loader |",
+        "| [`compaction/`](compaction/README.zh.md) | 压缩（compaction）能力系列：Service Definition + 基础提供方 + 命令 Consumer |",
+        "| [`context/`](context/README.zh.md) | 模型可见请求上下文：workspace 指令、时间上下文、引用 |",
+        "| [`subagent/`](subagent/README.zh.md) | subagent 能力系列：提供方注册表约定和面向模型的委托工具 |",
+        "| [`jobs/`](jobs/README.zh.md) | 通用后台任务运行时和面向模型的作业控制工具 |",
+        "| [`experimental/`](experimental/README.zh.md) | 仍在评估中的能力；[状态与支持策略](experimental/README.zh.md#status) |",
+        "| [`workflow/`](workflow/README.zh.md) | 工作流 seam、PTC 进程引擎、面向模型的 `workflow` 工具 |",
+        "| [`web/`](web/README.zh.md) | Web 能力系列：seam、搜索／获取提供方、面向模型的 Web 工具 |",
+        "| [`document/`](document/README.zh.md) | 共享宿主 Office 到 PDF 转换 |",
+        "| [`attachment/`](attachment/README.zh.md) | 持久附件标识、校验、本地内容寻址存储 |",
+        "| [`spill/`](spill/README.zh.md) | spill 能力系列：存储 seam、本地实现、工具结果 spill 策略 |",
+        "| [`todo/`](todo/README.zh.md) | 面向模型的 `todo_write` 工具 |",
+        "| [`plan/`](plan/README.zh.md) | Plan 协作状态，提供直接进入命令与经评审的退出 |",
+        "| [`preset/`](preset/README.zh.md) | 由 preset `cordis.yml` 按会话组装 agent |",
+        "| [`guard/`](guard/README.zh.md) | 循环卫生守卫：建议性重复调用提醒 + `tools/execute` 截止时间强制执行器 |",
+        "| [`bundle/`](bundle/README.zh.md) | 可安装的 `dsh --profile` 补丁层 |",
+        "| [`extensions/`](extensions/README.zh.md) | agent 运行时自修改：实时插件／服务检查与模型所写挂载／卸载 |",
+        "| [`mcp/`](mcp/README.zh.md) | 将外部 Model Context Protocol 服务器的工具接入为原生工具 |",
+        "| [`session/`](session/README.zh.md) | 持久会话数据平面：持久化 seam + 后端、投影 seam、基于日志的标题、会话上报 |",
+        "| [`session-query/`](session-query/README.zh.md) | 会话检索系列：逻辑语料库、有界读取、血缘、语义过滤、SQLite 全文搜索 |",
+        "| [`settings/`](settings/README.zh.md) | 用户设置 seam + 基于文件的提供方 |",
+        "| [`credentials/`](credentials/README.zh.md) | 凭据引用与凭据记录 seam + 环境变量优先于 `.env` 的提供方 + 需要向人询问的授权流程 |",
+        "| [`storage/`](storage/README.zh.md) | 非会话存储中枢 + 后端 + 领域形式 |",
+        "| [`workspace/`](workspace/README.zh.md) | Workspace 实体 |",
+        "| [`sdk/`](sdk/README.zh.md) | 进程外 SDK：JSON-RPC 协议与 TypeScript 客户端／服务器 |",
+        "| [`acp/`](acp/README.zh.md) | 仅面向自动化的 ACP（Agent Client Protocol）服务器 |",
+        "| [`interaction/`](interaction/README.zh.md) | 人机协作平面：批准／交互 seam、权限预设、命令、询问用户的工具 |",
+        "| [`boot/`](boot/README.zh.md) | 共享的 app bin 启动粘合层 |",
+        "| [`host/`](host/README.zh.md) | Web GUI 宿主服务、目录选择、应用启动、插件清单和产品遥测 |",
+        "| [`client/`](client/README.zh.md) | web GUI 浏览器半侧：shell、协议层、对象服务、slot、`ui-*` 插件 |",
+        "| [`test-support/`](test-support/README.zh.md) | 测试基础设施（testkit、回放、Loader 冒烟测试） |",
+        "| [`util/`](util/README.zh.md) | 组间共享的低层工具与纯数据包列表（`Branded<B>`、home／路径辅助函数、超时、留存、官方组合包列表） |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L93-L98",
+      "path": "packages/README.zh.md",
+      "start": 93,
+      "end": 98,
+      "sha256": "9ff9c938f57975e949fdfedf87dae5b5fc887ba5aa206ca7df7bdab7df400859",
+      "excerpt": [
+        "<a id=\"dependencies\"></a>",
+        "## 依赖",
+        "",
+        "依赖图由工具生成：[docs/module-graph.md](../docs/module-graph.zh.md)（`pnpm run gen-module-graph`，CI 中有新鲜度门禁）。",
+        "",
+        "**扩展插件依赖 Service Definition，绝不依赖具体提供方。** `dsh-agent-loop` 可替换；UI、钩子和工具插件使用 `dsh-agent`。组合包可以依赖主干插件。能力在需要独立演进时分离 Service Definition／Service Provider／Consumer 角色；详见[能力 seam](../.agents/notes/implemented/architecture/2026-06-13-capability-seams.zh.md)。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L493-L502",
+      "path": "packages/bundle/base/cordis.patch.yml",
+      "start": 493,
+      "end": 502,
+      "sha256": "e8269baedbd434f04a9ec3c9106e874e744e195d27fd8476a5006a85eab8d3f7",
+      "excerpt": [
+        "    # Shared tool definitions and the deployment’s native executor.",
+        "    - id: tools",
+        "      name: '@deepseek-ai/dsh-tools'",
+        "",
+        "    - id: tool-executor-native",
+        "      name: '@deepseek-ai/dsh-tool-executor-native'",
+        "",
+        "    - id: tool-executor-ptc",
+        "      name: '@deepseek-ai/dsh-tool-executor-ptc'",
+        "      disabled: true"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/package.json#L30-L35",
+      "path": "packages/bundle/base/package.json",
+      "start": 30,
+      "end": 35,
+      "sha256": "5a27e2c182db7fa10b0c860f79a78ede2340fb673bb6efcaf27da66b0f60ca92",
+      "excerpt": [
+        "  \"license\": \"MIT\",",
+        "  \"dsh\": {",
+        "    \"bundle\": {",
+        "      \"patch\": \"./cordis.patch.yml\"",
+        "    }",
+        "  },"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/client/README.zh.md#L10-L31",
+      "path": "packages/client/README.zh.md",
+      "start": 10,
+      "end": 31,
+      "sha256": "643e06b7b21383435e4947b31a6e1e8aed398263bd07ebbc2f1a865bda056085",
+      "excerpt": [
+        "## 概述",
+        "",
+        "`client/` 组提供 dsh web GUI 的浏览器体验，包括对话、导航、设置、批准、文件访问及其他交互功能。添加浏览器中可见的行为时，请选择本系列中的包；服务端页面交付与宿主集成则使用 [`host/`](../host/README.zh.md)。本系列同时涵盖共享浏览器基础与专门的 UI 功能，各子包 README 拥有其配置与行为说明。编写规则见 [AGENTS.md](AGENTS.md)，下方相关文档解释跨包组合方式。",
+        "",
+        "## 目录",
+        "",
+        "- [包](#packages)",
+        "- [相关文档](#related-documentation)",
+        "- [开发备注](#dev-note)",
+        "",
+        "-----",
+        "",
+        "<a id=\"packages\"></a>",
+        "## 包",
+        "",
+        "内核包负责启动与服务于页面，UI 功能包负责呈现页面。各包的 README 拥有自己的约定与配置。",
+        "",
+        "| 包 | 职责 | ctx 键 |",
+        "|---|---|---|",
+        "| [`web/`](web/README.zh.md) | 启动浏览器外壳 | — |",
+        "| [`modules/`](modules/README.zh.md) | 加载浏览器侧客户端模块 | `ctx.clientModules` / `ctx.modules` |",
+        "| [`connection/`](connection/README.zh.md) | 维护浏览器与宿主之间的 RPC 通信与事件投递 | `ctx.connection` |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/client/connection/README.zh.md#L10-L12",
+      "path": "packages/client/connection/README.zh.md",
+      "start": 10,
+      "end": 12,
+      "sha256": "d352865f0285408baab54d49d6b796fc0fe0d0d9da8c4b7883064a77715f2cdf",
+      "excerpt": [
+        "## 概述",
+        "",
+        "本包承载浏览器到 Host 的 Remote 调用、精确 Fetch 响应与 connection generation。Client 插件挂载 `ctx.connection`，其中包含当前页面的 loopback 状态、通用 RPC、当前 generation 及其 Host 信息、可观察的恢复状态、立即重连命令，以及单一 generation source 的注册点。source 报告 ready 后 generation 才可见；source 结束、失败、被撤回或显式 stop 都会清空它，再由 `ConnectionController` 执行重试策略。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/README.zh.md#L25-L36",
+      "path": "packages/core/README.zh.md",
+      "start": 25,
+      "end": 36,
+      "sha256": "3f4849e37b57692cdc0eb360aeb3772cab3b8483ba3b9e0c6d9b7178835934e8",
+      "excerpt": [
+        "| 包 | 职责 | ctx key |",
+        "|---|---|---|",
+        "| [`scope/`](scope/README.zh.md) | 隔离单个 agent 贡献的作用域注册与事件路由 | 库，不使用 ctx key |",
+        "| [`session/`](session/README.zh.md) | 每个 agent 的历史均派生自该仅追加会话事件日志 | `ctx.sessions` |",
+        "| [`system-prompt/`](system-prompt/README.zh.md) | 由有序段、工具 schema 与变量进行的系统提示词组装 | `ctx.systemPrompt` |",
+        "| [`tools/`](tools/README.zh.md) | 供循环分发使用的工具注册表与带防护机制的执行流水线 | `ctx.tools` |",
+        "| [`agent-tool-presentation/`](agent-tool-presentation/README.zh.md) | 为 preset 提供按 agent 的工具呈现方式选择器 | 无 ctx key |",
+        "| [`agent/`](agent/README.zh.md) | 供插件编程使用的 `Agent` 句柄，以及其实时注册表与事件 | `ctx.agents` |",
+        "| [`agent-default-model/`](agent-default-model/README.zh.md) | 入口对全新 agent 应用的部署默认模型选择 | `ctx.agentDefaultModel` |",
+        "| [`agent-loop/`](agent-loop/README.zh.md) | 默认 agent 驱动器：创建 agent 并运行轮次与步骤生命周期 | `ctx.agentLoop` |",
+        "",
+        "`scope` 提供共享作用域原语；`agent` 负责公开的 `Agent` 约定，而 `agent-loop` 是其默认实现，因此扩展插件依赖 `agent`，驱动器保持可替换。`agent-default-model` 负责入口在会话自身没有选择时应用的部署选择。可运行组合位于 [`packages/bundle`](../bundle/README.zh.md)；本分组只负责可替换的主干组件。"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L586-L597",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "start": 586,
+      "end": 597,
+      "sha256": "ad9ee0778c0a93dec40363f88b53f442add9b033837b9ff049675a1ada3df61f",
+      "excerpt": [
+        "        const toolCalls = message.content.filter(block => block.type === 'tool-call')",
+        "        if (toolCalls.length === 0) return { kind: 'completed' }",
+        "        const maxParallelToolCalls = this.loopCtx.agentLoop.config.maxParallelToolCalls.get()",
+        "        try {",
+        "          const result = await this.loopCtx.tools.execute({",
+        "            calls: toolCalls, signal, agent: this, log: { turn, step },",
+        "            maxParallelToolCalls, toolSet: decision.toolSet,",
+        "          })",
+        "          for (const context of result.additionalContexts) {",
+        "            this.inbox.splice('next-step', this.inbox.nextStep.length, 0, [context])",
+        "          }",
+        "          return result.concluded ? { kind: 'completed' } : null"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L103-L128",
+      "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+      "start": 103,
+      "end": 128,
+      "sha256": "17b81c755ee51d9ebefa6e810e6f58119be88653474cba7895489cae2f1181c6",
+      "excerpt": [
+        "it('shares the registry and selects an independent executor through the preset scope chain', async () => {",
+        "  const trace: string[] = []",
+        "  const adapter = new MockAdapter([",
+        "    toolCallResponse('sdk-call', 'sdk_eval', {}), textResponse('sdk done'),",
+        "    toolCallResponse('native-call', 'echo', {}), textResponse('native done'),",
+        "  ])",
+        "  const ctx = await setup(adapter)",
+        "  const presetKey = { preset: 'sdk' }",
+        "  const preset = await scoped(ctx, presetKey)",
+        "  preset.ctx.tools.setExecutor(independent(preset.ctx, 'sdk_eval', trace))",
+        "  const sdk = await ctx.agentLoop.create(SessionId('sdk'), { provider: 'mock', model: 'mock' })",
+        "  bindScopeParent(sdk, presetKey)",
+        "  const native = await ctx.agentLoop.create(SessionId('native'), { provider: 'mock', model: 'mock' })",
+        "  expect(ctx.tools).toBeInstanceOf(ToolsService)",
+        "  expect('registerExecutor' in ctx.tools).toBe(false)",
+        "  expect(sdk.ctx.tools.get('echo', sdk)).toBe(ctx.tools.get('echo'))",
+        "  expect(native.ctx.tools.get('echo', native)).toBe(ctx.tools.get('echo'))",
+        "  await run(ctx, sdk)",
+        "  await run(ctx, native)",
+        "  expect(adapter.requests[0]?.tools?.map(tool => tool.name)).toEqual(['sdk_eval'])",
+        "  expect(adapter.requests[2]?.tools?.map(tool => tool.name)).toEqual(['echo'])",
+        "  expect(trace).toEqual(['sdk_eval:execute'])",
+        "  expect(sdk.session.snapshotEvents().find(event => event.type === 'tool/result')).toMatchObject({",
+        "    data: { message: { content: [{ type: 'text', text: 'sdk_eval:shared' }], isError: false } },",
+        "  })",
+        "})"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L66-L83",
+      "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+      "start": 66,
+      "end": 83,
+      "sha256": "17b81c755ee51d9ebefa6e810e6f58119be88653474cba7895489cae2f1181c6",
+      "excerpt": [
+        "async function setup(adapter = new MockAdapter([]), maxParallelToolCalls?: number) {",
+        "  const ctx = new Context()",
+        "  onTestFinished(() => ctx.fiber.dispose())",
+        "  await ctx.plugin(LlmRuntime)",
+        "  await ctx.plugin(SessionStore)",
+        "  await ctx.plugin(SessionProjections)",
+        "  await ctx.plugin(SystemPrompt)",
+        "  await ctx.plugin(Tools)",
+        "  await ctx.plugin(NativeToolExecutor)",
+        "  await ctx.plugin(AgentRegistry)",
+        "  await ctx.plugin(AgentLoop, { agents: [], ...maxParallelToolCalls === undefined ? {} : { maxParallelToolCalls } })",
+        "  ctx.llm.registerAdapter(['mock'], adapter)",
+        "  ctx.tools.register(defineTool({",
+        "    name: 'echo', description: 'Shared capability.', parameters: {},",
+        "    output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },",
+        "    execute: async () => 'shared',",
+        "  }))",
+        "  return ctx"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/package.json#L1-L24",
+      "path": "packages/core/tool-executor-native/package.json",
+      "start": 1,
+      "end": 24,
+      "sha256": "d7efe1cc395fcb9af45d61078b4a659d4f54b076e5a29a4c676dea30a6965cf2",
+      "excerpt": [
+        "{",
+        "  \"name\": \"@deepseek-ai/dsh-tool-executor-native\",",
+        "  \"description\": \"Native tool execution plugin\",",
+        "  \"version\": \"0.2.2-alpha.2\",",
+        "  \"publishConfig\": {",
+        "    \"access\": \"public\"",
+        "  },",
+        "  \"repository\": {",
+        "    \"type\": \"git\",",
+        "    \"url\": \"git+https://github.com/deepseek-ai/deepseek-harness.git\",",
+        "    \"directory\": \"packages/core/tool-executor-native\"",
+        "  },",
+        "  \"type\": \"module\",",
+        "  \"main\": \"lib/index.js\",",
+        "  \"types\": \"lib/types/index.d.ts\",",
+        "  \"license\": \"MIT\",",
+        "  \"exports\": {",
+        "    \".\": {",
+        "      \"types\": \"./lib/types/index.d.ts\",",
+        "      \"default\": \"./lib/index.js\"",
+        "    },",
+        "    \"./src/*\": \"./src/*\",",
+        "    \"./package.json\": \"./package.json\",",
+        "    \"./locale/*.json\": \"./locale/*.json\""
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L15-L20",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "start": 15,
+      "end": 20,
+      "sha256": "a4a1094d63e6580b6255a05c466d1391ff17156fe3a9debc404e4b057c5a0881",
+      "excerpt": [
+        "  describe(tools: readonly ToolDefinition[]): ToolModelInput {",
+        "    return { schemas: tools.map(definition => projectToolSchema(definition, false)) }",
+        "  }",
+        "",
+        "  execute(input: ToolBatchInput): Promise<ToolBatchResult> {",
+        "    return executeToolBatch(input, this.pipeline, this.maxParallel)"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L2-L8",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "start": 2,
+      "end": 8,
+      "sha256": "a4a1094d63e6580b6255a05c466d1391ff17156fe3a9debc404e4b057c5a0881",
+      "excerpt": [
+        "import type { Context } from '@deepseek-ai/cordis'",
+        "import { projectToolSchema } from '@deepseek-ai/dsh-tools'",
+        "import type { ToolDefinition, ToolExecutor, ToolModelInput, ToolBatchInput, ToolBatchResult } from '@deepseek-ai/dsh-tools'",
+        "import { ToolExecutionPipeline, executeToolBatch } from '@deepseek-ai/dsh-tools/pipeline'",
+        "",
+        "/** Executes visible capabilities directly and owns their complete batch settlement. */",
+        "export class NativeToolExecutor implements ToolExecutor {"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L25-L35",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "start": 25,
+      "end": 35,
+      "sha256": "a4a1094d63e6580b6255a05c466d1391ff17156fe3a9debc404e4b057c5a0881",
+      "excerpt": [
+        "export const name = 'native-tool-executor'",
+        "/** Tool registration and scoped dispatch. */",
+        "export const inject = ['tools']",
+        "",
+        "/**",
+        " * Select native execution in the mounting scope.",
+        " * @param ctx - context owning this executor's selection and lifetime.",
+        " */",
+        "export function apply(ctx: Context): void {",
+        "  ctx.tools.setExecutor(new NativeToolExecutor(ctx))",
+        "}"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L3-L5",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "start": 3,
+      "end": 5,
+      "sha256": "a4a1094d63e6580b6255a05c466d1391ff17156fe3a9debc404e4b057c5a0881",
+      "excerpt": [
+        "import { projectToolSchema } from '@deepseek-ai/dsh-tools'",
+        "import type { ToolDefinition, ToolExecutor, ToolModelInput, ToolBatchInput, ToolBatchResult } from '@deepseek-ai/dsh-tools'",
+        "import { ToolExecutionPipeline, executeToolBatch } from '@deepseek-ai/dsh-tools/pipeline'"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/tsconfig.json#L10-L22",
+      "path": "packages/core/tool-executor-native/tsconfig.json",
+      "start": 10,
+      "end": 22,
+      "sha256": "3805b2ae3920fec2542bf4283a2f7ee0205984817bdca2531dc66ba5f8618da1",
+      "excerpt": [
+        "  \"references\": [",
+        "    {",
+        "      \"path\": \"../../../vendor/cordis\"",
+        "    },",
+        "    {",
+        "      \"path\": \"../tools\"",
+        "    },",
+        "    {",
+        "      \"path\": \"../../../vendor/cosmokit\"",
+        "    },",
+        "    {",
+        "      \"path\": \"../../../vendor/schemastery\"",
+        "    }"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/executor.ts#L63-L86",
+      "path": "packages/core/tools/src/executor.ts",
+      "start": 63,
+      "end": 86,
+      "sha256": "2204c7b2b38057fa8bd2ee5237bc80dd25ce5b730973c057ab54b80f87da897e",
+      "excerpt": [
+        "/** A plugin owns argument parsing, dispatch, scheduling, cancellation, and logging. */",
+        "export interface ToolExecutor {",
+        "  /** Guidance registered and disposed with this executor; absent means no executor-owned sections. */",
+        "  readonly sections?: readonly ToolPromptSection[]",
+        "  /**",
+        "   * Describe the model's callable tools.",
+        "   * @param tools - currently visible capability definitions, after scoped restrictions.",
+        "   * @returns schemas and names used to validate tool ordering.",
+        "   */",
+        "  describe(tools: readonly ToolDefinition[]): ToolModelInput",
+        "  /**",
+        "   * Execute a complete batch. With log, commit root call/result events to the",
+        "   * Agent's Session; without log, omit those events. Tool-owned events may still",
+        "   * use the owning Agent's Session. Return",
+        "   * one outcome per input call in input order, including skipped calls on abort.",
+        "   * Never settle while started work is still running. Internal failures reject",
+        "   * with ToolBatchExecutionError after draining, preserving committed outcomes",
+        "   * and context; callers must stop dependent work and repair missing log results.",
+        "   * An explicit maxParallelToolCalls takes precedence over executor configuration.",
+        "   * @param input - original calls, cancellation, optional concurrency override, Agent and logging step.",
+        "   * @returns settled results, deferred context, and whether a success concludes the turn.",
+        "   */",
+        "  execute(input: ToolBatchInput): Promise<ToolBatchResult>",
+        "}"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L369-L377",
+      "path": "packages/core/tools/src/index.ts",
+      "start": 369,
+      "end": 377,
+      "sha256": "020c566150cf82dd49d368f5585043c73c191aaeba9103fd77a3efde6ee909dd",
+      "excerpt": [
+        "  /**",
+        "   * Delegate a raw call batch to its Agent's provider or the deployment default.",
+        "   * Select at dispatch; accepted batches settle through that provider even if it unloads.",
+        "   * @param input - original calls, optional owning Agent, and optional logging step.",
+        "   * @returns the selected executor's settled batch; unavailable selections reject.",
+        "   */",
+        "  async execute(input: ToolBatchInput): Promise<ToolBatchResult> {",
+        "    return this.selectExecutor(input.agent).execute(input)",
+        "  }"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/host/README.zh.md#L10-L30",
+      "path": "packages/host/README.zh.md",
+      "start": 10,
+      "end": 30,
+      "sha256": "cb8e6d7fb5633ead6b0eff475a9fb8ede68120deed7d7a09bfac799e0dbd89b4",
+      "excerpt": [
+        "## 概述",
+        "",
+        "`host/` 组提供 Web GUI 的 HTTP(S) 服务器、服务已构建 Web 壳的 SPA dist 服务器、带原生／浏览／自适应组合包的工作区目录选择 seam、open-in-app 的应用探测与启动路由，只读的插件清单投影以及显式产品事件上报。这些包都是产品包；浏览器传输位于 [`client/`](../client/README.zh.md)，组合应用是 [`apps/cli`](../../apps/cli/README.zh.md)，它启动 [`dsh-base` 组合包](../bundle/base/cordis.patch.yml) 来提供 `apps/web/` 下的 Web 应用。选择器后端可在共享 seam 后互相替换。",
+        "",
+        "## 目录",
+        "",
+        "- [包](#packages)",
+        "- [相关文档](#related-documentation)",
+        "- [开发备注](#dev-note)",
+        "",
+        "-----",
+        "",
+        "<a id=\"packages\"></a>",
+        "## 包",
+        "",
+        "各包分别承担 Host 角色；各包的 README 拥有自己的约定与配置。",
+        "",
+        "| 包 | 职责 | ctx 键 |",
+        "|---|---|---|",
+        "| [`webserver/`](webserver/README.zh.md) | 浏览器 HTTP 服务器：具名路由、upgrade、index 转换与回退席位 | `ctx.webServer` |",
+        "| [`frontend-static/`](frontend-static/README.zh.md) | 占据 webserver 回退席位的 SPA dist 服务器 | 消费 `ctx.webServer` |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/README.zh.md#L23-L35",
+      "path": "packages/llm/README.zh.md",
+      "start": 23,
+      "end": 35,
+      "sha256": "550e8c650d1e4f52c530e9a9abdf055c6d243e84a46d534713d0cca7f2c83e18",
+      "excerpt": [
+        "## 包",
+        "",
+        "| 包 | 职责 | ctx key |",
+        "|---|---|---|",
+        "| [`llm/`](llm/README.zh.md) | 通过已注册的提供方适配器流式发起一次模型调用，并共享 harness 的消息、块与分片词汇 | `ctx.llm` |",
+        "| [`llm-deepseek/`](llm-deepseek/README.zh.md) | 共享 Messages 协议、请求配置与模型能力 | — |",
+        "| [`llm-deepseek-api-key/`](llm-deepseek-api-key/README.zh.md) | API key 鉴权与 official 模型发现 | `ctx.llm` |",
+        "| [`llm-deepseek-account/`](llm-deepseek-account/README.zh.md) | 账号 token 鉴权、失效处理与模型发现 | `ctx.llm` |",
+        "| [`llm-pi-ai/`](llm-pi-ai/README.zh.md) | 通过 pi-ai 目录与协议格式服务配置的提供方路由，包括手工声明的网关 | 注册到 `ctx.llm` |",
+        "| [`deepseek-llm-api-extensions/`](deepseek-llm-api-extensions/README.zh.md) | 在官方 DeepSeek 请求上注册具有生命周期归属的顶层字段 | `ctx.deepseekLlmApiExtensions` |",
+        "| [`plugin-package-inventory-deepseek/`](plugin-package-inventory-deepseek/README.zh.md) | 为官方 DeepSeek 请求贡献当前启用的 Loader 包清单 | 贡献 `dsh_plugin_packages` |",
+        "| [`llm-retry/`](llm-retry/README.zh.md) | 在持久 agent 步骤边界上按各提供方策略重试失败的模型请求 | 监听 `agent/request-error` |",
+        "| [`token-meter/`](token-meter/README.zh.md) | 用固定启发式规则从持久会话日志测量请求与上下文压力 | `ctx.tokenMeter` |"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/official-bundles/src/bundles.ts#L9-L25",
+      "path": "packages/util/official-bundles/src/bundles.ts",
+      "start": 9,
+      "end": 25,
+      "sha256": "da2843644bec1065e4ef893c5eb688c7f5fad2108cd299c13f8bc4b4e1dd57db",
+      "excerpt": [
+        "/** The shipped profile templates auto-initialized on first use, by name. */",
+        "export const PROFILE_TEMPLATES: Record<string, ProfileTemplate> = {",
+        "  acp: {",
+        "    bundles: ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-acp-app'],",
+        "  },",
+        "  web: {",
+        "    bundles: ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'],",
+        "  },",
+        "  headless: {",
+        "    bundles: ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-headless'],",
+        "  },",
+        "  sdk: {",
+        "    bundles: ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-sdk-app'],",
+        "  },",
+        "  'sdk-minimal': {",
+        "    bundles: ['@deepseek-ai/dsh-sdk-minimal'],",
+        "  },"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/pnpm-workspace.yaml#L1-L15",
+      "path": "pnpm-workspace.yaml",
+      "start": 1,
+      "end": 15,
+      "sha256": "eb42731b8f509dd4ee3ae880eae1cde5381a1875a3598fd2fa83d1c1e5e1ef1a",
+      "excerpt": [
+        "packages:",
+        "  - vendor/*",
+        "  - packages/*/*",
+        "  # The Landlock launcher is developed with its harness consumers but keeps",
+        "  # its native build and publication scripts under native/system.",
+        "  - native/system",
+        "  - native/system/packages/*",
+        "  # Product assemblies over the package tier; apps/cli owns the `dsh` bin.",
+        "  - apps/*",
+        "  # Private package owning repository-level benchmark dependencies.",
+        "  - benchmarks",
+        "  - website",
+        "  # Deploy root of the single-exe build: a pure dependency manifest whose",
+        "  # closure is what the exe bundles and what the Python runtime distributes.",
+        "  - python/sdk-runtime"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.base.json#L27-L30",
+      "path": "tsconfig.base.json",
+      "start": 27,
+      "end": 30,
+      "sha256": "b696cf38fa13e1f0fdd38531f2fcb40250d1faa79f07f58c2c562fd1c747c479",
+      "excerpt": [
+        "    // Source-level resolution for every repo-local graph. Project references,",
+        "    // not declaration path aliases, keep each package/vendor source compiled",
+        "    // under its own tsconfig boundary.",
+        "    \"paths\": {"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.base.json#L571-L571",
+      "path": "tsconfig.base.json",
+      "start": 571,
+      "end": 571,
+      "sha256": "b696cf38fa13e1f0fdd38531f2fcb40250d1faa79f07f58c2c562fd1c747c479",
+      "excerpt": [
+        "      \"@deepseek-ai/dsh-tool-executor-native\": [\"./packages/core/tool-executor-native/src\"],"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.base.json#L593-L593",
+      "path": "tsconfig.base.json",
+      "start": 593,
+      "end": 593,
+      "sha256": "b696cf38fa13e1f0fdd38531f2fcb40250d1faa79f07f58c2c562fd1c747c479",
+      "excerpt": [
+        "      \"@deepseek-ai/dsh-tools\": [\"./packages/core/tools/src\"],"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.client.json#L1-L14",
+      "path": "tsconfig.client.json",
+      "start": 1,
+      "end": 14,
+      "sha256": "48132aab6e66e269b2cd97ad1d3eb6a5991c43e72515f44d26f0db50a548acca",
+      "excerpt": [
+        "{",
+        "  // Client-side typecheck aggregate: packages/client tests and top-level Client benchmarks.",
+        "  // Split from the host aggregate because both sides merge cordis Context",
+        "  // under the same keys (sessions, loader) with different services; shared",
+        "  // leaves (session/llm/tools/...) build once and are referenced by",
+        "  // both programs through each client package's own references.",
+        "  \"extends\": \"./tsconfig.base.client.json\",",
+        "  \"compilerOptions\": {",
+        "    \"noEmit\": true,",
+        "    \"rewriteRelativeImportExtensions\": false,",
+        "    // Tests execute under vitest on node (e2e files spawn processes); browser",
+        "    // purity of package src is each package's own tsconfig plus",
+        "    // scripts/client-bundle-purity.spec.ts.",
+        "    \"types\": [\"node\"]"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.host.json#L1-L9",
+      "path": "tsconfig.host.json",
+      "start": 1,
+      "end": 9,
+      "sha256": "4c8e3e2b467a8d4e9b6256ca339062deb43bc83ad1327201fadbad580611803b",
+      "excerpt": [
+        "{",
+        "  // Host aggregate (one of the two check units; see tsconfig.json). packages/client",
+        "  // type-checks in tsconfig.client.json: the two sides merge cordis Context under",
+        "  // the same keys, one program cannot see both.",
+        "  \"extends\": \"./tsconfig.base.json\",",
+        "  \"compilerOptions\": {",
+        "    \"noEmit\": true,",
+        "    \"rewriteRelativeImportExtensions\": false",
+        "  },"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.json#L1-L15",
+      "path": "tsconfig.json",
+      "start": 1,
+      "end": 15,
+      "sha256": "9eb420010dfd10daaa1a5374ce018fd691b1ba56a4bea60f2ebd8d548ffdffa4",
+      "excerpt": [
+        "{",
+        "  // Solution file: the whole-repo graph for `tsc -b tsconfig.json` and the",
+        "  // tsserver entry. `extends` carries the base paths for get-tsconfig",
+        "  // consumers — tsx running scripts/ (no nearer tsconfig)",
+        "  // resolves workspace imports through this file. `files: []` keeps it",
+        "  // program-less, so the host/client cordis Context merges never meet.",
+        "  // NEVER add include/files entries, and NEVER flatten this solution into a",
+        "  // single ts.Program (scripts seed tsconfig.host.json or tsconfig.client.json).",
+        "  \"extends\": \"./tsconfig.base.json\",",
+        "  \"files\": [],",
+        "  \"references\": [",
+        "    { \"path\": \"./tsconfig.host.json\" },",
+        "    { \"path\": \"./tsconfig.client.json\" }",
+        "  ]",
+        "}"
+      ],
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/README.md#L1-L7",
+      "path": "vendor/README.md",
+      "start": 1,
+      "end": 7,
+      "sha256": "9479200e228f66dab061ee5f426b2521c4634186bf5c588efbc8d8490c120c5d",
+      "excerpt": [
+        "# Vendored Packages",
+        "",
+        "This directory contains source-vendored copies of the Cordis framework and its foundation libraries. They are copied into this monorepo instead of being depended on via npm, so that the harness fully owns its framework layer (auditable, patchable, pinned).",
+        "",
+        "All vendored packages use the **`@deepseek-ai` scope** (`cordis` → `@deepseek-ai/cordis`, `@cordisjs/plugin-<x>` → `@deepseek-ai/cordis-plugin-<x>`). The manifest table records upstream versions and source commits; each package manifest carries its Harness release version and publication metadata. References to vendored packages use `workspace:~`, so local builds resolve the workspace packages and published ranges permit patch updates within the same minor version. Upstream MIT `LICENSE` files are preserved in each package directory.",
+        "",
+        "This file covers the manifest, the local-modification log, and the procedure for **updating** an existing vendored package. To **add a new** one, see the cookbook guide: [docs/cookbook/adding-a-vendored-package.md](../docs/cookbook/adding-a-vendored-package.md)."
+      ],
+      "status": "STATIC_VERIFIED"
+    }
+  ],
+  "claims": [
+    {
+      "id": "S01",
+      "claim": "工具链、两级 workspace；pnpm 清单额外列 benchmarks 与 Python runtime",
+      "path": "package.json",
+      "start": 1,
+      "end": 18,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/package.json#L1-L18",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S01a",
+      "claim": "pnpm 实际成员清单",
+      "path": "pnpm-workspace.yaml",
+      "start": 1,
+      "end": 15,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/pnpm-workspace.yaml#L1-L15",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S02",
+      "claim": "能力系列分组；组 README 是包映射入口",
+      "path": "packages/README.zh.md",
+      "start": 10,
+      "end": 31,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L10-L31",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S03",
+      "claim": "主干服务与默认循环分开；core 是分组",
+      "path": "packages/core/README.zh.md",
+      "start": 25,
+      "end": 36,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/README.zh.md#L25-L36",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S04",
+      "claim": "共享 LLM 服务与提供方接入分开",
+      "path": "packages/llm/README.zh.md",
+      "start": 23,
+      "end": 35,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/README.zh.md#L23-L35",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S05",
+      "claim": "公共基础与测试支持有专属分组",
+      "path": "packages/README.zh.md",
+      "start": 66,
+      "end": 82,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L66-L82",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S05a",
+      "claim": "vendor 保存框架与基础库的仓库固定源码",
+      "path": "vendor/README.md",
+      "start": 1,
+      "end": 7,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/README.md#L1-L7",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S06",
+      "claim": "命令入口按 profile 分支委托 runProfile",
+      "path": "apps/cli/src/bin.ts",
+      "start": 26,
+      "end": 48,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L26-L48",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S06a",
+      "claim": "bin 映射到发布产物",
+      "path": "apps/cli/package.json",
+      "start": 13,
+      "end": 20,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/package.json#L13-L20",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S07",
+      "claim": "headless 模板选择 base 与 headless，sdk-minimal 不使用 base",
+      "path": "packages/util/official-bundles/src/bundles.ts",
+      "start": 9,
+      "end": 25,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/official-bundles/src/bundles.ts#L9-L25",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S07a",
+      "claim": "base 声明组合 patch",
+      "path": "packages/bundle/base/package.json",
+      "start": 30,
+      "end": 35,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/package.json#L30-L35",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S07b",
+      "claim": "base 挂载工具与原生执行器，另一种执行器默认停用",
+      "path": "packages/bundle/base/cordis.patch.yml",
+      "start": 493,
+      "end": 502,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L493-L502",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S08",
+      "claim": "ToolExecutor 定义 describe / execute 契约",
+      "path": "packages/core/tools/src/executor.ts",
+      "start": 63,
+      "end": 86,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/executor.ts#L63-L86",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S09",
+      "claim": "原生提供方导入契约、实现并注册；execute 转交共享函数",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "start": 2,
+      "end": 35,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L2-L35",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S10",
+      "claim": "服务选定提供方后调用；不是在此写死导入具体执行器",
+      "path": "packages/core/tools/src/index.ts",
+      "start": 369,
+      "end": 377,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L369-L377",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S11",
+      "claim": "组合测试挂载实际服务与原生执行器，模型为 Mock",
+      "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+      "start": 66,
+      "end": 83,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L66-L83",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S11a",
+      "claim": "跨包测试核工具呈现与作用域选择",
+      "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+      "start": 103,
+      "end": 128,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L103-L128",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S12",
+      "claim": "构建项目引用 tools；不能当运行调用",
+      "path": "packages/core/tool-executor-native/tsconfig.json",
+      "start": 10,
+      "end": 22,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/tsconfig.json#L10-L22",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S13",
+      "claim": "包身份、运行入口和类型入口与源码不同",
+      "path": "packages/core/tool-executor-native/package.json",
+      "start": 1,
+      "end": 24,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/package.json#L1-L24",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S13a",
+      "claim": "paths 为仓库源码解析；引用保持编译边界",
+      "path": "tsconfig.base.json",
+      "start": 27,
+      "end": 30,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.base.json#L27-L30",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S14",
+      "claim": "Host 与浏览器 Client 各有职责",
+      "path": "packages/host/README.zh.md",
+      "start": 10,
+      "end": 30,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/host/README.zh.md#L10-L30",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S14a",
+      "claim": "Client 中有浏览器连接与 UI 基础",
+      "path": "packages/client/README.zh.md",
+      "start": 10,
+      "end": 31,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/client/README.zh.md#L10-L31",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S15",
+      "claim": "solution 引用两套 aggregate，自身无文件",
+      "path": "tsconfig.json",
+      "start": 1,
+      "end": 15,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/tsconfig.json#L1-L15",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S15a",
+      "claim": "Context 声明合并冲突使 Host/Client 类型检查分开，存在共享/拆分例外",
+      "path": "docs/development.zh.md",
+      "start": 63,
+      "end": 81,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/development.zh.md#L63-L81",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S16",
+      "claim": "官方 module-graph 只包含 peer 依赖",
+      "path": "docs/module-graph.zh.md",
+      "start": 1,
+      "end": 8,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/module-graph.zh.md#L1-L8",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S17",
+      "claim": "浏览器入口委托 AppWebEntry",
+      "path": "apps/web/src/main.ts",
+      "start": 1,
+      "end": 20,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/web/src/main.ts#L1-L20",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S17a",
+      "claim": "网页从 main.ts 模块脚本进入",
+      "path": "apps/web/index.html",
+      "start": 14,
+      "end": 18,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/web/index.html#L14-L18",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S18",
+      "claim": "Desktop Host 调用共享 runner",
+      "path": "apps/desktop-host/src/index.ts",
+      "start": 22,
+      "end": 36,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/desktop-host/src/index.ts#L22-L36",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S19",
+      "claim": "apps 中的索引生成器不是 Cordis 应用",
+      "path": "apps/plugin-market-generator/README.zh.md",
+      "start": 1,
+      "end": 5,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/plugin-market-generator/README.zh.md#L1-L5",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S20",
+      "claim": "未审计预览，不能推导生产安全",
+      "path": "SAFETY.zh.md",
+      "start": 5,
+      "end": 15,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L15",
+      "status": "STATIC_VERIFIED"
+    },
+    {
+      "id": "S21",
+      "claim": "研发辅助：路径门禁测试区分历史引用与当前正文；只静态阅读",
+      "path": "scripts/verify-package-paths.spec.ts",
+      "start": 28,
+      "end": 39,
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/scripts/verify-package-paths.spec.ts#L28-L39",
+      "status": "STATIC_VERIFIED"
+    }
+  ],
+  "files": [
+    {
+      "path": "SAFETY.zh.md",
+      "sha256": "d021947c09c83eb352961cf12c95f4b5781d3987663e78c4a8b621d2e3be07a3",
+      "gitBlob": "6f7dae47b3e47ddfb155adb9c8c868b516d75360"
+    },
+    {
+      "path": "apps/cli/README.zh.md",
+      "sha256": "52a3d6faef82968bc3ce8352d8010adebb1489a1accc9d402dd2e937d82cfba7",
+      "gitBlob": "810126e839ea9064fd25a92dcae3f988e45f9aba"
+    },
+    {
+      "path": "apps/cli/package.json",
+      "sha256": "97750bfdb62d59955156f60ca7af0b7498bcd9e537ad800059222c231ab65209",
+      "gitBlob": "a77b89b9f2599b18b80d40afa36a6af7f14499ff"
+    },
+    {
+      "path": "apps/cli/src/bin.ts",
+      "sha256": "7081b6503a635eb6c6d9c3e4619e740afe157252b246aa17acbf1a1ceec54c88",
+      "gitBlob": "1ae0c4a59182c3ebe7dd38fcc17292e185332cdc"
+    },
+    {
+      "path": "apps/desktop-host/src/index.ts",
+      "sha256": "514f5ead12dbe398ddd5de4f4e59721b332ae4e845c590d63a676a99fbe2e4b1",
+      "gitBlob": "31bbbffe151c7311b4c593187084971ac7e93113"
+    },
+    {
+      "path": "apps/desktop/package.json",
+      "sha256": "e986ebcfa4f1034e2837c638ee75dd17c540eb55d07a85d9eab1b4c6d0f6554e",
+      "gitBlob": "081a90ead3e6b6a69c28355c9e8edf6808faa235"
+    },
+    {
+      "path": "apps/plugin-market-generator/README.zh.md",
+      "sha256": "c7e0df3116c6cf3d3642b4105f382dc83e538c30a0b4c692eb44ff7121f63c0a",
+      "gitBlob": "083428a78b8b87bdaab01d4d6da3066ced034e26"
+    },
+    {
+      "path": "apps/web/index.html",
+      "sha256": "c7baf480b9a88e198d92eb0f6e439092a290e9693848f98c29a7a8e7d422b553",
+      "gitBlob": "ff3ca620b7350989052ab9afe86697734ff021af"
+    },
+    {
+      "path": "apps/web/package.json",
+      "sha256": "d673ff57ce9e280501fa41201558259ddd28425ae1764d07ee225f63aa3df02c",
+      "gitBlob": "51ecc68787476f7f123dfbc9bc353a3c6f4c07e4"
+    },
+    {
+      "path": "apps/web/src/main.ts",
+      "sha256": "fde2d8134e55b2f463c19453e255bb64fda2e46380ff405b6a6d27f1398e208c",
+      "gitBlob": "5f4786acb78e8aff68919ec0dc529e93b81357ab"
+    },
+    {
+      "path": "docs/architecture.zh.md",
+      "sha256": "491fe1b1d21e40ab2c9c5ee0bbf69dc3e24c6a6ef8830d5dfd647b2ce8bfe1d2",
+      "gitBlob": "4ab73a419d08f461122acad2441f88f57b914137"
+    },
+    {
+      "path": "docs/development.zh.md",
+      "sha256": "6f12f3d6c136d880ff322f490b4f5ab0fc34c18b28d1eede890805cb35861b96",
+      "gitBlob": "8dcedc893840cdbdd40b7fb158a8f20d5f4a9502"
+    },
+    {
+      "path": "docs/module-graph.zh.md",
+      "sha256": "95547ab1f0250f840e4007b637ce3827faaef0c005dbb3e6f26f99f0389d750f",
+      "gitBlob": "47141c6e0b890ea2c1b317acb67d53fd71900230"
+    },
+    {
+      "path": "package.json",
+      "sha256": "d0fd7a2084d455b1651815bfbf9034e8b7dfb6571513727bec5d6cbc175a0b45",
+      "gitBlob": "9dccd6008bc8baa11863c2cab544eac2c786808e"
+    },
+    {
+      "path": "packages/README.zh.md",
+      "sha256": "9ff9c938f57975e949fdfedf87dae5b5fc887ba5aa206ca7df7bdab7df400859",
+      "gitBlob": "ae3a18bbc114bfcf3ce4e5bb83c0d36e16b48b5f"
+    },
+    {
+      "path": "packages/bundle/base/cordis.patch.yml",
+      "sha256": "e8269baedbd434f04a9ec3c9106e874e744e195d27fd8476a5006a85eab8d3f7",
+      "gitBlob": "863d194bf5ae78d83e9473589e466744f05a76df"
+    },
+    {
+      "path": "packages/bundle/base/package.json",
+      "sha256": "5a27e2c182db7fa10b0c860f79a78ede2340fb673bb6efcaf27da66b0f60ca92",
+      "gitBlob": "6c6e50873246bc66c8945ed8f457c79700ac98e0"
+    },
+    {
+      "path": "packages/client/README.zh.md",
+      "sha256": "643e06b7b21383435e4947b31a6e1e8aed398263bd07ebbc2f1a865bda056085",
+      "gitBlob": "92fcb266a5cf4295bd4e4d3b2a47b56943cdcaff"
+    },
+    {
+      "path": "packages/client/connection/README.zh.md",
+      "sha256": "d352865f0285408baab54d49d6b796fc0fe0d0d9da8c4b7883064a77715f2cdf",
+      "gitBlob": "5b5779297510419563fec6d82a7579b6e8488115"
+    },
+    {
+      "path": "packages/core/README.zh.md",
+      "sha256": "3f4849e37b57692cdc0eb360aeb3772cab3b8483ba3b9e0c6d9b7178835934e8",
+      "gitBlob": "128ad5cbd0f5e4c889f4074aa5de43c8dbf01b55"
+    },
+    {
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "sha256": "ad9ee0778c0a93dec40363f88b53f442add9b033837b9ff049675a1ada3df61f",
+      "gitBlob": "c4daa50c47c13fb86b94466774dfcac32b214076"
+    },
+    {
+      "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+      "sha256": "17b81c755ee51d9ebefa6e810e6f58119be88653474cba7895489cae2f1181c6",
+      "gitBlob": "d1fcff918964b3ed890f5acf7dd543dc72a63401"
+    },
+    {
+      "path": "packages/core/tool-executor-native/package.json",
+      "sha256": "d7efe1cc395fcb9af45d61078b4a659d4f54b076e5a29a4c676dea30a6965cf2",
+      "gitBlob": "2634c166214084786be9f627c994fe95cad0a832"
+    },
+    {
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "sha256": "a4a1094d63e6580b6255a05c466d1391ff17156fe3a9debc404e4b057c5a0881",
+      "gitBlob": "457749152c004c3b61fe4981eb9c89718bdb1640"
+    },
+    {
+      "path": "packages/core/tool-executor-native/tsconfig.json",
+      "sha256": "3805b2ae3920fec2542bf4283a2f7ee0205984817bdca2531dc66ba5f8618da1",
+      "gitBlob": "527fb0d8f8c15fcf8f3366ad73d2fb929e5e9faf"
+    },
+    {
+      "path": "packages/core/tools/src/executor.ts",
+      "sha256": "2204c7b2b38057fa8bd2ee5237bc80dd25ce5b730973c057ab54b80f87da897e",
+      "gitBlob": "a1bdd2d7a23a16c278cbd9429f38f1163a9f834d"
+    },
+    {
+      "path": "packages/core/tools/src/index.ts",
+      "sha256": "020c566150cf82dd49d368f5585043c73c191aaeba9103fd77a3efde6ee909dd",
+      "gitBlob": "d2d10d6b5be2d77696470e82164bda47322c2112"
+    },
+    {
+      "path": "packages/host/README.zh.md",
+      "sha256": "cb8e6d7fb5633ead6b0eff475a9fb8ede68120deed7d7a09bfac799e0dbd89b4",
+      "gitBlob": "e963dc1c168fd4f4e3a187b386dc555458dbb039"
+    },
+    {
+      "path": "packages/llm/README.zh.md",
+      "sha256": "550e8c650d1e4f52c530e9a9abdf055c6d243e84a46d534713d0cca7f2c83e18",
+      "gitBlob": "9afa16f63825a158ae23badc3b8de3b3d7c7b486"
+    },
+    {
+      "path": "packages/util/official-bundles/src/bundles.ts",
+      "sha256": "da2843644bec1065e4ef893c5eb688c7f5fad2108cd299c13f8bc4b4e1dd57db",
+      "gitBlob": "c3521b66d701f3c49fb31125b99de3b3280870a1"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "eb42731b8f509dd4ee3ae880eae1cde5381a1875a3598fd2fa83d1c1e5e1ef1a",
+      "gitBlob": "59b31eb46b90e35251cbf3c26b20556892c4aa52"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "sha256": "b696cf38fa13e1f0fdd38531f2fcb40250d1faa79f07f58c2c562fd1c747c479",
+      "gitBlob": "8f6b6ed9aab3b4be67a5ffca76f03a27c9c1bf73"
+    },
+    {
+      "path": "tsconfig.client.json",
+      "sha256": "48132aab6e66e269b2cd97ad1d3eb6a5991c43e72515f44d26f0db50a548acca",
+      "gitBlob": "26d88ff45ea68396e36c8409fed017482660dc5a"
+    },
+    {
+      "path": "tsconfig.host.json",
+      "sha256": "4c8e3e2b467a8d4e9b6256ca339062deb43bc83ad1327201fadbad580611803b",
+      "gitBlob": "2ac375604b4c655d354e7afa2598fb97258c953a"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "9eb420010dfd10daaa1a5374ce018fd691b1ba56a4bea60f2ebd8d548ffdffa4",
+      "gitBlob": "143b73efd0b425c5f345d9506c30e87bdb612745"
+    },
+    {
+      "path": "vendor/README.md",
+      "sha256": "9479200e228f66dab061ee5f426b2521c4634186bf5c588efbc8d8490c120c5d",
+      "gitBlob": "53b89254c06ceff3c4daa1f2d6b6809db717cb43"
+    },
+    {
+      "path": "scripts/verify-package-paths.spec.ts",
+      "sha256": "2634eed4b1ed8235d443a472a291b2e9db4771e67f827d51366f79209c859be0",
+      "gitBlob": "46af93a34ad00a4690e9200ad191ee65622fcae2"
+    }
+  ],
+  "cardsVerified": 6,
+  "upstreamTests": "STATIC_READ_ONLY_NOT_RUN",
+  "officialBuild": "NOT_RUN",
+  "realModel": "NOT_RUN"
+}
