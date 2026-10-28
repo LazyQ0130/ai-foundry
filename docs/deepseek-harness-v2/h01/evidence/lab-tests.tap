@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: 同一 Mock：A 直接写，B 等待；检查真实工具计数和内存结果
+ok 1 - 同一 Mock：A 直接写，B 等待；检查真实工具计数和内存结果
+  ---
+  duration_ms: 1.957
+  type: 'test'
+  ...
+# Subtest: 宿主批准才执行相同参数；改变读取结果也改变笔记
+ok 2 - 宿主批准才执行相同参数；改变读取结果也改变笔记
+  ---
+  duration_ms: 0.9129
+  type: 'test'
+  ...
+# Subtest: 拒绝或未知审批值都不能执行写工具
+ok 3 - 拒绝或未知审批值都不能执行写工具
+  ---
+  duration_ms: 0.2274
+  type: 'test'
+  ...
+# Subtest: 读取失败：A 抛错；B 明确失败，后续模型和写工具不启动
+ok 4 - 读取失败：A 抛错；B 明确失败，后续模型和写工具不启动
+  ---
+  duration_ms: 0.2452
+  type: 'test'
+  ...
+# Subtest: 写入后响应丢失：failed 不能证明副作用为零，也不会自动重试
+ok 5 - 写入后响应丢失：failed 不能证明副作用为零，也不会自动重试
+  ---
+  duration_ms: 0.1674
+  type: 'test'
+  ...
+# Subtest: 未知工具、坏参数及模型自报批准：正文执行次数为零
+ok 6 - 未知工具、坏参数及模型自报批准：正文执行次数为零
+  ---
+  duration_ms: 0.2265
+  type: 'test'
+  ...
+# Subtest: 两种循环都有限次；直接结束不启动工具
+ok 7 - 两种循环都有限次；直接结束不启动工具
+  ---
+  duration_ms: 0.2114
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 67.7443

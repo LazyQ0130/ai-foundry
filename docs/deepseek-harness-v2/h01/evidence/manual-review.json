@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "status": "AUTHOR_REVIEWED",
+  "reviewer": "same author in separate source, teaching and visual rounds; no independent second reviewer",
+  "sourceRound": {
+    "result": "static control-flow reviewed",
+    "checks": [
+      "AgentFactory consumer/implementation separation",
+      "step tool-call extraction then tools.execute",
+      "prepare policy -> ask resolution -> guards -> dispatch",
+      "missing approval service/channel denies",
+      "LlmRuntime prepareCall at line 960 rather than adapter interface",
+      "Session append and ordered model-history derivation distinct; not disk flush"
+    ]
+  },
+  "teachingRound": {
+    "result": "author readability review completed",
+    "textReviewed": "full formal prose, lab and detailed answers; final terminology pass applied",
+    "revisions": [
+      "Stage 4 final work distinguished from intentionally stripped teaching A",
+      "four terms treated as responsibility vocabulary rather than deployment layers",
+      "post-write failure retains one effect and does not imply rollback",
+      "approved case starts fresh world, not safe Resume",
+      "first appearances expanded Agent Loop, Commit, Run/Step/Action, Agent and Mock",
+      "removed unobserved claim that experiment prints a model success statement",
+      "scope of independent guards explained without H14 internals"
+    ],
+    "pending": [
+      "learner trial",
+      "actual reading duration",
+      "independent technical/editorial review"
+    ]
+  },
+  "visualRound": {
+    "result": "author inspected three full-size PNGs and representative actual Renderer screenshots",
+    "inspected": [
+      "figures/rendered/h01-01.png",
+      "figures/rendered/h01-02.png",
+      "figures/rendered/h01-03.png",
+      "figures/qa/h01-01-390.png",
+      "figures/qa/h01-02-320.png",
+      "figures/qa/h01-03-320.png",
+      "figures/qa/answer-320.png",
+      "figures/qa/static-intro-1440.png",
+      "figures/qa/static-intro-390.png"
+    ],
+    "issueFound": "two lines crossed diagram 3 labels",
+    "resolution": "moved both lines to one side of labels, removed detached lower labels, regenerated and reran all three viewport tests",
+    "conclusion": "Chinese readable, no clipped labels, arrows distinguish model proposals from tool execution; 320 px is minimum supported check, original image available"
+  },
+  "teachingEffectiveness": "NOT_PROVEN_BY_AUTOMATED_CHECKS"
+}
