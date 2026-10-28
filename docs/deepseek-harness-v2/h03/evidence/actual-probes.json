@@ -1,0 +1,38 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "status": "PASS",
+  "scope": "4 actual-source in-memory library probes, not full AgentLoop, persistence flush or upstream suite",
+  "checks": [
+    {
+      "name": "live chunk is visible before any assistant settlement",
+      "status": "PASS"
+    },
+    {
+      "name": "actual settle appends before committed end; compact stream is embedded",
+      "status": "PASS",
+      "seq": 3
+    },
+    {
+      "name": "actual detached Session replay derives same messages; boundaries/attempt excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "rejected append emits abandoned, never committed end",
+      "status": "PASS"
+    }
+  ],
+  "files": [
+    {
+      "path": "packages/core/session/src/index.ts",
+      "sha256": "343eeb693620bf3de6d21fcecb685fb7288b623c0bd4f655f29a23e92ce2f634"
+    },
+    {
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "sha256": "120d2bec5efeec2aa54bf0e4261a45282936272d610dbbab21eee36b902629de"
+    },
+    {
+      "path": "packages/llm/llm/src/message.ts",
+      "sha256": "5826fb32bc3d6e2221a7a39cc8b4fecc57282540a332417bb9f2ac3522b5c7da"
+    }
+  ]
+}

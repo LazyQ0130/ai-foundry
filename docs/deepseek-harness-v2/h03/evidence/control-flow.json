@@ -1,0 +1,292 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "status": "AST_ORDER_VERIFIED_REQUIRES_SEMANTIC_REVIEW",
+  "files": [
+    {
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "sha256": "ad9ee0778c0a93dec40363f88b53f442add9b033837b9ff049675a1ada3df61f"
+    },
+    {
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "sha256": "120d2bec5efeec2aa54bf0e4261a45282936272d610dbbab21eee36b902629de"
+    },
+    {
+      "path": "packages/core/tools/src/batch.ts",
+      "sha256": "5451e17f844cea8a56b8bf6dfadbf357d3081c4796d0b1046b761a82e4d8e355"
+    }
+  ],
+  "orders": [
+    {
+      "id": "O1",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "method": "turn",
+      "selected": [
+        {
+          "callee": "this.session.append",
+          "arg0": "turn/start",
+          "line": 336,
+          "end": 336,
+          "parents": [
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.preStep",
+          "line": 347,
+          "end": 347,
+          "parents": [
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.session.append",
+          "arg0": "step/start",
+          "line": 361,
+          "end": 361,
+          "parents": [
+            "TryStatement",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.step",
+          "line": 370,
+          "end": 370,
+          "parents": [
+            "TryStatement",
+            "TryStatement",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.session.append",
+          "arg0": "step/end",
+          "line": 388,
+          "end": 388,
+          "parents": [
+            "TryStatement",
+            "TryStatement",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.dispatch.serial",
+          "arg0": "agent/turn-stopping",
+          "line": 396,
+          "end": 396,
+          "parents": [
+            "IfStatement",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.session.append",
+          "arg0": "turn/end",
+          "line": 422,
+          "end": 422,
+          "parents": [
+            "TryStatement",
+            "TryStatement"
+          ]
+        }
+      ],
+      "meaning": "正常分支：Turn 先打开；reject 提前返回但外层 finally 关 Turn；Step finally 关 Step，随后才停止检查",
+      "limit": "AST lexical order is supporting evidence, not execution proof; branch/finally reasoning and cited test assertions reviewed separately"
+    },
+    {
+      "id": "O2",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "method": "preStep",
+      "selected": [
+        {
+          "callee": "this.inbox.claim",
+          "line": 287,
+          "end": 287,
+          "parents": []
+        },
+        {
+          "callee": "this.loopCtx.tools.resolve",
+          "line": 292,
+          "end": 292,
+          "parents": []
+        },
+        {
+          "callee": "this.loopCtx.systemPrompt.assemble",
+          "line": 294,
+          "end": 294,
+          "parents": [
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.dispatch.waterfall",
+          "arg0": "agent/pre-step",
+          "line": 296,
+          "end": 306,
+          "parents": [
+            "TryStatement"
+          ]
+        }
+      ],
+      "meaning": "模型选择在 claim 后读取；工具与提示材料先准备，之后才进入 pre-step 接纳扩展点",
+      "limit": "AST lexical order is supporting evidence, not execution proof; branch/finally reasoning and cited test assertions reviewed separately"
+    },
+    {
+      "id": "O3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "method": "step",
+      "selected": [
+        {
+          "callee": "this.prepareRequest",
+          "line": 445,
+          "end": 445,
+          "parents": []
+        },
+        {
+          "callee": "this.session.append",
+          "arg0": "user/message",
+          "line": 467,
+          "end": 467,
+          "parents": [
+            "IfStatement",
+            "IfStatement",
+            "IfStatement"
+          ]
+        },
+        {
+          "callee": "this.buildRequest",
+          "line": 479,
+          "end": 479,
+          "parents": []
+        },
+        {
+          "callee": "preparedCall?.stream",
+          "line": 490,
+          "end": 490,
+          "parents": [
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.session.append",
+          "arg0": "assistant/message",
+          "line": 576,
+          "end": 582,
+          "parents": [
+            "ArrowFunction",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.loopCtx.tools.execute",
+          "line": 590,
+          "end": 593,
+          "parents": [
+            "TryStatement",
+            "TryStatement"
+          ]
+        }
+      ],
+      "meaning": "默认已注册适配器且成功流：模型调用准备先于用户消息提交；成功助手消息提交先于工具分派；catch 中断/attempt 是不同分支",
+      "limit": "AST lexical order is supporting evidence, not execution proof; branch/finally reasoning and cited test assertions reviewed separately"
+    },
+    {
+      "id": "O4",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "method": "buildRequest",
+      "selected": [
+        {
+          "callee": "this.session.append",
+          "arg0": "request/header",
+          "line": 677,
+          "end": 681,
+          "parents": [
+            "IfStatement"
+          ]
+        },
+        {
+          "callee": "session.append",
+          "arg0": "request/context",
+          "line": 722,
+          "end": 722,
+          "parents": [
+            "IfStatement"
+          ]
+        },
+        {
+          "callee": "session.deriveMessages",
+          "line": 728,
+          "end": 728,
+          "parents": []
+        }
+      ],
+      "meaning": "header/context 在各自条件中按需追加；派生历史在其后，不能画成每步强制新增快照",
+      "limit": "AST lexical order is supporting evidence, not execution proof; branch/finally reasoning and cited test assertions reviewed separately"
+    },
+    {
+      "id": "O5",
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "method": "settle",
+      "selected": [
+        {
+          "callee": "append",
+          "line": 84,
+          "end": 84,
+          "parents": [
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.abandon",
+          "line": 86,
+          "end": 86,
+          "parents": [
+            "CatchClause",
+            "TryStatement"
+          ]
+        },
+        {
+          "callee": "this.emit",
+          "line": 90,
+          "end": 96,
+          "parents": []
+        },
+        {
+          "callee": "this.nextRevision",
+          "line": 93,
+          "end": 93,
+          "parents": []
+        }
+      ],
+      "meaning": "append 成功后发 committed end；append 抛出时 catch 调 abandon，不得把两条分支合并"
+    },
+    {
+      "id": "O6",
+      "path": "packages/core/tools/src/batch.ts",
+      "method": "runGroup.startCall",
+      "selected": [
+        {
+          "callee": "settlement.start",
+          "line": 157
+        },
+        {
+          "callee": "pipeline.prepare",
+          "line": 159
+        },
+        {
+          "callee": "throwSchedulerFailure",
+          "line": 160
+        },
+        {
+          "callee": "pipeline.dispatch(prepared.exec).then",
+          "line": 163
+        },
+        {
+          "callee": "pipeline.dispatch",
+          "line": 163
+        }
+      ],
+      "meaning": "tool/call 起始记录先于 prepare；只有 dispatch 分支启动主体，不把起始记录当成功"
+    }
+  ]
+}

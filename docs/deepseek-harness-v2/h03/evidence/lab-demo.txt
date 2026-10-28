@@ -1,0 +1,45 @@
+direct {"steps":1,"modelRequests":1,"tools":0,"end":"completed"}
+tool {"steps":2,"modelRequests":2,"tools":1,"end":"completed"}
+multi {"steps":3,"modelRequests":3,"tools":2,"end":"completed"}
+reject {"steps":0,"modelRequests":0,"tools":0,"end":"blocked"}
+tool-failure {"steps":2,"modelRequests":2,"tools":1,"end":"completed"}
+cancel {"steps":1,"modelRequests":1,"tools":0,"end":"aborted"}
+model-error {"steps":1,"modelRequests":1,"tools":0,"end":"error"}
+timeout {"steps":1,"modelRequests":1,"tools":0,"end":"error"}
+prepare-error {"steps":1,"modelRequests":0,"tools":0,"end":"error"}
+
+--- tool 完整教学追踪 ---
+0 [fact #0] agent/inbox/spliced {"demoOperation":"insert","input":"请读取 README.md，概括主要功能。"}
+1 [live] agent/status {"status":"running"}
+2 [fact #1] turn/start {"turn":1}
+3 [fact #2] agent/inbox/spliced {"demoOperation":"claim"}
+4 [live] agent/inbox/claimed {"turn":1}
+5 [checkpoint] prepare-input {"model":"mock","tools":["read_fixture"],"prompt":"只根据收到的资料回答"}
+6 [checkpoint] agent/pre-step {"proposedStep":1,"decision":"enter"}
+7 [fact #3] step/start {"turn":1,"step":1}
+8 [checkpoint] llm.prepareCall {"provider":"mock","model":"mock"}
+9 [fact #4] system/message {"role":"system","content":"只根据收到的资料回答"}
+10 [fact #5] user/message {"role":"user","content":"请读取 README.md，概括主要功能。"}
+11 [fact #6] request/header {"demoConfig":{"provider":"mock","model":"mock"},"reason":"initial"}
+12 [checkpoint] model/request {"step":1,"messages":[{"role":"system","content":"只根据收到的资料回答"},{"role":"user","content":"请读取 README.md，概括主要功能。"}]}
+13 [live] agent/assistant-stream {"type":"start","step":1}
+14 [live] agent/assistant-stream {"type":"chunk","demoResponse":{"call":{"id":"c1","name":"read_fixture","path":"README.md"}}}
+15 [fact #7] assistant/message {"turn":1,"step":1,"role":"assistant","demoResponse":{"call":{"id":"c1","name":"read_fixture","path":"README.md"}}}
+16 [live] agent/assistant-stream {"type":"end","outcome":{"kind":"committed","eventType":"assistant/message","seq":7}}
+17 [fact #8] tool/call {"turn":1,"step":1,"id":"c1","name":"read_fixture","path":"README.md"}
+18 [checkpoint] tools/validate-and-prepare {"callId":"c1"}
+19 [fact #9] tool/result {"turn":1,"step":1,"callId":"c1","isError":false,"content":"Foundry Demo：整理项目资料。使用方法见 USAGE.md。"}
+20 [fact #10] step/end {"turn":1,"step":1}
+21 [checkpoint] prepare-input {"model":"mock","tools":["read_fixture"],"prompt":"只根据收到的资料回答"}
+22 [checkpoint] agent/pre-step {"proposedStep":2,"decision":"enter"}
+23 [fact #11] step/start {"turn":1,"step":2}
+24 [checkpoint] llm.prepareCall {"provider":"mock","model":"mock"}
+25 [checkpoint] model/request {"step":2,"messages":[{"role":"system","content":"只根据收到的资料回答"},{"role":"user","content":"请读取 README.md，概括主要功能。"},{"role":"assistant","call":{"id":"c1","name":"read_fixture","path":"README.md"}},{"role":"tool","callId":"c1","isError":false,"content":"Foundry Demo：整理项目资料。使用方法见 USAGE.md。"}]}
+26 [live] agent/assistant-stream {"type":"start","step":2}
+27 [live] agent/assistant-stream {"type":"chunk","demoResponse":{"text":"依据已收到的资料：Foundry Demo：整理项目资料。使用方法见 USAGE.md。"}}
+28 [fact #12] assistant/message {"turn":1,"step":2,"role":"assistant","demoResponse":{"text":"依据已收到的资料：Foundry Demo：整理项目资料。使用方法见 USAGE.md。"}}
+29 [live] agent/assistant-stream {"type":"end","outcome":{"kind":"committed","eventType":"assistant/message","seq":12}}
+30 [fact #13] step/end {"turn":1,"step":2}
+31 [fact #14] turn/end {"turn":1,"reason":{"kind":"completed"}}
+32 [live] agent/status {"status":"idle"}
+SUMMARY {"steps":2,"modelRequests":2,"tools":1,"end":"completed"}
