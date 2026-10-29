@@ -1,0 +1,52 @@
+--- a/course-content/internal/deepseek-harness/h07/lab/lifecycle.test.ts
++++ b/course-content/internal/deepseek-harness/h07/lab/lifecycle.test.ts
+@@ -25,7 +25,7 @@
+ }));
+ test('配置验证失败不执行apply，清理后FAILED', async () => inContext(async ctx => {
+   let called = 0;
+-  const plugin = { Config: { '~standard': { version: 1 as const, vendor:'h07', validate: () => ({issues:[{message:'BAD_CONFIG'}]}) } }, apply() { called++; } };
++  const plugin = { Config: { '~standard': { version: 1 as const, vendor:'h07', validate: () => ({issues:[{message:'BAD_CONFIG'}]}) } }, apply(_inner: Context, _config: unknown) { called++; } };
+   const handle=ctx.plugin(plugin,{});
+   await assert.rejects(handle.await(),/BAD_CONFIG/); assert.equal(called,0); assert.equal(handle.state,FiberState.FAILED);
+   await handle.dispose();
+@@ -43,7 +43,7 @@
+ }));
+ test('LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理', async () => inContext(async ctx => {
+   const entered=Promise.withResolvers<void>(),release=Promise.withResolvers<void>();let clean=0,done=false;
+-  const f=ctx.plugin({async apply(inner:Context){entered.resolve();await release.promise;inner.effect(()=>()=>{clean++;});}});
++  const f=ctx.plugin({async apply(inner:Context){inner.effect(()=>()=>{clean++;});entered.resolve();await release.promise;}});
+   await entered.promise;const task=f.dispose();void task.then(()=>{done=true;});
+   try {await Promise.resolve();assert.equal(done,false);release.resolve();await task;assert.equal(clean,1);assert.equal(f.state,FiberState.DISPOSED);}
+   finally{release.resolve();await task;}
+@@ -70,7 +70,7 @@
+   const first=stop();await started.promise;
+   const repeated=stop();assert.equal(repeated,undefined);await repeated;
+   const owner=f.dispose();void owner.then(()=>{ownerDone=true;});
+-  try{await Promise.resolve();assert.equal(ownerDone,false);assert.equal(f.state,FiberState.UNLOADING);release.resolve();await first;await owner;assert.equal(count,1);}
++  try{const repeatOwner=f.dispose();assert.equal(repeatOwner,undefined);await repeatOwner;await Promise.resolve();assert.equal(ownerDone,false);assert.equal(f.state,FiberState.UNLOADING);release.resolve();await first;await owner;assert.equal(count,1);}
+   finally{release.resolve();await owner;}
+ }));
+ test('不同Effect逆序启动B/A；受控让A/B完成，卸载等二者', async () => {
+@@ -112,9 +112,10 @@
+ }));
+ test('父级dispose递归等子级清理；不强制父级各Effect全局串行', async () => inContext(async ctx => {
+   let child!:Fiber;const started=Promise.withResolvers<void>(),release=Promise.withResolvers<void>();let done=false;
++  let siblingHits=0;const sibling=await ctx.plugin({apply(inner:Context){inner.on('h07/pulse',()=>{siblingHits++;});}});
+   const parent=await ctx.plugin({async apply(inner:Context){child=await inner.plugin({apply(c:Context){c.effect(()=>async()=>{started.resolve();await release.promise;});}});}});
+   const task=parent.dispose();void task.then(()=>{done=true;});
+-  try{await started.promise;assert.equal(done,false);assert.equal(child.state,FiberState.UNLOADING);release.resolve();await task;assert.equal(child.state,FiberState.DISPOSED);assert.equal(parent.state,FiberState.DISPOSED);}
++  try{await started.promise;assert.equal(done,false);assert.equal(child.state,FiberState.UNLOADING);release.resolve();await task;assert.equal(child.state,FiberState.DISPOSED);assert.equal(parent.state,FiberState.DISPOSED);ctx.emit('h07/pulse');assert.equal(sibling.state,FiberState.ACTIVE);assert.equal(siblingHits,1);}
+   finally{release.resolve();await task;}
+ }));
+ test('C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留', async () => {
+@@ -143,3 +144,10 @@
+   try{release.resolve();await work;assert.equal(exits,1);await ctx.parallel('h07/work');assert.equal(exits,1);}
+   finally{release.resolve();await work;}
+ }));
++test('异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次', async () => inContext(async ctx => {
++  const started=Promise.withResolvers<void>(),release=Promise.withResolvers<void>();let closes=0,settled=false;
++  const f=ctx.plugin({async apply(inner:Context){await inner.effect(async()=>{started.resolve();await release.promise;return()=>{closes++;};});}});
++  await started.promise;const task=f.dispose();void task.then(()=>{settled=true;});
++  try{await Promise.resolve();assert.equal(settled,false);release.resolve();await task;assert.equal(closes,1);assert.equal(f.state,FiberState.DISPOSED);}
++  finally{release.resolve();await task;}
++}));

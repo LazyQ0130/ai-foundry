@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "cordisVersion": "4.0.6-alpha.1",
+  "sourceByteCheck": "20 vendor file SHA256 checks before execution",
+  "node": "v24.16.0",
+  "typescript": "5.9.3",
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h07-lab-tBjlrq",
+  "tests": 24,
+  "mutation": {
+    "exit": 1,
+    "status": "EXPECTED_FAILURE"
+  },
+  "runtime": "actual pinned vendor Cordis/Cosmokit, not Mock; no Loader/Profile/Harness integration",
+  "environment": "allowlisted OS startup variables, new fixtures only; no private data/credentials/real model or network",
+  "typecheck": "strict course consumers; vendor-generated declarations; TS2345 negative; Events augmentation erased",
+  "outputs": {
+    "tests": {
+      "code": 0,
+      "stdout": "TAP version 13\n# Subtest: A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED\nok 1 - A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED\n  ---\n  duration_ms: 4.9043\n  type: 'test'\n  ...\n# Subtest: apply失败先卸载已登记资源，再FAILED；await重抛错误\nok 2 - apply失败先卸载已登记资源，再FAILED；await重抛错误\n  ---\n  duration_ms: 4.358\n  type: 'test'\n  ...\n# Subtest: 配置验证失败不执行apply，清理后FAILED\nok 3 - 配置验证失败不执行apply，清理后FAILED\n  ---\n  duration_ms: 1.0104\n  type: 'test'\n  ...\n# Subtest: 缺必需服务：await可稳定在PENDING；显式dispose可永久移除\nok 4 - 缺必需服务：await可稳定在PENDING；显式dispose可永久移除\n  ---\n  duration_ms: 1.7364\n  type: 'test'\n  ...\n# Subtest: 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄\nok 5 - 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄\n  ---\n  duration_ms: 1.4088\n  type: 'test'\n  ...\n# Subtest: LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理\nok 6 - LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理\n  ---\n  duration_ms: 0.846\n  type: 'test'\n  ...\n# Subtest: B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留\nok 7 - B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留\n  ---\n  duration_ms: 1.1546\n  type: 'test'\n  ...\n# Subtest: 受控真实Node setInterval：不等墙钟，卸载后不再tick\nok 8 - 受控真实Node setInterval：不等墙钟，卸载后不再tick\n  ---\n  duration_ms: 2.228\n  type: 'test'\n  ...\n# Subtest: effect主体立即运行；提前调用句柄与随后卸载只清理一次\nok 9 - effect主体立即运行；提前调用句柄与随后卸载只清理一次\n  ---\n  duration_ms: 0.8336\n  type: 'test'\n  ...\n# Subtest: 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理\nok 10 - 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理\n  ---\n  duration_ms: 0.9103\n  type: 'test'\n  ...\n# Subtest: 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者\nok 11 - 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者\n  ---\n  duration_ms: 0.9187\n  type: 'test'\n  ...\n# Subtest: 严格清理顺序放同一Disposer：flush完成后才close\nok 12 - 严格清理顺序放同一Disposer：flush完成后才close\n  ---\n  duration_ms: 1.6684\n  type: 'test'\n  ...\n# Subtest: 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行\nok 13 - 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行\n  ---\n  duration_ms: 0.773\n  type: 'test'\n  ...\n# Subtest: 手动清理同步throw会抛出，不自动重试\nok 14 - 手动清理同步throw会抛出，不自动重试\n  ---\n  duration_ms: 0.713\n  type: 'test'\n  ...\n# Subtest: 手动异步清理拒绝传给首个调用方\nok 15 - 手动异步清理拒绝传给首个调用方\n  ---\n  duration_ms: 0.6551\n  type: 'test'\n  ...\n# Subtest: 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功\nok 16 - 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功\n  ---\n  duration_ms: 1.169\n  type: 'test'\n  ...\n# Subtest: Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放\nok 17 - Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放\n  ---\n  duration_ms: 0.9038\n  type: 'test'\n  ...\n# Subtest: 父级dispose递归等子级清理；不强制父级各Effect全局串行\nok 18 - 父级dispose递归等子级清理；不强制父级各Effect全局串行\n  ---\n  duration_ms: 1.1482\n  type: 'test'\n  ...\n# Subtest: C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留\nok 19 - C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留\n  ---\n  duration_ms: 2.1839\n  type: 'test'\n  ...\n# Subtest: 显式dispose的Consumer不会因服务重现自动复活\nok 20 - 显式dispose的Consumer不会因服务重现自动复活\n  ---\n  duration_ms: 2.0236\n  type: 'test'\n  ...\n# Subtest: restart保留Fiber身份，重跑apply，监听器不重复\nok 21 - restart保留Fiber身份，重跑apply，监听器不重复\n  ---\n  duration_ms: 1.123\n  type: 'test'\n  ...\n# Subtest: DISPOSED/UNLOADING时不得再创建Effect\nok 22 - DISPOSED/UNLOADING时不得再创建Effect\n  ---\n  duration_ms: 0.7946\n  type: 'test'\n  ...\n# Subtest: 移除on只影响后续分发，不自动等待或取消已经开始的异步监听\nok 23 - 移除on只影响后续分发，不自动等待或取消已经开始的异步监听\n  ---\n  duration_ms: 0.7541\n  type: 'test'\n  ...\n# Subtest: 异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次\nok 24 - 异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次\n  ---\n  duration_ms: 0.7485\n  type: 'test'\n  ...\n1..24\n# tests 24\n# suites 0\n# pass 24\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 358.0466\n",
+      "stderr": ""
+    },
+    "demo": {
+      "code": 0,
+      "stdout": "statesExample {\"states\":[\"PENDING\",\"LOADING\",\"ACTIVE\",\"UNLOADING\",\"DISPOSED\"],\"trace\":[\"apply进入\",\"清理开始\",\"清理完成\"],\"duringLoad\":\"LOADING\",\"running\":\"ACTIVE\",\"duringUnload\":\"UNLOADING\",\"final\":\"DISPOSED\",\"uidWasPresent\":true,\"uidNow\":null}\nresourcesExample {\"before\":{\"events\":1,\"ticks\":1,\"closes\":0,\"pending\":1,\"open\":true},\"after\":{\"events\":1,\"ticks\":1,\"closes\":1,\"pending\":0,\"open\":false},\"state\":\"DISPOSED\"}\nasyncOrderExample {\"before\":[\"B开始\",\"A开始\"],\"trace\":[\"B开始\",\"A开始\",\"A完成\",\"B完成\"],\"state\":\"DISPOSED\"}\ndependenciesExample {\"phases\":[\"PENDING\",\"ACTIVE\",\"PENDING\",\"ACTIVE\",\"DISPOSED\"],\"trace\":[\"加载:v1\",\"事件:v1\",\"清理:v1\",\"加载:v2\",\"事件:v2\",\"清理:v2\"],\"runs\":2,\"cleanups\":2,\"events\":2,\"sameUid\":true}\n",
+      "stderr": ""
+    }
+  },
+  "lessonPrograms": [
+    {
+      "name": "support.ts",
+      "sha256": "03790830c3ff72899842f732539247cbba22b5f8354ad4b69f11bc768cf13906"
+    },
+    {
+      "name": "states.ts",
+      "sha256": "cf4a80d4c453f2f8a396d14c596be1212aca3105a404b0973356c59df13d8150"
+    },
+    {
+      "name": "resources.ts",
+      "sha256": "6570f2782cc5bc41ef15260153f8c97e4d30b66c17b8052c8eefbfe34d85b3b4"
+    },
+    {
+      "name": "dependencies.ts",
+      "sha256": "55cfaf6a155beb2ffde77eaf9d8317514c6b8ef17e42306816553258b36bb605"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "b3dc988a4fae099cf3ed229b25929a29622e48c23c1f4ea8be50732f6325aa6f"
+    },
+    {
+      "name": "lifecycle.test.ts",
+      "sha256": "ad03b3602035a5fbbd38133fb1d0b3e027f170a73a6fd286852f8313ee9540af"
+    }
+  ]
+}

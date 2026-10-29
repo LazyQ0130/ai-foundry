@@ -1,0 +1,165 @@
+TAP version 13
+# Subtest: A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED
+ok 1 - A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED
+  ---
+  duration_ms: 5.5929
+  type: 'test'
+  ...
+# Subtest: apply失败先卸载已登记资源，再FAILED；await重抛错误
+ok 2 - apply失败先卸载已登记资源，再FAILED；await重抛错误
+  ---
+  duration_ms: 5.1421
+  type: 'test'
+  ...
+# Subtest: 配置验证失败不执行apply，清理后FAILED
+ok 3 - 配置验证失败不执行apply，清理后FAILED
+  ---
+  duration_ms: 1.2218
+  type: 'test'
+  ...
+# Subtest: 缺必需服务：await可稳定在PENDING；显式dispose可永久移除
+ok 4 - 缺必需服务：await可稳定在PENDING；显式dispose可永久移除
+  ---
+  duration_ms: 1.6763
+  type: 'test'
+  ...
+# Subtest: 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄
+ok 5 - 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄
+  ---
+  duration_ms: 1.3417
+  type: 'test'
+  ...
+# Subtest: LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理
+not ok 6 - LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理
+  ---
+  duration_ms: 1.6953
+  type: 'test'
+  location: 'C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h07-lab-JQCjv9\\lifecycle.test.ts:1:3199'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    0 !== 1
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    <anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h07-lab-JQCjv9\lifecycle.test.ts:48:93)
+    async inContext (C:\Users\QYF\AppData\Local\Temp\aifoundry-h07-lab-JQCjv9\support.ts:15:16)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留
+ok 7 - B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留
+  ---
+  duration_ms: 1.264
+  type: 'test'
+  ...
+# Subtest: 受控真实Node setInterval：不等墙钟，卸载后不再tick
+ok 8 - 受控真实Node setInterval：不等墙钟，卸载后不再tick
+  ---
+  duration_ms: 2.5432
+  type: 'test'
+  ...
+# Subtest: effect主体立即运行；提前调用句柄与随后卸载只清理一次
+ok 9 - effect主体立即运行；提前调用句柄与随后卸载只清理一次
+  ---
+  duration_ms: 1.0088
+  type: 'test'
+  ...
+# Subtest: 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理
+ok 10 - 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理
+  ---
+  duration_ms: 1.0763
+  type: 'test'
+  ...
+# Subtest: 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者
+ok 11 - 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者
+  ---
+  duration_ms: 1.0964
+  type: 'test'
+  ...
+# Subtest: 严格清理顺序放同一Disposer：flush完成后才close
+ok 12 - 严格清理顺序放同一Disposer：flush完成后才close
+  ---
+  duration_ms: 0.8656
+  type: 'test'
+  ...
+# Subtest: 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行
+ok 13 - 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行
+  ---
+  duration_ms: 1.9093
+  type: 'test'
+  ...
+# Subtest: 手动清理同步throw会抛出，不自动重试
+ok 14 - 手动清理同步throw会抛出，不自动重试
+  ---
+  duration_ms: 1.0359
+  type: 'test'
+  ...
+# Subtest: 手动异步清理拒绝传给首个调用方
+ok 15 - 手动异步清理拒绝传给首个调用方
+  ---
+  duration_ms: 0.952
+  type: 'test'
+  ...
+# Subtest: 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功
+ok 16 - 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功
+  ---
+  duration_ms: 1.4895
+  type: 'test'
+  ...
+# Subtest: Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放
+ok 17 - Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放
+  ---
+  duration_ms: 0.949
+  type: 'test'
+  ...
+# Subtest: 父级dispose递归等子级清理；不强制父级各Effect全局串行
+ok 18 - 父级dispose递归等子级清理；不强制父级各Effect全局串行
+  ---
+  duration_ms: 1.15
+  type: 'test'
+  ...
+# Subtest: C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留
+ok 19 - C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留
+  ---
+  duration_ms: 2.1867
+  type: 'test'
+  ...
+# Subtest: 显式dispose的Consumer不会因服务重现自动复活
+ok 20 - 显式dispose的Consumer不会因服务重现自动复活
+  ---
+  duration_ms: 1.4466
+  type: 'test'
+  ...
+# Subtest: restart保留Fiber身份，重跑apply，监听器不重复
+ok 21 - restart保留Fiber身份，重跑apply，监听器不重复
+  ---
+  duration_ms: 1.2502
+  type: 'test'
+  ...
+# Subtest: DISPOSED/UNLOADING时不得再创建Effect
+ok 22 - DISPOSED/UNLOADING时不得再创建Effect
+  ---
+  duration_ms: 1.1182
+  type: 'test'
+  ...
+# Subtest: 移除on只影响后续分发，不自动等待或取消已经开始的异步监听
+ok 23 - 移除on只影响后续分发，不自动等待或取消已经开始的异步监听
+  ---
+  duration_ms: 1.0625
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 22
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 447.9695
