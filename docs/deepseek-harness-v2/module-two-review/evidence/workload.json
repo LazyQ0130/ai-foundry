@@ -1,0 +1,686 @@
+{
+  "method": "Actual lesson parser; remark text/inlineCode excluding fenced code, Markdown syntax and URL destinations; default prose excludes deepdive descendants. Han characters and Latin/numeric word units reported separately; no claim of Chinese word segmentation. Citation lines unioned per file; core route manually curated separately. Durations are unvalidated author estimates.",
+  "rows": [
+    {
+      "lesson": "h05",
+      "estimatedTime": "100～135 分钟（概念与源码约 60～75 分钟，实践约 40～60 分钟；实际时长待试读）",
+      "allProse": {
+        "han": 8046,
+        "latinNumericWords": 514
+      },
+      "defaultVisibleProse": {
+        "han": 6751,
+        "latinNumericWords": 441
+      },
+      "codeBlocks": 16,
+      "codeLines": 218,
+      "foldedCodeLines": 178,
+      "folds": 15,
+      "figures": 3,
+      "concepts": [
+        "Plugin",
+        "Service",
+        "Context",
+        "依赖注入 DI",
+        "apply"
+      ],
+      "coreConceptCount": 5,
+      "practiceTasks": 2,
+      "thoughtQuestions": 3,
+      "coreRoute": [
+        {
+          "path": "packages/core/tool-executor-native/src/index.ts",
+          "ranges": [
+            [
+              25,
+              35
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/service.ts",
+          "ranges": [
+            [
+              42,
+              58
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/context.ts",
+          "ranges": [
+            [
+              70,
+              84
+            ],
+            [
+              109,
+              125
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/registry.ts",
+          "ranges": [
+            [
+              91,
+              133
+            ],
+            [
+              316,
+              335
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/fiber.ts",
+          "ranges": [
+            [
+              247,
+              260
+            ],
+            [
+              597,
+              623
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 164,
+      "citedFiles": 16,
+      "citedLines": 494,
+      "citedByKind": [
+        {
+          "path": "vendor/cordis/src/registry.ts",
+          "lines": 63,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tool-executor-native/src/index.ts",
+          "lines": 11,
+          "kind": "source"
+        },
+        {
+          "path": "docs/cordis-tutorial/03-services.zh.md",
+          "lines": 60,
+          "kind": "documentation"
+        },
+        {
+          "path": "vendor/cordis/src/service.ts",
+          "lines": 17,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/reflect.ts",
+          "lines": 52,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/context.ts",
+          "lines": 32,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/fiber.ts",
+          "lines": 66,
+          "kind": "source"
+        },
+        {
+          "path": "docs/architecture.zh.md",
+          "lines": 20,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/llm/llm/src/index.ts",
+          "lines": 11,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/session/src/index.ts",
+          "lines": 8,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "lines": 34,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/index.ts",
+          "lines": 27,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "lines": 12,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/tests/tools.spec.ts",
+          "lines": 7,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+          "lines": 63,
+          "kind": "test"
+        },
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        }
+      ],
+      "blueprintMinutes": [
+        70,
+        95
+      ]
+    },
+    {
+      "lesson": "h06",
+      "estimatedTime": "120～160 分钟（可分三段；实际学习时长待试读，安装等待另计）",
+      "allProse": {
+        "han": 9077,
+        "latinNumericWords": 779
+      },
+      "defaultVisibleProse": {
+        "han": 6785,
+        "latinNumericWords": 514
+      },
+      "codeBlocks": 18,
+      "codeLines": 240,
+      "foldedCodeLines": 148,
+      "folds": 18,
+      "figures": 3,
+      "concepts": [
+        "Event",
+        "Listener",
+        "Dispatch",
+        "emit",
+        "parallel",
+        "serial",
+        "bail",
+        "Waterfall",
+        "next"
+      ],
+      "coreConceptCount": 9,
+      "practiceTasks": 3,
+      "thoughtQuestions": 4,
+      "coreRoute": [
+        {
+          "path": "vendor/cordis/src/events.ts",
+          "ranges": [
+            [
+              7,
+              15
+            ],
+            [
+              165,
+              243
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/tools/src/events.ts",
+          "ranges": [
+            [
+              8,
+              41
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/tools/src/pipeline.ts",
+          "ranges": [
+            [
+              190,
+              232
+            ]
+          ]
+        },
+        {
+          "path": "packages/jobs/tool-jobs/src/index.ts",
+          "ranges": [
+            [
+              285,
+              290
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 171,
+      "citedFiles": 14,
+      "citedLines": 391,
+      "citedByKind": [
+        {
+          "path": "vendor/cordis/src/events.ts",
+          "lines": 106,
+          "kind": "source"
+        },
+        {
+          "path": "docs/cordis-tutorial/04-events.zh.md",
+          "lines": 30,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/core/agent/src/runtime-types.ts",
+          "lines": 13,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "lines": 19,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/events.ts",
+          "lines": 34,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/pipeline.ts",
+          "lines": 42,
+          "kind": "source"
+        },
+        {
+          "path": "packages/llm/llm/src/index.ts",
+          "lines": 22,
+          "kind": "source"
+        },
+        {
+          "path": "packages/jobs/tool-jobs/src/index.ts",
+          "lines": 6,
+          "kind": "source"
+        },
+        {
+          "path": "packages/session/session-checkpoint-policy/src/index.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/tests/tools.spec.ts",
+          "lines": 30,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/interception.spec.ts",
+          "lines": 22,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/session/src/index.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/inbox.ts",
+          "lines": 16,
+          "kind": "source"
+        },
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        }
+      ],
+      "blueprintMinutes": [
+        80,
+        110
+      ]
+    },
+    {
+      "lesson": "h07",
+      "estimatedTime": "125～165 分钟（分三段；实际学习时长待试读，环境准备另计）",
+      "allProse": {
+        "han": 7922,
+        "latinNumericWords": 707
+      },
+      "defaultVisibleProse": {
+        "han": 6132,
+        "latinNumericWords": 483
+      },
+      "codeBlocks": 13,
+      "codeLines": 168,
+      "foldedCodeLines": 132,
+      "folds": 18,
+      "figures": 3,
+      "concepts": [
+        "Fiber",
+        "Lifecycle",
+        "Effect",
+        "Disposer",
+        "inject 持续依赖"
+      ],
+      "coreConceptCount": 5,
+      "practiceTasks": 3,
+      "thoughtQuestions": 5,
+      "coreRoute": [
+        {
+          "path": "vendor/cordis/src/registry.ts",
+          "ranges": [
+            [
+              316,
+              335
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/fiber.ts",
+          "ranges": [
+            [
+              139,
+              154
+            ],
+            [
+              184,
+              210
+            ],
+            [
+              234,
+              297
+            ],
+            [
+              415,
+              442
+            ],
+            [
+              485,
+              560
+            ],
+            [
+              574,
+              638
+            ],
+            [
+              673,
+              751
+            ],
+            [
+              764,
+              782
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/events.ts",
+          "ranges": [
+            [
+              254,
+              259
+            ]
+          ]
+        },
+        {
+          "path": "vendor/cordis/src/reflect.ts",
+          "ranges": [
+            [
+              277,
+              327
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 451,
+      "citedFiles": 11,
+      "citedLines": 585,
+      "citedByKind": [
+        {
+          "path": "vendor/cordis/src/fiber.ts",
+          "lines": 309,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/registry.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/events.ts",
+          "lines": 6,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/utils.ts",
+          "lines": 4,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/cordis/src/reflect.ts",
+          "lines": 42,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "lines": 21,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/index.ts",
+          "lines": 52,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/resource-lifecycle.spec.ts",
+          "lines": 59,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/shutdown-drain.spec.ts",
+          "lines": 18,
+          "kind": "test"
+        },
+        {
+          "path": "docs/cordis-tutorial/06-composition-and-hmr.zh.md",
+          "lines": 43,
+          "kind": "documentation"
+        },
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        }
+      ],
+      "blueprintMinutes": [
+        80,
+        110
+      ]
+    },
+    {
+      "lesson": "h08",
+      "estimatedTime": "140～185 分钟（分三段；作者估算，实际时长待试读，环境准备另计）",
+      "allProse": {
+        "han": 7684,
+        "latinNumericWords": 880
+      },
+      "defaultVisibleProse": {
+        "han": 6043,
+        "latinNumericWords": 684
+      },
+      "codeBlocks": 13,
+      "codeLines": 311,
+      "foldedCodeLines": 270,
+      "folds": 14,
+      "figures": 4,
+      "concepts": [
+        "Profile",
+        "Bundle",
+        "Patch",
+        "Loader",
+        "HMR",
+        "Entry",
+        "稳定 ID",
+        "raw/effective"
+      ],
+      "coreConceptCount": 8,
+      "practiceTasks": 3,
+      "thoughtQuestions": 7,
+      "coreRoute": [
+        {
+          "path": "packages/boot/app-boot/src/profile.ts",
+          "ranges": [
+            [
+              48,
+              71
+            ],
+            [
+              678,
+              714
+            ],
+            [
+              755,
+              762
+            ]
+          ]
+        },
+        {
+          "path": "packages/boot/app-boot/src/profile-context.ts",
+          "ranges": [
+            [
+              40,
+              85
+            ]
+          ]
+        },
+        {
+          "path": "vendor/include/src/index.ts",
+          "ranges": [
+            [
+              57,
+              126
+            ]
+          ]
+        },
+        {
+          "path": "vendor/loader/src/config/entry.ts",
+          "ranges": [
+            [
+              117,
+              180
+            ]
+          ]
+        },
+        {
+          "path": "packages/boot/hmr/src/index.ts",
+          "ranges": [
+            [
+              377,
+              407
+            ],
+            [
+              642,
+              739
+            ],
+            [
+              925,
+              982
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 436,
+      "citedFiles": 19,
+      "citedLines": 1135,
+      "citedByKind": [
+        {
+          "path": "packages/boot/app-boot/src/profile.ts",
+          "lines": 95,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/base/package.json",
+          "lines": 5,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/web-app/package.json",
+          "lines": 11,
+          "kind": "configuration"
+        },
+        {
+          "path": "vendor/loader/src/index.ts",
+          "lines": 41,
+          "kind": "source"
+        },
+        {
+          "path": "packages/util/official-bundles/src/bundles.ts",
+          "lines": 16,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/sdk-minimal/cordis.patch.yml",
+          "lines": 22,
+          "kind": "configuration"
+        },
+        {
+          "path": "vendor/include/src/index.ts",
+          "lines": 96,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/loader/src/config/entry.ts",
+          "lines": 87,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/src/profile-context.ts",
+          "lines": 46,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/base/cordis.patch.yml",
+          "lines": 40,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/headless/cordis.patch.yml",
+          "lines": 37,
+          "kind": "configuration"
+        },
+        {
+          "path": "vendor/loader/src/config/group.ts",
+          "lines": 46,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/loader/src/config/tree.ts",
+          "lines": 8,
+          "kind": "source"
+        },
+        {
+          "path": "vendor/loader/src/config/isolate.ts",
+          "lines": 64,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/hmr/src/index.ts",
+          "lines": 239,
+          "kind": "source"
+        },
+        {
+          "path": "docs/architecture.zh.md",
+          "lines": 5,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/boot/app-boot/src/index.ts",
+          "lines": 160,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/tests/config-reload.spec.ts",
+          "lines": 29,
+          "kind": "test"
+        },
+        {
+          "path": "packages/boot/plugin-manager/src/index.ts",
+          "lines": 88,
+          "kind": "source"
+        }
+      ],
+      "blueprintMinutes": [
+        85,
+        115
+      ]
+    }
+  ]
+}

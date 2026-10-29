@@ -68,7 +68,7 @@ Plugin是实际代码贡献，Patch是修改配置清单的操作列表，Loader
 
 ## Patch：改的是条目哪一层？
 
-Patch先理解为“对既有装配清单的一次明确修订”。它不是Git diff，也不是把几个YAML文件逐行拼接。官方 `applyEntryPatches(data, patches, warn)` 输入条目列表与操作列表，按顺序定位和写入，返回组合后的条目；缺失目标等情况报告警告并跳过。[实际算法57–133行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L57-L126)。
+Patch先理解为“对既有装配清单的一次明确修订”。它不是Git diff，也不是把几个YAML文件逐行拼接。官方 `applyEntryPatches(data, patches, warn)` 输入条目列表与操作列表，按顺序定位和写入，返回组合后的条目；缺失目标等情况报告警告并跳过。[实际算法57–126行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L57-L126)。
 
 先读下面的**教学输入**。包名虚构，但操作语法沿用官方规则；不执行模型。
 
@@ -105,7 +105,7 @@ for (const [key, value] of Object.entries(overrides)) {
 
 ### 插入、身份保护与开关
 
-无id的 `insert` 追加根条目；带id的 `insert` 是向目标组追加子条目，要求目标存在且带 `group` 标记。算法递归索引组中的config数组，后面的Patch可按子条目ID定位。它不会读取一个 `cordis:include` 指向的另一个文件并跨文件查目标。[插入与索引分支69–104行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L65-L102)。
+无id的 `insert` 追加根条目；带id的 `insert` 是向目标组追加子条目，要求目标存在且带 `group` 标记。算法递归索引组中的config数组，后面的Patch可按子条目ID定位。它不会读取一个 `cordis:include` 指向的另一个文件并跨文件查目标。[插入与索引分支65–102行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L65-L102)。
 
 ```yaml
 - id: audit
@@ -114,9 +114,9 @@ for (const [key, value] of Object.entries(overrides)) {
   disabled: false
 ```
 
-这保留audit配置条目，先禁用再启用；最终false胜出。当前讨论普通插件行，`group` 标记行有自己的启用特例，不把上述规则不加条件套给所有组。`Entry.disabled`会考虑祖先与表达式，[见79–103行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L75-L97)。
+这保留audit配置条目，先禁用再启用；最终false胜出。当前讨论普通插件行，`group` 标记行有自己的启用特例，不把上述规则不加条件套给所有组。`Entry.disabled`会考虑祖先与表达式，[见75–97行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L75-L97)。
 
-非insert操作要有id。可选的name是**身份断言**：提供了且不匹配现有name，就警告并跳过，不用它把旧插件改名成新插件。更换实现应设计明确的条目移除/新增或禁用/插入方案，并复核依赖，不能把“config可替换”误解为“Patch的name可任意替换模块”。目标不存在、插入目标不是组、name不匹配都不是正常修改成功。[检查分支107–123行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L104-L123)。
+非insert操作要有id。可选的name是**身份断言**：提供了且不匹配现有name，就警告并跳过，不用它把旧插件改名成新插件。更换实现应设计明确的条目移除/新增或禁用/插入方案，并复核依赖，不能把“config可替换”误解为“Patch的name可任意替换模块”。目标不存在、插入目标不是组、name不匹配都不是正常修改成功。[检查分支104–123行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L104-L123)。
 
 给可覆盖条目使用明确且不冲突的稳定ID。Patch用它定位，Loader用它比较同一条目。不要把模块name、Fiber uid和条目id混成一个标识；同一插件定义可以有多个配置条目，每次重新挂载也可能有新Fiber。
 
@@ -179,7 +179,7 @@ runner配置存在，还要等headlessStartup服务；服务不存在时不会�
 
 Loader的Entry是一个配置节点，Plugin定义是可加载代码，Fiber是这次应用的运行对象。EntryGroup按id比较新旧列表；同一ID可复用Entry，缺失ID则生成随机值。**重新读取成全新对象时，没有显式ID的行可能被当成删除旧行、添加新行。** [比较与创建](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/group.ts#L20-L65)、[生成ID](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/tree.ts#L52-L59)。
 
-稳定ID避免无关编辑造成身份漂移，**不保证任何改动都不重新执行apply**。普通config有效变化会进入Fiber.update，通常清理后重跑同一Fiber；插件可以拦截内部update。Include正是一个例子：路径没变时更新子列表，避免把整个Include及所有孩子都重建。volatile等特例不在本课展开。[Entry.update:134–180](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L117-L180)、[Include拦截190–201](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L190-L201)。
+稳定ID避免无关编辑造成身份漂移，**不保证任何改动都不重新执行apply**。普通config有效变化会进入Fiber.update，通常清理后重跑同一Fiber；插件可以拦截内部update。Include正是一个例子：路径没变时更新子列表，避免把整个Include及所有孩子都重建。volatile等特例不在本课展开。[Entry.update:117–180](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L117-L180)、[Include拦截190–201](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L190-L201)。
 
 对实践B的普通Provider行，变化可以这样读：
 

@@ -22,7 +22,7 @@ for i,(name,line) in enumerate(normal):
  y=155+i*172
  p.append(box(36,y,568,128,name,[line],TEAL if i==2 else BLUE,32))
  if i<4:p.append(arrow(f'320,{y+128} 320,{y+163}'))
-p += [box(24,1050,592,225,'失败：先清理，再保留错误',['LOADING → UNLOADING → FAILED','apply 或配置校验失败','FAILED 不等于永久移除'],AMBER,30),box(24,1320,592,270,'依赖失效：保留挂载意图',['ACTIVE → UNLOADING → PENDING','服务恢复：PENDING → LOADING','成功后 ACTIVE，仍是同一实例','前提：没有另被显式 dispose'],TEAL,30),text(320,1650,'PENDING / FAILED 也能被显式释放'),text(320,1692,'省略快速变化、重试与根 Fiber 特例')]
+p += [box(24,1050,592,225,'失败：先清理，再保留错误',['LOADING → UNLOADING → FAILED','加载时：apply / 校验失败','FAILED 不等于永久移除'],AMBER,30),box(24,1320,592,270,'依赖失效：保留挂载意图',['ACTIVE → UNLOADING → PENDING','服务恢复：PENDING → LOADING','成功后 ACTIVE，仍是同一实例','前提：没有另被显式 dispose'],TEAL,30),text(320,1650,'PENDING / FAILED 也能被显式释放'),text(320,1692,'省略快速变化、重试与根 Fiber 特例')]
 save('h07-01','Fiber：状态必须连着原因读',1740,p,'普通插件的正常显式释放、启动失败清理与依赖失效恢复三条精选路径，非完整状态机。')
 
 p=[text(320,108,'获取资源时，就要交出退出方式'),box(36,155,568,140,'日志插件的当前 Fiber',['资源与退出动作归同一所有者'],TEAL)]

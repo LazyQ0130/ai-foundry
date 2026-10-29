@@ -1,0 +1,681 @@
+{
+  "method": "Mutually exclusive per case, not assertion counts or full Harness acceptance; A includes ordinary teaching interface examples.",
+  "counts": {
+    "A": 4,
+    "B": 65,
+    "C": 6,
+    "D": 9
+  },
+  "E": "NOT_RUN",
+  "nativeHmr": "NOT_RUN",
+  "rows": [
+    {
+      "lesson": "h05",
+      "test": 1,
+      "title": "A：更换模型与日志提供方，消费者代码保持相同",
+      "grade": "A",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 2,
+      "title": "A：模型失败时不记成功日志，失败向调用方传播",
+      "grade": "A",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 3,
+      "title": "B：真实 Cordis provider-first，greet 恰好调用一次",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 4,
+      "title": "B：真实 Cordis consumer-first，greet 恰好调用一次",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 5,
+      "title": "B：只有类型/模块导入，无运行时注册，消费者 PENDING 且无输出",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 6,
+      "title": "B：遗漏 inject，即使服务存在，独立兄弟插件的属性访问也失败",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 7,
+      "title": "B：替换实现保持 greet 契约，同一消费者无需修改",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 8,
+      "title": "B：提供方尚在异步初始化，消费者仍不提前执行",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h05",
+      "test": 9,
+      "title": "B：同一作用域重复注册会失败；不能靠再次挂载覆盖实现",
+      "grade": "B",
+      "log": "evidence/h05/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 1,
+      "title": "A emit：返回时异步日志没完成，实验随后自己等待",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 2,
+      "title": "A parallel：两项都开始，受控让B先结束，发布者等A和B",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 3,
+      "title": "A serial：await后false继续，0停止",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 4,
+      "title": "A bail：同步false继续，0停止",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 5,
+      "title": "A waterfall：外入内出，输入2，B返回20，A返回21",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 6,
+      "title": "无监听者：四模式返回空结果，waterfall执行默认主体",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 7,
+      "title": "waterfall不使用bail值判据：返回false且不next也会短路",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 8,
+      "title": "serial和bail实际核对10种值；只有null/false/undefined继续",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 9,
+      "title": "serial不并发启动下一个监听器",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 10,
+      "title": "bail不会await：Promise对象本身使后续停止，即使最终兑现false",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 11,
+      "title": "emit和bail同步throw向外传播，并阻止剩余监听器",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 12,
+      "title": "parallel：捕获同步/异步错误，仍等门闩监听器完成后AggregateError",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 13,
+      "title": "serial遇同步throw或异步拒绝都会停止，不继续后续",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 14,
+      "title": "waterfall三层与共享入参：C加3，B乘10，A加1=51",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 15,
+      "title": "waterfall同步异常向外，外层能catch，默认逻辑未运行",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 16,
+      "title": "waterfall异步返回Promise；await next才使try/catch捕获异步拒绝",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 17,
+      "title": "只return next没有await：同步try/catch不会捕获Promise拒绝",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 18,
+      "title": "重复next无一次性保护：B一次，默认主体两次",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 19,
+      "title": "共享next游标：B短路后，A再调用next会进入尚未消费的C",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 20,
+      "title": "异步重复next也共享游标，不会为每次调用重建下游",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 21,
+      "title": "B正常：三个真实插件委托，主体一次，外层包装结果",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 22,
+      "title": "B策略拒绝：主体零次，已进入的外层仍收到拒绝结果",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 23,
+      "title": "B日志漏next：策略、统计和主体都没执行，结果为空",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 24,
+      "title": "B漏return：主体实际执行一次，返回结果仍丢失",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 25,
+      "title": "llm式异步可迭代返回：分发取得流，不会自动迭代",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 26,
+      "title": "prepend显式改变监听顺序；事件类型不会在运行时强制模式",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h06",
+      "test": 27,
+      "title": "诊断精度：本版本parallel内部给internal/dispatch报告emit标签",
+      "grade": "B",
+      "log": "evidence/h06/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 1,
+      "title": "A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 2,
+      "title": "apply失败先卸载已登记资源，再FAILED；await重抛错误",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 3,
+      "title": "配置验证失败不执行apply，清理后FAILED",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 4,
+      "title": "缺必需服务：await可稳定在PENDING；显式dispose可永久移除",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 5,
+      "title": "同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 6,
+      "title": "LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 7,
+      "title": "B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 8,
+      "title": "受控真实Node setInterval：不等墙钟，卸载后不再tick",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 9,
+      "title": "effect主体立即运行；提前调用句柄与随后卸载只清理一次",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 10,
+      "title": "公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 11,
+      "title": "不同Effect逆序启动B/A；受控让A/B完成，卸载等二者",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 12,
+      "title": "严格清理顺序放同一Disposer：flush完成后才close",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 13,
+      "title": "多个yield清理在同一Effect内串行；不可推广为独立Effect都串行",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 14,
+      "title": "手动清理同步throw会抛出，不自动重试",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 15,
+      "title": "手动异步清理拒绝传给首个调用方",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 16,
+      "title": "所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 17,
+      "title": "Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 18,
+      "title": "父级dispose递归等子级清理；不强制父级各Effect全局串行",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 19,
+      "title": "C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 20,
+      "title": "显式dispose的Consumer不会因服务重现自动复活",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 21,
+      "title": "restart保留Fiber身份，重跑apply，监听器不重复",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 22,
+      "title": "DISPOSED/UNLOADING时不得再创建Effect",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 23,
+      "title": "移除on只影响后续分发，不自动等待或取消已经开始的异步监听",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h07",
+      "test": 24,
+      "title": "异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次",
+      "grade": "B",
+      "log": "evidence/h07/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 1,
+      "title": "A 教学模拟器：五层计算符合独立答案，输入不变",
+      "grade": "A",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 2,
+      "title": "A 错误答案：深合并保留 temperature 必须拒绝",
+      "grade": "A",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 7,
+      "title": "B 真实 Cordis/Loader：两插件、稳定ID、配置更新、禁用和重新启用",
+      "grade": "B",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 8,
+      "title": "B 真实 Loader：稳定 ID 未改变条目不重挂",
+      "grade": "B",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 9,
+      "title": "B 真实 Loader：缺失 ID 且重新解析新对象导致删除/新增",
+      "grade": "B",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 3,
+      "title": "A 官方 Patch 对照：manifest顺序及五个YAML文件与教学输入一致",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 4,
+      "title": "官方 Patch：同一列表先 insert 再按 ID 覆盖，name 是保护条件",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 5,
+      "title": "官方 Patch：组内插入、disable/enable与缺目标警告",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 6,
+      "title": "官方 Patch：不会进入嵌套 Include 文件，带 group 的配置才递归索引",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 14,
+      "title": "C 真实配置解析：可选文件不存在无层；显式 overlay 不存在抛错；非数组拒绝",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 16,
+      "title": "C 真实 Profile 四层与遥测硬禁用：CLI值胜出，0字符串也禁遥测",
+      "grade": "C",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 10,
+      "title": "C 真实 App Boot：缺服务为 PENDING，应用后失败不自动恢复旧服务",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 11,
+      "title": "C 真实 App Boot：必需 webserver 等待服务导致启动审查失败",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 12,
+      "title": "C 真实 App Boot：可选模块缺失与缺服务分开报告，好兄弟仍运行",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 13,
+      "title": "C 真实 Include：坏 YAML、空文件保留旧树；下次合法编辑生效",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 15,
+      "title": "C 真实 Profile：五个官方模板完整解析，只读树；缺/不兼容 Bundle 被跳过",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "PARSE_ONLY: five shipped templates; not app boot"
+    },
+    {
+      "lesson": "h08",
+      "test": 17,
+      "title": "C 磁盘 Profile→有序 Bundle 文件→用户层→Home→overlay→真实 boot",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 18,
+      "title": "C 错误 Profile patch 抛错；错误 Bundle patch 记入跳过",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 19,
+      "title": "C Schema 拒绝：raw 配置已变，运行 effective 配置仍为旧值",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "h08",
+      "test": 20,
+      "title": "C recompose 显式 requiredIds 将新 PENDING 视为失败；应用后条目保留",
+      "grade": "D",
+      "log": "evidence/retry-h08/h08/evidence/lab-tests.txt",
+      "depth": "See test-evidence.md for exact API path"
+    },
+    {
+      "lesson": "module-two-review",
+      "test": 1,
+      "title": "M2-01: initial invalid config fails; ACTIVE invalid update keeps old effective service",
+      "grade": "B",
+      "log": "evidence/cross-course-module-two-probe-b6e8yjaq.tap"
+    },
+    {
+      "lesson": "module-two-review",
+      "test": 2,
+      "title": "A: consumer waits for ACTIVE provider, keeps identity across service loss/recovery",
+      "grade": "B",
+      "log": "evidence/cross-course-module-two-probe-b6e8yjaq.tap"
+    },
+    {
+      "lesson": "module-two-review",
+      "test": 3,
+      "title": "Context scope: global, two isolated realms and a shared label select different values",
+      "grade": "B",
+      "log": "evidence/cross-course-module-two-probe-b6e8yjaq.tap"
+    },
+    {
+      "lesson": "module-two-review",
+      "test": 4,
+      "title": "B: waterfall wraps result; disposal stops future listeners/effects but not in-flight work",
+      "grade": "B",
+      "log": "evidence/cross-course-module-two-probe-b6e8yjaq.tap"
+    }
+  ]
+}

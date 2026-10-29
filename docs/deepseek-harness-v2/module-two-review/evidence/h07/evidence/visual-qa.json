@@ -1,0 +1,297 @@
+{
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "7cf669a72bf19b1bd6cd0dc595c450c9ca41fd34998f4ff4f0ef5d3e3d2e7108",
+  "rendererSha256": "1a22ea4a2f6fb22c8183857ca964f1971449d38d1531a3dcf921245fc08e703c",
+  "figures": [
+    {
+      "id": "h07-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1740,
+      "sourceSha256": "af5a7038666ae6f480f93dc51e0ffae45007556aca3a5e4f907e689a5efc3efa",
+      "imageSha256": "0928282d10e6998ae5ffafbc4d5530da7e06304c5c5a74639506bc44f43055b0"
+    },
+    {
+      "id": "h07-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1550,
+      "sourceSha256": "9c05dad097a19a6cd50ccc1decd9830ce40b3098fe3da225db4ce4faeed75689",
+      "imageSha256": "48135ce00eb8d467510f7523ba7337a721859af8e48e41d4aaa83292fc72f748"
+    },
+    {
+      "id": "h07-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1510,
+      "sourceSha256": "93b6be6dc8d54572ccc6480829a65b4f0beb4a0a9522d549986051e4c06ec2ce",
+      "imageSha256": "1e9ad85222e6b279be1eef7cf41460f642a9339fea3eeacc8229b16343175ce6"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "普通非根Fiber在依赖满足后从PENDING到LOADING和ACTIVE；显式释放经过UNLOADING到DISPOSED。加载失败先清理再FAILED；必需服务消失则清理后PENDING，恢复后重新加载",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜精选状态路径，箭头表示转换而非函数调用；失败和依赖失效有不同终点。省略快速依赖变化、重试及根Fiber特例，不是完整状态机。",
+            "src": "/course-media/harness-v2/h07/h07-01.png"
+          },
+          {
+            "alt": "日志插件的监听器由on自动归属，定时器和连接由effect显式配对；卸载启动对应Disposer并等待登记的异步清理。未交清理入口的定时器与连接可能残留",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Effect建立资源与所有者的配对。等待范围是已登记的清理，不是进程里所有异步工作；右侧残留是反例，未实际连接外部系统。",
+            "src": "/course-media/harness-v2/h07/h07-02.png"
+          },
+          {
+            "alt": "左侧父Fiber持有子Fiber的释放登记，父级显式释放会等待子级清理并使子级DISPOSED；右侧必需服务消失让Consumer清理后PENDING，服务恢复后同一Consumer重新LOADING和ACTIVE",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜左边是所有权，右边是服务可用性驱动的运行变化。两者可以叠加但不是同一机制；右侧假设Consumer仍被挂载、没有另被显式dispose。",
+            "src": "/course-media/harness-v2/h07/h07-03.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "keyboardDetails": "PASS: all details",
+      "clipboard": "PASS: five full files, normalized LF, exact content",
+      "copiedPrograms": [
+        "support.ts",
+        "states.ts",
+        "resources.ts",
+        "dependencies.ts",
+        "demo.ts"
+      ],
+      "thoughtAnswers": "5 thought details opened, nonempty, then closed",
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 760,
+        "scrolled": 49
+      },
+      "codeScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 844,
+        "scrolled": 133
+      },
+      "originalImage": "PASS: actual popup decoded",
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 3,
+        "copyButtons": 0,
+        "details": 18
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "普通非根Fiber在依赖满足后从PENDING到LOADING和ACTIVE；显式释放经过UNLOADING到DISPOSED。加载失败先清理再FAILED；必需服务消失则清理后PENDING，恢复后重新加载",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜精选状态路径，箭头表示转换而非函数调用；失败和依赖失效有不同终点。省略快速依赖变化、重试及根Fiber特例，不是完整状态机。",
+            "src": "/course-media/harness-v2/h07/h07-01.png"
+          },
+          {
+            "alt": "日志插件的监听器由on自动归属，定时器和连接由effect显式配对；卸载启动对应Disposer并等待登记的异步清理。未交清理入口的定时器与连接可能残留",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Effect建立资源与所有者的配对。等待范围是已登记的清理，不是进程里所有异步工作；右侧残留是反例，未实际连接外部系统。",
+            "src": "/course-media/harness-v2/h07/h07-02.png"
+          },
+          {
+            "alt": "左侧父Fiber持有子Fiber的释放登记，父级显式释放会等待子级清理并使子级DISPOSED；右侧必需服务消失让Consumer清理后PENDING，服务恢复后同一Consumer重新LOADING和ACTIVE",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 3｜左边是所有权，右边是服务可用性驱动的运行变化。两者可以叠加但不是同一机制；右侧假设Consumer仍被挂载、没有另被显式dispose。",
+            "src": "/course-media/harness-v2/h07/h07-03.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "keyboardDetails": "PASS: all details",
+      "clipboard": "PASS: five full files, normalized LF, exact content",
+      "copiedPrograms": [
+        "support.ts",
+        "states.ts",
+        "resources.ts",
+        "dependencies.ts",
+        "demo.ts"
+      ],
+      "thoughtAnswers": "5 thought details opened, nonempty, then closed",
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 752,
+        "scrolled": 431
+      },
+      "codeScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 836,
+        "scrolled": 515
+      },
+      "originalImage": "PASS: actual popup decoded",
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 3,
+        "copyButtons": 0,
+        "details": 18
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.6625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "普通非根Fiber在依赖满足后从PENDING到LOADING和ACTIVE；显式释放经过UNLOADING到DISPOSED。加载失败先清理再FAILED；必需服务消失则清理后PENDING，恢复后重新加载",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜精选状态路径，箭头表示转换而非函数调用；失败和依赖失效有不同终点。省略快速依赖变化、重试及根Fiber特例，不是完整状态机。",
+            "src": "/course-media/harness-v2/h07/h07-01.png"
+          },
+          {
+            "alt": "日志插件的监听器由on自动归属，定时器和连接由effect显式配对；卸载启动对应Disposer并等待登记的异步清理。未交清理入口的定时器与连接可能残留",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Effect建立资源与所有者的配对。等待范围是已登记的清理，不是进程里所有异步工作；右侧残留是反例，未实际连接外部系统。",
+            "src": "/course-media/harness-v2/h07/h07-02.png"
+          },
+          {
+            "alt": "左侧父Fiber持有子Fiber的释放登记，父级显式释放会等待子级清理并使子级DISPOSED；右侧必需服务消失让Consumer清理后PENDING，服务恢复后同一Consumer重新LOADING和ACTIVE",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 3｜左边是所有权，右边是服务可用性驱动的运行变化。两者可以叠加但不是同一机制；右侧假设Consumer仍被挂载、没有另被显式dispose。",
+            "src": "/course-media/harness-v2/h07/h07-03.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "keyboardDetails": "PASS: all details",
+      "clipboard": "PASS: five full files, normalized LF, exact content",
+      "copiedPrograms": [
+        "support.ts",
+        "states.ts",
+        "resources.ts",
+        "dependencies.ts",
+        "demo.ts"
+      ],
+      "thoughtAnswers": "5 thought details opened, nonempty, then closed",
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 752,
+        "scrolled": 501
+      },
+      "codeScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 836,
+        "scrolled": 585
+      },
+      "originalImage": "PASS: actual popup decoded",
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 3,
+        "copyButtons": 0,
+        "details": 18
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.6
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

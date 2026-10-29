@@ -289,7 +289,7 @@ H03 的工具分支在 [`ReactLoopAgent.step()` 586–597 行](https://github.co
 
 选读[工具测试的 setup，35–41 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L35-L41)：先挂提示词服务、工具服务，再挂原生执行器。进一步在[组合测试 66–83、103–128 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L66-L128)找真实服务、Mock 模型和模型工具呈现断言。它们是本课静态选读，不冒称已运行完整官方测试。
 
-**我们的分析：**模块可分工、提供方可选择，能缩小替换影响，测试也可以单独组合所需能力。代价是诊断要追查服务键、作用域、提供方状态和装配来源；接口演进与多组合测试也成为维护工作。两个固定函数就能完成的小工具，普通模块与参数注入往往更易读。插件化在能力多、替换频繁、存在多种组合时更有价值，而非普遍优越。
+我们的分析：模块可分工、提供方可选择，能缩小替换影响，测试也可以单独组合所需能力。代价是诊断要追查服务键、作用域、提供方状态和装配来源；接口演进与多组合测试也成为维护工作。两个固定函数就能完成的小工具，普通模块与参数注入往往更易读。插件化在能力多、替换频繁、存在多种组合时更有价值，而非普遍优越。
 
 :::warning{title="插件连接不构成安全认证"}
 插件通常共享宿主进程与资源，不因使用 Context 或 inject 获得操作系统隔离。服务存在不等于调用已获授权，类型正确不等于参数可信，Session 接受事实不等于磁盘 flush。锁定版本仍是[未经安全审计的实验性开发者预览](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L15)。本课只运行固定内存夹具，不访问个人数据、凭据或真实模型。

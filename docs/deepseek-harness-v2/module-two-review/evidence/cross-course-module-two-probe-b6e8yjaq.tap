@@ -1,0 +1,38 @@
+TAP version 13
+# M2-01 {"initial":"FAILED; apply=0","rejectedUpdate":{"raw":"bad","effective":1,"service":1,"state":"ACTIVE","cleanups":0},"corrected":{"effective":2,"calls":2,"cleanups":1}}
+# A {"values":["v1","v2"],"sameConsumer":true,"phases":["PENDING","PENDING while provider LOADING","ACTIVE","PENDING","ACTIVE"]}
+# scope {"global":"global","a":"A","b":"B","sameSymbol":"shared"}
+# B {"trace":["L+","M+","body","M-","L-"],"result":21,"ticks":1,"closes":1,"after":2,"inFlightCompletedAfterDispose":true,"body":2}
+# Subtest: M2-01: initial invalid config fails; ACTIVE invalid update keeps old effective service
+ok 1 - M2-01: initial invalid config fails; ACTIVE invalid update keeps old effective service
+  ---
+  duration_ms: 5.277
+  type: 'test'
+  ...
+# Subtest: A: consumer waits for ACTIVE provider, keeps identity across service loss/recovery
+ok 2 - A: consumer waits for ACTIVE provider, keeps identity across service loss/recovery
+  ---
+  duration_ms: 2.2273
+  type: 'test'
+  ...
+# Subtest: Context scope: global, two isolated realms and a shared label select different values
+ok 3 - Context scope: global, two isolated realms and a shared label select different values
+  ---
+  duration_ms: 2.1748
+  type: 'test'
+  ...
+# Subtest: B: waterfall wraps result; disposal stops future listeners/effects but not in-flight work
+ok 4 - B: waterfall wraps result; disposal stops future listeners/effects but not in-flight work
+  ---
+  duration_ms: 1.3825
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 342.9381

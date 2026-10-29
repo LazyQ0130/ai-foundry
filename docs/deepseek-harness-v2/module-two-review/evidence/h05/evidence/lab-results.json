@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "cordisVersion": "4.0.6-alpha.1",
+  "sourceByteCheck": "source-check manifest SHA256 verified before execution",
+  "node": "v24.16.0",
+  "typescript": "5.9.3",
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h05-lab-ueysAL",
+  "environment": "allowlisted OS/Node startup variables; no user config, credentials or real network",
+  "runtime": "actual pinned vendor/cordis and vendor/cosmokit, loaded by tsx paths; not Mock, no Loader/Profile/full Harness",
+  "tests": 9,
+  "mutation": {
+    "exit": 1,
+    "status": "EXPECTED_FAILURE"
+  },
+  "typecheck": "PASS; TS2345 negative fixture rejected; declare module erased in emitted JS",
+  "outputs": {
+    "tests": {
+      "code": 0,
+      "stdout": "TAP version 13\n# Subtest: A：更换模型与日志提供方，消费者代码保持相同\nok 1 - A：更换模型与日志提供方，消费者代码保持相同\n  ---\n  duration_ms: 0.9928\n  type: 'test'\n  ...\n# Subtest: A：模型失败时不记成功日志，失败向调用方传播\nok 2 - A：模型失败时不记成功日志，失败向调用方传播\n  ---\n  duration_ms: 0.3424\n  type: 'test'\n  ...\n# Subtest: B：真实 Cordis provider-first，greet 恰好调用一次\nok 3 - B：真实 Cordis provider-first，greet 恰好调用一次\n  ---\n  duration_ms: 4.6613\n  type: 'test'\n  ...\n# Subtest: B：真实 Cordis consumer-first，greet 恰好调用一次\nok 4 - B：真实 Cordis consumer-first，greet 恰好调用一次\n  ---\n  duration_ms: 1.2919\n  type: 'test'\n  ...\n# Subtest: B：只有类型/模块导入，无运行时注册，消费者 PENDING 且无输出\nok 5 - B：只有类型/模块导入，无运行时注册，消费者 PENDING 且无输出\n  ---\n  duration_ms: 0.9477\n  type: 'test'\n  ...\n# Subtest: B：遗漏 inject，即使服务存在，独立兄弟插件的属性访问也失败\nok 6 - B：遗漏 inject，即使服务存在，独立兄弟插件的属性访问也失败\n  ---\n  duration_ms: 4.4433\n  type: 'test'\n  ...\n# Subtest: B：替换实现保持 greet 契约，同一消费者无需修改\nok 7 - B：替换实现保持 greet 契约，同一消费者无需修改\n  ---\n  duration_ms: 1.1955\n  type: 'test'\n  ...\n# Subtest: B：提供方尚在异步初始化，消费者仍不提前执行\nok 8 - B：提供方尚在异步初始化，消费者仍不提前执行\n  ---\n  duration_ms: 1.6904\n  type: 'test'\n  ...\n# Subtest: B：同一作用域重复注册会失败；不能靠再次挂载覆盖实现\nok 9 - B：同一作用域重复注册会失败；不能靠再次挂载覆盖实现\n  ---\n  duration_ms: 1.6717\n  type: 'test'\n  ...\n1..9\n# tests 9\n# suites 0\n# pass 9\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 204.551\n",
+      "stderr": ""
+    },
+    "demo": {
+      "code": 0,
+      "stdout": "缺失依赖：PENDING；尚未调用 greet\nHello, world!\n依赖满足：ACTIVE\n",
+      "stderr": ""
+    },
+    "missing": {
+      "code": 0,
+      "stdout": "缺失依赖：PENDING；尚未调用 greet\n",
+      "stderr": ""
+    }
+  },
+  "lessonPrograms": [
+    {
+      "name": "a-starter.ts",
+      "sha256": "1e27273d4c9d5016a22f9d938cfdf48df3eefe7f210ea14f76a2d8bedc695134"
+    },
+    {
+      "name": "a-reference.ts",
+      "sha256": "d8b13e0b139eaba7a53e1b2ce2338a39071d51c99baca392b7f000ae13644ebe"
+    },
+    {
+      "name": "greeter.ts",
+      "sha256": "4f48e115e5ed7b821cd56aa99de4db8ad1903f10403eadc4673985fa5412b6bb"
+    },
+    {
+      "name": "consumer.ts",
+      "sha256": "3f7cc5f41ec034f3cfbe122ee017e21975a46b7458b13c9959ed3ffed6eaeb6c"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "53599625f642d2984e8983bfd2c773206b71f7ea05ce29148894e546e9662c90"
+    },
+    {
+      "name": "lab.test.ts",
+      "sha256": "6a0ed7ac92192cf872595a22e140beca5d4723413d0161ce930109c10a1f9687"
+    }
+  ]
+}

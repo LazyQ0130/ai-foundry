@@ -1,0 +1,3932 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H05｜一切皆插件：Cordis 的设计思想</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-auto {
+  margin: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100vh-6rem\)\] {
+    max-height: calc(100vh - 6rem);
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H05 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">一切皆插件：Cordis 的设计思想</h1><p>100～135 分钟（概念与源码约 60～75 分钟，实践约 40～60 分钟；实际时长待试读）</p></header><div class="lesson-prose"><h2>项目助手长大以后，为什么换个模型也要改运行器？</h2>
+<p>H03 的项目助手会读取 README，再根据结果概括；H04 说明同一套能力可以供网页、命令行和程序客户端使用。现在团队准备继续开发：换一个模型提供方，增加读取工具，把会话换到另一种存储，还要让测试只运行内存能力。问题变成了：<strong>这些能力怎样接起来，才能让变化停在合适的地方？</strong></p>
+<p>本课官方事实继续锁定 Commit <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>，其中 Cordis 为 <code>4.0.6-alpha.1</code>。固定源码与实测行为、明确标出的教学简化、署为“我们的分析”的设计判断分别表述，不追随最新分支替换 API。</p>
+<p>先看一个容易写出来的方案。下列是<strong>教学简化的结构摘录</strong>，不是 Harness 源码或可接真实模型的程序。所有值都是虚构内存数据；<code>readFile</code> 这个教学方法并不读取磁盘。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>class AgentRuntime {
+  files = new Map([[&#x27;README.md&#x27;, &#x27;公开项目：整理资料&#x27;]]);
+  sessions = new Map&lt;string, string[]&gt;();
+  logs: string[] = [];
+  async callModel(text: string) { return `固定模型A：${text}`; }
+  readFile(path: string) { return this.files.get(path) ?? &#x27;未找到&#x27;; }
+  executeTool(name: string) {
+    if (name === &#x27;read_readme&#x27;) return this.readFile(&#x27;README.md&#x27;);
+    throw Error(&#x27;UNKNOWN_TOOL&#x27;);
+  }
+  async run(sessionId: string) {
+    this.logs.push(&#x27;开始&#x27;);
+    const material = this.executeTool(&#x27;read_readme&#x27;);
+    const reply = await this.callModel(material);
+    this.sessions.set(sessionId, [material, reply]);
+    this.logs.push(&#x27;结束&#x27;);
+    return reply;
+  }
+}</code></pre></div>
+<p>只有一个工具、一个固定模型时，这样很方便：打开一个类就能看到完整过程，调试也不用查注册来源。小型、稳定的一次性程序，保留这样的直接组织未必有问题。</p>
+<p>需求增加后，修改开始互相牵连。换模型，要进入 <code>callModel</code>；增加工具，要改 <code>executeTool</code> 的分支；更换会话存储，要改 <code>run</code> 中的 <code>Map.set</code>；给无文件能力的场景运行，又要改 <code>executeTool</code> 或 <code>run</code>。单独测摘要业务时，还得带着文件、会话和日志状态。假如供应商响应字段也漏进 <code>run</code>，下一次更换供应商就不只改一个方法。</p>
+<p>这些不是“类太长”一个问题。即便拆成五个文件，如果业务文件里仍直接创建固定模型、固定存储，<strong>文件分开了，选择实现的责任却没有分开</strong>。反过来，清楚的模块接口和普通函数参数已经能解决很多问题，不必一遇到修改就安装插件框架。</p>
+<p>我们接下来试一种组织方法：模型、工具、会话与日志各自提供能力；消费者通过约定使用；装配方决定这次放进什么。Cordis 为这种组织增加了插件挂载、具名服务访问与依赖跟踪。</p>
+<p>图一先回答“更换的连接点在哪里”。左右并排比较，同一行对应同一种职责。</p>
+<p><span class="lesson-figure" role="group" aria-label="左侧 AgentRuntime 内包含模型、文件、工具、会话和日志；右侧业务消费者通过服务约定连接由插件提供的能力。替换时仍需核对接口与行为"><img src="figures/rendered/h05-01.png" alt="左侧 AgentRuntime 内包含模型、文件、工具、会话和日志；右侧业务消费者通过服务约定连接由插件提供的能力。替换时仍需核对接口与行为" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜两种组织的修改位置。连接线表示能力依赖，不是调用时序或进程边界；右侧是教学设计，不是完整 Harness 依赖图。</span><a class="lesson-image-expand" href="figures/rendered/h05-01.png" target="_blank" rel="noopener noreferrer" aria-label="左侧 AgentRuntime 内包含模型、文件、工具、会话和日志；右侧业务消费者通过服务约定连接由插件提供的能力。替换时仍需核对接口与行为，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>右图减少的是消费者对具体实现的绑定，并没有消除依赖。装配方仍要选择提供方，接口变化仍可能影响消费者；错误配置也可能让能力一直不可用。标题“一切皆插件”表达本项目组织可扩展能力的方式，不表示每个函数都要变成插件。</p>
+<h2>用六分钟找回旧知识：文件分开，与能力接上</h2>
+<p>Stage 2 的 <a href="/lesson/stage-2/s2-l1">2.1 前端、API、服务端与数据库</a>已经把一次保存按职责分开：页面接住输入，服务端检查，数据库保存。同一台电脑上也能有这些分工；因此今天的“服务”不能自动理解为另一个进程。</p>
+<p>Stage 3 的 <a href="/lesson/stage-3/s3-l1">3.1 Provider 模块</a>把“请求供应商、整理结果”集中在服务端。<code>import</code> / <code>export</code> 让一个模块使用另一个模块开放的符号；导入函数并不等于已经调用函数，更不表示对应 Cordis 插件已经挂载。模型 Key 留在服务端的边界也不会因改为插件而改变。</p>
+<p>Stage 4 的 <a href="/lesson/stage-4/s4-l1">4.1 Agent Loop</a>里，Tool Registry 是工具名单，Runtime 控制检查、执行和停止；模型只提议动作。今天不重新教授这条循环，而是问“名单、模型和会话这些能力由谁提供，运行器如何取得”。旧课的 Registry 分工不等于 Cordis 的插件注册表，也不能把旧课 Run/Step 或登录 Session 当作 Harness 的同名实现。</p>
+<p>再补上两个读源码必需的词。TypeScript 的 <code>interface</code>（接口）描述“消费者需要的值具有什么形状”，例如 <code>complete(text): Promise&lt;string&gt;</code>；<code>class</code>（类）描述可创建对象的实现，<code>new</code> 才创建实例。接口不产生运行对象，也不会检查外部输入。依赖关系则是“我需要你的能力才能完成工作”，它既可能表现为模块导入，也可能表现为运行时服务需求，不能共用一个含糊箭头。</p>
+<p>H02 已经用同一对象区分了三层：<code>core/tools</code> 是包，<code>src/index.ts</code> 是模块，<code>ToolsService</code> 注册后提供 <code>ctx.tools</code> 服务。H05 的新增内容是第四层：<strong>谁把模块里的入口挂成插件，并保证它需要的服务能够使用？</strong> 上述旧课链接可选且沿用原权限；本节解释和练习自足，不要求购买旧课。原课重在应用开发，没有系统教过声明合并，本课会直接说明。</p>
+<h2>插件：把一项贡献交给宿主挂载</h2>
+<p>用一句话说，Plugin（插件）是一段按宿主约定接入运行环境的代码。比如“把原生工具执行器交给工具服务”的代码，不该每个应用入口再写一份。插件描述这项贡献，宿主决定何时挂载。</p>
+<p>先用软件中的最小对照建立直觉：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 普通模块导出：使用者自行调用它。
+export function formatTitle(text: string) { return `项目：${text}`; }</code></pre></div>
+<p>Cordis 消费者模块则可以同时导出 <code>inject</code> 与 <code>apply(ctx)</code>。区别不在文件后缀，也不在“函数有个特殊名字”，而在<strong>把这个入口交给 Cordis，参与宿主的挂载与依赖管理</strong>。直接 <code>import</code> 它，只会执行模块顶层代码；其中的 <code>apply</code> 还没有因名字而自动运行。模块若自己写了顶层副作用，导入当然可能产生副作用，但那也不是 Cordis 替它完成了挂载。</p>
+<p>严格到本版本，<code>Plugin</code> 接受函数、可构造的类、带 <code>apply</code> 的对象三种入口形态，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/registry.ts#L91-L133" target="_blank" rel="noopener noreferrer"><code>registry.ts:91–133</code> 的类型</a>。<strong>插件不必提供 Service</strong>，也可以只消费服务、登记工具或贡献其他行为。入门文档“插件是实现 Service 的对象”的一句概括，应结合教程的函数示例和这里的真实类型阅读，不能当成“所有插件必须继承 Service”的规定。</p>
+<p>一个真实短插件在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts#L25-L35" target="_blank" rel="noopener noreferrer">原生执行器模块 25–35 行</a>：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>export const name = &#x27;native-tool-executor&#x27;
+export const inject = [&#x27;tools&#x27;]
+
+export function apply(ctx: Context): void {
+  ctx.tools.setExecutor(new NativeToolExecutor(ctx))
+}</code></pre></div>
+<p>输入是宿主给的 <code>ctx</code>；行为是创建执行器，再选择它；结果是挂载作用域中的工具服务有了这个执行器。这里的 <code>apply</code> 是<strong>模块导出函数</strong>，不属于 <code>NativeToolExecutor</code> 类。这个类实现 <code>ToolExecutor</code>，并没有继承 Cordis <code>Service</code>；插件入口是模块导出这一层。</p>
+<p>常见误解是“能导入的函数都是插件”。一个格式化函数当然也能被包装成插件使用，但单凭 <code>export</code> 不会取得依赖等待、注册归属等行为。检查自己：只导入上面这个模块，没有调用 <code>ctx.plugin(...)</code>，是否已经执行 <code>setExecutor</code>？</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：核对一：导入没有自动完成挂载</summary><div class="lesson-callout-body"><p>没有。该模块的 <code>setExecutor</code> 位于 <code>apply</code> 内。宿主须把整个模块对象交给 Cordis，才能保留入口与 <code>inject</code> 元数据。若只传 <code>module.apply</code>，该函数不会自动携带模块另行导出的 <code>inject</code>。这正是练习 B 中要避免的错误。</p></div></details>
+<h2>服务：消费者要一项能力，不必挑选它的制造者</h2>
+<p>Service（服务）先理解为“对外提供、可以借用的一项能力”。摘要业务需要得到模型回答，没必要自己知道提供方怎样连接、怎样解析响应。把需求说成稳定接口，才能在接口保持兼容时更换实现。</p>
+<p>下面是<strong>普通 TypeScript 教学接口</strong>，并非官方 LLM API：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>interface Model { complete(text: string): Promise&lt;string&gt; }
+interface Log { write(message: string): void }</code></pre></div>
+<p>业务依赖 <code>Model.complete</code> 与 <code>Log.write</code> 的约定；装配方提供固定模型与内存日志，也可以提供另一组实现。接口需要约定输入、输出和失败含义，只有方法同名还不够。例如把“返回完整文本”换成“返回流”，就已经改变消费者要求，不能宣传为无改动替换。</p>
+<p>在 Cordis 语境，服务是提供方注册、消费者按名称取得的运行时能力。<code>Service</code> 这个大写类则是帮助实现具名服务的基类。二者不能倒过来说成“服务就是一个 TypeScript interface”。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-tutorial/03-services.zh.md#L11-L42" target="_blank" rel="noopener noreferrer">官方教程的 Greeter</a>提供 <code>greet(who)</code>，没有 HTTP，也没有独立服务器。</p>
+<p>真实注册发生在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/service.ts#L42-L58" target="_blank" rel="noopener noreferrer"><code>Service</code> 构造器 42–58 行</a>：子类调用 <code>super(ctx, &#x27;greeter&#x27;)</code> 后，构造器把实例交给 <code>ctx.reflect.provide(...)</code>。服务名称 <code>greeter</code> 是查找约定，实例才实际完成问候。</p>
+<p><code>Service</code> 不是唯一注册途径，底层还有 <code>ctx.provide(name, value)</code>，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/reflect.ts#L277-L305" target="_blank" rel="noopener noreferrer"><code>reflect.ts:277–305</code></a>。本课实践沿用教程的子类方式，先不增加第二套写法。同一作用域里不能同时重复注册同名服务；替换要有明确装配与生命周期策略，不能随手再挂一个覆盖旧实例。</p>
+<p>常见误解是“稳定接口保证所有实现效果相同”。接口让消费者知道怎样调用；响应质量、错误、性能和能力兼容仍要测。检查自己：如果只把类写好、导出，又从未创建或挂载它，<code>greeter</code> 服务存在了吗？</p>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：核对二：类定义不是能力实例</summary><div class="lesson-callout-body"><p>不存在。<code>class</code> 提供构造与方法定义；本例须让 Cordis 挂载子类，运行构造器，执行 <code>super(ctx, &#x27;greeter&#x27;)</code>。一个包里可以同时有接口、实现和插件入口，包的存在不是实例已就绪的证据。</p></div></details>
+<h2>Context：从当前插件所在的位置取得能力</h2>
+<p>有了服务，还需要统一的取用方式。Context（上下文）可以先想成“当前插件接入系统的工作入口”：插件从这里访问服务，向宿主登记自己的贡献。入口本身不替模型回答，也不替文件工具读取。</p>
+<p>严格地说，本版本的 <code>Context</code> 是带代理访问和作用域信息的依赖容器，连接服务解析、插件注册、事件与登记归属。它不是任意代码都可随手修改的全局变量。根 Context 与插件收到的子 Context 有关系，但不必是同一个对象；不同作用域下，同名服务也可能解析到不同实现。</p>
+<p>在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/context.ts#L70-L84" target="_blank" rel="noopener noreferrer"><code>context.ts:70–84</code></a>中，<code>new Context()</code> 创建代理并准备框架内建服务。这不会自动装入 Harness 全部业务服务。插件子上下文在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L234-L245" target="_blank" rel="noopener noreferrer"><code>fiber.ts:234–245</code></a>创建；作用域解析的规则在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/context.ts#L109-L125" target="_blank" rel="noopener noreferrer"><code>Context.isolate()</code> 注释与实现</a>。本节认出存在这个边界即可，H08 再研究组合中的作用域。</p>
+<p>所以 <code>ctx.&lt;key&gt;</code> 是服务访问写法，不是另一种服务类型。拿 <code>ctx.tools</code> 举例：<code>ctx</code> 是上下文入口，<code>tools</code> 是约定键，取得的能力是工具服务。调用 <code>ctx.tools.execute(...)</code> 才进一步请求该服务做事。也并非 <code>ctx</code> 的每个属性都是业务服务，例如 <code>baseUrl</code> 是元数据，<code>plugin</code> 等方法由框架接入。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>已在 H03 见过的入口</th><th>借用的能力</th><th>这里不能推断什么</th></tr></thead><tbody><tr><td><code>ctx.tools</code></td><td>工具登记、选择与执行服务</td><td>不表示每个工具都获准执行</td></tr><tr><td><code>ctx.llm</code></td><td>模型适配器登记与调用边界</td><td>不等于具体供应商适配器，更不证明凭据可用</td></tr><tr><td><code>ctx.sessions</code></td><td>内存会话管理</td><td>不自动提供磁盘持久化</td></tr></tbody></table></div>
+<p>三行的真实身份见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L57-L65" target="_blank" rel="noopener noreferrer">架构表 57–65 行</a>。其中模型类名是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L354-L364" target="_blank" rel="noopener noreferrer"><code>LlmRuntime</code>，354–364 行</a>；会话对象是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L1057-L1064" target="_blank" rel="noopener noreferrer"><code>SessionStore</code>，1057–1064 行</a>。不要把它们都改叫某个泛化的 Service 类名。</p>
+<p>常见误解是“既然有统一入口，就能访问所有能力”。插件上下文的属性访问会受依赖声明与作用域约束；根上下文的直接访问行为不能照搬给插件。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/reflect.ts#L144-L166" target="_blank" rel="noopener noreferrer">属性代理 144–166 行</a>明确检查这些条件。检查自己：同一个服务键，为什么仍不能证明所有插件取得同一对象？</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：核对三：统一名字仍有访问位置</summary><div class="lesson-callout-body"><p>服务解析会结合上下文的作用域；插件还需要正确声明依赖。不要把 <code>ctx</code> 保存成一个任意地方都能用的“万能全局对象”。本课最小实验都在同一根下、无额外 isolate，避免一开始计算完整作用域树；这不是说真实 Harness 没有作用域。</p></div></details>
+<h2>依赖注入：把“我需要什么”与“谁来提供”分开</h2>
+<p>Dependency Injection（依赖注入）先用普通参数理解：业务不在内部 <code>new</code> 一个固定模型，由外部装配方把符合接口的模型交给它。变化从业务内部移到了装配处。练习 A 就只做这一步，它完全不需要 Cordis。</p>
+<p>Cordis 的具体方式是：插件用 <code>inject</code> 声明需要哪些具名服务；框架在这些服务对它可用后启动插件；插件通过传入的 <code>ctx</code> 调用服务。<strong>这里没有把所有对象复制进参数，也没有因为写了 <code>inject</code> 就下载、导入或创建提供方。</strong></p>
+<p>例如 <code>inject = [&#x27;greeter&#x27;]</code> 只有一项需求。<code>super(ctx, &#x27;greeter&#x27;)</code> 是提供方执行注册；<code>ctx.greeter.greet(&#x27;world&#x27;)</code> 是消费者调用。它们分别是声明、提供、使用，少哪一项都不能靠另两项代替。图二把这三件事放在不同位置。</p>
+<p><span class="lesson-figure" role="group" aria-label="提供方插件构造 GreeterService 并注册 greeter；消费者声明 inject 后，经 Context 调用 greet。TypeScript 声明合并单列在编译期，不连到运行时注册"><img src="figures/rendered/h05-02.png" alt="提供方插件构造 GreeterService 并注册 greeter；消费者声明 inject 后，经 Context 调用 greet。TypeScript 声明合并单列在编译期，不连到运行时注册" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜声明需求、提供实例、调用能力是三种动作。实线表示注册或调用，虚线表示依赖条件；上方类型信息不创建实例。省略生命周期和作用域解析细节。</span><a class="lesson-image-expand" href="figures/rendered/h05-02.png" target="_blank" rel="noopener noreferrer" aria-label="提供方插件构造 GreeterService 并注册 greeter；消费者声明 inject 后，经 Context 调用 greet。TypeScript 声明合并单列在编译期，不连到运行时注册，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>真实路径从 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/registry.ts#L316-L335" target="_blank" rel="noopener noreferrer"><code>RegistryService.plugin()</code>，316–335 行</a>开始：接收插件与配置，识别入口，用 <code>Inject.resolve(plugin.inject)</code> 归一化需求，再创建承载这次挂载的 Fiber。Fiber 在这里先理解为“这次插件挂载的运行记录”，完整状态与回收留 H07。</p>
+<p><a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L597-L623" target="_blank" rel="noopener noreferrer"><code>Fiber._checkImpl()</code> 与 <code>_refresh()</code>，597–623 行</a>检查实现是否可用：没有实现，或可用性检查不通过，就不能激活；列出的每项都满足，才进入加载。注册记录存在与服务对消费者可用仍有区别，提供方尚未完成初始化时也不能贸然使用。</p>
+<p>缺少必需服务时，消费者保持 <code>PENDING</code>（等待依赖），不执行 <code>apply</code>，不是“执行到一半才发现 undefined”。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-tutorial/03-services.zh.md#L59-L72" target="_blank" rel="noopener noreferrer">官方教程 59–72 行</a>还指出：如果没有其他活动，Node 可能以 0 退出而没有问候输出。因此退出码 0 不证明插件业务完成。H04 的应用启动另有必需条目审查，不能把这个库级例子推广为完整 Harness 必定静默退出。</p>
+<p>常见误解是“把提供方放在配置列表第一行就等价于 inject”。列表位置不能表达依赖，也不能保证异步初始化完成。检查自己：交换提供方和消费者的挂载顺序，为什么正确程序仍可完成？如果完全去掉提供方，又会怎样？</p>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：核对四：顺序由实际可用性决定</summary><div class="lesson-callout-body"><p>消费者先出现时先等待，所需服务随后可用便可启动；提供方先出现时也必须真正完成相应初始化。完全没有提供方，消费者一直 PENDING、调用次数为 0。不能用多等几秒、交换列表顺序或增加类型声明来创造服务。可选服务有显式探测方式，但必需能力不应靠删掉 inject 伪装成可选。</p></div></details>
+<h2>apply 与注册：宿主何时把贡献接进系统</h2>
+<p><code>apply(ctx)</code> 可以理解为“挂载时请做这些接入工作”。例如原生执行器在这里调用 <code>setExecutor</code>；问候服务的提供方在这里挂载服务类。它是宿主启动插件行为的入口，<strong>不表示每来一条用户消息就重跑一次 apply</strong>。请求业务通常经已注册的能力继续发生。</p>
+<p>严格到实现，函数/对象插件的入口被框架用 <code>(ctx, config)</code> 调用；类插件则被构造，并可执行初始化方法，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L247-L260" target="_blank" rel="noopener noreferrer"><code>Fiber</code> 的入口执行分支 247–260 行</a>。因而 Service 子类也可直接挂载，不要求每个类都另写一个名叫 apply 的方法。本节使用教程的外层 <code>apply</code>，便于看出“提供方插件挂载服务类”这层关系。</p>
+<p>注册则把实际对象、工具等贡献接入宿主。比如 <code>ctx.plugin(GreeterService)</code> 是挂载动作，构造器里的 <code>super(...)</code> 才执行具名服务登记；<code>ctx.tools.setExecutor(...)</code> 是在<strong>已有工具服务中</strong>选择执行器，不是再提供一项名叫 tools 的服务。</p>
+<p>Cordis 把许多注册归入可撤销的 effect，便于所属插件结束时移除。真实 <code>provide()</code> 在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/reflect.ts#L277-L305" target="_blank" rel="noopener noreferrer">277–305 行</a>返回移除登记的函数。本节只建立“登记应有归属”的直觉；卸载顺序、资源清理、依赖消失与热重载留 H07。撤销注册也不会自动撤销插件已经写出的文件或已经发生的外部操作。</p>
+<p>常见误解是“我手动 <code>apply(root)</code>，效果就一定与挂载一样”。这会绕过插件的独立运行记录和依赖声明处理。检查自己：如果 <code>apply</code> 里面访问了所需服务，为什么不能把直接调用当作练习 B 的验证方法？</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：核对五：需要验证宿主契约</summary><div class="lesson-callout-body"><p>直接调用只验证普通函数执行，没有验证 Cordis 是否读到了 inject、依赖不足时是否阻止入口、服务可用后是否激活。练习 B 必须通过真实 <code>ctx.plugin(模块对象)</code>；类型检查或手动函数调用都不足以证明依赖行为。</p></div></details>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="第一处停顿：用三个动词复述"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第一处停顿：用三个动词复述</div><div class="lesson-callout-body"><p>现在可以先休息。合上图，用一句话分别解释“声明需要 greeter”“注册 greeter 实例”“调用 greet”；再说出普通模块导入与插件挂载的区别。若还把它们说成同一次注册，回读图二。第二次学习从下面的最小插件开始，不必重读 H03/H04。</p></div></aside>
+<h2>读一对真实模式的最小插件</h2>
+<p>选择的是锁定 Commit 的<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/cordis-tutorial/03-services.zh.md#L11-L56" target="_blank" rel="noopener noreferrer">官方服务教程 11–56 行</a>中的 Greeter 模式。下面保留其 API、名称、输入和输出，压缩注释与排版；这是有来源的教学改编，不是重新实现 DI 框架。许可证与改编说明随交付保留。</p>
+<p>提供方分三段读。第一段给 TypeScript 补信息，第二段描述服务实现和运行时登记，第三段定义模块入口。</p>
+<p>先把同一文件里的两段接线放在主线看。下面是摘录，完整文件在折叠区；<code>GreeterService</code> 的类定义也在完整文件中：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>declare module &#x27;@deepseek-ai/cordis&#x27; {
+  interface Context { greeter: GreeterService }
+}</code></pre></div>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>constructor(ctx: Context) { super(ctx, &#x27;greeter&#x27;); }</code></pre></div>
+<p>第一段让编译器认识一个属性，第二段要在对象构造时才执行。删掉第二段的实际挂载路径，第一段还在也不会产生服务；这就是接下来要验证的区别。</p>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整提供方：greeter.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 改编自锁定版本 docs/cordis-tutorial/03-services.zh.md:11–35。
+import { Service, type Context } from &#x27;@deepseek-ai/cordis&#x27;;
+
+declare module &#x27;@deepseek-ai/cordis&#x27; {
+  interface Context { greeter: GreeterService }
+}
+
+export class GreeterService extends Service {
+  constructor(ctx: Context) { super(ctx, &#x27;greeter&#x27;); }
+  greet(who: string) { return `Hello, ${who}!`; }
+}
+
+export const name = &#x27;greeter&#x27;;
+export function apply(ctx: Context) { ctx.plugin(GreeterService); }</code></pre></div></div></details>
+<p><code>greet</code> 输入一个名字，返回问候文本；不读环境、不发网络。构造器输入当前上下文，通过 <code>super</code> 登记实例。外层 <code>apply</code> 挂载 <code>GreeterService</code> 类；类被构造后实际登记能力。缺失挂载、同一作用域重复登记或启动抛错都可能使预期服务不可用。</p>
+<p><strong>声明合并提供的是类型信息，不会自动创建或注册运行时服务。</strong> <code>declare module</code> 将 <code>greeter: GreeterService</code> 合并进 <code>Context</code> 的类型描述，编译器由此知道 <code>greet</code> 接受字符串；它在发射的 JavaScript 中消失。即使只导入这份文件，类型已被看见，类也已被定义，服务仍可能完全没有挂载。反过来，运行时注册过一个名字，也不会让编译器自动知道其全部方法。</p>
+<p>消费者只要使用这项能力，无需导入提供方类。其类型检查单元仍要包含上面的服务声明；本实验同时包含两份文件。省略声明文件不代表“应该用 any 解决”，应让正确的服务契约进入类型检查。</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整消费者：consumer.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 改编自同教程:49–56；必须把整个模块对象挂载，以保留 inject。
+import type { Context } from &#x27;@deepseek-ai/cordis&#x27;;
+
+export const name = &#x27;consumer&#x27;;
+export const inject = [&#x27;greeter&#x27;];
+export function apply(ctx: Context) {
+  console.log(ctx.greeter.greet(&#x27;world&#x27;));
+}</code></pre></div></div></details>
+<p>逐段看输入、行为、结果：模块的 <code>inject</code> 是服务需求；宿主传入消费者的上下文；<code>apply</code> 调用 <code>ctx.greeter.greet(&#x27;world&#x27;)</code>；成功输出 <code>Hello, world!</code>。<code>name</code> 只是诊断显示元数据，不负责注册服务，也不必与服务键相同。</p>
+<p>图三把“定义代码”与“本次运行”分开。先读正常纵线，再看缺失依赖旁支。</p>
+<p><span class="lesson-figure" role="group" aria-label="模块定义和类型声明先准备代码；挂载消费者后检查 inject，缺 greeter 时保持 PENDING。提供方构造服务并可用后，消费者 apply 才调用 greet 并输出问候"><img src="figures/rendered/h05-03.png" alt="模块定义和类型声明先准备代码；挂载消费者后检查 inject，缺 greeter 时保持 PENDING。提供方构造服务并可用后，消费者 apply 才调用 greet 并输出问候" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜最小插件的精选运行流程。提供方和消费者的提出顺序可交换；服务可用是条件，模块导入或列表靠前不能替代它。省略事件传播、卸载与 Loader 内部过程。</span><a class="lesson-image-expand" href="figures/rendered/h05-03.png" target="_blank" rel="noopener noreferrer" aria-label="模块定义和类型声明先准备代码；挂载消费者后检查 inject，缺 greeter 时保持 PENDING。提供方构造服务并可用后，消费者 apply 才调用 greet 并输出问候，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>本课的精读路线共五个源码文件，按问题选择短段，不要求通读五个文件：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>顺序与文件</th><th>先看哪个符号，再看什么</th><th>要回答的问题</th></tr></thead><tbody><tr><td>1 · <code>tool-executor-native/src/index.ts</code></td><td>25–35 行的 inject/apply，再回看类声明</td><td>一个真实插件究竟贡献什么？</td></tr><tr><td>2 · <code>vendor/cordis/src/service.ts</code></td><td><code>Service</code> 构造器 42–58</td><td>服务实例在哪一行登记？</td></tr><tr><td>3 · <code>vendor/cordis/src/context.ts</code></td><td>构造器 70–84，再看 109–125 的注释</td><td>ctx 为什么是解析入口、为何不是全局单例？</td></tr><tr><td>4 · <code>vendor/cordis/src/registry.ts</code></td><td><code>Plugin</code> 类型，再看 <code>plugin()</code> 316–335</td><td>模块对象和 inject 怎样进入宿主？</td></tr><tr><td>5 · <code>vendor/cordis/src/fiber.ts</code></td><td><code>_checkImpl/_refresh</code> 597–623，再看 247–260</td><td>什么条件允许入口开始执行？</td></tr></tbody></table></div>
+<p>以上链接已在对应概念段给出。教程、<code>reflect.ts</code>、Harness 服务和测试是辅助核对入口。不要把阅读路线当成函数调用顺序：实际是挂载消费者后查依赖；提供方的 Service 注册及激活让依赖可用；再进入消费者入口。构造器登记的瞬间也不能一概当成异步初始化已完成，实验会专门测这个反例。</p>
+<h2>回到 Harness：请求流程借用的能力由谁准备</h2>
+<p>H03 从“实例、服务和执行器已就绪”开始。现在可以给那个前提补上证据，而无需重新讲 Turn/Step。</p>
+<p><code>ToolsService</code> 的<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L32-L36" target="_blank" rel="noopener noreferrer">类型声明、类和构造器</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118" target="_blank" rel="noopener noreferrer">99–118 行</a>分别告诉编译器 <code>ctx.tools</code> 的类型、声明需要 <code>systemPrompt</code>、通过 <code>super(ctx, &#x27;tools&#x27;)</code> 登记能力。原生执行器再声明需要 <code>tools</code> 并调用 <code>setExecutor</code>。<strong>提供工具服务、给工具服务选择执行器、向注册表添加某个工具，是不同层次。</strong></p>
+<p>默认 <code>AgentLoop</code> 在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L292-L318" target="_blank" rel="noopener noreferrer">292–318 行</a>声明 <code>agents</code>、<code>sessions</code>、<code>llm</code>、<code>tools</code>、<code>systemPrompt</code> 和 <code>sessionProjections</code>，自己登记为 <code>agentLoop</code>。它同时是消费者和提供方，两个身份并不冲突。等这些连接成立，H03 中的运行实例才有条件借用模型、工具和会话能力；插件激活本身仍不证明某次模型请求成功。</p>
+<p>H03 的工具分支在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L586-L597" target="_blank" rel="noopener noreferrer"><code>ReactLoopAgent.step()</code> 586–597 行</a>消费 <code>this.loopCtx.tools.execute(...)</code>；工具服务再<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L369-L377" target="_blank" rel="noopener noreferrer">选择当前执行器并委托</a>。这是运行时调用，不能推成工具包反向静态导入所有执行器。</p>
+<p>模型也有两层：<code>ctx.llm</code> 提供共享适配与调用边界，具体供应商适配器在该服务上登记，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L150-L155" target="_blank" rel="noopener noreferrer">架构文档 150–155 行</a>。因此更换供应商不一定是更换名叫 llm 的服务。会话同样不能简单说成“换掉 sessions 就完成存储迁移”：<code>SessionStore</code> 负责内存管理，持久化有<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/architecture.zh.md#L167-L171" target="_blank" rel="noopener noreferrer">独立契约与提供方</a>。H05 建立分工，具体适配和迁移后续再学。</p>
+<p>选读<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/tests/tools.spec.ts#L35-L41" target="_blank" rel="noopener noreferrer">工具测试的 setup，35–41 行</a>：先挂提示词服务、工具服务，再挂原生执行器。进一步在<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/tests/tool-executors.spec.ts#L66-L128" target="_blank" rel="noopener noreferrer">组合测试 66–83、103–128 行</a>找真实服务、Mock 模型和模型工具呈现断言。它们是本课静态选读，不冒称已运行完整官方测试。</p>
+<p>**我们的分析：**模块可分工、提供方可选择，能缩小替换影响，测试也可以单独组合所需能力。代价是诊断要追查服务键、作用域、提供方状态和装配来源；接口演进与多组合测试也成为维护工作。两个固定函数就能完成的小工具，普通模块与参数注入往往更易读。插件化在能力多、替换频繁、存在多种组合时更有价值，而非普遍优越。</p>
+<aside id="lesson-warning" class="lesson-callout lesson-warning" aria-label="插件连接不构成安全认证"><div class="lesson-callout-label">注意风险</div><div class="lesson-callout-title">插件连接不构成安全认证</div><div class="lesson-callout-body"><p>插件通常共享宿主进程与资源，不因使用 Context 或 inject 获得操作系统隔离。服务存在不等于调用已获授权，类型正确不等于参数可信，Session 接受事实不等于磁盘 flush。锁定版本仍是<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L15" target="_blank" rel="noopener noreferrer">未经安全审计的实验性开发者预览</a>。本课只运行固定内存夹具，不访问个人数据、凭据或真实模型。</p></div></aside>
+<h2>练习 A：先用普通接口解开两项依赖</h2>
+<p>在自己的新建空目录中建立 <code>a-starter.ts</code>。这是教学程序，没有 Cordis，模型与日志直接写在业务方法里。</p>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：练习 A 起始程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 练习 A：教学简化；纯内存、固定模型，没有真实 API 或持久日志。
+export class NoteAgent {
+  async summarize(text: string) {
+    const reply = `固定模型A：${text}`;
+    console.log(`完成：${reply}`);
+    return reply;
+  }
+}</code></pre></div></div></details>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="练习 A：重设结构并说明替换范围"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 A：重设结构并说明替换范围</div><div class="lesson-callout-body"><p>把模型调用与日志记录拆成两项能力，用接口表达消费者需要的方法。让装配方选择“固定模型 A / B”及内存日志，不更改摘要业务方法来切换实现。保持原输入参与返回值；模型失败时不能记录“完成”。</p><p>另写四句解释：哪些部分独立；谁提供实现；消费者依赖什么；更换提供方后哪些代码必须变、哪些测试仍要跑。允许其他等价设计，不要求照抄类名。</p></div></aside>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：练习 A 完整参考答案</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 普通 TypeScript 参数注入，不是 Cordis 运行时。
+export interface Model { complete(text: string): Promise&lt;string&gt; }
+export interface Log { write(message: string): void }
+
+export class NoteAgent {
+  constructor(private model: Model, private log: Log) {}
+  async summarize(text: string) {
+    const reply = await this.model.complete(text);
+    this.log.write(`完成：${reply}`);
+    return reply;
+  }
+}
+
+// 装配方选择实现；消费者 NoteAgent 不知道具体提供方。
+export function assemble(prefix: string, entries: string[]) {
+  const model: Model = { async complete(text) { return `${prefix}：${text}`; } };
+  const log: Log = { write(message) { entries.push(message); } };
+  return new NoteAgent(model, log);
+}</code></pre></div><p>模型与日志独立为 <code>Model</code> 和 <code>Log</code>。<code>NoteAgent</code> 只知道完成文本与写日志的方法；<code>assemble</code> 提供固定模型及内存日志，并把它们交给业务实例。改前缀或换符合约定的提供方，装配处变化，<code>summarize</code> 不必改；若接口或失败语义改变，则要重新审消费者。</p><p>本参考用构造参数注入，已经能验证解耦；它不是 Cordis Plugin，没有 Context、PENDING 或框架回收。不能为了名称听起来统一，把它叫作官方运行时。本课自动测试会核 A/B 实际返回值和日志内容，以及模型失败后没有成功日志。</p></div></details>
+<h2>练习 B：用真实 Cordis 连接服务</h2>
+<p>先预测三项结果：只挂消费者；先消费者后提供方；服务存在但消费者没有 inject。不要先看输出猜理由。</p>
+<aside id="lesson-task-3" class="lesson-callout lesson-task" aria-label="练习 B：提供、等待、调用与反例"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 B：提供、等待、调用与反例</div><div class="lesson-callout-body"><p>在独立练习目录建立上文 <code>greeter.ts</code> 与 <code>consumer.ts</code>，再建立下面的 <code>demo.ts</code>。通过 <code>ctx.plugin(consumer)</code> 挂载模块对象，通过提供方挂载服务类。先在缺失依赖时检查状态与零调用，再提供服务，完成一次 greet。</p><p>解释两处关系：为什么 <code>declare module</code> 不能解除 PENDING；为什么只传 <code>consumer.apply</code> 会丢失本例模块导出的依赖元数据。对照自动化测试后，再将问候文本换成另一种兼容实现，消费者保持原样。</p></div></aside>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整装配程序：demo.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 库级教学装配：使用真实 Cordis；不经过 Harness Profile 或 Loader。
+import assert from &#x27;node:assert/strict&#x27;;
+import { Context, FiberState } from &#x27;@deepseek-ai/cordis&#x27;;
+import * as greeter from &#x27;./greeter.ts&#x27;;
+import * as consumer from &#x27;./consumer.ts&#x27;;
+
+const ctx = new Context();
+try {
+  const waiting = ctx.plugin(consumer);
+  await waiting;
+  assert.equal(waiting.state, FiberState.PENDING);
+  assert.equal(ctx.get(&#x27;greeter&#x27;), undefined);
+  console.log(&#x27;缺失依赖：PENDING；尚未调用 greet&#x27;);
+  if (process.argv[2] !== &#x27;--missing&#x27;) {
+    await ctx.plugin(greeter);
+    // 外层提供方还挂载了子类插件；显式等待子插件与消费者稳定。
+    for (const fiber of ctx.registry.get(greeter.GreeterService)!.fibers) await fiber.await();
+    await waiting;
+    assert.equal(waiting.state, FiberState.ACTIVE);
+    console.log(&#x27;依赖满足：ACTIVE&#x27;);
+  }
+} finally { await ctx.fiber.dispose(); }</code></pre></div></div></details>
+<p>这里 <code>await</code> 等待的是当前挂载工作稳定，<strong>不保证未来缺失的服务会出现</strong>；PENDING 也可以是稳定状态。提供方外层 apply 还挂了一个子类插件，示例因此显式等待子类和消费者，再断言 ACTIVE。不要把“await 返回了”孤立当作应用所有服务已就绪。对应 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L725-L737" target="_blank" rel="noopener noreferrer"><code>Fiber.await()</code> 725–737 行</a>。</p>
+<h3>两条可复验路线</h3>
+<p>已有<strong>独立、锁定 Commit、依赖已准备好的 Harness checkout</strong>时，可以把这几个课件文件复制到那份 checkout 新建的 <code>tmp/h05-cordis-lab</code>，在该目录运行。沿用官方教程所需 Node.js <code>&gt;=24.9.0</code> 和固定仓库工具链；不在 AI Foundry 根安装 Harness 依赖，不把此目录指向个人项目或 Home。下面的相对路径以这个新目录为前提：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="bash 代码"><code>node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json demo.ts
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json demo.ts --missing
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json --test lab.test.ts</code></pre></div>
+<p>测试需要同时复制 <code>a-reference.ts</code> 与下方 <code>lab.test.ts</code>。路径不存在时先核 checkout 的依赖准备，不能随意安装 npm 上另一个同名 Cordis 版本，也不要求为了本课运行整套 Harness。官方教程的 Loader/YAML 启动方式是另一路径，本课不依赖 Loader。</p>
+<p>作者复验使用随交付的 <code>docs/deepseek-harness-v2/h05/scripts/run-labs.mjs</code>，从 AI Foundry 根运行：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="bash 代码"><code>node docs/deepseek-harness-v2/h05/scripts/run-labs.mjs</code></pre></div>
+<p>它读取固定源码缓存（换机用 <code>HARNESS_SOURCE_CACHE</code> 指向同 Commit），在 OS 新临时目录复制课程夹具，以 tsx 路径映射加载<strong>真实 vendor/cordis 与 vendor/cosmokit</strong>，不模拟 Cordis。它不经过 Profile、Loader 或完整 Agent 应用。临时目录保留，报告给出路径；脚本不清理目录、不读取个人配置。类型测试先按 Cordis 的包编译选项生成声明，再对课程消费者做严格检查，避免把 Host 全仓混进单一检查单元。</p>
+<p>第一条 demo 预期依次出现：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>缺失依赖：PENDING；尚未调用 greet
+Hello, world!
+依赖满足：ACTIVE</code></pre></div>
+<p><code>--missing</code> 只有第一行，退出 0，没有问候；这就是“过程没报错”与“消费者已运行”的差别。<code>lab.test.ts</code> 有 9 项行为测试；作者 runner 还检查故意删除 inject 的 demo 非零退出、错误参数触发 TS2345，以及声明合并在发射代码中消失。</p>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整自动化测试：lab.test.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import test from &#x27;node:test&#x27;;
+import assert from &#x27;node:assert/strict&#x27;;
+import { Context, FiberState, Service } from &#x27;@deepseek-ai/cordis&#x27;;
+import * as greeter from &#x27;./greeter.ts&#x27;;
+import * as consumer from &#x27;./consumer.ts&#x27;;
+import { assemble, NoteAgent } from &#x27;./a-reference.ts&#x27;;
+
+test(&#x27;A：更换模型与日志提供方，消费者代码保持相同&#x27;, async () =&gt; {
+  const a: string[] = [], b: string[] = [];
+  assert.equal(await assemble(&#x27;A&#x27;, a).summarize(&#x27;公开资料&#x27;), &#x27;A：公开资料&#x27;);
+  assert.equal(await assemble(&#x27;B&#x27;, b).summarize(&#x27;公开资料&#x27;), &#x27;B：公开资料&#x27;);
+  assert.deepEqual(a, [&#x27;完成：A：公开资料&#x27;]);
+  assert.deepEqual(b, [&#x27;完成：B：公开资料&#x27;]);
+});
+test(&#x27;A：模型失败时不记成功日志，失败向调用方传播&#x27;, async () =&gt; {
+  const logs: string[] = [];
+  const agent = new NoteAgent({ async complete() { throw Error(&#x27;MODEL_FAILED&#x27;); } }, { write(s) { logs.push(s); } });
+  await assert.rejects(agent.summarize(&#x27;fixture&#x27;), /MODEL_FAILED/);
+  assert.deepEqual(logs, []);
+});
+
+async function providerReady(ctx: Context) {
+  await ctx.plugin(greeter);
+  for (const f of ctx.registry.get(greeter.GreeterService)!.fibers) await f.await();
+}
+for (const order of [&#x27;provider-first&#x27;, &#x27;consumer-first&#x27;]) {
+  test(`B：真实 Cordis ${order}，greet 恰好调用一次`, async t =&gt; {
+    const ctx = new Context(), output: string[] = [];
+    const spy = t.mock.method(console, &#x27;log&#x27;, (s: string) =&gt; { output.push(s); });
+    try {
+      if (order === &#x27;provider-first&#x27;) await providerReady(ctx);
+      const f = ctx.plugin(consumer);
+      await f;
+      if (order === &#x27;consumer-first&#x27;) {
+        assert.equal(f.state, FiberState.PENDING);
+        assert.deepEqual(output, []);
+        await providerReady(ctx);
+        await f;
+      }
+      assert.equal(f.state, FiberState.ACTIVE);
+      assert.deepEqual(output, [&#x27;Hello, world!&#x27;]);
+    } finally { await ctx.fiber.dispose(); spy.mock.restore(); }
+  });
+}
+test(&#x27;B：只有类型/模块导入，无运行时注册，消费者 PENDING 且无输出&#x27;, async t =&gt; {
+  const ctx = new Context(), output: string[] = [];
+  const spy = t.mock.method(console, &#x27;log&#x27;, (s: string) =&gt; { output.push(s); });
+  try {
+    // greeter.ts 已被导入；其 declare module 与 class 定义都不会挂载服务。
+    const f = ctx.plugin(consumer); await f;
+    assert.equal(f.state, FiberState.PENDING);
+    assert.equal(ctx.get(&#x27;greeter&#x27;), undefined);
+    assert.deepEqual(output, []);
+  } finally { await ctx.fiber.dispose(); spy.mock.restore(); }
+});
+test(&#x27;B：遗漏 inject，即使服务存在，独立兄弟插件的属性访问也失败&#x27;, async () =&gt; {
+  const ctx = new Context();
+  try {
+    await providerReady(ctx);
+    const f = ctx.plugin({ apply(inner: Context) { inner.greeter.greet(&#x27;world&#x27;); } });
+    await assert.rejects(f.await(), /cannot get property &quot;greeter&quot; without inject/);
+    assert.equal(f.state, FiberState.FAILED);
+  } finally { await ctx.fiber.dispose(); }
+});
+test(&#x27;B：替换实现保持 greet 契约，同一消费者无需修改&#x27;, async t =&gt; {
+  const ctx = new Context(), output: string[] = [];
+  const spy = t.mock.method(console, &#x27;log&#x27;, (s: string) =&gt; { output.push(s); });
+  class ChineseGreeter extends Service {
+    constructor(inner: Context) { super(inner, &#x27;greeter&#x27;); }
+    greet(who: string) { return `你好，${who}！`; }
+  }
+  try {
+    await ctx.plugin(ChineseGreeter);
+    await ctx.plugin(consumer);
+    assert.deepEqual(output, [&#x27;你好，world！&#x27;]);
+  } finally { await ctx.fiber.dispose(); spy.mock.restore(); }
+});
+test(&#x27;B：提供方尚在异步初始化，消费者仍不提前执行&#x27;, async () =&gt; {
+  const ctx = new Context();
+  const gate = Promise.withResolvers&lt;void&gt;();
+  let calls = 0;
+  const f = ctx.plugin({ inject: [&#x27;greeter&#x27;], apply(inner: Context) { assert.equal(inner.greeter.greet(&#x27;x&#x27;), &#x27;ready:x&#x27;); calls++; } });
+  const p = ctx.plugin({ async apply(inner: Context) {
+    inner.provide(&#x27;greeter&#x27;, { greet: (s: string) =&gt; `ready:${s}` });
+    await gate.promise;
+  } });
+  try {
+    await f;
+    assert.equal(f.state, FiberState.PENDING); assert.equal(calls, 0);
+    assert.equal(ctx.get(&#x27;greeter&#x27;), undefined);
+    gate.resolve(); await p; await f;
+    assert.equal(calls, 1); assert.equal(f.state, FiberState.ACTIVE);
+  } finally { gate.resolve(); await ctx.fiber.dispose(); }
+});
+test(&#x27;B：同一作用域重复注册会失败；不能靠再次挂载覆盖实现&#x27;, async () =&gt; {
+  const ctx = new Context();
+  try {
+    await ctx.plugin(greeter.GreeterService);
+    class Duplicate extends Service { constructor(inner: Context) { super(inner, &#x27;greeter&#x27;); } }
+    const duplicate = ctx.plugin(Duplicate);
+    await assert.rejects(duplicate.await(), /has been registered/);
+  } finally { await ctx.fiber.dispose(); }
+});</code></pre></div></div></details>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：练习 B 完整参考解释与替换实现</summary><div class="lesson-callout-body"><p>上文三份完整代码就是提供方、消费者和装配的参考实现。正常路径先见 PENDING，提供方完成后只输出一次 <code>Hello, world!</code>。一直缺失服务则保持 PENDING，调用数为 0。类定义和声明合并都存在于检查单元，却没有自动执行 <code>super(...)</code>。</p><p>遗漏 inject 是另一种错误：本例消费者是没有继承该依赖的独立兄弟插件，直接读 <code>inner.greeter</code> 会产生 <code>cannot get property &quot;greeter&quot; without inject</code>，即使提供方已经存在。不能把它解释成“服务没安装”。真实实现还允许沿祖先依赖和特定探测 API 访问，本例不据此断言所有无 inject 的任意访问都必然相同。</p><p>替换练习可在<strong>另一个新 Context</strong>中挂载下面的类，再挂同一个 consumer；不要与原提供方在同一作用域重复登记。类形态直接作为插件，构造器仍通过 Service 登记名字：</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>class ChineseGreeter extends Service {
+  constructor(inner: Context) { super(inner, &#x27;greeter&#x27;); }
+  greet(who: string) { return `你好，${who}！`; }
+}</code></pre></div><p>消费者将输出 <code>你好，world！</code>。测试用这条行为验证相同方法约定；Cordis 不会自动为任意服务对象验证接口，静态类型与兼容性测试仍有责任。更抽象的独立服务接口可进一步减少对具体实现类类型的绑定；本例沿用官方教程的 <code>GreeterService</code> 类型，先保持代码最小。</p><p>第八项用异步 gate 控制提供方：注册记录已建立但提供方尚未 ACTIVE，消费者不提前执行；gate 放行后才调用一次。第九项检查同作用域重复注册报错。这些是 H05 为正确解释“可用”和“替换”所需的反例，不是 H07 完整生命周期测试。</p></div></details>
+<aside id="lesson-check" class="lesson-callout lesson-check" aria-label="完成标准：观察行为，再解释原因"><div class="lesson-callout-label">怎么确认做对了</div><div class="lesson-callout-title">完成标准：观察行为，再解释原因</div><div class="lesson-callout-body"><p>保留 A 的两种实现输出、B 的正常和缺失输出、9 项测试结果与四句结构解释。故意删除副本中消费者的 inject，预期测试失败，恢复后再通过；不能改断言迎合错误答案。绿色测试不自动评价你的解释，更不证明完整 Harness 已启动。</p></div></aside>
+<aside id="lesson-help" class="lesson-callout lesson-stuck" aria-label="结果不同，先分清是哪层缺口"><div class="lesson-callout-label">卡住了怎么办</div><div class="lesson-callout-title">结果不同，先分清是哪层缺口</div><div class="lesson-callout-body"><p>找不到包：先核固定源码、独立依赖环境和 tsx 配置路径。类型不认识 greeter：核声明所在文件是否进入同一 TypeScript 检查单元。一直 PENDING：核运行时提供方有没有挂载、名称与作用域是否一致、提供方是否完成初始化。报 without inject：核传给 plugin 的是否完整模块对象，消费者是否保留依赖声明。重复注册：检查同一作用域是否挂了两个提供方。不要打印真实配置、删除 Home 或放宽测试来修复。</p></div></aside>
+<h2>用三个迁移问题检查理解</h2>
+<aside id="lesson-task-4" class="lesson-callout lesson-task" aria-label="思考一：编辑器补全正常，为什么没有输出？"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">思考一：编辑器补全正常，为什么没有输出？</div><div class="lesson-callout-body"><p>同学把提供方文件加进 tsconfig，但只挂载 consumer；程序退出 0。他声称“TypeScript 已识别 greeter，Cordis 运行正确”。你会要求哪两条运行证据？</p></div></aside>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>看消费者的实际状态与服务的实际可用性，例如本例 PENDING、<code>ctx.get(&#x27;greeter&#x27;) === undefined</code>；再核 greet 输出/调用是否发生。类型补全说明检查单元有声明，不说明构造器或 provide 执行。只有等待依赖的程序也可退出 0。不能把没有异常当成功，更不能只补一行类型来解决缺失提供方。</p></div></details>
+<aside id="lesson-task-5" class="lesson-callout lesson-task" aria-label="思考二：增加工具，是否一定要增加一个服务键？"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">思考二：增加工具，是否一定要增加一个服务键？</div><div class="lesson-callout-body"><p>现有 ctx.tools 已可用，希望增加一个工具或更换执行器，应该再注册一个 tools 服务吗？它与 H03 的工具分派有什么关系？</p></div></aside>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>不用再提供同名服务。新增工具通过现有服务的工具登记契约，更换执行方式通过执行器选择契约；原生插件的 <code>setExecutor</code> 就是现成例子。H03 的循环消费 ctx.tools.execute，服务再委托所选执行器。插件、服务、工具条目与执行器对象是不同角色；同一服务可承载许多注册贡献。具体工具 output、可见性与执行检查到 H13–H15 再读。</p></div></details>
+<aside id="lesson-task-6" class="lesson-callout lesson-task" aria-label="思考三：两人维护的短脚本也必须插件化吗？"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">思考三：两人维护的短脚本也必须插件化吗？</div><div class="lesson-callout-body"><p>它只有固定模型和一份内存日志，半年没有替换需求。请比较普通参数注入与 Cordis；再给出一个可能改变判断的新需求。</p></div></aside>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>普通模块和构造参数已经能分开实现与业务，认知成本较低。Cordis 多了宿主挂载、具名查询与依赖跟踪，也增加状态、作用域和组合诊断成本。若后来多个入口需要不同能力集合、提供方经常替换、扩展贡献需要有统一归属，框架的价值可能上升。决定仍要按契约、测试和维护条件评估，不以插件数量衡量架构先进性。</p></div></details>
+<h2>下一问：不直接调用服务的插件，怎样协作？</h2>
+<p>回到开头，模型、工具、会话和日志不必都塞进 AgentRuntime。普通模块先给代码边界，服务接口给调用约定，插件给宿主可挂载的贡献，Context 给当前插件的访问入口，inject 给启动所需的服务条件；apply 在挂载时把贡献接入。这几个角色一起工作，不能相互代替。</p>
+<p>现在应能指着最小案例说出：哪个声明只供编译器用，哪一行登记运行实例，哪一行声明依赖，哪一行调用能力。H04 选择组合的知识没有失效；本课补的是组合中各块为何能连接，未重算 Profile、Bundle 或 Patch。</p>
+<p>接下来的 H06 只接一个新问题：如果日志观察者和策略插件都要参与一次动作，直接互相调用服务不合适时，事件该怎样传播？五种分发模式和 Waterfall 留到那里。H07 再解释卸载、清理和热重载；H08 再解释配置组合算法。本课到服务连接与最小可运行验证为止。</p></div></main></body></html>

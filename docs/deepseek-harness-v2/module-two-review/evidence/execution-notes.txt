@@ -1,0 +1,7 @@
+Audit execution notes (not upstream runtime failures):
+1. H08 first audit output directory missing: ENOENT, 19/20. Original raw failed logs retained under evidence/h08; retry under evidence/retry-h08 passes 20/20.
+2. New H07 link initially ended at L784; fixed file has 783 lines. Static range check rejected it; corrected to actual update L764-L782 and reran H07 content/Renderer/visual.
+3. Workload curated route initially used abbreviated packages/native path; range validator found KeyError; corrected to packages/core/tool-executor-native/src/index.ts. Metrics recomputed.
+4. Final evidence reader initially expected TAP # prefix; Node Renderer log actually uses spec reporter with tests 9, fail 0. Reader accepts either reporter and confirms those counts without rerunning already-passing tests.
+5. A retry runner status line said all four lessons although its command record correctly contains only H08. Future status output now lists actual selected lessons; scope in test-evidence.md is explicit.
+No official source, expected values, original evidence or user output changed for these harness adaptations.

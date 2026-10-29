@@ -1,0 +1,9 @@
+emitExample {"before":["日志开始","统计","发布者继续"],"after":["日志开始","统计","发布者继续","日志完成"],"returned":"undefined"}
+parallelExample {"trace":["A开始","B开始","发布者等待","B完成","A完成","发布者完成"],"returned":"undefined"}
+serialExample {"trace":["A开始","A完成","B"],"value":0}
+bailExample {"trace":["A","B"],"value":0}
+waterfallExample {"trace":["A进入","B进入","主体=2","B得到2","A得到20"],"value":21}
+allow {"trace":["日志进入","策略检查","统计进入","工具主体","统计退出","日志收到:FIXTURE"],"bodyCalls":1,"result":{"ok":true,"text":"外层(FIXTURE)"}}
+deny {"trace":["日志进入","策略检查","日志收到:DENIED"],"bodyCalls":0,"result":{"ok":false,"text":"外层(DENIED)"}}
+lost-next {"trace":["日志进入"],"bodyCalls":0,"result":null}
+lost-return {"trace":["日志进入","策略检查","统计进入","工具主体","统计退出","日志收到:FIXTURE"],"bodyCalls":1,"result":null}

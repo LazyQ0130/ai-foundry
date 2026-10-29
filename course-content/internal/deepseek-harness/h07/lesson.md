@@ -96,7 +96,7 @@ await handle.dispose();    // 保留并等待首次清理结果。
 | LOADING | apply正在初始化，例如等连接夹具准备好 | 成功且本次加载仍有效才ACTIVE；失败或加载被失效会转入清理 |
 | ACTIVE | 这次初始化已完成，登记处于工作阶段 | 服务变化、restart或显式dispose可引发UNLOADING；不保证永不出业务错误 |
 | UNLOADING | 正在撤销登记、等待已登记的清理 | 清理结束后按原因转PENDING、FAILED、DISPOSED，或重新LOADING |
-| FAILED | 启动或配置校验失败，已走清理，保留错误 | await会重抛启动错误；它不是缺服务的正常等待，也不是永久释放完成 |
+| FAILED | 加载阶段的配置校验或入口执行失败，已走清理，保留错误 | await会重抛启动错误；它不是缺服务的正常等待，也不是永久释放完成 |
 | DISPOSED | 此非根实例被永久移除，uid为null | 不能靠服务恢复唤醒；若要重新挂载，需新的ctx.plugin调用 |
 
 图一把正常、失败和依赖失效三条精选路径分开，先看“为什么离开运行态”，再看清理结束去哪儿。
@@ -104,6 +104,8 @@ await handle.dispose();    // 保留并等待首次清理结果。
 ![普通非根Fiber在依赖满足后从PENDING到LOADING和ACTIVE；显式释放经过UNLOADING到DISPOSED。加载失败先清理再FAILED；必需服务消失则清理后PENDING，恢复后重新加载](/course-media/harness-v2/h07/h07-01.png "图 1｜精选状态路径，箭头表示转换而非函数调用；失败和依赖失效有不同终点。省略快速依赖变化、重试及根Fiber特例，不是完整状态机。")
 
 这里最容易错的是FAILED。实现捕获启动错误后记录它、令本次加载失效，再进入UNLOADING；资源清理完，`_getState()`才按uid、错误和激活信息决定稳定状态。[673–723行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L673-L723)与[574–594行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L574-L594)共同说明：不能把图简写成“apply抛错直接FAILED、已有资源不管了”。
+
+要区分“正在加载”和“已经ACTIVE后请求更新”。例如服务当前使用 `{value: 1}`，运行中改成不符合Schema的 `{value: 'bad'}`：普通 `update()` 会在重启前抛出校验错误，旧有效配置和服务仍可保持1，Fiber仍为ACTIVE；内部收到的原始配置却可能已经变成bad。[update的校验顺序764–782行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L764-L782)解释了这个边界。H08再把它放进配置重组中观察；这里先记住：校验失败是否触发清理，要先问发生在哪个阶段。
 
 显式dispose另有一步：把uid置为null、移除该实例的注册关系，再等卸载转换结束。[265–297行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/cordis/src/fiber.ts#L265-L297)还照顾尚未激活的PENDING实例。加载失败保留错误与实例，显式释放永久移除实例，是不同的问题。
 

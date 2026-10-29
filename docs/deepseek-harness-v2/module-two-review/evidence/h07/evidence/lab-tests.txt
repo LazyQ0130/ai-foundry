@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED
+ok 1 - A真实状态：PENDING→LOADING→ACTIVE→UNLOADING→DISPOSED
+  ---
+  duration_ms: 4.3491
+  type: 'test'
+  ...
+# Subtest: apply失败先卸载已登记资源，再FAILED；await重抛错误
+ok 2 - apply失败先卸载已登记资源，再FAILED；await重抛错误
+  ---
+  duration_ms: 5.1937
+  type: 'test'
+  ...
+# Subtest: 配置验证失败不执行apply，清理后FAILED
+ok 3 - 配置验证失败不执行apply，清理后FAILED
+  ---
+  duration_ms: 1.1352
+  type: 'test'
+  ...
+# Subtest: 缺必需服务：await可稳定在PENDING；显式dispose可永久移除
+ok 4 - 缺必需服务：await可稳定在PENDING；显式dispose可永久移除
+  ---
+  duration_ms: 1.5208
+  type: 'test'
+  ...
+# Subtest: 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄
+ok 5 - 同一插件定义可挂两次：共享runtime、独立Fiber/Context；返回可等待句柄
+  ---
+  duration_ms: 0.9944
+  type: 'test'
+  ...
+# Subtest: LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理
+ok 6 - LOADING时dispose不强行终止apply；第一份dispose承诺等待它结束并清理
+  ---
+  duration_ms: 0.7815
+  type: 'test'
+  ...
+# Subtest: B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留
+ok 7 - B自动撤销监听/定时器，连接夹具关闭一次；后续分发与tick无残留
+  ---
+  duration_ms: 1.2037
+  type: 'test'
+  ...
+# Subtest: 受控真实Node setInterval：不等墙钟，卸载后不再tick
+ok 8 - 受控真实Node setInterval：不等墙钟，卸载后不再tick
+  ---
+  duration_ms: 1.8901
+  type: 'test'
+  ...
+# Subtest: effect主体立即运行；提前调用句柄与随后卸载只清理一次
+ok 9 - effect主体立即运行；提前调用句柄与随后卸载只清理一次
+  ---
+  duration_ms: 0.8902
+  type: 'test'
+  ...
+# Subtest: 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理
+ok 10 - 公共Effect清理句柄第二次不加入在途任务；所有者卸载会加入第一次清理
+  ---
+  duration_ms: 0.885
+  type: 'test'
+  ...
+# Subtest: 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者
+ok 11 - 不同Effect逆序启动B/A；受控让A/B完成，卸载等二者
+  ---
+  duration_ms: 1.0414
+  type: 'test'
+  ...
+# Subtest: 严格清理顺序放同一Disposer：flush完成后才close
+ok 12 - 严格清理顺序放同一Disposer：flush完成后才close
+  ---
+  duration_ms: 1.7207
+  type: 'test'
+  ...
+# Subtest: 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行
+ok 13 - 多个yield清理在同一Effect内串行；不可推广为独立Effect都串行
+  ---
+  duration_ms: 0.796
+  type: 'test'
+  ...
+# Subtest: 手动清理同步throw会抛出，不自动重试
+ok 14 - 手动清理同步throw会抛出，不自动重试
+  ---
+  duration_ms: 0.8434
+  type: 'test'
+  ...
+# Subtest: 手动异步清理拒绝传给首个调用方
+ok 15 - 手动异步清理拒绝传给首个调用方
+  ---
+  duration_ms: 0.7103
+  type: 'test'
+  ...
+# Subtest: 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功
+ok 16 - 所有者卸载记录清理同步/异步错误并继续其他Effect；DISPOSED不证明外部关闭成功
+  ---
+  duration_ms: 1.237
+  type: 'test'
+  ...
+# Subtest: Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放
+ok 17 - Effect返回非法结构会报错；获取后没交出Disposer的资源不会凭空释放
+  ---
+  duration_ms: 0.9625
+  type: 'test'
+  ...
+# Subtest: 父级dispose递归等子级清理；不强制父级各Effect全局串行
+ok 18 - 父级dispose递归等子级清理；不强制父级各Effect全局串行
+  ---
+  duration_ms: 1.3878
+  type: 'test'
+  ...
+# Subtest: C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留
+ok 19 - C同一Consumer随服务失去/恢复清理与重载，期间无旧事件残留
+  ---
+  duration_ms: 1.9877
+  type: 'test'
+  ...
+# Subtest: 显式dispose的Consumer不会因服务重现自动复活
+ok 20 - 显式dispose的Consumer不会因服务重现自动复活
+  ---
+  duration_ms: 2.0477
+  type: 'test'
+  ...
+# Subtest: restart保留Fiber身份，重跑apply，监听器不重复
+ok 21 - restart保留Fiber身份，重跑apply，监听器不重复
+  ---
+  duration_ms: 1.0515
+  type: 'test'
+  ...
+# Subtest: DISPOSED/UNLOADING时不得再创建Effect
+ok 22 - DISPOSED/UNLOADING时不得再创建Effect
+  ---
+  duration_ms: 1.0198
+  type: 'test'
+  ...
+# Subtest: 移除on只影响后续分发，不自动等待或取消已经开始的异步监听
+ok 23 - 移除on只影响后续分发，不自动等待或取消已经开始的异步监听
+  ---
+  duration_ms: 0.8312
+  type: 'test'
+  ...
+# Subtest: 异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次
+ok 24 - 异步获取先登记Effect：加载中被dispose，等setup完成后仍释放一次
+  ---
+  duration_ms: 0.8773
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 226.5188

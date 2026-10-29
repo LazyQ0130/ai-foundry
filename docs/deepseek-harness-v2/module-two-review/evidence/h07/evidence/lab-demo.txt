@@ -1,0 +1,4 @@
+statesExample {"states":["PENDING","LOADING","ACTIVE","UNLOADING","DISPOSED"],"trace":["apply进入","清理开始","清理完成"],"duringLoad":"LOADING","running":"ACTIVE","duringUnload":"UNLOADING","final":"DISPOSED","uidWasPresent":true,"uidNow":null}
+resourcesExample {"before":{"events":1,"ticks":1,"closes":0,"pending":1,"open":true},"after":{"events":1,"ticks":1,"closes":1,"pending":0,"open":false},"state":"DISPOSED"}
+asyncOrderExample {"before":["B开始","A开始"],"trace":["B开始","A开始","A完成","B完成"],"state":"DISPOSED"}
+dependenciesExample {"phases":["PENDING","ACTIVE","PENDING","ACTIVE","DISPOSED"],"trace":["加载:v1","事件:v1","清理:v1","加载:v2","事件:v2","清理:v2"],"runs":2,"cleanups":2,"events":2,"sameUid":true}
