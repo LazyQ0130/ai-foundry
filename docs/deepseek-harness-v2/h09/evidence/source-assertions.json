@@ -1,0 +1,597 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "assertions": [
+    {
+      "id": "H09-01",
+      "assertion": "Agent接口由type-only与runtime扩展构成；运行对象关联Session/Scope",
+      "source": "packages/core/agent/src/runtime-types.ts",
+      "start": 190,
+      "end": 231,
+      "symbol": "Agent augmentation",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 250,
+        "end": 256,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D04",
+      "conditions": "公开表面；不分析全部驱动方法"
+    },
+    {
+      "id": "H09-02",
+      "assertion": "id等于session.id；同id登记拒绝而不覆盖",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 484,
+      "end": 503,
+      "symbol": "AgentRegistry.enter",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 118,
+        "end": 128,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C03/D01/D14",
+      "conditions": "最后冲突边界；不能以预查询代替"
+    },
+    {
+      "id": "H09-03",
+      "assertion": "实时entry保存id/Agent/显式owner及通知状态",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 217,
+      "end": 227,
+      "symbol": "AgentEntry",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 129,
+        "end": 150,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C03/D08",
+      "conditions": "不等于持久Session目录"
+    },
+    {
+      "id": "H09-04",
+      "assertion": "get返回同一个裸Agent或undefined",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 586,
+      "end": 593,
+      "symbol": "get",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 98,
+        "end": 117,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01/D02",
+      "conditions": "不返回Handle，不保证create已完成"
+    },
+    {
+      "id": "H09-05",
+      "assertion": "list/roots为登记顺序的新数组；roots只看owner",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 607,
+      "end": 625,
+      "symbol": "list / roots",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 129,
+        "end": 150,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01/D08",
+      "conditions": "数组新，不克隆Agent；历史父级不参与"
+    },
+    {
+      "id": "H09-06",
+      "assertion": "SessionStore负责内存会话，不实现持久化",
+      "source": "packages/core/session/src/index.ts",
+      "start": 1057,
+      "end": 1064,
+      "symbol": "SessionStore contract",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 893,
+        "end": 914,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D10",
+      "conditions": "存储仅为内存后端替身；无磁盘结论"
+    },
+    {
+      "id": "H09-07",
+      "assertion": "SessionId只加编译期品牌，get不验证外部输入格式",
+      "source": "packages/core/session/src/types.ts",
+      "start": 22,
+      "end": 30,
+      "symbol": "SessionId",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 98,
+        "end": 117,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01",
+      "conditions": "空串查询undefined因不存在；官方测试不专测空串"
+    },
+    {
+      "id": "H09-08",
+      "assertion": "dsh-agent不创建模型请求，默认loop实现工厂",
+      "source": "packages/core/agent/README.zh.md",
+      "start": 12,
+      "end": 16,
+      "symbol": "概述",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 341,
+        "end": 359,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C01",
+      "conditions": "文本事实加缺工厂行为；非任意自定义驱动证明"
+    },
+    {
+      "id": "H09-09",
+      "assertion": "Factory分createAgent与resume两契约",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 175,
+      "end": 210,
+      "symbol": "AgentFactory",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 341,
+        "end": 374,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02",
+      "conditions": "局部替身只验证委托，不声称完整factory"
+    },
+    {
+      "id": "H09-10",
+      "assertion": "setFactory拒绝重复且Effect释放清空slot",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 379,
+      "end": 399,
+      "symbol": "setFactory",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 376,
+        "end": 387,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02",
+      "conditions": "同时只一个工厂"
+    },
+    {
+      "id": "H09-11",
+      "assertion": "缺工厂时create/resume拒绝",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 401,
+      "end": 440,
+      "symbol": "requireFactory/create/resume",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 341,
+        "end": 359,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C01",
+      "conditions": "查询已有项不需要创建工厂"
+    },
+    {
+      "id": "H09-12",
+      "assertion": "Registry传调用方绑定Context；runtime依赖来源另外保留",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 416,
+      "end": 440,
+      "symbol": "create/resume",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 341,
+        "end": 359,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02/D02",
+      "conditions": "实测fiber一致；不强称Context包装恒等"
+    },
+    {
+      "id": "H09-13",
+      "assertion": "默认loop注册工厂并持有投影依赖",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 329,
+      "end": 338,
+      "symbol": "AgentLoop Service.init",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 301,
+        "end": 330,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01/D07",
+      "conditions": "不开默认配置agents"
+    },
+    {
+      "id": "H09-14",
+      "assertion": "Handle携带释放入口，Agent公开表面没有dispose",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 150,
+      "end": 167,
+      "symbol": "AgentHandle",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 1062,
+        "end": 1081,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D02",
+      "conditions": "能力纪律，不是同进程恶意代码安全边界"
+    },
+    {
+      "id": "H09-15",
+      "assertion": "工厂也是共同结构所有者，跟踪并停止等待活实例",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 54,
+      "end": 106,
+      "symbol": "FactoryOwnership",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 698,
+        "end": 719,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D07-factory",
+      "conditions": "官方该用例部分查询ID不一致；作者用准确id验证"
+    },
+    {
+      "id": "H09-16",
+      "assertion": "先登记所有权/取消联系再构造作用域并安装退出链",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 478,
+      "end": 594,
+      "symbol": "initializeAgent ownership",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 95,
+        "end": 132,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D06/D07",
+      "conditions": "异步mint竞态仅静态选读，不冒称本轮全覆盖"
+    },
+    {
+      "id": "H09-17",
+      "assertion": "Session准备与可选存储获取后进入initializeAgent",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 717,
+      "end": 748,
+      "symbol": "createAgent",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 665,
+        "end": 675,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01/D09",
+      "conditions": "取得持久句柄前取消另有迟到关闭范围"
+    },
+    {
+      "id": "H09-18",
+      "assertion": "resume需要后端并先open(write)/read/prepare新对象",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 756,
+      "end": 836,
+      "symbol": "resume/resumeWith",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/resume.spec.ts",
+        "start": 514,
+        "end": 537,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D09/D10",
+      "conditions": "上游真实后端路径仅选读；作者resume使用内存后端替身"
+    },
+    {
+      "id": "H09-19",
+      "assertion": "有seed的重建可追加session/end-seed，旧事实前缀保留",
+      "source": "packages/core/session/src/index.ts",
+      "start": 679,
+      "end": 702,
+      "symbol": "Session seed marker",
+      "officialTest": {
+        "path": "packages/core/session/tests/session.spec.ts",
+        "start": 154,
+        "end": 173,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D10",
+      "conditions": "本轮一条model/selection前缀；非完整恢复算法"
+    },
+    {
+      "id": "H09-20",
+      "assertion": "Session先enter并同步announce，之后setup时Agent未登记",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 620,
+      "end": 636,
+      "symbol": "initializeAgent publication",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 377,
+        "end": 425,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D04/D03-setup",
+      "conditions": "Session同步通知期间只读，成功后才live append"
+    },
+    {
+      "id": "H09-21",
+      "assertion": "Session通知同步throw否决；返回Promise仅观察拒绝，不等待",
+      "source": "packages/core/session/src/index.ts",
+      "start": 1287,
+      "end": 1317,
+      "symbol": "SessionStore.announce",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 944,
+        "end": 962,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D03-session-listener",
+      "conditions": "本轮只实测同步失败；异步拒绝语义静态审读"
+    },
+    {
+      "id": "H09-22",
+      "assertion": "setup全部等待后同步commit，紧邻Agent enter/announce",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 629,
+      "end": 641,
+      "symbol": "setupCommit/enter/announce",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 377,
+        "end": 425,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D04/D03-commit",
+      "conditions": "贡献按注册API可见，不等commit才普遍可见"
+    },
+    {
+      "id": "H09-23",
+      "assertion": "Scope登记可见性和退出归属；失效后拒绝新注册",
+      "source": "packages/core/scope/src/index.ts",
+      "start": 105,
+      "end": 147,
+      "symbol": "Scope/createScope",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 276,
+        "end": 299,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D04",
+      "conditions": "本轮Scoped事件验证；完整工具/提示词呈现只选读"
+    },
+    {
+      "id": "H09-24",
+      "assertion": "agent/created按serial等待，失败跳过后续并触发收尾",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 562,
+      "end": 583,
+      "symbol": "announce",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 165,
+        "end": 218,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D05/D03-agent-listener",
+      "conditions": "回调须遵守undefined契约，意外bail值会短路"
+    },
+    {
+      "id": "H09-25",
+      "assertion": "退出初始化维护才放行唤醒，不承诺调用方先于首轮",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 200,
+      "end": 229,
+      "symbol": "runMaintenance",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 67,
+        "end": 93,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D12",
+      "conditions": "真实Turn开始+pre-step拒绝；模型stream零次"
+    },
+    {
+      "id": "H09-26",
+      "assertion": "创建失败保留待办，通知结束后再收Scope与两表",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 642,
+      "end": 658,
+      "symbol": "initializeAgent catch/finally",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 134,
+        "end": 156,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D05/D06",
+      "conditions": "保存的是可读对象/内存后端事实，不保证磁盘恢复"
+    },
+    {
+      "id": "H09-27",
+      "assertion": "parentAgent作为独立选项进入entry.owner",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 733,
+      "end": 745,
+      "symbol": "createAgent options forwarding",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 361,
+        "end": 374,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D08",
+      "conditions": "调用方、持有者、历史父级分别记录"
+    },
+    {
+      "id": "H09-28",
+      "assertion": "isOwnedBy比较确切Agent对象，roots不看历史",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 595,
+      "end": 625,
+      "symbol": "isOwnedBy/roots",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 129,
+        "end": 150,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D08",
+      "conditions": "不存在条目对正常Agent参数为false"
+    },
+    {
+      "id": "H09-29",
+      "assertion": "parentAgent字段自身没有级联销毁或Scope父链绑定",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 566,
+      "end": 594,
+      "symbol": "Scope minted on loopCtx",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 257,
+        "end": 274,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D08",
+      "conditions": "独立caller案例；完整Subagent协议NOT_RUN"
+    },
+    {
+      "id": "H09-30",
+      "assertion": "发起方只是进程本地归因，不是授权和存活证明",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 240,
+      "end": 250,
+      "symbol": "AgentRegistry contract",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent-initiator.spec.ts",
+        "start": 1,
+        "end": 28,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "STATIC_ONLY",
+      "conditions": "AsyncLocalStorage深入机制未运行/不展开"
+    },
+    {
+      "id": "H09-31",
+      "assertion": "正常teardown等待活动后Scope→close→Agent→Session",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 495,
+      "end": 546,
+      "symbol": "teardown",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 1026,
+        "end": 1060,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D07/D11",
+      "conditions": "实际默认实现；非概述职责列举的文字顺序"
+    },
+    {
+      "id": "H09-32",
+      "assertion": "Handle各入口共享记忆化teardown，重复释放仍等待/观察原失败",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 495,
+      "end": 559,
+      "symbol": "teardown/dispose",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 1062,
+        "end": 1081,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D07/D11",
+      "conditions": "区别H07原始Effect重复调用"
+    },
+    {
+      "id": "H09-33",
+      "assertion": "创建通知开始即标记，使失败时disposed配对",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 522,
+      "end": 583,
+      "symbol": "detachEntered/announce",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 151,
+        "end": 187,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C03/D03-agent-listener",
+      "conditions": "未announce的插入回退不虚构disposed"
+    },
+    {
+      "id": "H09-34",
+      "assertion": "disposal监听逐项容纳throw/reject而不await全部异步工作",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 537,
+      "end": 549,
+      "symbol": "emitDisposed",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 165,
+        "end": 187,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "STATIC_ONLY",
+      "conditions": "对应上游测试选读；本轮未独立运行坏观察者路径"
+    },
+    {
+      "id": "H09-35",
+      "assertion": "陈旧detach不能移除后来同id的确切entry",
+      "source": "packages/core/agent/src/index.ts",
+      "start": 504,
+      "end": 534,
+      "symbol": "detach/detachEntered",
+      "officialTest": {
+        "path": "packages/core/agent/tests/agent.spec.ts",
+        "start": 220,
+        "end": 243,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C03/D02/D14",
+      "conditions": "同理Session保护见1267–1275"
+    },
+    {
+      "id": "H09-36",
+      "assertion": "正常dispose继续清理后报告收集错误，创建失败保留原始错误",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 495,
+      "end": 546,
+      "symbol": "throwCollectedFailures + teardown",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/resume.spec.ts",
+        "start": 195,
+        "end": 222,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D11",
+      "conditions": "实测内存close拒绝；创建错误优先级另见initializeAgent 653–658；不是任意外部资源close已成功"
+    },
+    {
+      "id": "H09-37",
+      "assertion": "signal只用于创建语义，成功后abort不销毁活Agent",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 478,
+      "end": 503,
+      "symbol": "caller abort hook",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+        "start": 461,
+        "end": 491,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D03-cancel/D13",
+      "conditions": "只验证行为；没有声称成功时已物理removeEventListener"
+    }
+  ]
+}

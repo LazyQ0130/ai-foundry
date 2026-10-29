@@ -1,0 +1,8 @@
+A {"sameReference":true,"active":["reader-A","writer-B","tester-C"],"roots":["reader-A","writer-B"],"missing":true,"emptyLookup":true}
+B {"bareHasDispose":false,"handleHasDispose":true,"runtimeChild":true,"historyParent":"different-history","staleDisposePreservedReplacement":true}
+C {"kind":"setup","trace":["session/created","setup","scope-clean","session/disposed"],"cleanups":1,"agentAbsent":true,"sessionAbsent":true}
+C {"kind":"commit","trace":["session/created","setup","commit","scope-clean","session/disposed"],"cleanups":1,"agentAbsent":true,"sessionAbsent":true}
+C {"kind":"session-listener","trace":["session/created","session/disposed"],"cleanups":0,"agentAbsent":true,"sessionAbsent":true}
+C {"kind":"agent-listener","trace":["session/created","setup","commit","agent/created","scope-clean","agent/disposed","session/disposed"],"cleanups":1,"agentAbsent":true,"sessionAbsent":true}
+C {"kind":"cancel","trace":["session/created","setup","scope-clean","session/disposed"],"cleanups":1,"agentAbsent":true,"sessionAbsent":true}
+C {"kind":"normal","trace":["session/created","setup","commit","agent/created","later-listener","scope-clean","agent/disposed","session/disposed"],"cleanups":1,"agentAbsent":true,"sessionAbsent":true}

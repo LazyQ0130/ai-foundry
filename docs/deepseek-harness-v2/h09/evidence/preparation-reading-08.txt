@@ -1,0 +1,443 @@
+](PIN/packages/core/tools/src/index.ts#L369-L377)。这是运行时调用，不能推成工具包反向静态导入所有执行器。
+
+模型也有两层：`ctx.llm` 提供共享适配与调用边界，具体供应商适配器在该服务上登记，见[架构文档 150–155 行](PIN/docs/architecture.zh.md#L150-L155)。因此更换供应商不一定是更换名叫 llm 的服务。会话同样不能简单说成“换掉 sessions 就完成存储迁移”：`SessionStore` 负责内存管理，持久化有[独立契约与提供方](PIN/docs/architecture.zh.md#L167-L171)。H05 建立分工，具体适配和迁移后续再学。
+
+选读[工具测试的 setup，35–41 行](PIN/packages/core/tools/tests/tools.spec.ts#L35-L41)：先挂提示词服务、工具服务，再挂原生执行器。进一步在[组合测试 66–83、103–128 行](PIN/packages/core/agent-loop/tests/tool-executors.spec.ts#L66-L128)找真实服务、Mock 模型和模型工具呈现断言。它们是本课静态选读，不冒称已运行完整官方测试。
+
+我们的分析：模块可分工、提供方可选择，能缩小替换影响，测试也可以单独组合所需能力。代价是诊断要追查服务键、作用域、提供方状态和装配来源；接口演进与多组合测试也成为维护工作。两个固定函数就能完成的小工具，普通模块与参数注入往往更易读。插件化在能力多、替换频繁、存在多种组合时更有价值，而非普遍优越。
+
+:::warning{title="插件连接不构成安全认证"}
+插件通常共享宿主进程与资源，不因使用 Context 或 inject 获得操作系统隔离。服务存在不等于调用已获授权，类型正确不等于参数可信，Session 接受事实不等于磁盘 flush。锁定版本仍是[未经安全审计的实验性开发者预览](PIN/SAFETY.zh.md#L5-L15)。本课只运行固定内存夹具，不访问个人数据、凭据或真实模型。
+:::
+
+## 练习 A：先用普通接口解开两项依赖
+
+在自己的新建空目录中建立 `a-starter.ts`。这是教学程序，没有 Cordis，模型与日志直接写在业务方法里。
+
+:::deepdive{title="练习 A 起始程序"}
+<!-- code:a-starter.ts:start -->
+```typescript
+// 练习 A：教学简化；纯内存、固定模型，没有真实 API 或持久日志。
+export class NoteAgent {
+  async summarize(text: string) {
+    const reply = `固定模型A：${text}`;
+    console.log(`完成：${reply}`);
+    return reply;
+  }
+}
+```
+<!-- code:a-starter.ts:end -->
+:::
+
+:::task{title="练习 A：重设结构并说明替换范围"}
+把模型调用与日志记录拆成两项能力，用接口表达消费者需要的方法。让装配方选择“固定模型 A / B”及内存日志，不更改摘要业务方法来切换实现。保持原输入参与返回值；模型失败时不能记录“完成”。
+
+另写四句解释：哪些部分独立；谁提供实现；消费者依赖什么；更换提供方后哪些代码必须变、哪些测试仍要跑。允许其他等价设计，不要求照抄类名。
+:::
+
+:::deepdive{title="练习 A 完整参考答案"}
+<!-- code:a-reference.ts:start -->
+```typescript
+// 普通 TypeScript 参数注入，不是 Cordis 运行时。
+export interface Model { complete(text: string): Promise<string> }
+export interface Log { write(message: string): void }
+
+export class NoteAgent {
+  constructor(private model: Model, private log: Log) {}
+  async summarize(text: string) {
+    const reply = await this.model.complete(text);
+    this.log.write(`完成：${reply}`);
+    return reply;
+  }
+}
+
+// 装配方选择实现；消费者 NoteAgent 不知道具体提供方。
+export function assemble(prefix: string, entries: string[]) {
+  const model: Model = { async complete(text) { return `${prefix}：${text}`; } };
+  const log: Log = { write(message) { entries.push(message); } };
+  return new NoteAgent(model, log);
+}
+```
+<!-- code:a-reference.ts:end -->
+
+模型与日志独立为 `Model` 和 `Log`。`NoteAgent` 只知道完成文本与写日志的方法；`assemble` 提供固定模型及内存日志，并把它们交给业务实例。改前缀或换符合约定的提供方，装配处变化，`summarize` 不必改；若接口或失败语义改变，则要重新审消费者。
+
+本参考用构造参数注入，已经能验证解耦；它不是 Cordis Plugin，没有 Context、PENDING 或框架回收。不能为了名称听起来统一，把它叫作官方运行时。本课自动测试会核 A/B 实际返回值和日志内容，以及模型失败后没有成功日志。
+:::
+
+## 练习 B：用真实 Cordis 连接服务
+
+先预测三项结果：只挂消费者；先消费者后提供方；服务存在但消费者没有 inject。不要先看输出猜理由。
+
+:::task{title="练习 B：提供、等待、调用与反例"}
+在独立练习目录建立上文 `greeter.ts` 与 `consumer.ts`，再建立下面的 `demo.ts`。通过 `ctx.plugin(consumer)` 挂载模块对象，通过提供方挂载服务类。先在缺失依赖时检查状态与零调用，再提供服务，完成一次 greet。
+
+解释两处关系：为什么 `declare module` 不能解除 PENDING；为什么只传 `consumer.apply` 会丢失本例模块导出的依赖元数据。对照自动化测试后，再将问候文本换成另一种兼容实现，消费者保持原样。
+:::
+
+:::deepdive{title="完整装配程序：demo.ts"}
+<!-- code:demo.ts:start -->
+```typescript
+// 库级教学装配：使用真实 Cordis；不经过 Harness Profile 或 Loader。
+import assert from 'node:assert/strict';
+import { Context, FiberState } from '@deepseek-ai/cordis';
+import * as greeter from './greeter.ts';
+import * as consumer from './consumer.ts';
+
+const ctx = new Context();
+try {
+  const waiting = ctx.plugin(consumer);
+  await waiting;
+  assert.equal(waiting.state, FiberState.PENDING);
+  assert.equal(ctx.get('greeter'), undefined);
+  console.log('缺失依赖：PENDING；尚未调用 greet');
+  if (process.argv[2] !== '--missing') {
+    await ctx.plugin(greeter);
+    // 外层提供方还挂载了子类插件；显式等待子插件与消费者稳定。
+    for (const fiber of ctx.registry.get(greeter.GreeterService)!.fibers) await fiber.await();
+    await waiting;
+    assert.equal(waiting.state, FiberState.ACTIVE);
+    console.log('依赖满足：ACTIVE');
+  }
+} finally { await ctx.fiber.dispose(); }
+```
+<!-- code:demo.ts:end -->
+:::
+
+这里 `await` 等待的是当前挂载工作稳定，**不保证未来缺失的服务会出现**；PENDING 也可以是稳定状态。提供方外层 apply 还挂了一个子类插件，示例因此显式等待子类和消费者，再断言 ACTIVE。不要把“await 返回了”孤立当作应用所有服务已就绪。对应 [`Fiber.await()` 725–737 行](PIN/vendor/cordis/src/fiber.ts#L725-L737)。
+
+### 两条可复验路线
+
+已有**独立、锁定 Commit、依赖已准备好的 Harness checkout**时，可以把这几个课件文件复制到那份 checkout 新建的 `tmp/h05-cordis-lab`，在该目录运行。沿用官方教程所需 Node.js `>=24.9.0` 和固定仓库工具链；不在 AI Foundry 根安装 Harness 依赖，不把此目录指向个人项目或 Home。下面的相对路径以这个新目录为前提：
+
+```bash
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json demo.ts
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json demo.ts --missing
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json --test lab.test.ts
+```
+
+测试需要同时复制 `a-reference.ts` 与下方 `lab.test.ts`。路径不存在时先核 checkout 的依赖准备，不能随意安装 npm 上另一个同名 Cordis 版本，也不要求为了本课运行整套 Harness。官方教程的 Loader/YAML 启动方式是另一路径，本课不依赖 Loader。
+
+作者复验使用随交付的 `docs/deepseek-harness-v2/h05/scripts/run-labs.mjs`，从 AI Foundry 根运行：
+
+```bash
+node docs/deepseek-harness-v2/h05/scripts/run-labs.mjs
+```
+
+它读取固定源码缓存（换机用 `HARNESS_SOURCE_CACHE` 指向同 Commit），在 OS 新临时目录复制课程夹具，以 tsx 路径映射加载**真实 vendor/cordis 与 vendor/cosmokit**，不模拟 Cordis。它不经过 Profile、Loader 或完整 Agent 应用。临时目录保留，报告给出路径；脚本不清理目录、不读取个人配置。类型测试先按 Cordis 的包编译选项生成声明，再对课程消费者做严格检查，避免把 Host 全仓混进单一检查单元。
+
+第一条 demo 预期依次出现：
+
+```text
+缺失依赖：PENDING；尚未调用 greet
+Hello, world!
+依赖满足：ACTIVE
+```
+
+`--missing` 只有第一行，退出 0，没有问候；这就是“过程没报错”与“消费者已运行”的差别。`lab.test.ts` 有 9 项行为测试；作者 runner 还检查故意删除 inject 的 demo 非零退出、错误参数触发 TS2345，以及声明合并在发射代码中消失。
+
+:::deepdive{title="完整自动化测试：lab.test.ts"}
+<!-- code:lab.test.ts:start -->
+[长程序已在原件，单独核对；此处省略重复代码]
+<!-- code:lab.test.ts:end -->
+:::
+
+:::deepdive{title="练习 B 完整参考解释与替换实现"}
+上文三份完整代码就是提供方、消费者和装配的参考实现。正常路径先见 PENDING，提供方完成后只输出一次 `Hello, world!`。一直缺失服务则保持 PENDING，调用数为 0。类定义和声明合并都存在于检查单元，却没有自动执行 `super(...)`。
+
+遗漏 inject 是另一种错误：本例消费者是没有继承该依赖的独立兄弟插件，直接读 `inner.greeter` 会产生 `cannot get property "greeter" without inject`，即使提供方已经存在。不能把它解释成“服务没安装”。真实实现还允许沿祖先依赖和特定探测 API 访问，本例不据此断言所有无 inject 的任意访问都必然相同。
+
+替换练习可在**另一个新 Context**中挂载下面的类，再挂同一个 consumer；不要与原提供方在同一作用域重复登记。类形态直接作为插件，构造器仍通过 Service 登记名字：
+
+```typescript
+class ChineseGreeter extends Service {
+  constructor(inner: Context) { super(inner, 'greeter'); }
+  greet(who: string) { return `你好，${who}！`; }
+}
+```
+
+消费者将输出 `你好，world！`。测试用这条行为验证相同方法约定；Cordis 不会自动为任意服务对象验证接口，静态类型与兼容性测试仍有责任。更抽象的独立服务接口可进一步减少对具体实现类类型的绑定；本例沿用官方教程的 `GreeterService` 类型，先保持代码最小。
+
+第八项用异步 gate 控制提供方：注册记录已建立但提供方尚未 ACTIVE，消费者不提前执行；gate 放行后才调用一次。第九项检查同作用域重复注册报错。这些是 H05 为正确解释“可用”和“替换”所需的反例，不是 H07 完整生命周期测试。
+:::
+
+:::check{title="完成标准：观察行为，再解释原因"}
+保留 A 的两种实现输出、B 的正常和缺失输出、9 项测试结果与四句结构解释。故意删除副本中消费者的 inject，预期测试失败，恢复后再通过；不能改断言迎合错误答案。绿色测试不自动评价你的解释，更不证明完整 Harness 已启动。
+:::
+
+:::stuck{title="结果不同，先分清是哪层缺口"}
+找不到包：先核固定源码、独立依赖环境和 tsx 配置路径。类型不认识 greeter：核声明所在文件是否进入同一 TypeScript 检查单元。一直 PENDING：核运行时提供方有没有挂载、名称与作用域是否一致、提供方是否完成初始化。报 without inject：核传给 plugin 的是否完整模块对象，消费者是否保留依赖声明。重复注册：检查同一作用域是否挂了两个提供方。不要打印真实配置、删除 Home 或放宽测试来修复。
+:::
+
+## 用三个迁移问题检查理解
+
+:::task{title="思考一：编辑器补全正常，为什么没有输出？"}
+同学把提供方文件加进 tsconfig，但只挂载 consumer；程序退出 0。他声称“TypeScript 已识别 greeter，Cordis 运行正确”。你会要求哪两条运行证据？
+:::
+
+:::deepdive{title="思考 1 参考答案"}
+看消费者的实际状态与服务的实际可用性，例如本例 PENDING、`ctx.get('greeter') === undefined`；再核 greet 输出/调用是否发生。类型补全说明检查单元有声明，不说明构造器或 provide 执行。只有等待依赖的程序也可退出 0。不能把没有异常当成功，更不能只补一行类型来解决缺失提供方。
+:::
+
+:::task{title="思考二：增加工具，是否一定要增加一个服务键？"}
+现有 ctx.tools 已可用，希望增加一个工具或更换执行器，应该再注册一个 tools 服务吗？它与 H03 的工具分派有什么关系？
+:::
+
+:::deepdive{title="思考 2 参考答案"}
+不用再提供同名服务。新增工具通过现有服务的工具登记契约，更换执行方式通过执行器选择契约；原生插件的 `setExecutor` 就是现成例子。H03 的循环消费 ctx.tools.execute，服务再委托所选执行器。插件、服务、工具条目与执行器对象是不同角色；同一服务可承载许多注册贡献。具体工具 output、可见性与执行检查到 H13–H15 再读。
+:::
+
+:::task{title="思考三：两人维护的短脚本也必须插件化吗？"}
+它只有固定模型和一份内存日志，半年没有替换需求。请比较普通参数注入与 Cordis；再给出一个可能改变判断的新需求。
+:::
+
+:::deepdive{title="思考 3 参考答案"}
+普通模块和构造参数已经能分开实现与业务，认知成本较低。Cordis 多了宿主挂载、具名查询与依赖跟踪，也增加状态、作用域和组合诊断成本。若后来多个入口需要不同能力集合、提供方经常替换、扩展贡献需要有统一归属，框架的价值可能上升。决定仍要按契约、测试和维护条件评估，不以插件数量衡量架构先进性。
+:::
+
+## 下一问：不直接调用服务的插件，怎样协作？
+
+回到开头，模型、工具、会话和日志不必都塞进 AgentRuntime。普通模块先给代码边界，服务接口给调用约定，插件给宿主可挂载的贡献，Context 给当前插件的访问入口，inject 给启动所需的服务条件；apply 在挂载时把贡献接入。这几个角色一起工作，不能相互代替。
+
+现在应能指着最小案例说出：哪个声明只供编译器用，哪一行登记运行实例，哪一行声明依赖，哪一行调用能力。H04 选择组合的知识没有失效；本课补的是组合中各块为何能连接，未重算 Profile、Bundle 或 Patch。
+
+接下来的 H06 只接一个新问题：如果日志观察者和策略插件都要参与一次动作，直接互相调用服务不合适时，事件该怎样传播？五种分发模式和 Waterfall 留到那里。H07 再解释卸载、清理和热重载；H08 再解释配置组合算法。本课到服务连接与最小可运行验证为止。
+
+FILE course-content/internal/deepseek-harness/h06/lesson.md
+---
+estimatedTime: "120～160 分钟（可分三段；实际学习时长待试读，安装等待另计）"
+difficulty: "高级源码研习 · 事件分发与环绕调用"
+objective: "延续插件化项目助手，用固定源码与真实 Cordis 实验区分五种事件分发语义，能逐步解释 Waterfall 的委托、返回、短路与失败，并定位一项 Harness 扩展事件。"
+checklist:
+  - "能解释 Service 调用与事件协作的适用场景，分清声明、监听与分发"
+  - "已预测并运行五种模式，能说明等待、并发、返回值与精确停止条件"
+  - "能逐步追踪 Waterfall 的正常、拒绝、漏 next、漏 return、异常及重复 next"
+  - "已完成三项实践，定位真实事件的声明、触发、消费者与测试，区分运行时通知与会话事实"
+checkKeys:
+  - "check-86e2c9014a000601"
+  - "check-86e2c9014a000602"
+  - "check-86e2c9014a000603"
+  - "check-86e2c9014a000604"
+---
+
+## 工具还没执行，为什么五个插件都想参与？
+
+H05 把项目助手的模型、工具、会话与日志分成了可组合的能力。现在 Agent Runtime 准备执行一次读取：日志想记录开始，权限策略想检查是否允许，工具插件负责真正读取，性能统计想知道花了多久。以后还可能增加审计插件。
+
+一种做法是在运行器里逐个调用它们。下面是**教学结构摘录**，不是官方 API，也不执行真实读取：
+
+```typescript
+await logs.record(call);
+const decision = await policy.check(call);
+if (!decision.allowed) return decision;
+const result = await tools.execute(call);
+metrics.record(result);
+return result;
+```
+
+这段代码本身没有错。固定职责、明确返回结果的合作，直接调用很清楚。困难出现在扩展者不断增加时：运行器必须知道所有参与方；新增审计又要改它；日志失败该不该阻止工具，统计是否必须等日志，策略拒绝后还要不要执行主体，都混在一串调用里。
+
+事件系统给出另一种组织：负责这个动作的模块开放一个**有契约的参与点**，其他插件登记自己想做的事。发布方知道参与点的名字、参数和结果约定，无需逐个导入所有监听插件。事件分发器按约定把它们接起来。
+
+但“需要扩展”不等于“都发一条通知就好”。日志可能只观察；策略必须有机会阻止；统计可能包住实际执行前后。若全用不等待的广播，策略还没查完，工具就可能已经开始。本课的问题是：**同样叫事件，怎样选择执行、等待与返回的规则？**
+
+本课继续锁定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`，Cordis `4.0.6-alpha.1`。官方事实绑定固定源码；`course/*` 是教学事件，业务只用内存 fixture；“我们的分析”表示工程判断。事件核心使用真实 Cordis，不重写一套相似系统冒充它。
+
+图一先比较两条连接：一条借用具体能力，另一条开放共同参与点。
+
+![业务通过 Service 方法请求工具能力；服务内部可通过事件分发器让日志、策略和统计插件参与。事件分发可有返回约定，不能把所有事件都当作无返回广播](/course-media/harness-v2/h06/h06-01.png "图 1｜Service 调用与事件协作可以组合。实线表示本例调用，分支表示分发到参与方；不是线程、进程或消息队列。模式决定怎样等待和处理结果。")
+
+需要“执行这项明确能力并取得结果”，可以调用稳定的 Service 方法；需要“让可扩展的参与方观察、包装或按规则作决定”，可以开放事件。**事件也能返回决策或结果**，所以不能把二者粗分成“有返回值”与“没返回值”。一个 Service 方法内部就能分发事件；两种方式并不互斥。事件机制不会替代所有直接函数调用。
+
+## 用六分钟找回回调、等待与返回
+
+H05 的 Plugin 是宿主挂载的贡献，Service 是可借用的能力，Context 是当前插件的接入入口。本节新增的是：插件除了直接借用服务，还可以在同一参与点登记回调。回调函数就是“先把函数交出去，之后由约定的一方调用”，不是另一个线程。
+
+Stage 4 [4.1](/lesson/stage-4/s4-l1)讲过 Tool Registry 管名单，Runtime 验证、执行与停止；[4.3](/lesson/stage-4/s4-l3)把写提议停在审批前。我们保留“模型提议不等于执行权”的边界。旧教材没有系统讲 Cordis 事件总线，不能把这节当成已经学过的内容；4.6 的测试 hook 也是用于注入故障的回调，不等于今天的事件机制。
+
+读后面的代码，先记住三个区别：
+
+- 普通函数执行到 `return`，返回它指定的值；没写返回值，通常得到 `undefined`。
+- `async` 函数返回 Promise；调用时先运行到第一次等待处，再把尚未完成的结果交还。返回 `false` 与返回“将来兑现为 false 的 Promise”，此刻不是同一个值。
+- `await` 等待它接到的 Promise，不会自动发现旁边所有异步工作。没有接住下游结果，就不会自动替你等完它。
+
+**同步**说的是当前调用按代码先后推进；**异步**允许未完成的工作通过 Promise 等形式表示。**并发**表示多项工作在时间上重叠，本节常见的是各自等待时其他工作继续，不等于 JavaScript 同时在多个 CPU 线程上执行。**顺序等待**则是第一项完成，才开始下一项。
+
+:::deepdive{title="语法补课：callback、Promise 与 return next"}
+`ctx.on(name, callback)` 把函数交给事件系统。写 `() => { return 0; }` 与 `() => 0` 都返回数值0；写 `() => { console.log('done'); }` 没有显式返回结果。
+
+`async () => false` 返回 Promise，最终兑现为 false。`await` 得到兑现值后才能按 false 判断；不等待时看到的是 Promise 对象。本节用门闩 Promise 固定完成顺序，不用“睡几十毫秒应该够了”猜时序。
+
+`return next()` 把下游结果传给上游；`const value = await next(); return value;` 则先等到结果，再传回。只写 `await next();` 而不返回，在需要决策结果的事件中会把最终结果丢掉。它与“完全没调用 next”是两种错误。
+
+H05 的 `declare module` 给编译器补类型，运行时会消失。本课给 `Events` 接口补监听签名，原理相同；它不会自动调用回调、登记监听器或写日志。旧课链接沿用原权限，以上复习足以继续，不要求离开本课。
+:::
+
+## 谁发布，谁监听，谁决定怎样分发？
+
+**发布者**到达某个参与点，把事件名和参数交给分发方法；例如工具系统拿着待执行请求，请策略参与。**监听者**是通过 `ctx.on()` 登记的回调，完成自己的观察或处理。**分发器**是 Cordis 的事件服务，按调用的方法决定启动顺序、等待与返回。它不替监听者编写策略，也不会凭事件名猜出怎样执行工具。
+
+下面三段是教学用的不同动作，片段中的 `ctx` 已由宿主提供：
+
+```typescript
+declare module '@deepseek-ai/cordis' {
+  interface Events { 'course/notice'(): void | Promise<void> }
+}
+```
+
+```typescript
+ctx.on('course/notice', () => { console.log('收到通知'); });
+```
+
+```typescript
+ctx.emit('course/notice');
+```
+
+第一段约定名字和回调形状；第二段登记实际函数；第三段才分发。本课把回调叫监听器，不表示必须等某个外部网络消息：这里通常是当前进程中的函数调用。只有声明，没有 `on`，就没有这个监听器；只有 `on`，没有分发，也不会凭空发生通知。
+
+`ctx.on` 的真实[注册入口在 288–301 行](PIN/vendor/cordis/src/events.ts#L288-L301)，对应的[类型签名在 89–97 行](PIN/vendor/cordis/src/events.ts#L89-L97)。登记会关联当前插件；卸载与资源回收的详细机制留 H07。
+
+一次分发先选出适用监听器，再执行，见 [`dispatch()` 165–175 行](PIN/vendor/cordis/src/events.ts#L165-L175)。下面“注册顺序”都以本次选中的监听器、没有显式前置选项为前提；`prepend: true` 可以改变顺序，真实 Harness 也有作用域筛选。这里只认出这些前提，不计算 H08 的完整作用域树。
+
+事件模式是公开契约的一部分。`@mode` 标记供文档和工程核查使用，**声明合并不会让运行时自动挑选正确模式，也不会自动拒绝所有错用模式**。实际行为由调用的 `emit`、`parallel` 等方法决定；不能把同一决策事件随意改用广播。
+
+## 练习 A 从这里开始：先预测五种分发
+
+每段先写下顺序和返回值，再展开预期。五段来自同一受测 `modes.ts`；文件开头统一导入 `inContext`。这个教学辅助函数创建全新真实 Context，完成后释放夹具，不增加业务分发规则。完整 `support.ts`、`modes.ts` 与运行命令在实践部分给出。
+
+```typescript
+import { inContext } from './support.ts';
+```
+
+### emit：通知到了，不代表异步工作做完了
+
+想象接待台同时通知日志和统计：“一次动作即将开始。”如果只需要同步记录一个内存标记，广播足够直观；若某项异步工作必须完成才能放行，就不能只靠这条通知。
+
+技术上，`ctx.emit(name, ...args)` 同步逐个调用监听器，忽略它们的返回值，不等待返回的 Promise，也不收集它们。[实际实现 189–196 行](PIN/vendor/cordis/src/events.ts#L189-L196)只是调用这一组回调；方法返回 `undefined`。
+
+<!-- snippet:emit:start -->
+```typescript
+export async function emitExample() {
+  return inContext(async ctx => {
+    const trace: string[] = [], gate = Promise.withResolvers<void>();
+    let finished!: Promise<void>;
+    ctx.on('course/notice', () => {
+      trace.push('日志开始');
+      finished = gate.promise.then(() => { trace.push('日志完成'); });
+      return finished;
+    });
+    ctx.on('course/notice', () => { trace.push('统计'); });
+    const value = ctx.emit('course/notice');
+    trace.push('发布者继续');
+    const before = [...trace];
+    gate.resolve(); await finished; // 实验自己等；emit 没有等。
+    return { before, after: trace, returned: String(value) };
+  });
+}
+```
+<!-- snippet:emit:end -->
+
+这里门闩关闭时，“日志完成”不可能出现；第二个监听器和发布者却能继续。因此结果不依赖机器快慢。
+
+:::deepdive{title="emit 预期输出与原因"}
+emit 返回时的 before 是 `日志开始 → 统计 → 发布者继续`；实验放开门闩并自己等待后，after 末尾才增加 `日志完成`；returned 为字符串 `"undefined"`，用于把实际空返回值显示进 JSON。
+
+异步监听器已经被调用，并没有被忽略；被忽略的是它返回的 Promise。把 `ctx.emit(...)` 外面加一个 await，也不会让分发器收集这些 Promise。很短的异步工作偶尔先完成，不足以证明 emit 具有等待保证。
+:::
+
+常见误解是“广播会在后台线程执行所有回调”。同步回调仍占当前调用；长计算也会拖住后续回调。适合同步观察或由监听器自行处理异步失败的通知；不适合要求异步检查完成后才能继续的决策。
+
+### parallel：都启动，再等每个人交卷
+
+假设几项独立统计都要交齐，但相互没有先后依赖。可以让它们各自开始，最后一起等；其中一项慢，不必阻止其他项开始。
+
+`await ctx.parallel(name, ...args)` 启动适用的监听器，等待所有结果；正常完成时不把各监听器业务返回值汇成数组，而是返回空结果。**并发完成的顺序没有注册顺序保证。** 本版本使用 [`Promise.allSettled`，177–187 行](PIN/vendor/cordis/src/events.ts#L177-L187)：失败也要等其他监听器结束，再把失败原因汇为 `AggregateError`。
+
+<!-- snippet:parallel:start -->
+```typescript
+export async function parallelExample() {
+  return inContext(async ctx => {
+    const trace: string[] = [];
+    const a = Promise.withResolvers<void>(), b = Promise.withResolvers<void>();
+    const bDone = Promise.withResolvers<void>();
+    ctx.on('course/parallel', async () => { trace.push('A开始'); await a.promise; trace.push('A完成'); });
+    ctx.on('course/parallel', async () => { trace.push('B开始'); await b.promise; trace.push('B完成'); bDone.resolve(); });
+    const task = ctx.parallel('course/parallel');
+    trace.push('发布者等待');
+    b.resolve(); await bDone.promise; // 固定让 B 先完成，不猜定时器速度。
+    a.resolve(); const value = await task;
+    trace.push('发布者完成');
+    return { trace, returned: String(value) };
+  });
+}
+```
+<!-- snippet:parallel:end -->
+
+:::deepdive{title="parallel 预期输出与原因"}
+顺序是 `A开始 → B开始 → 发布者等待 → B完成 → A完成 → 发布者完成`；returned 是 `"undefined"`。A、B 注册顺序决定本例开始调用的顺序；门闩故意让 B 先完成。发布者在 await task 之后才追加最后一项，证明两项都完成了。
+
+并发不保证“耗时只等于最慢者”，因为同步前缀也要依次运行，还可能有共享资源竞争。若某监听器一直不结束，allSettled 也不会自动给它设置超时。不能用 parallel 表达“先保存，再基于刚保存的数据发送通知”的严格先后。
+:::
+
+常见误解是把它当成 `Promise.all` 的快速失败语义。本版本会收集错误并等其他项结束，不自动取消它们。它适合可独立开展、又必须一同完成的异步参与；真实契约若要求顺序，就应换一种组织。
+
+### serial：每项都等，但遇到明确结果就停止
+
+现在让几个处理方依次回答“这件事是否由我处理”。前一位说“没有答案”，再找下一位；有人给出答案，就不用继续问。这与“必须做完每一项任务”的流水账不同。
+
+`await ctx.serial(name, ...args)` 按顺序调用并等待，每次拿到兑现值后判断是否提前停止。判据来自 [`isBailed()`，7–15 行](PIN/vendor/cordis/src/events.ts#L7-L15)：**只有 `null`、`false`、`undefined` 表示继续；其他值均会停止**。这不是普通 truthy/falsy 判断，`0`、空字符串、`NaN` 也能停止。[serial 的循环在 198–209 行](PIN/vendor/cordis/src/events.ts#L198-L209)。
+
+<!-- snippet:serial:start -->
+```typescript
+export async function serialExample() {
+  return inContext(async ctx => {
+    const trace: string[] = [];
+    ctx.on('course/serial', async () => { trace.push('A开始'); await Promise.resolve(); trace.push('A完成'); return false; });
+    ctx.on('course/serial', async () => { trace.push('B'); return 0; });
+    ctx.on('course/serial', async () => { trace.push('C'); return undefined; });
+    const value = await ctx.serial('course/serial');
+    return { trace, value };
+  });
+}
+```
+<!-- snippet:serial:end -->
+
+:::deepdive{title="serial 预期输出与原因"}
+trace 是 `A开始 → A完成 → B`，value 为0，没有 C。A 返回的 Promise 先被等待，得到 false 才继续；B 返回的0不属于那三个继续值，所以停止。全体都只返回继续值时，最终没有胜出结果，返回 undefined。
+
+若事件约定只是按序完成注册工作，监听器应按契约不返回意外的停止值；例如无意 `return array.push(x)` 会返回数组新长度，也可能让后续监听器不再执行。“serial 会等待每个监听器”必须补上“除非先出现停止值或错误”。
+:::
+
+它适合要求顺序、允许首个有效响应胜出的异步协作。若任务要求无条件做完全部，不能只凭 serial 这个名字就保证这一点，还要读事件的返回约定与监听器代码。
+
+### bail：同步地找第一个有效响应
+
+如果处理方都能立刻回答，例如几个同步解析器依次尝试识别一个命令，可以用 `ctx.bail`。它与 serial 使用同一个停止判据，区别是**不等待 Promise**。
+
+[`bail()` 211–222 行](PIN/vendor/cordis/src/events.ts#L211-L222)拿到回调当场返回的值就判断；首个停止值直接返回。下面辅助函数是 async，只为了等夹具收尾，里面的 bail 分发仍是同步的。
+
+<!-- snippet:bail:start -->
+```typescript
+export async function bailExample() {
+  return inContext(ctx => {
+    const trace: string[] = [];
+    ctx.on('course/bail', () => { trace.push('A'); return false; });
+    ctx.on('course/bail', () => { trace.push('B'); return 0; });
+    ctx.on('course/bail', () => { trace.push('C'); return undefined; });
+    const value = ctx.bail('course/bail');
+    return { trace, value };
+  });
+}
+```
+<!-- snippet:bail:end -->
+
+:::deepdive{title="bail 预期输出与一个危险反例"}
+trace 是 `A → B`，value 为0，没有 C。A 的 false 继续，B 的0停止。
+
+若错误地让一个监听器返回 `Promise.resolve(false)`，bail 此刻看到的是 Promise 对象，立刻以该对象停止。即使调用方之后 await 得到 false，也不会回去恢复分发、继续调用下一位。实验会直接核对返回对象身份与后续调用数；不能把“bail 是 serial 同步版本”误读成“它也会按将来的值决定”。
+:::
+
+适合同步首个响应查询，不适合要等待异步检查再判断是否继续的任务。同步监听器抛错会直接传播，也不会自动把错误当成那三个继续值。
+
+:::task{title="第一处停顿：先把等待与停止分开"}
+先不要进入 Waterfall。说出 emit 与 parallel 谁等待；serial 与 bail 谁等待；再分别预测 false、0、空字符串、Promise.resolve(false) 的区别。若把“0是假值”当作继续理由，回读 isBailed。能

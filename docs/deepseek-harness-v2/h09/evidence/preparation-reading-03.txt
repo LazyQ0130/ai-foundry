@@ -1,0 +1,608 @@
+
+
+### 15. 思考题与参考答案要点
+
+工具参数字符串流到一半就能调用工具吗？
+
+参考答案：不能；须满足完整流协议、完成拼装与执行阶段校验。
+
+### 16. 关键风险及常见误解
+
+统一接口不保证不同 Provider 的工具/图片/推理语义相同；不要混用其他版本 SDK 字段。
+
+### 17. 验收方式
+
+完成一个公共 chunk→消息→工具提议的转换表，区分终态 error chunk 与基础设施 throw。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S148 · packages/llm/llm/tests/assistant-stream.spec.ts:1](PIN/packages/llm/llm/tests/assistant-stream.spec.ts#L1-L28)
+- [S149 · packages/llm/llm-deepseek/tests/prepared-call.spec.ts:1](PIN/packages/llm/llm-deepseek/tests/prepared-call.spec.ts#L1-L28)
+- [S150 · packages/llm/llm-deepseek/tests/stream.spec.ts:1](PIN/packages/llm/llm-deepseek/tests/stream.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+95–125 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H13 消费组装出的工具提议；H26 再扩展 Provider 工程。
+
+### 20. 源码依据与验证状态
+
+
+## H13
+
+### 1. 课程编号
+
+H13（核心）。
+
+### 2. 课程名称
+
+Tool Registry、Schema 与工具可见性
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H07、H11–H12；严格输入校验。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l2](/lesson/stage-3/s3-l2)、[s4-l1](/lesson/stage-4/s4-l1)、[s4-l2](/lesson/stage-4/s4-l2)。基础回顾约 5 分钟：复习 Stage 4 白名单和 strict 参数；区分 Schema 合法与用户有权。
+
+旧课深度：严格 Schema 验模型 JSON，不把建议直接写业务数据；未讲工具 output 契约。本讲增量：新增层级可见表、step admission 与 output contract。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同名工具在不同 Agent 下含义不同，模型看见的 schema 如何与执行定义保持一致？
+
+### 7. 本节唯一核心目标
+
+推导作用域、限制交集与 step admission 共同决定的工具集合。
+
+### 8. 重点技术概念
+
+ToolsService、shadowing、restrict、resolve、output schema。
+
+### 9. 需要额外解释的难懂术语
+
+Registry、Scope、Admission。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+公司通讯录有全局联系人和部门同名分机；能在名册中找到，不等于每个请求都可拨打。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S151 · docs/subsystems/tools.zh.md:1](PIN/docs/subsystems/tools.zh.md#L1-L10)、[S131 · docs/subsystems/scope.zh.md:1](PIN/docs/subsystems/scope.zh.md#L1-L10)。
+
+1. [S041 · packages/core/tools/src/index.ts:128](PIN/packages/core/tools/src/index.ts#L128-L155) — `register(definition:`；先看注册契约和 output 必填。
+2. [S042 · packages/core/tools/src/index.ts:162](PIN/packages/core/tools/src/index.ts#L162-L189) — `restrict(filter:`；再看限制仅适用于 scoped context。
+3. [S043 · packages/core/tools/src/index.ts:199](PIN/packages/core/tools/src/index.ts#L199-L226) — `private view(`；计算继承与覆盖。
+4. [S044 · packages/core/tools/src/index.ts:264](PIN/packages/core/tools/src/index.ts#L264-L291) — `async resolve(`；最后核对每步固定能力集。
+5. [S045 · packages/core/tools/src/contracts.ts:26](PIN/packages/core/tools/src/contracts.ts#L26-L53) — `export interface ToolDefinition`；核对接口字段而非猜 schema。
+
+**重要数据结构：**ToolDefinition.output、ToolRestriction、ResolvedToolSet、ToolRegistrationOptions.when。
+
+**关键代码分段讲法：**用全局 search 与子级 search 计算可见表；用声明正确而执行返回不合 schema 的例子讲 output contract。
+
+**实际调用链：**注册定义→scope chain view→step resolve→executor.describe→prompt schema；执行时携带同一 toolSet。
+
+**设计取舍：**run_code 名称保留给 PTC；restrict 不是任意隔离边界，scope 自有注册的规则须单独算。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H13-01 集合《作用域工具可见性》：手算 shadow/restrict；H13-02 契约《Schema 到执行的固定集合》：防止描述与执行错配。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L13：M4 计算全局/子级/deny 的可见集，并让隐形工具调用被拒绝。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h13)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+删掉 prompt 里的工具说明就能作为权限拒绝吗？
+
+参考答案：不能；展示与执行查找必须同受能力集合/策略约束，恶意模型仍可构造名字。
+
+### 16. 关键风险及常见误解
+
+注册成功不代表模型必调用；Schema 不是业务授权。
+
+### 17. 验收方式
+
+画三层可见表并解释三个冲突；未知和隐藏工具执行计数必须为零。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S152 · packages/core/tools/tests/scoped.spec.ts:1](PIN/packages/core/tools/tests/scoped.spec.ts#L1-L28)
+- [S153 · packages/core/tools/tests/activation.spec.ts:1](PIN/packages/core/tools/tests/activation.spec.ts#L1-L28)
+- [S154 · packages/core/tools/tests/schema.spec.ts:1](PIN/packages/core/tools/tests/schema.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+90–125 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H14 研究已可见调用的完整流水线；H15 再看策略与 OS 边界。
+
+### 20. 源码依据与验证状态
+
+
+## H14
+
+### 1. 课程编号
+
+H14（核心）。
+
+### 2. 课程名称
+
+工具执行流水线与 Hook 机制
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H06、H13。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l1](/lesson/stage-4/s4-l1)、[s4-l3](/lesson/stage-4/s4-l3)。基础回顾约 5 分钟：回顾 unknown/坏参数/未批准写入时工具计数为零，写提议与实际 execute 分开。
+
+旧课深度：单工具受限 Loop、参数/步骤/预算/取消；未讲 Turn/Step/Inbox。本讲增量：新增三阶段流水线和结果归一化/冻结。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+工具抛错、策略改写结果、用户拒绝或观察器报错，模型最后应该看到哪份结果？
+
+### 7. 本节唯一核心目标
+
+按准备、分派与结算追踪唯一权威工具结果。
+
+### 8. 重点技术概念
+
+ToolExecutionPipeline、batch、pre/execute/post、finalizeContent。
+
+### 9. 需要额外解释的难懂术语
+
+Hook、Monotonic Guard、Authoritative Result。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+办理业务先审核、再处理、再交付回执；事后收据被改写不会撤销已经完成的转账。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S155 · docs/tool-execution-pipeline.zh.md:1](PIN/docs/tool-execution-pipeline.zh.md#L1-L10)、[S151 · docs/subsystems/tools.zh.md:1](PIN/docs/subsystems/tools.zh.md#L1-L10)。
+
+1. [S046 · packages/core/tool-executor-native/src/index.ts:19](PIN/packages/core/tool-executor-native/src/index.ts#L19-L35) — `execute(input:`；先看默认执行器委托。
+2. [S047 · packages/core/tools/src/batch.ts:1](PIN/packages/core/tools/src/batch.ts#L1-L28) — `executeToolBatch`；再看原始批次与日志责任。
+3. [S003 · packages/core/tools/src/pipeline.ts:190](PIN/packages/core/tools/src/pipeline.ts#L190-L217) — `async prepare(`；跟 pre 与 guard。
+4. [S048 · packages/core/tools/src/pipeline.ts:295](PIN/packages/core/tools/src/pipeline.ts#L295-L322) — `async dispatch(`；跟 around 与 body。
+5. [S049 · packages/core/tools/src/pipeline.ts:336](PIN/packages/core/tools/src/pipeline.ts#L336-L363) — `async complete(`；最后读 post/project/finalize/result。
+
+**重要数据结构：**ScheduledToolPreparation、ToolRunContext、ToolExecutionResult、ToolExecutionToken。
+
+**关键代码分段讲法：**分四段解释函数输入、内部状态、输出变体、错误归一化；画正常/拒绝/throw 三色路径。
+
+**实际调用链：**NativeToolExecutor→executeToolBatch→prepare(pre/ask/guard)→dispatch(around/body)→projectContent→post→finalizeContent→tools/result→记录 tool/result。
+
+**设计取舍：**tools/result 是冻结后的同步观察通知，观察器失败被容纳；不能通过其返回值重新批准。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H14-01 流程《工具执行全流水线》：拆开准备执行结算；H14-02 时序《正常、拒绝与结果改写》：辨认副作用发生时点。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L14：M4 注入 pre deny、body throw、post block；比较 body 次数与最终回执。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h14)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+post-execute 把成功改成 isError，是否证明文件没有写过？
+
+参考答案：不证明；body 已运行，post 改的是结果。副作用回滚必须另有事务/补偿机制。
+
+### 16. 关键风险及常见误解
+
+非所有错误都走同一 post 路径；final-result 与 post-result 必须分别读。
+
+### 17. 验收方式
+
+三条轨迹及权威结果一致；指出 tools/result observer throw 不替换结果的源码。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](PIN/packages/core/tools/tests/tools.spec.ts#L1-L28)
+- [S156 · packages/core/agent-loop/tests/tool-order.spec.ts:1](PIN/packages/core/agent-loop/tests/tool-order.spec.ts#L1-L28)
+- [S157 · packages/core/agent-loop/tests/tool-executors.spec.ts:1](PIN/packages/core/agent-loop/tests/tool-executors.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟（建议拆两段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H15 只展开安全决策，避免重复本讲所有 pipeline 阶段。
+
+### 20. 源码依据与验证状态
+
+
+## H15
+
+### 1. 课程编号
+
+H15（核心）。
+
+### 2. 课程名称
+
+审批、权限、守卫与沙箱
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H14；可信身份与写入确认。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l6](/lesson/stage-2/s2-l6)、[s4-l3](/lesson/stage-4/s4-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：复习精确参数签名、Stage 4.3 replay 缺口与 4.6 业务幂等。
+
+旧课深度：可信 Session 推导 owner、SQL 内授权，未讲 Agent 生命周期所有权。本讲增量：新增独立 guard 与平台沙箱，不冒称相同 HMAC 实现。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户点了允许以后，为什么仍可能拒绝？沙箱开启又是否等于网络隔离？
+
+### 7. 本节唯一核心目标
+
+区分审批决定、不可放宽守卫和文件效果隔离的责任。
+
+### 8. 重点技术概念
+
+allow/deny/ask、approval、guards、confine、enforcement。
+
+### 9. 需要额外解释的难懂术语
+
+Sandbox、Monotonic、Fail Closed。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+访客同意条款不等于有机房门禁；审批像单次通行确认，守卫像不可跳过的禁入规则。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S114 · SAFETY.zh.md:1](PIN/SAFETY.zh.md#L1-L10)、[S158 · docs/subsystems/approval.zh.md:1](PIN/docs/subsystems/approval.zh.md#L1-L10)、[S159 · docs/subsystems/sandbox.zh.md:1](PIN/docs/subsystems/sandbox.zh.md#L1-L10)。
+
+1. [S050 · packages/core/tools/src/pipeline.ts:432](PIN/packages/core/tools/src/pipeline.ts#L432-L459) — `private async serviceAsk(`；先看缺少审批渠道如何拒绝。
+2. [S051 · packages/core/tools/src/index.ts:393](PIN/packages/core/tools/src/index.ts#L393-L412) — `checkGuards(`；再读 guard 无法被 allow 放宽。
+3. [S052 · packages/interaction/user-approval/src/index.ts:1](PIN/packages/interaction/user-approval/src/index.ts#L1-L28) — `ApprovalPolicy、setApprovalPolicy、ApprovalRequest、Config、ApprovalService`；读审批请求生命周期。
+4. [S053 · packages/sandbox/sandbox-policy/src/index.ts:197](PIN/packages/sandbox/sandbox-policy/src/index.ts#L197-L217) — `resolve(request:`；看策略解析。
+5. [S054 · packages/sandbox/sandbox/src/index.ts:192](PIN/packages/sandbox/sandbox/src/index.ts#L192-L197) — `abstract confine(`；看后端包装契约与 partial。
+
+**重要数据结构：**PreToolDecision、ApprovalOutcome、SandboxMode、SandboxEnforcement、ConfinedArgv。
+
+**关键代码分段讲法：**固定案例：审批允许但 guard deny，body=0；接着讨论 Windows partial 的含义，不在宿主做真实逃逸。
+
+**实际调用链：**pre ask→approval.request→allowed-once→checkGuards→body；shell consumer resolve policy→danger-full-access bypass 或 sandbox.confine→subprocess。
+
+**设计取舍：**SandboxMode 的词汇约束文件效果，网络与进程可见性不在该定义范围；partial 不得当 full。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H15-01 决策《审批与单调守卫》：说明允许后仍会拒绝；H15-02 边界《沙箱模式与实际强制执行》：避免生产安全过度承诺。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L15：M4 模拟无渠道、拒绝、允许后守卫拒绝、允许后执行四种结果；所有资源使用内存。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h15)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+一次 allowed-once 能否覆盖 owner guard 的 deny？
+
+参考答案：不能；准入通过后仍检查单调 guard。未审计实现也不能宣传为已验证生产安全方案。
+
+### 16. 关键风险及常见误解
+
+HMAC 与幂等事务是 Stage 4 实现，不能直接说 Harness 使用同一方案。
+
+### 17. 验收方式
+
+四路径 body 次数 0/0/0/1；能说清 full/partial 与既有副作用不能取消。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S160 · packages/interaction/user-approval/tests/approval.spec.ts:1](PIN/packages/interaction/user-approval/tests/approval.spec.ts#L1-L28)
+- [S161 · packages/sandbox/sandbox-policy/tests/policy.spec.ts:1](PIN/packages/sandbox/sandbox-policy/tests/policy.spec.ts#L1-L28)
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](PIN/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H16 看真实消费者如何使用这些能力；H28 扩展浏览器/桌面。
+
+### 20. 源码依据与验证状态
+
+
+## H16
+
+### 1. 课程编号
+
+H16（核心）。
+
+### 2. 课程名称
+
+文件、Shell、Web 与 MCP 能力接入
+
+### 3. 所属模块
+
+工具执行与安全机制
+
+### 4. 推荐前置知识
+
+H13–H15；HTTP、MCP 与工具区别。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l2](/lesson/stage-2/s2-l2)、[s4-l2](/lesson/stage-4/s4-l2)、[s4-l4](/lesson/stage-4/s4-l4)。基础回顾约 6 分钟：用一句话区分 Tool 能力与 MCP 协议；复述本地白名单与外部结果不可信。
+
+旧课深度：POST/JSON、服务端校验与 HTTP 验收，未涉及 JSON-RPC。本讲增量：新增四类 seam 与每服务器 MCP 适配。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+四种工具都进入同一注册表，底层却分别访问文件、进程和远端服务器，边界如何保留？
+
+### 7. 本节唯一核心目标
+
+按 Definition/Provider/Consumer 三角色定位能力，并对比远端信任。
+
+### 8. 重点技术概念
+
+fs seam、shell、web、MCP bridge。
+
+### 9. 需要额外解释的难懂术语
+
+Capability Seam、Transport、Tool Discovery。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+同一前台接不同窗口；前台统一办理流程，不能让外部窗口自行授予内部权限。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S118 · docs/capability-seams.zh.md:1](PIN/docs/capability-seams.zh.md#L1-L10)、[S162 · docs/subsystems/filesystem.zh.md:1](PIN/docs/subsystems/filesystem.zh.md#L1-L10)、[S163 · docs/subsystems/mcp.zh.md:1](PIN/docs/subsystems/mcp.zh.md#L1-L10)。
+
+1. [S055 · packages/fs/tool-fs/src/index.ts:1](PIN/packages/fs/tool-fs/src/index.ts#L1-L28) — `Config、apply`；先看面向模型的文件消费者。
+2. [S056 · packages/shell/bash-sandbox/src/index.ts:1](PIN/packages/shell/bash-sandbox/src/index.ts#L1-L28) — `Config、SandboxBashExecutor`；再看 shell 如何消费沙箱。
+3. [S057 · packages/web/tool-web/src/index.ts:1](PIN/packages/web/tool-web/src/index.ts#L1-L28) — `Config、apply`；再对比 Web seam。
+4. [S058 · packages/mcp/mcp-client/src/index.ts:154](PIN/packages/mcp/mcp-client/src/index.ts#L154-L181) — `export async function apply`；看每服务器插件入口。
+5. [S059 · packages/mcp/mcp-client/src/tools.ts:225](PIN/packages/mcp/mcp-client/src/tools.ts#L225-L252) — `export function createMcpToolDefinition`；落到工具适配及结果契约。
+
+**重要数据结构：**ToolDefinition、MCP tool inputSchema、serverName、ToolExecution、callTool result。
+
+**关键代码分段讲法：**用四列三角色图，不在一讲深挖所有实现；先复习 MCP 协议与本地 Tool，再对照 publicToolName。
+
+**实际调用链：**模型→统一 tools pipeline→tool-fs/fs provider；shell/sandbox/subprocess；tool-web/web provider；MCP definition→SDK client.callTool。
+
+**设计取舍：**MCP client 不提供通用 ctx.mcp；工具名来自 serverName + rawName，能力接入不等于信任远端内容。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H16-01 矩阵《四类能力三角色》：定位真实消费者；H16-02 时序《MCP 工具接线》：区分发现与授权。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L16：把虚构远端搜索接到 M4 本地白名单，远端多声明 write 工具也不能增加执行计数。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h16)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+远端 tools/list 列出 write 能否当作本地批准？
+
+参考答案：不能；发现是能力描述，本地注册、作用域与执行策略继续生效，返回文本是不可信内容。
+
+### 16. 关键风险及常见误解
+
+Shell 不能据危险字符串示例访问私人文件；H16 只做 Mock 接线。
+
+### 17. 验收方式
+
+三角色表覆盖四家族；解释 MCP 两个服务命名差异并用拒绝轨迹验收。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S164 · packages/mcp/mcp-client/tests/tool-definition.spec.ts:1](PIN/packages/mcp/mcp-client/tests/tool-definition.spec.ts#L1-L28)
+- [S165 · packages/mcp/mcp-client/tests/protocol.spec.ts:1](PIN/packages/mcp/mcp-client/tests/protocol.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–135 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H27 深挖 MCP 重连资源；H17 改读长期记录。
+
+### 20. 源码依据与验证状态
+
+
+## H17
+
+### 1. 课程编号
+
+H17（核心）。
+
+### 2. 课程名称
+
+Session、事件日志与事件溯源
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H10–H12；Run/Step 持久化。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l3](/lesson/stage-2/s2-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：复习 PostgreSQL 的 Run/Step/Action，刷新恢复不靠浏览器记忆。
+
+旧课深度：PostgreSQL/Prisma、刷新重启回读，未采用 Session 事件溯源。本讲增量：从领域表对比追加事实、Surface 与纯投影。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+只保存 messages 数组，能解释一次工具为何没执行、模型看见哪版 schema 吗？
+
+### 7. 本节唯一核心目标
+
+从不可变事件推导模型消息与业务投影，区分日志和读视图。
+
+### 8. 重点技术概念
+
+SessionEventMap、seq、surface、deriveMessages、projection registry。
+
+### 9. 需要额外解释的难懂术语
+
+Event Sourcing、Session Projection、Fold。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+银行流水是事实，余额是计算结果；类比不承诺金融级账务原子性。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S166 · docs/subsystems/session.zh.md:1](PIN/docs/subsystems/session.zh.md#L1-L10)、[S167 · docs/subsystems/session-projection.zh.md:1](PIN/docs/subsystems/session-projection.zh.md#L1-L10)。
+
+1. [S060 · packages/core/session/src/types.ts:287](PIN/packages/core/session/src/types.ts#L287-L314) — `interface SessionEventMap`；先识别事件词汇与模型可见事件。
+2. [S061 · packages/core/session/src/index.ts:806](PIN/packages/core/session/src/index.ts#L806-L833) — `append<T`；再看提交与快照边界。
+3. [S062 · packages/core/session/src/surface.ts:1](PIN/packages/core/session/src/surface.ts#L1-L28) — `SessionMessageProjectionContext、SessionMessageProjection、isSurfaceEligibleType、isSurfaceEvent、isAppendSurfaceEvent、isReplacementSurfaceEvent、deriveEventMessage、validateSessionEvent`；读 surface 操作而非筛 messages。
+4. [S009 · packages/core/session/src/index.ts:999](PIN/packages/core/session/src/index.ts#L999-L1026) — `deriveMessages():`；再看派生与缓存。
+5. [S063 · packages/session/session-projection/src/index.ts:259](PIN/packages/session/session-projection/src/index.ts#L259-L286) — `export class SessionProjectionRegistry`；最后看插件投影注册与 snapshot。
+
+**重要数据结构：**SessionEvent、SessionSeq、SurfaceOp、ProjectionDefinition、ProjectionSnapshot。
+
+**关键代码分段讲法：**按六条带 seq 事件算两份视图：模型消息与步骤状态；强调事件 projection 和消息 projection 是两种扩展点。
+
+**实际调用链：**Session.append→lossless snapshot/验证→追加 log→surface apply→session/event→已注册 fold；deriveMessages 从 surface + message projection 得到历史。
+
+**设计取舍：**内存 append 成功不是磁盘 flush 承诺；会话日志不是平台登录 Session。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H17-01 双轨《日志与模型可见 Surface》：解释事件溯源；H17-02 架构《Session Projection 注册与读取》：区分两类投影。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L17：M5 重建事件日志并比较两种投影；破坏 seq 必须拒绝，原事件不变。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h17)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+所有 SessionEvent 都能直接传给模型吗？
+
+参考答案：不能；模型历史由 surface 节点和纯消息投影派生，审计事件不必是消息。
+
+### 16. 关键风险及常见误解
+
+事件溯源不代表无限重放外部副作用；snapshot 不是另一个真源。
+
+### 17. 验收方式
+
+两个投影与预期一致，能定位 deriveMessages 并说明 append/flush 区别。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S168 · packages/core/session/tests/surface.spec.ts:1](PIN/packages/core/session/tests/surface.spec.ts#L1-L28)
+- [S169 · packages/core/session/tests/message-projections.spec.ts:1](PIN/packages/core/session/tests/message-projections.spec.ts#L1-L28)
+- [S170 · packages/session/session-projection/tests/registry.spec.ts:1](PIN/packages/session/session-projection/tests/registry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H18 用同一日志恢复和 fork；H19 研究投影替换。
+
+### 20. 源码依据与验证状态
+
+
+## H18
+
+### 1. 课程编号
+
+H18（核心）。
+
+### 2. 课程名称
+
+会话恢复、历史回放与 Fork
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H09、H17。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l5](/lesson/stage-1/s1-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：复述 checkpoint Resume：只读阶段可以重做，未知写结果不能随意重发。
+
+旧课深度：保存/比较/局部恢复版本，未教授事件日志 Fork。本讲增量：新增 SessionHandle、lease、历史回放与固定前缀 Fork。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+进程退出后能从哪里继续？复制父会话后，子会话是否拥有父级后台进程？
+
+### 7. 本节唯一核心目标
+
+区分恢复执行、纯历史回放与固定前缀 Fork 的语义。
+
+### 8. 重点技术概念
+
+SessionHandle、write lease、interrupted tail、fork prefix。
+
+### 9. 需要额外解释的难懂术语
+
+Replay、Fork、Idempotency、Generation。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+从会议记录恢复讨论、阅读旧记录、复制一份议题继续是三种动作；记录不会恢复会议室里原有设备。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S171 · docs/subsystems/persistence.zh.md:1](PIN/docs/subsystems/persistence.zh.md#L1-L10)、[S172 · packages/core/session/README.zh.md:1](PIN/packages/core/session/README.zh.md#L1-L10)。
+
+1. [S064 · packages/session/session-persistence/src/handle.ts:59](PIN/packages/session/session-persistence/src/handle.ts#L59-L86) — `export interface SessionHandle extends`；先读 read/append/flush/close 契约。
+2. [S065 · packages/session/session-persistence-jsonl/src/index.ts:388](PIN/packages/session/session-persistence-jsonl/src/index.ts#L388-L415) — `async open(`；再读读写打开与代际选择。
+3. [S066 · packages/core/session/src/repair.ts:15](PIN/packages/core/session/src/repair.ts#L15-L42) — `export`；看缺失结果和尾部修复。
+4. [S067 · packages/core/session/src/fork.ts:21](PIN/packages/core/session/src/fork.ts#L21-L30) — `export`；看 fork prefix 规则。
+5. [S068 · packages/core/agent-loop/src/index.ts:754](PIN/packages/core/agent-loop/src/index.ts#L754-L781) — `async resume(ownerCtx:`；最后进入恢复发布。
+
+**重要数据结构：**SessionHandle、SessionSeedEventState、SessionAlreadyOwnedError、inheritedEventCount、ToolCallRecovery。
+
+**关键代码分段讲法：**用“tool/call 已写但 result 缺失”的日志，要求标 outcome unknown，不能悄悄重执行写工具。
+
+**实际调用链：**persistence.open(write)→读取当前逻辑事件→修复未闭合尾→sessions.prepare→initializeAgent→恢复队列；fork 使用 seed + inheritedEventCount 创建新身份。
+
+**设计取舍：**JS

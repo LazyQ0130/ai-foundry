@@ -1,0 +1,155 @@
+{
+  "tests": [
+    {
+      "name": "C01 Registry without factory rejects both creation operations",
+      "grade": "C",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot",
+      "grade": "C",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "C03 real entry identity and advanced detach reject mismatch, collision and stale teardown",
+      "grade": "C",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D01 A uses real Loop: queries, roots, snapshots and collisions",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-setup initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-commit initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-session-listener initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-agent-listener initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-cancel initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D03-normal initialization/cleanup path",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D05 serial listener barrier holds create; failed creation preserves queued input without starting model",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D06 owner unload during async creation listener waits for listener and scope before detaching",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D07-handle stops and drains real maintenance before scope/registries",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D07-owner stops and drains real maintenance before scope/registries",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D07-factory stops and drains real maintenance before scope/registries",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D08 explicit parentAgent, caller, historical parent and object identity are independent",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D09 real resume rejects absent backend; pre-aborted create announces nothing",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D11 teardown attempts registry cleanup after write-close failure and preserves rejection",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D13 aborting the creation signal after success does not dispose the live Agent",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    },
+    {
+      "name": "D14 concurrent same-id preparation publishes one lifecycle and preserves winner",
+      "grade": "D",
+      "status": "PASS",
+      "runner": "node:test against pinned actual source; author tests"
+    }
+  ],
+  "totals": {
+    "C": 3,
+    "D": 21
+  },
+  "A": "not standalone",
+  "B": "real Cordis within C/D, not double counted",
+  "E": "NOT_RUN"
+}

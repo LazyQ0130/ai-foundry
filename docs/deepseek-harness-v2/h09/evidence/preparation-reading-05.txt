@@ -1,0 +1,613 @@
+SAFETY.zh.md:1](PIN/SAFETY.zh.md#L1-L10)。
+
+1. [S091 · packages/core/agent-loop/tests/contract-regressions.spec.ts:1](PIN/packages/core/agent-loop/tests/contract-regressions.spec.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；先看必须长期维持的约定。
+2. [S092 · packages/core/agent-loop/tests/mock-adapter.ts:1](PIN/packages/core/agent-loop/tests/mock-adapter.ts#L1-L28) — `textResponse、maxTokensResponse、toolCallResponse、HangAfter、MockAdapter`；看确定性替身边界。
+3. [S093 · vitest.config.ts:1](PIN/vitest.config.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；再查测试纳入/跳过规则。
+4. [S094 · scripts/run-gates.ts:1](PIN/scripts/run-gates.ts#L1-L28) — `Mode、Gate、GateResult、ConcurrencyDefault、runAggregate、cliGateOptions、defaultConcurrency、ciWorkerEnvironment、gatesForMode、RunGatesOptions、runGates、runGate、parsePidPpidLines、taskkillA`；最后看依赖门禁。
+5. [S095 · benchmarks/AGENTS.md:1](PIN/benchmarks/AGENTS.md#L1-L18) — `声明配置/模块入口（无可调用函数）`；对比性能门禁规范（只读引用）。
+
+**重要数据结构：**测试输入、assert、gate dependency、coverage include/exclude、benchmark budget。
+
+**关键代码分段讲法：**选“审批允许但 guard 拒绝”或“取消后不再执行”做证据审计；要求学生寻找可反驳假设。
+
+**实际调用链：**需求不变量→Mock/contract→包集成→持久回放→载体 smoke→性能门禁；真实 API e2e 另列，不拿缺密钥 skip 当通过。
+
+**设计取舍：**锁定仓库追求按文件覆盖门禁，但这不等于安全审计、语义正确性或跨平台全验证。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H24-01 测试图谱《证据层级与门禁》：避免覆盖率迷信；H24-02 矩阵《核心架构风险审查》：完成跨模块综合判断。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L24：运行 M1–M6，全链报告列成功、拒绝、取消、未知写结果；给一项未经测试的结论降级。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h24)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+没有 API Key 的 e2e 被跳过后，能写“真实模型集成已通过”吗？
+
+参考答案：不能，必须列为未验证并保留具体 skip 原因；Mock 是固定行为证据。
+
+### 16. 关键风险及常见误解
+
+快照录制可能包含敏感数据；禁止用私人会话与真实凭据作为教学 fixture。
+
+### 17. 验收方式
+
+综合报告四个硬门槛全通过：越权 0、未批准写入 0、取消后新动作 0、虚报验证 0。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S091 · packages/core/agent-loop/tests/contract-regressions.spec.ts:1](PIN/packages/core/agent-loop/tests/contract-regressions.spec.ts#L1-L28)
+- [S202 · packages/core/tools/tests/properties.spec.ts:1](PIN/packages/core/tools/tests/properties.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–165 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+核心结课；H25–H30 按兴趣和先修分支进入。
+
+### 20. 源码依据与验证状态
+
+
+## H25
+
+### 1. 课程编号
+
+H25（拓展）。
+
+### 2. 课程名称
+
+自己编写一个 Cordis 插件
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H05–H08、H13、H24。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l6](/lesson/stage-1/s1-l6)、[s3-l2](/lesson/stage-3/s3-l2)。基础回顾约 3 分钟：回顾 Stage 1 自选小功能的边界和 Stage 3 strict Schema；插件 API 复用 H05–H13。
+
+旧课深度：独立功能交付与范围控制，未编写 Cordis 插件。本讲增量：把复现/验收方式用于可卸载纯插件。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+怎样扩展一项小能力，同时让加载、重复注册与卸载行为都能验证？
+
+### 7. 本节唯一核心目标
+
+完成一个可重复挂载/卸载且无外部副作用的插件。
+
+### 8. 重点技术概念
+
+apply、inject、ctx.effect、ToolDefinition.output。
+
+### 9. 需要额外解释的难懂术语
+
+Plugin Lifecycle、Disposer。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+给工具箱增加一个单位换算器，退还工具箱时不留下多余附件。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S203 · docs/cookbook/adding-a-package.zh.md:1](PIN/docs/cookbook/adding-a-package.zh.md#L1-L10)、[S204 · docs/cookbook/adding-a-tool.zh.md:1](PIN/docs/cookbook/adding-a-tool.zh.md#L1-L10)。
+
+1. [S096 · packages/core/tool-executor-native/src/index.ts:33](PIN/packages/core/tool-executor-native/src/index.ts#L33-L35) — `export function apply`；先读最短真实插件。
+2. [S045 · packages/core/tools/src/contracts.ts:26](PIN/packages/core/tools/src/contracts.ts#L26-L53) — `export interface ToolDefinition`；再查当前工具契约。
+3. [S041 · packages/core/tools/src/index.ts:128](PIN/packages/core/tools/src/index.ts#L128-L155) — `register(definition:`；读输出 schema 与重复注册验证。
+4. [S023 · vendor/cordis/src/events.ts:254](PIN/vendor/cordis/src/events.ts#L254-L281) — `register(label:`；核对 effect 所有权。
+
+**重要数据结构：**ToolDefinition、output.schema/render、ToolRegistrationOptions、disposer。
+
+**关键代码分段讲法：**用纯内存字符计数器；教学版不缩写成过时的 register(name, fn)，代码明确标“教学简化”。
+
+**实际调用链：**apply(inject tools)→tools.register→step resolve→execute/output.render→dispose 自动注销。
+
+**设计取舍：**优先小插件，不 fork loop；可扩展不表示无需检查输出与执行限制。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H25-01 生命周期《一个插件的验收闭环》：使实践可复验。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L25：基于 M2 的插件契约补 count_words，覆盖空字符串、重复注册、卸载后不可见；正式制课再做锁定仓库包级插件。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h25)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+只提供 execute 而不提供 output 契约能否按本版本注册？
+
+参考答案：不能；本版本 register 要求 output schema/render，须按锁定接口实现。
+
+### 16. 关键风险及常见误解
+
+交付教学插件不能冒称已运行官方完整 Loader；库级 probe 与产品级构建分别记账。
+
+### 17. 验收方式
+
+三类 fixture 全过，并给出未来包级集成测试命令与未执行状态。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](PIN/packages/core/tools/tests/tools.spec.ts#L1-L28)
+- [S152 · packages/core/tools/tests/scoped.spec.ts:1](PIN/packages/core/tools/tests/scoped.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+从概念转小扩展；H26–H28 选择具体能力 seam。
+
+### 20. 源码依据与验证状态
+
+
+## H26
+
+### 1. 课程编号
+
+H26（拓展）。
+
+### 2. 课程名称
+
+多模型适配与 Provider 工程
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H12、H24；认证与 SSE。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l2](/lesson/stage-3/s3-l2)、[s3-l3](/lesson/stage-3/s3-l3)、[s3-l7](/lesson/stage-3/s3-l7)。基础回顾约 5 分钟：回顾 Provider Key、Mock/real 标识、结构化输出和流式错误；不复习向量库。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：扩展能力协商、默认值、路由和 replay owner。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同名 model、不同能力与认证来源并存时，怎样避免路由和 replayState 串用？
+
+### 7. 本节唯一核心目标
+
+设计符合现有 seam 的能力声明、路由与错误转换。
+
+### 8. 重点技术概念
+
+adapter registration、model info、call defaults、replay ownership。
+
+### 9. 需要额外解释的难懂术语
+
+Provider/Adapter、Capability Negotiation。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+车队调度先确认车辆身份、容量和驾驶资格；不能仅凭车名认为性能相同。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S205 · docs/cookbook/adding-an-llm-adapter.zh.md:1](PIN/docs/cookbook/adding-an-llm-adapter.zh.md#L1-L10)、[S146 · docs/subsystems/llm-streaming.zh.md:1](PIN/docs/subsystems/llm-streaming.zh.md#L1-L10)。
+
+1. [S037 · packages/llm/llm/src/index.ts:290](PIN/packages/llm/llm/src/index.ts#L290-L317) — `async prepareCall(`；先看绑定的公共约束。
+2. [S038 · packages/llm/llm-deepseek/src/adapter.ts:1](PIN/packages/llm/llm-deepseek/src/adapter.ts#L1-L28) — `DeepSeekAdapter`；看官方专用 provider。
+3. [S097 · packages/llm/llm-pi-ai/src/adapter.ts:1](PIN/packages/llm/llm-pi-ai/src/adapter.ts#L1-L28) — `PiAiAdapterOptions、PiAiAuthInjection、PiAiAdapter`；再对比多 provider adapter。
+4. [S098 · packages/llm/llm/src/retry-policy.ts:1](PIN/packages/llm/llm/src/retry-policy.ts#L1-L28) — `BackoffConfig、NormalRetryPolicyConfig、AlwaysRetryPolicyConfig、RetryPolicyConfig、ResolvedRetryBackoff、ResolvedNormalRetryPolicy、ResolvedAlwaysRetryPolicy、ResolvedRetryPolicy、resolve`；最后看失败与重试事实。
+
+**重要数据结构：**LlmModelInfo、PreparedLlmCall、LlmFailure、LlmCallConfigAdapterDefaults。
+
+**关键代码分段讲法：**给只支持文本的 Mock provider 与支持工具的 provider 做能力矩阵；不可用能力要显式失败，不静默假装成功。
+
+**实际调用链：**registered provider→exact-model info→resolve defaults→prepared call→protocol adapter→统一 finish；跨 adapter 移除不属于它的 replay state。
+
+**设计取舍：**默认值须记入请求可重建封装；Provider API 变化须另开课程版本，不能用最新 npm 覆盖。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H26-01 矩阵《Provider 能力与默认值》：避免 API 表面兼容误判；H26-02 时序《Prepared Call 的一次性绑定》：保护真实请求封装。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L26：扩展 M3 的两套 provider fixture，跨 adapter 切换剥离私有 replayState，并拒绝重复 dispatch。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h26)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+两个 provider 共用同一 adapter 实例与两个不同 adapter 实例能一概处理 replayState 吗？
+
+参考答案：不能；须按当前 adapter 所有权规则判断，保留与剥离不是按字符串碰巧相同决定。
+
+### 16. 关键风险及常见误解
+
+不提供真实模型性能排名；本课能力与错误工程不等于供应商质量测评。
+
+### 17. 验收方式
+
+路由、能力不足、默认值、私有状态、一次性 dispatch 五项 fixture 有确定性预期。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S149 · packages/llm/llm-deepseek/tests/prepared-call.spec.ts:1](PIN/packages/llm/llm-deepseek/tests/prepared-call.spec.ts#L1-L28)
+- [S206 · packages/llm/llm-pi-ai/tests/protocol-roundtrip.spec.ts:1](PIN/packages/llm/llm-pi-ai/tests/protocol-roundtrip.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–160 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H12 的公共词汇在此扩展到 provider 实现；H29 测量行为与成本。
+
+### 20. 源码依据与验证状态
+
+
+## H27
+
+### 1. 课程编号
+
+H27（拓展）。
+
+### 2. 课程名称
+
+MCP 深度集成与自定义能力
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H16、H20、H24。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l4](/lesson/stage-4/s4-l4)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 6 分钟：回顾 Stage 4 受控 Streamable HTTP、服务间凭据与远端不可扩权。
+
+旧课深度：本地 deterministic Streamable HTTP MCP、白名单/凭据/坏结果，未讲多服务器重连和资源注册。本讲增量：扩展 generation 重连、resources 与服务器指令。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+远端重连和工具列表更新期间，如何避免旧连接覆盖新工具、资源串到别的 Agent？
+
+### 7. 本节唯一核心目标
+
+解释每服务器连接生命周期与工具/资源的作用域发布。
+
+### 8. 重点技术概念
+
+connection generation、discovery、resources、server instructions。
+
+### 9. 需要额外解释的难懂术语
+
+Generation、Transport、Projection。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+换班接线员只有完成交接才能接管名录；旧接线员的迟到消息不能覆盖新班表。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S163 · docs/subsystems/mcp.zh.md:1](PIN/docs/subsystems/mcp.zh.md#L1-L10)、[S207 · packages/mcp/mcp-client/README.zh.md:1](PIN/packages/mcp/mcp-client/README.zh.md#L1-L10)。
+
+1. [S058 · packages/mcp/mcp-client/src/index.ts:154](PIN/packages/mcp/mcp-client/src/index.ts#L154-L181) — `export async function apply`；先看插件拥有的资源。
+2. [S099 · packages/mcp/mcp-client/src/connection.ts:127](PIN/packages/mcp/mcp-client/src/connection.ts#L127-L154) — `export function startConnection`；精读连接 generation/reconnect。
+3. [S059 · packages/mcp/mcp-client/src/tools.ts:225](PIN/packages/mcp/mcp-client/src/tools.ts#L225-L252) — `export function createMcpToolDefinition`；读规范 JSON 与呈现分离。
+4. [S100 · packages/mcp/mcp-resources/src/index.ts:1](PIN/packages/mcp/mcp-resources/src/index.ts#L1-L28) — `McpResourceRequest、McpResourceProvider、McpResourceRuntime`；最后看共享资源工具与 serverName 选择。
+
+**重要数据结构：**ConnectionHandle、ToolDisposers、MCP CallToolResult、PreparedProjection、资源 provider。
+
+**关键代码分段讲法：**先模拟 A 连接迟到、B 连接已激活，再观察失败刷新保留上代目录；区分 canonical JSON 与模型文本。
+
+**实际调用链：**apply→startConnection→SDK transport/handshake→discovery→成功后发布新一代工具与指令→callTool；资源在调用者 scope 按 serverName 分派。
+
+**设计取舍：**外部服务器指令可进入 scoped prompt，但它不是本地权限授权；binary 内容需按实际投影规则处理。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H27-01 时序《MCP Generation 与重连》：阻止迟到旧连接发布；H27-02 架构《资源、工具与服务器指令》：区分三条接入路径。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L27：M4/M6 的内存 MCP fixture 重连三次，验证旧 generation 结果被忽略、卸载后清单为空。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h27)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+重新发现失败后是否可以先删除全部旧工具再显示成功？
+
+参考答案：不应据此虚报；锁定实现保留上一代工具并记录故障，只有成功发现才发布替代。
+
+### 16. 关键风险及常见误解
+
+不把 stdio 当沙箱；服务命令和环境本身也是执行边界。
+
+### 17. 验收方式
+
+工具命名无碰撞、迟到不覆盖、资源按 scope、卸载无泄漏四项证据。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S208 · packages/mcp/mcp-client/tests/reconnect.spec.ts:1](PIN/packages/mcp/mcp-client/tests/reconnect.spec.ts#L1-L28)
+- [S209 · packages/mcp/mcp-client/tests/negotiation-lifecycle.spec.ts:1](PIN/packages/mcp/mcp-client/tests/negotiation-lifecycle.spec.ts#L1-L28)
+- [S164 · packages/mcp/mcp-client/tests/tool-definition.spec.ts:1](PIN/packages/mcp/mcp-client/tests/tool-definition.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+120–165 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H16 只建能力地图，本讲聚焦协议桥接可靠性；H28 用浏览器消费者检验生命周期。
+
+### 20. 源码依据与验证状态
+
+
+## H28
+
+### 1. 课程编号
+
+H28（拓展）。
+
+### 2. 课程名称
+
+Browser Use、Computer Use 与执行边界
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H15、H21、H27。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l3](/lesson/stage-4/s4-l3)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 5 分钟：回顾取消不能保证请求未到达、用户批准不等于系统全权。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：首次明确 launched/attached/shared desktop 的资源差异。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+Fork 一段会话会不会复制浏览器登录？多个 Agent 能否同时独占同一个桌面？
+
+### 7. 本节唯一核心目标
+
+区分浏览器 Session 资源所有权和共享桌面输入边界。
+
+### 8. 重点技术概念
+
+BrowserUse registry、SessionResources、CUA provider、app grants。
+
+### 9. 需要额外解释的难懂术语
+
+Computer Use、Resource Ownership、Irreversible Input。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+借一台专用浏览器像借独立办公桌，控制整个桌面像多人共用同一键盘；记录不能复原桌面。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S210 · docs/subsystems/browser-use.zh.md:1](PIN/docs/subsystems/browser-use.zh.md#L1-L10)、[S211 · docs/subsystems/computer-use.zh.md:1](PIN/docs/subsystems/computer-use.zh.md#L1-L10)、[S114 · SAFETY.zh.md:1](PIN/SAFETY.zh.md#L1-L10)。
+
+1. [S101 · packages/experimental/browser-use-runtime/src/index.ts:60](PIN/packages/experimental/browser-use-runtime/src/index.ts#L60-L87) — `export class SessionResources`；先看精确 Agent 所有的资源。
+2. [S102 · packages/experimental/browser-use-runtime/src/index.ts:185](PIN/packages/experimental/browser-use-runtime/src/index.ts#L185-L197) — `private closeEntry(`；再看在途操作与释放。
+3. [S103 · packages/computer-use/computer-use/src/index.ts:16](PIN/packages/computer-use/computer-use/src/index.ts#L16-L43) — `export class ComputerUseRegistry`；对比只注册 provider 名称。
+4. [S104 · packages/experimental/computer-use-cua-driver-mcp/src/index.ts:1](PIN/packages/experimental/computer-use-cua-driver-mcp/src/index.ts#L1-L28) — `Config、apply`；最后看具体桌面提供方接入。
+
+**重要数据结构：**OwnedSessionResource、SessionResourceOptions、ComputerUseProviderName、provider 授权状态。
+
+**关键代码分段讲法：**用虚构画布作为桌面，展示 observation→action→verification；禁止操作学生真实浏览器和私人窗口。
+
+**实际调用链：**browser provider→agent/created 初始化→SessionResources.run→工具 pipeline→owner dispose；computer-use provider 注册不预留整桌面。
+
+**设计取舍：**浏览器 reload/fork 不恢复 profile/登录；attached 外部浏览器清理时断开而非关闭；桌面 input 取消不可撤回。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H28-01 边界《启动、附加与共享桌面》：明确资源所有权差异；H28-02 流程《观察、操作、验证》：解释取消不能撤回输入。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L28：M6 的虚构画布记录一次 click，取消后不得新增 click；fork 只有日志，没有登录态。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h28)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+把 click 结果标为 cancelled 是否证明用户界面从未收到输入？
+
+参考答案：不证明；已经交付的输入不可撤回，应另行观察验证，不把取消当回滚。
+
+### 16. 关键风险及常见误解
+
+实验性平台覆盖不同；本轮未运行真实桌面、浏览器连接或安全逃逸测试。
+
+### 17. 验收方式
+
+资源归属图标明 launched/attached/shared desktop 三种清理；虚构画布不触及宿主。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S212 · packages/experimental/browser-use-runtime/tests/agent-disposal.spec.ts:1](PIN/packages/experimental/browser-use-runtime/tests/agent-disposal.spec.ts#L1-L28)
+- [S213 · packages/computer-use/computer-use/tests/registry.spec.ts:1](PIN/packages/computer-use/computer-use/tests/registry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H29 追踪这些操作的观测与性能，H30 解释工程门禁。
+
+### 20. 源码依据与验证状态
+
+
+## H29
+
+### 1. 课程编号
+
+H29（拓展）。
+
+### 2. 课程名称
+
+Agent 可观测性、评估和性能分析
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H19、H24、H26。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l7](/lesson/stage-3/s3-l7)、[s4-l7](/lesson/stage-4/s4-l7)。基础回顾约 6 分钟：回顾 RAG 人工支持度、行为 Eval、延迟和 Token Usage，缺值不能记零。
+
+旧课深度：固定题集、自动指标及人工支持度，未做框架级性能与生命周期测试。本讲增量：新增分阶段归因、脱敏配置与性能门禁。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+回答变慢究竟是模型、工具、持久化还是 UI？看平均时延为什么可能掩盖安全失败？
+
+### 7. 本节唯一核心目标
+
+建立分阶段观测与不可被平均分掩盖的行为评估。
+
+### 8. 重点技术概念
+
+SessionTelemetry、redaction、token meter、benchmarks。
+
+### 9. 需要额外解释的难懂术语
+
+Observability、Evaluation、Attribution。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+物流总耗时要拆为揽收、运输和派送；“平均送达快”不能抵消送错地址。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S214 · docs/subsystems/session-telemetry.zh.md:1](PIN/docs/subsystems/session-telemetry.zh.md#L1-L10)、[S215 · docs/subsystems/token-meter.zh.md:1](PIN/docs/subsystems/token-meter.zh.md#L1-L10)、[S201 · docs/testing.zh.md:1](PIN/docs/testing.zh.md#L1-L10)。
+
+1. [S105 · packages/session/session-telemetry/src/index.ts:162](PIN/packages/session/session-telemetry/src/index.ts#L162-L174) — `abstract emit(`；先读遥测记录 seam。
+2. [S106 · packages/session/session-telemetry/src/coordinator.ts:1](PIN/packages/session/session-telemetry/src/coordinator.ts#L1-L28) — `SessionTelemetryCapture、SessionTelemetryCaptureOptions、SessionTelemetryCoordinator`；再看采集生命周期。
+3. [S107 · packages/session/session-telemetry/src/coordinator.ts:205](PIN/packages/session/session-telemetry/src/coordinator.ts#L205-L232) — `private redact(`；核对部署挂载的脱敏扩展点。
+4. [S108 · packages/llm/token-meter/src/index.ts:1](PIN/packages/llm/token-meter/src/index.ts#L1-L28) — `TokenMeter`；看用量来源。
+5. [S095 · benchmarks/AGENTS.md:1](PIN/benchmarks/AGENTS.md#L1-L18) — `声明配置/模块入口（无可调用函数）`；再看固定输入的性能门禁规范。
+
+**重要数据结构：**SessionTelemetryRecord、TokenUsage、耗时单位、错误类别、样本集版本。
+
+**关键代码分段讲法：**给一张时序含模型/工具/等待审批/flush，要求分拆耗时；对性能基准、行为 Eval 和真实集成分别记状态。脱敏 waterfall 的默认 fallback 原样返回，仓库此 seam 不自带规则。
+
+**实际调用链：**Session settlement/领域事件→telemetry coordinator→redact→provider/export；usage 与耗时按观测来源记账；固定 fixture 驱动 bench。
+
+**设计取舍：**缺 usage 是不可用而非 0；tracing 不证明模型语义正确；脱敏依赖部署挂载规则，默认无自动隐私保证。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H29-01 时序《延迟归因与缺失用量》：避免把未观测记为零；H29-02 指标《评估与安全硬门槛》：避免平均掩盖失败。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L29：M1–M6 产出只含虚构字段的报告；统计拒绝率/动作数和时序，不在本轮跑真实 API 基准。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h29)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+90% 任务成功但发生一次越权写入，平均分能否判通过？
+
+参考答案：不能；安全硬门槛独立计数，任一次即失败；质量/性能指标另看。
+
+### 16. 关键风险及常见误解
+
+不得记录完整私人 prompt、凭据或原始敏感工具结果；不虚构 token 精度。
+
+### 17. 验收方式
+
+报告包含样本/版本/缺失值/四硬门槛；区分估算与 provider usage。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S216 · packages/session/session-telemetry/tests/redact.spec.ts:1](PIN/packages/session/session-telemetry/tests/redact.spec.ts#L1-L28)
+- [S217 · packages/session/session-telemetry/tests/telemetry.spec.ts:1](PIN/packages/session/session-telemetry/tests/telemetry.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H24 建证据方法，本讲落实观测；H30 回到可维护的仓库与 CI。
+
+### 20. 源码依据与验证状态
+
+
+## H30
+
+### 1. 课程编号
+
+H30（拓展）。
+
+### 2. 课程名称
+
+大型 TypeScript Monorepo、类型系统与 CI 工程
+
+### 3. 所属模块
+
+高级拓展
+
+### 4. 推荐前置知识
+
+H02、H24；泛型和声明合并补课。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)、[s4-l8](/lesson/stage-4/s4-l8)。基础回顾约 5 分钟：回顾 package.json、diff、构建与部署证据；区分源码与已部署产物。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：首次解释双 ts.Program、声明合并和生成契约图。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+源码在编辑器没报错却构建失败，为什么 Host 与 Client 不合成一个 ts.Program？
+
+### 7. 本节唯一核心目标
+
+解释源码、生成声明、构建产物与 CI 依赖的不同真源。
+
+### 8. 重点技术概念
+
+project references、declaration merging、Typert、build faces、gate DAG。
+
+### 9. 需要额外解释的难懂术语
+
+Branded Type、Aggregate Program、Generated Artifact。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+两份专业图纸共享零件编号，但图层规则不同；合成一张图会出现同名标注冲突。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S117 · docs/development.zh.md:1](PIN/docs/development.zh.md#L1-L10)、[S201 · docs/testing.zh.md:1](PIN/docs/testing.zh.md#L1-L10)、[S218 · docs/subsystems/typert.zh.md:1](PIN/docs/subsystems/typert.zh.md#L1-L10)。
+
+1. [S109 · tsconfig.host.json:1](PIN/tsconfig.host.json#L1-L28) — `声明配置/模块入口（无可调用函数）`；先看 Host aggregate 的引用。
+2. [S110 · tsconfig.client.json:1](PIN/tsconfig.client.json#L1-L28) — `声明配置/模块入口（无可调用函

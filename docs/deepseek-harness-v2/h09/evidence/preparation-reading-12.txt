@@ -1,0 +1,187 @@
+tch.yml。
+
+:::task{title="A：提交每一步，不只提交最后一行"}
+按a-profile的Bundle顺序填写answer.json：order为五层来源数组；configs为每层应用后的model完整config；final为最后两个条目。指出retry、temperature、timeout各在哪层消失，并解释为何name仍在。最后把surface与core交换，预测缺目标警告和最终差异。
+:::
+
+只用Node即可运行下面的完整教学校验器。它实现平面条目、根insert、id/config/disabled子集，没有组、Include、表达式、服务或HMR；它**不等于Harness Profile组合机制**。作者另用官方applyEntryPatches读取同样五份YAML交叉核对。
+
+:::deepdive{title="实践 A 完整程序：compose.mjs"}
+<!-- code:compose.mjs:start -->
+[长程序已在原件，单独核对；此处省略重复代码]
+<!-- code:compose.mjs:end -->
+:::
+
+将answer-template.json的结构填好后，逐条执行：
+
+```bash
+node compose.mjs --trace
+node compose.mjs answer.json
+```
+
+第一条仅显示程序轨迹，不代表你已作答；第二条逐字段检查自己的答案，错误会非零退出。把最后config错误地加上temperature=0.6应失败。作者还把实现改成深合并，原测试确实捕获错误，未修改正确预期求通过。
+
+:::deepdive{title="实践 A 详细参考答案"}
+<!-- answer:a:start -->
+[长程序已在原件，单独核对；此处省略重复代码]
+<!-- answer:a:end -->
+
+retry在surface整份替换时丢失；temperature在Home替换时丢失；timeout在CLI替换时丢失。id和name位于条目外层，没有被这些config操作覆盖。audit被Home禁用后又被CLI启用。
+
+若surface先于core，surface对尚不存在的model发出缺目标警告并跳过；core随后插入原始三个字段。接着Profile又完整替换，所以本题最终仍是CLI结果；**最终相同不表示中间过程相同**。自由解释不按中文关键词打分，要指出发生警告的实际时点。
+:::
+
+## 实践B：用真实Loader观察两个插件重组
+
+这次没有自制运行器。程序挂真实Cordis Loader，把Provider与Consumer作为两个内建教学插件交给官方条目树；内建方式避免安装外部包，仍经过真实Entry/Group/Fiber。它没有经过Profile读取，不能称为完整Harness应用。
+
+:::task{title="B：预测身份与退出，再运行"}
+记录稳定ID不变、普通config从v1改v2、禁用Provider、重新启用四个阶段。每阶段分别写Entry身份、Provider Fiber身份、Consumer状态及服务值。再比较anonymousComparison(true/false)：每次都重新创建配置对象时，缺ID是否会让未改文本的插件重挂？
+:::
+
+:::deepdive{title="实践 B 完整程序：reconfigure.ts"}
+<!-- code:reconfigure.ts:start -->
+[长程序已在原件，单独核对；此处省略重复代码]
+<!-- code:reconfigure.ts:end -->
+:::
+
+:::deepdive{title="实践 B 详细参考答案"}
+初次Provider与Consumer均ACTIVE。相同ID、相同config再次应用，Provider仍只运行1次；改v2后普通更新使它清理v1、运行v2，但仍为同一个Fiber。
+
+禁用后Provider Entry还在，旧Provider Fiber为DISPOSED/uid=null；Consumer因缺h08Probe清理后PENDING，实例仍保留。重新启用创建新Provider Fiber，原Consumer恢复ACTIVE。这不是旧Provider Fiber复活。
+
+在最终夹具释放之前，Provider runs=3、cleanups=2；trace中有三次consumer加载、两次consumer清理。函数复制了此时trace，再由finally释放夹具，不能把返回计数当作进程所有清理总数。稳定ID对照为runs=1、cleanups=0、sameEntry=true、sameUid=true；缺ID对照为2、1、false、false。
+
+框架内部并发可能使不同资源的清理日志交错，因此测试核对象身份、状态、次数和必要因果，不承诺所有兄弟日志具有唯一全局顺序。重组仍需H07正确的资源所有权。
+:::
+
+## 实践C：真实Harness配置诊断与组合设计
+
+这里调用固定源码的Profile/App Boot API，只写新OS临时目录。它解析五个官方Profile完整配置而不激活默认应用；另外用两个本地纯内存插件启动真实boot夹具。它不读取、修改个人Harness Home，也不调用模型、网络或包安装。
+
+:::task{title="C：三类故障与一个精简方案"}
+一，真实Headless的session-title只覆盖maxTitleBytes，解释另外两个原字段在哪里消失、怎样保留需要的行为。二，插件inject需要h08Missing却没有提供方，分析PENDING、好兄弟运行和必需启动ID的差别。三，manifest选择缺失或engines.dsh不兼容的Bundle，说明配置读取层会记录什么、后续树缺什么、为何不能统称apply失败。
+
+每项交问题层、证据、可能运行结果、安全修复四列。再设计一个只含固定摘要提供方与消费者的精简组合：给出稳定ID、服务依赖、Bundle顺序和用户覆盖；说明省掉Web/HMR后的收益与代价，以及为什么还要明确权限和退出方式。
+:::
+
+:::deepdive{title="实践 C 完整程序：harness.ts"}
+<!-- code:harness.ts:start -->
+[长程序已在原件，单独核对；此处省略重复代码]
+<!-- code:harness.ts:end -->
+:::
+
+:::deepdive{title="实践 C 详细参考答案与设计取舍"}
+覆盖故障在Patch组合层：最终session-title.config只有maxTitleBytes。拿base原值与用户Patch逐层对照，再看Schema是否补默认值；修复时重述期望的三个字段，或明确接受插件默认值。不要为丢字段就启动真实模型证明。
+
+缺服务发生在运行依赖层：模块可以已经导入，Entry存在，Fiber仍PENDING，apply未执行。本课optional-needs等待h08Missing，good仍ACTIVE。启动时若同一缺依赖行使用必需ID webserver，App Boot审查会拒绝并释放部分树；required ID列表不要求树必须拥有每个名字，缺席或禁用的必需行另有规则。定位要查inject、同作用域提供方和状态，不能通过删inject掩盖必需能力。恢复正确提供方后再核激活和业务输出。
+
+Bundle故障在Profile读取层：loadProfileDirectory将缺包、不支持平台、不兼容或坏Bundle Patch记入skippedBundles，继续其他可读层；manifest所列选择没有因此等于已加载。用户自己的坏Patch仍抛错，不是都静默跳过。检查解析锚点、包manifest、dsh.bundle.patch与兼容性诊断；修复可用包和版本后重新解析，再按HMR/重启条件应用。不应为教学直接放宽兼容性豁免或碰个人安装。[真实读取分支678–714](PIN/packages/boot/app-boot/src/profile.ts#L678-L714)。
+
+精简方案可以选course-core先插入summary-provider、summary-consumer，后选course-headless贡献一次性入口；Consumer显式inject摘要服务，用户层重述Provider完整config以选择固定输出。若两项能力由同一Bundle已经声明，也可只选这一Bundle，理由是组合变化点尚少，不需要额外拆包。省掉Web减少入口依赖；省掉HMR意味着编辑后要重启。类型和命名不证明服务存在，纯摘要夹具也不赋予真实文件或Shell权限。完整官方Agent应用还需要Agent、模型、工具、会话等兼容组合，本设计只展示装配取舍，不虚称两个插件就是完整Harness。
+
+额外失败证据：recomposeProfile应用 `{value:v2, fail:true}` 后拒绝；good保留新config、Fiber为FAILED、旧h08Value服务消失。再显式提交原配置可恢复v1。Schema拒绝的另一路径则raw值invalid、effective值1、服务仍1。两种结果不能互相替代，故障阶段必须进入诊断表。
+:::
+
+### 运行与四层验收
+
+:::deepdive{title="统一运行入口：demo.ts"}
+<!-- code:demo.ts:start -->
+```typescript
+import { compose } from './compose.mjs';
+import { reconfigure, anonymousComparison } from './reconfigure.ts';
+import { diagnosis } from './harness.ts';
+console.log(JSON.stringify({ A: compose(), B: await reconfigure(),
+  stable: await anonymousComparison(true), anonymous: await anonymousComparison(false), C: await diagnosis() }, null, 2));
+```
+<!-- code:demo.ts:end -->
+:::
+
+作者在AI Foundry根用已有依赖执行，运行器先核固定源码字节，在新临时目录运行，不安装到项目、不清理目录：
+
+```bash
+node docs/deepseek-harness-v2/h08/scripts/run-labs.mjs
+```
+
+已有独立、锁定Commit且依赖齐备的Harness checkout时，也可将随课lab文件复制到新建 `tmp/h08-composition-lab`，在该目录运行下列命令。使用官方Node `>=24.9.0`；作者的bootstrap.mjs仅供隔离运行器解析现有依赖，普通官方checkout不需要它：
+
+```bash
+node --import tsx --test composition.test.ts
+node --import tsx demo.ts
+```
+
+其中官方Profile解析测试还需要 `HARNESS_SOURCE_CACHE` 指向该checkout、`H08_PROFILE_REPORT` 指向新练习目录的report.json。目录选择必须在自己的新夹具范围。测试文件 `composition.test.ts` 随课提供；完整程序与正文代码逐字同步。
+
+| 验证层级 | 本轮实际范围 | 不能外推什么 |
+| --- | --- | --- |
+| 自制模拟器确定性测试 | A手算、错误答案与深合并变异 | 不证明官方Loader运行 |
+| 真实Cordis与Loader | B实例、ID、开关、依赖恢复 | 不证明Profile启动或文件监听 |
+| 真实Harness Profile/App Boot | 真实五模板只读解析；磁盘自定义Profile至boot/重组；失败夹具 | 不证明完整随附应用成功启动 |
+| 完整官方应用集成 | NOT_RUN | 真实Web/Headless/SDK/ACP、原生HMR和完整官方套件均未计PASS |
+
+总计20项是作者编写的行为测试，另有预期失败变异。官方测试有递归目录清理，本轮仅选读对应断言，未直接执行其清理钩子。学员试读、真实时长、独立外审仍待验证。
+
+:::check{title="保留可审查的实践产出"}
+A交每层结果与丢字段原因；B交Entry/Fiber/服务三列轨迹；C交四列诊断与精简组合取舍。错误答案必须被拒绝，不删断言。最后指出一项尚未验证的完整应用结论；测试绿色不能代替独立解释。
+:::
+
+:::stuck{title="按证据层定位，不凭没有报错判成功"}
+找不到包先核固定checkout、依赖和解析锚点。目标未改先查ID、name保护、Patch所在Include边界及后层覆盖。配置存在但没有输出，查disabled、导入错误、PENDING依赖与FAILED原因。raw与运行值不一致时查Schema和更新拦截。改完没生效再查HMR是否存在、监听了哪类输入或是否要求重启。只修自己的夹具，不重置个人Home，不通过删除课程或扩大权限排错。
+:::
+
+## 七道思考题：把规则变成判断
+
+:::task{title="思考一：为什么一个Profile可以组合多个Bundle？"}
+修复共享会话配置后，三个入口都要得到更新；但只有Web需要服务器。你怎样安排层，顺序又能保证什么？
+:::
+:::deepdive{title="思考 1 参考答案"}
+让共享层先提供核心条目，Web/Headless/SDK应用层随后覆盖差异，各Profile引用相应有序列表。共享修复无需复制三份；如果应用层重述了同一config，仍要检查它是否把共享修复覆盖掉。顺序只保证Patch的作用先后，不保证异步服务初始化先后，后者由inject和实际可用性决定。跨组合回归仍是维护成本。
+:::
+
+:::task{title="思考二：Bundle为什么不能直接等于Plugin？"}
+web-app的manifest列五份Patch，它还可能禁用base的工具。把它画成一个ACTIVE Fiber会漏掉哪些信息？
+:::
+:::deepdive{title="思考 2 参考答案"}
+会漏掉它贡献的多个条目、对旧行的修改、文件内外顺序及各行不同运行状态。Bundle是分发组合描述的包，实际代码入口可以也是包的一部分，但不让整个配置层自动成为单个Fiber。一个行可以PENDING，另一个ACTIVE，禁用行甚至没有新Fiber；不能给Bundle一个总ACTIVE就当所有能力都工作。
+:::
+
+:::task{title="思考三：稳定ID是不是保证永远不重新挂载？"}
+比较相同配置重读、config更新、禁用后恢复，以及缺ID重读四种情况。
+:::
+:::deepdive{title="思考 3 参考答案"}
+稳定ID让Loader识别同一Entry。实践B中相同配置不重跑，普通config更新清理后重跑同一Fiber，禁用显式释放旧Fiber而保留Entry，再启用新建Fiber。缺ID的新解析对象会得到新ID而造成删除/新增。故ID稳定只是比较依据；具体生命周期由变化、插件update拦截与依赖决定，不能把Entry身份等同Fiber身份。
+:::
+
+:::task{title="思考四：只写config.model为什么容易出意外？"}
+旧config里有provider、model和timeout，只想换model。请给出最终原始config，并说明修复前还应查什么。
+:::
+:::deepdive{title="思考 4 参考答案"}
+最终原始config只有model；provider与timeout没有由Patch深合并保留。应查插件Schema默认值和必需字段、后续更高层、表达式及实际effective配置。完整重述想保留的字段可消除这一隐含继承假设，但不能机械复制秘密或失效选项。配置接受、插件激活与实际模型调用成功仍需分开验证。
+:::
+
+:::task{title="思考五：配置存在为什么不等于运行成功？"}
+同样没有输出的两行，一行模块不存在，一行inject缺服务，分别要看什么证据？
+:::
+:::deepdive{title="思考 5 参考答案"}
+模块不存在可能在导入阶段就没有Fiber，日志说明解析/导入失败；缺服务则模块可导入、Fiber为PENDING、apply尚未执行。还有disabled=true、不合法config或apply抛错的其他分支。初次boot的必需条目会影响启动审查，可选失败可只警告并保留好兄弟；重组后的判断也有自己的规则，不能用一条“配置错则全进程退出”概括。
+:::
+
+:::task{title="思考六：HMR失败为什么不能统一说已回滚？"}
+对比坏YAML、模块预导入失败与Profile新config应用后apply抛错；还原旧定义是否会撤回已经写出的外部数据？
+:::
+:::deepdive{title="思考 6 参考答案"}
+坏YAML在Include读取提交前失败可保留旧树；模块预导入失败有缓存回退，发生在旧运行卸载前；Profile应用后apply失败可能已经撤销旧服务并保留新FAILED条目。模块激活失败路径虽尝试重登记旧插件，恢复自己也会失败，只能称尽力。旧定义重新运行也不恢复其全部内存状态或撤销外部写入。H07的清理是动态替换前提，不是事务回滚或状态迁移保证。
+:::
+
+:::task{title="思考七：组合越灵活，诊断为何越复杂？"}
+用户在Plugin Manager启用条目，磁盘显示false，运行却仍禁用。你会追哪几层？
+:::
+:::deepdive{title="思考 7 参考答案"}
+先确认是Profile文件哪条覆盖，再看后面的Home、启动overlay与特定硬开关；检查Bundle自身是否成功读取、目标ID/name和所在树是否匹配。再查HMR是否存在、是否执行了重组或报告重启，最后核条目disabled与实际Fiber/服务。管理器保存的选择和本次运行不是同一份证据。灵活性把变化集中到组合层，也增加来源、时点、兼容性和生命周期的交叉检查；可用少量明确层、稳定ID及回归减少成本。
+:::
+
+## 下一问：装配好的系统，怎样持有一个Agent实例？
+
+这次项目助手没有再复制三套运行器：Profile选择有序Bundle，Patch明确修改条目，Include与Loader把最终清单接到真实插件；运行是否成立，仍取决于代码、配置、依赖和生命周期。第二模块至此把能力连接、事件参与、资源退出与动态组装接到同一个问题上。
+
+保留五层计算、真实身份轨迹与分层故障报告。**现在我们知道Agent能力怎样被装配起来，下一步需要研究运行中的Agent实例如何创建、持有和销毁。** 这正是H09的下一问，本课不提前实现Agent创建事务或Agent Loop，也不因作者验收通过自动发布课程。

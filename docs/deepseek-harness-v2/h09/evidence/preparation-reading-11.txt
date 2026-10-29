@@ -1,0 +1,358 @@
+});
+      inner.effect(() => () => { cleanups++; trace.push('清理:' + value); });
+    } });
+    const uid = consumer.uid;
+    phases.push(stateName(consumer.state));
+    const first = await ctx.plugin(ProbeService, 'v1'); await consumer.await();
+    phases.push(stateName(consumer.state)); ctx.emit('h07/pulse');
+    await first.dispose(); await consumer.await();
+    phases.push(stateName(consumer.state)); ctx.emit('h07/pulse'); // 缺依赖时旧监听器已撤销。
+    const second = await ctx.plugin(ProbeService, 'v2'); await consumer.await();
+    phases.push(stateName(consumer.state)); ctx.emit('h07/pulse');
+    const sameUid = consumer.uid === uid;
+    await consumer.dispose(); phases.push(stateName(consumer.state));
+    await second.dispose();
+    return { phases, trace, runs, cleanups, events, sameUid };
+  });
+}
+```
+<!-- code:dependencies.ts:end -->
+:::
+
+:::deepdive{title="实践 C 详细参考答案"}
+phases是PENDING、ACTIVE、PENDING、ACTIVE、DISPOSED；runs=2、cleanups=2、events=2、sameUid=true。trace为加载:v1、事件:v1、清理:v1、加载:v2、事件:v2、清理:v2。中间缺服务时的emit没有增加事件数，因为Consumer旧运行的监听器已撤销。
+
+ProbeService的super(ctx,'h07Probe')提供运行时能力；declare module只是开发期类型。Consumer的inject声明需要它，没有创建它。v1提供方被释放后，依赖通知令Consumer失活并清理，Consumer仍被根挂载、uid保留；v2活跃后它重新加载。最后显式dispose才永久移除。
+
+本例Provider与Consumer均由根挂载，没有父子所有权；如果把Consumer挂在某父插件内部，父级处置会额外决定它能否继续存在。附带测试验证显式释放的Consumer不会随服务恢复再运行，也验证父级等待子级清理；这不是只比对五个常量字符串。
+:::
+
+### 运行入口和自动检查
+
+:::deepdive{title="统一运行入口：demo.ts"}
+<!-- code:demo.ts:start -->
+```typescript
+import { statesExample } from './states.ts';
+import { resourcesExample, asyncOrderExample } from './resources.ts';
+import { dependenciesExample } from './dependencies.ts';
+for (const run of [statesExample, resourcesExample, asyncOrderExample, dependenciesExample]) {
+  console.log(run.name, JSON.stringify(await run()));
+}
+```
+<!-- code:demo.ts:end -->
+:::
+
+已有独立、固定Commit且依赖准备好的Harness checkout时，将五文件与随课lifecycle.test.ts保存到新建tmp/h07-lifecycle-lab。沿用官方Node `>=24.9.0`，在这个新目录运行：
+
+```bash
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json demo.ts
+node ../../node_modules/tsx/dist/cli.mjs --tsconfig ../../tsconfig.base.json --test lifecycle.test.ts
+```
+
+demo输出四条JSON；测试应24项通过。作者在AI Foundry根使用下面入口，在新的OS临时目录复制夹具，核固定vendor字节后加载真实Cordis/Cosmokit，无需完整Harness或外部模型：
+
+```bash
+node docs/deepseek-harness-v2/h07/scripts/run-labs.mjs
+```
+
+作者运行器还做遗漏计时器清理的变异，必须非零；按Cordis原选项生成真实声明，再strict检查课程消费方，并运行错误插件参数的TS2345负例。类型检查不能代替24项真实行为。临时目录保留，不递归清理。
+
+:::check{title="实践结束保留三份解释"}
+A交状态与触发原因；B交资源配对表、计数和顺序；C交实例身份与依赖恢复解释。说明一个已经运行的异步监听为什么可能晚于插件卸载才结束。自动测试通过仅证明夹具行为，学员能否独立解释仍待试读。
+:::
+
+:::stuck{title="没有输出或清理卡住，按阶段定位"}
+没加载：先看PENDING和必需服务，不把它当FAILED。启动失败：读await拒绝和错误日志。清理卡住：找保存的首次清理任务、未放行的门闩或没有退出的工作，不靠再调用dispose猜完成。旧Context报INACTIVE_EFFECT：检查是否在所有者被释放后才登记资源。重复输出：分别检查旧on、原生计时器、外部订阅是否归属正确。清理日志有错但状态DISPOSED：继续核外部资源，不把状态当成功关闭证明。
+:::
+
+## 五道思考题：把退出边界说完整
+
+:::task{title="思考一：为什么不能只删除插件登记？"}
+如果插件已经没有列表项，旧定时器和异步监听却还运行，哪里仍持有它们？应该如何知道退出真正完成？
+:::
+:::deepdive{title="思考 1 参考答案"}
+时间系统、事件回调列表或在途调用仍可能持有函数与闭包。删除一个管理记录不会自动知道这些外部关系。Fiber把清理集中到所有者，Effect交出准确Disposer，调用方等待首次收尾任务；已开始的异步工作还需要明确停止与等待。注销登记与工作静止是不同证据。
+:::
+
+:::task{title="思考二：inject为什么不能只在启动检查一次？"}
+Consumer已经读过v1服务，Provider后来退出。只保留旧引用继续工作有什么问题？重新出现v2后什么应该重做？
+:::
+:::deepdive{title="思考 2 参考答案"}
+旧引用可能指向已经关闭或不再可用的实现。持续检查服务可用性使Consumer当前运行卸载，撤销其登记与资源；保留挂载意图，等待新实现后重跑apply并重新取得能力。恢复不等于旧资源自动迁移。显式dispose则移除了Consumer实例，服务恢复不会将它复活。
+:::
+
+:::task{title="思考三：为什么Effect所有权必须明确？"}
+临时日志插件用根Context登记计时器，资源仍有Disposer，为什么还可能出错？
+:::
+:::deepdive{title="思考 3 参考答案"}
+清理函数只说明怎么释放，所有者决定何时释放。错挂根下后，卸载临时插件可能不触发它，旧心跳仍运行；反过来，把共享资源挂进短命插件也可能过早关闭。应使用与资源有效期一致的当前Context，并核实际所有权，不能把Context简化成任何地方都等价的全局入口。
+:::
+
+:::task{title="思考四：两个async Disposer先后登记能保证写完再关吗？"}
+B先启动但A先结束是否违反Cordis规则？如果第一次stop尚未结束，再await第二次stop是否足够？
+:::
+:::deepdive{title="思考 4 参考答案"}
+独立Effect逆序启动，异步完成可交错，A先结束不违反规则。严格依赖要在同一个Disposer里显式await，错误路径也要规定是否继续close及如何保留失败。公共清理句柄重复调用不保证加入在途任务，应保存首次返回值；本版本结构所有者另会加入其在途清理，不能将两条通道混称。
+:::
+
+:::task{title="思考五：保存一次代码，为何可能出现两套日志？"}
+restart已通过测试，是否说明文件监视、配置重组、真实连接恢复与状态迁移都已验证？
+:::
+:::deepdive{title="思考 5 参考答案"}
+旧运行未撤销定时器、连接或外部订阅，新运行又创建一套，就会重复。可靠清理是热替换的必要基础，但restart本课定义仅验证同一代码的卸载/再激活，没有加载磁盘新代码、运行Loader/HMR或迁移业务状态。需分别验证监视、替换、依赖和业务边界；完整Profile/Bundle/Patch组装属于H08。
+:::
+
+## 下一问：哪些实例应该被组装到一起？
+
+项目助手现在有完整的配对思路：定义描述行为，Fiber管理一次应用；Context连接当前所有者；Effect登记获取与退出；Disposer执行释放。父子所有权负责结构退出，持续依赖检查负责服务可用性变化；它们共同支持动态变化，却不自动跟踪一切异步工作。
+
+H08接着问：如何从Profile、Bundle与Patch决定装哪些插件、用哪些实现、怎样形成组合？H07只交出生命周期前提和真实实验，不提前演算配置组合或完整热替换。本轮到这里停止。
+
+FILE course-content/internal/deepseek-harness/h08/lesson.md
+---
+estimatedTime: "140～185 分钟（分三段；作者估算，实际时长待试读，环境准备另计）"
+difficulty: "高级源码研习 · 动态组合与配置诊断"
+objective: "从同一项目助手的多种应用场景出发，按固定版本的 Profile、Bundle、Patch 和 Loader 规则推导最终配置树，用真实运行解释稳定身份、依赖与重组失败，并设计可审查的精简组合。"
+checklist:
+  - "能区分五个组合角色，读出五种真实 Profile 的 Bundle 顺序与 minimal 例外"
+  - "已逐层推导 Patch 结果，说明完整 config 替换、稳定 ID 和配置优先级"
+  - "已用真实 Cordis/Loader 观察更新、禁用与恢复，区分配置条目和运行 Fiber"
+  - "已完成三类真实配置诊断及精简组合设计，能解释 HMR、重组和进程重启的边界"
+checkKeys:
+  - "check-a18f3468d2000801"
+  - "check-a18f3468d2000802"
+  - "check-a18f3468d2000803"
+  - "check-a18f3468d2000804"
+---
+
+## 同一个项目助手，为什么要维护三套运行器？
+
+H07已经让日志插件能可靠退出。下一次启动时，团队又有三种需要：运营打开Web界面交互；自动任务在Headless模式执行一次就结束；另一个程序通过SDK调用。模型适配、工具与会话能力大体相同，入口、工具集合和退出方式却不同。
+
+如果复制三套Agent Runtime，修复会话问题要改三处，换模型时可能漏改一个入口，部署时还要解释为什么一次性任务带着Web服务器。即使把代码共享出去，三份完整配置也可能逐渐漂移。我们的分析：可复用的组合层能集中共享选择，同时允许应用只覆盖自己的差异；代价是排错时必须追查“这一行来自哪层”。
+
+这节只解决一个问题：**怎样从声明推导出这次要装配的插件树，再用运行证据判断它究竟装起来了没有？** 官方事实锁定Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`，Cordis为 `4.0.6-alpha.1`。`course-*`、`h08*` 是教学命名；官方算法与真实运行另有明确标记。
+
+## 六分钟回顾：选择、连接、参与、退出
+
+H04回答“选择哪种应用并从哪里启动”；H05回答“插件贡献什么、服务由谁提供、Context从哪里取得能力”；H06回答“多个插件怎样按约定参与一次动作”；H07回答“运行失效后谁撤销登记、谁等待资源退出”。H08新增的是决定装哪些条目、用哪份配置，以及变化后怎样重新对齐运行。
+
+Stage 1 [1.5版本管理](/lesson/stage-1/s1-l5)提供比较配置差异的习惯；Stage 2 [2.8部署](/lesson/stage-2/s2-l8)区分配置、构建与运行位置。这里只借用这些阅读方法，不把旧课配置规则说成Harness实现。链接可选，本课不要求额外购买权限。
+
+JSON中的对象保存键值，数组保存顺序；YAML也能表达这两类数据。下文 `bundles: [A, B]` 是先A后B，不是无序集合。`id`是配置项身份，`name`是要加载的模块标识，`config`是交给插件的数据。模块能导入、服务已注册、插件已激活，仍是三件事。依赖 `inject` 也不会替你安装缺失的包。
+
+## 五个角色，先落到实际文件
+
+Profile（运行配置档）保存“一套应用怎样组合”：通常位于Harness Home的 `profiles/<name>`，其 `package.json` 声明有序Bundle，也记录安装依赖；自己的 `cordis.patch.yml` 保存用户覆盖。Profile不是单个插件定义，更不是正在运行的Fiber。[Profile结构与路径](PIN/packages/boot/app-boot/src/profile.ts#L74-L99)、[目录约束](PIN/packages/boot/app-boot/src/profile.ts#L165-L172)。
+
+下面是随附Headless模板的组合关系，排版缩短，包名与顺序保留。**这是声明示例，本课不启动真实Headless任务。**
+
+```json
+{
+  "dsh": {
+    "profile": {
+      "bundles": ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-headless"]
+    }
+  }
+}
+```
+
+Bundle（组合包）是可分发的配置层。它在自己的manifest声明 `dsh.bundle.patch`，指向一个Patch文件或有序文件列表。比如[base的声明](PIN/packages/bundle/base/package.json#L31-L35)指向 `./cordis.patch.yml`；[web-app声明](PIN/packages/bundle/web-app/package.json#L46-L56)在主Patch后依次列出四个preset Patch。因此“一个Bundle”等于“一份YAML”的说法也过窄。
+
+Plugin是实际代码贡献，Patch是修改配置清单的操作列表，Loader是导入模块、维护配置条目并推动挂载的服务。一个Bundle可以插入多个Plugin条目，也能修改或禁用之前的条目；**Bundle本身不会因为出现在bundles数组里，就自动变成一个运行中的Fiber。** [bundlePatchFiles](PIN/packages/boot/app-boot/src/profile.ts#L48-L71)负责展开文件列表；[Loader职责](PIN/vendor/loader/src/index.ts#L72-L102)负责运行接线。
+
+把它类比成装配单：Profile选择几份可复用方案，Bundle贡献条目，Patch修订清单，Loader照最终清单接入代码。类比到这里为止：真实配置可以有表达式，插件可以产生副作用，清单并非天然安全的纯文本。
+
+图一只画模板组成关系，先找四种共享base的模式，再找独立的例外。
+
+![web、headless、sdk、acp模板先选dsh-base再叠加各自应用Bundle；sdk-minimal单独拥有完整树。Bundle贡献Patch，最终条目由Loader挂载Plugin](/course-media/harness-v2/h08/h08-01.png "图 1｜箭头表示组合贡献，不表示进程、调用顺序或服务已激活。sdk-minimal与base并列，不能画成base的子层。")
+
+| 随附Profile | 有序Bundle（省略共同包名前缀） | 应用差异及默认HMR |
+| --- | --- | --- |
+| web | dsh-base → dsh-web-app | 浏览器及Host能力；base的配置HMR默认可用 |
+| headless | dsh-base → dsh-headless | 一次性runner；应用层禁用hmr条目 |
+| sdk | dsh-base → dsh-sdk-app | SDK JSON-RPC stdio；应用层禁用hmr |
+| acp | dsh-base → dsh-acp-app | ACP stdio；应用层禁用hmr |
+| sdk-minimal | 只有dsh-sdk-minimal | 独立完整配置树，不含base，也没有hmr条目 |
+
+模板依据[official-bundles:10–25](PIN/packages/util/official-bundles/src/bundles.ts#L10-L25)。已有Profile能被用户修改，名字相同不证明仍是默认树。minimal也不表示权限小：[其独立配置明确有danger-full-access](PIN/packages/bundle/sdk-minimal/cordis.patch.yml#L1-L17)、[策略行](PIN/packages/bundle/sdk-minimal/cordis.patch.yml#L70-L74)。本课仅解析这些真实配置，不运行其中的Shell或模型。
+
+## Patch：改的是条目哪一层？
+
+Patch先理解为“对既有装配清单的一次明确修订”。它不是Git diff，也不是把几个YAML文件逐行拼接。官方 `applyEntryPatches(data, patches, warn)` 输入条目列表与操作列表，按顺序定位和写入，返回组合后的条目；缺失目标等情况报告警告并跳过。[实际算法57–126行](PIN/vendor/include/src/index.ts#L57-L126)。
+
+先读下面的**教学输入**。包名虚构，但操作语法沿用官方规则；不执行模型。
+
+```yaml
+- insert:
+    - id: model
+      name: course-model
+      config:
+        model: base
+        temperature: 0.2
+        retry: { attempts: 2 }
+- id: model
+  config:
+    model: surface
+    temperature: 0.4
+```
+
+第一项在根列表追加条目，并把新ID纳入后续查找；第二项找到model行，保留其id和name，**把整个config替换成 `{model: surface, temperature: 0.4}`**。原来的retry消失。再追加 `{id: model, config: {model: cli}}`，temperature也消失，最终只剩 `{model: cli}`。
+
+算法在条目层逐键覆盖；当键是config时，值就是整个对象。它没有进入config内部递归合并。要保留retry，应在新的config中明确重述它。插件自己的Schema稍后可能补默认值，但那是加载阶段的另一条规则，不是Patch悄悄继承了旧值。
+
+核心两行来自[120–123行](PIN/vendor/include/src/index.ts#L120-L123)：
+
+```typescript
+for (const [key, value] of Object.entries(overrides)) {
+  if (key === 'id') continue
+  target[key] = value
+}
+```
+
+图二把正确结果与常见错误预测放在一起。先看消失的字段，再看后层是否重述了它们。
+
+![原始config含model、temperature和retry；surface层整份替换后retry消失；CLI层再替换后仅剩model。深合并保留旧字段只是错误预测](/course-media/harness-v2/h08/h08-02.png "图 2｜实线是当前版本的整个config替换；底部反例保留旧字段，不是官方结果。条目id与name仍保留。")
+
+### 插入、身份保护与开关
+
+无id的 `insert` 追加根条目；带id的 `insert` 是向目标组追加子条目，要求目标存在且带 `group` 标记。算法递归索引组中的config数组，后面的Patch可按子条目ID定位。它不会读取一个 `cordis:include` 指向的另一个文件并跨文件查目标。[插入与索引分支65–102行](PIN/vendor/include/src/index.ts#L65-L102)。
+
+```yaml
+- id: audit
+  disabled: true
+- id: audit
+  disabled: false
+```
+
+这保留audit配置条目，先禁用再启用；最终false胜出。当前讨论普通插件行，`group` 标记行有自己的启用特例，不把上述规则不加条件套给所有组。`Entry.disabled`会考虑祖先与表达式，[见75–97行](PIN/vendor/loader/src/config/entry.ts#L75-L97)。
+
+非insert操作要有id。可选的name是**身份断言**：提供了且不匹配现有name，就警告并跳过，不用它把旧插件改名成新插件。更换实现应设计明确的条目移除/新增或禁用/插入方案，并复核依赖，不能把“config可替换”误解为“Patch的name可任意替换模块”。目标不存在、插入目标不是组、name不匹配都不是正常修改成功。[检查分支104–123行](PIN/vendor/include/src/index.ts#L104-L123)。
+
+给可覆盖条目使用明确且不冲突的稳定ID。Patch用它定位，Loader用它比较同一条目。不要把模块name、Fiber uid和条目id混成一个标识；同一插件定义可以有多个配置条目，每次重新挂载也可能有新Fiber。
+
+## 配置层：按顺序算，不按文件大小猜
+
+正常Profile的常规组合从空列表开始：按manifest中的Bundle顺序、每个Bundle内声明的文件顺序应用Patch；然后Profile自己的文件；再Home文件；最后启动时解析出的 `--patch` 列表。后层对同一字段的写入胜出，不涉及该字段的操作则保留前值。[readProfilePatches:74–85](PIN/packages/boot/app-boot/src/profile-context.ts#L74-L85)。
+
+这里还有一个必须保留的实际边界：函数最后按启动时 `DSH_TELEMETRY_DISABLED` 追加遥测禁用Patch。任何非空值，连字符串 `0`、`false` 也表示关闭；只在树有对应条目时添加。**“CLI永远最高”只能用于前述常规四层，不能覆盖这项硬禁用。** [开关规则40–55行](PIN/packages/boot/app-boot/src/profile-context.ts#L40-L55)。本课不重讲H04的环境来源优先级，那是不同问题。
+
+把上面的model条目继续扩展，实践A会逐字使用这组数据：
+
+| 应用到哪层 | 该层给model写入的完整config | 此刻还保留哪些配置字段？ |
+| --- | --- | --- |
+| core Bundle插入 | model=base，temperature=0.2，retry.attempts=2 | 三个字段都在 |
+| surface Bundle | model=surface，temperature=0.4 | retry已消失 |
+| Profile | model=profile，temperature=0.6 | 仍只有两个字段 |
+| Home | model=home，timeout=30 | temperature也消失，timeout新出现 |
+| CLI extra.yml | model=cli | timeout消失，只有model |
+
+audit在core插入为false，Home改true，CLI再改false。最后两行的name与id没变。顺序倒过来会改变结果；例如surface先应用时model尚不存在，该Patch会警告并跳过，后来的core插入也不会使过去的操作重新执行。
+
+图三从输入文件一路画到运行判断。它最下面故意分成两块，提醒你最后的YAML仍不是运行结果。
+
+![空树依次经过有序Bundle、Profile、Home和CLI Patch形成最终条目列表，随后由Include与Loader导入插件；禁用、缺服务和启动失败会使配置存在却没有ACTIVE插件](/course-media/harness-v2/h08/h08-03.png "图 3｜常规四层的优先级与加载边界。遥测硬禁用另列在最后；Loader接到的是组合结果，表达式求值和插件校验还在后面。")
+
+至少保留三份证据：源文件说明“写了什么”；组合结果说明“按规则算出什么”；运行状态说明“成功导入、满足依赖并完成初始化了什么”。带 `!!js` 的值在解析时保留为表达式节点，Loader在对应条目激活时求值；dump里的一段表达式不是已经计算出的服务值。[表达式与树载体处理](PIN/vendor/loader/src/index.ts#L104-L113)。
+
+:::task{title="第一处停顿：不看表，重算两次"}
+写出只到Home时的model配置，再写CLI生效后的配置。说明消失字段在哪里丢失，为什么不能用“插件会补默认值”证明它继承了原值。能同时解释文件、组合树和ACTIVE状态后，从真实Headless配置继续。
+:::
+
+## 真实Headless组合：共享核心怎样变成一次性应用
+
+先读[base文件开头1–33行](PIN/packages/bundle/base/cordis.patch.yml#L1-L33)：它以一个insert贡献共享核心，hmr默认 `root: []`；后面有模型、会话、工具与策略行。文件注释明确：**条目排列不承担服务激活语义**，实际由服务可用性驱动。Bundle层的顺序重要，不意味着Plugin写在第一行就一定先完成初始化。
+
+[Headless层10–46行](PIN/packages/bundle/headless/cordis.patch.yml#L10-L46)做了四类修改：替换system-prompt的config；插入headless-startup和headless-runner；重述sandbox-policy配置并声明headlessStartup依赖；禁用hmr和交互式凭据相关条目。核心没有被复制成另一套Runtime，应用层只写差异。
+
+看一个真实插入片段，省去无关行，字段保留：
+
+```yaml
+- insert:
+    - id: headless-startup
+      name: '@deepseek-ai/dsh-headless/startup'
+    - id: headless-runner
+      name: '@deepseek-ai/dsh-headless'
+      inject: [headlessStartup]
+      config:
+        task: !!js ctx.headlessStartup.task
+        sessionId: !!js ctx.headlessStartup.sessionId
+        json: !!js ctx.headlessStartup.json
+```
+
+runner配置存在，还要等headlessStartup服务；服务不存在时不会因为它排第二行就执行任务。表达式依赖当前服务，最终配置树也不会为你创造该服务。默认Headless树没有webserver行，避免把它画成“Web关掉界面后跑一次”。
+
+用户若在Profile给真实 `session-title` 只写 `config: {maxTitleBytes: 120}`，组合后的config就只剩这个字段。base原有fallbackMaxWords=5和fallbackMaxBytes=40不会由Patch继承；真实插件是否再补默认值，要另查Schema。原始字段在[base:60–66](PIN/packages/bundle/base/cordis.patch.yml#L60-L66)。修复时先确认想保留的行为，再明确重述完整config，而非把缺字段都判作启动必然失败。
+
+作者实验解析五个真实模板及其所有声明Patch，保存完整最终树；Headless真实行、minimal例外和用户标题覆盖都有断言。这里**没有激活完整默认应用**。完整树证据见交付包 `evidence/official-profiles.json`；不能把JSON解析通过当作服务器、模型或持久化集成通过。
+
+## 稳定身份：配置更新不总等于新建Fiber
+
+Loader的Entry是一个配置节点，Plugin定义是可加载代码，Fiber是这次应用的运行对象。EntryGroup按id比较新旧列表；同一ID可复用Entry，缺失ID则生成随机值。**重新读取成全新对象时，没有显式ID的行可能被当成删除旧行、添加新行。** [比较与创建](PIN/vendor/loader/src/config/group.ts#L20-L65)、[生成ID](PIN/vendor/loader/src/config/tree.ts#L52-L59)。
+
+稳定ID避免无关编辑造成身份漂移，**不保证任何改动都不重新执行apply**。普通config有效变化会进入Fiber.update，通常清理后重跑同一Fiber；插件可以拦截内部update。Include正是一个例子：路径没变时更新子列表，避免把整个Include及所有孩子都重建。volatile等特例不在本课展开。[Entry.update:117–180](PIN/vendor/loader/src/config/entry.ts#L117-L180)、[Include拦截190–201](PIN/vendor/include/src/index.ts#L190-L201)。
+
+对实践B的普通Provider行，变化可以这样读：
+
+| 操作 | 配置节点与运行结果 | H07的退出机制怎样参与 |
+| --- | --- | --- |
+| 稳定ID、配置完全相同 | 同一Entry、同一Fiber，apply不重跑 | 不撤掉仍需要的运行 |
+| 稳定ID、普通config改变 | 同一Entry、同一Fiber，清理后重跑 | 旧运行的登记先撤销，资源按所有权退出 |
+| disabled=true | Entry保留，Provider Fiber显式dispose | Provider服务撤销，Consumer清理后PENDING |
+| 再改false | 同一Entry创建新的Provider Fiber | 原Consumer仍被挂载，可随服务恢复重新加载 |
+| 缺ID、重新读取新对象 | 旧Entry移除，新Entry与Fiber出现 | 无关文本编辑也可能造成不必要的卸载/挂载 |
+
+禁用后不能说“原DISPOSED Fiber复活”。条目被保留与运行对象被保留不是一件事。H07的依赖恢复则可以是**原Consumer Fiber**再活跃；两条路径在同一次配置变更中同时发生。
+
+Loader接管条目导入与生命周期，Include给一个子树提供文件读取、Patch应用与刷新；Group在同一树中管理子列表，Include会形成另一棵文件子树。ID作用域和Patch查找边界因此要结合所在树看，不能凭全局字符串相同就猜能覆盖到。
+
+组还可以配置 `isolate`，把指定服务解析到独立的命名域（realm）：例如把一组Provider和Consumer放在同一个组域内，组外就不应假定能借用它的实现。`true`创建条目本地域，字符串标签可让使用同一标签的条目共享域，见[Loader的realm选择](PIN/vendor/loader/src/config/isolate.ts#L25-L88)。这是服务解析边界，与父子资源所有权、Agent能力可见范围是不同维度，也不是进程或操作系统安全隔离。本节认清关系，完整Agent作用域留后课；不把base与应用Bundle的叠层直接画成隔离域。
+
+## HMR、重新组合、重启：改动进了哪条路径？
+
+HMR是热模块替换，也承担这里的配置变更协调。重新组合是重新读取组合输入、计算并应用条目；完整进程重启则重新经过启动环境、参数和应用准备。三者可以关联，但不是同一个操作。
+
+base的 `root: []` 意味着默认只做Profile配置相关监听，不等于监视所有源码。Headless、SDK、ACP的应用Patch禁用hmr；minimal没有它。Profile覆盖可以改变这些选择，也仍要满足HMR的依赖和宿主要求。[HMR声明需要loader与timer](PIN/packages/boot/hmr/src/index.ts#L211-L225)；缺少必需服务时仍会等待，不能把写了hmr配置当作监视器已工作。[架构说明25–29行](PIN/docs/architecture.zh.md#L25-L29)、[HMR初始化与监听](PIN/packages/boot/hmr/src/index.ts#L352-L407)。
+
+Profile的manifest、Profile/Home Patch变更会经精确文件监听，在串行操作内调用reconcileProfile。它使用启动时保存的overlay内容；编辑原 `--patch` 文件不会让这份快照自动重读。`.env`、argv、需要新构建产物的变更也不能靠这条配置监听保证生效。无HMR的应用需要按应用关闭流程重启；源码映射移动或缓存不可比较等情况会报告restart-required，而不是假装新代码已经运行。[Profile输入与overlays](PIN/packages/boot/app-boot/src/profile-context.ts#L13-L30)、[reconcileProfile](PIN/packages/boot/hmr/src/index.ts#L913-L982)。
+
+图四先分输入，再看失败发生在应用前还是应用后；箭头不是对所有异常的统一回滚保证。
+
+![配置变化经重新组合更新Entry并触发清理和加载；源码模块变化经独立替换路径；重启重新进入启动流程。解析失败可保留旧树，应用后失败可能保留新配置和FAILED条目](/course-media/harness-v2/h08/h08-04.png "图 4｜精选变化路径。普通配置更新可重用Fiber，禁用后再启用则是新Fiber；模块替换的恢复只是尽力，未承诺恢复旧业务状态。")
+
+### 失败要按阶段分别说
+
+| 失败阶段 | 锁定版本的实际处理 | 能否宣称旧代码/状态无损保留？ |
+| --- | --- | --- |
+| Include刷新读到坏YAML或非数组 | 捕获、记警告；读取成功前不提交新内容，保留上次树 | 对这一解析失败路径可说保留旧树 |
+| Profile重组在应用新一代前失败 | finally尝试恢复先停掉的行与此前运行条目；映射拒绝可要求重启 | 恢复也可能报错，是尽力尝试 |
+| 新一代已经应用，某插件apply失败 | 新条目/config可能保留，失败实例为FAILED；好兄弟可继续 | 不能说恢复旧配置，旧服务可能已撤销 |
+| 普通config被Schema拒绝 | raw条目可能已更新，运行effective配置仍旧；日志记录拒绝 | 需同时看raw与effective，不能看一次树就下结论 |
+| 源码模块预导入失败 | 缓存回退发生在旧运行卸载前 | 仍需看具体分支与导入副作用 |
+| 模块替换激活失败 | 恢复缓存、尝试清理替代实例并重新登记旧插件；恢复失败记警告 | 无法保证恢复一定成功，更不等于外部副作用回滚 |
+
+依据依次为[Include.refresh:274–287](PIN/vendor/include/src/index.ts#L274-L287)、[App Boot重组335–443](PIN/packages/boot/app-boot/src/index.ts#L335-L443)、[模块替换642–739](PIN/packages/boot/hmr/src/index.ts#L642-L739)。Schema反例见[官方config-reload测试232–260](PIN/packages/boot/app-boot/tests/config-reload.spec.ts#L232-L260)，作者也运行了独立对应夹具。
+
+Plugin Manager（插件管理器）负责持久化选择、条目开关及包操作；HMR负责监听、串行协调与运行重载。管理器写入成功不等于运行应用成功；它可以报告restart-required。Home/overlay仍可能覆盖Profile写下的开关。[管理器条目与Bundle修改](PIN/packages/boot/plugin-manager/src/index.ts#L832-L877)、[应用与重启判断](PIN/packages/boot/plugin-manager/src/index.ts#L1233-L1274)。本节不调用安装、删除或版本豁免操作。
+
+HMR之所以接在H07后，是因为每次旧运行退出都需要可靠资源清理。恢复旧定义也会重新登记资源；没有Disposer的旧计时器不会因为缓存恢复自动消失。重新加载不自动迁移业务状态，通知变化也不自动成为持久会话事实。
+
+:::task{title="第二处停顿：为一次失败保留三列"}
+假设新config已经写进Entry，apply随后抛错。分别写下配置、Fiber状态、服务可用性会是什么；再说明为什么“网页还开着”不足以证明旧服务已恢复。能回答后进入实践，不用先学习完整Node缓存算法。
+:::
+
+## 精读路线：五个文件，各解决一个问题
+
+| 顺序 | 只精读这些入口与分支 | 输入→处理→输出/失败 |
+| --- | --- | --- |
+| 1 · app-boot/profile.ts | bundlePatchFiles、loadProfileDirectory、composeEntries | manifest→有序层；缺失/不兼容Bundle记录跳过，用户层错误仍抛 |
+| 2 · app-boot/profile-context.ts | readProfilePatches | 当前文件+启动快照→完整Patch列表；此函数还没更新Loader |
+| 3 · vendor/include/src/index.ts | applyEntryPatches | 空根/原树+操作→组合树；检查insert、目标、name与整config赋值 |
+| 4 · loader/config/entry.ts | update、init | 新options→保留/卸载/更新/导入；运行结果还受依赖与Schema影响 |
+| 5 · hmr/src/index.ts | Profile监听、reconcileProfile及模块替换catch | 文件变更→串行协调；按失败阶段判断恢复范围 |
+
+这是阅读顺序。实际主线是Profile选层→读取Patch→组合→根Include→Loader条目→导入Plugin→Fiber按依赖激活。`mountRootInclude`会注册include/group内建，准备兼容性，再挂根Include；[741–791行](PIN/packages/boot/app-boot/src/index.ts#L741-L791)是辅助精读。另选读user-patches、config-reload、profile及HMR reconciliation/error测试的setup、action和assertions；定位不计为执行通过。
+
+## 实践A：在运行程序之前手算五层
+
+新建空练习目录，使用随课 `a-profile.json`、`a-bundles.json` 和五份YAML。它们对应前述五层表：course-core声明core.patch.yml，course-surface声明surface.patch.yml；Profile用户层用profile.patch.yml，Home层用home.patch.yml，CLI层用extra.yml。这里用教学文件名区分来源，真实Profile和Home文件都叫cordis.pa

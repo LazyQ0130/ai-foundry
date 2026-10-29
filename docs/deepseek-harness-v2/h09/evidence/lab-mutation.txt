@@ -1,0 +1,188 @@
+TAP version 13
+# Subtest: C01 Registry without factory rejects both creation operations
+ok 1 - C01 Registry without factory rejects both creation operations
+  ---
+  duration_ms: 5.3164
+  type: 'test'
+  ...
+# Subtest: C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot
+ok 2 - C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot
+  ---
+  duration_ms: 5.592
+  type: 'test'
+  ...
+# Subtest: C03 real entry identity and advanced detach reject mismatch, collision and stale teardown
+ok 3 - C03 real entry identity and advanced detach reject mismatch, collision and stale teardown
+  ---
+  duration_ms: 2.1099
+  type: 'test'
+  ...
+# Subtest: D01 A uses real Loop: queries, roots, snapshots and collisions
+ok 4 - D01 A uses real Loop: queries, roots, snapshots and collisions
+  ---
+  duration_ms: 10.9948
+  type: 'test'
+  ...
+# Subtest: D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement
+not ok 5 - D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement
+  ---
+  duration_ms: 8.4041
+  type: 'test'
+  location: 'C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h09-lab-EzKpsw\\lifecycle.test.ts:1:2561'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+    +   bareHasDispose: true,
+    -   bareHasDispose: false,
+        handleHasDispose: true,
+        historyParent: 'different-history',
+        runtimeChild: true,
+        staleDisposePreservedReplacement: true
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    bareHasDispose: false
+    handleHasDispose: true
+    runtimeChild: true
+    historyParent: 'different-history'
+    staleDisposePreservedReplacement: true
+  actual:
+    bareHasDispose: true
+    handleHasDispose: true
+    runtimeChild: true
+    historyParent: 'different-history'
+    staleDisposePreservedReplacement: true
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h09-lab-EzKpsw\lifecycle.test.ts:51:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: D03-setup initialization/cleanup path
+ok 6 - D03-setup initialization/cleanup path
+  ---
+  duration_ms: 4.881
+  type: 'test'
+  ...
+# Subtest: D03-commit initialization/cleanup path
+ok 7 - D03-commit initialization/cleanup path
+  ---
+  duration_ms: 6.2714
+  type: 'test'
+  ...
+# Subtest: D03-session-listener initialization/cleanup path
+ok 8 - D03-session-listener initialization/cleanup path
+  ---
+  duration_ms: 4.5484
+  type: 'test'
+  ...
+# Subtest: D03-agent-listener initialization/cleanup path
+ok 9 - D03-agent-listener initialization/cleanup path
+  ---
+  duration_ms: 5.1241
+  type: 'test'
+  ...
+# Subtest: D03-cancel initialization/cleanup path
+ok 10 - D03-cancel initialization/cleanup path
+  ---
+  duration_ms: 5.0646
+  type: 'test'
+  ...
+# Subtest: D03-normal initialization/cleanup path
+ok 11 - D03-normal initialization/cleanup path
+  ---
+  duration_ms: 5.7829
+  type: 'test'
+  ...
+# Subtest: D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations
+ok 12 - D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations
+  ---
+  duration_ms: 6.5064
+  type: 'test'
+  ...
+# Subtest: D05 serial listener barrier holds create; failed creation preserves queued input without starting model
+ok 13 - D05 serial listener barrier holds create; failed creation preserves queued input without starting model
+  ---
+  duration_ms: 14.5858
+  type: 'test'
+  ...
+# Subtest: D06 owner unload during async creation listener waits for listener and scope before detaching
+ok 14 - D06 owner unload during async creation listener waits for listener and scope before detaching
+  ---
+  duration_ms: 6.4109
+  type: 'test'
+  ...
+# Subtest: D07-handle stops and drains real maintenance before scope/registries
+ok 15 - D07-handle stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.476
+  type: 'test'
+  ...
+# Subtest: D07-owner stops and drains real maintenance before scope/registries
+ok 16 - D07-owner stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.8654
+  type: 'test'
+  ...
+# Subtest: D07-factory stops and drains real maintenance before scope/registries
+ok 17 - D07-factory stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.7628
+  type: 'test'
+  ...
+# Subtest: D08 explicit parentAgent, caller, historical parent and object identity are independent
+ok 18 - D08 explicit parentAgent, caller, historical parent and object identity are independent
+  ---
+  duration_ms: 7.2657
+  type: 'test'
+  ...
+# Subtest: D09 real resume rejects absent backend; pre-aborted create announces nothing
+ok 19 - D09 real resume rejects absent backend; pre-aborted create announces nothing
+  ---
+  duration_ms: 7.2469
+  type: 'test'
+  ...
+# Subtest: D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts
+ok 20 - D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts
+  ---
+  duration_ms: 7.2958
+  type: 'test'
+  ...
+# Subtest: D11 teardown attempts registry cleanup after write-close failure and preserves rejection
+ok 21 - D11 teardown attempts registry cleanup after write-close failure and preserves rejection
+  ---
+  duration_ms: 5.2908
+  type: 'test'
+  ...
+# Subtest: D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call
+ok 22 - D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call
+  ---
+  duration_ms: 9.0335
+  type: 'test'
+  ...
+# Subtest: D13 aborting the creation signal after success does not dispose the live Agent
+ok 23 - D13 aborting the creation signal after success does not dispose the live Agent
+  ---
+  duration_ms: 5.8757
+  type: 'test'
+  ...
+# Subtest: D14 concurrent same-id preparation publishes one lifecycle and preserves winner
+ok 24 - D14 concurrent same-id preparation publishes one lifecycle and preserves winner
+  ---
+  duration_ms: 6.2483
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 23
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 497.434

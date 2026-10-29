@@ -1,0 +1,604 @@
+ONL 历史迁移发布后继 generation，不原地覆盖旧文件；句柄单写者不等于所有外部动作 exactly-once。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H18-01 对比《Replay、Resume 与 Fork》：避免重放副作用；H18-02 时序《写租约与中断尾修复》：明确恢复边界。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L18：M5 从同一前缀派生子分支，父日志保持不变；未知写结果不得自动重做。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h18)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+Replay 为什么通常不应重新发 HTTP 写请求？
+
+参考答案：Replay 重建历史/投影；重发是新的副作用，必须有独立授权与幂等设计。
+
+### 16. 关键风险及常见误解
+
+不保证恢复浏览器登录、OS 进程或原内存 promise；绝不调用迁移脚本触碰个人数据。
+
+### 17. 验收方式
+
+父子前缀与 seq 断言通过，解释只读 open 与写 open 的差异和 lease 冲突。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S173 · packages/core/session/tests/repair.spec.ts:1](PIN/packages/core/session/tests/repair.spec.ts#L1-L28)
+- [S174 · packages/core/session/tests/fork.spec.ts:1](PIN/packages/core/session/tests/fork.spec.ts#L1-L28)
+- [S175 · packages/session/session-persistence-jsonl/tests/lease.spec.ts:1](PIN/packages/session/session-persistence-jsonl/tests/lease.spec.ts#L1-L28)
+- [S176 · packages/core/agent-loop/tests/resume.spec.ts:1](PIN/packages/core/agent-loop/tests/resume.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H19 在不改变事实日志的前提下减少模型上下文；H20 讨论取消与重试。
+
+### 20. 源码依据与验证状态
+
+
+## H19
+
+### 1. 课程编号
+
+H19（核心）。
+
+### 2. 课程名称
+
+上下文管理、Compaction 与 Token 优化
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H11、H17–H18；Context Window。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l5](/lesson/stage-3/s3-l5)、[s3-l7](/lesson/stage-3/s3-l7)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 5 分钟：回顾 Context Window、RAG 候选和 Token Usage；比较成本与事实是否保留。
+
+旧课深度：owner-filtered Top-K 与单轮 RAG Context，未讲事件 Surface。本讲增量：新增压缩事件、投影替换与位置跨度。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+长任务超过窗口，简单删除早期消息为什么可能拆开工具调用与结果？
+
+### 7. 本节唯一核心目标
+
+比较剪枝、图片省略和摘要压缩对可重建历史的不同影响。
+
+### 8. 重点技术概念
+
+CompactionEngine、pressure、replace、tool pairing。
+
+### 9. 需要额外解释的难懂术语
+
+Compaction、Shadowed Range、Token Estimate。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+带原始凭证的会议纪要替代桌面上铺开的文件；纪要会遗漏信息，原档案仍需保留。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S177 · docs/subsystems/compaction.zh.md:1](PIN/docs/subsystems/compaction.zh.md#L1-L10)、[S178 · packages/compaction/compaction-basic/README.zh.md:1](PIN/packages/compaction/compaction-basic/README.zh.md#L1-L10)。
+
+1. [S069 · packages/compaction/compaction/src/index.ts:16](PIN/packages/compaction/compaction/src/index.ts#L16-L43) — `export`；先看能力契约。
+2. [S070 · packages/compaction/compaction-basic/src/index.ts:112](PIN/packages/compaction/compaction-basic/src/index.ts#L112-L139) — `class BasicCompactionEngine`；再看自动策略与 overflow。
+3. [S071 · packages/compaction/compaction-basic/src/region.ts:173](PIN/packages/compaction/compaction-basic/src/region.ts#L173-L200) — `compactSurfaceRegion`；精读选择、再校验、提交替换。
+4. [S072 · packages/compaction/compaction-tool-result-pruner/src/index.ts:1](PIN/packages/compaction/compaction-tool-result-pruner/src/index.ts#L1-L28) — `ToolResultPruner`；比较工具结果剪枝。
+5. [S073 · packages/compaction/compaction-image-offload/src/index.ts:1](PIN/packages/compaction/compaction-image-offload/src/index.ts#L1-L28) — `apply`；比较图片纯投影。
+
+**重要数据结构：**CompactionResult、shadowedSeqs、surface POSITION span、CompactionTrigger、TokenUsage。
+
+**关键代码分段讲法：**画原事件序号与模型可见顺序双轨；replace 后 startSeq 数值可大于 endSeq，不能按数值区间理解。
+
+**实际调用链：**pre-step pressure/request-error overflow→compactIfNeeded→选择范围→compaction/start→summary→user/message replace→compaction/end；原 log 不删除。
+
+**设计取舍：**压缩成本和失真需评估；token 数可能是估算，不能承诺压缩固定节费比。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H19-01 对比《截断、剪枝与摘要压缩》：比较保留信息与成本；H19-02 双轨《Compaction 的位置跨度》：理解 seq 非数值区间。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L19：M5 用固定摘要器比较保留全文、剪枝、摘要的字符预算与关键事实覆盖；记录不确定信息。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h19)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+compaction/summary 本身是否自动成为模型消息？
+
+参考答案：不是；它是记账事件，模型可见替换由另一 user/message 的 surfaceOp 实现。
+
+### 16. 关键风险及常见误解
+
+不把摘要当原始证据；失败/遗留锁不应伪装压缩完成。
+
+### 17. 验收方式
+
+三策略都保持日志哈希不变、tool pairing 不破坏；说明 summary 与 replacement 的两条记录。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S179 · packages/compaction/compaction-basic/tests/compaction-basic.spec.ts:1](PIN/packages/compaction/compaction-basic/tests/compaction-basic.spec.ts#L1-L28)
+- [S180 · packages/compaction/compaction-basic/tests/manual-compaction.spec.ts:1](PIN/packages/compaction/compaction-basic/tests/manual-compaction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H20 处理压缩或流失败后的控制；H29 再评估性能与质量。
+
+### 20. 源码依据与验证状态
+
+
+## H20
+
+### 1. 课程编号
+
+H20（核心）。
+
+### 2. 课程名称
+
+取消、重试、异常处理与故障恢复
+
+### 3. 所属模块
+
+Session 与运行可靠性
+
+### 4. 推荐前置知识
+
+H14、H18–H19；AbortSignal。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 7 分钟：按 Stage 3 取消与 Stage 4 paused Resume 列出迟到、失败、已发生写入三种情况。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：新增 request attempt 重试、drain 与 repair。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户点击停止时工具可能已经开始；重试模型失败又怎样避免重复加入用户消息？
+
+### 7. 本节唯一核心目标
+
+按故障阶段区分可重试请求、取消与未知副作用。
+
+### 8. 重点技术概念
+
+LlmFailure、request-error、retry policy、drain、repair。
+
+### 9. 需要额外解释的难懂术语
+
+Idempotency、Retry、Quiescence。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+撤销未发货订单与拦截已上路包裹不同；通知停止不能让已送达包裹消失。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S137 · docs/subsystems/core.zh.md:1](PIN/docs/subsystems/core.zh.md#L1-L10)、[S181 · packages/llm/llm-retry/README.zh.md:1](PIN/packages/llm/llm-retry/README.zh.md#L1-L10)。
+
+1. [S074 · packages/core/agent-loop/src/agent.ts:191](PIN/packages/core/agent-loop/src/agent.ts#L191-L218) — `cancel(cause:`；先看取消 cause 与 inbox 处理。
+2. [S075 · packages/core/agent-loop/src/agent.ts:549](PIN/packages/core/agent-loop/src/agent.ts#L549-L576) — `'agent/request-error'`；再看同一步 request attempt 重试。
+3. [S076 · packages/llm/llm-retry/src/index.ts:1](PIN/packages/llm/llm-retry/src/index.ts#L1-L28) — `Config、RetryInternals、apply`；核对实际 retry 插件政策。
+4. [S077 · packages/core/tools/src/pipeline.ts:258](PIN/packages/core/tools/src/pipeline.ts#L258-L285) — `private async dispatchToolBody(`；看已开始工具的等待。
+5. [S066 · packages/core/session/src/repair.ts:15](PIN/packages/core/session/src/repair.ts#L15-L42) — `export`；最后对照缺失结果的修复。
+
+**重要数据结构：**AgentCancelCause、RequestErrorAction、LlmFailure、ToolBatchExecutionError。
+
+**关键代码分段讲法：**用故障点表分准备前、stream 中、body 前、body 后；逐格回答日志、重试与副作用。
+
+**实际调用链：**失败 finish→assistant/attempt→request-error→retry/throw；cancel→abort→工具 drain→step/end→turn/end；硬退出之后由 repair 处理未闭合历史。
+
+**设计取舍：**模型请求重试与写工具重试不同；重试不重新 assembly/pre-step，已进入的用户消息只提交一次。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H20-01 故障树《四阶段取消与恢复》：定位可撤销边界；H20-02 时序《同 Step 的模型重试》：避免重复用户消息。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L20：M5 模拟迟到结果、请求失败重试与未知写结果；取消后后续 body=0。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h20)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+为什么同一 prompt 的两次请求不是严格幂等的外部操作？
+
+参考答案：模型可能不同、计费可能发生，工具副作用更不自动幂等；幂等要针对业务结果定义并实现。
+
+### 16. 关键风险及常见误解
+
+不承诺自动回滚或 exactly-once；网络超时不等于上游未执行。
+
+### 17. 验收方式
+
+故障表每格有结果与证据；同一步重试不重复用户消息，取消停止后续动作。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S182 · packages/core/agent-loop/tests/cancel.spec.ts:1](PIN/packages/core/agent-loop/tests/cancel.spec.ts#L1-L28)
+- [S183 · packages/core/agent-loop/tests/request-error.spec.ts:1](PIN/packages/core/agent-loop/tests/request-error.spec.ts#L1-L28)
+- [S133 · packages/core/agent-loop/tests/shutdown-drain.spec.ts:1](PIN/packages/core/agent-loop/tests/shutdown-drain.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H21 将所有权、取消传播扩展到子代理树。
+
+### 20. 源码依据与验证状态
+
+
+## H21
+
+### 1. 课程编号
+
+H21（核心）。
+
+### 2. 课程名称
+
+Subagent、任务委派与多智能体协作
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H09、H18、H20。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 5 分钟：回顾短期 Workflow 状态和父任务需要的预算/取消；不假设已学多智能体。
+
+旧课深度：现有工具组成短期有停止条件的 Workflow，非 Harness 模型脚本 PTC。本讲增量：首次引入 activation/provider/delivery 与父子所有权。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+父 Agent 委派任务后，谁拥有子会话、如何回传、取消后谁负责清理？
+
+### 7. 本节唯一核心目标
+
+用 activation 的所有权和 delivery 区分新建、Fork 与外部执行。
+
+### 8. 重点技术概念
+
+SubagentRuntime、activation、provider capabilities、child catalog。
+
+### 9. 需要额外解释的难懂术语
+
+Delegation、Activation、Lineage。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+主编给记者分配资料核查；记者收到的是任务材料，不一定复制主编整本笔记。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S184 · docs/subsystems/subagent.zh.md:1](PIN/docs/subsystems/subagent.zh.md#L1-L10)、[S185 · docs/subsystems/agent-team.zh.md:1](PIN/docs/subsystems/agent-team.zh.md#L1-L10)。
+
+1. [S078 · packages/subagent/subagent/src/index.ts:271](PIN/packages/subagent/subagent/src/index.ts#L271-L298) — `async startActivation(`；先读统一准入入口。
+2. [S079 · packages/subagent/subagent/src/index.ts:312](PIN/packages/subagent/subagent/src/index.ts#L312-L339) — `async sendMessage(`；再看消息与父子约束。
+3. [S080 · packages/subagent/subagent-spawn-in-process/src/index.ts:46](PIN/packages/subagent/subagent-spawn-in-process/src/index.ts#L46-L59) — `readonly inheritsParentContext`；核对 spawn 不继承对话。
+4. [S081 · packages/subagent/subagent-fork-in-process/src/index.ts:1](PIN/packages/subagent/subagent-fork-in-process/src/index.ts#L1-L28) — `Config、apply`；再对照 fork provider。
+
+**重要数据结构：**SubagentActivationSpec、SubagentActivation、SubagentCapabilities、SubagentResult。
+
+**关键代码分段讲法：**先跑一父两子 Mock，再换 delivery；目录中的历史 child 不一定可继续，unknown descriptor 不能授予能力。
+
+**实际调用链：**tool/Workflow→startActivation→capability 校验→local prepareContinuable 或 external start→结果 settlement→parent/caller delivery→dispose descendants。
+
+**设计取舍：**Agent Teams 是需显式启用的实验扩展，只做边界介绍；本课主线仍是 subagent seam。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H21-01 所有权《父子 Activation 树》：定位取消传播；H21-02 对比《Spawn 与 Fork》：避免默认继承误解。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L21：M6 创建两子任务，取消父级后拒绝新子任务并等待清理；比较 caller/parent 的通知数。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h21)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+spawn 与 fork 是否默认拥有同样的父上下文？
+
+参考答案：不是；spawn provider 明确不继承父对话；fork 要按其 seed 规则讨论，不能只看“子代理”名称。
+
+### 16. 关键风险及常见误解
+
+模型分工不保证正确性或隔离；深度和数量预算不能替代业务权限。
+
+### 17. 验收方式
+
+父子清理轨迹与回传数准确；指明能力不支持时在哪一层拒绝。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S186 · packages/subagent/subagent/tests/activation-policy.spec.ts:1](PIN/packages/subagent/subagent/tests/activation-policy.spec.ts#L1-L28)
+- [S187 · packages/subagent/subagent/tests/parent-result.spec.ts:1](PIN/packages/subagent/subagent/tests/parent-result.spec.ts#L1-L28)
+- [S188 · packages/subagent/subagent/tests/external-lifecycle.spec.ts:1](PIN/packages/subagent/subagent/tests/external-lifecycle.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+110–150 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H22 使用 subagent 编排；H23 看外部载体怎样驱动这些服务。
+
+### 20. 源码依据与验证状态
+
+
+## H22
+
+### 1. 课程编号
+
+H22（核心）。
+
+### 2. 课程名称
+
+Workflow、Jobs、Goal 与任务调度
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H21；Run 状态与预算。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l5](/lesson/stage-4/s4-l5)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：先复述 Stage 4 Workflow 是既有能力按状态衔接，不是新增一堆同名 Tool。
+
+旧课深度：现有工具组成短期有停止条件的 Workflow，非 Harness 模型脚本 PTC。本讲增量：再对比 Harness 脚本编排、Job、Goal 与 Schedule。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+脚本编排、后台进程、同会话长期目标和定时触发为什么不能都称为一个任务队列？
+
+### 7. 本节唯一核心目标
+
+根据生命周期选择四种任务抽象，并画清它们的组合。
+
+### 8. 重点技术概念
+
+WorkflowEngine、JobRegistry、GoalService、ScheduleService。
+
+### 9. 需要额外解释的难懂术语
+
+Workflow、Job、Goal Round、Schedule。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+项目执行方案、后台印刷任务、持续交付目标、日历提醒分别解决不同问题。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S189 · docs/subsystems/workflow.zh.md:1](PIN/docs/subsystems/workflow.zh.md#L1-L10)、[S190 · docs/subsystems/jobs.zh.md:1](PIN/docs/subsystems/jobs.zh.md#L1-L10)、[S191 · docs/subsystems/goal.zh.md:1](PIN/docs/subsystems/goal.zh.md#L1-L10)、[S192 · docs/subsystems/schedule.zh.md:1](PIN/docs/subsystems/schedule.zh.md#L1-L10)。
+
+1. [S082 · packages/workflow/workflow/src/runtime-types.ts:19](PIN/packages/workflow/workflow/src/runtime-types.ts#L19-L46) — `interface WorkflowStartRequest`；先读脚本请求契约。
+2. [S083 · packages/workflow/workflow-ptc/src/index.ts:134](PIN/packages/workflow/workflow-ptc/src/index.ts#L134-L161) — `start(request:`；看实际 PTC 引擎。
+3. [S084 · packages/jobs/jobs/src/index.ts:88](PIN/packages/jobs/jobs/src/index.ts#L88-L115) — `export abstract class JobRegistry`；对比后台执行注册。
+4. [S085 · packages/goal/goal/src/index.ts:305](PIN/packages/goal/goal/src/index.ts#L305-L332) — `create(agent:`；看修订化目标。
+5. [S086 · packages/schedule/schedule/src/index.ts:256](PIN/packages/schedule/schedule/src/index.ts#L256-L283) — `async create(`；最后只读定时触发契约。
+
+**重要数据结构：**WorkflowStartRequest、WorkflowResult、JobStatus、GoalRef(id,revision)、ScheduleRecord。
+
+**关键代码分段讲法：**拆三段：脚本 35 分钟、Job/Goal 对比 30 分钟、Schedule 20 分钟；phases 只是进度注释，非 DAG。
+
+**实际调用链：**WorkflowEngine.start→PTC→subagent activation；生产方→jobs；goal-round-driver→Agent 续跑；schedule runtime→delivery/Session，四者不是硬编码单链。
+
+**设计取舍：**同一步/同一 turn 结束不保证所有 Job settled；Goal revision 支持精确变更而非自动业务 exactly-once。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H22-01 矩阵《四种任务抽象》：防止把一切叫队列；H22-02 时序《编排与续跑的组合》：看清非线性关系。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L22：M6 对四个场景分类，使用虚拟时钟与内存队列验证调度；不创建系统定时器。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h22)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+WorkflowMeta.phases 是否决定脚本执行顺序？
+
+参考答案：不是；它是展示信息，脚本与引擎 helper 决定实际结构。
+
+### 16. 关键风险及常见误解
+
+不能把 Harness Workflow 说成 Stage 4 固定短 Workflow 的同名实现；不声称分布式可靠调度已验证。
+
+### 17. 验收方式
+
+四种抽象各给一个入口、终态和故障；脚本 fatal 错误不能被当作普通 null 成功。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S193 · packages/workflow/workflow-ptc/tests/meta.spec.ts:1](PIN/packages/workflow/workflow-ptc/tests/meta.spec.ts#L1-L28)
+- [S194 · packages/jobs/jobs/tests/service.spec.ts:1](PIN/packages/jobs/jobs/tests/service.spec.ts#L1-L28)
+- [S195 · packages/goal/goal/tests/projection.spec.ts:1](PIN/packages/goal/goal/tests/projection.spec.ts#L1-L28)
+- [S196 · packages/schedule/schedule/tests/recovery.spec.ts:1](PIN/packages/schedule/schedule/tests/recovery.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+130–180 分钟（建议三段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H21 提供执行单元，本讲提供编排；H24 统一审查各生命周期。
+
+### 20. 源码依据与验证状态
+
+
+## H23
+
+### 1. 课程编号
+
+H23（核心）。
+
+### 2. 课程名称
+
+CLI、Web UI、SDK 与远程通信
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H04、H17、H21–H22；HTTP 与流。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l2](/lesson/stage-2/s2-l2)、[s3-l3](/lesson/stage-3/s3-l3)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 5 分钟：复习 HTTP 请求响应、流式取消和刷新回读，区分页面状态与服务端事实。
+
+旧课深度：POST/JSON、服务端校验与 HTTP 验收，未涉及 JSON-RPC。本讲增量：新增载体适配、JSON-RPC 和远程投影。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+界面重连后看到的状态来自哪里？SDK 与网页是不是各写一套 Agent？
+
+### 7. 本节唯一核心目标
+
+追踪一个控制动作与一条状态订阅穿过载体边界。
+
+### 8. 重点技术概念
+
+profile launcher、controller、JSON-RPC、Session follow。
+
+### 9. 需要额外解释的难懂术语
+
+Carrier、Remote、Snapshot/Delta。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+柜台、手机银行和机器接口共享后端业务，但登录方式与通信协议不同。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S197 · docs/subsystems/web-server.zh.md:1](PIN/docs/subsystems/web-server.zh.md#L1-L10)、[S198 · packages/sdk/client/README.zh.md:1](PIN/packages/sdk/client/README.zh.md#L1-L10)。
+
+1. [S011 · apps/cli/src/profile-boot.ts:1](PIN/apps/cli/src/profile-boot.ts#L1-L28) — `homePatchPath、initializeProfileFromDefault、prepareProfile、ResolvedProfileRuntime、RunProfileOptions、runProfile`；先回到统一启动器。
+2. [S087 · packages/api/session-controller/src/agent.ts:1](PIN/packages/api/session-controller/src/agent.ts#L1-L28) — `ApiSessionNotFound、ApiSessionSubagentOwnership、ApiSessionCwdConflict、ApiSessionPresetConflict、ApiSessionCreateRequest、ApiSessionCreated、ApiSessionAgentError、ApiSessionAgentResult、h`；再读创建/恢复的 Web 业务适配。
+3. [S088 · packages/api/session-controller/src/assistant-stream.ts:1](PIN/packages/api/session-controller/src/assistant-stream.ts#L1-L28) — `SessionAssistantStreamAccumulator`；看实时流消费与版本。
+4. [S089 · packages/sdk/client/src/launch.ts:1](PIN/packages/sdk/client/src/launch.ts#L1-L28) — `RuntimeProcessOptions、DshNodeLaunch、resolveDshBinFromManifests、installedDshBin、resolveDshNodeLaunchFromManifests、resolveDshLaunch`；对照 SDK 如何启动 profile。
+5. [S090 · packages/sdk/client/src/client.ts:1](PIN/packages/sdk/client/src/client.ts#L1-L28) — `TransportClosedError、RequestTimeoutError、SdkProtocolError、NotificationSubscription、HarnessClient、createProcessHarnessClient、isRecord`；最后读客户端通信生命周期。
+
+**重要数据结构：**SessionId、ProjectionSnapshot、stream revision、SDK client 生命周期；协议以源码字段为准。
+
+**关键代码分段讲法：**从 cancel 控制向内读，再从 session/event 向外读；不要把所有 transport 都归作 WebSocket。
+
+**实际调用链：**Web controller→AgentRegistry/SessionProjection；agent/assistant-stream→Web follow；SDK client→SDK profile server→JSON-RPC 控制/事件。
+
+**设计取舍：**共享领域能力不代表共享公开传输；Web live stream 的唯一远端消费者与 SDK durable event 分清。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H23-01 架构《CLI、Web 与 SDK 载体》：识别共享能力和不同协议；H23-02 时序《断连重连与状态重建》：区分 snapshot 和增量。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L23：给 M6 的事件适配器做断连/重连 fixture，基于 snapshot 重建，过滤旧 revision。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h23)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+UI 显示完成能否代替持久化确认？
+
+参考答案：不能；需核对领域终态与持久边界，实时 UI 只是消费方。
+
+### 16. 关键风险及常见误解
+
+本轮不连用户账户/现有服务器，不修改平台路由；不得凭界面反推领域事实。
+
+### 17. 验收方式
+
+一条控制链与一条订阅链均有端点源码和失败路径；说明重连从何处获得状态。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S199 · packages/api/session-controller/tests/transport.host.spec.ts:1](PIN/packages/api/session-controller/tests/transport.host.spec.ts#L1-L28)
+- [S200 · packages/api/session-controller/tests/assistant-stream.host.spec.ts:1](PIN/packages/api/session-controller/tests/assistant-stream.host.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H24 把控制、状态、测试合为架构证据；扩展课再实现小插件。
+
+### 20. 源码依据与验证状态
+
+
+## H24
+
+### 1. 课程编号
+
+H24（核心）。
+
+### 2. 课程名称
+
+大型 Agent 系统测试与综合架构分析
+
+### 3. 所属模块
+
+复杂智能体系统
+
+### 4. 推荐前置知识
+
+H01–H23；Mock 与故障注入。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l7](/lesson/stage-3/s3-l7)、[s4-l7](/lesson/stage-4/s4-l7)、[s4-l8](/lesson/stage-4/s4-l8)。基础回顾约 7 分钟：回顾固定 Eval、成功/该拒绝都应 PASS、三个旧安全硬门槛。
+
+旧课深度：固定题集、自动指标及人工支持度，未做框架级性能与生命周期测试。本讲增量：新增框架级 contract/property/snapshot/bench 证据层。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+有很多绿色测试，怎样判断它们是否验证了真正的产品边界？
+
+### 7. 本节唯一核心目标
+
+为一条跨模块链建立事实、测试与限制的证据矩阵。
+
+### 8. 重点技术概念
+
+contract regression、property test、snapshot/replay、benchmark。
+
+### 9. 需要额外解释的难懂术语
+
+Coverage、Invariant、Gate。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+消防演练不能只看所有人走过楼梯，还要验证出口、断电与人数；覆盖到代码不等于证明业务成立。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S201 · docs/testing.zh.md:1](PIN/docs/testing.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](PIN/docs/development.zh.md#L1-L10)、[S114 ·

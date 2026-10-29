@@ -1,0 +1,629 @@
+回 0 会 bail，而 false 不会。
+
+**实际调用链：**EventsService.waterfall → snapshot callbacks → next → listener A → listener B → fallback → B → A；不调用 next 则下游不运行。
+
+**设计取舍：**waterfall 本身不自动 await，但可返回 Promise；serial 也有短路，不是保证所有监听器必执行。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H06-01 时序《Cordis 事件分发机制》：解释 next 的环绕与返回；H06-02 对比《五种分发模式》：选择等待与短路语义。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L06：实现环绕与拒绝两条路径；运行 M2，再运行官方 Cordis probe 对照。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h06)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+观察工具的 listener 忘记 next() 会发生什么？0 与 false 对 bail 是否相同？
+
+参考答案：前者可能截断后续策略与默认实现；0 是 bail 值，false 不是。
+
+### 16. 关键风险及常见误解
+
+不要把 Waterfall 讲成上一个数值自动传给下一个函数；异步由返回类型决定。
+
+### 17. 验收方式
+
+两条轨迹完全匹配；能说明 serial、emit 的返回值与等待差异。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S130 · packages/core/agent-loop/tests/serial-listener-review.spec.ts:1](PIN/packages/core/agent-loop/tests/serial-listener-review.spec.ts#L1-L28)
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](PIN/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+80–110 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H07 接着看 listener 与插件卸载；H14 再用 Waterfall 研究真实执行策略。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。H06 的 Cordis、H07 的监听器回收、H17 的 detached Session 以及 H13–H15 原生内存工具流水线有库级实际探针；精确范围见 official-probes.json。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H07
+
+### 1. 课程编号
+
+H07（核心）。
+
+### 2. 课程名称
+
+插件生命周期、服务依赖与资源回收
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H06；try/finally。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l3](/lesson/stage-1/s1-l3)、[s3-l3](/lesson/stage-3/s3-l3)。基础回顾约 5 分钟：回顾取消请求与旧 generation 数据隔离：停止信号后仍可能有迟到响应。
+
+旧课深度：复现、定位、最小修复与复验，未涉及并发资源生命周期。本讲增量：新增 fiber/effect 所有权和资源 drain。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+热重载后监听器触发两次、关闭后还在写日志，泄漏从哪里来？
+
+### 7. 本节唯一核心目标
+
+将每次注册与其所有者、释放函数和等待边界配对。
+
+### 8. 重点技术概念
+
+Fiber、Scope、effect、disposer、依赖失效。
+
+### 9. 需要额外解释的难懂术语
+
+Lifecycle、Side Effect、Quiescence。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+会议室借钥匙、开灯、登记都应有归还动作；收回钥匙不等于正在进行的会议已结束。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](PIN/docs/cordis-primer.zh.md#L1-L10)、[S131 · docs/subsystems/scope.zh.md:1](PIN/docs/subsystems/scope.zh.md#L1-L10)。
+
+1. [S021 · vendor/cordis/src/fiber.ts:184](PIN/vendor/cordis/src/fiber.ts#L184-L211) — `export class Fiber`；先看插件生命周期的承载者。
+2. [S022 · vendor/cordis/src/registry.ts:195](PIN/vendor/cordis/src/registry.ts#L195-L222) — `export class RegistryService`；再看依赖管理。
+3. [S023 · vendor/cordis/src/events.ts:254](PIN/vendor/cordis/src/events.ts#L254-L281) — `register(label:`；跟踪 on 的注册如何成为 effect。
+4. [S007 · packages/core/agent-loop/src/index.ts:465](PIN/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；用 Agent 销毁的等待边界检验直觉。
+
+**重要数据结构：**Fiber、FiberState、EffectMeta、AgentHandle.dispose；agent scope 与 Cordis isolation 不可混称。
+
+**关键代码分段讲法：**先画资源归属表，再按释放时仍需用到日志/服务的要求讨论顺序，不承诺所有 effect 都全局逆序。
+
+**实际调用链：**ctx.on → fiber.effect → disposer；Agent dispose → cancel → idle/drain → registry/session removal → scope.dispose。
+
+**设计取舍：**卸载要保留正在 drain 的工作所需资源；具体先后须跟实现，不凭 RAII 类比猜。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H07-01 时序《插件挂载与依赖撤走》：揭示生命周期；H07-02 状态《资源归属与释放台账》：防止监听器与进程泄漏。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L07：模拟 mount→emit→dispose→emit，断言第二次不触发且重复 dispose 不新增事件；运行 M2。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h07)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+取消 signal 已置位，为什么还可能要等待工具 promise？
+
+参考答案：工具已经开始，须等待它静止并清理；signal 不会自动撤销副作用，也不是资源释放凭证。
+
+### 16. 关键风险及常见误解
+
+Scope 有多种含义；本讲分别标注 Cordis fiber 与 agent 注册作用域。
+
+### 17. 验收方式
+
+每个 listener、provider、Agent handle 都有 owner/disposer；指出一个 shutdown 测试。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S132 · packages/core/agent-loop/tests/resource-lifecycle.spec.ts:1](PIN/packages/core/agent-loop/tests/resource-lifecycle.spec.ts#L1-L28)
+- [S133 · packages/core/agent-loop/tests/shutdown-drain.spec.ts:1](PIN/packages/core/agent-loop/tests/shutdown-drain.spec.ts#L1-L28)
+- [S134 · packages/core/scope/tests/scope.spec.ts:1](PIN/packages/core/scope/tests/scope.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+80–110 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H08 用生命周期解释配置重载；H09 开始研究 Agent 的所有权。
+
+### 20. 源码依据与验证状态
+
+
+## H08
+
+### 1. 课程编号
+
+H08（核心）。
+
+### 2. 课程名称
+
+Profile、Bundle、Patch 与动态能力组合
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H04–H07。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)。基础回顾约 4 分钟：回顾 git diff 的最小范围和环境配置：一个配置字段改变可能影响哪些能力？
+
+旧课深度：保存/比较/局部恢复版本，未教授事件日志 Fork。本讲增量：新增整 config 替换与可审查插件树。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+希望只替换一个模型后端，却发现配置里另外两个字段消失了，patch 到底如何覆盖？
+
+### 7. 本节唯一核心目标
+
+按固定顺序手算一棵可审查的插件树。
+
+### 8. 重点技术概念
+
+条目 id、配置替换、preset patch、isolate、HMR。
+
+### 9. 需要额外解释的难懂术语
+
+Patch、Bundle、Realm。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+装配清单的后层替换整张零件规格单，不能默认逐字段深合并。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S123 · docs/subsystems/boot.zh.md:1](PIN/docs/subsystems/boot.zh.md#L1-L10)。
+
+1. [S024 · packages/boot/app-boot/src/profile.ts:54](PIN/packages/boot/app-boot/src/profile.ts#L54-L81) — `export function bundlePatchFiles`；先从 manifest 得到有序 patch 列表。
+2. [S025 · packages/boot/app-boot/src/index.ts:633](PIN/packages/boot/app-boot/src/index.ts#L633-L660) — `export function renderConfigDump`；再找与 boot 一致的展开核查入口。
+3. [S026 · vendor/include/src/index.ts:57](PIN/vendor/include/src/index.ts#L57-L84) — `export function applyEntryPatches`；精读按 id 定位与 config 替换。
+4. [S013 · packages/bundle/base/cordis.patch.yml:1](PIN/packages/bundle/base/cordis.patch.yml#L1-L28) — `声明配置/模块入口（无可调用函数）`；核对真实组装行。
+
+**重要数据结构：**ProfileLayer、PatchOptions、EntryOptions、config.plugins、isolate map。
+
+**关键代码分段讲法：**给三份小 YAML，手算替换后 temperature 是否仍在；先看算法，再用 base 的真实行做例子。
+
+**实际调用链：**ordered bundles → profile patch → home patch → --patch overlay → applyEntryPatches → Loader；preset patch 在 config.plugins 内作用。
+
+**设计取舍：**配置开放提高灵活性，也可能因移除安全插件改变边界；dump-config 是检查工具，不等于安全审计。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H08-01 层叠《Bundle 与 Patch 优先级》：手算最后配置；H08-02 对比《全局、agent scope 与 isolate》：区分三种边界。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L08：实现教学版整 config 替换，验证后层覆盖与未知目标诊断；扩展 M2 的 fixture。官方对不匹配目标报告 warn，不擅自改称 throw。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h08)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+用 patch 只写 config.model，能默认继承旧 config.provider 吗？
+
+参考答案：不能按深合并推断；课程示例应给出完整替换配置，并核对实际 patch 操作。
+
+### 16. 关键风险及常见误解
+
+HMR 默认随 profile 不同；sdk-minimal 不包含 base；不对个人配置做实验。
+
+### 17. 验收方式
+
+提交三层输入与唯一结果，说明覆盖丢字段和组合改变权限的风险。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S135 · packages/boot/app-boot/tests/user-patches.spec.ts:1](PIN/packages/boot/app-boot/tests/user-patches.spec.ts#L1-L28)
+- [S136 · packages/boot/app-boot/tests/config-reload.spec.ts:1](PIN/packages/boot/app-boot/tests/config-reload.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+85–115 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H04 只认识层次，本讲计算算法；H09 进入组装后的运行对象。
+
+### 20. 源码依据与验证状态
+
+
+## H09
+
+### 1. 课程编号
+
+H09（核心）。
+
+### 2. 课程名称
+
+Agent 实例创建、注册和所有权
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H07–H08；会读 async/await。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s2-l6](/lesson/stage-2/s2-l6)、[s4-l6](/lesson/stage-4/s4-l6)。基础回顾约 6 分钟：对比 ownerId 业务授权和 Run 的执行状态，指出二者都不等同对象生命周期 owner。
+
+旧课深度：可信 Session 推导 owner、SQL 内授权，未讲 Agent 生命周期所有权。本讲增量：新增 factory caller 所有权与发布事务。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+创建中途 setup 失败时，Session 已登记但 Agent 没发布，谁负责回滚？
+
+### 7. 本节唯一核心目标
+
+解释 create/resume 的发布边界与调用者所有权。
+
+### 8. 重点技术概念
+
+AgentRegistry、AgentFactory、AgentHandle、初始化事务。
+
+### 9. 需要额外解释的难懂术语
+
+Ownership、Publication、Rollback。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+新员工入职先预留工位、配置权限，全部就绪才发门卡；失败必须撤销已申请资源。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S137 · docs/subsystems/core.zh.md:1](PIN/docs/subsystems/core.zh.md#L1-L10)、[S138 · packages/core/agent-loop/README.zh.md:1](PIN/packages/core/agent-loop/README.zh.md#L1-L10)。
+
+1. [S027 · packages/core/agent/src/index.ts:164](PIN/packages/core/agent/src/index.ts#L164-L191) — `export interface AgentHandle`；先读调用方必须持有的 handle。
+2. [S028 · packages/core/agent/src/index.ts:416](PIN/packages/core/agent/src/index.ts#L416-L443) — `async create(options:`；再看 registry 委托而不自建 loop。
+3. [S007 · packages/core/agent-loop/src/index.ts:465](PIN/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；按发布事务读 setup 与 announce。
+4. [S029 · packages/core/agent-loop/src/index.ts:717](PIN/packages/core/agent-loop/src/index.ts#L717-L744) — `async createAgent(ownerCtx:`；最后追 session preparation。
+
+**重要数据结构：**CreateAgentOptions、AgentSetupCommit、FactoryOwnership、SessionPreparation。
+
+**关键代码分段讲法：**分“未发布准备、可见发布、失败撤销”三段画状态；caller fiber 拥有 handle，非 factory 注册上下文。
+
+**实际调用链：**AgentRegistry.create → factory.createAgent(ownerCtx) → sessions.prepare/persistence → initializeAgent → session announce → setup.commit → agents.enter/announce → 返回 handle。
+
+**设计取舍：**运行所有权是生命周期概念，不能直接等同平台多租户权限。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H09-01 状态《Agent 发布事务》：解释半初始化回滚；H09-02 所有权《调用者与 Factory》：防止推错 owner。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L09：给 setup/announce 各注入一次确定性异常，列回收台账；为 M3 增加失败不发布 fixture。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h09)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+只删 registry 项是否等于 Agent 已完全销毁？
+
+参考答案：不是；还须取消并 drain、释放 Session/write handle 和 agent scope，处理未发布失败。
+
+### 16. 关键风险及常见误解
+
+身份关联不代表可共享所有权；不要按静态工厂位置推测生命周期 owner。
+
+### 17. 验收方式
+
+两种失败均无半发布对象；说明 session/created 与 agent/created 的先后及测试位置。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S139 · packages/core/agent-loop/tests/agent.spec.ts:1](PIN/packages/core/agent-loop/tests/agent.spec.ts#L1-L28)
+- [S140 · packages/core/agent-loop/tests/scope-lifecycle.spec.ts:1](PIN/packages/core/agent-loop/tests/scope-lifecycle.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+90–120 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H10 在成功发布后研究驱动循环；恢复细节留给 H18。
+
+### 20. 源码依据与验证状态
+
+
+## H10
+
+### 1. 课程编号
+
+H10（核心）。
+
+### 2. 课程名称
+
+深入 Agent Loop——Turn、Step 与执行循环
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H03、H09；受限循环。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s4-l1](/lesson/stage-4/s4-l1)、[s4-l5](/lesson/stage-4/s4-l5)。基础回顾约 7 分钟：复述 Stage 4 的模型提议、Runtime 执行、步骤/工具预算、停止条件。
+
+旧课深度：单工具受限 Loop、参数/步骤/预算/取消；未讲 Turn/Step/Inbox。本讲增量：新增 Turn/Step/Attempt、Inbox 与零步轮次。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+一次输入触发多次模型请求，为什么某次 turn 又可能没有 step？
+
+### 7. 本节唯一核心目标
+
+从 inbox 和停止条件推导 Turn/Step 的边界。
+
+### 8. 重点技术概念
+
+next-turn、next-step、followup、steer、inject、turn-stopping。
+
+### 9. 需要额外解释的难懂术语
+
+Turn、Step、Inbox、Wakeup。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+工单是一轮，查一次资料是一小步；仅加入参考材料不一定叫醒工作人员。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S137 · docs/subsystems/core.zh.md:1](PIN/docs/subsystems/core.zh.md#L1-L10)。
+
+1. [S030 · packages/core/agent-loop/src/agent.ts:170](PIN/packages/core/agent-loop/src/agent.ts#L170-L197) — `send(message:`；先读三种输入如何入队。
+2. [S031 · packages/core/agent-loop/src/inbox.ts:73](PIN/packages/core/agent-loop/src/inbox.ts#L73-L100) — `export class`；再读 claim 与持久投影。
+3. [S008 · packages/core/agent-loop/src/agent.ts:327](PIN/packages/core/agent-loop/src/agent.ts#L327-L354) — `private async turn():`；逐段追轮次/步骤/停止。
+4. [S002 · packages/core/agent-loop/src/agent.ts:435](PIN/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；核对工具导致的下一请求。
+
+**重要数据结构：**Phase、InboxTarget、PreparedStep、TurnEndReason、StepEndReason。
+
+**关键代码分段讲法：**先复习模型提议/Runtime 控制，再用直答、工具续步、首输入被拒绝三轨迹，最后读 max-tokens sticky 分支。
+
+**实际调用链：**send→inbox→wakeDriver/kick→turn/start→preStep→step/start→step→step/end→serial turn-stopping→turn/end；inject 不自行唤醒。
+
+**设计取舍：**步骤定义为模型请求及其工具阶段；同一步内部可以有多个失败重试 attempt。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H10-01 流程《Agent Loop 的 Turn / Step》：推导零步与多步轮次；H10-02 对比《三种 Inbox 输入》：区分排队和唤醒。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L10：用 M3 跑直答、工具续步、空输入和拒绝四种事件序列，断言不会空耗模型调用。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h10)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+首个 pre-step 拒绝后能否仍有 turn/start、turn/end？
+
+参考答案：可以；turn 在 claim 前打开，拒绝关闭 blocked turn，未进入 step。
+
+### 16. 关键风险及常见误解
+
+Step 不等于 token/chunk；不要把教学版 maxSteps 当成锁定版 loop 必有同名配置。
+
+### 17. 验收方式
+
+四种轨迹通过且正确解释 next-step 与 next-turn；在 turn 函数圈出三个退出分支。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S121 · packages/core/agent-loop/tests/loop.spec.ts:1](PIN/packages/core/agent-loop/tests/loop.spec.ts#L1-L28)
+- [S141 · packages/core/agent-loop/tests/inbox.spec.ts:1](PIN/packages/core/agent-loop/tests/inbox.spec.ts#L1-L28)
+- [S142 · packages/core/agent-loop/tests/interception.spec.ts:1](PIN/packages/core/agent-loop/tests/interception.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟（建议两段）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H11 拆请求准备；H12 拆模型流；H20 研究异常分支。
+
+### 20. 源码依据与验证状态
+
+
+## H11
+
+### 1. 课程编号
+
+H11（核心）。
+
+### 2. 课程名称
+
+系统提示词、上下文与模型请求组装
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H10；RAG Context 与 Schema。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l5](/lesson/stage-3/s3-l5)、[s3-l6](/lesson/stage-3/s3-l6)、[s4-l2](/lesson/stage-4/s4-l2)。基础回顾约 6 分钟：从单轮 RAG 的 Question+Context+Schema 出发，问这次模型究竟看到了什么。
+
+旧课深度：owner-filtered Top-K 与单轮 RAG Context，未讲事件 Surface。本讲增量：新增 assembly、prepared capability、日志封装与冻结。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+工具或工作目录变化后，本轮模型究竟看到了哪一版指令与能力？
+
+### 7. 本节唯一核心目标
+
+从 assembly、prepared capability 和日志重建一次冻结请求。
+
+### 8. 重点技术概念
+
+PromptAssembly、模型选择快照、runtime context、request/header。
+
+### 9. 需要额外解释的难懂术语
+
+Admission、Projection、Immutable Snapshot。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+打印出车清单前先确认车辆能载什么；旧清单不能证明这次真实出车的载荷。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S143 · docs/subsystems/system-prompt.zh.md:1](PIN/docs/subsystems/system-prompt.zh.md#L1-L10)、[S138 · packages/core/agent-loop/README.zh.md:1](PIN/packages/core/agent-loop/README.zh.md#L1-L10)。
+
+1. [S032 · packages/core/system-prompt/src/index.ts:619](PIN/packages/core/system-prompt/src/index.ts#L619-L646) — `async assemble(`；先看片段与 schema 汇总输入输出。
+2. [S033 · packages/core/system-prompt/src/index.ts:587](PIN/packages/core/system-prompt/src/index.ts#L587-L614) — `refreshContext(`；区分每次尝试刷新事实与重新组装。
+3. [S034 · packages/core/agent-loop/src/agent.ts:613](PIN/packages/core/agent-loop/src/agent.ts#L613-L640) — `private async prepareRequest(`；读适配器能力绑定。
+4. [S035 · packages/core/agent-loop/src/agent.ts:656](PIN/packages/core/agent-loop/src/agent.ts#L656-L683) — `private buildRequest(`；最后读 header/context 与冻结历史。
+
+**重要数据结构：**AssembleContext.modelSelection、PromptAssembly、PreparedLlmCall、EpochHeader、GenerateOptions。
+
+**关键代码分段讲法：**用“工具列表刚变化”的例子区分声明 schema、step admission 与执行定义；先输入输出，再解释 system 更新分支。
+
+**实际调用链：**tools.resolve→systemPrompt.assemble→pre-step→llm.prepareCall→systemPrompt.project→提交消息→buildRequest→session.deriveMessages→冻结请求。
+
+**设计取舍：**关键事实：取消发生于异步准备阶段时不提交 system/users；重试不重跑 assembly/pre-step，runtime facts 可刷新。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H11-01 流程《模型请求的准入与冻结》：明确真实输入版本；H11-02 双轨《Prompt 与 Runtime Context》：区分刷新与重组。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L11：给 M3 输入两个时间点的工具清单，冻结入场版本；尝试篡改并验证历史不变。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h11)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+能否把旧 request/context 当作当前 route 支持 system 更新的依据？
+
+参考答案：不能，应使用本次 prepareCall 绑定的能力；日志记录本次实际请求封装。
+
+### 16. 关键风险及常见误解
+
+系统指令可更新不意味着修改旧日志；纯投影与原事件分开。
+
+### 17. 验收方式
+
+准确说明 assemble、refresh、prepare、commit、freeze 的顺序，并给取消前后的日志差异。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S144 · packages/core/agent-loop/tests/request-freeze.spec.ts:1](PIN/packages/core/agent-loop/tests/request-freeze.spec.ts#L1-L28)
+- [S145 · packages/core/agent-loop/tests/system-prompt-admission.spec.ts:1](PIN/packages/core/agent-loop/tests/system-prompt-admission.spec.ts#L1-L28)
+- [S122 · packages/core/agent-loop/tests/request-reconstruction.spec.ts:1](PIN/packages/core/agent-loop/tests/request-reconstruction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+100–140 分钟（含可选深读）；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H10 的一步在此展开；H12 解释冻结请求怎样进入 adapter。
+
+### 20. 源码依据与验证状态
+
+
+## H12
+
+### 1. 课程编号
+
+H12（核心）。
+
+### 2. 课程名称
+
+LLM 适配器、消息结构与流式响应
+
+### 3. 所属模块
+
+Agent 核心运行引擎
+
+### 4. 推荐前置知识
+
+H11；AsyncIterable 与取消。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l2](/lesson/stage-3/s3-l2)、[s3-l3](/lesson/stage-3/s3-l3)。基础回顾约 6 分钟：复习流式六状态、坏 JSON 和迟到片段，先预测半截工具参数是否能执行。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：新增 adapter 公共流、attempt 与持久 settlement。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+不同模型的 SSE 和工具参数片段不同，Loop 为什么无需处理每家协议？
+
+### 7. 本节唯一核心目标
+
+追踪统一消息/流契约与 Provider 协议的转换边界。
+
+### 8. 重点技术概念
+
+LlmRuntime、LlmAdapter、StreamChunk、prepared call。
+
+### 9. 需要额外解释的难懂术语
+
+Provider、Adapter、Attempt、Settlement。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+插头转换器转接口但不能凭空增加电器能力；流片段像分批快递，还须组装后核验。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S146 · docs/subsystems/llm-streaming.zh.md:1](PIN/docs/subsystems/llm-streaming.zh.md#L1-L10)、[S147 · packages/llm/llm-deepseek/README.zh.md:1](PIN/packages/llm/llm-deepseek/README.zh.md#L1-L10)。
+
+1. [S036 · packages/llm/llm/src/types.ts:34](PIN/packages/llm/llm/src/types.ts#L34-L61) — `export`；先认识公共流与请求词汇。
+2. [S037 · packages/llm/llm/src/index.ts:290](PIN/packages/llm/llm/src/index.ts#L290-L317) — `async prepareCall(`；再看一次性绑定约束。
+3. [S038 · packages/llm/llm-deepseek/src/adapter.ts:1](PIN/packages/llm/llm-deepseek/src/adapter.ts#L1-L28) — `DeepSeekAdapter`；再看具体 adapter。
+4. [S039 · packages/llm/llm-deepseek/src/sse.ts:1](PIN/packages/llm/llm-deepseek/src/sse.ts#L1-L28) — `声明配置/模块入口（无可调用函数）`；最后跟协议片段处理。
+5. [S040 · packages/core/agent-loop/src/assistant-stream.ts:1](PIN/packages/core/agent-loop/src/assistant-stream.ts#L1-L28) — `AssistantStreamAttempt`；回到 message/attempt settlement。
+
+**重要数据结构：**GenerateOptions、StreamChunk、FinishReason、PreparedLlmCall、ContentBlock。
+
+**关键代码分段讲法：**用工具参数被拆为两段的 Mock，先拼装再验证；失败 finish chunk 与抛异常分开讲。
+
+**实际调用链：**prepareCall → bound stream → llm/stream waterfall → adapter → 协议 chunk → AssistantStreamAttempt → assistant/message 或 assistant/attempt。
+
+**设计取舍：**prepareCall 只能发起一次且不得换 config；相同 adapter 实例拥有的 replayState 才可复用。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→5 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H12-01 适配《统一流与 Provider 协议》：展示边界翻译；H12-02 状态《流式 Attempt 结算》：避免把 chunk 当持久事实。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+L12：M3 发送文本片段、工具参数片段与失败尾帧；断言半截 JSON 不执行。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h12)；全部标为教学简化。

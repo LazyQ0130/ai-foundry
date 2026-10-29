@@ -1,0 +1,669 @@
+FILE docs/deepseek-harness-v2/A-blueprint-v2.md
+# 《深入 DeepSeek Harness：从 Agent 原理到复杂智能体架构》研发蓝图 V2.0
+
+作者基线：2026-10-28；源码 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；文档状态：内部研发设计，非正式 30 讲正文。
+
+## 定位与学习成果
+
+课程以真实源码的问题驱动阅读为主。学员完成后应能用证据解释一次请求如何组装、执行、受策略约束并恢复；能够定位扩展点、追踪资源所有权、辨别日志与投影，并对未经验证的结论保留边界。阅读不追求全仓覆盖，也不以重新翻译官方文档或复刻完整 Agent 产品作为成果。
+
+核心 H01–H24 构成六个四讲模块，拓展 H25–H30 分支深化。先宏观追踪，再建立插件语言，然后逐段进入引擎、工具、日志、协作与工程门禁。H03 是导航级主线，H10/H11/H12 才分别细读循环、请求与流；H16 是能力地图，H27 才细读 MCP；H24 建证据方法，H29 才做观测归因，避免重复。
+
+入学不以购买 Stage 1–4 为条件。可通过免费随文基础回顾及本目录 Mock 实验补足必需知识；原课链接仅供已有权限者选学，不复制受保护大段正文。TypeScript 的 import/export、联合类型、泛型、async/await、AsyncIterable、try/finally 为额外阅读门槛，H02/H05/H12 提供 10–20 分钟可选补课卡。
+
+## 先修图谱与学习路线
+
+```mermaid
+flowchart TD
+  S1[需求、复现、diff 与版本] --> H2[H01-H04 全貌与入口]
+  S2[HTTP、校验、持久化与身份] --> H5[H05-H08 插件与组合]
+  H2 --> H5 --> H9[H09-H12 核心引擎]
+  S3[Provider、流、Context 与评估] --> H9
+  H9 --> H13[H13-H16 工具与边界]
+  S4[受限 Loop、审批、MCP、Run/Step] --> H13
+  H13 --> H17[H17-H20 日志与可靠性]
+  H17 --> H21[H21-H24 协作与综合证据]
+  H21 --> H25[H25 插件]
+  H21 --> H26[H26 Provider]
+  H21 --> H27[H27 MCP]
+  H27 --> H28[H28 浏览器/桌面]
+  H21 --> H29[H29 可观测性]
+  H21 --> H30[H30 Monorepo/CI]
+```
+
+每个模块以一项零 API 费用的小实验验收。按逐讲区间加总，核心约 37.5–51.3 小时，拓展约 11.3–15.5 小时；这是含阅读和实验的估算，非课时承诺。H10/H11/H14/H15/H18/H19/H20 建议分两次，H22 分三段，不以压缩安全或异常分支来凑课时。
+
+## 30 讲目录
+
+| 编号 | 模块 | 课题 | 预计时长 |
+| --- | --- | --- | --- |
+
+| [H01](#h01) | Harness 整体认知 | 为什么有了大模型，还需要 Harness？ | 55–75 分钟 |
+
+| [H02](#h02) | Harness 整体认知 | 从零读懂 DeepSeek Harness 仓库结构 | 60–80 分钟 |
+
+| [H03](#h03) | Harness 整体认知 | 一个 Agent 请求的完整执行流程 | 75–100 分钟 |
+
+| [H04](#h04) | Harness 整体认知 | Profile、运行入口与环境配置 | 60–85 分钟 |
+
+| [H05](#h05) | Cordis 与插件架构 | 一切皆插件——Cordis 设计思想 | 70–95 分钟 |
+
+| [H06](#h06) | Cordis 与插件架构 | 事件系统与插件间通信机制 | 80–110 分钟 |
+
+| [H07](#h07) | Cordis 与插件架构 | 插件生命周期、服务依赖与资源回收 | 80–110 分钟 |
+
+| [H08](#h08) | Cordis 与插件架构 | Profile、Bundle、Patch 与动态能力组合 | 85–115 分钟 |
+
+| [H09](#h09) | Agent 核心运行引擎 | Agent 实例创建、注册和所有权 | 90–120 分钟 |
+
+| [H10](#h10) | Agent 核心运行引擎 | 深入 Agent Loop——Turn、Step 与执行循环 | 100–140 分钟（建议两段） |
+
+| [H11](#h11) | Agent 核心运行引擎 | 系统提示词、上下文与模型请求组装 | 100–140 分钟（含可选深读） |
+
+| [H12](#h12) | Agent 核心运行引擎 | LLM 适配器、消息结构与流式响应 | 95–125 分钟 |
+
+| [H13](#h13) | 工具执行与安全机制 | Tool Registry、Schema 与工具可见性 | 90–125 分钟 |
+
+| [H14](#h14) | 工具执行与安全机制 | 工具执行流水线与 Hook 机制 | 110–150 分钟（建议拆两段） |
+
+| [H15](#h15) | 工具执行与安全机制 | 审批、权限、守卫与沙箱 | 110–150 分钟 |
+
+| [H16](#h16) | 工具执行与安全机制 | 文件、Shell、Web 与 MCP 能力接入 | 100–135 分钟 |
+
+| [H17](#h17) | Session 与运行可靠性 | Session、事件日志与事件溯源 | 100–140 分钟 |
+
+| [H18](#h18) | Session 与运行可靠性 | 会话恢复、历史回放与 Fork | 110–150 分钟 |
+
+| [H19](#h19) | Session 与运行可靠性 | 上下文管理、Compaction 与 Token 优化 | 110–150 分钟 |
+
+| [H20](#h20) | Session 与运行可靠性 | 取消、重试、异常处理与故障恢复 | 110–150 分钟 |
+
+| [H21](#h21) | 复杂智能体系统 | Subagent、任务委派与多智能体协作 | 110–150 分钟 |
+
+| [H22](#h22) | 复杂智能体系统 | Workflow、Jobs、Goal 与任务调度 | 130–180 分钟（建议三段） |
+
+| [H23](#h23) | 复杂智能体系统 | CLI、Web UI、SDK 与远程通信 | 100–140 分钟 |
+
+| [H24](#h24) | 复杂智能体系统 | 大型 Agent 系统测试与综合架构分析 | 120–165 分钟 |
+
+| [H25](#h25) | 高级拓展 | 自己编写一个 Cordis 插件 | 100–140 分钟 |
+
+| [H26](#h26) | 高级拓展 | 多模型适配与 Provider 工程 | 120–160 分钟 |
+
+| [H27](#h27) | 高级拓展 | MCP 深度集成与自定义能力 | 120–165 分钟 |
+
+| [H28](#h28) | 高级拓展 | Browser Use、Computer Use 与执行边界 | 110–150 分钟 |
+
+| [H29](#h29) | 高级拓展 | Agent 可观测性、评估和性能分析 | 110–150 分钟 |
+
+| [H30](#h30) | 高级拓展 | 大型 TypeScript Monorepo、类型系统与 CI 工程 | 120–165 分钟 |
+
+
+## 逐讲设计的阅读约定
+
+以下每讲 20 个字段均为研发规格。源码入口是固定 Commit 的真实链接，引用编号可在 B 报告及 source-index.json 中查回；链接行区间是阅读锚点，函数较长时继续读到函数结尾。具体调用链只描述选定主线，不宣称所有组合都必经同一实现。字段 11 同时包含数据结构、分段精读与设计取舍。字段 15 的答案是思考题要点，实践完整参考方案另见 G。
+
+验证层级：`STATIC_VERIFIED` 是文件、符号、相关逻辑及测试位置的静态核对；实际执行证据只认 evidence 中的记录。禁止把“定位了测试”写成“官方测试通过”。
+
+
+## H01
+
+### 1. 课程编号
+
+H01（核心）。
+
+### 2. 课程名称
+
+为什么有了大模型，还需要 Harness？
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+能说明一次模型 API 请求的输入与输出。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 5 分钟：复述一次服务端模型调用：输入、输出、Key 在哪层；再回顾谁检查工具提议。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：从一次 API/受限循环增加运行环境职责。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+模型提出“搜索资料并保存结论”，谁来执行、记住进度并阻止未获准的动作？
+
+### 7. 本节唯一核心目标
+
+用可追踪证据划分模型决策与运行环境执行的职责。
+
+### 8. 重点技术概念
+
+LLM、Agent、Harness、能力 seam。
+
+### 9. 需要额外解释的难懂术语
+
+Harness、Runtime、Capability Seam。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+研究助理能提议查档案，工作台还须提供工具、日志与审批；提议不是执行授权。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S113 · README.zh.md:1](PIN/README.zh.md#L1-L10)、[S114 · SAFETY.zh.md:1](PIN/SAFETY.zh.md#L1-L10)、[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)。
+
+1. [S001 · packages/core/agent/src/index.ts:175](PIN/packages/core/agent/src/index.ts#L175-L202) — `export interface AgentFactory`；先看创建/恢复的公开契约，认识宿主责任。
+2. [S002 · packages/core/agent-loop/src/agent.ts:435](PIN/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；再看模型结果如何进入工具执行。
+3. [S003 · packages/core/tools/src/pipeline.ts:190](PIN/packages/core/tools/src/pipeline.ts#L190-L217) — `async prepare(`；最后看动作如何在执行前被拒绝。
+
+**重要数据结构：**AgentFactory、StreamChunk、PreToolDecision；不把三者画成三个独立进程。
+
+**关键代码分段讲法：**用无工具回答和带 tool-call 回答并排追踪：前者可完成，后者仍需宿主分派。
+
+**实际调用链：**ReactLoopAgent.step → preparedCall.stream/llm.stream → tools.execute → ToolExecutionPipeline.prepare；图中 Harness 是职责集合。
+
+**设计取舍：**官方实现：loop 也是插件。设计思考：可替换性增加组合验证成本，不能据此断言比所有框架更好。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→3 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H01-01 关系对比《LLM、Agent 与 Harness》：区分提议、循环执行与工作台能力。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L01：将“产生调用、执行调用、记录结果、批准写入”四项分给模型与 Runtime；运行 lab M1 核对两条轨迹。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h01)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+为什么在系统提示词里写“不要越权”不能代替工具策略？
+
+参考答案：提示词影响模型提议；执行器必须对不可信提议独立检查，工具返回内容也不是新授权。
+
+### 16. 关键风险及常见误解
+
+开发者预览未安全审计；三层关系是教学抽象，不能把 Harness 等同沙箱。
+
+### 17. 验收方式
+
+交一张职责图及一次被拒绝调用的轨迹，指出模型与执行器各自的证据位置。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S116 · packages/core/agent-loop/tests/tool-calls.spec.ts:1](PIN/packages/core/agent-loop/tests/tool-calls.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+55–75 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+由 Stage 4 最小循环进入仓库地图；H02 找到各职责所在包。
+
+### 20. 源码依据与验证状态
+
+固定 Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`；上述文件/符号/测试引用为 STATIC_VERIFIED。本讲端到端官方运行未验证；教学实验通过也不替代官方集成。真实 Provider、原生沙箱、完整官方测试及真实 GUI/跨进程恢复仍未运行。
+
+
+## H02
+
+### 1. 课程编号
+
+H02（核心）。
+
+### 2. 课程名称
+
+从零读懂 DeepSeek Harness 仓库结构
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H01；能识别 import/export 与 package.json。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s1-l5](/lesson/stage-1/s1-l5)、[s2-l8](/lesson/stage-2/s2-l8)。基础回顾约 5 分钟：拿一份三文件 diff 找入口、实现和测试，回忆包名与路径查找；不要求重新部署。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：从小项目定位提升到两层 workspace 与 compiler face。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+仓库有大量包，直接从根目录逐个读会迷路，怎样围绕一次功能找入口？
+
+### 7. 本节唯一核心目标
+
+从用户能力反查服务、提供方、消费方与测试。
+
+### 8. 重点技术概念
+
+Monorepo、workspace、包边界、Host/Client。
+
+### 9. 需要额外解释的难懂术语
+
+Service Definition、Provider、Consumer。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+找一家医院的挂号台、科室协议和实际诊室；目录是地图，不能只凭包名判断运行依赖。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](PIN/docs/development.zh.md#L1-L10)、[S118 · docs/capability-seams.zh.md:1](PIN/docs/capability-seams.zh.md#L1-L10)。
+
+1. [S004 · package.json:7](PIN/package.json#L7-L34) — `"packageManager"`；先核对工具链与 workspace 层级。
+2. [S005 · tsconfig.base.json:117](PIN/tsconfig.base.json#L117-L144) — `"@deepseek-ai/cordis"`；再看包名如何映射到源码。
+3. [S006 · packages/core/tool-executor-native/src/index.ts:8](PIN/packages/core/tool-executor-native/src/index.ts#L8-L35) — `export class NativeToolExecutor`；沿一个小提供方回到 tools seam。
+
+**重要数据结构：**package.json workspaces、Context 声明合并、inject、ToolExecutor。
+
+**关键代码分段讲法：**从 native executor 的 describe/execute 看“提供方”而非扫描全部 core；只打开定义、消费方与相邻 tests。
+
+**实际调用链：**package workspace → tsconfig paths → native executor → tools pipeline；区分构建依赖和运行服务注入。
+
+**设计取舍：**官方采用两层 packages/<领域>/<包>。Host/Client 类型检查分离是声明合并冲突的工程边界。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H02-01 架构《源码导航地图》：围绕问题选包。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L02：为一次工具执行列出三角色包、两个 import 和一个测试，不安装整个仓库。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h02)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+npm 包名和目录名不相同时，应该信搜索结果还是凭名称猜路径？
+
+参考答案：先查 package.json 和 tsconfig paths，再验证真实源码及导出；目录邻近不代表调用。
+
+### 16. 关键风险及常见误解
+
+不得混用旧版单层 packages 布局；Node 要求来自锁定 package.json。
+
+### 17. 验收方式
+
+路径查找脚本验证三条文件存在；手写一条“入口→接口→实现→测试”路线。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S119 · scripts/verify-package-paths.spec.ts:1](PIN/scripts/verify-package-paths.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+60–80 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H01 的职责在此落到文件；H03 把文件连成时序。
+
+### 20. 源码依据与验证状态
+
+
+## H03
+
+### 1. 课程编号
+
+H03（核心）。
+
+### 2. 课程名称
+
+一个 Agent 请求的完整执行流程
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H02；会读异步函数。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l1](/lesson/stage-3/s3-l1)、[s3-l3](/lesson/stage-3/s3-l3)、[s4-l1](/lesson/stage-4/s4-l1)。基础回顾约 6 分钟：画 Browser→Server→Provider 的已知链，补上旧受限 Loop 的一次工具往返。
+
+旧课深度：服务端 Provider 调用与 Mock/Key 边界，未讲 adapter seam。本讲增量：引入 live event 与 durable settlement 双线。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+用户提交后出现流式文字、工具卡片和下一次模型调用，这些阶段究竟由谁连接？
+
+### 7. 本节唯一核心目标
+
+按持久事实与实时通知两条线复述一次请求。
+
+### 8. 重点技术概念
+
+Inbox、Turn、Step、请求组装、流式 settlement。
+
+### 9. 需要额外解释的难懂术语
+
+Settlement、Projection、Request Series。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+餐厅点单进入待办篮，厨师一轮可多次取料；屏幕进度不等于已归档的账单。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S120 · docs/agent-lifecycle.zh.md:1](PIN/docs/agent-lifecycle.zh.md#L1-L10)。
+
+1. [S007 · packages/core/agent-loop/src/index.ts:465](PIN/packages/core/agent-loop/src/index.ts#L465-L492) — `private async initializeAgent(`；先看创建完成后才放行工作的边界。
+2. [S008 · packages/core/agent-loop/src/agent.ts:327](PIN/packages/core/agent-loop/src/agent.ts#L327-L354) — `private async turn():`；再读轮次打开和结束。
+3. [S002 · packages/core/agent-loop/src/agent.ts:435](PIN/packages/core/agent-loop/src/agent.ts#L435-L462) — `private async step(`；逐段看流与工具。
+4. [S009 · packages/core/session/src/index.ts:999](PIN/packages/core/session/src/index.ts#L999-L1026) — `deriveMessages():`；最后核对下一请求从哪里取得历史。
+
+**重要数据结构：**SessionEventMap、GenerateOptions、AssistantStreamAttempt、ToolBatchResult。
+
+**关键代码分段讲法：**以一次只读搜索为主线标注 turn/start、step/start、assistant/message、tool/call、tool/result、step/end、turn/end。
+
+**实际调用链：**initializeAgent → sessions.announce → agents.announce → turn → preStep → step → prepareRequest/buildRequest → stream → tools.execute → 下一 step。
+
+**设计取舍：**实时 chunk 服务于体验；durable settlement 服务于重建。硬退出可能发生在 settlement 之前。
+
+### 12. 推荐源码阅读顺序
+
+按字段 11 的 1→4 阅读。每一步先写输入、输出、状态变化和失败分支，再按“为什么”的理由转入下一文件；先读契约再读实现，最后对照下面的测试。不要通读包内所有文件。
+
+### 13. 主要架构图或教学配图
+
+H03-01 架构《整体执行架构》：看清控制与持久事实两条线；H03-02 时序《一次只读搜索》：串起一个请求。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L03：给固定 Mock 轨迹排序，找出 tool/result 后还欠的下一请求；运行 M1。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h03)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+实时 chunk 到达但进程在 settlement 前退出，能保证日志已有完整回答吗？
+
+参考答案：不能。已提交 message/attempt 才是持久来源；live stream 不能等价为逐 chunk 持久化。
+
+### 16. 关键风险及常见误解
+
+一条请求不必等于一个 turn；middleware 可以阻止首个 step。
+
+### 17. 验收方式
+
+事件顺序正确且将 5 个实时扩展点与会话记录分开解释。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S121 · packages/core/agent-loop/tests/loop.spec.ts:1](PIN/packages/core/agent-loop/tests/loop.spec.ts#L1-L28)
+- [S122 · packages/core/agent-loop/tests/request-reconstruction.spec.ts:1](PIN/packages/core/agent-loop/tests/request-reconstruction.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+75–100 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H04 定位启动组合；H09–H12 再拆开精读，不在本讲穷尽错误分支。
+
+### 20. 源码依据与验证状态
+
+
+## H04
+
+### 1. 课程编号
+
+H04（核心）。
+
+### 2. 课程名称
+
+Profile、运行入口与环境配置
+
+### 3. 所属模块
+
+Harness 整体认知
+
+### 4. 推荐前置知识
+
+H03；理解环境变量与服务端凭据。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l0](/lesson/stage-1/s1-l0)、[s2-l8](/lesson/stage-2/s2-l8)、[s3-l1](/lesson/stage-3/s3-l1)。基础回顾约 5 分钟：辨认 package.json 脚本、环境变量名和构建产物；重申凭据只在服务端。
+
+旧课深度：命令、Node 项目与本地运行准备；不计正式 29 课。本讲增量：新增具名 profile、home 与有序组合。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+同一个 dsh 为什么能启动 Web、Headless 或 SDK，而工具集合还可以不同？
+
+### 7. 本节唯一核心目标
+
+在不启动模型的前提下解释启动配置的来源和覆盖顺序。
+
+### 8. 重点技术概念
+
+Profile、Harness home、启动器、patch overlay。
+
+### 9. 需要额外解释的难懂术语
+
+Profile、Bundle、Patch、HMR。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+同一套厨房用不同班次菜单开工；菜单组合不是复制一套厨房代码。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S115 · docs/architecture.zh.md:1](PIN/docs/architecture.zh.md#L1-L10)、[S123 · docs/subsystems/boot.zh.md:1](PIN/docs/subsystems/boot.zh.md#L1-L10)、[S117 · docs/development.zh.md:1](PIN/docs/development.zh.md#L1-L10)。
+
+1. [S010 · apps/cli/src/bin.ts:1](PIN/apps/cli/src/bin.ts#L1-L28) — `RunCliOptions、runCli`；先识别支持的产品入口。
+2. [S011 · apps/cli/src/profile-boot.ts:1](PIN/apps/cli/src/profile-boot.ts#L1-L28) — `homePatchPath、initializeProfileFromDefault、prepareProfile、ResolvedProfileRuntime、RunProfileOptions、runProfile`；再查 profile runner 如何交给 boot。
+3. [S012 · packages/boot/app-boot/src/profile.ts:165](PIN/packages/boot/app-boot/src/profile.ts#L165-L192) — `export function resolveProfileDir`；核对 home/profile 路径及非法名称拒绝。
+4. [S013 · packages/bundle/base/cordis.patch.yml:1](PIN/packages/bundle/base/cordis.patch.yml#L1-L28) — `声明配置/模块入口（无可调用函数）`；观察声明配置而不执行。
+
+**重要数据结构：**Profile、ProfileLayer、dsh.profile.bundles、dsh.bundle.patch。
+
+**关键代码分段讲法：**对照 web 与 sdk-minimal：后者不叠 base；展示变量名而不用真实 key，也不运行 npx 最新版。
+
+**实际调用链：**CLI 参数 → profile runner → profile discovery/composition → Loader 插件树；源码启动须先有构建产物。
+
+**设计取舍：**版本隔离优先；“相同命令”不表示相同 profile 或运行树。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H04-01 流程《启动与配置来源》：避免命令相同就误认为配置相同。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L04：只用内存配置合成三层菜单并说明缺项；运行 M1 的 route fixture，不读本机 home。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h04)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+sdk-minimal 能否按“base 加 SDK”来画？
+
+参考答案：不能；锁定版把它作为显式完整组合的例外，需要单独跟踪其 bundle。
+
+### 16. 关键风险及常见误解
+
+本轮不安装、不读取个人 DSH home；绝不打印凭据值。
+
+### 17. 验收方式
+
+准确列出层优先级、sdk-minimal 例外与构建前提；解释非法 profile 名的拒绝。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S124 · packages/boot/app-boot/tests/profile.spec.ts:1](PIN/packages/boot/app-boot/tests/profile.spec.ts#L1-L28)
+- [S125 · packages/boot/app-boot/tests/config-dump.spec.ts:1](PIN/packages/boot/app-boot/tests/config-dump.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+60–85 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H05–H07 解释树如何运行；H08 才精读 patch 算法。
+
+### 20. 源码依据与验证状态
+
+
+## H05
+
+### 1. 课程编号
+
+H05（核心）。
+
+### 2. 课程名称
+
+一切皆插件——Cordis 设计思想
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H04；基础 TypeScript interface。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s1-l4](/lesson/stage-1/s1-l4)、[s3-l1](/lesson/stage-3/s3-l1)。基础回顾约 4 分钟：对比 Stage 3 把 Provider 封装为函数与把具体实现写死在 Route。
+
+旧课深度：找到组件与数据并审查 diff，未解释 workspace/project references。本讲增量：从参数/模块边界进入 Context 服务注入。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+模型服务、工具与存储若都写死在一个类里，更换能力为什么会牵连多处？
+
+### 7. 本节唯一核心目标
+
+用 Context 服务查询与 inject 说明模块怎样依赖接口。
+
+### 8. 重点技术概念
+
+Plugin、Service、Context、依赖注入。
+
+### 9. 需要额外解释的难懂术语
+
+Dependency Injection、Side Effect。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+办公楼统一插座让设备可替换；Context 不替设备完成工作，inject 也不是把所有对象复制进去。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](PIN/docs/cordis-primer.zh.md#L1-L10)、[S127 · docs/cordis-tutorial/index.zh.md:1](PIN/docs/cordis-tutorial/index.zh.md#L1-L10)。
+
+1. [S014 · vendor/cordis/src/context.ts:42](PIN/vendor/cordis/src/context.ts#L42-L69) — `export class Context`；先看服务容器与代理入口。
+2. [S015 · vendor/cordis/src/service.ts:11](PIN/vendor/cordis/src/service.ts#L11-L38) — `class Service`；再看服务声明与挂载。
+3. [S016 · packages/core/tool-executor-native/src/index.ts:27](PIN/packages/core/tool-executor-native/src/index.ts#L27-L35) — `export const inject`；用短插件核对真实依赖。
+
+**重要数据结构：**Context、Service、Plugin、InjectKey；类型声明和运行时存在性分开。
+
+**关键代码分段讲法：**先把写死的 mailer 参数化，再回到 native executor；教学参数注入不能冒称完整 Cordis。
+
+**实际调用链：**插件声明 inject → registry 等待服务 → apply/Service 初始化 → ctx.tools.setExecutor；卸载由 effect 回收。
+
+**设计取舍：**可替换的是服务契约及组合，不保证任意插件彼此兼容。
+
+### 12. 推荐源码阅读顺序
+
+### 13. 主要架构图或教学配图
+
+H05-01 场景对照《写死依赖与服务契约》：建立注入直觉；H05-02 架构《Context 与 Service》：区分类型声明和运行时注册。完整结构、alt 和制作状态见 D。
+
+### 14. 小规模实践任务
+
+练习卡 L05：写一个只依赖日志接口的计数插件，替换内存日志实现；运行 M2。完整参考路径和预期输出见 [G 实践手册](G-exercises-and-answers.md#h05)；全部标为教学简化。
+
+### 15. 思考题与参考答案要点
+
+声明合并让 ctx.foo 在编译时存在，是否证明运行时已挂载？
+
+参考答案：不证明；声明合并只扩展类型，服务还须注册且满足 inject 与作用域。
+
+### 16. 关键风险及常见误解
+
+不要把 Context 当全局单例；不要把 inject 解释成自动导入 npm 包。
+
+### 17. 验收方式
+
+更换假日志服务后插件代码不变；指出一个真实 inject 与服务 key。
+
+对应官方测试（已定位并静态核对，非声称本轮运行）：
+
+- [S128 · packages/core/tools/tests/tools.spec.ts:1](PIN/packages/core/tools/tests/tools.spec.ts#L1-L28)
+
+### 18. 预计学习时长
+
+70–95 分钟；包含基础回顾、源码、实验与核对，不含安装/网络等待。
+
+### 19. 与前后课程的衔接
+
+H06 解释服务间事件；H07 解释依赖撤走后的生命周期。
+
+### 20. 源码依据与验证状态
+
+
+## H06
+
+### 1. 课程编号
+
+H06（核心）。
+
+### 2. 课程名称
+
+事件系统与插件间通信机制
+
+### 3. 所属模块
+
+Cordis 与插件架构
+
+### 4. 推荐前置知识
+
+H05；Promise 与返回值。
+
+### 5. 与 Stage 1–4 的对应关系
+
+[s3-l3](/lesson/stage-3/s3-l3)、[s4-l3](/lesson/stage-4/s4-l3)。基础回顾约 5 分钟：回顾异步等待和审批回调：观察结果、等待结果、否决动作的需求有何不同。
+
+旧课深度：流式六状态、取消与旧请求隔离，未讲持久 attempt stream。本讲增量：新增五种分发语义和 next 环绕。无原课权限者使用 C 手册自足回顾。
+
+### 6. 本节要解决的真实工程问题
+
+日志观察、等待初始化和拦截工具都叫事件，为什么不能都用 emit？
+
+### 7. 本节唯一核心目标
+
+根据顺序、等待与短路需求选择正确分发模式。
+
+### 8. 重点技术概念
+
+emit、parallel、serial、bail、waterfall。
+
+### 9. 需要额外解释的难懂术语
+
+Waterfall、Hook、Continuation、Bail Value。首次出现使用 C 手册七步结构，先问题后定义。
+
+### 10. 推荐的通俗讲解案例
+
+快递签收观察 vs 多道检查站；Waterfall 像一层层包装的服务台，回程按相反顺序返回。类比之后必须指出边界，不把故事当实现证据。
+
+### 11. 官方源码文件及关键函数
+
+先读官方材料：[S126 · docs/cordis-primer.zh.md:1](PIN/docs/cordis-primer.zh.md#L1-L10)、[S129 · docs/event-producer-consumer.zh.md:1](PIN/docs/event-producer-consumer.zh.md#L1-L10)。
+
+1. [S017 · vendor/cordis/src/events.ts:13](PIN/vendor/cordis/src/events.ts#L13-L40) — `export function isBailed`；先明确哪些返回值会停止。
+2. [S018 · vendor/cordis/src/events.ts:204](PIN/vendor/cordis/src/events.ts#L204-L231) — `async serial(...args`；再看按序 await 与 bail。
+3. [S019 · vendor/cordis/src/events.ts:234](PIN/vendor/cordis/src/events.ts#L234-L261) — `waterfall(...args`；最后跟踪 next 闭包。
+4. [S020 · packages/core/tools/src/pipeline.ts:200](PIN/packages/core/tools/src/pipeline.ts#L200-L227) — `carrier, 'tools/pre-execute'`；回到真实策略事件。
+
+**重要数据结构：**DispatchMode、Events 声明合并、next 回调、PreToolDecision。
+
+**关键代码分段讲法：**用 A-before/B-before/body/B-after/A-after 的确定性轨迹；serial 返
