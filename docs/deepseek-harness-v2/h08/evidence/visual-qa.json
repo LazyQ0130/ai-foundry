@@ -1,0 +1,315 @@
+{
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "c41aa171fb472d13ad14bfddcff725a998124d746e8145af3ca535af0e03f85d",
+  "rendererSha256": "1a22ea4a2f6fb22c8183857ca964f1971449d38d1531a3dcf921245fc08e703c",
+  "figures": [
+    {
+      "id": "h08-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1500,
+      "sourceSha256": "ed53e87ab78a27505927caec079e5b8e8c5b567e9c505d4592d2f71b473a825b",
+      "imageSha256": "e91bd070d1bd56c468e51bdf20fd455294ee48943340a494b93d9d51fec968cd"
+    },
+    {
+      "id": "h08-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1430,
+      "sourceSha256": "e482f4076db84511ca74531fecd9942ed421b713069eabbf32dca6f2cb0e7d85",
+      "imageSha256": "c421908a38a961a8181d8defd8b2bb30094a58189e3be2a10c0818172a1aef4c"
+    },
+    {
+      "id": "h08-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1690,
+      "sourceSha256": "530950c193f67e221cab19d5c8b2f1a3f3a85a766dbe9b3d5d52e057730aa396",
+      "imageSha256": "b065ba5182097243af0e1692f914c741d2c0c9aaecd0b455c3ca461fdc6ab93a"
+    },
+    {
+      "id": "h08-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1520,
+      "sourceSha256": "62335f97fcaee0ec31968afeb04640f724e1f058dbe60c182e0295d862799a22",
+      "imageSha256": "31a3657c514ae2aac384fcb10315317b04c7610f03f490f6edcdb5ab6068da0a"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "web、headless、sdk、acp模板先选dsh-base再叠加各自应用Bundle；sdk-minimal单独拥有完整树。Bundle贡献Patch，最终条目由Loader挂载Plugin",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜箭头表示组合贡献，不表示进程、调用顺序或服务已激活。sdk-minimal与base并列，不能画成base的子层。",
+            "src": "/course-media/harness-v2/h08/h08-01.png"
+          },
+          {
+            "alt": "原始config含model、temperature和retry；surface层整份替换后retry消失；CLI层再替换后仅剩model。深合并保留旧字段只是错误预测",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜实线是当前版本的整个config替换；底部反例保留旧字段，不是官方结果。条目id与name仍保留。",
+            "src": "/course-media/harness-v2/h08/h08-02.png"
+          },
+          {
+            "alt": "空树依次经过有序Bundle、Profile、Home和CLI Patch形成最终条目列表，随后由Include与Loader导入插件；禁用、缺服务和启动失败会使配置存在却没有ACTIVE插件",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜常规四层的优先级与加载边界。遥测硬禁用另列在最后；Loader接到的是组合结果，表达式求值和插件校验还在后面。",
+            "src": "/course-media/harness-v2/h08/h08-03.png"
+          },
+          {
+            "alt": "配置变化经重新组合更新Entry并触发清理和加载；源码模块变化经独立替换路径；重启重新进入启动流程。解析失败可保留旧树，应用后失败可能保留新配置和FAILED条目",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜精选变化路径。普通配置更新可重用Fiber，禁用后再启用则是新Fiber；模块替换的恢复只是尽力，未承诺恢复旧业务状态。",
+            "src": "/course-media/harness-v2/h08/h08-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "compose.mjs",
+        "reconfigure.ts",
+        "harness.ts",
+        "demo.ts"
+      ],
+      "clipboard": "four full programs + A reference exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 990,
+        "scrolled": 279
+      },
+      "codeScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 711,
+        "scrolled": 0
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 14
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "web、headless、sdk、acp模板先选dsh-base再叠加各自应用Bundle；sdk-minimal单独拥有完整树。Bundle贡献Patch，最终条目由Loader挂载Plugin",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜箭头表示组合贡献，不表示进程、调用顺序或服务已激活。sdk-minimal与base并列，不能画成base的子层。",
+            "src": "/course-media/harness-v2/h08/h08-01.png"
+          },
+          {
+            "alt": "原始config含model、temperature和retry；surface层整份替换后retry消失；CLI层再替换后仅剩model。深合并保留旧字段只是错误预测",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜实线是当前版本的整个config替换；底部反例保留旧字段，不是官方结果。条目id与name仍保留。",
+            "src": "/course-media/harness-v2/h08/h08-02.png"
+          },
+          {
+            "alt": "空树依次经过有序Bundle、Profile、Home和CLI Patch形成最终条目列表，随后由Include与Loader导入插件；禁用、缺服务和启动失败会使配置存在却没有ACTIVE插件",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 3｜常规四层的优先级与加载边界。遥测硬禁用另列在最后；Loader接到的是组合结果，表达式求值和插件校验还在后面。",
+            "src": "/course-media/harness-v2/h08/h08-03.png"
+          },
+          {
+            "alt": "配置变化经重新组合更新Entry并触发清理和加载；源码模块变化经独立替换路径；重启重新进入启动流程。解析失败可保留旧树，应用后失败可能保留新配置和FAILED条目",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜精选变化路径。普通配置更新可重用Fiber，禁用后再启用则是新Fiber；模块替换的恢复只是尽力，未承诺恢复旧业务状态。",
+            "src": "/course-media/harness-v2/h08/h08-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "compose.mjs",
+        "reconfigure.ts",
+        "harness.ts",
+        "demo.ts"
+      ],
+      "clipboard": "four full programs + A reference exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 982,
+        "scrolled": 661
+      },
+      "codeScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 321,
+        "scrolled": 0
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 14
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.6625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "web、headless、sdk、acp模板先选dsh-base再叠加各自应用Bundle；sdk-minimal单独拥有完整树。Bundle贡献Patch，最终条目由Loader挂载Plugin",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜箭头表示组合贡献，不表示进程、调用顺序或服务已激活。sdk-minimal与base并列，不能画成base的子层。",
+            "src": "/course-media/harness-v2/h08/h08-01.png"
+          },
+          {
+            "alt": "原始config含model、temperature和retry；surface层整份替换后retry消失；CLI层再替换后仅剩model。深合并保留旧字段只是错误预测",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜实线是当前版本的整个config替换；底部反例保留旧字段，不是官方结果。条目id与name仍保留。",
+            "src": "/course-media/harness-v2/h08/h08-02.png"
+          },
+          {
+            "alt": "空树依次经过有序Bundle、Profile、Home和CLI Patch形成最终条目列表，随后由Include与Loader导入插件；禁用、缺服务和启动失败会使配置存在却没有ACTIVE插件",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 3｜常规四层的优先级与加载边界。遥测硬禁用另列在最后；Loader接到的是组合结果，表达式求值和插件校验还在后面。",
+            "src": "/course-media/harness-v2/h08/h08-03.png"
+          },
+          {
+            "alt": "配置变化经重新组合更新Entry并触发清理和加载；源码模块变化经独立替换路径；重启重新进入启动流程。解析失败可保留旧树，应用后失败可能保留新配置和FAILED条目",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜精选变化路径。普通配置更新可重用Fiber，禁用后再启用则是新Fiber；模块替换的恢复只是尽力，未承诺恢复旧业务状态。",
+            "src": "/course-media/harness-v2/h08/h08-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "compose.mjs",
+        "reconfigure.ts",
+        "harness.ts",
+        "demo.ts"
+      ],
+      "clipboard": "four full programs + A reference exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 982,
+        "scrolled": 731
+      },
+      "codeScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 251,
+        "scrolled": 0
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 14
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.6
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

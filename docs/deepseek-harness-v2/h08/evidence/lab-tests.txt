@@ -1,0 +1,144 @@
+TAP version 13
+# Subtest: A 教学模拟器：五层计算符合独立答案，输入不变
+ok 1 - A 教学模拟器：五层计算符合独立答案，输入不变
+  ---
+  duration_ms: 1.257
+  type: 'test'
+  ...
+# Subtest: A 错误答案：深合并保留 temperature 必须拒绝
+ok 2 - A 错误答案：深合并保留 temperature 必须拒绝
+  ---
+  duration_ms: 2.3968
+  type: 'test'
+  ...
+# Subtest: A 官方 Patch 对照：manifest顺序及五个YAML文件与教学输入一致
+ok 3 - A 官方 Patch 对照：manifest顺序及五个YAML文件与教学输入一致
+  ---
+  duration_ms: 11.1607
+  type: 'test'
+  ...
+# Subtest: 官方 Patch：同一列表先 insert 再按 ID 覆盖，name 是保护条件
+ok 4 - 官方 Patch：同一列表先 insert 再按 ID 覆盖，name 是保护条件
+  ---
+  duration_ms: 0.2356
+  type: 'test'
+  ...
+# Subtest: 官方 Patch：组内插入、disable/enable与缺目标警告
+ok 5 - 官方 Patch：组内插入、disable/enable与缺目标警告
+  ---
+  duration_ms: 0.1551
+  type: 'test'
+  ...
+# Subtest: 官方 Patch：不会进入嵌套 Include 文件，带 group 的配置才递归索引
+ok 6 - 官方 Patch：不会进入嵌套 Include 文件，带 group 的配置才递归索引
+  ---
+  duration_ms: 0.1304
+  type: 'test'
+  ...
+# Subtest: B 真实 Cordis/Loader：两插件、稳定ID、配置更新、禁用和重新启用
+ok 7 - B 真实 Cordis/Loader：两插件、稳定ID、配置更新、禁用和重新启用
+  ---
+  duration_ms: 46.4974
+  type: 'test'
+  ...
+# Subtest: B 真实 Loader：稳定 ID 未改变条目不重挂
+ok 8 - B 真实 Loader：稳定 ID 未改变条目不重挂
+  ---
+  duration_ms: 1.9936
+  type: 'test'
+  ...
+# Subtest: B 真实 Loader：缺失 ID 且重新解析新对象导致删除/新增
+ok 9 - B 真实 Loader：缺失 ID 且重新解析新对象导致删除/新增
+  ---
+  duration_ms: 2.4219
+  type: 'test'
+  ...
+# h08: warning: 1 entry did not activate
+# optional-needs (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h08-boot-X2xmg8/needs.mjs): pending (waiting for service: h08Missing)
+# Subtest: C 真实 App Boot：缺服务为 PENDING，应用后失败不自动恢复旧服务
+ok 10 - C 真实 App Boot：缺服务为 PENDING，应用后失败不自动恢复旧服务
+  ---
+  duration_ms: 15.9623
+  type: 'test'
+  ...
+# Subtest: C 真实 App Boot：必需 webserver 等待服务导致启动审查失败
+ok 11 - C 真实 App Boot：必需 webserver 等待服务导致启动审查失败
+  ---
+  duration_ms: 6.5275
+  type: 'test'
+  ...
+# h08: warning: 1 entry did not activate
+# missing (./absent-course.mjs): failed to import: Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h08-boot-My0oEl\\absent-course.mjs' imported from C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h08-boot-My0oEl\\
+#     at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+#     at moduleResolve (node:internal/modules/esm/resolve:865:10)
+#     at defaultResolve (node:internal/modules/esm/resolve:992:11)
+#     at \#cachedDefaultResolve (node:internal/modules/esm/loader:691:20)
+#     at \#resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)
+#     at nextStep (node:internal/modules/customization_hooks:189:26)
+#     at resolveBaseSync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+#     at resolveDirectorySync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+#     at resolveTsPathsSync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+#     at resolve (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832)
+# Subtest: C 真实 App Boot：可选模块缺失与缺服务分开报告，好兄弟仍运行
+ok 12 - C 真实 App Boot：可选模块缺失与缺服务分开报告，好兄弟仍运行
+  ---
+  duration_ms: 9.6351
+  type: 'test'
+  ...
+# Subtest: C 真实 Include：坏 YAML、空文件保留旧树；下次合法编辑生效
+ok 13 - C 真实 Include：坏 YAML、空文件保留旧树；下次合法编辑生效
+  ---
+  duration_ms: 14.8652
+  type: 'test'
+  ...
+# Subtest: C 真实配置解析：可选文件不存在无层；显式 overlay 不存在抛错；非数组拒绝
+ok 14 - C 真实配置解析：可选文件不存在无层；显式 overlay 不存在抛错；非数组拒绝
+  ---
+  duration_ms: 4.2422
+  type: 'test'
+  ...
+# Subtest: C 真实 Profile：五个官方模板完整解析，只读树；缺/不兼容 Bundle 被跳过
+ok 15 - C 真实 Profile：五个官方模板完整解析，只读树；缺/不兼容 Bundle 被跳过
+  ---
+  duration_ms: 61.0133
+  type: 'test'
+  ...
+# Subtest: C 真实 Profile 四层与遥测硬禁用：CLI值胜出，0字符串也禁遥测
+ok 16 - C 真实 Profile 四层与遥测硬禁用：CLI值胜出，0字符串也禁遥测
+  ---
+  duration_ms: 3.0411
+  type: 'test'
+  ...
+# Subtest: C 磁盘 Profile→有序 Bundle 文件→用户层→Home→overlay→真实 boot
+ok 17 - C 磁盘 Profile→有序 Bundle 文件→用户层→Home→overlay→真实 boot
+  ---
+  duration_ms: 10.9668
+  type: 'test'
+  ...
+# Subtest: C 错误 Profile patch 抛错；错误 Bundle patch 记入跳过
+ok 18 - C 错误 Profile patch 抛错；错误 Bundle patch 记入跳过
+  ---
+  duration_ms: 4.5587
+  type: 'test'
+  ...
+# Subtest: C Schema 拒绝：raw 配置已变，运行 effective 配置仍为旧值
+ok 19 - C Schema 拒绝：raw 配置已变，运行 effective 配置仍为旧值
+  ---
+  duration_ms: 5.8674
+  type: 'test'
+  ...
+# Subtest: C recompose 显式 requiredIds 将新 PENDING 视为失败；应用后条目保留
+ok 20 - C recompose 显式 requiredIds 将新 PENDING 视为失败；应用后条目保留
+  ---
+  duration_ms: 5.3767
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 623.621

@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys
+ok 1 - V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys
+  ---
+  duration_ms: 19.5654
+  type: 'test'
+  ...
+# Subtest: V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON
+ok 2 - V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON
+  ---
+  duration_ms: 9.2836
+  type: 'test'
+  ...
+# Subtest: Markdown renders headings, prose, formatting, code, GFM, links and captioned images
+ok 3 - Markdown renders headings, prose, formatting, code, GFM, links and captioned images
+  ---
+  duration_ms: 13.5438
+  type: 'test'
+  ...
+# Subtest: all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed
+ok 4 - all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed
+  ---
+  duration_ms: 19.9859
+  type: 'test'
+  ...
+# Subtest: directive allowlist rejects arbitrary components/attributes and malformed prompts
+ok 5 - directive allowlist rejects arbitrary components/attributes and malformed prompts
+  ---
+  duration_ms: 7.3289
+  type: 'test'
+  ...
+# Subtest: raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed
+ok 6 - raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed
+  ---
+  duration_ms: 3.578
+  type: 'test'
+  ...
+# Subtest: resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML
+ok 7 - resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML
+  ---
+  duration_ms: 6.3263
+  type: 'test'
+  ...
+# Subtest: published courses render in full with unique stable progress keys
+ok 8 - published courses render in full with unique stable progress keys
+  ---
+  duration_ms: 240.877
+  type: 'test'
+  ...
+# Subtest: every authored lesson parses and renders with globally unique progress keys
+ok 9 - every authored lesson parses and renders with globally unique progress keys
+  ---
+  duration_ms: 477.5925
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1341.3163

@@ -1,0 +1,372 @@
+[
+  {
+    "id": "S01",
+    "claim": "Profile保存有序Bundle与用户层",
+    "path": "packages/boot/app-boot/src/profile.ts",
+    "start": 74,
+    "end": 99,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L74-L99",
+    "verification": "loadProfileDirectory磁盘夹具",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S02",
+    "claim": "Bundle声明一个文件或有序文件数组",
+    "path": "packages/boot/app-boot/src/profile.ts",
+    "start": 48,
+    "end": 71,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L48-L71",
+    "verification": "两个Bundle文件依次覆盖",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S03",
+    "claim": "五种随附模板与minimal独立树",
+    "path": "packages/util/official-bundles/src/bundles.ts",
+    "start": 10,
+    "end": 25,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/official-bundles/src/bundles.ts#L10-L25",
+    "verification": "officialProfiles解析五模板完整Patch",
+    "status": "EXECUTED_PARSE_ONLY"
+  },
+  {
+    "id": "S04",
+    "claim": "base以insert贡献共享行；行顺序不是服务激活顺序",
+    "path": "packages/bundle/base/cordis.patch.yml",
+    "start": 1,
+    "end": 33,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L1-L33",
+    "verification": "配置选读＋完整树解析",
+    "status": "STATIC_AND_PARSE"
+  },
+  {
+    "id": "S05",
+    "claim": "web-app一个Bundle列五个Patch文件",
+    "path": "packages/bundle/web-app/package.json",
+    "start": 46,
+    "end": 56,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/web-app/package.json#L46-L56",
+    "verification": "五模板解析",
+    "status": "EXECUTED_PARSE_ONLY"
+  },
+  {
+    "id": "S06",
+    "claim": "按安装锚点再Profile查Bundle",
+    "path": "packages/boot/app-boot/src/profile.ts",
+    "start": 629,
+    "end": 664,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L629-L664",
+    "verification": "隔离安装目录解析；锚点逆序未另做变异",
+    "status": "PARTIAL_EXECUTED"
+  },
+  {
+    "id": "S07",
+    "claim": "缺失/平台/不兼容/坏Bundle可被跳过，用户层错误抛出",
+    "path": "packages/boot/app-boot/src/profile.ts",
+    "start": 678,
+    "end": 714,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L678-L714",
+    "verification": "缺包、版本、坏Bundle及坏Profile测试；平台分支只选读",
+    "status": "PARTIAL_EXECUTED"
+  },
+  {
+    "id": "S08",
+    "claim": "四常规层＋启动overlays快照",
+    "path": "packages/boot/app-boot/src/profile-context.ts",
+    "start": 74,
+    "end": 85,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile-context.ts#L74-L85",
+    "verification": "磁盘Profile→boot与四层夹具",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S09",
+    "claim": "遥测非空开关在最后禁用已存在行",
+    "path": "packages/boot/app-boot/src/profile-context.ts",
+    "start": 40,
+    "end": 55,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile-context.ts#L40-L55",
+    "verification": "0字符串压过CLI重新启用",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S10",
+    "claim": "composeEntries调用官方Patch，不另造算法",
+    "path": "packages/boot/app-boot/src/profile.ts",
+    "start": 747,
+    "end": 762,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L747-L762",
+    "verification": "A官方对照与所有模板",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S11",
+    "claim": "根insert及组insert会索引新增条目",
+    "path": "vendor/include/src/index.ts",
+    "start": 65,
+    "end": 102,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L65-L102",
+    "verification": "同列表先插再改、组内插入",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S12",
+    "claim": "缺ID/目标/name保护报告warn跳过",
+    "path": "vendor/include/src/index.ts",
+    "start": 104,
+    "end": 123,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L104-L123",
+    "verification": "三警告与name不匹配测试",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S13",
+    "claim": "整个config赋值，非默认深合并",
+    "path": "vendor/include/src/index.ts",
+    "start": 120,
+    "end": 123,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L120-L123",
+    "verification": "A五层；官方标题raw覆盖；深合并变异拒绝",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S14",
+    "claim": "Patch索引递归组，不跨嵌套Include文件",
+    "path": "vendor/include/src/index.ts",
+    "start": 65,
+    "end": 74,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L65-L74",
+    "verification": "只定位配置中当前树；Include边界测试",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S15",
+    "claim": "配置解析保留表达式节点，插入相对名锚定Patch目录",
+    "path": "packages/boot/app-boot/src/index.ts",
+    "start": 547,
+    "end": 590,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L547-L590",
+    "verification": "五模板表达式只解析；相对路径规则选读",
+    "status": "STATIC_AND_PARSE"
+  },
+  {
+    "id": "S16",
+    "claim": "Loader保留Include/Group配置字面量；其他Fiber插值",
+    "path": "vendor/loader/src/index.ts",
+    "start": 104,
+    "end": 113,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/index.ts#L104-L113",
+    "verification": "模块选读；未对全部表达式作执行矩阵",
+    "status": "STATIC"
+  },
+  {
+    "id": "S17",
+    "claim": "EntryGroup用ID比较、同ID复用Entry",
+    "path": "vendor/loader/src/config/group.ts",
+    "start": 20,
+    "end": 65,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/group.ts#L20-L65",
+    "verification": "B稳定/匿名新对象两对照",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S18",
+    "claim": "缺ID时ensureId随机生成并写回对象",
+    "path": "vendor/loader/src/config/tree.ts",
+    "start": 52,
+    "end": 59,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/tree.ts#L52-L59",
+    "verification": "B每次重新解析全新对象，非复用已补ID对象",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S19",
+    "claim": "普通config更新可清理并重跑同一Fiber",
+    "path": "vendor/loader/src/config/entry.ts",
+    "start": 118,
+    "end": 180,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L118-L180",
+    "verification": "B普通无Config拦截/volatile的插件",
+    "status": "EXECUTED_CONDITIONAL"
+  },
+  {
+    "id": "S20",
+    "claim": "disabled释放旧Fiber，Entry仍保留；重启用新建Fiber",
+    "path": "vendor/loader/src/config/entry.ts",
+    "start": 134,
+    "end": 180,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L134-L180",
+    "verification": "B Provider/Consumer状态身份",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S21",
+    "claim": "group标记行有enabled特例，祖先和表达式另影响禁用",
+    "path": "vendor/loader/src/config/entry.ts",
+    "start": 75,
+    "end": 97,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/entry.ts#L75-L97",
+    "verification": "选读getter；未覆盖所有组变更",
+    "status": "STATIC"
+  },
+  {
+    "id": "S22",
+    "claim": "Include同路径更新拦截自身重启而更新孩子",
+    "path": "vendor/include/src/index.ts",
+    "start": 190,
+    "end": 201,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L190-L201",
+    "verification": "App Boot recompose隔离夹具",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S23",
+    "claim": "Include读失败不提交新内容，refresh捕获并留旧树",
+    "path": "vendor/include/src/index.ts",
+    "start": 216,
+    "end": 241,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/include/src/index.ts#L216-L241",
+    "verification": "坏YAML/空文件/下次合法恢复",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S24",
+    "claim": "根Include内建准备、兼容性与Loader挂载",
+    "path": "packages/boot/app-boot/src/index.ts",
+    "start": 741,
+    "end": 791,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L741-L791",
+    "verification": "真实boot＋本地纯插件",
+    "status": "EXECUTED_FIXTURE"
+  },
+  {
+    "id": "S25",
+    "claim": "启动必需ID失败抛；可选项警告；缺席/禁用必需行另处理",
+    "path": "packages/boot/app-boot/src/index.ts",
+    "start": 1140,
+    "end": 1170,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L1140-L1170",
+    "verification": "webserver缺服务拒绝；optional-needs与缺模块保兄弟",
+    "status": "PARTIAL_EXECUTED"
+  },
+  {
+    "id": "S26",
+    "claim": "重组应用前的finally恢复不同于应用后的失败",
+    "path": "packages/boot/app-boot/src/index.ts",
+    "start": 329,
+    "end": 430,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L329-L430",
+    "verification": "应用后失败实际验证；映射publication前恢复只选读",
+    "status": "PARTIAL_EXECUTED"
+  },
+  {
+    "id": "S27",
+    "claim": "重组PENDING通常warning；requiredIds可将其变失败",
+    "path": "packages/boot/app-boot/src/index.ts",
+    "start": 390,
+    "end": 411,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L390-L411",
+    "verification": "requiredIds=needs失败但条目保留",
+    "status": "EXECUTED"
+  },
+  {
+    "id": "S28",
+    "claim": "Schema拒绝可使raw新值与effective旧值并存",
+    "path": "packages/boot/app-boot/tests/config-reload.spec.ts",
+    "start": 232,
+    "end": 260,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/config-reload.spec.ts#L232-L260",
+    "verification": "独立真实boot对应夹具；官方用例未运行",
+    "status": "EXECUTED_AUTHOR_FIXTURE"
+  },
+  {
+    "id": "S29",
+    "claim": "base配置HMR；headless应用层禁用",
+    "path": "packages/bundle/headless/cordis.patch.yml",
+    "start": 35,
+    "end": 46,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/headless/cordis.patch.yml#L35-L46",
+    "verification": "五模板解析；真实HMR未挂载",
+    "status": "STATIC_AND_PARSE"
+  },
+  {
+    "id": "S30",
+    "claim": "Profile/Home/manifest监听等待应用就绪并串行协调",
+    "path": "packages/boot/hmr/src/index.ts",
+    "start": 352,
+    "end": 407,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/src/index.ts#L352-L407",
+    "verification": "选读初始化、watchConfig及runExclusive；未运行原生监视",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S31",
+    "claim": "Profile重组比较模块并调用App Boot重组",
+    "path": "packages/boot/hmr/src/index.ts",
+    "start": 913,
+    "end": 982,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/src/index.ts#L913-L982",
+    "verification": "选读try/finally；只执行App Boot子路径",
+    "status": "STATIC_NOT_RUN_HMR"
+  },
+  {
+    "id": "S32",
+    "claim": "模块预导入失败先恢复缓存而不卸载旧运行",
+    "path": "packages/boot/hmr/tests/modules.spec.ts",
+    "start": 178,
+    "end": 192,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/tests/modules.spec.ts#L178-L192",
+    "verification": "setup→partialReload拒绝→sameFiber/once断言选读",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S33",
+    "claim": "模块激活失败尝试恢复旧插件",
+    "path": "packages/boot/hmr/tests/modules.spec.ts",
+    "start": 267,
+    "end": 283,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/tests/modules.spec.ts#L267-L283",
+    "verification": "setup→replacement throw→两次original且无成功event断言",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S34",
+    "claim": "旧插件恢复自己也可能失败，原错误仍报告",
+    "path": "packages/boot/hmr/tests/modules.spec.ts",
+    "start": 455,
+    "end": 469,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/tests/modules.spec.ts#L455-L469",
+    "verification": "replacement/restore双失败与warn断言选读",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S35",
+    "claim": "模块恢复实际catch是尽力，不保证状态/副作用回滚",
+    "path": "packages/boot/hmr/src/index.ts",
+    "start": 642,
+    "end": 739,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/src/index.ts#L642-L739",
+    "verification": "预导入、delete/await、reload、rollback双层catch语义审读",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S36",
+    "claim": "Plugin Manager保存选择并经HMR应用或要求重启",
+    "path": "packages/boot/plugin-manager/src/index.ts",
+    "start": 1233,
+    "end": 1274,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/plugin-manager/src/index.ts#L1233-L1274",
+    "verification": "管理器调用与状态分支选读；无安装/删除操作",
+    "status": "STATIC_NOT_RUN"
+  },
+  {
+    "id": "S37",
+    "claim": "isolate的true本地域与字符串命名域，不是OS隔离",
+    "path": "vendor/loader/src/config/isolate.ts",
+    "start": 25,
+    "end": 88,
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/vendor/loader/src/config/isolate.ts#L25-L88",
+    "verification": "选读Realm与access分支；完整隔离重组矩阵未运行",
+    "status": "STATIC"
+  }
+]

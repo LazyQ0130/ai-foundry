@@ -1,0 +1,39 @@
+TAP version 13
+# node:internal/modules/esm/load:199
+#     throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+#           ^
+# Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+#     at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:146:3)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+#     at nextStep (node:internal/modules/customization_hooks:189:26)
+#     at load (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:5820)
+#     at nextStep (node:internal/modules/customization_hooks:189:26)
+#     at loadWithHooks (node:internal/modules/customization_hooks:374:18)
+#     at \#loadSync (node:internal/modules/esm/loader:787:14)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31) {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Node.js v24.16.0
+# Subtest: composition.test.ts
+not ok 1 - composition.test.ts
+  ---
+  duration_ms: 86.2896
+  type: 'test'
+  location: 'C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h08-lab-Tu4G7V\\composition.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 93.1858

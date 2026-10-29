@@ -1,0 +1,209 @@
+{
+  "status": "PASS",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "node": "v24.16.0",
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h08-lab-xXGBki",
+  "sourceFilesChecked": 749,
+  "tests": 20,
+  "mutation": {
+    "exit": 1,
+    "status": "EXPECTED_FAILURE"
+  },
+  "results": {
+    "tests": {
+      "exit": 0,
+      "stdout": "TAP version 13\n# Subtest: A 教学模拟器：五层计算符合独立答案，输入不变\nok 1 - A 教学模拟器：五层计算符合独立答案，输入不变\n  ---\n  duration_ms: 1.257\n  type: 'test'\n  ...\n# Subtest: A 错误答案：深合并保留 temperature 必须拒绝\nok 2 - A 错误答案：深合并保留 temperature 必须拒绝\n  ---\n  duration_ms: 2.3968\n  type: 'test'\n  ...\n# Subtest: A 官方 Patch 对照：manifest顺序及五个YAML文件与教学输入一致\nok 3 - A 官方 Patch 对照：manifest顺序及五个YAML文件与教学输入一致\n  ---\n  duration_ms: 11.1607\n  type: 'test'\n  ...\n# Subtest: 官方 Patch：同一列表先 insert 再按 ID 覆盖，name 是保护条件\nok 4 - 官方 Patch：同一列表先 insert 再按 ID 覆盖，name 是保护条件\n  ---\n  duration_ms: 0.2356\n  type: 'test'\n  ...\n# Subtest: 官方 Patch：组内插入、disable/enable与缺目标警告\nok 5 - 官方 Patch：组内插入、disable/enable与缺目标警告\n  ---\n  duration_ms: 0.1551\n  type: 'test'\n  ...\n# Subtest: 官方 Patch：不会进入嵌套 Include 文件，带 group 的配置才递归索引\nok 6 - 官方 Patch：不会进入嵌套 Include 文件，带 group 的配置才递归索引\n  ---\n  duration_ms: 0.1304\n  type: 'test'\n  ...\n# Subtest: B 真实 Cordis/Loader：两插件、稳定ID、配置更新、禁用和重新启用\nok 7 - B 真实 Cordis/Loader：两插件、稳定ID、配置更新、禁用和重新启用\n  ---\n  duration_ms: 46.4974\n  type: 'test'\n  ...\n# Subtest: B 真实 Loader：稳定 ID 未改变条目不重挂\nok 8 - B 真实 Loader：稳定 ID 未改变条目不重挂\n  ---\n  duration_ms: 1.9936\n  type: 'test'\n  ...\n# Subtest: B 真实 Loader：缺失 ID 且重新解析新对象导致删除/新增\nok 9 - B 真实 Loader：缺失 ID 且重新解析新对象导致删除/新增\n  ---\n  duration_ms: 2.4219\n  type: 'test'\n  ...\n# h08: warning: 1 entry did not activate\n# optional-needs (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h08-boot-X2xmg8/needs.mjs): pending (waiting for service: h08Missing)\n# Subtest: C 真实 App Boot：缺服务为 PENDING，应用后失败不自动恢复旧服务\nok 10 - C 真实 App Boot：缺服务为 PENDING，应用后失败不自动恢复旧服务\n  ---\n  duration_ms: 15.9623\n  type: 'test'\n  ...\n# Subtest: C 真实 App Boot：必需 webserver 等待服务导致启动审查失败\nok 11 - C 真实 App Boot：必需 webserver 等待服务导致启动审查失败\n  ---\n  duration_ms: 6.5275\n  type: 'test'\n  ...\n# h08: warning: 1 entry did not activate\n# missing (./absent-course.mjs): failed to import: Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h08-boot-My0oEl\\\\absent-course.mjs' imported from C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h08-boot-My0oEl\\\\\n#     at finalizeResolution (node:internal/modules/esm/resolve:271:11)\n#     at moduleResolve (node:internal/modules/esm/resolve:865:10)\n#     at defaultResolve (node:internal/modules/esm/resolve:992:11)\n#     at \\#cachedDefaultResolve (node:internal/modules/esm/loader:691:20)\n#     at \\#resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)\n#     at nextStep (node:internal/modules/customization_hooks:189:26)\n#     at resolveBaseSync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)\n#     at resolveDirectorySync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)\n#     at resolveTsPathsSync (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)\n#     at resolve (file:///C:/Users/QYF/Desktop/AIFoundry/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832)\n# Subtest: C 真实 App Boot：可选模块缺失与缺服务分开报告，好兄弟仍运行\nok 12 - C 真实 App Boot：可选模块缺失与缺服务分开报告，好兄弟仍运行\n  ---\n  duration_ms: 9.6351\n  type: 'test'\n  ...\n# Subtest: C 真实 Include：坏 YAML、空文件保留旧树；下次合法编辑生效\nok 13 - C 真实 Include：坏 YAML、空文件保留旧树；下次合法编辑生效\n  ---\n  duration_ms: 14.8652\n  type: 'test'\n  ...\n# Subtest: C 真实配置解析：可选文件不存在无层；显式 overlay 不存在抛错；非数组拒绝\nok 14 - C 真实配置解析：可选文件不存在无层；显式 overlay 不存在抛错；非数组拒绝\n  ---\n  duration_ms: 4.2422\n  type: 'test'\n  ...\n# Subtest: C 真实 Profile：五个官方模板完整解析，只读树；缺/不兼容 Bundle 被跳过\nok 15 - C 真实 Profile：五个官方模板完整解析，只读树；缺/不兼容 Bundle 被跳过\n  ---\n  duration_ms: 61.0133\n  type: 'test'\n  ...\n# Subtest: C 真实 Profile 四层与遥测硬禁用：CLI值胜出，0字符串也禁遥测\nok 16 - C 真实 Profile 四层与遥测硬禁用：CLI值胜出，0字符串也禁遥测\n  ---\n  duration_ms: 3.0411\n  type: 'test'\n  ...\n# Subtest: C 磁盘 Profile→有序 Bundle 文件→用户层→Home→overlay→真实 boot\nok 17 - C 磁盘 Profile→有序 Bundle 文件→用户层→Home→overlay→真实 boot\n  ---\n  duration_ms: 10.9668\n  type: 'test'\n  ...\n# Subtest: C 错误 Profile patch 抛错；错误 Bundle patch 记入跳过\nok 18 - C 错误 Profile patch 抛错；错误 Bundle patch 记入跳过\n  ---\n  duration_ms: 4.5587\n  type: 'test'\n  ...\n# Subtest: C Schema 拒绝：raw 配置已变，运行 effective 配置仍为旧值\nok 19 - C Schema 拒绝：raw 配置已变，运行 effective 配置仍为旧值\n  ---\n  duration_ms: 5.8674\n  type: 'test'\n  ...\n# Subtest: C recompose 显式 requiredIds 将新 PENDING 视为失败；应用后条目保留\nok 20 - C recompose 显式 requiredIds 将新 PENDING 视为失败；应用后条目保留\n  ---\n  duration_ms: 5.3767\n  type: 'test'\n  ...\n1..20\n# tests 20\n# suites 0\n# pass 20\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 623.621\n",
+      "stderr": ""
+    },
+    "demo": {
+      "exit": 0,
+      "stdout": "{\n  \"A\": {\n    \"rows\": [\n      {\n        \"id\": \"model\",\n        \"name\": \"course-model\",\n        \"config\": {\n          \"model\": \"cli\"\n        }\n      },\n      {\n        \"id\": \"audit\",\n        \"name\": \"course-audit\",\n        \"disabled\": false\n      }\n    ],\n    \"trace\": [\n      {\n        \"source\": \"bundle:core\",\n        \"rows\": [\n          {\n            \"id\": \"model\",\n            \"name\": \"course-model\",\n            \"config\": {\n              \"model\": \"base\",\n              \"temperature\": 0.2,\n              \"retry\": {\n                \"attempts\": 2\n              }\n            }\n          },\n          {\n            \"id\": \"audit\",\n            \"name\": \"course-audit\",\n            \"disabled\": false\n          }\n        ]\n      },\n      {\n        \"source\": \"bundle:surface\",\n        \"rows\": [\n          {\n            \"id\": \"model\",\n            \"name\": \"course-model\",\n            \"config\": {\n              \"model\": \"surface\",\n              \"temperature\": 0.4\n            }\n          },\n          {\n            \"id\": \"audit\",\n            \"name\": \"course-audit\",\n            \"disabled\": false\n          }\n        ]\n      },\n      {\n        \"source\": \"profile\",\n        \"rows\": [\n          {\n            \"id\": \"model\",\n            \"name\": \"course-model\",\n            \"config\": {\n              \"model\": \"profile\",\n              \"temperature\": 0.6\n            }\n          },\n          {\n            \"id\": \"audit\",\n            \"name\": \"course-audit\",\n            \"disabled\": false\n          }\n        ]\n      },\n      {\n        \"source\": \"home\",\n        \"rows\": [\n          {\n            \"id\": \"model\",\n            \"name\": \"course-model\",\n            \"config\": {\n              \"model\": \"home\",\n              \"timeout\": 30\n            }\n          },\n          {\n            \"id\": \"audit\",\n            \"name\": \"course-audit\",\n            \"disabled\": true\n          }\n        ]\n      },\n      {\n        \"source\": \"cli:extra.yml\",\n        \"rows\": [\n          {\n            \"id\": \"model\",\n            \"name\": \"course-model\",\n            \"config\": {\n              \"model\": \"cli\"\n            }\n          },\n          {\n            \"id\": \"audit\",\n            \"name\": \"course-audit\",\n            \"disabled\": false\n          }\n        ]\n      }\n    ],\n    \"warnings\": []\n  },\n  \"B\": {\n    \"runs\": 3,\n    \"cleanups\": 2,\n    \"stableUpdateSameFiber\": true,\n    \"disabled\": {\n      \"providerState\": 4,\n      \"consumerState\": 0,\n      \"configPresent\": true\n    },\n    \"reenableNewFiber\": true,\n    \"consumerSameFiber\": true,\n    \"trace\": [\n      \"apply:v1\",\n      \"consumer:v1\",\n      \"clean:v1\",\n      \"consumer-clean:v1\",\n      \"apply:v2\",\n      \"consumer:v2\",\n      \"clean:v2\",\n      \"consumer-clean:v2\",\n      \"apply:v2\",\n      \"consumer:v2\"\n    ]\n  },\n  \"stable\": {\n    \"stable\": true,\n    \"runs\": 1,\n    \"cleanups\": 0,\n    \"sameEntry\": true,\n    \"sameUid\": true\n  },\n  \"anonymous\": {\n    \"stable\": false,\n    \"runs\": 2,\n    \"cleanups\": 1,\n    \"sameEntry\": false,\n    \"sameUid\": false\n  },\n  \"C\": {\n    \"directory\": \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h08-boot-MY6X0c\",\n    \"missingService\": \"PENDING, sibling ACTIVE\",\n    \"applyFailure\": \"FAILED; new config retained; old service absent\",\n    \"recovered\": \"v1\",\n    \"priorFiberReusedForOrdinaryUpdate\": true\n  }\n}\n",
+      "stderr": "h08: warning: 1 entry did not activate\noptional-needs (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h08-boot-MY6X0c/needs.mjs): pending (waiting for service: h08Missing)\n"
+    }
+  },
+  "levels": {
+    "teachingSimulator": "PASS: A + wrong-answer rejection + mutation",
+    "cordisLoader": "PASS: actual pinned runtime",
+    "harnessProfileAppBoot": "PASS: actual APIs with isolated local fixtures; five shipped trees parsed only",
+    "fullOfficialApplication": "NOT_RUN",
+    "nativeHmrWatcherAndModuleReplacement": "NOT_RUN"
+  },
+  "isolation": "Only new OS fixture directories, allowlisted environment, no model/network/private Home; retained without cleanup",
+  "dependencies": {
+    "anchor": "C:/Users/QYF/.codex/research/h04-probe-deps/node_modules/commander/index.js",
+    "packages": [
+      {
+        "name": "@eslint-community/regexpp",
+        "version": "4.12.2",
+        "integrity": "sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew=="
+      },
+      {
+        "name": "ajv",
+        "version": "8.20.0",
+        "integrity": "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="
+      },
+      {
+        "name": "argparse",
+        "version": "2.0.1",
+        "integrity": "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="
+      },
+      {
+        "name": "commander",
+        "version": "15.0.0",
+        "integrity": "sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg=="
+      },
+      {
+        "name": "fast-deep-equal",
+        "version": "3.1.3",
+        "integrity": "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
+      },
+      {
+        "name": "fast-uri",
+        "version": "3.1.8",
+        "integrity": "sha512-GZMtZUTNRpOVIECoXwLNZS5xUGE+mVNbTB8h/7Rwh2TFWcBQiPzTgyZi05BF9UMZKkLJv8XBRJTlU7zg8+ZfMg=="
+      },
+      {
+        "name": "js-yaml",
+        "version": "4.3.2",
+        "integrity": "sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA=="
+      },
+      {
+        "name": "json-schema-traverse",
+        "version": "1.0.0",
+        "integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="
+      },
+      {
+        "name": "node-addon-native-custom-loader",
+        "version": "0.1.9",
+        "integrity": "sha512-Zh87aubSc1UF8CzZsRws1KtSwXiPDH0tbcg8V/2OA8Tcq9yGJRESFcEOC5NGLFama5IGfC3aJhubZbrj9Un2qA=="
+      },
+      {
+        "name": "node-addon-require-builtin",
+        "version": "0.1.9",
+        "integrity": "sha512-BCxXCMZDs/VLLh64SwKNw/me7Qx1I7Be4qxWwYVRRm8tJoOB8fL7qg6CmXhSXeUqsKt72t8RaKCX4EN+5nocVg=="
+      },
+      {
+        "name": "node-addon-require-builtin-darwin-arm64",
+        "version": "0.1.9",
+        "integrity": "sha512-n45xEILQVOLZ2hVhzRXesTMYS4odHquyI/B/IkPMPUCONa8PjNfBag6lYBH4wDrhgpLNNBwMsUD8d8O/13QPPA=="
+      },
+      {
+        "name": "node-addon-require-builtin-darwin-x64",
+        "version": "0.1.9",
+        "integrity": "sha512-Sm4Liqh1uo9zgJB2F/pACPPZdHu+fj9Qniyr1Q99dDQB0v71VgZgkAgv3K0/E1iPQBlZq9rakFkY7MGUIfWc0A=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-arm64-gnu",
+        "version": "0.1.9",
+        "integrity": "sha512-ToU4wGtOD/069i2y4fJ3cjDJiiWtcjSQTZMf0YKlotb5BmTM7FjhR3X1aub8J/YjlOwl6665J/XAYuvCaDO5sA=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-arm64-musl",
+        "version": "0.1.9",
+        "integrity": "sha512-85Z5Avp++wfa9iiTIH8LC/r6qvlC/CiwpifiwIz0gYQ9PzajTSkz06gX7YDqf1oUqWYxU9uwNEOmo7mktHOOfA=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-x64-gnu",
+        "version": "0.1.9",
+        "integrity": "sha512-fh3K3/JvBfSYwU8vEOpp4Wdp4N/jX0EnZYq5GsaftlQin1FVqgve/yDNoh+asxBMOQyHOG8F4dXlV1WCierrfg=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-x64-musl",
+        "version": "0.1.9",
+        "integrity": "sha512-B6fu/5xmbRxnifM7nWz0IESkYnUl8dwFZmRDMsxdhzv2nb+EtBRFAXg4lf73qhX3yoZD4SnWJILBQMlIAwBCzw=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-arm64-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-FOQuzNe8B1BANu886rJgdbQuRxPGUQmewkykw87wSr32U0ibQ3AWGuUM/Gh7LG4RekjFaifj7gEI/tq2+6GU6g=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-ia32-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-N29P0kmIBT6hnkNNFYzxn+o9ydT6OYZe9RFAi8dSxV1rNSul1FlxtuKWYe8w2sQpbQGYuGDEtpOwdeFtq2iFTg=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-x64-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-+i6N4A7m7txjbw8pDYESdWXiKO9EEVq0SzTzwPS0WZuV4F1MzQnaDJwJJnO7T6zAc0BvqHXBOkpharCrUjFhbQ=="
+      },
+      {
+        "name": "require-from-string",
+        "version": "2.0.2",
+        "integrity": "sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw=="
+      },
+      {
+        "name": "resolve.exports",
+        "version": "2.0.3",
+        "integrity": "sha512-OcXjMsGdhL4XnbShKpAcSqPMzQoYkYyhbEaeSko47MjRP9NfEQMhZkXL1DoFlt9LWQn4YttrdnV6X2OiyzBi+A=="
+      },
+      {
+        "name": "semver",
+        "version": "7.8.5",
+        "integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA=="
+      }
+    ]
+  },
+  "programs": [
+    {
+      "name": "a-bundles.json",
+      "sha256": "496fc3be3ccd21607ad97d1f5a0087ea0dd5cddac826e4aa0a3e88ac685474c3"
+    },
+    {
+      "name": "a-profile.json",
+      "sha256": "6db1c7fe94ae86ae5cf183509bf565d611e1d86948f06fa008ad6e37a8315698"
+    },
+    {
+      "name": "answer-reference.json",
+      "sha256": "c47e4ceb951565029d51021d065678992748244f8237fe46fdca28c560b583d3"
+    },
+    {
+      "name": "answer-template.json",
+      "sha256": "c73bf66f3183a43d85d0d10bdd4461d4945eb4e28fb38dcb96375fbaf4b75dd0"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "48dbf2fe16f671b50984be11a193d282a4045ec3053f539461362c30f078bc5f"
+    },
+    {
+      "name": "compose.mjs",
+      "sha256": "9f02a21d4e69d0f476cc3aceadcea75390b660e7059f4a68163c19983d89826d"
+    },
+    {
+      "name": "composition.test.ts",
+      "sha256": "c82163f2ac716606862a45f8f13cf85a05f4c6657b54837f062eacd2ebe1bdbd"
+    },
+    {
+      "name": "core.patch.yml",
+      "sha256": "59c773ffce6d20778bbda2e7494b25a9f87cf8bac4f3bb5f035652507d25d1ef"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "125770af8e64cb711e8bc888463b4892593d707862d636163ccb4ad52a668e48"
+    },
+    {
+      "name": "extra.yml",
+      "sha256": "b27bfdade729374adfc7ef70d045c2e24ba53a59604a50e4584473b6fe652aef"
+    },
+    {
+      "name": "harness.ts",
+      "sha256": "c444d30d680c71de5f4e58ca07a5cba0ea97333334e8874495cb28a243499755"
+    },
+    {
+      "name": "home.patch.yml",
+      "sha256": "01aa15c6aa7b1527a446764b92f6d4a588a0bccdcb37121c5a71180719458fcd"
+    },
+    {
+      "name": "profile.patch.yml",
+      "sha256": "b15dcc2e45eec7e7b1a97358fc93cf70ff5dfeb2ff59685bea9dd6a661b9d06a"
+    },
+    {
+      "name": "reconfigure.ts",
+      "sha256": "79beded6bc86d5bfe770138e695832e81277d5d6d20dead55ac0ea7c40b0291a"
+    },
+    {
+      "name": "surface.patch.yml",
+      "sha256": "c42cf22a17aeb899daf34b7e373599d885557885034c0106979b23aafdbbbaf3"
+    }
+  ]
+}

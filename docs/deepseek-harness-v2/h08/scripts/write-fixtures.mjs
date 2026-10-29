@@ -1,0 +1,13 @@
+import { writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+import { stringify } from 'yaml';
+import { layers, reference } from '../../../../course-content/internal/deepseek-harness/h08/lab/compose.mjs';
+const lab=fileURLToPath(new URL('../../../../course-content/internal/deepseek-harness/h08/lab/',import.meta.url));
+const names=['core.patch.yml','surface.patch.yml','profile.patch.yml','home.patch.yml','extra.yml'];
+for(let i=0;i<names.length;i++) await writeFile(resolve(lab,names[i]),stringify(layers[i].patches));
+await writeFile(resolve(lab,'a-profile.json'),JSON.stringify({dsh:{profile:{bundles:['course-core','course-surface']}}},null,2)+'\n');
+await writeFile(resolve(lab,'a-bundles.json'),JSON.stringify({'course-core':{dsh:{bundle:{patch:'./core.patch.yml'}}},'course-surface':{dsh:{bundle:{patch:'./surface.patch.yml'}}}},null,2)+'\n');
+await writeFile(resolve(lab,'answer-reference.json'),JSON.stringify(reference,null,2)+'\n');
+await writeFile(resolve(lab,'answer-template.json'),JSON.stringify({order:[],configs:[],final:[]},null,2)+'\n');
+console.log('A fixtures and independent reference written');

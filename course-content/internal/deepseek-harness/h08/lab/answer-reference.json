@@ -1,0 +1,47 @@
+{
+  "order": [
+    "bundle:core",
+    "bundle:surface",
+    "profile",
+    "home",
+    "cli:extra.yml"
+  ],
+  "configs": [
+    {
+      "model": "base",
+      "temperature": 0.2,
+      "retry": {
+        "attempts": 2
+      }
+    },
+    {
+      "model": "surface",
+      "temperature": 0.4
+    },
+    {
+      "model": "profile",
+      "temperature": 0.6
+    },
+    {
+      "model": "home",
+      "timeout": 30
+    },
+    {
+      "model": "cli"
+    }
+  ],
+  "final": [
+    {
+      "id": "model",
+      "name": "course-model",
+      "config": {
+        "model": "cli"
+      }
+    },
+    {
+      "id": "audit",
+      "name": "course-audit",
+      "disabled": false
+    }
+  ]
+}

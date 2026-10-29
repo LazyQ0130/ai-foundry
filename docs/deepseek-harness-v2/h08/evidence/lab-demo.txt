@@ -1,0 +1,160 @@
+{
+  "A": {
+    "rows": [
+      {
+        "id": "model",
+        "name": "course-model",
+        "config": {
+          "model": "cli"
+        }
+      },
+      {
+        "id": "audit",
+        "name": "course-audit",
+        "disabled": false
+      }
+    ],
+    "trace": [
+      {
+        "source": "bundle:core",
+        "rows": [
+          {
+            "id": "model",
+            "name": "course-model",
+            "config": {
+              "model": "base",
+              "temperature": 0.2,
+              "retry": {
+                "attempts": 2
+              }
+            }
+          },
+          {
+            "id": "audit",
+            "name": "course-audit",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "source": "bundle:surface",
+        "rows": [
+          {
+            "id": "model",
+            "name": "course-model",
+            "config": {
+              "model": "surface",
+              "temperature": 0.4
+            }
+          },
+          {
+            "id": "audit",
+            "name": "course-audit",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "source": "profile",
+        "rows": [
+          {
+            "id": "model",
+            "name": "course-model",
+            "config": {
+              "model": "profile",
+              "temperature": 0.6
+            }
+          },
+          {
+            "id": "audit",
+            "name": "course-audit",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "source": "home",
+        "rows": [
+          {
+            "id": "model",
+            "name": "course-model",
+            "config": {
+              "model": "home",
+              "timeout": 30
+            }
+          },
+          {
+            "id": "audit",
+            "name": "course-audit",
+            "disabled": true
+          }
+        ]
+      },
+      {
+        "source": "cli:extra.yml",
+        "rows": [
+          {
+            "id": "model",
+            "name": "course-model",
+            "config": {
+              "model": "cli"
+            }
+          },
+          {
+            "id": "audit",
+            "name": "course-audit",
+            "disabled": false
+          }
+        ]
+      }
+    ],
+    "warnings": []
+  },
+  "B": {
+    "runs": 3,
+    "cleanups": 2,
+    "stableUpdateSameFiber": true,
+    "disabled": {
+      "providerState": 4,
+      "consumerState": 0,
+      "configPresent": true
+    },
+    "reenableNewFiber": true,
+    "consumerSameFiber": true,
+    "trace": [
+      "apply:v1",
+      "consumer:v1",
+      "clean:v1",
+      "consumer-clean:v1",
+      "apply:v2",
+      "consumer:v2",
+      "clean:v2",
+      "consumer-clean:v2",
+      "apply:v2",
+      "consumer:v2"
+    ]
+  },
+  "stable": {
+    "stable": true,
+    "runs": 1,
+    "cleanups": 0,
+    "sameEntry": true,
+    "sameUid": true
+  },
+  "anonymous": {
+    "stable": false,
+    "runs": 2,
+    "cleanups": 1,
+    "sameEntry": false,
+    "sameUid": false
+  },
+  "C": {
+    "directory": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h08-boot-MY6X0c",
+    "missingService": "PENDING, sibling ACTIVE",
+    "applyFailure": "FAILED; new config retained; old service absent",
+    "recovered": "v1",
+    "priorFiberReusedForOrdinaryUpdate": true
+  }
+}
+h08: warning: 1 entry did not activate
+optional-needs (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h08-boot-MY6X0c/needs.mjs): pending (waiting for service: h08Missing)
