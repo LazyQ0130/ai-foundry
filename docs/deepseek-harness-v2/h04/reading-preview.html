@@ -1,0 +1,3990 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H04｜Profile、运行入口与环境配置：Harness 如何启动不同的 Agent 应用？</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-auto {
+  margin: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100vh-6rem\)\] {
+    max-height: calc(100vh - 6rem);
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H04 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Profile、运行入口与环境配置：Harness 如何启动不同的 Agent 应用？</h1><p>110～150 分钟（可分两次学习；实际时长待试读）</p></header><div class="lesson-prose"><h2>四个人想用同一个项目助手</h2>
+<p>上一课，我们跟着“读取 README，概括主要功能”走完了一次请求。现在，做这个助手的团队遇到另一个问题。</p>
+<p>运营同事希望打开浏览器就能聊天；开发者想在命令行交给它一项任务，做完输出答案；数据同事希望从 Python 程序调用它；编辑器作者则希望通过约定好的协议接入。</p>
+<p>这四种需求首先改变的是<strong>怎样与应用交互、进程要活多久、需要哪些应用服务</strong>。它们并不要求重新写四份 Agent Loop、工具系统与会话管理。可也不能只在同一个进程外面换四个按钮：浏览器需要页面和网络入口，一次性任务要知道何时退出，协议进程的标准输出还得保持为协议数据。</p>
+<p>H04 要研究的就是这些差异如何被启动器和配置组织起来。课末，你应能拿到一条命令，解释谁解析它、配置从哪里来、最后启动哪种应用；遇到错误时，也能指出应先查哪一层。</p>
+<aside id="lesson-concept" class="lesson-callout lesson-concept" aria-label="本课的边界"><div class="lesson-callout-label">先搞懂这件事</div><div class="lesson-callout-title">本课的边界</div><div class="lesson-callout-body"><p>官方事实仍锁定 Commit <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。我们先假定已有可用的固定版本源码，不安装完整 Harness、不读取个人 Home 或凭据、不启动真实 Agent。</p><p><strong>官方实现</strong>绑定真实文件与行号；<strong>教学简化</strong>只模拟规定的输入和规则；<strong>我们的分析</strong>说明工程取舍。本课建立启动地图，Cordis 容器、事件、卸载和 Patch 深层算法分别留 H05–H08。</p></div></aside>
+<h2>用六分钟复习：命令、进程、配置与产物</h2>
+<p>Stage 1 的准备课已经让你在能看到 <code>package.json</code> 的目录中执行 <code>npm install</code>、<code>npm run dev</code>。前者准备依赖，后者运行清单中名为 dev 的任务。开发服务器持续运行，浏览器才有本地地址可访问；“依赖装好了”和“应用已启动”不是同一状态。</p>
+<p>Stage 2 的部署课进一步区分本地开发、生产构建、云端运行与生产环境变量。本地 <code>.env</code> 没有随着源码提交，就不会自动出现在部署机器上。Stage 3 则把 API Key 留在服务端，由 Provider 读取，浏览器只向自己的接口提问；Stage 4 在服务端继续控制工具、预算与停止。</p>
+<p>把这些知识换到今天的仓库：<strong>Node.js 是执行宿主代码的环境；包管理器准备依赖；脚本决定从哪里运行；构建产物是被运行或交付的文件；配置决定这次怎样运行。</strong> 少了其中某项，不一定会在同一个阶段报错。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：基础回顾：环境变量不是自动生效的文本文件</summary><div class="lesson-callout-body"><p>进程环境是程序启动时继承的一组名字和值，Node 可以通过 <code>process.env</code> 访问。<code>.env</code> 是文件，必须由某段程序读取和解析，才会影响应用。不同框架可以有不同的文件搜索和覆盖规则；不能因为 Next.js 项目用过 <code>.env</code>，就认为 Harness 会搜索同样的文件。</p><p>命令参数是这一次调用传入的 token（参数片段），例如 <code>--port</code> 和 <code>8080</code>；环境变量通常由启动环境提供；配置文件是应用选择并解析的数据。三者可以共同影响结果，但需要具体代码说明谁优先。</p><p>已有原课权限时，可选回看 <a href="/lesson/stage-1/s1-l0">Stage 1 准备与启动</a>、<a href="/lesson/stage-2/s2-l8">2.8 部署</a>、<a href="/lesson/stage-3/s3-l1">3.1 服务端模型接入</a>、<a href="/lesson/stage-4/s4-l1">4.1 受限 Agent Loop</a>。本课的说明自足，不要求另有这些课程的购买权限。</p></div></details>
+<h2>六个词，分别回答六个问题</h2>
+<p>**CLI（命令行界面）**回答“用户怎样输入操作”。敲一条命令、传参数、读输出，就是一种交互方式。它不等于 Agent 的执行引擎，也不意味着所有工作都在终端中呈现。</p>
+<p>**Launcher（启动器）**回答“哪段程序负责把应用拉起来”。在锁定版本里，<code>dsh</code> 是受支持的 Node 应用启动器；它选择运行模式，必要时交给对应 runner。CLI 是交互形式，Launcher 是承担启动职责的具体程序。证据是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/README.zh.md#L5-L20" target="_blank" rel="noopener noreferrer">CLI 定位与入口表，5–20 行</a>，以及 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L26-L69" target="_blank" rel="noopener noreferrer"><code>runCli()</code>，26–69 行</a>。</p>
+<p>**Profile（运行配置档）**回答“这次使用哪套应用组合”。像同一套厨房可以按早餐、外送或堂食的开工单工作：选择的设备、交付方式和工作节奏不同，不必复制一套厨房代码。技术上，本版本的具名 Profile 是 Harness Home 下的目录，包含声明组合包顺序的 <code>package.json</code>，以及自己的用户覆盖文件。它有可修改状态，不只是一个枚举标签；目录约定见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L74-L99" target="_blank" rel="noopener noreferrer"><code>Profile</code> 与路径解析，74–99、165–172 行</a>和 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L165-L172" target="_blank" rel="noopener noreferrer"><code>resolveProfileDir()</code></a>。</p>
+<p>**Bundle（插件组合包）**回答“这批可复用配置从哪里提供”。可把它理解成开工单引用的一组现成安排；技术上，它是声明了 <code>dsh.bundle.patch</code> 的包，为 Profile 提供配置层。这里还不能把 Bundle 当成一个大插件实例：它主要交付的是组合描述，实际能力由其中的插件行挂载。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/README.zh.md#L10-L32" target="_blank" rel="noopener noreferrer">组合包分组说明，10–32 行</a>。</p>
+<p>**Runtime（运行时）**沿用 H01 的运行职责：调度、检查、分派与状态推进。今天说“启动运行环境”，是把这些服务与扩展点装配到可工作的应用中，不是每次切换 Profile 都重新实现循环。**Application（应用）**则是这次交给使用者的具体交互：Web 聊天、一次性任务，或供客户端调用的协议服务。</p>
+<p>厨房类比到这里就应收住：配置可能引用实际代码和 <code>!!js</code> 表达式，插件可以产生副作用；它不是一份天然安全、任意替换都无影响的菜单。也不能反过来说“应用都是同一个产品，只改一个名字”：不同组合会实际增减服务、工具、策略和呈现能力。</p>
+<p>先检查一下：<code>dsh --profile web</code> 中，哪个词是启动器，哪个是选择的运行配置？浏览器里的聊天应用又属于哪层？答案分别是 dsh、web Profile、Application；模型请求还没有因为这条命令就必然开始。</p>
+<h2>五种 Profile：先看交互，再看组合</h2>
+<p>下面说的是随附模板。它们首次使用时可自动初始化；已有 Profile 可以被修改，不能只凭目录名字认定里面仍是默认组合。真实模板清单在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/official-bundles/src/bundles.ts#L10-L25" target="_blank" rel="noopener noreferrer"><code>PROFILE_TEMPLATES</code>，10–25 行</a>。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>Profile</th><th>面向的场景与入口写法</th><th>交互、能力与运行时长</th></tr></thead><tbody><tr><td><code>web</code></td><td>普通用户用浏览器；<code>dsh web</code></td><td>base + web-app，提供浏览器界面及对应 Host 服务；进程持续运行来服务请求</td></tr><tr><td><code>headless</code></td><td>终端交付一项任务；<code>dsh headless &quot;概括项目说明&quot;</code></td><td>base + headless，无 Web server；runner 执行任务、打印结果，再退出</td></tr><tr><td><code>sdk</code></td><td>Python/TypeScript 等程序通过 SDK 调用；<code>dsh --profile sdk</code></td><td>base + sdk-app，使用 SDK JSON-RPC 标准输入输出；连接关闭或请求 shutdown 后按所属流程结束，可在连接期处理会话</td></tr><tr><td><code>sdk-minimal</code></td><td>明确需要独立小型配置树的 SDK 客户端；<code>dsh --profile sdk-minimal</code></td><td><strong>只有 sdk-minimal 组合包</strong>，不叠 base；同样使用 SDK stdio 应用层，但能力、凭据来源和策略另行显式配置</td></tr><tr><td><code>acp</code></td><td>编辑器或自动化客户端使用 ACP；<code>dsh --profile acp</code></td><td>base + acp-app，使用 ACP 协议的标准输入输出；服务到客户端断开或关闭</td></tr></tbody></table></div>
+<p>这里的命令是<strong>语法对照，本课不执行</strong>。表格说明默认应用的生命周期，不表示每次“进程启动成功”都已经完成用户任务。CLI 运行目录也会参与默认工作区选择；SDK、ACP 后续协议请求还能提供会话工作目录，不要把所有会话都锁死成同一个目录。</p>
+<h3>SDK 与 ACP：两套协议，不是两个 HTTP 端口</h3>
+<p>SDK（软件开发工具包）通常让程序作者用熟悉的语言调用能力。在这里，要区分<strong>客户端库</strong>与它启动或连接的 Harness 运行进程。<code>sdk</code> Profile 是进程里的应用组合，不是 Python 库本身。</p>
+<p>随附 SDK 服务把标准输入作为输入、标准输出作为输出，以按行传输的 JSON-RPC（基于 JSON 的远程过程调用）交换消息。可以把它想成客户端与子进程之间的双向数据管道；不用把它改称 HTTP 服务。源码实际建立 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sdk/server/src/index.ts#L45-L64" target="_blank" rel="noopener noreferrer"><code>JsonRpcLineTransport(input, output)</code>，45–64 行</a>，输入输出默认是 <code>process.stdin</code> 和 <code>process.stdout</code>。模型提供方、模型与会话工作目录通过 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-app/README.zh.md#L30-L36" target="_blank" rel="noopener noreferrer">SDK 初始化请求传入</a>，不是把任意模型选项塞进 dsh 的通用 flag。SDK 启动提供方把 EOF（输入结束）接到关闭流程，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-app/src/index.ts#L55-L61" target="_blank" rel="noopener noreferrer"><code>sdk-app.apply()</code>，55–61 行</a>。</p>
+<p>ACP（Agent Client Protocol，智能体客户端协议）也是一套供客户端与 Agent 协作的约定。这个 Profile 使用 ACP 的换行 JSON-RPC stdio 传输，源码通过 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/acp/acp/src/index.ts#L374-L384" target="_blank" rel="noopener noreferrer"><code>ndJsonStream</code>，374–384 行</a>接到标准输入输出；应用提供方见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/acp-app/src/index.ts#L41-L47" target="_blank" rel="noopener noreferrer"><code>acp-app.apply()</code>，41–47 行</a>。SDK 与 ACP 的方法、数据和能力协商不同，<strong>共用 stdio 不表示协议可以互换</strong>。</p>
+<p>这种管道类比只解释传输方向，不表示通信天然可信。stdout 专用于协议帧，随意插入 <code>console.log</code> 可能破坏通信；客户端能要求什么，还要看协议和宿主能力。见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-app/README.zh.md#L63-L69" target="_blank" rel="noopener noreferrer">SDK 的 stdout 与自定义 Profile 限制</a>。</p>
+<h3>为什么必须单独看 sdk-minimal</h3>
+<p>这个名字里的 minimal 指组合显式、依赖较少，不能理解成权限更小。其默认树不含 base、Web、settings、受管凭据、jobs 或 subagent 等完整产品基础，却包含持久 shell 等编程能力；<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-minimal/README.zh.md#L10-L12" target="_blank" rel="noopener noreferrer">官方说明 10–12 行</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-minimal/cordis.patch.yml#L1-L31" target="_blank" rel="noopener noreferrer">完整树开头</a>可以对照。</p>
+<aside id="lesson-warning" class="lesson-callout lesson-warning" aria-label="极简组合不是安全沙箱示例"><div class="lesson-callout-label">注意风险</div><div class="lesson-callout-title">极简组合不是安全沙箱示例</div><div class="lesson-callout-body"><p>锁定版本的 sdk-minimal 明确配置 <code>danger-full-access</code>，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-minimal/cordis.patch.yml#L70-L74" target="_blank" rel="noopener noreferrer">策略行 70–74</a>。它允许 shell 修改进程可访问的路径。本课只读配置，不运行该 Profile；不能为了演示 SDK 而把它接到个人工作区或真实凭据。</p><p>以 base 为基础的模式也不是默认只读演示：base 包含 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L281-L296" target="_blank" rel="noopener noreferrer">Shell 工具配置 281–296 行</a>，其策略默认值是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L244-L276" target="_blank" rel="noopener noreferrer">workspace-write 与 ask</a>。具体限制取决于工具、平台和配置，不能仅凭 Profile 名字承诺只读。</p><p>项目整体仍是<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L15" target="_blank" rel="noopener noreferrer">未经安全审计的实验性开发者预览</a>。选择 Web、SDK 或 ACP 只决定入口与组合，不构成安全等级认证。</p></div></aside>
+<p><span class="lesson-figure" role="group" aria-label="web、headless、sdk 与 acp 模板分别由 base 和应用组合包构成，sdk-minimal 独立提供完整树；应用间复用核心职责，传输与生命周期各有不同"><img src="figures/rendered/h04-01.png" alt="web、headless、sdk 与 acp 模板分别由 base 和应用组合包构成，sdk-minimal 独立提供完整树；应用间复用核心职责，传输与生命周期各有不同" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜同一个 Harness 的五种应用组合。容器表示模板组成，不是进程拓扑或安全隔离；sdk-minimal 绕过 base，仍显式挂载部分相同核心包。</span><a class="lesson-image-expand" href="figures/rendered/h04-01.png" target="_blank" rel="noopener noreferrer" aria-label="web、headless、sdk 与 acp 模板分别由 base 和应用组合包构成，sdk-minimal 独立提供完整树；应用间复用核心职责，传输与生命周期各有不同，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>看这张图时，用 H02 的方法问“它挂载了什么”，不要只问“文件夹叫什么”。base 的默认 <code>agent-loop.config.agents</code> 为空，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L511-L516" target="_blank" rel="noopener noreferrer">511–516 行</a>：应用就绪后，具体实例何时创建还取决于 Web 会话、SDK 初始化或一次性 runner 等入口。</p>
+<h2>一条命令经过两次参数解析</h2>
+<p>先读这两个例子。它们只交换 <code>--patch</code> 的位置：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>dsh --profile web --patch ./extra.yml --port 8080
+dsh --profile web --port 8080 --patch ./extra.yml</code></pre></div>
+<p>在第一行，启动器领取 Profile 与额外覆盖文件，把 <code>--port 8080</code> 原样交给应用。第二行中，<code>--port</code> 是启动器不认识的第一个 token，后面的 <code>--patch ./extra.yml</code> 也一起归应用了。Web 应用并没有因此得到一个启动器 overlay，它还可能把这个不认识的 flag 当使用错误。</p>
+<p>这不是“flag 名字写对就总能生效”。官方 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts#L146-L185" target="_blank" rel="noopener noreferrer"><code>parseDshArgs()</code> 的配置，146–185 行</a>使用按位置交接的解析方式，调用方测试直接核对<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/tests/args.spec.ts#L35-L57" target="_blank" rel="noopener noreferrer">早写与晚写参数的不同结果，35–57 行</a>。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>层次</th><th>本例中的内容</th><th>不应混到哪里</th></tr></thead><tbody><tr><td>启动器参数</td><td><code>--profile</code>、前置 <code>--patch</code>、配置 dump flag</td><td>不由模型解释，也不是 Web 端口值</td></tr><tr><td>应用参数</td><td>Web 的 <code>--port</code>、<code>--help</code>；Headless 的任务文本</td><td>由该应用定义，不保证换 Profile 后仍有效</td></tr><tr><td>运行配置</td><td>Bundle、用户 patch 中的插件行与 config</td><td>决定服务和默认值，不等于一条模型请求</td></tr><tr><td>模型请求参数</td><td>选定模型、输出控制、消息、工具描述等</td><td>来自模型与 Agent 服务；不能把任何 <code>--xxx</code> 都当 dsh 通用模型开关</td></tr></tbody></table></div>
+<p><code>dsh --help</code> 是启动器帮助；<code>dsh web --help</code> 交给 Web 应用。后者走 Profile 准备与应用解析路径，不能据此宣称它完全没有配置文件副作用。SDK/ACP 的启动提供方会在接受调用后才让协议服务接管 stdio，因此应用 help 不会启动它们的传输服务。</p>
+<p>应用拿到的是共享的不可变参数快照，不是读一次就少一个参数的队列。证据在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/cmdline/src/index.ts#L84-L89" target="_blank" rel="noopener noreferrer"><code>provideCmdline()</code>，84–89 行</a>。本课只理解“启动器交接，应用拥有自己的语法”，其服务注入细节留下一模块。</p>
+<h2>沿着启动器，走到应用就绪</h2>
+<p>先看图，再按后面的五个文件走一遍。与 H03 不同，这条线发生在处理具体用户请求之前；Web 或协议应用启动成功后，仍要等实际输入才进入相应请求路径。</p>
+<p><span class="lesson-figure" role="group" aria-label="dsh 参数先被解析为启动或 dump，正常启动加载分层环境并安装代理策略，再解析 Profile、组合配置与运行包，boot 在挂载配置树前提供环境和参数快照，等待树结算与激活审查后进入应用模式"><img src="figures/rendered/h04-02.png" alt="dsh 参数先被解析为启动或 dump，正常启动加载分层环境并安装代理策略，再解析 Profile、组合配置与运行包，boot 在挂载配置树前提供环境和参数快照，等待树结算与激活审查后进入应用模式" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜正常启动的主要顺序；dump 是旁支。代理安装在 Profile 组合之前，启动器提供参数和环境快照在配置树条目挂载之前；不是所有行都代表一次文件读取。</span><a class="lesson-image-expand" href="figures/rendered/h04-02.png" target="_blank" rel="noopener noreferrer" aria-label="dsh 参数先被解析为启动或 dump，正常启动加载分层环境并安装代理策略，再解析 Profile、组合配置与运行包，boot 在挂载配置树前提供环境和参数快照，等待树结算与激活审查后进入应用模式，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h3>第一站：args.ts 决定“要做什么”</h3>
+<p>打开 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts#L111-L135" target="_blank" rel="noopener noreferrer"><code>apps/cli/src/args.ts</code> 的 <code>resolveBoot()</code>，111–135 行</a>，再回看 <code>parseDshArgs()</code>。输入是 Node 和脚本名之后的参数，输出是 profile、dump-config、dump-config-schema 或 plugin 等 invocation（本次调用描述）。</p>
+<p>先看输出类型再看分支，可以避免把“打印配置”误当成“启动后顺便打印”。本课研究启动与两种配置值 dump；schema dump 会导入插件声明来读取 schema，不把它当作检查任意陌生插件的安全预览。</p>
+<h3>第二站：bin.ts 分派，不承担应用功能</h3>
+<p><a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/bin.ts#L26-L69" target="_blank" rel="noopener noreferrer"><code>runCli()</code>，26–69 行</a>先解析参数，再按 mode 动态加载对应 runner。正常 profile 分支调用 <code>loadLayeredEnv(&#x27;dsh&#x27;)</code>，把环境快照与 Profile、patch 文件、应用参数交给 <code>runProfile()</code>；dump 分支调用的是另一个函数，<strong>不会先走这次分层环境加载</strong>。</p>
+<p>这里主要是分派。找不到 Web 端口 flag，不应该在 bin.ts 加一个；应该去应用的启动提供方。启动器参数解析错误、环境来源被拒绝、Profile 加载失败，也都不是模型输出错误。</p>
+<h3>第三站：profile-boot.ts 准备这一套运行环境</h3>
+<p>先读 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L194-L199" target="_blank" rel="noopener noreferrer"><code>prepareProfile()</code>，194–199 行</a>，再读 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L224-L235" target="_blank" rel="noopener noreferrer"><code>composeProfile()</code>，224–235 行</a>。它们取得 Profile、建立运行时解析信息，并按传入顺序读取额外覆盖文件。<code>--patch</code> 路径相对本次调用目录解析，不会自动变成相对 Profile 的路径。</p>
+<p>接着读 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L271-L339" target="_blank" rel="noopener noreferrer"><code>runProfile()</code>，271–339 行</a>。真实顺序值得记住：<strong>先从已冻结的环境安装代理策略，再组合 Profile</strong>；之后创建关闭与就绪机制，交给 <code>boot()</code>。在配置树挂载前，回调提供 profileContext、启动环境、包解析和应用参数等启动器事实。</p>
+<p><code>boot()</code> 等待配置树结算、做激活审查后返回；启动器确认未被关闭且树仍活跃，才提交 appReady，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L340-L345" target="_blank" rel="noopener noreferrer">340–345 行</a>。因此“命令已解析”“树已挂载”“应用已就绪”是不同进度，不能只凭一条启动日志推断所有服务可用。</p>
+<h3>第四站：profile.ts 回答“目录与组合从哪里来”</h3>
+<p><a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L165-L172" target="_blank" rel="noopener noreferrer"><code>resolveProfileDir()</code></a>拒绝空名、路径分隔符、<code>.</code>、<code>..</code> 与 <code>node_modules</code>，再拼接 Home/profiles/name。参数解析器可以接收一个自定义名字，但<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L728-L744" target="_blank" rel="noopener noreferrer">加载阶段 728–744 行</a>会检查其清单是否存在：随附名称才会按模板自动初始化，未知的自定义名称不会悄悄退回 web。</p>
+<p>每个 Bundle 先从这份 dsh 安装目录解析，再从 Profile 解析，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L639-L661" target="_blank" rel="noopener noreferrer"><code>resolveBundleDir()</code>，639–661 行</a>。这解释了为什么“Profile 里放了一个同名包”不一定能取代安装随附的包。深层解析和包刷新留 H08/H30，本课到这个边界就停。</p>
+<h3>第五站：app-boot/index.ts 挂载，而不是复制一个应用</h3>
+<p><a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L1203-L1244" target="_blank" rel="noopener noreferrer"><code>boot()</code>，1203–1244 行</a>建立 Context、挂载 Loader，先运行宿主准备回调，再挂载根配置，等待树结算和审查。Context 暂时理解为服务共用的工作环境，Loader 暂时理解为按配置挂载能力的执行方；不要在 H04 先背完它们的内部规则。</p>
+<p>至此，同一启动机制接入了不同的应用层。**我们的分析：**共享这条路径能减少各应用重复实现环境、配置和关闭流程的机会；代价是定位问题时必须区分启动器、配置组合、插件激活和应用自己的错误。是否每项细节都是为某个性能原因而设计，没有直接依据时不猜作者动机。</p>
+<h2>三类配置来源，别画成一条万能优先级</h2>
+<h3>Harness Home 与 Profile 目录</h3>
+<p>Harness Home 是保存 Harness 用户数据与配置的根位置。产品路径通过 <code>resolveDshHome()</code> 取得它，通常来自启动进程的 <code>DSH_HOME</code>，未设置时使用 <code>~/.dsh</code>；底层 helper 还支持显式配置路径优先，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/home-paths/src/index.ts#L125-L136" target="_blank" rel="noopener noreferrer">Home 解析约定，125–136 行</a>。它不是本次项目工作区，也不是仓库根目录。</p>
+<p>为避免碰到个人配置，下图和练习都使用虚拟 <code>/fixture/home</code>。这是教学路径，Windows 实际路径分隔符不同，本课不在磁盘创建这棵 Home：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>/fixture/home/
+  .env                         Home 环境文件
+  cordis.patch.yml             各 Profile 共用的用户覆盖层
+  profiles/web/
+    package.json               dsh.profile.bundles 与依赖清单
+    cordis.patch.yml           这个 Profile 自己的用户层
+    cordis.yml                 启动器生成/重写的空根</code></pre></div>
+<p>下面只展示清单中的组合字段，是<strong>教学节选</strong>，不让你覆盖真实 Profile 文件。字段结构可对照 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L198-L225" target="_blank" rel="noopener noreferrer"><code>initProfile()</code> 的 198–225 行</a>。列表先选 base，再选 Web 应用层，顺序本身属于输入。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JSON</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="json 代码"><code>{
+  &quot;private&quot;: true,
+  &quot;dsh&quot;: {
+    &quot;profile&quot;: {
+      &quot;bundles&quot;: [&quot;@deepseek-ai/dsh-base&quot;, &quot;@deepseek-ai/dsh-web-app&quot;]
+    }
+  }
+}</code></pre></div>
+<p><code>cordis.yml</code> 在这个 Profile runner 中是 Loader 锚点，启动器会重写为空列表，不应把用户定制直接写进去；用户层在 <code>cordis.patch.yml</code>。证据是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L179-L199" target="_blank" rel="noopener noreferrer"><code>prepareProfile()</code> 前的约定，179–199 行</a>。Profile 清单还管理其外部插件依赖，不表示要把全仓复制进这个目录。</p>
+<h3>普通启动环境：先限制来源，再比较优先级</h3>
+<p><code>loadLayeredEnv()</code> 先确定 Home，保存进程继承环境，然后读取**调用目录的 <code>.env</code>**与 <strong>Home 的 <code>.env</code></strong>。两份文件都通过来源校验之后，才物化接受的值，并保留来源快照。普通变量按下面顺序查找：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>继承的进程环境  &gt;  调用目录 .env  &gt;  Harness Home .env</code></pre></div>
+<p>证据是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L236-L256" target="_blank" rel="noopener noreferrer">236–256 行</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/app-boot.spec.ts#L107-L137" target="_blank" rel="noopener noreferrer">实际分层测试</a>。这里是<strong>启动时的调用目录</strong>，不向父目录搜索，也不因为后来选择了另一个 Session 工作区而再读取一次。Profile 目录的 <code>.env</code> 不因其身份自动成为第四层。</p>
+<p>优先级之前还有来源限制。文件不得决定启动程序从哪里装代码或怎样改变信任条件，例如 <code>DSH_HOME</code>、<code>DSH_*</code> 开关、<code>PATH</code>、<code>NODE_OPTIONS</code> 和指定的 Base URL、CA/TLS 变量被拒绝。它们不是“被更高层盖住就无所谓”：<strong>文件里声明了不允许的名字，即使进程中已有同名值，也会拒绝启动</strong>，而且校验失败前不会先应用另一份文件。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L133-L222" target="_blank" rel="noopener noreferrer">限制清单与检查 133–222 行</a>和<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/app-boot.spec.ts#L139-L159" target="_blank" rel="noopener noreferrer">原子拒绝测试 139–159 行</a>。</p>
+<p>代理有明确例外：Home <code>.env</code> 可以提供 <code>HTTP_PROXY</code>、<code>HTTPS_PROXY</code>、<code>ALL_PROXY</code>、<code>NO_PROXY</code>，调用项目 <code>.env</code> 仍被拒绝；CA/TLS 变量不享有这个例外。运行器会把解析出的策略用于出站 HTTP，而不是仅假定 Node 会自动使用所有代理设置。源码的<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L160-L178" target="_blank" rel="noopener noreferrer">例外定义</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/app-boot.spec.ts#L167-L190" target="_blank" rel="noopener noreferrer">Home 代理测试</a>与 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L271-L279" target="_blank" rel="noopener noreferrer">runProfile 中的安装</a>可以互相核对。本课不实际发网络请求验证代理覆盖范围。</p>
+<h3>组合配置：顺着列表应用，后层改写前层</h3>
+<p>对于 Profile 配置树，读取顺序又是一套规则：<strong>空根 → 清单顺序中的 Bundle patch → Profile 用户层 → Home 用户层 → argv 顺序中的 <code>--patch</code></strong>。实现直接在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile-context.ts#L74-L84" target="_blank" rel="noopener noreferrer"><code>readProfilePatches()</code>，74–84 行</a>列出顺序。启动时还有专门的遥测关闭开关处理，不宜把一般层序图当成所有部署开关的完整定义。</p>
+<p>Home 配置层在 Profile 层之后，因此能修改同一配置行；这与环境变量中的“项目 <code>.env</code> 优先于 Home <code>.env</code>”不矛盾。两处处理的是不同数据、由不同代码规定顺序。</p>
+<p>Patch 先理解为“对配置树的修改清单”，可以改某行或插入行。本课只记住一个会影响实际判断的细节：按 id 替换 <code>config</code> 时，是<strong>整个 config 值替换，不是按键深度合并</strong>。后续只写一个键，可能丢掉原来同一 config 的其他字段。算法和 Bundle 嵌套规则留 H08；不要据此给真实个人配置做大范围改写。</p>
+<p><span class="lesson-figure" role="group" aria-label="上半部分区分进程环境、项目与 Home 的 dotenv 来源及限制；下半部分显示空根上按清单顺序叠 Bundle、Profile、Home 和 CLI overlay，启动快照和配置重组有各自边界"><img src="figures/rendered/h04-03.png" alt="上半部分区分进程环境、项目与 Home 的 dotenv 来源及限制；下半部分显示空根上按清单顺序叠 Bundle、Profile、Home 和 CLI overlay，启动快照和配置重组有各自边界" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜环境从高到低查找，配置按顺序应用；两种箭头不能互换。受管凭据是独立解析机制，启动变量快照也不随 Profile 配置热重载重新读取。</span><a class="lesson-image-expand" href="figures/rendered/h04-03.png" target="_blank" rel="noopener noreferrer" aria-label="上半部分区分进程环境、项目与 Home 的 dotenv 来源及限制；下半部分显示空根上按清单顺序叠 Bundle、Profile、Home 和 CLI overlay，启动快照和配置重组有各自边界，在新窗口查看原图">查看原图 ↗</a></span></p>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：凭据为什么不能直接套用普通环境优先级</summary><div class="lesson-callout-body"><p>普通启动环境不是全部凭据机制。受管凭据提供方启用时，实际 <code>resolve()</code> <strong>先查已保存的受管文档，再查非空的继承环境，再查 dotenv 回退</strong>，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/credentials/credentials-local/src/index.ts#L624-L631" target="_blank" rel="noopener noreferrer"><code>credentials-local/src/index.ts</code>，624–631 行</a>及<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/credentials/credentials-local/tests/local.spec.ts#L79-L87" target="_blank" rel="noopener noreferrer">受管文件优先的测试，79–87 行</a>。它不会把受管秘密值写入 <code>process.env</code>。</p><p>CLI 参考的<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/reference/README.zh.md#L139-L144" target="_blank" rel="noopener noreferrer">部署摘要 139–144 行</a>给出了不同顺序；这里依据同一 Commit 的实现与测试，差异已登记在源码核对清单中，不把矛盾藏起来。Headless 默认禁用交互式凭据提供方，使用启动环境，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/headless/cordis.patch.yml#L35-L46" target="_blank" rel="noopener noreferrer">headless patch 的 35–46 行</a>；sdk-minimal 也不含该受管提供方。因此不能把这条受管规则推广到每个 Profile。</p><p>本课不打开 <code>.credentials.yaml</code>，也不显示 Key 值。排查时先核对提供方是否启用、引用的变量名和来源，不把秘密全文打印到日志。</p></div></details>
+<h2>怎样观察配置，哪些改动需要重启</h2>
+<h3>dump 是组合前提的证据，不是所有运行值的照片</h3>
+<p>下面是固定版本的语法对照，不是要求你在个人 Home 上执行：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>dsh --profile web --dump-default-config
+dsh --profile web --patch ./extra.yml --dump-config</code></pre></div>
+<p><code>--dump-default-config</code> 只收集 Bundle 层，不读取 Profile、Home 的用户 patch，也不接受 <code>--patch</code>；<code>--dump-config</code> 把这些层纳入。两者都不启动应用，但<strong>可能初始化缺失的 Profile，并写入根文件</strong>，不能称为完全只读。其收集逻辑在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/dump-config.ts#L51-L74" target="_blank" rel="noopener noreferrer"><code>collectConfigDumpLayers()</code>，51–74 行</a>，准备与打印在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/dump-config.ts#L32-L42" target="_blank" rel="noopener noreferrer">32–42 行</a>。</p>
+<p>输出会保留 <code>!!js</code> 表达式而不求值，并标注来源与修改层。dump 不运行应用参数提供方，因此下面的组合会被拒绝：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TEXT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="text 代码"><code>dsh --profile web --dump-config --port 8080</code></pre></div>
+<p>证据在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts#L122-L135" target="_blank" rel="noopener noreferrer"><code>resolveBoot()</code>，122–135 行</a>及<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/tests/config-dump.spec.ts#L70-L100" target="_blank" rel="noopener noreferrer">配置输出测试 70–100 行</a>。如果 dump 显示 <code>ctx.webStartup.port ?? 3080</code>，你读到的是表达式与后备值，不是“监听端口一定为 3080”。正常启动的遥测关闭补丁也有额外处理；dump 本身不证明插件激活、端口绑定、网络可达或模型可用。</p>
+<p>配置表达式保留，也不代表输出天然脱敏。写在 config 中的字面量秘密仍可能出现在 dump；schema dump 还会导入插件声明。不要将真实完整配置、协议帧、启动诊断或 <code>.env</code> 直接贴进聊天或提交。教学练习只展示固定的非秘密值。</p>
+<h3>配置 HMR 不等于所有文件都可以热改</h3>
+<p>HMR（热重载）先理解为“进程不整体重开，把允许变化的部分重新应用”。像营业中更换一组工作安排，但不是把所有设备和人员都瞬间替换。技术上，要看哪个插件监视哪些文件、重组哪些配置；它不是一个全局魔法开关。</p>
+<p>在随附组合里：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>改动</th><th>本课可以据源码得出的行为</th></tr></thead><tbody><tr><td>Web 的 Profile manifest、Profile patch、Home patch</td><td>base 在 Profile 环境启用配置 HMR，监视这些输入；变更可走统一重组路径，失败仍需看诊断</td></tr><tr><td>headless、sdk、acp 的这些配置</td><td>应用 patch 明确禁用 hmr，下一进程才采用改动</td></tr><tr><td>sdk-minimal</td><td>完整树未挂载 hmr，配置只在启动时应用</td></tr><tr><td><code>.env</code>、启动 argv、已读入的 <code>--patch</code> 内容</td><td>属于本次启动快照或固定 overlay；不要期待配置 HMR 自动重读，修改后重新启动</td></tr><tr><td>任意插件源码或旧的浏览器产物</td><td>配置重载不等于任意模块热替换；源码/产物更新要按相应构建与运行流程处理</td></tr></tbody></table></div>
+<p>依据是 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml#L27-L32" target="_blank" rel="noopener noreferrer">base 的 hmr 行 27–32</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/headless/cordis.patch.yml#L35-L40" target="_blank" rel="noopener noreferrer">headless 禁用</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-app/cordis.patch.yml#L23-L24" target="_blank" rel="noopener noreferrer">SDK 禁用</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/acp-app/cordis.patch.yml#L22-L23" target="_blank" rel="noopener noreferrer">ACP 禁用</a>，以及<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/hmr/src/index.ts#L377-L414" target="_blank" rel="noopener noreferrer">监视 manifest、Profile/Home patch 的实现，377–414 行</a>。base 的 <code>root: []</code> 表示模块监视根没有默认展开，不能把配置 HMR 与所有模块 HMR 混为一谈。</p>
+<p>Web 端口 flag 的优先级还有一个前提：配置保留读取 <code>webStartup</code> 的表达式。随附 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/web-app/cordis.patch.yml#L171-L177" target="_blank" rel="noopener noreferrer">Web 行 171–177</a>用 <code>ctx.webStartup.port ?? 3080</code>，有 flag 时读它，没有时取后备。若用户层把整个 config 换成字面量 <code>port: 9090</code>，便丢了这条读取关系，不能坚持认为 <code>--port</code> 永远最高。本课实验专门比较这两种情况，H08 再展开树更新和卸载原理。</p>
+<h2>出错时，先确定失败发生在哪一层</h2>
+<p>下面是定位路线，不是“一键修好”的命令。先记版本、Profile、参数边界、配置来源及第一条有效错误，不输出秘密。恢复只处理已经定位的文件或配置，不删除整个工作区、Home 或个人数据。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>现象</th><th>可能原因与先查路径</th><th>正确恢复方式</th></tr></thead><tbody><tr><td>很早就出现语法/内置 API 错误</td><td>核 <code>node --version</code> 与根 engines；锁定版本要求 <code>&gt;=24.9.0</code></td><td>在独立源码环境切换受支持版本，重开该环境终端再核；不把本课小实验的 Node 20.19 要求当官方要求</td></tr><tr><td>pnpm 不存在、workspace 依赖没装好</td><td>根 <code>packageManager</code> 固定 <code>pnpm@11.28.5</code>；核当前目录、版本与安装首个错误</td><td>使用仓库指定工具链准备这份固定 checkout；不在 AI Foundry 根目录安装 Harness 依赖，不先删除 lock 或全目录</td></tr><tr><td>Profile 不存在或名称非法</td><td>解析接受名字不代表目录有效；核 templates 与 <code>resolveProfileDir/loadProfile</code></td><td>修正名称；自定义 Profile 需明确准备；不静默切换成另一个模式</td></tr><tr><td><code>--patch</code> 未生效，或应用报未知选项</td><td>看它是否位于第一个应用参数之后；对照 args 测试</td><td>把启动器 flag 放到应用参数之前，再核应用自身 help；不改源码硬接一个错误 flag</td></tr><tr><td>应用就绪，但模型调用仍失败</td><td>核模型路由是否存在、对应提供方和凭据来源；SDK 模型可来自初始化请求</td><td>只修正确认缺失的路由或凭据引用，重试最小检查；不以 UI 能打开证明模型可用，不把 Key 放到 URL/argv</td></tr><tr><td>组合包无法解析或插件等待服务</td><td>Bundle 加载可能先记录 skippedBundles 警告，required 条目失效才导致致命审查；optional 失败不保证全树退出</td><td>核安装锚点、Profile 依赖、包版本与真实缺失服务；恢复正确依赖/配置，读原始原因；不随意豁免版本或禁掉必需检查</td></tr><tr><td><code>.env</code> 存在却被拒绝或变量没变化</td><td>核调用目录、Home、禁止名字、继承同名值；不是先打印文件全文</td><td>把只能由启动环境提供的设置移到正确来源；修正具体文件中的名字；重启建立新快照</td></tr><tr><td>配置保存后效果没变</td><td>核 HMR 是否启用、覆盖顺序、字面量是否替掉表达式、overlay 是否已冻结</td><td>对照组合预览和应用实际值，修正确切来源；需要时有序关闭再启动，不删除个人 Profile</td></tr><tr><td>源码更新后浏览器仍像旧版</td><td><code>pnpm dsh</code> 不负责 build，也不检查产物是否新鲜</td><td>在独立固定仓库按官方流程构建，再启动；不能只反复刷新网页</td></tr></tbody></table></div>
+<p>工具链证据在<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/package.json#L1-L10" target="_blank" rel="noopener noreferrer">根清单 1–10 行</a>；源码入口与构建前提见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/README.zh.md#L56-L60" target="_blank" rel="noopener noreferrer">CLI 开发说明 56–60 行</a>。Bundle 的“跳过并报告”是<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/profile.ts#L678-L712" target="_blank" rel="noopener noreferrer">实际加载分支 678–712 行</a>，必需与可选条目的激活审查在 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/boot/app-boot/src/index.ts#L1156-L1200" target="_blank" rel="noopener noreferrer"><code>auditStartupEntries()</code>，1156–1200 行</a>，不能仅凭 README 的笼统错误描述判定全树行为。</p>
+<p>另有一个看起来像修复命令的危险选项：<code>--from-default-profile</code> 会<strong>替换自定义目标，包含原依赖与用户 patch</strong>，并不是把缺失字段补上。参见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/profile-boot.ts#L90-L107" target="_blank" rel="noopener noreferrer">初始化约定 90–107 行</a>。本课不运行它，不把它作为默认恢复建议。</p>
+<h2>练习 A：为五个场景留下选择依据</h2>
+<p>这次不要只填一个名字。你需要让另一位同学按你的记录找到相同的启动器、应用提供方和组合包。</p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="练习 A：选择 Profile 并解释差异"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 A：选择 Profile 并解释差异</div><div class="lesson-callout-body"><p>为下列场景选择随附 Profile：browser，普通用户用 Web UI；once，命令行完成一项任务后退出；python，Python 程序使用完整 SDK 能力；editor，编辑器通过 ACP 接入；explicitMinimal，开发者明确要研究独立小型 SDK 配置树。</p><p>每个场景记录 profile、公共 entry 文件、app 应用提供方文件、bundles 顺序。再各写一句理由，包括通信形式或生命周期的差异。尤其解释 explicitMinimal 为什么不应填 base + sdk-app，以及为什么本课不会实际运行它。</p></div></aside>
+<p>建议查找顺序：CLI 入口表 → <code>PROFILE_TEMPLATES</code> → 对应 Bundle patch → app 提供方或协议传输代码。不要从英文包名猜功能；A 中 SDK 与 ACP 都有 stdio，也不能据此互换答案。</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：练习 A 参考解析：入口共享，应用层不同</summary><div class="lesson-callout-body"><p>browser 是 web，组合 base + web-app，Web 启动提供方解析端口等参数。once 是 headless，组合 base + headless，runner 拿任务并最终输出退出；不需要 Web server。</p><p>python 在题设“完整 SDK”下选 sdk，组合 base + sdk-app，用 SDK JSON-RPC stdio；editor 按题设 ACP 选 acp，组合 base + acp-app，用 ACP stdio。它们各自服务客户端生命周期，而不是每个请求启动一个普通 HTTP 服务。</p><p>explicitMinimal 是 sdk-minimal，其 bundles 只有 <code>@deepseek-ai/dsh-sdk-minimal</code>。它仍复用 sdk-app 的启动提供方代码，但完整配置树与权限另外定义。公共 entry 都是 <code>apps/cli/src/bin.ts</code>，不应虚构五个公开 bin。完整路径与包名在下面合并答案中。</p><p>如果换一个客户端或需求，合理选择也可能改变。本题的自动检查固定这些已写明的条件，不代替分析真实部署需求。</p></div></details>
+<h2>练习 B：把启动配置追踪到具体结果</h2>
+<p>现在只研究一个 Web 夹具。它全部在内存中，不读取个人环境，也不创建真实 Home。</p>
+<p>参数是 <code>--profile web --patch ./extra.yml --port 8080</code>。虚拟启动进程提供 <code>DSH_HOME=/fixture/home</code> 和非秘密变量 <code>COURSE_THEME=night</code>；项目环境中同名值是 day，Home 环境中是 mint。manifest 的 Bundle 列表与随附 Web 模板一致。</p>
+<p>配置层的端口后备值分别为：web-app 3080、Profile 4100、Home 4200、extra.yml 4300。每层都保留 <code>ctx.webStartup.port ?? 后备值</code> 这条读取关系，并重述其 config 中需要保留的字段。这里研究的是配置来源，不是建议把真实 Web 服务器这样部署。</p>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="练习 B：先预测七项结果"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 B：先预测七项结果</div><div class="lesson-callout-body"><p>写下选中的 Profile、虚拟 Profile 目录、启动器收到的 patch 列表、应用收到的参数、COURSE_THEME 的胜出来源、最终端口以及配置层的完整顺序。</p><p>再预测三个反例：把 <code>--patch</code> 放到 <code>--port 8080</code> 后面；在项目环境加入 <code>DSH_HOME</code>；把最后一层 port 改为字面量 9090。分别会在哪一层失败或改变结果？哪些真实信息不能放进你的输出或提交文件？</p></div></aside>
+<p>在自己新建的空目录 <code>h04-launch-lab</code> 中，用编辑器创建 <code>answer.json</code>。先填写下面模板，不写真实 Key 或私人路径。所有路径都是仓库相对路径或本课虚拟路径。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JSON</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="json 代码"><code>{
+  &quot;A&quot;: {
+    &quot;browser&quot;: {
+      &quot;profile&quot;: &quot;&quot;,
+      &quot;entry&quot;: &quot;&quot;,
+      &quot;app&quot;: &quot;&quot;,
+      &quot;bundles&quot;: []
+    },
+    &quot;once&quot;: {
+      &quot;profile&quot;: &quot;&quot;,
+      &quot;entry&quot;: &quot;&quot;,
+      &quot;app&quot;: &quot;&quot;,
+      &quot;bundles&quot;: []
+    },
+    &quot;python&quot;: {
+      &quot;profile&quot;: &quot;&quot;,
+      &quot;entry&quot;: &quot;&quot;,
+      &quot;app&quot;: &quot;&quot;,
+      &quot;bundles&quot;: []
+    },
+    &quot;editor&quot;: {
+      &quot;profile&quot;: &quot;&quot;,
+      &quot;entry&quot;: &quot;&quot;,
+      &quot;app&quot;: &quot;&quot;,
+      &quot;bundles&quot;: []
+    },
+    &quot;explicitMinimal&quot;: {
+      &quot;profile&quot;: &quot;&quot;,
+      &quot;entry&quot;: &quot;&quot;,
+      &quot;app&quot;: &quot;&quot;,
+      &quot;bundles&quot;: []
+    }
+  },
+  &quot;B&quot;: {
+    &quot;selectedProfile&quot;: &quot;&quot;,
+    &quot;profileDir&quot;: &quot;&quot;,
+    &quot;launcherPatches&quot;: [],
+    &quot;appArgs&quot;: [],
+    &quot;themeSource&quot;: &quot;&quot;,
+    &quot;port&quot;: &quot;&quot;,
+    &quot;layerOrder&quot;: []
+  }
+}</code></pre></div>
+<h3>运行固定检查，不启动 Harness</h3>
+<p>同一目录建立 <code>launch-lab.mjs</code>，复制完整程序。沿用 H01–H03 的 Node.js 20.19 及以上即可；官方仓库仍要求 Node 24.9.0 以上。</p>
+<p>**教学简化：**程序只覆盖本课明确的 flag、按 id 替换完整 config、规定的环境名字，以及一条固定端口表达式。<code>!!js ...</code> 在实验里只是受限的字符串表示，不执行 JavaScript；<code>course-shared/course-webserver</code> 是虚构标识，不是官方包。它不模拟全部 Commander、Patch、模块解析、HMR、凭据或权限。CLI 只读取你刚建的 <code>answer.json</code>，不加载真实配置；不发生模型请求、网络、工具执行或子进程启动。</p>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整校验程序：复制到 launch-lab.mjs</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// H04 教学简化：只模拟指定参数、完整 config 替换和固定表达式。
+// 不加载 Harness、不读真实 Home/.env/凭据、不启动服务器、工具、模型或子进程。
+import assert from &#x27;node:assert/strict&#x27;;
+import { readFile } from &#x27;node:fs/promises&#x27;;
+import { pathToFileURL } from &#x27;node:url&#x27;;
+
+const BASE = &#x27;@deepseek-ai/dsh-base&#x27;;
+export const profiles = {
+  web: { bundles: [BASE, &#x27;@deepseek-ai/dsh-web-app&#x27;], app: &#x27;packages/bundle/web-app/src/startup.ts&#x27;, transport: &#x27;browser-http&#x27;, lifetime: &#x27;service&#x27;, hmr: true },
+  headless: { bundles: [BASE, &#x27;@deepseek-ai/dsh-headless&#x27;], app: &#x27;packages/bundle/headless/src/startup.ts&#x27;, transport: &#x27;task-stdout&#x27;, lifetime: &#x27;one-shot&#x27;, hmr: false },
+  sdk: { bundles: [BASE, &#x27;@deepseek-ai/dsh-sdk-app&#x27;], app: &#x27;packages/bundle/sdk-app/src/index.ts&#x27;, transport: &#x27;sdk-jsonrpc-stdio&#x27;, lifetime: &#x27;client&#x27;, hmr: false },
+  &#x27;sdk-minimal&#x27;: { bundles: [&#x27;@deepseek-ai/dsh-sdk-minimal&#x27;], app: &#x27;packages/bundle/sdk-app/src/index.ts&#x27;, transport: &#x27;sdk-jsonrpc-stdio&#x27;, lifetime: &#x27;client&#x27;, hmr: false },
+  acp: { bundles: [BASE, &#x27;@deepseek-ai/dsh-acp-app&#x27;], app: &#x27;packages/bundle/acp-app/src/index.ts&#x27;, transport: &#x27;acp-jsonrpc-stdio&#x27;, lifetime: &#x27;client&#x27;, hmr: false }
+};
+export const casesA = { browser: &#x27;web&#x27;, once: &#x27;headless&#x27;, python: &#x27;sdk&#x27;, editor: &#x27;acp&#x27;, explicitMinimal: &#x27;sdk-minimal&#x27; };
+const fail = message =&gt; { throw new Error(message); };
+
+export function parseLauncher(argv) {
+  // 仅覆盖本课语法；不实现 Commander、plugin、reset、schema dump 或所有 -- 规则。
+  const tokens = [...argv];
+  if (tokens[0] &amp;&amp; !tokens[0].startsWith(&#x27;-&#x27;)) tokens.unshift(&#x27;--profile&#x27;);
+  let profile, mode = &#x27;profile&#x27;; const patches = [];
+  const value = flag =&gt; {
+    const v = tokens.shift();
+    if (!v || v.startsWith(&#x27;--&#x27;)) fail(`${flag} 缺少值`);
+    return v;
+  };
+  while (tokens.length) {
+    const t = tokens[0];
+    if (t === &#x27;--profile&#x27;) { tokens.shift(); if (profile !== undefined) fail(&#x27;重复 Profile&#x27;); profile = value(t); }
+    else if (t === &#x27;--patch&#x27;) { tokens.shift(); patches.push(value(t)); }
+    else if (t === &#x27;--dump-config&#x27; || t === &#x27;--dump-default-config&#x27;) {
+      tokens.shift(); if (mode !== &#x27;profile&#x27;) fail(&#x27;dump 互斥&#x27;); mode = t.slice(2);
+    } else break;
+  }
+  if (!profile) fail(&#x27;缺少 Profile&#x27;);
+  if (profile.toLowerCase() === &#x27;desktop&#x27;) fail(&#x27;desktop 由 Electron 管理&#x27;);
+  if (mode !== &#x27;profile&#x27; &amp;&amp; tokens.length) fail(&#x27;dump 不接受应用参数&#x27;);
+  if (mode === &#x27;dump-default-config&#x27; &amp;&amp; patches.length) fail(&#x27;默认 dump 不接受 --patch&#x27;);
+  return { profile, mode, patches, appArgs: tokens };
+}
+export function profileDir(home, name) {
+  if ([&#x27;&#x27;, &#x27;.&#x27;, &#x27;..&#x27;, &#x27;node_modules&#x27;].includes(name) || /[\\/]/.test(name)) fail(&#x27;非法 Profile 名称&#x27;);
+  return `${home}/profiles/${name}`; // 虚拟 POSIX 路径，不访问磁盘。
+}
+export function selectEnv(processLayer, project, home) {
+  // 只实现本课示例名；完整 bootstrap 清单与平台大小写差异见官方源码。
+  for (const [source, layer] of [[&#x27;project-env&#x27;, project], [&#x27;user-env&#x27;, home]]) {
+    for (const key of Object.keys(layer)) {
+      const upper = key.toUpperCase();
+      const proxy = [&#x27;HTTP_PROXY&#x27;, &#x27;HTTPS_PROXY&#x27;, &#x27;ALL_PROXY&#x27;, &#x27;NO_PROXY&#x27;].includes(upper);
+      const restricted = /^(DSH_|XDG_|DYLD_|BASH_FUNC_)/.test(upper) || [&#x27;PATH&#x27;, &#x27;HOME&#x27;, &#x27;NODE_OPTIONS&#x27;, &#x27;DEEPSEEK_BASE_URL&#x27;, &#x27;NODE_TLS_REJECT_UNAUTHORIZED&#x27;].includes(upper) || proxy;
+      if (restricted &amp;&amp; !(source === &#x27;user-env&#x27; &amp;&amp; proxy)) fail(`${source} 禁止设置 ${key}`);
+    }
+  }
+  const result = {};
+  for (const [source, layer] of [[&#x27;process&#x27;, processLayer], [&#x27;project-env&#x27;, project], [&#x27;user-env&#x27;, home]]) {
+    for (const [key, value] of Object.entries(layer)) if (!(key in result)) result[key] = { value, source };
+  }
+  return result;
+}
+const expression = port =&gt; `!!js ctx.webStartup.port ?? ${port}`;
+const webConfig = port =&gt; ({ host: &#x27;127.0.0.1&#x27;, port: expression(port) });
+export function fixture() {
+  return {
+    argv: [&#x27;--profile&#x27;, &#x27;web&#x27;, &#x27;--patch&#x27;, &#x27;./extra.yml&#x27;, &#x27;--port&#x27;, &#x27;8080&#x27;],
+    process: { DSH_HOME: &#x27;/fixture/home&#x27;, COURSE_THEME: &#x27;night&#x27; },
+    projectEnv: { COURSE_THEME: &#x27;day&#x27; }, homeEnv: { COURSE_THEME: &#x27;mint&#x27; },
+    layers: [
+      { label: &#x27;bundle:base&#x27;, patches: [{ insert: [{ id: &#x27;shared&#x27;, name: &#x27;course-shared&#x27; }] }] },
+      { label: &#x27;bundle:web-app&#x27;, patches: [{ insert: [{ id: &#x27;webserver&#x27;, name: &#x27;course-webserver&#x27;, config: webConfig(3080) }] }] },
+      { label: &#x27;profile&#x27;, patches: [{ id: &#x27;webserver&#x27;, config: webConfig(4100) }] },
+      { label: &#x27;home&#x27;, patches: [{ id: &#x27;webserver&#x27;, config: webConfig(4200) }] },
+      { label: &#x27;./extra.yml&#x27;, patches: [{ id: &#x27;webserver&#x27;, config: webConfig(4300) }] }
+    ]
+  };
+}
+export function compose(layers) {
+  const rows = [], warnings = [];
+  for (const layer of layers) for (const patch of layer.patches) {
+    if (patch.insert) { for (const row of patch.insert) rows.push(structuredClone(row)); continue; }
+    const row = rows.find(r =&gt; r.id === patch.id);
+    if (!row) { warnings.push(`缺少目标 ${patch.id}`); continue; }
+    // 这里仅模拟匹配 id 的 config 整体替换，不是通用 Patch 实现。
+    if (patch.config !== undefined) row.config = structuredClone(patch.config);
+  }
+  return { rows, warnings };
+}
+export function traceLaunch(input = fixture()) {
+  const invocation = parseLauncher(input.argv);
+  const home = input.process.DSH_HOME?.trim() || &#x27;/fixture/default-home&#x27;;
+  const dir = profileDir(home, invocation.profile);
+  // 正常启动先加载环境；dump 分支不调用 loadLayeredEnv，也不解析应用参数。
+  const env = invocation.mode === &#x27;profile&#x27; ? selectEnv(input.process, input.projectEnv, input.homeEnv) : undefined;
+  if (!profiles[invocation.profile]) fail(&#x27;未安装的自定义 Profile&#x27;);
+  if (invocation.profile !== &#x27;web&#x27;) fail(&#x27;追踪夹具只模拟 Web；A 的其他 Profile 用事实表定位&#x27;);
+  const chosen = input.layers.filter(l =&gt; l.label.startsWith(&#x27;bundle:&#x27;) || (invocation.mode !== &#x27;dump-default-config&#x27; &amp;&amp; ([&#x27;profile&#x27;, &#x27;home&#x27;].includes(l.label) || invocation.patches.includes(l.label))));
+  const result = compose(chosen), server = result.rows.find(r =&gt; r.id === &#x27;webserver&#x27;);
+  if (!server) fail(&#x27;缺少必需的 Web 配置行&#x27;);
+  if (invocation.mode !== &#x27;profile&#x27;) return { mode: invocation.mode, profileDir: dir, layerOrder: chosen.map(l =&gt; l.label), unevaluatedPort: server.config.port, appStarted: false };
+  let appPort;
+  for (let i = 0; i &lt; invocation.appArgs.length; i++) {
+    if (invocation.appArgs[i] !== &#x27;--port&#x27;) fail(`Web 不认识 ${invocation.appArgs[i]}`);
+    const port = invocation.appArgs[++i];
+    if (!port || !/^\d+$/.test(port)) fail(&#x27;Web 端口必须是数字&#x27;);
+    appPort = Number(port);
+  }
+  const p = server.config.port, match = typeof p === &#x27;string&#x27; ? /^!!js ctx\.webStartup\.port \?\? (\d+)$/.exec(p) : null;
+  if (typeof p !== &#x27;number&#x27; &amp;&amp; !match) fail(&#x27;夹具不执行任意表达式&#x27;);
+  const port = match ? (appPort ?? Number(match[1])) : p;
+  return { selectedProfile: invocation.profile, profileDir: dir, launcherPatches: invocation.patches, appArgs: invocation.appArgs, themeSource: env.COURSE_THEME?.source, port, layerOrder: chosen.map(l =&gt; l.label) };
+}
+export const reference = {
+  A: Object.fromEntries(Object.entries(casesA).map(([id, name]) =&gt; [id, { profile: name, entry: &#x27;apps/cli/src/bin.ts&#x27;, app: profiles[name].app, bundles: profiles[name].bundles }])),
+  B: { selectedProfile: &#x27;web&#x27;, profileDir: &#x27;/fixture/home/profiles/web&#x27;, launcherPatches: [&#x27;./extra.yml&#x27;], appArgs: [&#x27;--port&#x27;, &#x27;8080&#x27;], themeSource: &#x27;process&#x27;, port: 8080, layerOrder: [&#x27;bundle:base&#x27;, &#x27;bundle:web-app&#x27;, &#x27;profile&#x27;, &#x27;home&#x27;, &#x27;./extra.yml&#x27;] }
+};
+export function checkAnswer(answer) { assert.deepEqual(answer, reference, &#x27;请逐字段对照 A 事实与 B 追踪；理由需要自己解释&#x27;); return true; }
+export function selfTest() {
+  assert.deepEqual(traceLaunch(), reference.B);
+  const late = fixture(); late.argv = [&#x27;web&#x27;, &#x27;--port&#x27;, &#x27;8080&#x27;, &#x27;--patch&#x27;, &#x27;./extra.yml&#x27;];
+  assert.deepEqual(parseLauncher(late.argv).patches, []); assert.throws(() =&gt; traceLaunch(late), /Web 不认识/);
+  const bad = fixture(); bad.projectEnv.DSH_HOME = &#x27;/fixture/other&#x27;; assert.throws(() =&gt; traceLaunch(bad), /禁止设置/);
+  assert.equal(profiles[&#x27;sdk-minimal&#x27;].bundles.includes(BASE), false);
+  console.log(&#x27;PASS：Profile 定位与启动规则教学自检；不是完整 Harness 启动&#x27;);
+}
+if (process.argv[1] &amp;&amp; import.meta.url === pathToFileURL(process.argv[1]).href) {
+  if (process.argv[2] === &#x27;--self-test&#x27;) selfTest();
+  else if (process.argv[2] === &#x27;--trace&#x27;) console.log(JSON.stringify(traceLaunch(), null, 2));
+  else { checkAnswer(JSON.parse(await readFile(&#x27;answer.json&#x27;, &#x27;utf8&#x27;))); console.log(&#x27;PASS：A 五场景事实 + B 配置追踪；请另行解释理由&#x27;); }
+}</code></pre></div></div></details>
+<p>逐条运行，成功后再继续：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="bash 代码"><code>node launch-lab.mjs --self-test
+node launch-lab.mjs --trace
+node launch-lab.mjs</code></pre></div>
+<p>第一条显示 <code>PASS：Profile 定位与启动规则教学自检；不是完整 Harness 启动</code>，验证标准场景及两类反例。第二条给出 B 的确定性追踪。第三条才读取你的 answer.json；完全一致时显示 <code>PASS：A 五场景事实 + B 配置追踪；请另行解释理由</code>。字段不符会非零退出，不能把自检通过当成自己的答案已经检查。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：A 与 B 完整参考答案</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JSON</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="json 代码"><code>{
+  &quot;A&quot;: {
+    &quot;browser&quot;: {
+      &quot;profile&quot;: &quot;web&quot;,
+      &quot;entry&quot;: &quot;apps/cli/src/bin.ts&quot;,
+      &quot;app&quot;: &quot;packages/bundle/web-app/src/startup.ts&quot;,
+      &quot;bundles&quot;: [
+        &quot;@deepseek-ai/dsh-base&quot;,
+        &quot;@deepseek-ai/dsh-web-app&quot;
+      ]
+    },
+    &quot;once&quot;: {
+      &quot;profile&quot;: &quot;headless&quot;,
+      &quot;entry&quot;: &quot;apps/cli/src/bin.ts&quot;,
+      &quot;app&quot;: &quot;packages/bundle/headless/src/startup.ts&quot;,
+      &quot;bundles&quot;: [
+        &quot;@deepseek-ai/dsh-base&quot;,
+        &quot;@deepseek-ai/dsh-headless&quot;
+      ]
+    },
+    &quot;python&quot;: {
+      &quot;profile&quot;: &quot;sdk&quot;,
+      &quot;entry&quot;: &quot;apps/cli/src/bin.ts&quot;,
+      &quot;app&quot;: &quot;packages/bundle/sdk-app/src/index.ts&quot;,
+      &quot;bundles&quot;: [
+        &quot;@deepseek-ai/dsh-base&quot;,
+        &quot;@deepseek-ai/dsh-sdk-app&quot;
+      ]
+    },
+    &quot;editor&quot;: {
+      &quot;profile&quot;: &quot;acp&quot;,
+      &quot;entry&quot;: &quot;apps/cli/src/bin.ts&quot;,
+      &quot;app&quot;: &quot;packages/bundle/acp-app/src/index.ts&quot;,
+      &quot;bundles&quot;: [
+        &quot;@deepseek-ai/dsh-base&quot;,
+        &quot;@deepseek-ai/dsh-acp-app&quot;
+      ]
+    },
+    &quot;explicitMinimal&quot;: {
+      &quot;profile&quot;: &quot;sdk-minimal&quot;,
+      &quot;entry&quot;: &quot;apps/cli/src/bin.ts&quot;,
+      &quot;app&quot;: &quot;packages/bundle/sdk-app/src/index.ts&quot;,
+      &quot;bundles&quot;: [
+        &quot;@deepseek-ai/dsh-sdk-minimal&quot;
+      ]
+    }
+  },
+  &quot;B&quot;: {
+    &quot;selectedProfile&quot;: &quot;web&quot;,
+    &quot;profileDir&quot;: &quot;/fixture/home/profiles/web&quot;,
+    &quot;launcherPatches&quot;: [
+      &quot;./extra.yml&quot;
+    ],
+    &quot;appArgs&quot;: [
+      &quot;--port&quot;,
+      &quot;8080&quot;
+    ],
+    &quot;themeSource&quot;: &quot;process&quot;,
+    &quot;port&quot;: 8080,
+    &quot;layerOrder&quot;: [
+      &quot;bundle:base&quot;,
+      &quot;bundle:web-app&quot;,
+      &quot;profile&quot;,
+      &quot;home&quot;,
+      &quot;./extra.yml&quot;
+    ]
+  }
+}</code></pre></div><p>B 的环境来自 process，端口为 8080：配置层的最高后备值虽然是 4300，但保留的表达式会先读应用解析出的 flag。层顺序与环境优先级是两套规则，不能因为配置里 Home 晚应用，就把环境答案改成 user-env。</p><p>晚放 <code>--patch</code> 时启动器 patch 列表为空，应用参数包含它；本课 Web 子集解析器会拒绝未知 flag。项目 <code>.env</code> 试图设置 DSH_HOME 时，校验阶段拒绝，不能用它搬走 Home。最后一层改成字面量 9090 后，flag 的读取关系消失，结果是 9090。</p><p>真实 Key、令牌、带认证的代理地址、受管凭据内容和私人运行诊断不应进入日志、Prompt、截图或 Git。本题只使用固定非秘密变量；校验器没有提供通用脱敏保证。</p></div></details>
+<aside id="lesson-check" class="lesson-callout lesson-check" aria-label="用两次错误证明校验有实际作用"><div class="lesson-callout-label">怎么确认做对了</div><div class="lesson-callout-title">用两次错误证明校验有实际作用</div><div class="lesson-callout-body"><p>先把 answer.json 中 sdk-minimal 的 bundles 改成 base + sdk-app，运行检查应失败；按源码修回。再把 B 的 port 改成 4300，也应失败。每次说明为什么错，不修改程序里的正确事实来迎合答案。</p><p>最后在自己的实验副本按 B 的三个反例修改夹具，重新运行 <code>--trace</code> 观察失败或端口变化。保留原副本作对照；不用接真实 API 证明这些启动规则。</p></div></aside>
+<aside id="lesson-help" class="lesson-callout lesson-stuck" aria-label="找不到答案或程序报错时"><div class="lesson-callout-label">卡住了怎么办</div><div class="lesson-callout-title">找不到答案或程序报错时</div><div class="lesson-callout-body"><p>入口找不到：先核固定 Commit，再从 templates 找 Bundle patch，不猜五个独立 bin。JSON 报错：核双引号、逗号、字段名与文件扩展名。默认运行找不到 answer.json：核终端是否在新建练习目录。数组不一致：检查 Bundle 顺序与 minimal 例外。端口不一致：分开看后备值和应用值。真实官方启动失败则回到前面的分层表，不运行删除工作区或重置个人 Profile 的命令。</p></div></aside>
+<h2>三个需要能解释的问题</h2>
+<h3>1. 同样是 JSON-RPC stdio，为什么 SDK 和 ACP 不能随便交换？</h3>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案：传输相同不表示应用协议相同</summary><div class="lesson-callout-body"><p>stdio 决定字节走哪条管道，JSON-RPC 规定一类消息与调用结构；具体方法、会话、能力协商和结果语义仍由 SDK 或 ACP 自己定义。客户端要求 ACP，接 SDK server 不会因为都按行传 JSON 就自动兼容。</p><p>先按客户端协议选 Profile，再检查它的应用 bridge/server 是否在组合里，最后看协议初始化结果。HTTP 端口与网页能否打开不是这两种连接的通用判断条件。</p></div></details>
+<h3>2. 为什么不能用一张“环境最高、CLI 次之”的图概括所有配置？</h3>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案：先问谁在处理哪一种数据</summary><div class="lesson-callout-body"><p>启动环境先限制来源，再按 process、project-env、user-env 查值。配置树则从空根逐层应用 Bundle、Profile、Home、CLI patch。应用 flag 是否覆盖默认值，又取决于实际配置有没有保留相应表达式。受管凭据还有自己的所有者与解析顺序。</p><p>一条笼统优先级会把“变量是否允许来自文件”“哪个值胜出”“config 是否整体替换”“应用怎样读 flag”混在一起。读代码时分别找到规则的负责方，再用同一组输入验证；dump 也只能回答其中一部分问题。</p></div></details>
+<h3>3. 为什么 Web 配置能热重载，也仍可能需要重启？</h3>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案：热重载的范围由实现指定</summary><div class="lesson-callout-body"><p>默认 Web 配置 HMR 监视 manifest 与 Profile/Home patch；它不是重新执行进程启动、重新发现 <code>.env</code> 或解析新的 argv。额外 overlay 的内容在本次启动已经固定，浏览器构建产物与插件模块监视也有独立边界。</p><p>所以改了环境来源、启动参数、固定 overlay 或需要更新的构建产物，不能只等配置 HMR。应先核改的是哪类输入，再按应用流程有序关闭、必要时构建并重启；重载失败也要读诊断，不把旧界面仍可用当成新配置已成功。</p></div></details>
+<h2>模块一到这里，下一问交给 Cordis</h2>
+<p>H01 解释职责为什么要组织，H02 教我们按问题找源码，H03 追踪一次请求，H04 补上请求开始前的启动条件。现在你能从客户端需求选择 Profile，从参数边界追到组合，再用来源规则解释环境与配置结果；也知道应用就绪与模型可用、任务完成仍是不同证据。</p>
+<p>保留自己的五场景定位表、配置追踪答案和三类反例。第一模块结束后，将把 H01–H04 的理解路径、重复内容、练习与配图集中审查，<strong>制作标准目前仍是待审候选，不因技术测试通过就自动冻结</strong>。</p>
+<p>再往下的问题自然出现了：<strong>不同 Profile 可以组合不同能力，这些能力为什么能作为插件装配在一起？</strong> H05 将从 Cordis 的 Context、Service 和 Plugin 解释这件事。本课到运行树就绪为止，不提前展开它们的实现。</p></div></main></body></html>

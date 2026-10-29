@@ -1,0 +1,23 @@
+PASS：Profile 定位与启动规则教学自检；不是完整 Harness 启动
+
+--- Web 固定启动教学追踪 ---
+{
+  "selectedProfile": "web",
+  "profileDir": "/fixture/home/profiles/web",
+  "launcherPatches": [
+    "./extra.yml"
+  ],
+  "appArgs": [
+    "--port",
+    "8080"
+  ],
+  "themeSource": "process",
+  "port": 8080,
+  "layerOrder": [
+    "bundle:base",
+    "bundle:web-app",
+    "profile",
+    "home",
+    "./extra.yml"
+  ]
+}

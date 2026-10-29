@@ -1,0 +1,78 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "status": "PASS",
+  "scope": "10 actual-source helper probes; no boot/runProfile, model, network, user Home/credentials or package install",
+  "checks": [
+    {
+      "name": "actual CLI positional boundary, early overlay and late application args",
+      "status": "PASS"
+    },
+    {
+      "name": "actual Profile name/path validation with explicit fixture home",
+      "status": "PASS"
+    },
+    {
+      "name": "actual patch composition replaces entire config, no deep merge",
+      "status": "PASS"
+    },
+    {
+      "name": "actual cmdline provider snapshots and freezes without consuming args",
+      "status": "PASS"
+    },
+    {
+      "name": "actual isolated loadLayeredEnv: precedence",
+      "status": "PASS"
+    },
+    {
+      "name": "actual isolated loadLayeredEnv: atomic",
+      "status": "PASS"
+    },
+    {
+      "name": "actual isolated loadLayeredEnv: home-proxy",
+      "status": "PASS"
+    },
+    {
+      "name": "actual isolated loadLayeredEnv: project-proxy",
+      "status": "PASS"
+    },
+    {
+      "name": "actual isolated loadLayeredEnv: home-relocate",
+      "status": "PASS"
+    },
+    {
+      "name": "actual CLI rejects dump mixed with app flags (isolated exit 1)",
+      "status": "PASS"
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/cli/src/args.ts",
+      "sha256": "adff9b75449f883529021bd931a25a380df25edbbf7fbda2e65e6ab2824128cd"
+    },
+    {
+      "path": "packages/boot/app-boot/src/index.ts",
+      "sha256": "8ed5d877ba85366dc610db0712b6a60a47278a0cc24e78ffd7381fbff867baa3"
+    },
+    {
+      "path": "packages/boot/app-boot/src/profile.ts",
+      "sha256": "a7ad9cc9ae18bbdf6f01255c0ab29f6edcd4385cb2a7421ddeed29c47160a530"
+    },
+    {
+      "path": "packages/boot/cmdline/src/index.ts",
+      "sha256": "943a8d9c5c1531ca8b98d081117a4c3e4c6597b53b00b5d2483a6999beaa23af"
+    },
+    {
+      "path": "packages/util/launch-environment/src/index.ts",
+      "sha256": "4b9cb39fd421108a1b4d3a38fe98814efad96b36770c2508ef223a090b5c1695"
+    }
+  ],
+  "dependency": {
+    "lockEntries": 22,
+    "name": "commander",
+    "version": "15.0.0",
+    "source": "pnpm-lock.yaml:546-548,22188-22190; isolated package, no install scripts",
+    "entry": "C:/Users/QYF/.codex/research/h04-probe-deps/node_modules/commander/index.js"
+  },
+  "temporaryFixture": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h04-probes-WoBXvD",
+  "cleanup": "retained; no bulk deletion"
+}

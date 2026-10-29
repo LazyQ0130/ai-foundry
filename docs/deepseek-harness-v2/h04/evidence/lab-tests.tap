@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: 五 Profile 的固定组合、通信和生命周期；minimal 不含 base
+ok 1 - 五 Profile 的固定组合、通信和生命周期；minimal 不含 base
+  ---
+  duration_ms: 1.2638
+  type: 'test'
+  ...
+# Subtest: 启动器只解析应用参数之前的 flag
+ok 2 - 启动器只解析应用参数之前的 flag
+  ---
+  duration_ms: 0.2427
+  type: 'test'
+  ...
+# Subtest: 重复、缺失、保留名称和 dump 组合明确拒绝
+ok 3 - 重复、缺失、保留名称和 dump 组合明确拒绝
+  ---
+  duration_ms: 0.2537
+  type: 'test'
+  ...
+# Subtest: 名称与目录独立于命令解析；缺失自定义 Profile 不静默改为 web
+ok 4 - 名称与目录独立于命令解析；缺失自定义 Profile 不静默改为 web
+  ---
+  duration_ms: 0.7291
+  type: 'test'
+  ...
+# Subtest: 一般环境优先级是 process > project > home，空值由所有者判断
+ok 5 - 一般环境优先级是 process > project > home，空值由所有者判断
+  ---
+  duration_ms: 0.19
+  type: 'test'
+  ...
+# Subtest: 两文件先验证；受限制变量即使被继承值遮住仍拒绝，输入不被物化
+ok 6 - 两文件先验证；受限制变量即使被继承值遮住仍拒绝，输入不被物化
+  ---
+  duration_ms: 0.2048
+  type: 'test'
+  ...
+# Subtest: 代理只在 Home 文件有例外，CA/TLS/DSH 开关不是这个例外
+ok 7 - 代理只在 Home 文件有例外，CA/TLS/DSH 开关不是这个例外
+  ---
+  duration_ms: 0.1485
+  type: 'test'
+  ...
+# Subtest: 标准配置追踪与参考答案一致；保持 CLI 表达式才由应用 flag 选择端口
+ok 8 - 标准配置追踪与参考答案一致；保持 CLI 表达式才由应用 flag 选择端口
+  ---
+  duration_ms: 0.5898
+  type: 'test'
+  ...
+# Subtest: config 整体替换不是深度合并；overlay 顺序改变结果
+ok 9 - config 整体替换不是深度合并；overlay 顺序改变结果
+  ---
+  duration_ms: 0.4078
+  type: 'test'
+  ...
+# Subtest: dump 不解析应用参数、不启动、不读项目 env；默认 dump 仅保留组合包
+ok 10 - dump 不解析应用参数、不启动、不读项目 env；默认 dump 仅保留组合包
+  ---
+  duration_ms: 0.3895
+  type: 'test'
+  ...
+# Subtest: Web 参数错误与缺少应用配置行有明确边界，任意表达式不会执行
+ok 11 - Web 参数错误与缺少应用配置行有明确边界，任意表达式不会执行
+  ---
+  duration_ms: 0.2134
+  type: 'test'
+  ...
+# Subtest: 答案核对拒绝错误事实而不修改参考；脚本不评分解释文字
+ok 12 - 答案核对拒绝错误事实而不修改参考；脚本不评分解释文字
+  ---
+  duration_ms: 1.785
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.7838

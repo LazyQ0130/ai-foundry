@@ -1,0 +1,68 @@
+{
+  "A": {
+    "browser": {
+      "profile": "web",
+      "entry": "apps/cli/src/bin.ts",
+      "app": "packages/bundle/web-app/src/startup.ts",
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app"
+      ]
+    },
+    "once": {
+      "profile": "headless",
+      "entry": "apps/cli/src/bin.ts",
+      "app": "packages/bundle/headless/src/startup.ts",
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-headless"
+      ]
+    },
+    "python": {
+      "profile": "sdk",
+      "entry": "apps/cli/src/bin.ts",
+      "app": "packages/bundle/sdk-app/src/index.ts",
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-sdk-app"
+      ]
+    },
+    "editor": {
+      "profile": "acp",
+      "entry": "apps/cli/src/bin.ts",
+      "app": "packages/bundle/acp-app/src/index.ts",
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-acp-app"
+      ]
+    },
+    "explicitMinimal": {
+      "profile": "sdk-minimal",
+      "entry": "apps/cli/src/bin.ts",
+      "app": "packages/bundle/sdk-app/src/index.ts",
+      "bundles": [
+        "@deepseek-ai/dsh-sdk-minimal"
+      ]
+    }
+  },
+  "B": {
+    "selectedProfile": "web",
+    "profileDir": "/fixture/home/profiles/web",
+    "launcherPatches": [
+      "./extra.yml"
+    ],
+    "appArgs": [
+      "--port",
+      "8080"
+    ],
+    "themeSource": "process",
+    "port": 8080,
+    "layerOrder": [
+      "bundle:base",
+      "bundle:web-app",
+      "profile",
+      "home",
+      "./extra.yml"
+    ]
+  }
+}
