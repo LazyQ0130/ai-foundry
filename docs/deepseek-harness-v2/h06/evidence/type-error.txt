@@ -1,0 +1,8 @@
+[96mwrong-type.ts[0m:[93m2[0m:[93m76[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 2, '(name: "course/value", input: number, next: () => number): number', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'number'.
+  Overload 2 of 2, '(thisArg: unknown, name: keyof Events, ...args: [] | [fiber: Fiber] | [fiber: Fiber, oldValue: FiberState] | [config: any, next: () => any] | [name: string, value: any] | [config: any, noSave: boolean, next: () => void] | [ctx: Context, name: string, error: Error, next: () => any] | ... 7 more ... | [next: ...]): any', gave the following error.
+    Argument of type '"wrong"' is not assignable to parameter of type 'keyof Events'.
+
+[7m2[0m export function wrong(ctx: Context) { return ctx.waterfall('course/value', 'wrong', () => 2); }
+[7m [0m [91m                                                                           ~~~~~~~[0m

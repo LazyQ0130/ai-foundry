@@ -1,0 +1,10 @@
+{
+  "event": "tools/pre-execute",
+  "mode": "waterfall",
+  "declaration": { "path": "packages/core/tools/src/events.ts", "start": 8, "end": 18 },
+  "publisher": { "path": "packages/core/tools/src/pipeline.ts", "start": 197, "end": 215 },
+  "consumer": { "path": "packages/jobs/tool-jobs/src/index.ts", "start": 285, "end": 290 },
+  "test": { "path": "packages/core/tools/tests/tools.spec.ts", "start": 788, "end": 817 },
+  "default": "Promise<PreToolDecision> resolving to {kind: allow}",
+  "explanation": "tool-jobs records an output limit and delegates via return next(); a policy can instead return deny without next. An outer already-entered wrapper can still see the result. Allow continues other checks; it is not proof the tool executed."
+}

@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "cordisVersion": "4.0.6-alpha.1",
+  "sourceByteCheck": "20 vendor file SHA256 checks before execution",
+  "node": "v24.16.0",
+  "typescript": "5.9.3",
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h06-lab-slf8lk",
+  "tests": 27,
+  "mutation": {
+    "exit": 1,
+    "status": "EXPECTED_FAILURE"
+  },
+  "emitAsyncRejection": {
+    "exit": 1,
+    "returnedBeforeFailure": true
+  },
+  "bailAsyncRejection": {
+    "exit": 1,
+    "returnedBeforeFailure": true
+  },
+  "runtime": "actual pinned vendor Cordis/Cosmokit, not Mock; no Loader/Profile/Harness integration",
+  "environment": "allowlisted OS startup variables, new fixtures only; no private data/credentials/real model or network",
+  "typecheck": "strict course consumers; vendor-generated declarations; TS2769 negative; Events augmentation erased",
+  "outputs": {
+    "tests": {
+      "code": 0,
+      "stdout": "TAP version 13\n# Subtest: A emit：返回时异步日志没完成，实验随后自己等待\nok 1 - A emit：返回时异步日志没完成，实验随后自己等待\n  ---\n  duration_ms: 4.6933\n  type: 'test'\n  ...\n# Subtest: A parallel：两项都开始，受控让B先结束，发布者等A和B\nok 2 - A parallel：两项都开始，受控让B先结束，发布者等A和B\n  ---\n  duration_ms: 1.0666\n  type: 'test'\n  ...\n# Subtest: A serial：await后false继续，0停止\nok 3 - A serial：await后false继续，0停止\n  ---\n  duration_ms: 1.0675\n  type: 'test'\n  ...\n# Subtest: A bail：同步false继续，0停止\nok 4 - A bail：同步false继续，0停止\n  ---\n  duration_ms: 0.884\n  type: 'test'\n  ...\n# Subtest: A waterfall：外入内出，输入2，B返回20，A返回21\nok 5 - A waterfall：外入内出，输入2，B返回20，A返回21\n  ---\n  duration_ms: 0.8667\n  type: 'test'\n  ...\n# Subtest: 无监听者：四模式返回空结果，waterfall执行默认主体\nok 6 - 无监听者：四模式返回空结果，waterfall执行默认主体\n  ---\n  duration_ms: 0.7589\n  type: 'test'\n  ...\n# Subtest: waterfall不使用bail值判据：返回false且不next也会短路\nok 7 - waterfall不使用bail值判据：返回false且不next也会短路\n  ---\n  duration_ms: 0.6759\n  type: 'test'\n  ...\n# Subtest: serial和bail实际核对10种值；只有null/false/undefined继续\nok 8 - serial和bail实际核对10种值；只有null/false/undefined继续\n  ---\n  duration_ms: 15.752\n  type: 'test'\n  ...\n# Subtest: serial不并发启动下一个监听器\nok 9 - serial不并发启动下一个监听器\n  ---\n  duration_ms: 1.3854\n  type: 'test'\n  ...\n# Subtest: bail不会await：Promise对象本身使后续停止，即使最终兑现false\nok 10 - bail不会await：Promise对象本身使后续停止，即使最终兑现false\n  ---\n  duration_ms: 1.1064\n  type: 'test'\n  ...\n# Subtest: emit和bail同步throw向外传播，并阻止剩余监听器\nok 11 - emit和bail同步throw向外传播，并阻止剩余监听器\n  ---\n  duration_ms: 2.1843\n  type: 'test'\n  ...\n# Subtest: parallel：捕获同步/异步错误，仍等门闩监听器完成后AggregateError\nok 12 - parallel：捕获同步/异步错误，仍等门闩监听器完成后AggregateError\n  ---\n  duration_ms: 1.5889\n  type: 'test'\n  ...\n# Subtest: serial遇同步throw或异步拒绝都会停止，不继续后续\nok 13 - serial遇同步throw或异步拒绝都会停止，不继续后续\n  ---\n  duration_ms: 2.006\n  type: 'test'\n  ...\n# Subtest: waterfall三层与共享入参：C加3，B乘10，A加1=51\nok 14 - waterfall三层与共享入参：C加3，B乘10，A加1=51\n  ---\n  duration_ms: 1.3754\n  type: 'test'\n  ...\n# Subtest: waterfall同步异常向外，外层能catch，默认逻辑未运行\nok 15 - waterfall同步异常向外，外层能catch，默认逻辑未运行\n  ---\n  duration_ms: 1.0528\n  type: 'test'\n  ...\n# Subtest: waterfall异步返回Promise；await next才使try/catch捕获异步拒绝\nok 16 - waterfall异步返回Promise；await next才使try/catch捕获异步拒绝\n  ---\n  duration_ms: 1.171\n  type: 'test'\n  ...\n# Subtest: 只return next没有await：同步try/catch不会捕获Promise拒绝\nok 17 - 只return next没有await：同步try/catch不会捕获Promise拒绝\n  ---\n  duration_ms: 1.4457\n  type: 'test'\n  ...\n# Subtest: 重复next无一次性保护：B一次，默认主体两次\nok 18 - 重复next无一次性保护：B一次，默认主体两次\n  ---\n  duration_ms: 1.076\n  type: 'test'\n  ...\n# Subtest: 共享next游标：B短路后，A再调用next会进入尚未消费的C\nok 19 - 共享next游标：B短路后，A再调用next会进入尚未消费的C\n  ---\n  duration_ms: 1.6646\n  type: 'test'\n  ...\n# Subtest: 异步重复next也共享游标，不会为每次调用重建下游\nok 20 - 异步重复next也共享游标，不会为每次调用重建下游\n  ---\n  duration_ms: 1.1356\n  type: 'test'\n  ...\n# Subtest: B正常：三个真实插件委托，主体一次，外层包装结果\nok 21 - B正常：三个真实插件委托，主体一次，外层包装结果\n  ---\n  duration_ms: 3.684\n  type: 'test'\n  ...\n# Subtest: B策略拒绝：主体零次，已进入的外层仍收到拒绝结果\nok 22 - B策略拒绝：主体零次，已进入的外层仍收到拒绝结果\n  ---\n  duration_ms: 1.6745\n  type: 'test'\n  ...\n# Subtest: B日志漏next：策略、统计和主体都没执行，结果为空\nok 23 - B日志漏next：策略、统计和主体都没执行，结果为空\n  ---\n  duration_ms: 4.8407\n  type: 'test'\n  ...\n# Subtest: B漏return：主体实际执行一次，返回结果仍丢失\nok 24 - B漏return：主体实际执行一次，返回结果仍丢失\n  ---\n  duration_ms: 1.8864\n  type: 'test'\n  ...\n# Subtest: llm式异步可迭代返回：分发取得流，不会自动迭代\nok 25 - llm式异步可迭代返回：分发取得流，不会自动迭代\n  ---\n  duration_ms: 1.415\n  type: 'test'\n  ...\n# Subtest: prepend显式改变监听顺序；事件类型不会在运行时强制模式\nok 26 - prepend显式改变监听顺序；事件类型不会在运行时强制模式\n  ---\n  duration_ms: 1.5256\n  type: 'test'\n  ...\n# Subtest: 诊断精度：本版本parallel内部给internal/dispatch报告emit标签\nok 27 - 诊断精度：本版本parallel内部给internal/dispatch报告emit标签\n  ---\n  duration_ms: 1.1474\n  type: 'test'\n  ...\n1..27\n# tests 27\n# suites 0\n# pass 27\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 458.6808\n",
+      "stderr": ""
+    },
+    "demo": {
+      "code": 0,
+      "stdout": "emitExample {\"before\":[\"日志开始\",\"统计\",\"发布者继续\"],\"after\":[\"日志开始\",\"统计\",\"发布者继续\",\"日志完成\"],\"returned\":\"undefined\"}\nparallelExample {\"trace\":[\"A开始\",\"B开始\",\"发布者等待\",\"B完成\",\"A完成\",\"发布者完成\"],\"returned\":\"undefined\"}\nserialExample {\"trace\":[\"A开始\",\"A完成\",\"B\"],\"value\":0}\nbailExample {\"trace\":[\"A\",\"B\"],\"value\":0}\nwaterfallExample {\"trace\":[\"A进入\",\"B进入\",\"主体=2\",\"B得到2\",\"A得到20\"],\"value\":21}\nallow {\"trace\":[\"日志进入\",\"策略检查\",\"统计进入\",\"工具主体\",\"统计退出\",\"日志收到:FIXTURE\"],\"bodyCalls\":1,\"result\":{\"ok\":true,\"text\":\"外层(FIXTURE)\"}}\ndeny {\"trace\":[\"日志进入\",\"策略检查\",\"日志收到:DENIED\"],\"bodyCalls\":0,\"result\":{\"ok\":false,\"text\":\"外层(DENIED)\"}}\nlost-next {\"trace\":[\"日志进入\"],\"bodyCalls\":0,\"result\":null}\nlost-return {\"trace\":[\"日志进入\",\"策略检查\",\"统计进入\",\"工具主体\",\"统计退出\",\"日志收到:FIXTURE\"],\"bodyCalls\":1,\"result\":null}\n",
+      "stderr": ""
+    }
+  },
+  "lessonPrograms": [
+    {
+      "name": "support.ts",
+      "sha256": "564074c9ec13162c7235332bc51a7ddef93d2427c6e23673b867b26cdc2cd1fe"
+    },
+    {
+      "name": "modes.ts",
+      "sha256": "d2c01f95f6594fb6c2f484dade68fdd5501686e47a4e30009855cc5992306ff2"
+    },
+    {
+      "name": "request.ts",
+      "sha256": "a0f3cbb693a56d8fb788e1c9abcd120907e8bcf9f224439cf16ad80f11ec6c8d"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "4f96b98ff611131b3d0b8f41240040948049930ad6089be82a79a5d1ca7bde57"
+    },
+    {
+      "name": "error-worker.ts",
+      "sha256": "ed1e532adba87e80a48988d43fe141f0c379aef7db394ce17d60dbbe9afd3fe1"
+    },
+    {
+      "name": "events.test.ts",
+      "sha256": "68d6f4b89ed99efe81e6142b12012654b35c76580bf75278c16a76bfe206ed31"
+    }
+  ]
+}

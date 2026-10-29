@@ -1,0 +1,208 @@
+TAP version 13
+# Subtest: A emit：返回时异步日志没完成，实验随后自己等待
+ok 1 - A emit：返回时异步日志没完成，实验随后自己等待
+  ---
+  duration_ms: 3.8286
+  type: 'test'
+  ...
+# Subtest: A parallel：两项都开始，受控让B先结束，发布者等A和B
+ok 2 - A parallel：两项都开始，受控让B先结束，发布者等A和B
+  ---
+  duration_ms: 0.9614
+  type: 'test'
+  ...
+# Subtest: A serial：await后false继续，0停止
+not ok 3 - A serial：await后false继续，0停止
+  ---
+  duration_ms: 3.2934
+  type: 'test'
+  location: 'C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h06-lab-slf8lk\\events.test.ts:1:1029'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+        trace: [
+          'A开始',
+          'A完成',
+          'B',
+    +     'C'
+        ],
+    +   value: undefined
+    -   value: 0
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    trace:
+      0: 'A开始'
+      1: 'A完成'
+      2: 'B'
+    value: 0
+  actual:
+    trace:
+      0: 'A开始'
+      1: 'A完成'
+      2: 'B'
+      3: 'C'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h06-lab-slf8lk\events.test.ts:20:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: A bail：同步false继续，0停止
+ok 4 - A bail：同步false继续，0停止
+  ---
+  duration_ms: 1.0475
+  type: 'test'
+  ...
+# Subtest: A waterfall：外入内出，输入2，B返回20，A返回21
+ok 5 - A waterfall：外入内出，输入2，B返回20，A返回21
+  ---
+  duration_ms: 1.068
+  type: 'test'
+  ...
+# Subtest: 无监听者：四模式返回空结果，waterfall执行默认主体
+ok 6 - 无监听者：四模式返回空结果，waterfall执行默认主体
+  ---
+  duration_ms: 0.8121
+  type: 'test'
+  ...
+# Subtest: waterfall不使用bail值判据：返回false且不next也会短路
+ok 7 - waterfall不使用bail值判据：返回false且不next也会短路
+  ---
+  duration_ms: 0.7872
+  type: 'test'
+  ...
+# Subtest: serial和bail实际核对10种值；只有null/false/undefined继续
+ok 8 - serial和bail实际核对10种值；只有null/false/undefined继续
+  ---
+  duration_ms: 16.6816
+  type: 'test'
+  ...
+# Subtest: serial不并发启动下一个监听器
+ok 9 - serial不并发启动下一个监听器
+  ---
+  duration_ms: 1.0619
+  type: 'test'
+  ...
+# Subtest: bail不会await：Promise对象本身使后续停止，即使最终兑现false
+ok 10 - bail不会await：Promise对象本身使后续停止，即使最终兑现false
+  ---
+  duration_ms: 0.9138
+  type: 'test'
+  ...
+# Subtest: emit和bail同步throw向外传播，并阻止剩余监听器
+ok 11 - emit和bail同步throw向外传播，并阻止剩余监听器
+  ---
+  duration_ms: 1.8035
+  type: 'test'
+  ...
+# Subtest: parallel：捕获同步/异步错误，仍等门闩监听器完成后AggregateError
+ok 12 - parallel：捕获同步/异步错误，仍等门闩监听器完成后AggregateError
+  ---
+  duration_ms: 1.3353
+  type: 'test'
+  ...
+# Subtest: serial遇同步throw或异步拒绝都会停止，不继续后续
+ok 13 - serial遇同步throw或异步拒绝都会停止，不继续后续
+  ---
+  duration_ms: 2.0023
+  type: 'test'
+  ...
+# Subtest: waterfall三层与共享入参：C加3，B乘10，A加1=51
+ok 14 - waterfall三层与共享入参：C加3，B乘10，A加1=51
+  ---
+  duration_ms: 1.3738
+  type: 'test'
+  ...
+# Subtest: waterfall同步异常向外，外层能catch，默认逻辑未运行
+ok 15 - waterfall同步异常向外，外层能catch，默认逻辑未运行
+  ---
+  duration_ms: 1.1309
+  type: 'test'
+  ...
+# Subtest: waterfall异步返回Promise；await next才使try/catch捕获异步拒绝
+ok 16 - waterfall异步返回Promise；await next才使try/catch捕获异步拒绝
+  ---
+  duration_ms: 1.2198
+  type: 'test'
+  ...
+# Subtest: 只return next没有await：同步try/catch不会捕获Promise拒绝
+ok 17 - 只return next没有await：同步try/catch不会捕获Promise拒绝
+  ---
+  duration_ms: 1.241
+  type: 'test'
+  ...
+# Subtest: 重复next无一次性保护：B一次，默认主体两次
+ok 18 - 重复next无一次性保护：B一次，默认主体两次
+  ---
+  duration_ms: 1.6125
+  type: 'test'
+  ...
+# Subtest: 共享next游标：B短路后，A再调用next会进入尚未消费的C
+ok 19 - 共享next游标：B短路后，A再调用next会进入尚未消费的C
+  ---
+  duration_ms: 1.3995
+  type: 'test'
+  ...
+# Subtest: 异步重复next也共享游标，不会为每次调用重建下游
+ok 20 - 异步重复next也共享游标，不会为每次调用重建下游
+  ---
+  duration_ms: 1.1895
+  type: 'test'
+  ...
+# Subtest: B正常：三个真实插件委托，主体一次，外层包装结果
+ok 21 - B正常：三个真实插件委托，主体一次，外层包装结果
+  ---
+  duration_ms: 2.6611
+  type: 'test'
+  ...
+# Subtest: B策略拒绝：主体零次，已进入的外层仍收到拒绝结果
+ok 22 - B策略拒绝：主体零次，已进入的外层仍收到拒绝结果
+  ---
+  duration_ms: 1.7168
+  type: 'test'
+  ...
+# Subtest: B日志漏next：策略、统计和主体都没执行，结果为空
+ok 23 - B日志漏next：策略、统计和主体都没执行，结果为空
+  ---
+  duration_ms: 1.7164
+  type: 'test'
+  ...
+# Subtest: B漏return：主体实际执行一次，返回结果仍丢失
+ok 24 - B漏return：主体实际执行一次，返回结果仍丢失
+  ---
+  duration_ms: 4.3158
+  type: 'test'
+  ...
+# Subtest: llm式异步可迭代返回：分发取得流，不会自动迭代
+ok 25 - llm式异步可迭代返回：分发取得流，不会自动迭代
+  ---
+  duration_ms: 1.2356
+  type: 'test'
+  ...
+# Subtest: prepend显式改变监听顺序；事件类型不会在运行时强制模式
+ok 26 - prepend显式改变监听顺序；事件类型不会在运行时强制模式
+  ---
+  duration_ms: 0.9904
+  type: 'test'
+  ...
+# Subtest: 诊断精度：本版本parallel内部给internal/dispatch报告emit标签
+ok 27 - 诊断精度：本版本parallel内部给internal/dispatch报告emit标签
+  ---
+  duration_ms: 1.0733
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 26
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 296.0302
