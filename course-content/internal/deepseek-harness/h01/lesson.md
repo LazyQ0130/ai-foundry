@@ -144,6 +144,8 @@ Harness 解决的是“怎样把这些执行机制持续、可组合地提供给
 
 **官方实现**的模块分工如下。`ctx.xxx` 是代码访问服务的入口写法；看到它，先问“这里在借用什么能力”，不必先研究 Context 内部。
 
+这里的服务先理解为“运行时可借用的一项能力对象”，不是说每一项都要开一个 HTTP 服务或独立进程。`ctx` 是访问这些能力的上下文入口；例如工具服务的构造器通过 `super(ctx, 'tools')` 登记名称，调用方再通过 `ctx.tools` 访问它，见 [`ToolsService` 的声明与构造器，99–118 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118)。这个访问写法本身不表示发出网络请求；对象怎样注册、等待依赖和释放，留到 H05–H07。
+
 | 服务入口 | 在研究笔记任务中做什么 | 核心包 |
 | --- | --- | --- |
 | `ctx.agents` | 对外提供 Agent 注册与创建入口 | `core/agent` |

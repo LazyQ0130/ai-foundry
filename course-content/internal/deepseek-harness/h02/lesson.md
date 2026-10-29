@@ -82,6 +82,8 @@ const result = renderReceipt(new PaperReceipt())
 
 **Package（包）**是具有包元数据与入口约定的代码组织单元。它像部门自己的名称牌和办事窗口：文件夹地址与公开身份可以不同。在本仓库中，`packages/core` 是能力分组，`packages/core/tools` 才是其中一个包。官方[包地图](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/README.zh.md#L10-L31)明确按 `packages/<分组>/<包>` 组织，包清单是核身份的依据。
 
+再把 H01 的工具服务放进这张地图：`packages/core/tools` 是包；其中 `src/index.ts` 是有导入、导出的代码模块；代码声明的 `ToolsService` 则在运行时提供 `ctx.tools` 这项服务，见[类与构造器，99–118 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118)。所以包是代码的组织单元，模块是导入导出的单元，服务是运行时借用能力的入口，不能把它们都当成三种文件夹。一个包可以包含多个模块；看到服务调用也不能据此推断另起了一个服务器进程。
+
 例如，[原生执行器的包清单](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/package.json#L1-L24)声明名字为 `@deepseek-ai/dsh-tool-executor-native`，默认入口指向 `lib/index.js`；源码却在 `packages/core/tool-executor-native/src/index.ts`。名称相似可以帮助搜索，但不能把删掉前缀后的文字直接拼成目录。
 
 **我们的分析：**多包放在同一仓库，便于一起修改契约、消费方和测试；保留包边界又便于替换与复用。这解释了当前组织方式的工程价值，不是对作者所有历史选择的猜测。共同工具链也带来边界、依赖与生成产物维护成本，Monorepo 不会自动消除这些工作。

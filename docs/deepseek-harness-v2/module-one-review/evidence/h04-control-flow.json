@@ -1,0 +1,88 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "status": "AST_STRUCTURE_VERIFIED_WITH_RECORDED_LIMITS",
+  "checks": [
+    {
+      "id": "O1",
+      "path": "apps/cli/src/bin.ts",
+      "symbol": "runCli",
+      "lines": [
+        29,
+        35,
+        36
+      ],
+      "meaning": "loadLayeredEnv is nested in runProfile arguments, so argument evaluation precedes runProfile invocation despite its later lexical line; dump is a different switch branch"
+    },
+    {
+      "id": "O2",
+      "path": "apps/cli/src/profile-boot.ts",
+      "symbol": "runProfile",
+      "calls": [
+        {
+          "callee": "installProxyFromEnvironment",
+          "line": 276
+        },
+        {
+          "callee": "composeProfile",
+          "line": 292
+        },
+        {
+          "callee": "boot",
+          "line": 323
+        }
+      ],
+      "meaning": "await proxy installation before composition; boot receives preparation callback; runtime/cleanup branches reviewed separately"
+    },
+    {
+      "id": "O3",
+      "path": "packages/boot/app-boot/src/index.ts",
+      "symbol": "boot",
+      "lines": [
+        1233,
+        1235
+      ],
+      "meaning": "host preparation callback is awaited before config-tree mounting, not before creation of the Loader itself"
+    },
+    {
+      "id": "O4",
+      "path": "packages/boot/app-boot/src/index.ts",
+      "symbol": "loadLayeredEnv",
+      "lines": [
+        243,
+        244
+      ],
+      "meaning": "both permitted file reads/validations occur before first env materialization; home==cwd skips duplicate read; snapshot captures inherited provenance separately"
+    },
+    {
+      "id": "O5",
+      "path": "packages/boot/app-boot/src/profile-context.ts",
+      "symbol": "readProfilePatches",
+      "layers": [
+        "...readBundlePatches(binName, context, initialProfile)",
+        "...(initialProfile?.patches ?? loadOptionalPatches(binName, context.patchPath) ?? [])",
+        "...(loadOptionalPatches(binName, join(context.home, PROFILE_PATCH_FILENAME)) ?? [])",
+        "...context.overlays"
+      ],
+      "meaning": "bundle/profile/home/argv spreads are separate; telemetry disable patch may be appended afterwards, not represented by a universal precedence slogan"
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/cli/src/bin.ts",
+      "sha256": "7081b6503a635eb6c6d9c3e4619e740afe157252b246aa17acbf1a1ceec54c88"
+    },
+    {
+      "path": "apps/cli/src/profile-boot.ts",
+      "sha256": "f1bb748385b7d1dff8d42432aec248fbb771b2c8c94c6e731c9452699935dc44"
+    },
+    {
+      "path": "packages/boot/app-boot/src/index.ts",
+      "sha256": "8ed5d877ba85366dc610db0712b6a60a47278a0cc24e78ffd7381fbff867baa3"
+    },
+    {
+      "path": "packages/boot/app-boot/src/profile-context.ts",
+      "sha256": "67b749c28496e903d00fb843b772703b6b9bb2b5faf8b8838d8d982ebd7e89b1"
+    }
+  ],
+  "limit": "Static structure plus selected test reading and actual helper probes; full launcher/profile boot not executed"
+}

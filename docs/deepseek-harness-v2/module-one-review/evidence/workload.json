@@ -1,0 +1,873 @@
+{
+  "method": "Actual lesson parser; remark text/inlineCode excluding fenced code, Markdown syntax and URL destinations; default prose excludes deepdive descendants. Han characters and Latin/numeric word units reported separately; no claim of Chinese word segmentation. Citation lines unioned per file; core route manually curated separately. Durations are unvalidated author estimates.",
+  "rows": [
+    {
+      "lesson": "h01",
+      "estimatedTime": "80～110 分钟（阅读约 55 分钟，实验与思考约 25～55 分钟）",
+      "allProse": {
+        "han": 8003,
+        "latinNumericWords": 305
+      },
+      "defaultVisibleProse": {
+        "han": 6510,
+        "latinNumericWords": 255
+      },
+      "codeBlocks": 4,
+      "codeLines": 131,
+      "foldedCodeLines": 116,
+      "folds": 8,
+      "figures": 3,
+      "concepts": [
+        "LLM",
+        "Agent",
+        "Runtime",
+        "Harness"
+      ],
+      "coreConceptCount": 4,
+      "practiceTasks": "一项 A/B 比较实验，五个对照场景；另有职责分配与六行定位任务",
+      "thoughtQuestions": 3,
+      "coreRoute": [
+        {
+          "path": "packages/core/agent/src/index.ts",
+          "ranges": [
+            [
+              169,
+              175
+            ],
+            [
+              407,
+              425
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "ranges": [
+            [
+              435,
+              445
+            ],
+            [
+              586,
+              597
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/tools/src/pipeline.ts",
+          "ranges": [
+            [
+              190,
+              229
+            ],
+            [
+              432,
+              469
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 127,
+      "citedFiles": 11,
+      "citedLines": 402,
+      "citedByKind": [
+        {
+          "path": "README.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/architecture.zh.md",
+          "lines": 72,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "lines": 23,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent/src/index.ts",
+          "lines": 26,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/session/src/index.ts",
+          "lines": 49,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/session/tests/session.spec.ts",
+          "lines": 43,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/pipeline.ts",
+          "lines": 78,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/tests/tools.spec.ts",
+          "lines": 53,
+          "kind": "test"
+        },
+        {
+          "path": "packages/llm/llm/src/index.ts",
+          "lines": 16,
+          "kind": "source"
+        }
+      ],
+      "blueprintMinutes": [
+        55,
+        75
+      ]
+    },
+    {
+      "lesson": "h02",
+      "estimatedTime": "90～120 分钟（可选语法补课另计 10～15 分钟）",
+      "allProse": {
+        "han": 7307,
+        "latinNumericWords": 432
+      },
+      "defaultVisibleProse": {
+        "han": 5996,
+        "latinNumericWords": 351
+      },
+      "codeBlocks": 10,
+      "codeLines": 179,
+      "foldedCodeLines": 156,
+      "folds": 7,
+      "figures": 3,
+      "concepts": [
+        "Monorepo",
+        "Workspace",
+        "Package",
+        "Dependency",
+        "Module Boundary",
+        "Entry Point",
+        "Runtime",
+        "Host",
+        "Client",
+        "Build Artifact",
+        "Dependency Graph"
+      ],
+      "coreConceptCount": 11,
+      "practiceTasks": "两项练习：A 功能定位，B 六条关系分类；共用一个校验程序",
+      "thoughtQuestions": 2,
+      "coreRoute": [
+        {
+          "path": "package.json",
+          "ranges": [
+            [
+              1,
+              18
+            ]
+          ]
+        },
+        {
+          "path": "pnpm-workspace.yaml",
+          "ranges": [
+            [
+              1,
+              15
+            ]
+          ]
+        },
+        {
+          "path": "apps/cli/src/bin.ts",
+          "ranges": [
+            [
+              26,
+              48
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/tools/src/executor.ts",
+          "ranges": [
+            [
+              63,
+              86
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/tool-executor-native/src/index.ts",
+          "ranges": [
+            [
+              2,
+              35
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 114,
+      "citedFiles": 36,
+      "citedLines": 625,
+      "citedByKind": [
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/cli/README.zh.md",
+          "lines": 16,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/cli/package.json",
+          "lines": 8,
+          "kind": "configuration"
+        },
+        {
+          "path": "apps/cli/src/bin.ts",
+          "lines": 26,
+          "kind": "source"
+        },
+        {
+          "path": "apps/desktop-host/src/index.ts",
+          "lines": 15,
+          "kind": "source"
+        },
+        {
+          "path": "apps/desktop/package.json",
+          "lines": 17,
+          "kind": "configuration"
+        },
+        {
+          "path": "apps/plugin-market-generator/README.zh.md",
+          "lines": 5,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/web/index.html",
+          "lines": 5,
+          "kind": "source"
+        },
+        {
+          "path": "apps/web/package.json",
+          "lines": 27,
+          "kind": "configuration"
+        },
+        {
+          "path": "apps/web/src/main.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "docs/architecture.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/development.zh.md",
+          "lines": 19,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/module-graph.zh.md",
+          "lines": 8,
+          "kind": "documentation"
+        },
+        {
+          "path": "package.json",
+          "lines": 18,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/README.zh.md",
+          "lines": 79,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/bundle/base/cordis.patch.yml",
+          "lines": 10,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/base/package.json",
+          "lines": 6,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/client/README.zh.md",
+          "lines": 22,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/client/connection/README.zh.md",
+          "lines": 3,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/core/README.zh.md",
+          "lines": 12,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "lines": 12,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/tool-executors.spec.ts",
+          "lines": 44,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/tool-executor-native/package.json",
+          "lines": 24,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/core/tool-executor-native/src/index.ts",
+          "lines": 24,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tool-executor-native/tsconfig.json",
+          "lines": 13,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/core/tools/src/executor.ts",
+          "lines": 24,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "lines": 29,
+          "kind": "source"
+        },
+        {
+          "path": "packages/host/README.zh.md",
+          "lines": 21,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/llm/README.zh.md",
+          "lines": 13,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/util/official-bundles/src/bundles.ts",
+          "lines": 17,
+          "kind": "source"
+        },
+        {
+          "path": "pnpm-workspace.yaml",
+          "lines": 15,
+          "kind": "configuration"
+        },
+        {
+          "path": "tsconfig.base.json",
+          "lines": 6,
+          "kind": "configuration"
+        },
+        {
+          "path": "tsconfig.client.json",
+          "lines": 14,
+          "kind": "configuration"
+        },
+        {
+          "path": "tsconfig.host.json",
+          "lines": 9,
+          "kind": "configuration"
+        },
+        {
+          "path": "tsconfig.json",
+          "lines": 15,
+          "kind": "configuration"
+        },
+        {
+          "path": "vendor/README.md",
+          "lines": 7,
+          "kind": "documentation"
+        }
+      ],
+      "blueprintMinutes": [
+        60,
+        80
+      ]
+    },
+    {
+      "lesson": "h03",
+      "estimatedTime": "100～140 分钟（可分两次阅读；实际学习时长待试读）",
+      "allProse": {
+        "han": 8317,
+        "latinNumericWords": 586
+      },
+      "defaultVisibleProse": {
+        "han": 6984,
+        "latinNumericWords": 499
+      },
+      "codeBlocks": 6,
+      "codeLines": 205,
+      "foldedCodeLines": 188,
+      "folds": 8,
+      "figures": 3,
+      "concepts": [
+        "Turn",
+        "Step",
+        "Inbox",
+        "Session",
+        "Prompt Assembly",
+        "Model History",
+        "Stream",
+        "Tool Call",
+        "Tool Result",
+        "Event Log",
+        "Agent Lifecycle"
+      ],
+      "coreConceptCount": 11,
+      "practiceTasks": "一项追踪实验，九场景；另有流程重画与 fixture 变更",
+      "thoughtQuestions": 4,
+      "coreRoute": [
+        {
+          "path": "packages/core/agent-loop/src/inbox.ts",
+          "ranges": [
+            [
+              108,
+              112
+            ],
+            [
+              215,
+              230
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "ranges": [
+            [
+              327,
+              400
+            ],
+            [
+              283,
+              317
+            ],
+            [
+              435,
+              609
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/agent-loop/src/assistant-stream.ts",
+          "ranges": [
+            [
+              49,
+              70
+            ],
+            [
+              78,
+              108
+            ]
+          ]
+        },
+        {
+          "path": "packages/core/session/src/index.ts",
+          "ranges": [
+            [
+              892,
+              911
+            ],
+            [
+              999,
+              1029
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 409,
+      "citedFiles": 19,
+      "citedLines": 1338,
+      "citedByKind": [
+        {
+          "path": "LICENSE",
+          "lines": 21,
+          "kind": "source"
+        },
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/agent-lifecycle.zh.md",
+          "lines": 95,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/architecture.zh.md",
+          "lines": 54,
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/tool-execution-pipeline.zh.md",
+          "lines": 68,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "lines": 493,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/assistant-stream.ts",
+          "lines": 60,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/inbox.ts",
+          "lines": 21,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/src/index.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/coverage-edges.spec.ts",
+          "lines": 27,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/interception.spec.ts",
+          "lines": 22,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent-loop/tests/loop.spec.ts",
+          "lines": 195,
+          "kind": "test"
+        },
+        {
+          "path": "packages/core/agent/src/index.ts",
+          "lines": 23,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/session/src/index.ts",
+          "lines": 58,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tool-executor-native/src/index.ts",
+          "lines": 21,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/batch.ts",
+          "lines": 40,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "lines": 9,
+          "kind": "source"
+        },
+        {
+          "path": "packages/core/tools/src/pipeline.ts",
+          "lines": 42,
+          "kind": "source"
+        },
+        {
+          "path": "packages/llm/llm/src/index.ts",
+          "lines": 58,
+          "kind": "source"
+        }
+      ],
+      "blueprintMinutes": [
+        75,
+        100
+      ]
+    },
+    {
+      "lesson": "h04",
+      "estimatedTime": "110～150 分钟（可分两次学习；实际时长待试读）",
+      "allProse": {
+        "han": 8639,
+        "latinNumericWords": 845
+      },
+      "defaultVisibleProse": {
+        "han": 7452,
+        "latinNumericWords": 719
+      },
+      "codeBlocks": 10,
+      "codeLines": 265,
+      "foldedCodeLines": 198,
+      "folds": 8,
+      "figures": 3,
+      "concepts": [
+        "CLI",
+        "Launcher",
+        "Profile",
+        "Bundle",
+        "Runtime",
+        "Application"
+      ],
+      "coreConceptCount": 6,
+      "practiceTasks": "两项练习：A 五场景选择，B 七项配置预测与三个反例；共用一个校验程序",
+      "thoughtQuestions": 3,
+      "coreRoute": [
+        {
+          "path": "apps/cli/src/args.ts",
+          "ranges": [
+            [
+              111,
+              135
+            ],
+            [
+              146,
+              185
+            ]
+          ]
+        },
+        {
+          "path": "apps/cli/src/bin.ts",
+          "ranges": [
+            [
+              26,
+              69
+            ]
+          ]
+        },
+        {
+          "path": "apps/cli/src/profile-boot.ts",
+          "ranges": [
+            [
+              194,
+              199
+            ],
+            [
+              224,
+              235
+            ],
+            [
+              271,
+              345
+            ]
+          ]
+        },
+        {
+          "path": "packages/boot/app-boot/src/profile.ts",
+          "ranges": [
+            [
+              165,
+              172
+            ],
+            [
+              639,
+              661
+            ],
+            [
+              728,
+              744
+            ]
+          ]
+        },
+        {
+          "path": "packages/boot/app-boot/src/index.ts",
+          "ranges": [
+            [
+              236,
+              256
+            ],
+            [
+              1203,
+              1244
+            ]
+          ]
+        }
+      ],
+      "coreRouteLines": 313,
+      "citedFiles": 33,
+      "citedLines": 1088,
+      "citedByKind": [
+        {
+          "path": "SAFETY.zh.md",
+          "lines": 11,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/cli/README.zh.md",
+          "lines": 21,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/cli/reference/README.zh.md",
+          "lines": 6,
+          "kind": "documentation"
+        },
+        {
+          "path": "apps/cli/src/args.ts",
+          "lines": 65,
+          "kind": "source"
+        },
+        {
+          "path": "apps/cli/src/bin.ts",
+          "lines": 44,
+          "kind": "source"
+        },
+        {
+          "path": "apps/cli/src/dump-config.ts",
+          "lines": 35,
+          "kind": "source"
+        },
+        {
+          "path": "apps/cli/src/profile-boot.ts",
+          "lines": 126,
+          "kind": "source"
+        },
+        {
+          "path": "apps/cli/tests/args.spec.ts",
+          "lines": 23,
+          "kind": "test"
+        },
+        {
+          "path": "package.json",
+          "lines": 10,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/acp/acp/src/index.ts",
+          "lines": 11,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/src/index.ts",
+          "lines": 198,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/src/profile-context.ts",
+          "lines": 11,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/src/profile.ts",
+          "lines": 137,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/app-boot/tests/app-boot.spec.ts",
+          "lines": 76,
+          "kind": "test"
+        },
+        {
+          "path": "packages/boot/app-boot/tests/config-dump.spec.ts",
+          "lines": 31,
+          "kind": "test"
+        },
+        {
+          "path": "packages/boot/cmdline/src/index.ts",
+          "lines": 6,
+          "kind": "source"
+        },
+        {
+          "path": "packages/boot/hmr/src/index.ts",
+          "lines": 38,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/README.zh.md",
+          "lines": 23,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/bundle/acp-app/cordis.patch.yml",
+          "lines": 2,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/acp-app/src/index.ts",
+          "lines": 7,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/base/cordis.patch.yml",
+          "lines": 61,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/headless/cordis.patch.yml",
+          "lines": 12,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/sdk-app/README.zh.md",
+          "lines": 14,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/bundle/sdk-app/cordis.patch.yml",
+          "lines": 2,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/sdk-app/src/index.ts",
+          "lines": 7,
+          "kind": "source"
+        },
+        {
+          "path": "packages/bundle/sdk-minimal/README.zh.md",
+          "lines": 3,
+          "kind": "documentation"
+        },
+        {
+          "path": "packages/bundle/sdk-minimal/cordis.patch.yml",
+          "lines": 36,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/bundle/web-app/cordis.patch.yml",
+          "lines": 7,
+          "kind": "configuration"
+        },
+        {
+          "path": "packages/credentials/credentials-local/src/index.ts",
+          "lines": 8,
+          "kind": "source"
+        },
+        {
+          "path": "packages/credentials/credentials-local/tests/local.spec.ts",
+          "lines": 9,
+          "kind": "test"
+        },
+        {
+          "path": "packages/sdk/server/src/index.ts",
+          "lines": 20,
+          "kind": "source"
+        },
+        {
+          "path": "packages/util/home-paths/src/index.ts",
+          "lines": 12,
+          "kind": "source"
+        },
+        {
+          "path": "packages/util/official-bundles/src/bundles.ts",
+          "lines": 16,
+          "kind": "source"
+        }
+      ],
+      "blueprintMinutes": [
+        60,
+        85
+      ]
+    }
+  ]
+}

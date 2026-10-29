@@ -1,0 +1,51 @@
+{
+  "h01": {
+    "concepts": ["LLM", "Agent", "Runtime", "Harness"],
+    "practiceTasks": "一项 A/B 比较实验，五个对照场景；另有职责分配与六行定位任务",
+    "thoughtQuestions": 3,
+    "blueprintMinutes": [55, 75],
+    "coreRoute": [
+      {"path":"packages/core/agent/src/index.ts","ranges":[[169,175],[407,425]]},
+      {"path":"packages/core/agent-loop/src/agent.ts","ranges":[[435,445],[586,597]]},
+      {"path":"packages/core/tools/src/pipeline.ts","ranges":[[190,229],[432,469]]}
+    ]
+  },
+  "h02": {
+    "concepts": ["Monorepo", "Workspace", "Package", "Dependency", "Module Boundary", "Entry Point", "Runtime", "Host", "Client", "Build Artifact", "Dependency Graph"],
+    "practiceTasks": "两项练习：A 功能定位，B 六条关系分类；共用一个校验程序",
+    "thoughtQuestions": 2,
+    "blueprintMinutes": [60, 80],
+    "coreRoute": [
+      {"path":"package.json","ranges":[[1,18]]},
+      {"path":"pnpm-workspace.yaml","ranges":[[1,15]]},
+      {"path":"apps/cli/src/bin.ts","ranges":[[26,48]]},
+      {"path":"packages/core/tools/src/executor.ts","ranges":[[63,86]]},
+      {"path":"packages/core/tool-executor-native/src/index.ts","ranges":[[2,35]]}
+    ]
+  },
+  "h03": {
+    "concepts": ["Turn", "Step", "Inbox", "Session", "Prompt Assembly", "Model History", "Stream", "Tool Call", "Tool Result", "Event Log", "Agent Lifecycle"],
+    "practiceTasks": "一项追踪实验，九场景；另有流程重画与 fixture 变更",
+    "thoughtQuestions": 4,
+    "blueprintMinutes": [75, 100],
+    "coreRoute": [
+      {"path":"packages/core/agent-loop/src/inbox.ts","ranges":[[108,112],[215,230]]},
+      {"path":"packages/core/agent-loop/src/agent.ts","ranges":[[327,400],[283,317],[435,609]]},
+      {"path":"packages/core/agent-loop/src/assistant-stream.ts","ranges":[[49,70],[78,108]]},
+      {"path":"packages/core/session/src/index.ts","ranges":[[892,911],[999,1029]]}
+    ]
+  },
+  "h04": {
+    "concepts": ["CLI", "Launcher", "Profile", "Bundle", "Runtime", "Application"],
+    "practiceTasks": "两项练习：A 五场景选择，B 七项配置预测与三个反例；共用一个校验程序",
+    "thoughtQuestions": 3,
+    "blueprintMinutes": [60, 85],
+    "coreRoute": [
+      {"path":"apps/cli/src/args.ts","ranges":[[111,135],[146,185]]},
+      {"path":"apps/cli/src/bin.ts","ranges":[[26,69]]},
+      {"path":"apps/cli/src/profile-boot.ts","ranges":[[194,199],[224,235],[271,345]]},
+      {"path":"packages/boot/app-boot/src/profile.ts","ranges":[[165,172],[639,661],[728,744]]},
+      {"path":"packages/boot/app-boot/src/index.ts","ranges":[[236,256],[1203,1244]]}
+    ]
+  }
+}

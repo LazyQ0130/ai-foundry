@@ -1,0 +1,74 @@
+diff --git a/course-content/internal/deepseek-harness/h01/lesson.md b/course-content/internal/deepseek-harness/h01/lesson.md
+index 499978d..4b1a1fa 100644
+--- a/course-content/internal/deepseek-harness/h01/lesson.md
++++ b/course-content/internal/deepseek-harness/h01/lesson.md
+@@ -146,0 +147,2 @@ Harness 解决的是“怎样把这些执行机制持续、可组合地提供给
++这里的服务先理解为“运行时可借用的一项能力对象”，不是说每一项都要开一个 HTTP 服务或独立进程。`ctx` 是访问这些能力的上下文入口；例如工具服务的构造器通过 `super(ctx, 'tools')` 登记名称，调用方再通过 `ctx.tools` 访问它，见 [`ToolsService` 的声明与构造器，99–118 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118)。这个访问写法本身不表示发出网络请求；对象怎样注册、等待依赖和释放，留到 H05–H07。
++
+diff --git a/course-content/internal/deepseek-harness/h02/lesson.md b/course-content/internal/deepseek-harness/h02/lesson.md
+index 128d4d4..8cd9de2 100644
+--- a/course-content/internal/deepseek-harness/h02/lesson.md
++++ b/course-content/internal/deepseek-harness/h02/lesson.md
+@@ -84,0 +85,2 @@ const result = renderReceipt(new PaperReceipt())
++再把 H01 的工具服务放进这张地图：`packages/core/tools` 是包；其中 `src/index.ts` 是有导入、导出的代码模块；代码声明的 `ToolsService` 则在运行时提供 `ctx.tools` 这项服务，见[类与构造器，99–118 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118)。所以包是代码的组织单元，模块是导入导出的单元，服务是运行时借用能力的入口，不能把它们都当成三种文件夹。一个包可以包含多个模块；看到服务调用也不能据此推断另起了一个服务器进程。
++
+diff --git a/course-content/internal/deepseek-harness/h03/lesson.md b/course-content/internal/deepseek-harness/h03/lesson.md
+index 7063c85..17e3d92 100644
+--- a/course-content/internal/deepseek-harness/h03/lesson.md
++++ b/course-content/internal/deepseek-harness/h03/lesson.md
+@@ -99 +99 @@ Runtime 在这里指控制运行的程序职责：什么时候请求模型、怎
+-下面以“输入被接纳、模型先要工具、然后回答”为主线。我们把 Session 画在旁边，因为运行中会不断写事实，不能只在最后画一个“保存”。
++下面以“输入被接纳、模型先要工具、然后回答”为主线。图中在对应阶段标出写入 Session 的会话事实，因为记录贯穿运行过程，不能只在最后画一个“保存”。
+@@ -101 +101 @@ Runtime 在这里指控制运行的程序职责：什么时候请求模型、怎
+-![输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果，后续 Step 回读，停止检查后写 turn/end；实时通知另列](/course-media/harness-v2/h03/h03-01.png "图 2｜默认循环的完整主线。蓝色为处理，青绿为会话事实，琥珀为决定或边界；右侧通知只代表实时观察。图中省略历史压缩、并发工具和多入口传输，条件分支见正文。")
++![输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果；右侧虚线返回候选 Step 的准备，底部另列实时通知，停止检查后写 turn/end](/course-media/harness-v2/h03/h03-01.png "图 2｜默认循环的完整主线。蓝色为处理，青绿为会话事实，琥珀为决定或边界；右侧虚线表示继续下一 Step，底部单列实时观察。图中省略历史压缩、并发工具和多入口传输，条件分支见正文。")
+@@ -133 +133 @@ Runtime 在这里指控制运行的程序职责：什么时候请求模型、怎
+-LLM 服务将准备好的调用分派到同一适配器；[`LlmService.prepareCall()`，960–1017 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017)会保留注册信息与有效配置，返回的 `stream` 负责该次分派。适配器把不同 Provider 的响应转为共同的流结构，本课只确认这个边界，协议转换留 H12。
++LLM 服务将准备好的调用分派到同一适配器；[`LlmRuntime.prepareCall()`，960–1017 行](https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017)会保留注册信息与有效配置，返回的 `stream` 负责该次分派。适配器把不同 Provider 的响应转为共同的流结构，本课只确认这个边界，协议转换留 H12。
+diff --git a/course-content/internal/deepseek-harness/h04/lesson.md b/course-content/internal/deepseek-harness/h04/lesson.md
+index fc5e231..f871538 100644
+--- a/course-content/internal/deepseek-harness/h04/lesson.md
++++ b/course-content/internal/deepseek-harness/h04/lesson.md
+@@ -166,0 +167,6 @@ dsh --profile web --port 8080 --patch ./extra.yml
++:::task{title="到这里可以暂停：先复述启动，再读配置"}
++如果分两次学习，先停在这里。合上前面的图，用自己的话串起“CLI 分开两类参数 → Profile 找到组合 → 启动器挂载应用提供方 → 应用解析参数并达到就绪”，再指出其中哪一步还不能证明模型可用或 README 已被概括。能说清这条线，再进入下一部分。
++
++接下来不是再讲一遍启动链，而是追问同一个启动过程所用的值从哪里来。先分开环境变量和配置树，再单独看受管凭据；不要急着记一条通吃所有情况的优先级。
++:::
++
+diff --git a/docs/deepseek-harness-v2/h01/reading-preview.html b/docs/deepseek-harness-v2/h01/reading-preview.html
+index b85d507..798675a 100644
+--- a/docs/deepseek-harness-v2/h01/reading-preview.html
++++ b/docs/deepseek-harness-v2/h01/reading-preview.html
+@@ -3657,0 +3658 @@ body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:80
++<p>这里的服务先理解为“运行时可借用的一项能力对象”，不是说每一项都要开一个 HTTP 服务或独立进程。<code>ctx</code> 是访问这些能力的上下文入口；例如工具服务的构造器通过 <code>super(ctx, &#x27;tools&#x27;)</code> 登记名称，调用方再通过 <code>ctx.tools</code> 访问它，见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118" target="_blank" rel="noopener noreferrer"><code>ToolsService</code> 的声明与构造器，99–118 行</a>。这个访问写法本身不表示发出网络请求；对象怎样注册、等待依赖和释放，留到 H05–H07。</p>
+diff --git a/docs/deepseek-harness-v2/h02/reading-preview.html b/docs/deepseek-harness-v2/h02/reading-preview.html
+index 012fde0..03a2855 100644
+--- a/docs/deepseek-harness-v2/h02/reading-preview.html
++++ b/docs/deepseek-harness-v2/h02/reading-preview.html
+@@ -3626,0 +3627 @@ const result = renderReceipt(new PaperReceipt())</code></pre></div><p><code>impo
++<p>再把 H01 的工具服务放进这张地图：<code>packages/core/tools</code> 是包；其中 <code>src/index.ts</code> 是有导入、导出的代码模块；代码声明的 <code>ToolsService</code> 则在运行时提供 <code>ctx.tools</code> 这项服务，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts#L99-L118" target="_blank" rel="noopener noreferrer">类与构造器，99–118 行</a>。所以包是代码的组织单元，模块是导入导出的单元，服务是运行时借用能力的入口，不能把它们都当成三种文件夹。一个包可以包含多个模块；看到服务调用也不能据此推断另起了一个服务器进程。</p>
+diff --git a/docs/deepseek-harness-v2/h03/reading-preview.html b/docs/deepseek-harness-v2/h03/reading-preview.html
+index 85fc460..91a7d06 100644
+--- a/docs/deepseek-harness-v2/h03/reading-preview.html
++++ b/docs/deepseek-harness-v2/h03/reading-preview.html
+@@ -3640,2 +3640,2 @@ body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:80
+-<p>下面以“输入被接纳、模型先要工具、然后回答”为主线。我们把 Session 画在旁边，因为运行中会不断写事实，不能只在最后画一个“保存”。</p>
+-<p><span class="lesson-figure" role="group" aria-label="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果，后续 Step 回读，停止检查后写 turn/end；实时通知另列"><img src="figures/rendered/h03-01.png" alt="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果，后续 Step 回读，停止检查后写 turn/end；实时通知另列" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜默认循环的完整主线。蓝色为处理，青绿为会话事实，琥珀为决定或边界；右侧通知只代表实时观察。图中省略历史压缩、并发工具和多入口传输，条件分支见正文。</span><a class="lesson-image-expand" href="figures/rendered/h03-01.png" target="_blank" rel="noopener noreferrer" aria-label="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果，后续 Step 回读，停止检查后写 turn/end；实时通知另列，在新窗口查看原图">查看原图 ↗</a></span></p>
++<p>下面以“输入被接纳、模型先要工具、然后回答”为主线。图中在对应阶段标出写入 Session 的会话事实，因为记录贯穿运行过程，不能只在最后画一个“保存”。</p>
++<p><span class="lesson-figure" role="group" aria-label="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果；右侧虚线返回候选 Step 的准备，底部另列实时通知，停止检查后写 turn/end"><img src="figures/rendered/h03-01.png" alt="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果；右侧虚线返回候选 Step 的准备，底部另列实时通知，停止检查后写 turn/end" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜默认循环的完整主线。蓝色为处理，青绿为会话事实，琥珀为决定或边界；右侧虚线表示继续下一 Step，底部单列实时观察。图中省略历史压缩、并发工具和多入口传输，条件分支见正文。</span><a class="lesson-image-expand" href="figures/rendered/h03-01.png" target="_blank" rel="noopener noreferrer" aria-label="输入通过 followup 入队并唤醒驱动，turn/start 后领取输入、选择模型与组装材料，经 pre-step 接纳才打开 Step。准备适配器后提交消息与请求快照，模型流结算为助手消息，工具分派记录调用与结果；右侧虚线返回候选 Step 的准备，底部另列实时通知，停止检查后写 turn/end，在新窗口查看原图">查看原图 ↗</a></span></p>
+@@ -3655 +3655 @@ body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:80
+-<p>LLM 服务将准备好的调用分派到同一适配器；<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017" target="_blank" rel="noopener noreferrer"><code>LlmService.prepareCall()</code>，960–1017 行</a>会保留注册信息与有效配置，返回的 <code>stream</code> 负责该次分派。适配器把不同 Provider 的响应转为共同的流结构，本课只确认这个边界，协议转换留 H12。</p>
++<p>LLM 服务将准备好的调用分派到同一适配器；<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017" target="_blank" rel="noopener noreferrer"><code>LlmRuntime.prepareCall()</code>，960–1017 行</a>会保留注册信息与有效配置，返回的 <code>stream</code> 负责该次分派。适配器把不同 Provider 的响应转为共同的流结构，本课只确认这个边界，协议转换留 H12。</p>
+diff --git a/docs/deepseek-harness-v2/h04/reading-preview.html b/docs/deepseek-harness-v2/h04/reading-preview.html
+index 6238574..1cf9ec7 100644
+--- a/docs/deepseek-harness-v2/h04/reading-preview.html
++++ b/docs/deepseek-harness-v2/h04/reading-preview.html
+@@ -3663,0 +3664 @@ dsh --profile web --port 8080 --patch ./extra.yml</code></pre></div>
++<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="到这里可以暂停：先复述启动，再读配置"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">到这里可以暂停：先复述启动，再读配置</div><div class="lesson-callout-body"><p>如果分两次学习，先停在这里。合上前面的图，用自己的话串起“CLI 分开两类参数 → Profile 找到组合 → 启动器挂载应用提供方 → 应用解析参数并达到就绪”，再指出其中哪一步还不能证明模型可用或 README 已被概括。能说清这条线，再进入下一部分。</p><p>接下来不是再讲一遍启动链，而是追问同一个启动过程所用的值从哪里来。先分开环境变量和配置树，再单独看受管凭据；不要急着记一条通吃所有情况的优先级。</p></div></aside>
+@@ -3720 +3721 @@ dsh --profile web --patch ./extra.yml --dump-config</code></pre></div>
+-<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="练习 A：选择 Profile 并解释差异"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 A：选择 Profile 并解释差异</div><div class="lesson-callout-body"><p>为下列场景选择随附 Profile：browser，普通用户用 Web UI；once，命令行完成一项任务后退出；python，Python 程序使用完整 SDK 能力；editor，编辑器通过 ACP 接入；explicitMinimal，开发者明确要研究独立小型 SDK 配置树。</p><p>每个场景记录 profile、公共 entry 文件、app 应用提供方文件、bundles 顺序。再各写一句理由，包括通信形式或生命周期的差异。尤其解释 explicitMinimal 为什么不应填 base + sdk-app，以及为什么本课不会实际运行它。</p></div></aside>
++<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="练习 A：选择 Profile 并解释差异"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 A：选择 Profile 并解释差异</div><div class="lesson-callout-body"><p>为下列场景选择随附 Profile：browser，普通用户用 Web UI；once，命令行完成一项任务后退出；python，Python 程序使用完整 SDK 能力；editor，编辑器通过 ACP 接入；explicitMinimal，开发者明确要研究独立小型 SDK 配置树。</p><p>每个场景记录 profile、公共 entry 文件、app 应用提供方文件、bundles 顺序。再各写一句理由，包括通信形式或生命周期的差异。尤其解释 explicitMinimal 为什么不应填 base + sdk-app，以及为什么本课不会实际运行它。</p></div></aside>
+@@ -3727 +3728 @@ dsh --profile web --patch ./extra.yml --dump-config</code></pre></div>
+-<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="练习 B：先预测七项结果"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 B：先预测七项结果</div><div class="lesson-callout-body"><p>写下选中的 Profile、虚拟 Profile 目录、启动器收到的 patch 列表、应用收到的参数、COURSE_THEME 的胜出来源、最终端口以及配置层的完整顺序。</p><p>再预测三个反例：把 <code>--patch</code> 放到 <code>--port 8080</code> 后面；在项目环境加入 <code>DSH_HOME</code>；把最后一层 port 改为字面量 9090。分别会在哪一层失败或改变结果？哪些真实信息不能放进你的输出或提交文件？</p></div></aside>
++<aside id="lesson-task-3" class="lesson-callout lesson-task" aria-label="练习 B：先预测七项结果"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">练习 B：先预测七项结果</div><div class="lesson-callout-body"><p>写下选中的 Profile、虚拟 Profile 目录、启动器收到的 patch 列表、应用收到的参数、COURSE_THEME 的胜出来源、最终端口以及配置层的完整顺序。</p><p>再预测三个反例：把 <code>--patch</code> 放到 <code>--port 8080</code> 后面；在项目环境加入 <code>DSH_HOME</code>；把最后一层 port 改为字面量 9090。分别会在哪一层失败或改变结果？哪些真实信息不能放进你的输出或提交文件？</p></div></aside>

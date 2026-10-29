@@ -1,0 +1,7 @@
+A 最小循环 | completed | 笔记=1 | 工具=read_public,save_note
+B 等待审批 | waiting_approval | 笔记=0 | 工具=read_public
+0:started → 1:proposed → 2:tool_started → 3:tool_succeeded → 4:proposed → 5:waiting_approval
+B 宿主批准 | completed | 笔记=1 | 工具=read_public,save_note
+B 读取失败 | failed | 笔记=0 | 工具=read_public
+B 写后报错 | failed | 笔记=1 | 工具=read_public,save_note
+PASS：5 组状态与实际效果检查
