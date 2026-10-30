@@ -1,0 +1,196 @@
+TAP version 13
+# Subtest: C01 actual Inbox claims all next-step then one next-turn, before live claimed notification
+ok 1 - C01 actual Inbox claims all next-step then one next-turn, before live claimed notification
+  ---
+  duration_ms: 8.3731
+  type: 'test'
+  ...
+# Subtest: C02 actual Inbox rejects duplicate identity across lists without adding a fact
+ok 2 - C02 actual Inbox rejects duplicate identity across lists without adding a fact
+  ---
+  duration_ms: 2.1168
+  type: 'test'
+  ...
+# Subtest: C03 actual Inbox clear records canceled next-step before next-turn
+ok 3 - C03 actual Inbox clear records canceled next-step before next-turn
+  ---
+  duration_ms: 1.9912
+  type: 'test'
+  ...
+# Subtest: C04 actual stream component publishes chunks before settlement, committed end after Session append
+ok 4 - C04 actual stream component publishes chunks before settlement, committed end after Session append
+  ---
+  duration_ms: 2.0504
+  type: 'test'
+  ...
+# Subtest: D01-direct real Loop boundary counts and endings
+ok 5 - D01-direct real Loop boundary counts and endings
+  ---
+  duration_ms: 16.0808
+  type: 'test'
+  ...
+# Subtest: D01-one-tool real Loop boundary counts and endings
+ok 6 - D01-one-tool real Loop boundary counts and endings
+  ---
+  duration_ms: 9.9199
+  type: 'test'
+  ...
+# Subtest: D01-multi real Loop boundary counts and endings
+ok 7 - D01-multi real Loop boundary counts and endings
+  ---
+  duration_ms: 9.8476
+  type: 'test'
+  ...
+# Subtest: D01-two-tools real Loop boundary counts and endings
+ok 8 - D01-two-tools real Loop boundary counts and endings
+  ---
+  duration_ms: 10.404
+  type: 'test'
+  ...
+# Subtest: D01-reject real Loop boundary counts and endings
+ok 9 - D01-reject real Loop boundary counts and endings
+  ---
+  duration_ms: 5.5259
+  type: 'test'
+  ...
+# Subtest: D01-empty real Loop boundary counts and endings
+ok 10 - D01-empty real Loop boundary counts and endings
+  ---
+  duration_ms: 5.5802
+  type: 'test'
+  ...
+# Subtest: D01-retry real Loop boundary counts and endings
+ok 11 - D01-retry real Loop boundary counts and endings
+  ---
+  duration_ms: 8.1364
+  type: 'test'
+  ...
+# Subtest: D01-terminal real Loop boundary counts and endings
+ok 12 - D01-terminal real Loop boundary counts and endings
+  ---
+  duration_ms: 7.4497
+  type: 'test'
+  ...
+# Subtest: D01-tool-error real Loop boundary counts and endings
+ok 13 - D01-tool-error real Loop boundary counts and endings
+  ---
+  duration_ms: 10.0566
+  type: 'test'
+  ...
+# Subtest: D01-max-tokens real Loop boundary counts and endings
+ok 14 - D01-max-tokens real Loop boundary counts and endings
+  ---
+  duration_ms: 6.7966
+  type: 'test'
+  ...
+# Subtest: D02 three-Step task reads prior tool results in later frozen requests
+ok 15 - D02 three-Step task reads prior tool results in later frozen requests
+  ---
+  duration_ms: 12.5182
+  type: 'test'
+  ...
+# Subtest: D03 A verifies real trace annotations and rejects Attempt-as-Step answer
+ok 16 - D03 A verifies real trace annotations and rejects Attempt-as-Step answer
+  ---
+  duration_ms: 7.6703
+  type: 'test'
+  ...
+# Subtest: D04 actual maintenance is publicly idle; queued claims I,S,F1 then F2 over two Turns
+ok 17 - D04 actual maintenance is publicly idle; queued claims I,S,F1 then F2 over two Turns
+  ---
+  duration_ms: 9.7812
+  type: 'test'
+  ...
+# Subtest: D05-steer routing during running follows correct boundary
+ok 18 - D05-steer routing during running follows correct boundary
+  ---
+  duration_ms: 7.1121
+  type: 'test'
+  ...
+# Subtest: D05-followup routing during running follows correct boundary
+ok 19 - D05-followup routing during running follows correct boundary
+  ---
+  duration_ms: 7.6366
+  type: 'test'
+  ...
+# Subtest: D05-inject routing during running follows correct boundary
+ok 20 - D05-inject routing during running follows correct boundary
+  ---
+  duration_ms: 7.2227
+  type: 'test'
+  ...
+# Subtest: D06-pre-step cancellation at a controlled boundary
+ok 21 - D06-pre-step cancellation at a controlled boundary
+  ---
+  duration_ms: 10.9091
+  type: 'test'
+  ...
+# Subtest: D06-request cancellation at a controlled boundary
+ok 22 - D06-request cancellation at a controlled boundary
+  ---
+  duration_ms: 5.8553
+  type: 'test'
+  ...
+# Subtest: D06-stream cancellation at a controlled boundary
+ok 23 - D06-stream cancellation at a controlled boundary
+  ---
+  duration_ms: 6.9638
+  type: 'test'
+  ...
+# Subtest: D06-keep-inbox cancellation at a controlled boundary
+ok 24 - D06-keep-inbox cancellation at a controlled boundary
+  ---
+  duration_ms: 6.0977
+  type: 'test'
+  ...
+# Subtest: D06-drop-inbox cancellation at a controlled boundary
+ok 25 - D06-drop-inbox cancellation at a controlled boundary
+  ---
+  duration_ms: 6.1276
+  type: 'test'
+  ...
+# Subtest: D07 inject while truly idle parks input and performs no turn until a waking call
+ok 26 - D07 inject while truly idle parks input and performs no turn until a waking call
+  ---
+  duration_ms: 16.0377
+  type: 'test'
+  ...
+# Subtest: D08 rejected first pre-step leaves claimed input removed but later next-turn still pending
+ok 27 - D08 rejected first pre-step leaves claimed input removed but later next-turn still pending
+  ---
+  duration_ms: 6.6002
+  type: 'test'
+  ...
+# Subtest: D09 retry repeats request only, not assembly/pre-step/admitted user
+ok 28 - D09 retry repeats request only, not assembly/pre-step/admitted user
+  ---
+  duration_ms: 6.8056
+  type: 'test'
+  ...
+# Subtest: D10 request middleware failure is terminal, not automatically sent to request-error recovery
+ok 29 - D10 request middleware failure is terminal, not automatically sent to request-error recovery
+  ---
+  duration_ms: 5.6709
+  type: 'test'
+  ...
+# Subtest: D11 stopping listener steering is rechecked; max-tokens stays sticky across later completed Step
+ok 30 - D11 stopping listener steering is rechecked; max-tokens stays sticky across later completed Step
+  ---
+  duration_ms: 7.1168
+  type: 'test'
+  ...
+# Subtest: D12 model choice is captured per proposed Step, later select applies to next Step
+ok 31 - D12 model choice is captured per proposed Step, later select applies to next Step
+  ---
+  duration_ms: 7.4418
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 911.0541

@@ -1,0 +1,2988 @@
+{
+  "multi": {
+    "summary": {
+      "turns": [
+        1
+      ],
+      "steps": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "attempts": 3,
+      "toolCalls": 2,
+      "toolResults": 2,
+      "ends": [
+        "completed"
+      ],
+      "status": "idle"
+    },
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793329345392,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "请读取README，概括项目功能，并检查相关测试文件。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "ecf6ff12-ea0c-4d70-9bfa-89c9ef2795b9"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793329345392,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793329345392,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793329345393,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793329345393,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "You are an AI agent powered by DeepSeek Harness."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "82f1787c-1821-439f-96a9-1a66cbab02e4"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793329345393,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "ecf6ff12-ea0c-4d70-9bfa-89c9ef2795b9"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793329345393,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "tools": [
+              {
+                "name": "read_fixture",
+                "description": "只读取两段代码内固定文本，不读取磁盘",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "part": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793329345393,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted"
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793329345393,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "read-1",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"README\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "aadebccf-2c25-4ba8-809f-7db7ec4511f5"
+          },
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793329345393,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "tool-call-chunks",
+              "time0": 1793329345393,
+              "index": 0,
+              "dt": [],
+              "id": "read-1",
+              "name": "read_fixture",
+              "args": [
+                "{\"par"
+              ]
+            },
+            {
+              "type": "tool-call-chunks",
+              "time0": 1793329345393,
+              "index": 0,
+              "dt": [],
+              "id": "read-1",
+              "args": [
+                "t\":\"README\"}"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345393,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "read-1",
+                  "name": "read_fixture",
+                  "arguments": "{\"part\":\"README\"}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345393,
+              "chunk": {
+                "type": "usage",
+                "usage": {
+                  "inputTokens": 10,
+                  "outputTokens": 5
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345393,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 9,
+        "time": 1793329345393,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "read-1",
+          "name": "read_fixture",
+          "arguments": "{\"part\":\"README\"}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 10,
+        "time": 1793329345394,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "read-1"
+            },
+            "toolCallId": "read-1",
+            "content": [
+              {
+                "type": "text",
+                "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。"
+              }
+            ],
+            "isError": false,
+            "id": "5cbf3cb1-1a91-4095-a5d4-9475e15a6422"
+          }
+        },
+        "sourceEventSeqs": [
+          9
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 11,
+        "time": 1793329345394,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 12,
+        "time": 1793329345394,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 13,
+        "time": 1793329345395,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "read-2",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"TEST\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "87a71948-08b7-4049-8efd-5702abcbbc77"
+          },
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793329345394,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "tool-call-chunks",
+              "time0": 1793329345394,
+              "index": 0,
+              "dt": [],
+              "id": "read-2",
+              "name": "read_fixture",
+              "args": [
+                "{\"par"
+              ]
+            },
+            {
+              "type": "tool-call-chunks",
+              "time0": 1793329345394,
+              "index": 0,
+              "dt": [],
+              "id": "read-2",
+              "args": [
+                "t\":\"TEST\"}"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345394,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "read-2",
+                  "name": "read_fixture",
+                  "arguments": "{\"part\":\"TEST\"}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345394,
+              "chunk": {
+                "type": "usage",
+                "usage": {
+                  "inputTokens": 10,
+                  "outputTokens": 5
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345394,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 14,
+        "time": 1793329345395,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "callId": "read-2",
+          "name": "read_fixture",
+          "arguments": "{\"part\":\"TEST\"}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 15,
+        "time": 1793329345395,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "read-2"
+            },
+            "toolCallId": "read-2",
+            "content": [
+              {
+                "type": "text",
+                "text": "测试夹具：空输入不产生摘要，正常输入保留资料来源。"
+              }
+            ],
+            "isError": false,
+            "id": "2b9da268-866f-40ce-ad41-6df72855044d"
+          }
+        },
+        "sourceEventSeqs": [
+          14
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 16,
+        "time": 1793329345395,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 17,
+        "time": 1793329345395,
+        "data": {
+          "turn": 1,
+          "step": 3
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 18,
+        "time": 1793329345396,
+        "data": {
+          "turn": 1,
+          "step": 3,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "已比较README和测试。"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "914a8142-38b4-496f-a229-9b72bc6196f7"
+          },
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 13
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793329345396,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "text"
+              }
+            },
+            {
+              "type": "text-chunks",
+              "time0": 1793329345396,
+              "index": 0,
+              "dt": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "texts": [
+                "已",
+                "比",
+                "较",
+                "R",
+                "E",
+                "A",
+                "D",
+                "M",
+                "E",
+                "和",
+                "测",
+                "试",
+                "。"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345396,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "text",
+                  "text": "已比较README和测试。"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345396,
+              "chunk": {
+                "type": "usage",
+                "usage": {
+                  "inputTokens": 10,
+                  "outputTokens": 13
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345396,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 19,
+        "time": 1793329345396,
+        "data": {
+          "turn": 1,
+          "step": 3
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 20,
+        "time": 1793329345396,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "trace": [
+      {
+        "order": 0,
+        "channel": "fact",
+        "type": "agent/inbox/spliced",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793329345392,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "请读取README，概括项目功能，并检查相关测试文件。"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "ecf6ff12-ea0c-4d70-9bfa-89c9ef2795b9"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "order": 1,
+        "channel": "live",
+        "type": "agent/status",
+        "data": "running"
+      },
+      {
+        "order": 2,
+        "channel": "fact",
+        "type": "turn/start",
+        "data": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793329345392,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "order": 3,
+        "channel": "fact",
+        "type": "agent/inbox/spliced",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793329345392,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "order": 4,
+        "channel": "live",
+        "type": "agent/inbox/claimed",
+        "data": {
+          "id": "ecf6ff12-ea0c-4d70-9bfa-89c9ef2795b9",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "turn": 1
+        }
+      },
+      {
+        "order": 5,
+        "channel": "fact",
+        "type": "step/start",
+        "data": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793329345393,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "order": 6,
+        "channel": "fact",
+        "type": "system/message",
+        "data": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793329345393,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are an AI agent powered by DeepSeek Harness."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "82f1787c-1821-439f-96a9-1a66cbab02e4"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 7,
+        "channel": "fact",
+        "type": "user/message",
+        "data": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793329345393,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "请读取README，概括项目功能，并检查相关测试文件。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "ecf6ff12-ea0c-4d70-9bfa-89c9ef2795b9"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 8,
+        "channel": "fact",
+        "type": "request/header",
+        "data": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793329345393,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "tools": [
+                {
+                  "name": "read_fixture",
+                  "description": "只读取两段代码内固定文本，不读取磁盘",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "part": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "order": 9,
+        "channel": "fact",
+        "type": "request/context",
+        "data": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793329345393,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted"
+          }
+        }
+      },
+      {
+        "order": 10,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "start",
+          "attemptId": "h10-multi:1",
+          "revision": 1,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "order": 11,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 2,
+          "index": 0,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "block-start",
+            "index": 0,
+            "blockType": "tool-call"
+          }
+        }
+      },
+      {
+        "order": 12,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 3,
+          "index": 1,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "tool-call-delta",
+            "index": 0,
+            "id": "read-1",
+            "name": "read_fixture",
+            "argumentsDelta": "{\"par"
+          }
+        }
+      },
+      {
+        "order": 13,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 4,
+          "index": 2,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "tool-call-delta",
+            "index": 0,
+            "id": "read-1",
+            "argumentsDelta": "t\":\"README\"}"
+          }
+        }
+      },
+      {
+        "order": 14,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 5,
+          "index": 3,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "block-end",
+            "index": 0,
+            "block": {
+              "type": "tool-call",
+              "id": "read-1",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"README\"}"
+            }
+          }
+        }
+      },
+      {
+        "order": 15,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 6,
+          "index": 4,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "usage",
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 5
+            }
+          }
+        }
+      },
+      {
+        "order": 16,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:1",
+          "revision": 7,
+          "index": 5,
+          "time": 1793329345393,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "tool-calls"
+            }
+          }
+        }
+      },
+      {
+        "order": 17,
+        "channel": "fact",
+        "type": "assistant/message",
+        "data": {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793329345393,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool-call",
+                  "id": "read-1",
+                  "name": "read_fixture",
+                  "arguments": "{\"part\":\"README\"}"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "aadebccf-2c25-4ba8-809f-7db7ec4511f5"
+            },
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 5
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793329345393,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "tool-call"
+                }
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793329345393,
+                "index": 0,
+                "dt": [],
+                "id": "read-1",
+                "name": "read_fixture",
+                "args": [
+                  "{\"par"
+                ]
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793329345393,
+                "index": 0,
+                "dt": [],
+                "id": "read-1",
+                "args": [
+                  "t\":\"README\"}"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345393,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "tool-call",
+                    "id": "read-1",
+                    "name": "read_fixture",
+                    "arguments": "{\"part\":\"README\"}"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345393,
+                "chunk": {
+                  "type": "usage",
+                  "usage": {
+                    "inputTokens": 10,
+                    "outputTokens": 5
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345393,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "tool-calls"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 18,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "end",
+          "attemptId": "h10-multi:1",
+          "revision": 8,
+          "index": 6,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 8
+          }
+        }
+      },
+      {
+        "order": 19,
+        "channel": "fact",
+        "type": "tool/call",
+        "data": {
+          "type": "tool/call",
+          "seq": 9,
+          "time": 1793329345393,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "callId": "read-1",
+            "name": "read_fixture",
+            "arguments": "{\"part\":\"README\"}"
+          }
+        }
+      },
+      {
+        "order": 20,
+        "channel": "fact",
+        "type": "tool/result",
+        "data": {
+          "type": "tool/result",
+          "seq": 10,
+          "time": 1793329345394,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "tool",
+              "source": {
+                "kind": "tool",
+                "callId": "read-1"
+              },
+              "toolCallId": "read-1",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。"
+                }
+              ],
+              "isError": false,
+              "id": "5cbf3cb1-1a91-4095-a5d4-9475e15a6422"
+            }
+          },
+          "sourceEventSeqs": [
+            9
+          ],
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 21,
+        "channel": "fact",
+        "type": "step/end",
+        "data": {
+          "type": "step/end",
+          "seq": 11,
+          "time": 1793329345394,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "order": 22,
+        "channel": "fact",
+        "type": "step/start",
+        "data": {
+          "type": "step/start",
+          "seq": 12,
+          "time": 1793329345394,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      },
+      {
+        "order": 23,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "start",
+          "attemptId": "h10-multi:2",
+          "revision": 9,
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "order": 24,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 10,
+          "index": 0,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "block-start",
+            "index": 0,
+            "blockType": "tool-call"
+          }
+        }
+      },
+      {
+        "order": 25,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 11,
+          "index": 1,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "tool-call-delta",
+            "index": 0,
+            "id": "read-2",
+            "name": "read_fixture",
+            "argumentsDelta": "{\"par"
+          }
+        }
+      },
+      {
+        "order": 26,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 12,
+          "index": 2,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "tool-call-delta",
+            "index": 0,
+            "id": "read-2",
+            "argumentsDelta": "t\":\"TEST\"}"
+          }
+        }
+      },
+      {
+        "order": 27,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 13,
+          "index": 3,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "block-end",
+            "index": 0,
+            "block": {
+              "type": "tool-call",
+              "id": "read-2",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"TEST\"}"
+            }
+          }
+        }
+      },
+      {
+        "order": 28,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 14,
+          "index": 4,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "usage",
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 5
+            }
+          }
+        }
+      },
+      {
+        "order": 29,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:2",
+          "revision": 15,
+          "index": 5,
+          "time": 1793329345394,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "tool-calls"
+            }
+          }
+        }
+      },
+      {
+        "order": 30,
+        "channel": "fact",
+        "type": "assistant/message",
+        "data": {
+          "type": "assistant/message",
+          "seq": 13,
+          "time": 1793329345395,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool-call",
+                  "id": "read-2",
+                  "name": "read_fixture",
+                  "arguments": "{\"part\":\"TEST\"}"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "87a71948-08b7-4049-8efd-5702abcbbc77"
+            },
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 5
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793329345394,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "tool-call"
+                }
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793329345394,
+                "index": 0,
+                "dt": [],
+                "id": "read-2",
+                "name": "read_fixture",
+                "args": [
+                  "{\"par"
+                ]
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793329345394,
+                "index": 0,
+                "dt": [],
+                "id": "read-2",
+                "args": [
+                  "t\":\"TEST\"}"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345394,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "tool-call",
+                    "id": "read-2",
+                    "name": "read_fixture",
+                    "arguments": "{\"part\":\"TEST\"}"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345394,
+                "chunk": {
+                  "type": "usage",
+                  "usage": {
+                    "inputTokens": 10,
+                    "outputTokens": 5
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345394,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "tool-calls"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 31,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "end",
+          "attemptId": "h10-multi:2",
+          "revision": 16,
+          "index": 6,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 13
+          }
+        }
+      },
+      {
+        "order": 32,
+        "channel": "fact",
+        "type": "tool/call",
+        "data": {
+          "type": "tool/call",
+          "seq": 14,
+          "time": 1793329345395,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "callId": "read-2",
+            "name": "read_fixture",
+            "arguments": "{\"part\":\"TEST\"}"
+          }
+        }
+      },
+      {
+        "order": 33,
+        "channel": "fact",
+        "type": "tool/result",
+        "data": {
+          "type": "tool/result",
+          "seq": 15,
+          "time": 1793329345395,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "message": {
+              "role": "tool",
+              "source": {
+                "kind": "tool",
+                "callId": "read-2"
+              },
+              "toolCallId": "read-2",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "测试夹具：空输入不产生摘要，正常输入保留资料来源。"
+                }
+              ],
+              "isError": false,
+              "id": "2b9da268-866f-40ce-ad41-6df72855044d"
+            }
+          },
+          "sourceEventSeqs": [
+            14
+          ],
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 34,
+        "channel": "fact",
+        "type": "step/end",
+        "data": {
+          "type": "step/end",
+          "seq": 16,
+          "time": 1793329345395,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      },
+      {
+        "order": 35,
+        "channel": "fact",
+        "type": "step/start",
+        "data": {
+          "type": "step/start",
+          "seq": 17,
+          "time": 1793329345395,
+          "data": {
+            "turn": 1,
+            "step": 3
+          }
+        }
+      },
+      {
+        "order": 36,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "start",
+          "attemptId": "h10-multi:3",
+          "revision": 17,
+          "turn": 1,
+          "step": 3
+        }
+      },
+      {
+        "order": 37,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 18,
+          "index": 0,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "block-start",
+            "index": 0,
+            "blockType": "text"
+          }
+        }
+      },
+      {
+        "order": 38,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 19,
+          "index": 1,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "已"
+          }
+        }
+      },
+      {
+        "order": 39,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 20,
+          "index": 2,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "比"
+          }
+        }
+      },
+      {
+        "order": 40,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 21,
+          "index": 3,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "较"
+          }
+        }
+      },
+      {
+        "order": 41,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 22,
+          "index": 4,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "R"
+          }
+        }
+      },
+      {
+        "order": 42,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 23,
+          "index": 5,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "E"
+          }
+        }
+      },
+      {
+        "order": 43,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 24,
+          "index": 6,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "A"
+          }
+        }
+      },
+      {
+        "order": 44,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 25,
+          "index": 7,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "D"
+          }
+        }
+      },
+      {
+        "order": 45,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 26,
+          "index": 8,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "M"
+          }
+        }
+      },
+      {
+        "order": 46,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 27,
+          "index": 9,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "E"
+          }
+        }
+      },
+      {
+        "order": 47,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 28,
+          "index": 10,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "和"
+          }
+        }
+      },
+      {
+        "order": 48,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 29,
+          "index": 11,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "测"
+          }
+        }
+      },
+      {
+        "order": 49,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 30,
+          "index": 12,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "试"
+          }
+        }
+      },
+      {
+        "order": 50,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 31,
+          "index": 13,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "。"
+          }
+        }
+      },
+      {
+        "order": 51,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 32,
+          "index": 14,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "block-end",
+            "index": 0,
+            "block": {
+              "type": "text",
+              "text": "已比较README和测试。"
+            }
+          }
+        }
+      },
+      {
+        "order": 52,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 33,
+          "index": 15,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "usage",
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 13
+            }
+          }
+        }
+      },
+      {
+        "order": 53,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-multi:3",
+          "revision": 34,
+          "index": 16,
+          "time": 1793329345396,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "stop"
+            }
+          }
+        }
+      },
+      {
+        "order": 54,
+        "channel": "fact",
+        "type": "assistant/message",
+        "data": {
+          "type": "assistant/message",
+          "seq": 18,
+          "time": 1793329345396,
+          "data": {
+            "turn": 1,
+            "step": 3,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "已比较README和测试。"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "914a8142-38b4-496f-a229-9b72bc6196f7"
+            },
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 13
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793329345396,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "text"
+                }
+              },
+              {
+                "type": "text-chunks",
+                "time0": 1793329345396,
+                "index": 0,
+                "dt": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "texts": [
+                  "已",
+                  "比",
+                  "较",
+                  "R",
+                  "E",
+                  "A",
+                  "D",
+                  "M",
+                  "E",
+                  "和",
+                  "测",
+                  "试",
+                  "。"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345396,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "text",
+                    "text": "已比较README和测试。"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345396,
+                "chunk": {
+                  "type": "usage",
+                  "usage": {
+                    "inputTokens": 10,
+                    "outputTokens": 13
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345396,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 55,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "end",
+          "attemptId": "h10-multi:3",
+          "revision": 35,
+          "index": 17,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 18
+          }
+        }
+      },
+      {
+        "order": 56,
+        "channel": "fact",
+        "type": "step/end",
+        "data": {
+          "type": "step/end",
+          "seq": 19,
+          "time": 1793329345396,
+          "data": {
+            "turn": 1,
+            "step": 3
+          }
+        }
+      },
+      {
+        "order": 57,
+        "channel": "fact",
+        "type": "turn/end",
+        "data": {
+          "type": "turn/end",
+          "seq": 20,
+          "time": 1793329345396,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      },
+      {
+        "order": 58,
+        "channel": "live",
+        "type": "agent/status",
+        "data": "idle"
+      }
+    ],
+    "requests": [
+      [
+        {
+          "role": "system",
+          "text": "You are an AI agent powered by DeepSeek Harness.",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "role": "system",
+          "text": "You are an AI agent powered by DeepSeek Harness.",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "text": "",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "read-1",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"README\"}"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。",
+          "content": [
+            {
+              "type": "text",
+              "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "role": "system",
+          "text": "You are an AI agent powered by DeepSeek Harness.",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "text": "",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "read-1",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"README\"}"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。",
+          "content": [
+            {
+              "type": "text",
+              "text": "README夹具：整理项目资料；相关测试见 summary.test.ts。"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "text": "",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "read-2",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"TEST\"}"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "text": "测试夹具：空输入不产生摘要，正常输入保留资料来源。",
+          "content": [
+            {
+              "type": "text",
+              "text": "测试夹具：空输入不产生摘要，正常输入保留资料来源。"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+  "retry": {
+    "summary": {
+      "turns": [
+        1
+      ],
+      "steps": [
+        [
+          1,
+          1
+        ]
+      ],
+      "attempts": 2,
+      "toolCalls": 0,
+      "toolResults": 0,
+      "ends": [
+        "completed"
+      ],
+      "status": "idle"
+    },
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793329345421,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "请读取README，概括项目功能，并检查相关测试文件。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "7deebf14-e4f8-4680-926e-2d9e14123794"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793329345421,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793329345421,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793329345422,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793329345422,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "You are an AI agent powered by DeepSeek Harness."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "daffc6a6-56c2-447b-a08b-b80315dfbb7c"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793329345422,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "7deebf14-e4f8-4680-926e-2d9e14123794"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793329345422,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "tools": [
+              {
+                "name": "read_fixture",
+                "description": "只读取两段代码内固定文本，不读取磁盘",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "part": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793329345422,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted"
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 8,
+        "time": 1793329345422,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793329345422,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "message": "fixture busy",
+                    "code": "RATE_LIMIT"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 9,
+        "time": 1793329345423,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "重试后回答。"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "c59efb6b-0217-424a-ae30-d9122d8a6b69"
+          },
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 6
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793329345423,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "text"
+              }
+            },
+            {
+              "type": "text-chunks",
+              "time0": 1793329345423,
+              "index": 0,
+              "dt": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "texts": [
+                "重",
+                "试",
+                "后",
+                "回",
+                "答",
+                "。"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345423,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "text",
+                  "text": "重试后回答。"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345423,
+              "chunk": {
+                "type": "usage",
+                "usage": {
+                  "inputTokens": 10,
+                  "outputTokens": 6
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793329345423,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 10,
+        "time": 1793329345423,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 11,
+        "time": 1793329345423,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "trace": [
+      {
+        "order": 0,
+        "channel": "fact",
+        "type": "agent/inbox/spliced",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793329345421,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "请读取README，概括项目功能，并检查相关测试文件。"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "7deebf14-e4f8-4680-926e-2d9e14123794"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "order": 1,
+        "channel": "live",
+        "type": "agent/status",
+        "data": "running"
+      },
+      {
+        "order": 2,
+        "channel": "fact",
+        "type": "turn/start",
+        "data": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793329345421,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "order": 3,
+        "channel": "fact",
+        "type": "agent/inbox/spliced",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793329345421,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "order": 4,
+        "channel": "live",
+        "type": "agent/inbox/claimed",
+        "data": {
+          "id": "7deebf14-e4f8-4680-926e-2d9e14123794",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "turn": 1
+        }
+      },
+      {
+        "order": 5,
+        "channel": "fact",
+        "type": "step/start",
+        "data": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793329345422,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "order": 6,
+        "channel": "fact",
+        "type": "system/message",
+        "data": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793329345422,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are an AI agent powered by DeepSeek Harness."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "daffc6a6-56c2-447b-a08b-b80315dfbb7c"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 7,
+        "channel": "fact",
+        "type": "user/message",
+        "data": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793329345422,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "请读取README，概括项目功能，并检查相关测试文件。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "7deebf14-e4f8-4680-926e-2d9e14123794"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 8,
+        "channel": "fact",
+        "type": "request/header",
+        "data": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793329345422,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "tools": [
+                {
+                  "name": "read_fixture",
+                  "description": "只读取两段代码内固定文本，不读取磁盘",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "part": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "order": 9,
+        "channel": "fact",
+        "type": "request/context",
+        "data": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793329345422,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted"
+          }
+        }
+      },
+      {
+        "order": 10,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "start",
+          "attemptId": "h10-retry:1",
+          "revision": 1,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "order": 11,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:1",
+          "revision": 2,
+          "index": 0,
+          "time": 1793329345422,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "error",
+              "failure": {
+                "message": "fixture busy",
+                "code": "RATE_LIMIT"
+              }
+            }
+          }
+        }
+      },
+      {
+        "order": 12,
+        "channel": "fact",
+        "type": "assistant/attempt",
+        "data": {
+          "type": "assistant/attempt",
+          "seq": 8,
+          "time": 1793329345422,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793329345422,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "error",
+                    "failure": {
+                      "message": "fixture busy",
+                      "code": "RATE_LIMIT"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "order": 13,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "end",
+          "attemptId": "h10-retry:1",
+          "revision": 3,
+          "index": 1,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/attempt",
+            "seq": 8
+          }
+        }
+      },
+      {
+        "order": 14,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "start",
+          "attemptId": "h10-retry:2",
+          "revision": 4,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "order": 15,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 5,
+          "index": 0,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "block-start",
+            "index": 0,
+            "blockType": "text"
+          }
+        }
+      },
+      {
+        "order": 16,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 6,
+          "index": 1,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "重"
+          }
+        }
+      },
+      {
+        "order": 17,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 7,
+          "index": 2,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "试"
+          }
+        }
+      },
+      {
+        "order": 18,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 8,
+          "index": 3,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "后"
+          }
+        }
+      },
+      {
+        "order": 19,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 9,
+          "index": 4,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "回"
+          }
+        }
+      },
+      {
+        "order": 20,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 10,
+          "index": 5,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "答"
+          }
+        }
+      },
+      {
+        "order": 21,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 11,
+          "index": 6,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "。"
+          }
+        }
+      },
+      {
+        "order": 22,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 12,
+          "index": 7,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "block-end",
+            "index": 0,
+            "block": {
+              "type": "text",
+              "text": "重试后回答。"
+            }
+          }
+        }
+      },
+      {
+        "order": 23,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 13,
+          "index": 8,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "usage",
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 6
+            }
+          }
+        }
+      },
+      {
+        "order": 24,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h10-retry:2",
+          "revision": 14,
+          "index": 9,
+          "time": 1793329345423,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "stop"
+            }
+          }
+        }
+      },
+      {
+        "order": 25,
+        "channel": "fact",
+        "type": "assistant/message",
+        "data": {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793329345423,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "重试后回答。"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "c59efb6b-0217-424a-ae30-d9122d8a6b69"
+            },
+            "usage": {
+              "inputTokens": 10,
+              "outputTokens": 6
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793329345423,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "text"
+                }
+              },
+              {
+                "type": "text-chunks",
+                "time0": 1793329345423,
+                "index": 0,
+                "dt": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "texts": [
+                  "重",
+                  "试",
+                  "后",
+                  "回",
+                  "答",
+                  "。"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345423,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "text",
+                    "text": "重试后回答。"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345423,
+                "chunk": {
+                  "type": "usage",
+                  "usage": {
+                    "inputTokens": 10,
+                    "outputTokens": 6
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793329345423,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "order": 26,
+        "channel": "live",
+        "type": "agent/assistant-stream",
+        "data": {
+          "type": "end",
+          "attemptId": "h10-retry:2",
+          "revision": 15,
+          "index": 10,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 9
+          }
+        }
+      },
+      {
+        "order": 27,
+        "channel": "fact",
+        "type": "step/end",
+        "data": {
+          "type": "step/end",
+          "seq": 10,
+          "time": 1793329345423,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "order": 28,
+        "channel": "fact",
+        "type": "turn/end",
+        "data": {
+          "type": "turn/end",
+          "seq": 11,
+          "time": 1793329345423,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      },
+      {
+        "order": 29,
+        "channel": "live",
+        "type": "agent/status",
+        "data": "idle"
+      }
+    ],
+    "requests": [
+      [
+        {
+          "role": "system",
+          "text": "You are an AI agent powered by DeepSeek Harness.",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "role": "system",
+          "text": "You are an AI agent powered by DeepSeek Harness.",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "text": "请读取README，概括项目功能，并检查相关测试文件。",
+          "content": [
+            {
+              "type": "text",
+              "text": "请读取README，概括项目功能，并检查相关测试文件。"
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}

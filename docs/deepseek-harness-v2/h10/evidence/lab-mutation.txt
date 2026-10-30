@@ -1,0 +1,50 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  {
+    attempts: 2,
+    ends: [
+      'completed'
+    ],
+...
+      ],
++     [
++       1,
++       2
++     ]
+    ],
+    toolCalls: 0,
+    toolPositions: [],
+    turns: [
+      1
+
+    at verifyTrace (C:\Users\QYF\AppData\Local\Temp\aifoundry-h10-lab-FANz8d\trace-answer.ts:9:10)
+    at <anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h10-lab-FANz8d\negative-answer.ts:5:1) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    turns: [ 1 ],
+    steps: [ [ 1, 1 ], [ 1, 2 ] ],
+    attempts: 2,
+    toolCalls: 0,
+    toolPositions: [],
+    ends: [ 'completed' ]
+  },
+  expected: {
+    turns: [ 1 ],
+    steps: [ [ 1, 1 ] ],
+    attempts: 2,
+    toolCalls: 0,
+    toolPositions: [],
+    ends: [ 'completed' ]
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0
