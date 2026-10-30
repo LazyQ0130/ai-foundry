@@ -1,0 +1,11 @@
+import { iterablePractice } from './iterable.ts';
+import { assemblyPractice } from './assembly.ts';
+import { runtimePractice } from './runtime.ts';
+import { settlementPractice, type Scenario } from './settlement.ts';
+import { chainPractice } from './chain.ts';
+console.log('intro', JSON.stringify(await iterablePractice()));
+console.log('A', JSON.stringify(assemblyPractice()));
+console.log('A-max', JSON.stringify(assemblyPractice('max-tokens')));
+console.log('B', JSON.stringify(await runtimePractice()));
+for (const kind of ['success','failure','throw','cancel-empty','cancel-partial','cancel-reasoning','cancel-tools','max-tokens','write-failure','attempt-write-failure','assembly-failure','middleware-failure','retry','in-band-aborted'] as Scenario[]) console.log('C-' + kind, JSON.stringify(await settlementPractice(kind)));
+console.log('D', JSON.stringify(await chainPractice()));

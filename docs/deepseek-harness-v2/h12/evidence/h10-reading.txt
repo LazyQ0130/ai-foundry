@@ -1,0 +1,389 @@
+---
+estimatedTime: "150～200 分钟（分三段；作者估算，实际时长待试读，环境准备另计）"
+difficulty: "高级源码研习 · Agent Loop 控制流"
+objective: "围绕读取README并检查测试的任务，依据真实事件轨迹区分Turn、Step、Attempt和Tool Call，解释Inbox路由、请求接纳、停止与异常边界，并用真实Loop的局部实验预测下一步。"
+checklist:
+  - "能从事件轨迹标注Turn、Step、请求尝试和工具调用，解释零Step与同Step重试"
+  - "能依据Phase与Inbox解释followup、steer、inject和唤醒，而不把排队当作历史接纳"
+  - "能按实际顺序解释候选Step、请求准备、消息提交、流式结算和工具反馈"
+  - "已完成四项实践，能区分正常停止、拒绝、失败、取消及其Session证据"
+checkKeys:
+  - "check-c39a6209e1001001"
+  - "check-c39a6209e1001002"
+  - "check-c39a6209e1001003"
+  - "check-c39a6209e1001004"
+---
+
+## 同一个助手为什么又问了一次模型？
+
+工作台已经能创建和关闭Agent。现在给其中的A发送任务：“请读取README，概括项目功能，并检查相关测试文件。”第一次模型输出没有摘要，而是一个读取请求；工具返回README后，模型又要求读取测试；第二个工具结果回来，模型才生成答复。界面一直显示同一个助手在工作，后台却有三次模型请求。
+
+如果第一次请求失败后重试，总数会变成四次。这是否意味着四个Step？用户中途补充“先看空输入的测试”，该开新Agent，还是接着当前任务做？输入被策略拒绝、根本没有问模型时，还能留下一轮工作的记录吗？这些判断关系到界面如何显示进度，也关系到失败后能用哪些事实解释刚才发生的事。
+
+这节的产出是一张你亲手标注的轨迹：**当前在哪个Turn、哪个Step；请求试了几次；下一次推进由工具反馈、待办输入还是重试决定。** H03画过整体请求流，本节打开Driver里的判断条件；H09解决实例的生存与释放，本节只研究一个已经创建的实例怎样工作。
+
+:::concept{title="固定版本、主线与证据边界"}
+源码固定为Commit `f3803c96974ad4a94195fb97e5c637e9c2a3afe3`，Harness `0.2.2-alpha.2`、Cordis `4.0.6-alpha.1`。下文官方事实均对应这个版本；“我们的分析”是工程解释，`fixture`是作者实验数据。
+
+实践运行真实Cordis、ReactLoopAgent、Inbox、Session、LLM Runtime、Tools及原生工具执行器；复用官方MockAdapter，模型响应和工具内容受控。没有真实付费模型、磁盘会话后端、文件或Shell工具，也没有完整Harness应用集成的通过声明。实验名称A/B/C/D与验收证据等级A/B/C/D/E是两套分类。
+:::
+
+## 先把最小循环放在桌面上
+
+回看Stage 4.1“先做出能运行的两条路”：Direct是1次模型/0工具，Tool是2次模型/1工具，结果必须回交模型。下面只把这条反馈关系提炼出来，省略旧课名单、预算和取消护栏。它是**教学伪代码，不能直接运行，也不代表官方完整实现**；旧项目默认最多4次模型步骤，也不能直接搬成Harness的默认Step上限：
+
+[完整程序另见既有lab，原件保留]
+
+这段代码抓住“模型判断→工具反馈→再次判断”，却没有回答输入何时接纳、运行时新消息放哪里、请求失败怎样重试、取消以后还欠哪些记录。官方Loop在这条主线上加入了工作边界、待办箱和停止决策。不要只把`while`写得更长；先确定每个可观察状态意味着什么。
+
+回忆六项前置知识：H03里Session保存交互事实；H09里Registry委托Factory创建实例，Handle负责释放，Turn结束不销毁实例；H06的Waterfall把参数交给监听器和`next()`，返回决策会改变后续路径；H07的Fiber/Effect管理插件资源；`await`暂停当前异步函数，其他任务仍能发送消息；AbortSignal传递停止请求，不能强制杀死任意Promise。本节的Loop Phase属于某个Agent的驱动活动，**不是Cordis Fiber的状态**。
+
+Agent实例是带id、Session、Inbox、Scope与当前状态的活对象；Agent Loop是推进其工作的一套驱动逻辑。默认实现中，AgentLoop服务提供工厂，创建ReactLoopAgent实例，其私有turn/step方法落实循环。同一个实例可以先后跑很多Turn，共享服务也不把多个实例的队列合并成一个。
+
+### 用一个下载按钮理解状态机
+
+状态就是程序此刻允许做哪些事；事件是外部或内部发生的输入；转换是收到事件后改变状态。例如这个可运行的JavaScript小程序，只演示状态机，不模拟Harness：
+
+[完整程序另见既有lab，原件保留]
+
+边界的用处是让“按钮按了两次”有唯一解释。Loop也要防止一条新输入在已有Driver运行时又开一个Driver。不同的是，它还需要记录工作编号、待办和取消信号，单个字符串不足以描述全部状态。
+
+## 四个单位：先会数，再看循环
+
+**Turn（轮次）**是Driver管理的一轮工作边界，以`turn/start`和`turn/end`记录。**Step（步骤）**是Turn内一次模型判断及其相关工具执行的工作边界，以`step/start`和`step/end`记录。通常可把一个Step理解为“请求模型，结算它的输出，再处理这份输出中的工具”；但正式Step已经打开以后，也可能在请求准备阶段被取消，实际模型调用为零。
+
+**Attempt（请求尝试）**是同一Step内的一次请求尝试。失败满足恢复条件、监听器明确要求重试时，可以留在当前Step再次请求。**Tool Call（工具调用）**是模型输出中的某项工具请求；同一份输出可以含多个调用，因此一个Step可以有零个、一个或多个Tool Call。
+
+| 本课可复现路径 | Turn数 | Step数 | 实际模型请求数 | Tool Call数 | Turn结尾 |
+| --- | --- | --- | --- | --- | --- |
+| 已有内容，直接回答 | 1 | 1 | 1 | 0 | completed |
+| 读README后回答 | 1 | 2 | 2 | 1 | completed |
+| 读README、再读测试、再回答 | 1 | 3 | 3 | 2 | completed |
+| 同一输出要求读两段内容，再回答 | 1 | 2 | 2 | 2 | completed |
+| 首次pre-step拒绝 | 1 | 0 | 0 | 0 | blocked |
+| 首次接纳改为空输入 | 1 | 0 | 0 | 0 | completed |
+| 首次请求失败，监听器要求重试 | 1 | 1 | 2 | 0 | completed |
+
+这些数来自实践C/D的真实Loop，不是按术语拼出来的示意。最后一行最容易数错：出现两次模型请求，只有一对Step边界。成功尝试记录`assistant/message`，失败尝试可能记录`assistant/attempt`；不要用后者的条数当作所有Attempt的总数。
+
+!H10-01 Turn、Step、Attempt与Tool Call的关系，含零Step和同Step重试
+*图一：以本课实际夹具为例数边界。重试箭头留在Step内部；两个工具请求可以属于同一份Assistant输出。图中省略System Prompt与实时帧。*
+
+先试一个判断：用户一次输入，模型请求失败一次后成功，成功输出含两个工具请求，工具结束后再次请求并回答。只要没有另开Turn、没有再失败，就是一个Turn、两个Step、三次请求、两个Tool Call。必须同时知道边界和重试位置，不能只数HTTP请求或聊天气泡。
+
+## 三种驱动Phase，与两张待办列表
+
+现在打开主文件`agent.ts:53–61`。Phase携带的字段决定Driver下一步可以做什么：
+
+| 内部Phase | 保存什么 | 可以怎样推进 | 公开status |
+| --- | --- | --- | --- |
+| idle | lastTurn，上一轮编号 | 唤醒时先占用running，再启动Driver | idle |
+| maintenance | abort、lastTurn、wakeRequested | 维护任务独占；符合条件的唤醒先记下来，维护结束再重放 | idle |
+| running | abort、turn、step、wakeRequested | 现有Driver推进；输入按队列等待，避免启动第二个Driver | running |
+
+`status`与`setPhase`，156–168行把maintenance映射为公开idle。因此只看status，不能判断是否允许再开维护任务，也不能证明没有活动占用。H09创建时使用过维护屏障；本节实验B人为保留它，让排队和放行顺序可观察。普通调用方不需要直接读私有phase；测试读取它只是定位夹具边界。
+
+`wakeDriver()`先安装running及AbortController，再启动`kick()`；已有活动时按条件记唤醒意图，避免两个驱动器同时工作。维护结束会重新检查唤醒请求、待办及disposed原因，不能把`wakeRequested`当作“无条件再开一轮”的按钮。见`200–251行`。
+
+### 输入怎样找到下一次接纳位置
+
+Inbox（待办箱）保存尚未进入模型历史的输入。它不是作者随手写的数组，而是根据Session中的`agent/inbox/spliced`事实维护的两份视图；投影实现留H17。本节只读`inbox.ts:73–112`的工作接口。
+
+| 入口 | 通常入队位置 | 主动唤醒 | 已在正常运行时，输入通常在哪接纳 |
+| --- | --- | --- | --- |
+| followup | next-turn | 是 | 下一Turn开始的候选Step |
+| steer | next-step | 是 | 当前Turn后续候选Step |
+| inject | next-step | 否 | 现有Driver下次领取；若真正idle则停放等待 |
+
+“通常”有明确例外：若已有活动的信号已aborted，此时调用会唤醒的followup/steer，`send()`把输入转投next-turn并申请收束后的唤醒。inject仍不主动唤醒。源码在`170–197行`。本课运行测试覆盖正常运行中的三入口；“abort后转投”的细分竞态仅核对源码，不冒称已实测。
+
+领取次序更值得亲手算。`claim('next-turn', turn)`先取走**全部next-step**，再取走**一个next-turn**；`claim('next-step', turn)`只取全部next-step。两次队列变更先记录，再通知实时`agent/inbox/claimed`。假设维护期间依次注入I、排普通任务F1/F2、steer S，第一轮领取是`I,S,F1`，第二轮才是`F2`。这不是按所有入口的调用时间混排。
+
+领取会把输入从待办移除，但还没有产生普通`user/message`。如果随后pre-step拒绝，刚领取的输入不会自动退回；其他未领取输入可能仍停放。`inbox.clear()`则会记录明确的canceled移除，顺序是next-step在前、next-turn在后。领取移除与主动取消不能混用一个词。
+
+!H10-02 Driver Phase和Inbox路由，含维护唤醒与实际领取顺序
+*图二：上半区是活动占用与公开status，下半区是输入路线。路由表按正常未取消活动绘制；abort后的唤醒转投规则见正文。读取队列不代表消息已进入模型历史。*
+
+## Turn先开始，Step却还只是候选
+
+沿`turn()`，327–433行读一次完整工作。进入时先检查活动信号，再计算新Turn编号，追加`turn/start`。此时尚未请求模型，Step计数还是零。每轮正常切到下一Turn时Step计数重置，所以下一个Turn又从Step 1开始；编号必须写成`(turn, step)`二元组。
+
+循环接下来准备候选Step：先按target领取输入，再捕获`model.current()`的选择快照，解析该选择下可见的工具集合，等待System Prompt组装，然后调用`agent/pre-step`的Waterfall。见`preStep()`，283–317行。工具与组装都可能异步等待，取消检查也在正式Step之前发生。模型选择、工具集和Prompt在这里取得一致的候选视图；System Prompt构造算法留H11。
+
+`agent/pre-step`不是“Step已开始后的通知”。它能接纳、改写输入或拒绝。本课默认路径会整理运行上下文候选，随后返回enter；监听器也可以返回reject。**只有接纳且需要实际执行，才追加`step/start`。** 首次拒绝时Turn记blocked并停止，因此存在一轮零Step。首次接纳结果为空时也可能直接completed且零Step。已经有停止候选、又准备到空消息时，也可以直接退出，不再开一个空Step。
+
+在纸上标出五个时刻：①Turn开始；②输入领取；③候选被接纳并打开Step；④实际向适配器发请求；⑤Turn最终结束。①与③之间有拒绝/取消；③与④之间还有请求准备、绑定和历史提交。任何两点合并，都会让某个失败分支解释不通。
+
+### Step结束后，为什么还继续？
+
+普通工具批次结束且未声明concluded时，`step()`返回null，意思是“尚无结束候选，继续让模型消化结果”。无工具的正常答复返回completed；max-tokens返回对应结束候选；工具批次的concluded也可能给出completed。它们都还要交给Turn层判断。
+
+如果已有结束候选，而且next-step为空，Driver才串行通知`agent/turn-stopping`。通知期间可以有新输入进来，之后**再次检查**next-step；有输入就继续当前Turn。尚无结束候选的普通工具反馈路径不会在每个Step后都发这个通知。见`368–404行`。
+
+结束后`turn/end`记录reason。正常落到函数尾部时，若仍有待办，重置下一轮活动信号与Step计数，返回true给`kick()`再开Turn；否则返回false回idle。首次拒绝、空输入的早退，以及异常收束，并不承诺自动把所有尾部待办耗尽。实践D08验证拒绝后F2仍在队列，不能用`whenIdle()`当作“所有输入都已完成”的回执。
+
+还有一个读日志时的小心点：max-tokens结束候选具有保留性。本课停止监听器再steer一次，后续Step正常回答，最终Turn仍记max-tokens。最终reason描述整轮的结束状态，不能只从最后一条Assistant文本倒推。
+
+**第一段停顿（约35～45分钟）：** 合上源码，画出维护期间I、S、F1、F2的领取顺序，并解释“Turn已经开始但零Step”。能分清领取与接纳后再继续。第二段从下面的请求准备开始，约45～60分钟，产出三Step时序和三处取消边界对照。
+
+## 打开Step之后：先准备，再把输入写成事实
+
+这是本节最重要的一条顺序。先读`step()`的435–486行，再读`prepareRequest()`，613–652行：
+
+1. 候选阶段已经捕获模型选择、解析工具、组装Prompt并通过pre-step；Turn层记录step/start。
+2. Step渲染Prompt；请求尝试循环准备配置，经`agent/request`和`llm.prepareCall`绑定有效路线，沿途检查取消。
+3. 准备成功后刷新运行上下文，投影并提交系统提示；第一次尝试才把本Step接纳的输入提交为消息。
+4. `buildRequest()`按需记录请求头、工具表面变化和请求上下文，再从`session.deriveMessages()`派生历史并冻结本次请求。
+5. 实际发送，消费流式输出，结算Assistant；需要时执行工具批次；退出时由Turn层记录step/end。
+
+这条顺序解释一个看似矛盾的实验结果：日志已经有`step/start`，模型请求数却是零，而且没有本次`system/message`、`user/message`。实验在`agent/request`处暂停并取消，准备阶段尚未越过消息接纳边界。不能说“只要Step开始，用户消息一定已经写入”；也不能说“先写入全部消息，再选适配器”。本课用真实适配器绑定路线；源码还保留NO_ADAPTER时由中间件提供路线的兼容分支，不把所有部署简化成同一失败点。
+
+### 下一Step为什么能读到工具结果
+
+请求历史不直接拼接Inbox或UI消息。`buildRequest()`从已记录事实派生消息，并冻结这一次的边界视图，见`656–744行`。在README任务中，请求1没有工具结果；Step 1的Assistant、tool/call、tool/result已提交后，请求2才派生到README结果；Step 2又提交测试结果，请求3才同时看到两份内容。旧请求不会随Session增长而偷偷变长。
+
+我们的分析：把“当前打算做什么”和“已证明发生什么”分开，让重试、界面和后续请求有共同依据。这里只解释Loop调用这些接口的位置；H17再研究事件与投影。Session追加成功是会话日志接纳边界，**不自动证明磁盘已经flush**。本课Session完全在内存中。
+
+### 模型响应结束，工具工作才接上
+
+流开始时建立本次Attempt，逐块推送实时`agent/assistant-stream`；正常完成会把完整Assistant内容与嵌入流结算到Session，再发送带提交seq的end帧。见`assistant-stream.ts:49–104`。收到一个text-delta只能证明看见临时内容，不能证明已有assistant/message。
+
+随后，Step检查finish reason与tool calls：max-tokens先返回，不执行其中的工具请求；没有工具则给completed候选；有工具才调用`tools.execute()`，等待批次，并把附加上下文放进next-step，见`577–609行`。Step边界覆盖了这批相关工具，而不是每个工具单独开一个Step。并发、守卫、审批及执行器内部留H14。
+
+!H10-03 一个Turn三个Step的完整执行时序，标出接纳、请求、Assistant和工具提交
+*图三：沿同一README任务观察用户、Agent入口、Driver、LLM、Tools、Session。每个Step先有准备和提交，再有请求；普通工具反馈推进下一Step，第三步无工具且无next-step后停止。省略请求头差异、Prompt内部和逐块流。*
+
+## 失败不是一条统一的重试箭头
+
+### 同一Step内的重试
+
+本课让官方MockAdapter第一次抛出LlmError。LLM Runtime把它规范成请求失败的流结束；Loop结算`assistant/attempt`后，询问`agent/request-error`的Waterfall。监听器返回`{ kind: 'retry' }`，取消检查通过，才在Step内continue。没有这个决策，就抛出错误并结束本轮。见`535–571行`。
+
+这次continue重新准备请求，但不会重新走pre-step、解析本Step工具集或组装候选Prompt，也不会把用户输入再接纳一遍。实验D09实测计数：pre-step=1、assemble=1、agent/request=2、模型请求=2。Prompt按准备好的结果投影，运行上下文可在尝试间刷新，不意味着所有请求相关事件都只发生一次。
+
+并非任何throw都进入这条恢复支路。`agent/request`中间件直接抛错发生在流开始之前，本课D10看到零模型请求、零request-error调用和Turn error。流迭代异常、结算失败等也有各自catch路径；不能把“模型服务限流的规范化错误结束”推广成“任何失败都会自动重试”。真正的退避预算与恢复策略留H20。
+
+### 工具主体失败，与工具结果未知
+
+实践让`read_fixture`主体抛出FIXTURE_READ_FAILED。真实工具流水线把它规范成错误tool/result，Loop仍进入Step 2，模型据此回答“不能声称读到内容”，Turn是completed。**completed表明控制流收束，不担保用户业务目标成功。** 前端如果把它显示成“文件已读取”，就是用控制状态替代任务结果。
+
+若工具批次调度或日志提交等基础设施失败，Step层还会尝试为缺失结果补全记录，再让Turn走error/aborted。已提交的tool/result、只被模型请求却没有tool/call的调用，以及已有tool/call却缺少结果的调用，证据不同。固定源码的`ToolCallRecovery`，105–193行区分TOOL_NOT_STARTED与TOOL_OUTCOME_UNKNOWN。后者不能推成“工具没有副作用，可以放心重跑”。本课只静态审读这一修复分支，未运行进程崩溃、未知外部副作用或真实工具恢复。
+
+### 取消要问：取消发生在哪个边界？
+
+`cancel()`默认清空两份Inbox并撤销待放行唤醒；keepInbox=true则保留尚未领取的输入，再中止当前非idle活动。它不销毁Agent，也不会把已经领取的输入重新排队。信号让协作方退出；如果作者自制的监听器正在等一个不理会信号的Promise，仍要释放那道门，不能期望cancel强制打断JavaScript。
+
+| 夹具暂停位置 | Step数 / 请求数 | 本次消息接纳 | 主要结算与结尾 |
+| --- | --- | --- | --- |
+| agent/pre-step尚未返回 | 0 / 0 | 尚未提交 | turn/end aborted，没有Step边界 |
+| agent/request尚未放行 | 1 / 0 | 尚未提交 | step/end，再turn/end aborted |
+| 流已给出partial正文 | 1 / 1 | 已提交 | 非空部分内容结算为interrupted assistant/message，再结束边界 |
+
+表中每行都先等Turn确实开始。若信号在turn/start之前已经aborted，源码会先检查并退出，不能承诺每次cancel都新增一条turn/end。流已开始但无可结算内容时也可能留下assistant/attempt；本课流取消实测的是已有非空文本的分支。事件结算失败、取消胜过重试等更深组合，保留给H20而不虚构通过。
+
+!H10-04 正常、拒绝、准备期取消、流取消、失败重试的边界对照
+*图四：每一行都是独立路径，不能串起来当成一次执行。Step打开与实际请求之间有可取消区间；重试留在同一Step。图只比较本课可控分支，不表示全部故障恢复策略。*
+
+## 会话事实与实时观察，各自能证明什么
+
+| 事件 | 属于哪条通道 | 在Loop中证明什么 | 不能据此推断什么 |
+| --- | --- | --- | --- |
+| turn/start、turn/end | Session事实 | 一轮边界及最终reason | 任务业务成功、所有待办清空 |
+| step/start、step/end | Session事实 | Step边界已开/已收束 | 模型一定调用过、Step一定成功 |
+| user/message | Session事实 | 输入已被接纳入消息历史 | 入队时就已存在此记录 |
+| assistant/message | Session事实 | 一份正常或标记interrupted的Assistant内容已结算 | 未看interrupted就判定完整答复 |
+| assistant/attempt | Session事实 | 一次未产出正常Assistant消息的流尝试已结算 | 全部请求尝试的总数 |
+| tool/call、tool/result | Session事实 | 调用执行记录与结果记录；需检查关联与错误 | call存在便等于结果已知 |
+| agent/inbox/spliced | Session事实 | 待办变更已接纳 | 输入已经进入模型历史 |
+| agent/status | 实时观察 | 公开idle/running变化 | maintenance是否存在、销毁是否完成 |
+| agent/assistant-stream | 实时观察 | 流开始、块更新和结算/放弃帧 | 每个chunk都已持久提交 |
+
+有些架构概述把`agent/*`概称为实时事件；本版本`agent/inbox/spliced`明确进入Session，不能仅凭名字分类。实时流的end也要检查outcome：committed附有对应Session seq，abandoned表示临时行没有成功结算。C04在真实组件里断言“Session append之后才发committed end”；我们没有把页面先显示文字当作落盘证明。
+
+`whenIdle()`等待活动收敛，不是某条输入的成功Promise。`kick()`容纳已报告的驱动错误并回idle，所以await成功后，还要查turn/end reason与agent/error，不能只看Promise没有reject。见`253–280行`。
+
+**第二段停顿：** 用自己的话说出step/start、请求准备、消息接纳、流结算的先后；再预测pre-step、request、stream三处取消各有几次请求。第三段约70～95分钟，完成四项实验与八道题；时间均为作者估算，环境准备另计。
+
+## 实践准备：让真实Loop只碰固定数据
+
+四项实践共享`lab/`，运行器位于本课审阅包`docs/deepseek-harness-v2/h10/scripts/run-labs.mjs`。在AI Foundry仓库根目录执行以下命令；运行器复制程序到新建的系统临时目录，源码从固定缓存读取，所有目录保留，不执行清理。Node需24.x（本次24.16.0），仓库依赖提供tsx，官方依赖按上游锁文件复用；不在项目中改依赖。
+
+[完整程序另见既有lab，原件保留]
+
+准备不在这一个命令里暗中完成。首次复现先读审阅包README：取得指定Commit、核对1592份源码Git blob/SHA256，按H04依赖清单和Zod 4.4.3锁完整性准备隔离依赖。跨机器可设HARNESS_SOURCE_CACHE、H10_DEPS_ANCHOR、H10_ZOD_ANCHOR；不应把找不到缓存改成“随便用最新版本”。本课使用H09已经隔离安装的Zod锚点，目录名不意味着课程依赖H09实验输出。
+
+通过时末行是PASS、tests=31、mutation=EXPECTED_FAILURE。原始TAP、完整轨迹和stderr留在evidence。mutation这里专指**错误答案负例**，没有篡改官方实现。首次运行环境缺失、任何测试失败都应先停在错误处查原因，不应删断言来凑通过。
+
+:::deepdive{title="完整公共准备：support.ts"}
+这是四项实践共用装配，不是另一套Loop。官方MockAdapter原文件完整保存在official-mock.ts；许可与固定来源见审阅包NOTICE。只用其脚本响应替代外部模型，Driver、Session和Tools均为真实实现。
+
+<!-- code:support.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:support.ts:end -->
+:::
+
+## 实践 A：给真实重试轨迹做标注
+
+输入：一个用户任务；模型第一次规范化失败，request-error监听器明确返回retry，第二次回答，无工具。先不用参考答案，标记Turn边界、Step边界、请求尝试数、工具归属与最终状态。demo输出中的`retry-TRACE`来自真实Loop，events是Session事实，trace混合fact/live且带channel，requests是每次实际派发请求的简化视图；时间和随机id不是跨运行逐字相同。
+
+为便于纸上推理，下面只从该轨迹抽取关键事件，省略Inbox splice、系统消息、请求上下文及所有chunk；方括号是作者补充的真实请求计数，不是新增Session事件。完整可展开的JSON保存在审阅包evidence/trace-fixtures.json的retry与multi两项中：
+
+[完整程序另见既有lab，原件保留]
+
+新建你自己的答案JSON，字段为turns、steps、attempts、toolCalls、toolPositions、ends；steps用`[[turn,step], ...]`，toolPositions用`[[callId,turn,step], ...]`。运行以下命令将明确的文件路径交给校验器。它会重跑真实retry场景，比较你的标注；不会覆盖正式验收日志。
+
+[完整程序另见既有lab，原件保留]
+
+:::deepdive{title="实践 A 完整程序：trace-answer.ts"}
+<!-- code:trace-answer.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:trace-answer.ts:end -->
+:::
+
+:::deepdive{title="实践 A 详细参考答案"}
+只有一个Turn 1和一个Step (1,1)，两次请求，零工具，最终completed。第一次失败没有关闭Step；失败尝试结算后，监听器让请求循环continue，成功后才退出Step。`assistant/attempt`为一条，不能据此说“仅请求一次”；也不能把第二次request标成Step 2。所有请求都没有Tool Call，故不存在要分配到某个Step的工具。本题完整答案如下，亦保存为lab/answer.reference.json：
+
+[完整程序另见既有lab，原件保留]
+
+校验成功输出PASS；把steps改成`[[1,1],[1,2]]`应以非零退出并显示差异。D03还验证用户只接纳一次；独立negative-answer.ts重放这个错误，运行器要求它失败。若错误答案也通过，就不能宣布自动校验有效。
+
+完成后再对multi-TRACE标注：两个工具read-1/read-2分别归属(1,1)、(1,2)，第三Step回答，边界与实践C表格一致。用同一命令在答案路径后追加`multi`，校验这条轨迹；完整参考文件是lab/answer.multi.reference.json。D02既校验正确标注，也故意把read-1归到Step 2并要求失败，因此自动检查包含工具归属，不只比较调用总数。
+:::
+
+## 实践 B：让三种输入走不同边界
+
+先预测，再运行。维护门未放行时依次inject I、followup F1/F2、steer S，公开status是什么？第一次领谁？运行中再发送steer/followup/inject，第二次请求属于哪个Turn？真正idle时只inject，会不会起Turn？最后在实践D的保留/丢弃用例里观察待办怎样变化。
+
+:::deepdive{title="实践 B 完整程序：routing.ts"}
+<!-- code:routing.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:routing.ts:end -->
+:::
+
+:::deepdive{title="实践 B 详细参考答案"}
+维护中公开idle、内部maintenance，模型请求0。放行后，Turn 1的Step 1领取I、S、F1；Turn 2的Step 1领取F2，总共两次请求。两张队列各有领取规则，F1先于S入队也不改变next-step优先的合并顺序。C01直接用真实ReactLoopInbox、真实Session投影验证splice先于claimed通知，不靠作者数组模拟。
+
+duringRun在第一次流还没完全交还Driver时放入新输入：steer和inject都形成(1,2)，followup形成(2,1)。inject没有唤醒能力，却能影响一个已经存在的Driver；“不唤醒”不能读成“永远不会执行”。D07另在真正idle时只inject，证明零Turn、零请求，随后steer才带着两条next-step输入唤醒。这里没有新建Agent。
+
+取消默认移除两张待办表；keepInbox保留未领取的F与I，分别还各有一条。保留表示数据还在，不承诺此次取消收束会自动重启Driver，更不表示已领取的原任务也回来了。请同时看inbox视图和spliced事实，不能仅凭最终idle猜测队列为空。
+:::
+
+## 实践 C：同一个README任务，三次判断
+
+运行器依次展示direct、one-tool、multi、two-tools。工具名read_fixture，参数只允许README或TEST，内容是代码内两段字符串；“读取README”在本实验中是固定文本夹具，绝不读取你机器上的项目README或测试文件。模型脚本预先指定三次输出，验证的是Loop怎样推进和构造后续请求，不是模型是否真的会自主规划。
+
+| multi的阶段 | 模型本次看到的工具结果数 | 模型决定 | 该Step新增事实 |
+| --- | --- | --- | --- |
+| (1,1) | 0 | 读README | assistant/message、tool/call、tool/result |
+| (1,2) | 1 | 读TEST | assistant/message、tool/call、tool/result |
+| (1,3) | 2 | 最终答复 | assistant/message |
+
+每行外侧各有step/start与step/end，三行外侧是一对Turn边界。D02直接断言事件次序、三份请求中的工具结果数量与内容。前两步没有结束候选，需要继续反馈；第三步给出completed且没有新的next-step，停止通知后复查仍为空，Turn结束。
+
+:::deepdive{title="实践 C 完整程序：execution.ts"}
+<!-- code:execution.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:execution.ts:end -->
+:::
+
+:::deepdive{title="实践 C 详细参考答案"}
+direct为1 Step/1请求/0工具；one-tool为2/2/1；multi为3/3/2；two-tools为2/2/2。后两项工具数相同，Step数不同，因为two-tools把两个工具放在第一份Assistant输出里。工具的数量和Step数量并无一一对应关系。
+
+multi-TRACE里应依次找到turn/start，Step 1的开始、Assistant、调用、结果、结束，再是Step 2同样一组，最后Step 3的开始、Assistant、结束和turn/end。请求2看到README结果，请求3看到README与TEST结果；请求1仍保持原来的零工具结果视图。若请求1也“长出”后续结果，说明你检查的可能是可变引用，而非当时真正的请求快照。此夹具只返回明确文本；最终答复的内容质量由脚本给定，没有用它证明真实模型能力。
+:::
+
+## 实践 D：在边界上拒绝、失败与取消
+
+先在execution中看reject、empty、retry、terminal、tool-error、max-tokens，再对比cancellation的五个分支。每次开独立fixture Session，使用Promise门准确等待边界，避免“睡十毫秒猜它应该已经开始”的竞态。pre-step/request的门在取消后主动释放，让真实Driver继续检查信号并收束。
+
+:::deepdive{title="实践 D 完整程序：branches.ts"}
+<!-- code:branches.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:branches.ts:end -->
+:::
+
+:::deepdive{title="统一运行入口：demo.ts"}
+<!-- code:demo.ts:start -->
+[完整程序另见既有lab，原件保留]
+<!-- code:demo.ts:end -->
+:::
+
+:::deepdive{title="实践 D 详细参考答案"}
+reject是Turn blocked且零Step；empty是Turn completed且零Step。retry是1 Step、2请求、completed；terminal没有retry监听器，是1 Step、1请求、error。两种失败不能共用“自动重试”解释。max-tokens是结束候选而非工具调度命令，本课无工具分支记max-tokens。
+
+pre-step取消是0 Step/0请求；request取消是1/0；stream取消是1/1且保存非空interrupted Assistant内容，三者均aborted。前两者没有本次system/message与user/message。keep-inbox与drop-inbox都在request门取消，区别只在未领取的两个列表是否保留；原先领取输入不会回队。
+
+tool-error是2 Step、1次工具调用、错误工具结果及最终completed。任务未真正读到README，模型脚本明确报告不能完成读取。不能为了符合预想而把断言改成Turn error。工具批次基础设施失败、修复记录也写失败、跨进程恢复等未由本实验执行；它们在审阅包中单列STATIC_ONLY/NOT_RUN。
+
+若whenIdle正常返回但turn/end为error，程序仍算成功观察到了失败路径，不代表任务成功。若测试超时，先看自制门是否释放、监听器参数是否匹配；不要把await没有结束解释成“官方Loop永远不能取消”。
+:::
+
+## 把源码阅读变成一次可核对的追踪
+
+主读五个文件：agent.ts给控制流；inbox.ts给待办领取；runtime-types.ts给公开入口与决策契约；assistant-stream.ts给实时到提交边界；session/src/index.ts只选读append与deriveMessages接口。runtime-context.ts只补读候选/已提交上下文的区分，不在此展开构造算法。文档负责定位，实际先后按固定实现核对。
+
+| 阅读任务 | 位置 | 阅读后要回答的问题 |
+| --- | --- | --- |
+| 活动与输入 | agent.ts 53–61、156–280；inbox.ts 99–112 | maintenance为什么公开idle？谁能唤醒？领取几条？ |
+| 候选与正式Step | agent.ts 283–317、327–404 | 哪个return造成零Step？step/start在哪条判断后？ |
+| 请求与历史 | agent.ts 435–486、613–744 | 准备期取消为什么没有用户消息？下一请求怎样看到结果？ |
+| 失败与工具 | agent.ts 487–609 | 哪个continue仍在当前Step？工具失败是结果还是异常？ |
+| 记录边界 | assistant-stream.ts 49–104；session/src/index.ts 892–911、999–1029 | 临时块何时能关联提交seq？日志接纳是否等于落盘？ |
+
+完整固定源码断言、相关官方测试与本课C/D用例映射在审阅包source-checklist.md。官方Vitest为选读，没有宣称运行整套官方测试。文件哈希和行号有效只防止引用漂移；事件顺序、状态转换与失败分支由另列的真实组件/集成测试支撑，不能只用搜索关键字代替执行。
+
+## 八道思考题：先写判断，再展开答案
+
+### 思考 1：三次API请求，能确定三个Step吗？
+
+:::deepdive{title="思考 1 参考答案"}
+不能。直接三次模型判断可能是三个Step；第一次判断失败并重试，第二次判断直接结束，则可能是两个Step、三次请求。若同Step连续失败两次再成功，也可能只有一个Step。还要看turn/step边界与尝试归属。请求次数描述对模型的派发，Step描述Loop的工作边界；准备期取消甚至会留下一个Step而零请求，所以两种计数在两个方向都不能互相替代。
+:::
+
+### 思考 2：轨迹有turn/start→claimed→turn/end(blocked)，没有user/message，输入去哪里了？
+
+:::deepdive{title="思考 2 参考答案"}
+这是候选Step接纳前拒绝的轨迹。claim已经从Inbox移除输入并通知claimed，随后pre-step返回reject，所以没有step/start，也没有把输入提交成普通user/message；Turn仍有开始与blocked结束。已领取输入不会自动退回，其他未领取的next-turn输入可以保留。要检查此前的spliced事实和当前Inbox，不能把“没有user/message”理解为“输入从未入队”，也不能把blocked理解为“整张待办表都清空”。
+:::
+
+### 思考 3：一个Assistant消息有两个Tool Call，随后回答，共有几个Step？
+
+:::deepdive{title="思考 3 参考答案"}
+在普通工具反馈且没有结束工具、额外输入或失败的前提下，是两个Step。第一个Step请求模型并处理这一份输出中的两个工具调用，第二个Step读取两份工具结果后回答。两个工具可以有各自call/result事实，但它们共享第一个Step的(turn,step)位置。若模型分两次才决定两项调用，就会变成三个Step。工具并发顺序会影响执行时序，不直接把一个Step切成多个Step。
+:::
+
+### 思考 4：为什么重试不能再把这条用户消息追加一遍？
+
+:::deepdive{title="思考 4 参考答案"}
+用户输入在当前Step第一次成功准备请求之后已经接纳；重试是再次请求同一工作，不是用户又发了一条消息。若每次重试都追加一次，后续历史会出现重复要求，计数与因果关系也失真。源码用firstAttempt限制接纳，重试仍可准备有效请求路线、投影Prompt和刷新上下文。D09的1次pre-step/组装与2次请求说明重试循环位于Step内部，但并不等于请求相关所有状态完全冻结不变。
+:::
+
+### 思考 5：轨迹是step/start→取消→step/end→turn/end(aborted)，请求数0，缺了哪些必需事件？
+
+:::deepdive{title="思考 5 参考答案"}
+仅凭这些信息不能断言缺事件。如果取消发生在agent/request等待门或其他提交前的异步准备点，正式Step已经打开，实际模型派发与本次消息接纳尚未发生，完全可以没有user/message、assistant/message和实时流start。需要核对取消位置、已接纳历史及信号检查。此题和实践D的request路径一致；Step结束事件说明边界收束，不证明Step中每项计划动作都已经执行，更不能伪造一条Assistant答复补齐画面。
+:::
+
+### 思考 6：前端已经显示半句答复，为什么还不能确认Session已有Assistant消息？
+
+:::deepdive{title="思考 6 参考答案"}
+实时chunk先被发布，前端可以立刻绘制临时文本，完整Assistant事实却要等结算追加。正常settle先append，再发带seq的committed end；追加失败可能abandon临时行。取消时非空部分内容可能形成interrupted消息，也不能把它当完整回答。要确认已提交，关联Session事件与end的outcome，而不是只看屏幕文字。即便Session追加成功，本课内存实验也没有证明磁盘flush；这属于另一层持久化保证。
+:::
+
+### 思考 7：运行中先followup，再steer，下一次请求必然处理followup吗？
+
+:::deepdive{title="思考 7 参考答案"}
+不必然。正常运行未取消时，followup在next-turn等待，steer在next-step等待；当前Turn的下一个候选Step先领取next-step，所以通常先处理steer。当前Step若已发出不可变请求，steer不会回头改写那份请求，而是影响后续接纳。等当前Turn收束、正常推进下一Turn，才领取一个next-turn，且仍先合并全部next-step。若发送时活动已aborted，还要应用唤醒输入转投next-turn的例外，不能把正常路线当作所有竞态的保证。
+:::
+
+### 思考 8：已经有completed候选，Driver为什么还能继续当前Turn？
+
+:::deepdive{title="思考 8 参考答案"}
+completed是Step交给Turn的停止候选，Turn还会检查next-step；若有输入就继续。候选存在且队列空时，Driver发出串行turn-stopping通知，等监听器完成后再检查一次。监听器steer的新输入或期间到来的输入都可能使同一Turn继续。普通工具反馈返回null则还没有停止候选，直接继续下一次判断。下一Turn的followup与本Turn的next-step不同；不能只看“还有消息”就判定必然同Turn，也不能只看某个Step返回completed就宣布Driver已经idle。
+:::
+
+## 用一张轨迹交卷，带着一个问题进入H11
+
+完成自查时，请交出multi与retry两条轨迹的标注、运行中三入口的预测与实测差异、三处取消边界的事件比较，以及tool-error的业务解释。四个checklist分别对应“数得对、排得对、顺序对、分支对”；31项作者测试通过只证明教材列明子路径能复现，学员是否理解仍要看你的解释。
+
+回看H03，你现在能把一个“调用模型”节点拆成候选、接纳、准备、提交、流、结算与工具反馈；回看H09，同一个Agent完成Turn后回idle并保留实例，不会在每个Step创建或销毁。H11只需接过“模型选择与工具集已捕获、Prompt组装发生在pre-step前、投影提交发生在请求准备后”三个位置，继续回答Prompt具体由谁贡献、如何构造。H10到这里停止，不提前展开H11算法。

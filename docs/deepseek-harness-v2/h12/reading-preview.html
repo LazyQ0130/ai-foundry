@@ -1,0 +1,3911 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H12｜LLM Adapter 与流式响应：模型输出如何进入 Harness？</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-auto {
+  margin: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100vh-6rem\)\] {
+    max-height: calc(100vh - 6rem);
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H12 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">LLM Adapter 与流式响应：模型输出如何进入 Harness？</h1><p>185～245 分钟（分三段；作者估算，实际时长待试读，环境准备另计）</p></header><div class="lesson-prose"><h2>屏幕上已经有半句话，后台究竟完成了什么？</h2>
+<p>仍给代码助手同一个任务：“请读取 README，并简要介绍这个项目。”如果模型总是一次返回完整字符串，应用似乎只需等待，再显示全文。用教学伪代码写就是 <code>const reply = await ask(task); show(reply)</code>；这里的ask不是Harness API。</p>
+<p>实际响应常常分批抵达：先有“我先”，再有“读取资料”；还可能有单独的推理内容、读取工具的名字和调用ID。参数先来<code>{&quot;path&quot;:</code>，过一会儿才有<code>&quot;README.md&quot;}</code>。提供方最后报告用量与停止原因；网络也可能在右花括号之前断开，或模型达到输出上限。另一家提供方又使用不同事件名。</p>
+<p>如果Agent Loop直接理解每家HTTP报文、增量字段和结束标记，更换提供方就会牵动工作循环。更麻烦的是：屏幕已经显示文字，却不一定已有一条可供下次请求使用的Assistant消息。工具参数看起来像JSON，也不一定到了可执行的边界。</p>
+<p>本节要回答：<strong>零散数据属于哪条响应、哪个内容块和工具调用，怎样判断结束，以及哪些结果能作为Session事实接纳？</strong> 最后交出三份证据：逐片组装表、实时帧与结算对应表、第二次请求实际读到的工具结果。术语都为这三份产物服务。</p>
+<aside id="lesson-concept" class="lesson-callout lesson-concept" aria-label="固定版本与本课观察终点"><div class="lesson-callout-label">先搞懂这件事</div><div class="lesson-callout-title">固定版本与本课观察终点</div><div class="lesson-callout-body"><p>官方源码固定为 <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>，Harness <code>0.2.2-alpha.2</code>、Cordis <code>4.0.6-alpha.1</code>。下文描述这个版本，不套用其他SDK或最新供应商字段。</p><p>实验使用真实Runtime、Assembler、Accumulator、AgentLoop、SystemPrompt与内存Session；模型和工具内容受控。部分组件测试还直接运行官方DeepSeek事件翻译函数，不访问HTTP。Session接纳不等于磁盘flush；真实模型、完整应用、供应商性能及跨进程恢复未验证。实验A–D是实践名称，证据A–E是另外一套等级。</p></div></aside>
+<h2>先用逐个拆信，理解异步迭代</h2>
+<p>Stage 4.1已经让工具结果回交模型；Stage 3的服务端调用与流式页面说明“收到部分内容”和“请求完成”是不同状态。HTTP是请求与响应协议；流式响应允许响应体逐批抵达，SSE是一种事件文本分帧方式。网络字节片段、SSE事件和本课的StreamChunk不是一一对应，Adapter负责跨过这层差异。</p>
+<p><code>await</code>等待一个Promise的结果；<code>AsyncIterable</code>则是“还能继续异步取下一个值”的对象。<code>async function*</code>创建异步生成器，每次yield交出一个值，<code>for await...of</code>反复等待它的下一项。它不会因为循环写在一处就一次拿到全文，也不会把yield当成文件写入。先在Node中运行这个不依赖Harness的完整小例子：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>async function* pieces() {
+  yield &#x27;请&#x27;; await Promise.resolve(); yield &#x27;读&#x27;; yield &#x27;README&#x27;;
+}
+let text = &#x27;&#x27;;
+for await (const piece of pieces()) {
+  text += piece; console.log(text);
+}</code></pre></div>
+<p>输出依次为“请”“请读”“请读README”。这个例子使用已完成的Promise而非网络，所以只展示逐项交付；不模拟延迟、背压或Harness。实践入口intro和A01会验证同样的三份累计状态。提前break会触发迭代器关闭约定，但不能据此推断任意远端请求已撤销；真正的停止还要由实现配合AbortSignal。</p>
+<p>JSON字符串和JavaScript对象也先分开：<code>&#x27;{&quot;path&quot;:&quot;README.md&quot;}&#x27;</code>是一段字符串，<code>JSON.parse</code>后才是对象。半截字符串不能作为完整JSON解析。TypeScript联合类型则用标签区分形状，例如先判断<code>chunk.type === &#x27;text-delta&#x27;</code>，才读取它的text；不要对所有分片都读同一个字段。</p>
+<p>H09提供已经创建、持有Handle并能释放的Agent；本课沿用它，不为每个分片创建Agent。H10的Step包含模型判断及相关工具，失败重试可以留在同一个Step；一次模型尝试才对应一份响应流。H11已经将指令、动态事实、历史和工具声明组成GenerateOptions；本课从这个请求进入Runtime开始，看到结算和工具反馈为止，不重复Prompt算法。</p>
+<h2>Runtime管共同入口，Adapter翻译具体协议</h2>
+<p>先想两个提供方：A发<code>content_block_delta</code>，B的库发<code>text_delta</code>。Loop只想知道“哪个块多了哪段文字”，不必知道原生事件名。<strong>Adapter（适配器）是把具体协议翻译成共同结构的对象；LlmRuntime是管理这些对象并提供统一调用入口的服务。</strong> 接口转换不能凭空补齐模型能力，也不保证不同提供方效果相同。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>名称</th><th>在这个任务中是什么</th><th>容易混淆之处</th></tr></thead><tbody><tr><td>LlmRuntime</td><td><code>ctx.llm</code>，管理注册、模型信息、调用准备和流式入口</td><td>是同进程服务，不必是另一个HTTP服务</td></tr><tr><td>LlmAdapter</td><td>某个提供方协议的实现对象，可以拥有多个路由</td><td>一个Adapter不必只对应一个Provider</td></tr><tr><td>Provider</td><td>GenerateOptions.provider选择的注册路由，例如实验fixture</td><td>不是模型名称，也不等于配置界面里尚未激活的条目</td></tr><tr><td>Model</td><td>该路由下的具体模型标识，例如实验scripted</td><td>同名不证明能力或端点相同</td></tr></tbody></table></div>
+<p>实际基类是<code>LlmAdapter</code>，服务类是<code>LlmRuntime</code>。用<code>ctx.llm.registerAdapter([&#x27;fixture&#x27;], adapter)</code>登记后，<code>listProviders()</code>按注册顺序返回路由；<code>listModels(provider)</code>取得适配器公布的模型目录；<code>resolveModelInfo(provider, model)</code>询问一个精确路由的能力。契约见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L208-L302" target="_blank" rel="noopener noreferrer">Adapter与Runtime</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L393-L485" target="_blank" rel="noopener noreferrer">注册</a>和<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L711-L886" target="_blank" rel="noopener noreferrer">模型信息</a>。</p>
+<p>模型目录用于展示和选择，不是核心Runtime的统一请求白名单。实验Adapter没有公布目录，<code>listModels</code>是空数组，但仍能对<code>not-in-catalog</code>解析并调用；具体Adapter可以自行拒绝不支持的模型，GUI入口也可能要求目录成员。不要从“列表没显示”直接推“核心禁止调用”，也不要从“核心能路由”推“所有界面都能选”。</p>
+<p><span class="lesson-figure" role="group" aria-label="多种提供方协议由各自Adapter转为共同StreamChunk，Runtime提供路由和准备入口，Loop消费共同协议"><img src="figures/rendered/h12-01.png" alt="多种提供方协议由各自Adapter转为共同StreamChunk，Runtime提供路由和准备入口，Loop消费共同协议" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图1｜路由与协议翻译的职责图。并列卡片不是执行时间轴；实际DeepSeek走Messages事件，pi-ai走库事件。本课不访问两家的远端服务。</span><a class="lesson-image-expand" href="figures/rendered/h12-01.png" target="_blank" rel="noopener noreferrer" aria-label="多种提供方协议由各自Adapter转为共同StreamChunk，Runtime提供路由和准备入口，Loop消费共同协议，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>固定源码中的DeepSeek专用Adapter使用Messages协议：serialize形成请求，parseSse处理事件帧，translate把thinking/tool_use等转成共同块和分片。pi-ai Adapter通过库的事件转换，<code>toolcall_end</code>给出的已解析参数对象会重新JSON.stringify为字符串。两者都向Loop输出StreamChunk，协议内部并不相同。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/adapter.ts#L91-L178" target="_blank" rel="noopener noreferrer">DeepSeek请求与翻译入口</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/translate.ts#L104-L165" target="_blank" rel="noopener noreferrer">翻译实现</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-pi-ai/src/stream.ts#L144-L244" target="_blank" rel="noopener noreferrer">pi-ai映射</a>。这里不写Provider API大全，认证配置、模型目录工程和复杂迁移留H26。</p>
+<h2>先准备一张确定的调用单，再分发一次</h2>
+<p>GenerateOptions像已经装好的材料袋：provider/model、messages、可选tools、temperature、maxTokens、stop、reasoningEffort和signal等。LlmCallConfig只抽出路由与调用控制项，不包含整份历史；PreparedLlmCall则是准备后绑定本次分发的句柄。它不是AgentHandle，后者管理实例生命周期。</p>
+<p>H11的Loop请求通过messages携带系统指令，独立tools携带Schema，未设置单独system字段。GenerateOptions类型仍有system，供标题生成等直接单次调用方使用；不能把“Loop不用”讲成“类型没有”。本课实践B用仅供请求的user输入，不含持久id/source；实践C/D经Agent送入的消息则有完整身份。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L530-L597" target="_blank" rel="noopener noreferrer">GenerateOptions</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/call-config.ts#L15-L57" target="_blank" rel="noopener noreferrer">调用配置</a>。</p>
+<p>一次<code>await ctx.llm.prepareCall(config, signal, configure?)</code>的真实过程在<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017" target="_blank" rel="noopener noreferrer">960–1017行</a>：</p>
+<ol>
+<li>检查取消信号，按provider取得当前注册项，等待该Adapter.prepareCall解析模型并捕获它的分发入口。</li>
+<li>再查信号，校验并分离精确模型信息。可选configure同步选择控制项，接收已分离、深冻结的controls与model；最后强制保留原provider/model。</li>
+<li>对结果物化适配器默认值，校验推理强度；复制并冻结有效config、context及默认来源标记，保留同一注册项的能力和重试策略。</li>
+<li>返回只能成功分发一次的stream入口，分发时逐字段核调用配置；最终惰性Adapter边界还会再查配置是否漂移。</li>
+</ol>
+<p>例如实验默认maxTokens=128、reasoningEffort=low，调用方省略它们，准备结果就明确记录这两个值和adapterDefaults。显式maxTokens不会被默认覆盖；推理强度typo会以UNSUPPORTED_REASONING_EFFORT拒绝，而不是悄悄夹到low。模型信息中的defaultMaxTokens必须是正安全整数。<strong>这不等于Runtime对所有采样值、提供方参数和工具输入做了万能校验</strong>；具体已实现的校验见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L778-L886" target="_blank" rel="noopener noreferrer">778–886行</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L912-L945" target="_blank" rel="noopener noreferrer">912–945行</a>，提供方还可能拒绝某个选项。</p>
+<p>一次性有两道容易忽略的边界：配置不匹配的调用在占用分发机会前失败，修正后仍能分发；一旦接受分发，即便只取得句柄尚未消费，也不能再派发第二次。句柄内外都改了model会触发INVALID_PREPARED_CALL。直接prepare失败是Promise拒绝，不是已经开始的响应流；不能强求它产生finish。</p>
+<p>为什么绑定代次？设准备时旧Adapter说模型支持某种更新方式，真正分发前路由已换成新Adapter。若临时再查注册表，记录的能力和实际端点就可能来自两代。Runtime保留旧注册项；动态Adapter还必须用自己的prepareCall捕获内部配置。DeepSeek捕获connection，pi-ai捕获snapshot，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/adapter.ts#L50-L58" target="_blank" rel="noopener noreferrer">DeepSeek 50–58行</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-pi-ai/src/adapter.ts#L344-L369" target="_blank" rel="noopener noreferrer">pi-ai 344–369行</a>。只继承基类默认方法，不能自动冻结任意自定义Adapter内部可变字段。</p>
+<p>Loop把请求历史冻结，是为了保持记录与实际输入一致。<code>llm/stream</code> Waterfall可以观察或包装流；Loop请求不能被监听器改写。手工一次性调用由调用方保持输入稳定，Runtime不会把任何可变对象自动变成完整的日志快照。路由中间件、单次调用和Loop冻结请求必须按各自契约分析。</p>
+<p><strong>第一段停顿（约50～65分钟）：</strong> 运行最小异步例子；写出Runtime、Adapter、路由和模型四者关系。再预测“准备后替换Adapter”“重复分发”“目录为空”三个结果。第二段约55～75分钟，开始按分片组装内容。</p>
+<h2>一条消息里，可以有多种内容块</h2>
+<p>Message回答“谁在说、这是什么来源、这条消息是谁”；ContentBlock回答“消息里装了哪一类内容”。这是两个维度：assistant角色可以含text、reasoning或tool-call，而工具结果本身是tool角色消息。不能把所有数据都塞进assistant.text。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>结构</th><th>本课如何理解</th><th>本节必须保留的边界</th></tr></thead><tbody><tr><td>text</td><td>普通回答文字</td><td>不把推理和工具参数混进可见正文</td></tr><tr><td>reasoning</td><td>提供方交付的推理类内容</td><td>与text分块；存在此类型不保证每家模型都会输出，也不表示可以取得未交付的内部推理</td></tr><tr><td>tool-call</td><td>模型提出的一次工具调用，含id/name/arguments</td><td>arguments是原始JSON字符串；它还不是执行结果</td></tr><tr><td>image</td><td>指向持久图片附件的结构引用</td><td>是否能输入/呈现/回放依赖各消费方能力，不等于任意图片字节直接发模型</td></tr><tr><td>file</td><td>指向持久原样文件的引用</td><td>固定Runtime将其投影为句柄文本，文件本身不原生发送给Adapter</td></tr><tr><td>ToolResultMessage</td><td>tool角色，toolCallId关联某个调用，content装结果</td><td>是消息，不是名为tool-result的普通ContentBlock</td></tr></tbody></table></div>
+<p>类型见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L68-L157" target="_blank" rel="noopener noreferrer">内容块与工具调用</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/message.ts#L138-L196" target="_blank" rel="noopener noreferrer">消息角色</a>。固定类型还包含developer工具变更块，本节只认识其存在，完整Schema生命周期留H13。图片、文件、工具结果如何投影的完整工程也不在此展开。</p>
+<p>tool-call.id与ToolResultMessage.toolCallId负责一问一答；StreamChunk.index负责同一响应里“第几个内容块”的关联，二者不是同一种身份。持久Message.id又是整条消息身份。实时Attempt还会有attemptId；读轨迹时先写清在比较哪一层，避免把index=0当作“工具调用ID为0”。</p>
+<p>参数始终保留字符串，是共同协议对模型产物的表示约定。Assembler不逐片执行JSON.parse，不因某一时刻恰好闭合就执行工具；Adapter可在提供方完成时检查或重新序列化，工具系统后面还要校验定义与参数。pi-ai重序列化可能改变空格，因此“raw JSON string”不承诺各家协议原始字节逐字一致，只承诺这里不是已经解析并可随意修改的参数对象。</p>
+<h2>七类StreamChunk：先按标签，再看index</h2>
+<p>StreamChunk是响应的公共分片协议，不是HTTP字节包。真实联合类型在<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L496-L508" target="_blank" rel="noopener noreferrer">496–508行</a>，用type标签选择合法字段：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>type</th><th>关键字段</th><th>消费方的动作</th></tr></thead><tbody><tr><td>block-start</td><td>index、blockType</td><td>认识一个块及类型；不代表整块已到齐</td></tr><tr><td>text-delta</td><td>index、text</td><td>累计该块正文</td></tr><tr><td>reasoning-delta</td><td>index、text</td><td>累计该块推理内容</td></tr><tr><td>tool-call-delta</td><td>index、id、可选name、argumentsDelta</td><td>关联工具身份与参数片段，不执行</td></tr><tr><td>block-end</td><td>index、block</td><td>接收权威完整ContentBlock</td></tr><tr><td>usage</td><td>usage</td><td>保存用量事实，不是响应结束</td></tr><tr><td>finish</td><td>reason、可选replayState</td><td>提供响应终态；检查reason.kind而非只看finish出现</td></tr></tbody></table></div>
+<p>这些分片可以交错，不要求“先全部text，再全部reasoning，最后工具”。先看纯文本：index0的start → “这是” → “一个” → “项目” → block-end(text=“这是一个项目”) → usage → finish(stop)。每步累计文本依次为空、这是、这是一个、这是一个项目；block-end是完整块，不能再把同样文字追加一遍。</p>
+<p>再用实践A的真实输入推导交错场景。下表“当前结果”是<code>blocks()</code>预览，不等于已经提交的消息；finish尚未抵达时其getter默认stop，也不能据此宣称提供方已经完成：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>抵达分片</th><th>当前状态变化</th></tr></thead><tbody><tr><td>start(text, index7)</td><td>第一个见到的块是7，暂为空</td></tr><tr><td>text-delta(7,“先读”)</td><td>块7=先读</td></tr><tr><td>reasoning-delta(2,“检查资料”)</td><td>第二个见到的块是2，单独保存推理</td></tr><tr><td>tool-call-delta(4, read-1, read_fixture, <code>{&quot;path&quot;:</code>)</td><td>第三个块4保存工具身份和半截参数</td></tr><tr><td>text-delta(7,“README”)</td><td>块7=先读README，块2/4不变</td></tr><tr><td>tool-call-delta(4, read-1, <code>&quot;README.md&quot;}</code>)</td><td>块4参数字符串拼成完整JSON</td></tr><tr><td>block-end(4, 完整tool-call)</td><td>用权威整块关闭4，不重复拼接参数</td></tr><tr><td>usage，再finish(tool-calls)</td><td>保存用量与终态，等待上层决定结算/执行</td></tr></tbody></table></div>
+<p>最终顺序是7、2、4的首次出现顺序，不是索引数值升序。下一个响应又可从index0开始；不同响应要靠Attempt边界区分。图2将这张状态表画成两条内容线，细节仍以实践A逐片对象为准。</p>
+<p><span class="lesson-figure" role="group" aria-label="同一响应中index7文本、index2推理和index4工具参数交错抵达，分别累计，并按首次出现顺序形成内容块"><img src="figures/rendered/h12-02.png" alt="同一响应中index7文本、index2推理和index4工具参数交错抵达，分别累计，并按首次出现顺序形成内容块" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图2｜分片到内容块。index不是工具调用ID，也不是实时帧index；卡片标出各步状态，省略了未改变的字段。max-tokens另按保留规则处理。</span><a class="lesson-image-expand" href="figures/rendered/h12-02.png" target="_blank" rel="noopener noreferrer" aria-label="同一响应中index7文本、index2推理和index4工具参数交错抵达，分别累计，并按首次出现顺序形成内容块，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>BlockAssembler不是把所有字符串加起来</h2>
+<p>一个总字符串会把“先读”“检查资料”和半截参数混在一起，也失去调用ID。真实BlockAssembler用Map按index保存PartialBlock，再另记首次出现顺序。text/reasoning分别累计text，tool-call保存id/name并累计argumentsDelta。收到block-end后，首次关闭的完整块具有权威性，后来的delta或重复关闭被忽略，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assembler.ts#L49-L105" target="_blank" rel="noopener noreferrer">push 49–105行</a>。这是一种对迟到片段的容忍，不意味着任何畸形协议都被修复。</p>
+<p>没有显式start/end的核心文本、推理和工具delta也能被容忍组装；开放的未知块无法推导，会在blocks()报错。<strong>Assembler不会替每个工具参数验证JSON或业务权限</strong>。若直接喂入工具片段，blocks()可以产生未完整字符串，不能把“拿到了ToolCallBlock”当执行许可。实际链路还依赖Adapter的完成校验与Loop/工具边界。</p>
+<p>结束后<code>blocks()</code>给内容，<code>usage</code>给最新收到的用量，<code>finish</code>给终态，<code>message(source)</code>用冻结消息构造器生成值。组装值不自动写Session。未收到usage时为undefined，不应记为0；示例用量只是夹具。TokenUsage的inputTokens仅指未缓存输入，cacheRead/cacheWrite另计，reasoningTokens已包含在outputTokens内，不能重复加。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L174-L196" target="_blank" rel="noopener noreferrer">用量类型</a>。</p>
+<h3>输出上限与取消，要使用不同保留规则</h3>
+<p><code>max-tokens</code>表示模型正常生成到上限而停止，不等于网络异常。固定Assembler会丢弃<strong>全部tool-call块，包括已经block-end且参数合法的块</strong>，保留其他组装内容；不是只靠JSON完整性筛掉半个调用。相应逐块ReplayEnvelope条目同步裁剪，数量对不上则整份私有envelope丢弃，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assembler.ts#L130-L159" target="_blank" rel="noopener noreferrer">135–149行</a>。执行前宁可不把截断响应里的调用交出去，也不能盲目执行一个貌似闭合的参数。</p>
+<p>本地取消走<code>interruptedBlocks()</code>：只保留非空白的text/reasoning安全前缀，开放与已关闭均可；全部工具和开放未知块省略，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assembler.ts#L162-L179" target="_blank" rel="noopener noreferrer">169–178行</a>。这里“安全”指不凭空制造工具结果、保留已经交付的可见内容，不是证明文字事实正确或取消撤回外部副作用。只有空格、只有工具或尚无分片时，可能没有可提交的Assistant内容。</p>
+<h2>finish说明为何结束，failure说明出了什么事</h2>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>reason.kind</th><th>本节含义</th><th>固定Loop的重要结果</th></tr></thead><tbody><tr><td>stop</td><td>普通正常终止</td><td>结算Assistant，再看是否有工具调用，而非只凭名字判无工具</td></tr><tr><td>tool-calls</td><td>提供方因工具调用终止</td><td>结算后读取结构化调用；标签本身不制造工具</td></tr><tr><td>max-tokens</td><td>达到输出上限</td><td>工具块已被过滤，结算后返回max-tokens停止候选</td></tr><tr><td>error</td><td>提供方或传输失败</td><td>assistant/attempt结算，交给request-error决策；不把草稿自动当正常历史</td></tr><tr><td>aborted</td><td>提供方报告或规范化的中断</td><td>要结合本地signal；并不总等于用户取消</td></tr></tbody></table></div>
+<p>类型在<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L159-L172" target="_blank" rel="noopener noreferrer">163–172行</a>。LlmFailure用code做程序路由，用message给人解释，可带HTTP status、正有限providerRetryAfterMs、诊断requestId等，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L47-L66" target="_blank" rel="noopener noreferrer">48–66行</a>。等待建议只是事实，不是自动重试许可。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>具体例子</th><th>规范化code/阶段</th><th>不应怎样推断</th></tr></thead><tbody><tr><td>未注册路由</td><td>NO_ADAPTER；prepare拒绝，直接stream可变失败finish</td><td>不能统一算作已发出远端请求</td></tr><tr><td>未找到凭据 / 凭据格式错误 / 提供方拒绝</td><td>MISSING_CREDENTIAL / INVALID_CREDENTIAL / AUTH，具体由Adapter边界产生</td><td>不解析message文本猜是否换Key，不在日志回显密钥</td></tr><tr><td>HTTP限流</td><td>RATE_LIMIT，可带429与等待建议</td><td>不能让每个Adapter无限循环重发</td></tr><tr><td>上下文窗口溢出</td><td>CONTEXT_WINDOW_EXCEEDED</td><td>不等同输出上限max-tokens</td></tr><tr><td>传输断开或超时</td><td>TRANSPORT / TIMEOUT，具体映射由提供方实现负责</td><td>任意第三方Error不会自动仅凭code字符串获信任</td></tr><tr><td>用户取消</td><td>结合AbortSignal；响应可能尚无finish就进入中断结算</td><td>cancel不是销毁，也不表示已发生动作撤销</td></tr></tbody></table></div>
+<p>固定Runtime对普通Error回退UNKNOWN；可信LlmError的结构化事实经过验证复制后保留，signal已取消时终态kind可以是aborted，failure.code仍可能是UNKNOWN。消费方既检查终态/信号，也检查稳定code。提供方协议内部有时需兼容库扁平化的错误文本（pi-ai就是一例），这是Adapter的翻译工作；上层不应再次解析这些message作恢复策略。完整故障恢复留H20。</p>
+<h2>终止协议是约定，规范化有明确边界</h2>
+<p>合约要求usage先于唯一终止finish，finish之后不再发送分片。这样消费方能把结算绑定到清楚的终态，也能保留尾部用量。官方DeepSeek翻译器等到message_stop才依次yield usage/finish并return；流提前结束会抛STREAM_CLOSED。pi-ai的done/error同样形成usage再finish。实践组件测试直接验证前者，无外部API。</p>
+<p>Runtime的adapterStream会把注册查找、分发、迭代器构造和next中的异常变成一个error/aborted finish；已到达的前缀仍在，结构化异常不再直接从这条最终Adapter边界冒出。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L1063-L1195" target="_blank" rel="noopener noreferrer">1063–1195行</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/adapter-failure.ts#L16-L107" target="_blank" rel="noopener noreferrer">失败规范化</a>。</p>
+<p><strong>不要把这个保证扩大成任意生成器的协议校正。</strong> 固定Runtime逐项转发正常yield，并没有通用“看到finish就截断”“缺finish就补齐”“自动重排usage”的状态校验器。C25刻意让坏Adapter先finish再usage，Runtime仍原样转发；空生成器也原样结束。Assembler缺finish时默认stop，更不能拿它当严格协议验证器。这是实现与文档概括必须一起解释的边界，不能据Runtime包装就宣称自定义Adapter已经合规。</p>
+<p>Waterfall中间件本身、消费者、嵌套调用及迭代关闭清理失败仍可抛出，不冒充提供方失败finish。prepareCall之前的失败也没有已经开始的流。所有抛出错误都变终态、所有流都自动符合约定，这两个说法都过宽。</p>
+<p>Runtime不执行自动模型重试。Agent层在失败尝试结算后，通过<code>agent/request-error</code>决定是否再试，同Step可有多个Attempt；策略与退避由相应插件负责。pi-ai配置了maxRetries:0，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-pi-ai/src/adapter.ts#L127-L143" target="_blank" rel="noopener noreferrer">127–143行</a>。DeepSeek内部还有文件引用修复/回退请求分支，不能据“一次模型尝试”声称任何情况下仅有一个HTTP包；它不等于任意模型失败的上层重试循环。</p>
+<p><strong>第二段停顿：</strong> 合上状态表，独立写出实践A最后三个块；把finish改为max-tokens再算一次。另解释“提供方aborted但本地signal未取消”为什么不能直接画成用户取消。第三段约80～105分钟，用实践核对实时流与结算。</p>
+<h2>三件事：即时看到、组装完成、接纳为事实</h2>
+<p>现在把时间线拆开。模型不断返回StreamChunk；BlockAssembler累计内容供最后结算；AssistantStreamAccumulator同时记下每个分片和时间，形成紧凑流。<code>agent/assistant-stream</code>则发布进程本地start/chunk/end帧，让UI尽早显示。三个动作都发生，不代表每片都单独写入Session。</p>
+<p>真实<code>AssistantStreamAttempt</code>内部持有Assembler与Accumulator。start在请求外层流句柄取得、取消检查通过后发布，早于首个分片。push先让Accumulator对分片做一次分离冻结，再把同份快照送入Assembler和实时chunk帧，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/assistant-stream.ts#L18-L71" target="_blank" rel="noopener noreferrer">18–71行</a>。live帧里的index是该Attempt连续递增的交付序号，chunk.index才是块索引；revision在同Agent生命周期继续增长，不能混用。</p>
+<p><span class="lesson-figure" role="group" aria-label="分片同时进入组装与紧凑累积，再发布实时帧；Loop提交匹配Session事件成功后才发committed end，失败发abandoned end"><img src="figures/rendered/h12-03.png" alt="分片同时进入组装与紧凑累积，再发布实时帧；Loop提交匹配Session事件成功后才发committed end，失败发abandoned end" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图3｜实时显示、组装与结算分开。Session append是本课内存日志接纳边界，图中没有磁盘flush；committed end用eventType和seq关联事实。</span><a class="lesson-image-expand" href="figures/rendered/h12-03.png" target="_blank" rel="noopener noreferrer" aria-label="分片同时进入组装与紧凑累积，再发布实时帧；Loop提交匹配Session事件成功后才发committed end，失败发abandoned end，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>settle先执行同步append回调，得到seq才发<code>end {outcome:{kind:&#x27;committed&#x27;,eventType,seq}}</code>；append抛错则先abandon并重抛，发<code>end {outcome:{kind:&#x27;abandoned&#x27;}}</code>，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/assistant-stream.ts#L73-L108" target="_blank" rel="noopener noreferrer">78–108行</a>。committed是“这份匹配事实已接纳”，abandoned是“这条临时尝试没有成功结算”，两者都不是“画面已经消失”或“磁盘已刷完”的同义词。</p>
+<p>Loop使用它的规则见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L487-L607" target="_blank" rel="noopener noreferrer">487–607行</a>：正常流结算assistant/message；规范化error/aborted终态结算assistant/attempt后再询问恢复；本地signal取消进入catch时，若有安全前缀就提交interrupted=true的assistant/message，否则提交assistant/attempt。一般流迭代/中间件失败已start但非本地取消，也会尝试写assistant/attempt；最终组装或写入失败可能使实时行abandoned。</p>
+<p>因此，失败流已经显示过“网络前缀”，也不自动成为正常Assistant历史。中断保留的半句则明确标interrupted，后续历史可包含它；这是“保留已经交付的内容”的规则，不是把任务改判成功。提供方单独报告aborted、但本地signal未取消，实验会走失败attempt与Turn error；本地取消则收束为Turn aborted。结束标签、信号和提交路径要一起看。</p>
+<p>开始之前失败的请求可能连start都没有；已经start不保证一定有chunk；结算写入失败也不能伪造committed end。实践C把这些阶段的计数与原始事件分别留下。whenIdle返回仅表示工作收束，仍要查turn/end reason；不要把没有Promise拒绝当作成功回答。</p>
+<h2>紧凑流：少重复外壳，保留分片与时刻</h2>
+<p>只存最终“你好”，无法知道它是“你/好”两片还是一片，首片何时到达、是否先有推理、最后是什么failure。AssistantStreamRecord保存这些协议事实。连续同类型、同块的text/reasoning delta可打成一条run：time0=1000，texts=[“你”,“好”]，dt=[6]，可以精确还原1000与1006两次交付；它没有把两个token边界合成一个。工具run还要求id与name的存在性/值相容，交错块或身份变化会另开记录，其他chunk保留raw记录。</p>
+<p>Accumulator.snapshot()返回分离、不可变的当前记录；后续push不会改旧快照。<code>expandAssistantStream()</code>严格核record字段、成员数量、索引、安全整数时间及无损JSON，再重建TimedStreamChunk序列，见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assistant-stream.ts#L108-L232" target="_blank" rel="noopener noreferrer">108–232行</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assistant-stream.ts#L456-L534" target="_blank" rel="noopener noreferrer">456–534行</a>。时间间隔可为负值，只要可精确表示；不能凭“时间”二字假定单调递增。</p>
+<p>严格记录校验仍不等于完整模型协议校验，尤其raw记录的JSON形状检查不负责证明终止顺序。记录级读取器如assembleAssistantStream可直接按run累计以避免每次全量展开，但它信任记录类型；读持久边界先校验。紧凑记录嵌入assistant/message或assistant/attempt，不能把这套记录误称另一个逐chunk Session事件表。</p>
+<p>ReplayEnvelope是Adapter私有回放信息的共享外壳：response是不透明元信息，blocks可与发射块首次出现顺序对齐，Assembler丢块时同步裁剪。Runtime只在同一Adapter实例当前拥有历史路由与目标分发条件相符时保留私有状态，其他实例收到提供方无关内容，原历史值不被改写。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L1026-L1041" target="_blank" rel="noopener noreferrer">回放过滤</a>。准备代次和当前历史路由所有权仍要分开判断，不把“同Provider字符串”当全部条件。完整跨模型/Provider迁移与历史恢复留H26/H18。</p>
+<p><span class="lesson-figure" role="group" aria-label="成功、规范化失败、本地取消、输出上限和结算拒绝分别得到不同事实和实时end结果"><img src="figures/rendered/h12-04.png" alt="成功、规范化失败、本地取消、输出上限和结算拒绝分别得到不同事实和实时end结果" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图4｜独立分支对照，不是一次调用依次经过的五站。aborted终态与本地取消不同；所有committed均只表示匹配Session事实已接纳。</span><a class="lesson-image-expand" href="figures/rendered/h12-04.png" target="_blank" rel="noopener noreferrer" aria-label="成功、规范化失败、本地取消、输出上限和结算拒绝分别得到不同事实和实时end结果，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>实践准备：模型输出受控，运行机制用真实组件</h2>
+<p>本课lab含最小异步例子、A的逐片状态、B的真实Runtime、C的失败/取消/写入拒绝、D的工具往返。ScriptedAdapter只提供固定响应，真正的组装、路由、冻结、Loop与Session来自锁定源码；read_fixture返回代码内字符串，不读取本机README。局部写入失败用拦截该新夹具Session的append注入，其他事实仍走原方法；这验证实际Loop如何处理拒绝，不模拟磁盘故障。</p>
+<p>在AI Foundry根目录，依赖已按审阅包README隔离准备好时运行：</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>node docs/deepseek-harness-v2/h12/scripts/run-labs.mjs</code></pre></div>
+<p>运行器先核1594份源码/配置/文档Git blob与SHA256，再将lab复制到新OS临时目录，以Node24.16.0和固定依赖执行。源码缓存/依赖锚点可配置，不在项目安装另一版Harness。所有临时目录保留，不清理个人Home。原始TAP、stdout/stderr和完整JSON保存在审阅包evidence；随机id/时刻是真实值，不承诺每次输出字节相同。</p>
+<p>本轮49项通过，互斥计数为A1（最小异步例子）、C33（真实组件）、D15（真实Loop局部集成）。B未另跑独立Cordis专项，真实Cordis已包含在C/D；E完整应用未运行。官方测试为定位与选读，不宣称整套执行。学员试读、实际时长和独立外审仍未验证。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整公共准备：support.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 官方真实服务；替代的只有模型响应、工具内容与明确的故障门。
+import { Context } from &#x27;@deepseek-ai/cordis&#x27;;
+import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import LlmRuntime, { LlmAdapter, createUserMessage, ToolCallId, ReasoningEffortId } from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import type { GenerateOptions, StreamChunk } from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionStore, { SessionId } from &#x27;@deepseek-ai/dsh-session&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolRuntime from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import * as NativeToolExecutor from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import { defineContentToolFixture } from &#x27;@deepseek-ai/dsh-tool-testkit&#x27;;
+export { Context, LlmRuntime, LlmAdapter, ToolCallId, ReasoningEffortId };
+export * from &#x27;@deepseek-ai/dsh-llm&#x27;;
+export const gate = () =&gt; Promise.withResolvers&lt;void&gt;();
+export async function collect&lt;T&gt;(stream: AsyncIterable&lt;T&gt;): Promise&lt;T[]&gt; { const out: T[] = []; for await (const v of stream) out.push(v); return out; }
+export async function* sequence&lt;T&gt;(items: readonly T[]): AsyncGenerator&lt;T&gt; { for (const v of items) { await Promise.resolve(); yield v; } }
+export const textOf = (m: any) =&gt; m.content?.filter((b: any) =&gt; b.type === &#x27;text&#x27;).map((b: any) =&gt; b.text).join(&#x27;&#x27;) ?? &#x27;&#x27;;
+export function textChunks(text = &#x27;项目是一个固定演示。&#x27;): StreamChunk[] {
+  return [{ type: &#x27;block-start&#x27;, index: 0, blockType: &#x27;text&#x27; },
+    ...[text.slice(0, 3), text.slice(3, 7), text.slice(7)].map(text =&gt; ({ type: &#x27;text-delta&#x27; as const, index: 0, text })),
+    { type: &#x27;block-end&#x27;, index: 0, block: { type: &#x27;text&#x27;, text } },
+    { type: &#x27;usage&#x27;, usage: { inputTokens: 10, outputTokens: 4 } }, { type: &#x27;finish&#x27;, reason: { kind: &#x27;stop&#x27; } }];
+}
+export function toolChunks(): StreamChunk[] {
+  return [{ type: &#x27;block-start&#x27;, index: 0, blockType: &#x27;tool-call&#x27; },
+    { type: &#x27;tool-call-delta&#x27;, index: 0, id: ToolCallId(&#x27;read-1&#x27;), name: &#x27;read_fixture&#x27;, argumentsDelta: &#x27;{&quot;path&quot;:&#x27; },
+    { type: &#x27;tool-call-delta&#x27;, index: 0, id: ToolCallId(&#x27;read-1&#x27;), argumentsDelta: &#x27;&quot;README.md&quot;}&#x27; },
+    { type: &#x27;block-end&#x27;, index: 0, block: { type: &#x27;tool-call&#x27;, id: ToolCallId(&#x27;read-1&#x27;), name: &#x27;read_fixture&#x27;, arguments: &#x27;{&quot;path&quot;:&quot;README.md&quot;}&#x27; } },
+    { type: &#x27;usage&#x27;, usage: { inputTokens: 12, outputTokens: 5 } }, { type: &#x27;finish&#x27;, reason: { kind: &#x27;tool-calls&#x27; } }];
+}
+export type Response = StreamChunk[] | ((options: GenerateOptions) =&gt; AsyncIterable&lt;StreamChunk&gt;);
+export class ScriptedAdapter extends LlmAdapter {
+  readonly requests: GenerateOptions[] = [];
+  constructor(readonly responses: Response[]) { super(); }
+  override async resolveModel(provider: string, model: string) {
+    return { provider, id: model, name: model, defaultMaxTokens: 128, context: { contextWindow: 4096 } };
+  }
+  stream(options: GenerateOptions): AsyncIterable&lt;StreamChunk&gt; {
+    this.requests.push(options);
+    const response = this.responses.shift();
+    if (response === undefined) throw new Error(&#x27;fixture response exhausted&#x27;);
+    return typeof response === &#x27;function&#x27; ? response(options) : sequence(response);
+  }
+}
+export async function runtime&lt;T&gt;(work: (ctx: Context) =&gt; T | Promise&lt;T&gt;): Promise&lt;T&gt; {
+  const ctx = new Context(); try { await ctx.plugin(LlmRuntime); return await work(ctx); } finally { await ctx.fiber.dispose(); }
+}
+export async function harness(adapter: LlmAdapter) {
+  const ctx = new Context(), handles: any[] = [], trace: any[] = [];
+  for (const p of [LlmRuntime, SessionStore, SessionProjectionRegistry]) await ctx.plugin(p as any);
+  await ctx.plugin(SystemPrompt, { includeHarnessIdentity: false, personaPrefix: &#x27;你是代码助手。&#x27; });
+  for (const p of [ToolRuntime, NativeToolExecutor, AgentRegistry]) await ctx.plugin(p as any);
+  await ctx.plugin(AgentLoop, { agents: [] }); ctx.llm.registerAdapter([&#x27;fixture&#x27;], adapter);
+  ctx.on(&#x27;session/event&#x27;, (session, event) =&gt; { trace.push({ channel: &#x27;fact&#x27;, sessionId: session.id, event: structuredClone(event) }); });
+  ctx.on(&#x27;agent/assistant-stream&#x27;, ({ agent, frame }) =&gt; { trace.push({ channel: &#x27;live&#x27;, agentId: agent.id, frame: structuredClone(frame) }); });
+  ctx.on(&#x27;agent/error&#x27;, ({ error }) =&gt; { trace.push({ channel: &#x27;error&#x27;, error: String(error), members: error instanceof AggregateError ? error.errors.map(String) : [] }); });
+  async function create(id: string) { const h = await ctx.agents.create({ sessionId: SessionId(id), agentOptions: { provider: &#x27;fixture&#x27;, model: &#x27;scripted&#x27; } }); handles.push(h); return h.agent; }
+  return { ctx, trace, create, async close() { for (const h of handles) await h.dispose(); await ctx.fiber.dispose(); } };
+}
+export async function send(agent: any, text = &#x27;请读取 README，并简要介绍这个项目。&#x27;) {
+  agent.followup(createUserMessage({ content: [{ type: &#x27;text&#x27;, text }], source: { kind: &#x27;user&#x27; } })); await agent.whenIdle();
+}
+export function registerRead(ctx: Context, trace: any[]) {
+  return ctx.tools.register(defineContentToolFixture({ name: &#x27;read_fixture&#x27;, description: &#x27;只返回代码内固定README，不读取文件&#x27;, parameters: { path: { type: &#x27;string&#x27; } },
+    async execute(_args: any, _context: any) { trace.push({ channel: &#x27;tool-body&#x27;, result: &#x27;README: 固定演示项目&#x27; }); return [{ type: &#x27;text&#x27;, text: &#x27;README: 固定演示项目&#x27; }]; } }));
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：最小异步例子：iterable.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 最小JavaScript/TypeScript异步迭代例子；它不模拟Harness。
+export async function iterablePractice() {
+  async function* pieces() { yield &#x27;请&#x27;; await Promise.resolve(); yield &#x27;读&#x27;; yield &#x27;README&#x27;; }
+  const states: string[] = []; let text = &#x27;&#x27;;
+  for await (const piece of pieces()) { text += piece; states.push(text); }
+  return states;
+}</code></pre></div></div></details>
+<h2>实践 A：跟踪每片之后的真实组装状态</h2>
+<p>先按前面的7/2/4索引表填写每步blocks，再运行assemblyPractice。比较chunks、states、最终blocks、usage、finish、compact与expanded。把reason从tool-calls改为max-tokens，预测已关闭工具和ReplayEnvelope的变化；同时比较interruptedBlocks，而非把取消等同普通blocks。</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序：assembly.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { BlockAssembler, AssistantStreamAccumulator, expandAssistantStream, ToolCallId, type StreamChunk } from &#x27;./support.ts&#x27;;
+export function assemblyPractice(reason: &#x27;tool-calls&#x27; | &#x27;max-tokens&#x27; = &#x27;tool-calls&#x27;) {
+  const chunks: StreamChunk[] = [
+    { type: &#x27;block-start&#x27;, index: 7, blockType: &#x27;text&#x27; },
+    { type: &#x27;text-delta&#x27;, index: 7, text: &#x27;先读&#x27; },
+    { type: &#x27;reasoning-delta&#x27;, index: 2, text: &#x27;检查资料&#x27; },
+    { type: &#x27;tool-call-delta&#x27;, index: 4, id: ToolCallId(&#x27;read-1&#x27;), name: &#x27;read_fixture&#x27;, argumentsDelta: &#x27;{&quot;path&quot;:&#x27; },
+    { type: &#x27;text-delta&#x27;, index: 7, text: &#x27;README&#x27; },
+    { type: &#x27;tool-call-delta&#x27;, index: 4, id: ToolCallId(&#x27;read-1&#x27;), argumentsDelta: &#x27;&quot;README.md&quot;}&#x27; },
+    { type: &#x27;block-end&#x27;, index: 4, block: { type: &#x27;tool-call&#x27;, id: ToolCallId(&#x27;read-1&#x27;), name: &#x27;read_fixture&#x27;, arguments: &#x27;{&quot;path&quot;:&quot;README.md&quot;}&#x27; } },
+    { type: &#x27;usage&#x27;, usage: { inputTokens: 10, outputTokens: 6 } },
+    { type: &#x27;finish&#x27;, reason: { kind: reason }, replayState: { response: { fixture: true }, blocks: [&#x27;text-meta&#x27;, &#x27;reason-meta&#x27;, &#x27;tool-meta&#x27;] } },
+  ];
+  const assembler = new BlockAssembler(), accumulator = new AssistantStreamAccumulator(), states: any[] = [];
+  for (const [i, chunk] of chunks.entries()) {
+    const timed = accumulator.push({ time: 1000 + i * 5, chunk }); assembler.push(timed.chunk);
+    states.push({ chunk, blocks: structuredClone(assembler.blocks()), interrupted: assembler.interruptedBlocks(), usage: assembler.usage, finish: assembler.finish });
+  }
+  const compact = accumulator.snapshot();
+  return { chunks, states, blocks: assembler.blocks(), usage: assembler.usage, finish: assembler.finish, replay: assembler.replayState, compact, expanded: expandAssistantStream(compact) };
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>首次出现顺序为7、2、4，最终text=先读README，reasoning=检查资料，工具read-1/read_fixture的arguments是字符串{&quot;path&quot;:&quot;README.md&quot;}。第二个工具片段不再给name，已有名字仍保留。block-end关闭4后不把完整arguments再拼一次；usage为10输入/6输出，finish为tool-calls。</p><p>max-tokens版本只剩text/reasoning，逐块replay条目只留text-meta/reason-meta。已经block-end且JSON合法也不保留工具。interruptedBlocks同样只留非空白text/reasoning，但它用于取消安全前缀，不能据此改写原finish。每次states是观测快照，不是提交了九条Assistant消息；早期getter默认stop只是缺省值。</p><p>C01–08验证真实Assembler/Message相关行为；C09–11验证真实Accumulator快照、精确展开与三种坏记录。negative-answer故意断言max-tokens还留工具，必须非零退出，不改坏官方实现来凑测试。回答应附中间状态与保留/丢弃原因，不能只交最终拼接字符串。</p></div></details>
+<h2>实践 B：用真实Runtime准备并调用本地Adapter</h2>
+<p>先预测空catalog能否调用、默认值在哪出现、typo何时失败，以及复用prepared会怎样。观察Waterfall的before/after顺序，比较限流异常与不存在路由的终态。没有网络与真实Key，不把这项结果称为供应商协议兼容。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序：runtime.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { runtime, ScriptedAdapter, textChunks, collect, LlmError, ReasoningEffortId } from &#x27;./support.ts&#x27;;
+export async function runtimePractice() {
+  return runtime(async ctx =&gt; {
+    class Adapter extends ScriptedAdapter {
+      override async resolveModel(provider: string, model: string) {
+        return { ...await super.resolveModel(provider, model), reasoning: { efforts: [{ id: ReasoningEffortId(&#x27;low&#x27;), name: &#x27;低&#x27; }], defaultEffort: ReasoningEffortId(&#x27;low&#x27;) } };
+      }
+    }
+    const adapter = new Adapter([textChunks(&#x27;本地响应&#x27;), () =&gt; { throw new LlmError(&#x27;夹具限流&#x27;, &#x27;RATE_LIMIT&#x27;, { status: 429, providerRetryAfterMs: 250 }); }]);
+    ctx.llm.registerAdapter([&#x27;fixture&#x27;], adapter);
+    const order: string[] = [];
+    ctx.on(&#x27;llm/stream&#x27;, async function* (_options, next) { order.push(&#x27;before&#x27;); yield* next(); order.push(&#x27;after&#x27;); });
+    const prepared = await ctx.llm.prepareCall({ provider: &#x27;fixture&#x27;, model: &#x27;not-in-catalog&#x27; });
+    const chunks = await collect(prepared.stream({ ...prepared.config, messages: [{ role: &#x27;user&#x27;, content: [{ type: &#x27;text&#x27;, text: &#x27;你好&#x27; }] }] }));
+    let reuse = &#x27;&#x27;; try { prepared.stream({ ...prepared.config, messages: [] }); } catch (e) { reuse = String(e); }
+    let invalid = &#x27;&#x27;; try { await ctx.llm.prepareCall({ provider: &#x27;fixture&#x27;, model: &#x27;any&#x27;, reasoningEffort: ReasoningEffortId(&#x27;typo&#x27;) }); } catch (e) { invalid = String(e); }
+    const failed = await collect(ctx.llm.stream({ provider: &#x27;fixture&#x27;, model: &#x27;any&#x27;, messages: [] }));
+    const missing = await collect(ctx.llm.stream({ provider: &#x27;absent&#x27;, model: &#x27;any&#x27;, messages: [] }));
+    return { providers: ctx.llm.listProviders(), catalog: await ctx.llm.listModels(&#x27;fixture&#x27;), config: prepared.config, defaults: prepared.adapterDefaults, chunks, order, reuse, invalid, failed, missing, calls: adapter.requests.length };
+  });
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>providers有fixture，catalog为空；精确模型not-in-catalog仍能解析并响应。config明确有maxTokens=128、reasoningEffort=low，adapterDefaults两项为true。成功流按原序交付，Waterfall在yield* next前后各记一次；随后失败和missing调用同样经过此监听器，order为三组before/after。</p><p>复用prepared抛INVALID_PREPARED_CALL，typo准备拒绝UNSUPPORTED_REASONING_EFFORT；两者没有新增模型调用。第二个真正进入Adapter的调用同步抛LlmError，Runtime变成RATE_LIMIT失败finish，保留429和250ms事实。missing直接stream变NO_ADAPTER终态，未进入Adapter；所以Adapter记录calls=2。若改用prepareCall点名missing，则在准备时拒绝，没有响应流。</p><p>C12–26及C29覆盖真实注册、目录、默认、配置回调、准备、代次、规范化、Waterfall、坏协议和回放过滤；C27/28直接运行官方DeepSeek.translate，验证原生事件映射与缺少message_stop的STREAM_CLOSED。没有运行完整DeepSeek/PiAi Adapter网络链，不能将这两项翻译测试升级为两家API联调。</p></div></details>
+<h2>实践 C：同样看见前缀，结算可以完全不同</h2>
+<p>对success、failure、throw、cancel-empty、cancel-partial、cancel-reasoning、cancel-tools、max-tokens、write-failure等分别填写：是否有start、交付哪些chunk、形成什么内容、写哪类Assistant事实、end是committed还是abandoned、Turn为何结束。取消门在确认流已到达后才打开，最后主动释放；不能靠睡几毫秒猜取消位置。</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序：settlement.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { ScriptedAdapter, textChunks, toolChunks, harness, send, registerRead, sequence, gate, LlmError, type StreamChunk } from &#x27;./support.ts&#x27;;
+export type Scenario = &#x27;success&#x27; | &#x27;failure&#x27; | &#x27;throw&#x27; | &#x27;cancel-empty&#x27; | &#x27;cancel-partial&#x27; | &#x27;cancel-reasoning&#x27; | &#x27;cancel-tools&#x27; | &#x27;max-tokens&#x27; | &#x27;write-failure&#x27; | &#x27;attempt-write-failure&#x27; | &#x27;assembly-failure&#x27; | &#x27;middleware-failure&#x27; | &#x27;retry&#x27; | &#x27;in-band-aborted&#x27; | &#x27;tool-chain&#x27;;
+export async function settlementPractice(kind: Scenario) {
+  const reached = gate(), release = gate();
+  const failure: StreamChunk[] = [{ type: &#x27;text-delta&#x27;, index: 0, text: &#x27;未成功的草稿&#x27; }, { type: &#x27;finish&#x27;, reason: { kind: &#x27;error&#x27;, failure: { code: &#x27;SERVER&#x27;, message: &#x27;夹具失败&#x27; } } }];
+  let responses: any[] = [textChunks()];
+  if (kind === &#x27;failure&#x27; || kind === &#x27;attempt-write-failure&#x27;) responses = [failure];
+  if (kind === &#x27;throw&#x27;) responses = [async function* () { yield { type: &#x27;text-delta&#x27;, index: 0, text: &#x27;网络前缀&#x27; }; throw new LlmError(&#x27;夹具断流&#x27;, &#x27;TRANSPORT&#x27;); }];
+  if (kind.startsWith(&#x27;cancel-&#x27;)) responses = [async function* (options: any) {
+    if (kind === &#x27;cancel-partial&#x27;) yield { type: &#x27;text-delta&#x27;, index: 0, text: &#x27;已交付的半句&#x27; };
+    if (kind === &#x27;cancel-reasoning&#x27;) yield { type: &#x27;reasoning-delta&#x27;, index: 0, text: &#x27;正在分析&#x27; };
+    if (kind === &#x27;cancel-tools&#x27;) yield* sequence(toolChunks().slice(0, 4));
+    reached.resolve(); await release.promise; options.signal.throwIfAborted();
+  }];
+  if (kind === &#x27;max-tokens&#x27;) responses = [[{ type: &#x27;text-delta&#x27;, index: 9, text: &#x27;只完成一部分&#x27; }, ...toolChunks().slice(0, 4), { type: &#x27;finish&#x27;, reason: { kind: &#x27;max-tokens&#x27; } }]];
+  if (kind === &#x27;assembly-failure&#x27;) responses = [[{ type: &#x27;block-start&#x27;, index: 0, blockType: &#x27;unknown-fixture&#x27; }, { type: &#x27;finish&#x27;, reason: { kind: &#x27;stop&#x27; } }]];
+  if (kind === &#x27;retry&#x27;) responses = [failure, textChunks(&#x27;恢复后的回答&#x27;)];
+  if (kind === &#x27;in-band-aborted&#x27;) responses = [[{ type: &#x27;text-delta&#x27;, index: 0, text: &#x27;提供方草稿&#x27; }, { type: &#x27;finish&#x27;, reason: { kind: &#x27;aborted&#x27;, failure: { code: &#x27;ABORTED&#x27;, message: &#x27;提供方中断；本地信号未取消&#x27; } } }]];
+  if (kind === &#x27;tool-chain&#x27;) responses = [toolChunks(), textChunks(&#x27;README说明：这是固定演示项目。&#x27;)];
+  const adapter = new ScriptedAdapter(responses), h = await harness(adapter);
+  try {
+    const agent = await h.create(&#x27;h12-&#x27; + kind); registerRead(h.ctx, h.trace);
+    if (kind === &#x27;retry&#x27;) h.ctx.on(&#x27;agent/request-error&#x27;, async () =&gt; ({ kind: &#x27;retry&#x27; as const }));
+    if (kind === &#x27;middleware-failure&#x27;) h.ctx.on(&#x27;llm/stream&#x27;, async function* () { throw new Error(&#x27;夹具中间件失败&#x27;); });
+    const append = agent.session.append.bind(agent.session);
+    const rejected = kind === &#x27;write-failure&#x27; ? &#x27;assistant/message&#x27; : kind === &#x27;attempt-write-failure&#x27; ? &#x27;assistant/attempt&#x27; : undefined;
+    if (rejected) Object.defineProperty(agent.session, &#x27;append&#x27;, { configurable: true, value: (...args: any[]) =&gt; {
+      if (args[0] === rejected) throw new Error(&#x27;夹具拒绝结算：&#x27; + rejected);
+      return Reflect.apply(append, agent.session, args);
+    } });
+    const work = send(agent);
+    if (kind.startsWith(&#x27;cancel-&#x27;)) { await reached.promise; agent.cancel({ kind: &#x27;user&#x27; }); release.resolve(); }
+    await work;
+    return { kind, events: agent.session.snapshotEvents(), messages: agent.session.deriveMessages(), trace: structuredClone(h.trace),
+      requests: adapter.requests.map(r =&gt; ({ ...structuredClone({ ...r, signal: undefined }), signalAborted: r.signal?.aborted, frozen: Object.isFrozen(r) &amp;&amp; Object.isFrozen(r.messages) })) };
+  } finally { release.resolve(); await h.close(); }
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>success写1条assistant/message，end committed指向其seq，Turn completed。failure与throw虽然有草稿前缀，仍写assistant/attempt而非正常Assistant历史，Turn error；throw的TRANSPORT由Runtime规范化。middleware-failure在已返回生成器、开始迭代后抛错，真实Adapter调用0，仍有start与失败attempt；这不是所有中间件错误都已start的证明。</p><p>本地cancel-empty/cancel-tools没有可保留内容，写attempt；cancel-partial写“已交付的半句”，cancel-reasoning写“正在分析”，均为interrupted=true的message。工具即使已闭合仍不执行。以上Turn均aborted，记录的紧凑流可以没有finish，因为Loop在看到已取消signal后不会继续接纳后续分片。提供方in-band-aborted但本地信号未取消，写失败attempt，Turn是error，不能按名字强行改为用户取消。</p><p>max-tokens保留“只完成一部分”，去掉工具，写message并以max-tokens结束，工具主体0。write-failure拦截assistant/message，attempt-write-failure拦截assistant/attempt，均无对应成功事实，end abandoned，Turn error。assembly-failure也没有可成功结算的Assistant事实，不得伪造一条已提交消息。这里没有证明磁盘写坏或恢复。</p><p>retry先提交失败attempt、再经明确监听器重试成功message：一个Step、两请求、两attemptId，用户任务只接纳一次，revision连续。D类测试逐个核对committed end的seq、事实先于end、展开流与实际chunk一致；whenIdle正常返回仍要读这些结果，不把观察到预期失败称为任务成功。</p></div></details>
+<h2>实践 D：工具调用响应，怎样变成下一次请求的输入</h2>
+<p>准备的第一份响应是read_fixture调用，参数分两片；工具只返回“README: 固定演示项目”。第二份响应是项目说明。运行chainPractice，按stages.position找到两次start、第一条assistant/message、tool/call、tool/result、第二条assistant/message及Turn结束，再看两份真实requests。</p>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序：chain.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { settlementPractice } from &#x27;./settlement.ts&#x27;;
+export async function chainPractice() {
+  const result = await settlementPractice(&#x27;tool-chain&#x27;);
+  const stages = result.trace.flatMap((item, position) =&gt; {
+    if (item.channel === &#x27;fact&#x27;) return [{ position, kind: item.event.type, seq: item.event.seq }];
+    if (item.channel === &#x27;live&#x27;) return [{ position, kind: &#x27;live/&#x27; + item.frame.type, attemptId: item.frame.attemptId,
+      ...item.frame.type === &#x27;chunk&#x27; ? { chunk: item.frame.chunk.type, blockIndex: item.frame.chunk.index } : {} }];
+    if (item.channel === &#x27;tool-body&#x27;) return [{ position, kind: &#x27;tool-body&#x27;, text: item.result }];
+    return [];
+  });
+  return { ...result, stages };
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口：demo.ts</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { iterablePractice } from &#x27;./iterable.ts&#x27;;
+import { assemblyPractice } from &#x27;./assembly.ts&#x27;;
+import { runtimePractice } from &#x27;./runtime.ts&#x27;;
+import { settlementPractice, type Scenario } from &#x27;./settlement.ts&#x27;;
+import { chainPractice } from &#x27;./chain.ts&#x27;;
+console.log(&#x27;intro&#x27;, JSON.stringify(await iterablePractice()));
+console.log(&#x27;A&#x27;, JSON.stringify(assemblyPractice()));
+console.log(&#x27;A-max&#x27;, JSON.stringify(assemblyPractice(&#x27;max-tokens&#x27;)));
+console.log(&#x27;B&#x27;, JSON.stringify(await runtimePractice()));
+for (const kind of [&#x27;success&#x27;,&#x27;failure&#x27;,&#x27;throw&#x27;,&#x27;cancel-empty&#x27;,&#x27;cancel-partial&#x27;,&#x27;cancel-reasoning&#x27;,&#x27;cancel-tools&#x27;,&#x27;max-tokens&#x27;,&#x27;write-failure&#x27;,&#x27;attempt-write-failure&#x27;,&#x27;assembly-failure&#x27;,&#x27;middleware-failure&#x27;,&#x27;retry&#x27;,&#x27;in-band-aborted&#x27;] as Scenario[]) console.log(&#x27;C-&#x27; + kind, JSON.stringify(await settlementPractice(kind)));
+console.log(&#x27;D&#x27;, JSON.stringify(await chainPractice()));</code></pre></div></div></details>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>一个Turn、两个Step、两次模型请求、一次工具主体执行、两条assistant/message。先结算第一份工具提议的Assistant事实，再发其committed end，之后工具系统记录调用和结果。第二次请求才包含tool角色结果，其toolCallId=read-1，第一份请求仍没有工具结果；两份请求及历史数组冻结。</p><p>H11决定每次输入材料，H10控制Step与反馈，H12让统一分片形成内容并与结算对应。工具看到的是完整参数字符串经工具侧处理后的调用，不是刚来半片就执行。stages只从实际trace派生标签和位置，没有造新事件；完整events/messages/requests仍保留。D-tool-chain用真实Loop、Tools、NativeExecutor与Session验证它，未展开H14审批/守卫/并发内部，也没有读真实文件。</p></div></details>
+<h2>精读路线：五个核心文件，类型按需核对</h2>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>站点</th><th>先读符号与范围</th><th>要写下的解释</th></tr></thead><tbody><tr><td>llm/src/index.ts</td><td>LlmAdapter/PreparedLlmCall；960–1017、1063–1195</td><td>准备绑定什么，谁规范化哪些异常，哪些仍会抛出</td></tr><tr><td>llm/src/assembler.ts</td><td>push；135–179</td><td>首见顺序、整块权威、截断/取消两种保留决定</td></tr><tr><td>llm/src/assistant-stream.ts</td><td>push/snapshot/expand；456–534</td><td>紧凑为何无损，严格校验究竟校哪些结构</td></tr><tr><td>agent-loop/src/assistant-stream.ts</td><td>start/push/settle/abandon</td><td>临时帧怎样与事实seq建立对应，失败在哪条边</td></tr><tr><td>agent-loop/src/agent.ts</td><td>479–607</td><td>流消费、失败attempt、取消前缀、成功结算与工具先后</td></tr></tbody></table></div>
+<p>前面三个位于packages/llm，后两个位于packages/core。types.ts/message.ts用于逐项核形状；call-config、adapter-failure、两家协议转换、Session事件类型与官方测试为辅助，不要求初学者通读所有文件。固定断言清单见审阅包source-checklist.md；官方测试选读setup/操作/断言，没有运行整套Vitest。字节/AST检查防漂移，真正行为由分列的C/D测试支撑。</p>
+<h2>十道思考题：先推导分片，再解释边界</h2>
+<h3>思考 1：为什么不让Loop直接处理每家模型API？</h3>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>Loop要决定任务推进、结算和工具反馈，原生协议却会在事件名、参数增量、推理与用量上不同。Adapter把具体格式译成统一Message/StreamChunk，Runtime提供注册路由与准备边界，Loop消费共同语义。接口共享减少传播范围，却不保证能力相同；目录、认证、图片和回放仍需对应实现。不能把统一接口当作任意模型都能直接替换的证据。</p></div></details>
+<h3>思考 2：先见index9的text“甲”，再见index1的reasoning“乙”，最后text9“丙”，结果怎么排？</h3>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>在没有权威block-end替换和特殊截断前提下，块顺序为9、1，因为Assembler记首次出现而非索引升序。块9为text“甲丙”，块1为reasoning“乙”，不能拼成一个“甲乙丙”。index只在该响应内关联内容；下一响应同样index9不应混进来。实时帧index另是交付序号，不能按它替换这里的关联键。</p></div></details>
+<h3>思考 3：参数先来{&quot;path&quot;:，能否立刻解析或执行？</h3>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>这是未完成的原始JSON字符串，不能当作完整对象，更不能提前执行。后续argumentsDelta仍可能继续，block-end提供权威整块，终态还可能max-tokens或取消。即使参数恰好闭合，Assembler也不负责JSON合法性与权限，实际Adapter和工具系统仍有各自检查。ToolCallBlock是模型提议，ToolResultMessage才回答某个callId的执行结果，两者不能互相替代。</p></div></details>
+<h3>思考 4：text T、已关闭合法工具C、reasoning R之后finish(max-tokens)，blocks与replay怎样？</h3>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>固定Assembler去掉所有tool-call，结果为T、R，C即使合法闭合也不例外。若ReplayEnvelope.blocks原有三个对齐条目，同位置去掉C对应项；数量不对齐则丢弃整份envelope，不丢正文。Loop结算保留内容后返回max-tokens候选，不进入工具执行。不能只写“半截工具不执行”，本题检验的是更强的实际过滤规则。</p></div></details>
+<h3>思考 5：text-delta“半句”后本地取消，与finish(error)但信号未取消，有何不同？</h3>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>本地取消的catch会取非空白text/reasoning安全前缀，写interrupted=true的assistant/message；正常派生历史可包含它，Turn aborted。error终态则写assistant/attempt供失败记账，不自动把草稿放进正常Assistant历史，未要求重试时Turn error。两者屏幕都可能见过同样前缀，但提交意图和终态不同。committed end必须指向实际类型与seq，不能仅因看见文字就判成功。</p></div></details>
+<h3>思考 6：UI已经显示回答，append拒绝后还能发送committed end吗？</h3>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>不能。settle先执行append并取得seq，只有成功才标committed；拒绝会abandon临时行并把错误抛回上层。此时有start/chunk不证明对应Assistant事实存在，不能编一个seq补上。即使append成功也只是本课内存Session接纳，不证明磁盘flush；硬退出和恢复还需H17–H18另验。UI展示、组装内容与提交事实是三条相关但不同的证据。</p></div></details>
+<h3>思考 7：紧凑记录time0=100，texts=[a,b,c]，dt=[5,-2]，应展开为什么？</h3>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>还原为100的a、105的b、103的c，原始顺序不因为时刻倒退而排序。固定校验要求时间及间隔为安全整数、dt长度比成员少一，未要求每个dt非负。若只有dt=[5]却有三个成员，必须拒绝；若擅自把texts拼成abc再只存一个时间，便丢失交付边界和时刻。严格record校验也不证明该流有唯一finish，协议顺序另有约定。</p></div></details>
+<h3>思考 8：prepare时A1，路由替换为A2后分发，会使用谁？</h3>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>已准备句柄继续持有A1注册项及它的分发入口，新prepare/直接后续调用才选A2。若同一个动态Adapter对象内部设置也会变，它要覆写prepareCall捕获自己的connection/snapshot；Runtime不能冻结任意内部闭包状态。已经接受的prepared不能再用第二次，配置漂移也被拒绝。回放过滤还检查当前历史路由的Adapter所有权，不能把同名路由或旧准备对象当作全部兼容条件。</p></div></details>
+<h3>思考 9：坏生成器先finish再usage，套上Runtime就自动合规了吗？</h3>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>没有。固定adapterStream对正常yield逐项转发，没有通用终态顺序校正。C25真实证明后续usage仍可透出，空生成器也没有自动补finish。官方Adapter需要自己满足usage-before-finish、唯一终态及终态后return；异常规范化只针对选定边界的throw，不证明任意原始生成器合规。中间件和消费者错误还可能原样抛出，不能拿“Runtime统一接口”掩盖这些限制。</p></div></details>
+<h3>思考 10：失败后为什么不让Runtime悄悄重试到成功？</h3>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>悄悄重复会让上层丢失尝试计数、失败事实、取消机会与策略选择，费用也可能已经发生。Loop先结算失败attempt，再由request-error明确决定继续；同Step重试不重复接纳用户，下一Attempt有新身份。固定Runtime不执行恢复循环，等待建议也不是决定。真实退避、预算、修复和复杂故障策略属于H20；本课一失败一成功夹具不证明无限重试可靠，也不证明实际提供方性能。</p></div></details>
+<h2>把统一输出带到工具边界</h2>
+<p>完成时，先用A解释每个index的状态；用B给出准备配置与失败终态；用C把每条committed end连回真实Session事实，指出abandoned为何没有对应结果；再用D证明工具结果何时进入第二份请求。测试通过只证明覆盖的实现行为，学员理解还要看这些独立推导。</p>
+<p>第三模块现在连成“实例归属→工作推进→输入组装→输出与结算”。H13接过完整ToolCallBlock，研究工具注册、Schema与可见定义；H14才展开执行流水线。完整Session事件溯源、恢复/Fork、Compaction、复杂重试及自定义Provider分别留H17–H20和H26。本课只准备第三模块审查材料，不启动集中审查；H12到此停止，不制作H13，不发布课程。</p></div></main></body></html>

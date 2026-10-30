@@ -1,0 +1,11 @@
+# H12→H13前置知识与衔接
+
+本文件只交接能力门槛，不开发H13正文、实验或图片。
+
+进入H13前应能解释：工具Schema属于模型输入声明；ToolCallBlock是模型提议，arguments保持JSON字符串，id关联后续tool结果；ToolResultMessage是一等tool角色消息；Schema可见不保证无条件执行。完成H12实践A的交错参数与max-tokens推导，以及实践D的两份请求对照，再进入工具定义/可见集合的细节。
+
+自查三个反例：完整JSON工具在max-tokens里仍被共享Assembler去掉；本地取消只有工具而无安全文本时只能结算attempt；已经收到call提议不代表工具主体已运行。能在真实D轨迹找出Assistant结算→tool/call→主体→tool/result→第二次请求，才具备研究Schema与执行定义一致性的前提。
+
+H13须重新读固定Commit的Tools、Scope、Schema和相关官方测试，研究全局/局部同名、限制、step admission、output契约与Schema生命周期。H11/H12只是分别触碰声明入口和提议出口，不能把本课固定read_fixture当完整Registry工程验收。
+
+继续保留H14工具流水线、H15权限、H17–H18持久投影/恢复、H19压缩、H20复杂恢复及H26Provider扩展。当前模型为受控Adapter、Session为内存，未接真实API或磁盘。完成H12后停止；不自动制作H13，也不自动启动第三模块集中审查。

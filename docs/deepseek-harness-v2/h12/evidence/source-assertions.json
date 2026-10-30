@@ -1,0 +1,992 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "assertions": [
+    {
+      "id": "H12-01",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "LlmAdapter",
+      "lines": [
+        202,
+        302
+      ],
+      "expected": "ctx.llm是LlmRuntime服务，Adapter承担wire翻译",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          193,
+          202
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C13/AST",
+      "limits": "类型与继承责任不等于任意Provider已兼容"
+    },
+    {
+      "id": "H12-02",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "registerAdapter/prepareRoutes/commitRoutes",
+      "lines": [
+        401,
+        475
+      ],
+      "expected": "同一路由重复注册原子失败，disposer移除当前持有路由",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1638,
+          1690
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C12",
+      "limits": "没有验证整个Loader HMR watcher"
+    },
+    {
+      "id": "H12-03",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "listProviders",
+      "lines": [
+        478,
+        485
+      ],
+      "expected": "listProviders返回分离目录且按注册顺序",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          670,
+          698
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C12/C13",
+      "limits": "目录是注册路由，不是未激活配置项"
+    },
+    {
+      "id": "H12-04",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "listModels/resolveModelInfo",
+      "lines": [
+        711,
+        775
+      ],
+      "expected": "模型目录仅建议，精确解析不要求目录成员",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          775,
+          793
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C13",
+      "limits": "具体Adapter与GUI仍可收紧"
+    },
+    {
+      "id": "H12-05",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "normalizeModelInfo",
+      "lines": [
+        778,
+        886
+      ],
+      "expected": "精确模型身份/默认输出上限/能力模式被校验并分离",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          831,
+          894
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C15 + SOURCE_READ",
+      "limits": "C15实测坏defaultMaxTokens；其他元数据分支静态，不声称所有输入采样值已校验"
+    },
+    {
+      "id": "H12-06",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/types.ts",
+      "symbol": "RequestUserInput/GenerateOptions",
+      "lines": [
+        530,
+        597
+      ],
+      "expected": "GenerateOptions含messages/tools/控制项，可有单次调用system",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1480,
+          1502
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C13/AST + D-tool-chain",
+      "limits": "Loop不使用system不代表类型无此字段"
+    },
+    {
+      "id": "H12-07",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/call-config.ts",
+      "symbol": "LlmCallConfig/ConfigureCall",
+      "lines": [
+        15,
+        57
+      ],
+      "expected": "调用配置与完整请求分开；configure在默认值前运行",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1079,
+          1144
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C29 + SOURCE_READ",
+      "limits": "同步纯回调约定；不是自动组合任意插件"
+    },
+    {
+      "id": "H12-08",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "LlmRuntime.prepareCall",
+      "lines": [
+        960,
+        998
+      ],
+      "expected": "prepare捕获注册项并await Adapter代次，再查取消、规范化和默认",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1002,
+          1049
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C13/C16/C20/C29",
+      "limits": "prepare拒绝不必产生流finish"
+    },
+    {
+      "id": "H12-09",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "resolveCallWithInfo",
+      "lines": [
+        912,
+        945
+      ],
+      "expected": "reasoning按精确模型校验；maxTokens默认只补缺省",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          831,
+          916
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C13/C29",
+      "limits": "未验证所有提供方控制参数或远端上限"
+    },
+    {
+      "id": "H12-10",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "PreparedLlmCall.stream closure",
+      "lines": [
+        999,
+        1017
+      ],
+      "expected": "prepared成功分发一次，配置不匹配在占用前失败",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1002,
+          1049
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C16",
+      "limits": "一次句柄取得即占用；并非只在消费完成后占用"
+    },
+    {
+      "id": "H12-11",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "adapterStream prepared config guard",
+      "lines": [
+        1089,
+        1099
+      ],
+      "expected": "惰性最终分发再次核prepared配置，拒绝延后漂移",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1035,
+          1049
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C17",
+      "limits": "手工请求仍由调用方保持稳定"
+    },
+    {
+      "id": "H12-12",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "prepareCall registration closure",
+      "lines": [
+        960,
+        1017
+      ],
+      "expected": "旧prepared继续用捕获注册项，动态Adapter需自行捕获内部设置",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1239,
+          1273
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C18/C19",
+      "limits": "本地动态代次夹具；不称真实HMR系统集成"
+    },
+    {
+      "id": "H12-13",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "forAdapter",
+      "lines": [
+        1026,
+        1041
+      ],
+      "expected": "Replay私有状态按历史路由当前实例所有权过滤，原消息不变",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          1503,
+          1586
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C26",
+      "limits": "未跑全部路由替换/跨模型兼容矩阵"
+    },
+    {
+      "id": "H12-14",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/message.ts",
+      "symbol": "MessageRoleMap/ToolResultMessage",
+      "lines": [
+        138,
+        196
+      ],
+      "expected": "消息角色与内容块为不同维度；工具结果是一等tool消息",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          491,
+          525
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C08/D-tool-chain",
+      "limits": "图片/文件完整生命周期仅定点静态核读"
+    },
+    {
+      "id": "H12-15",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/message.ts",
+      "symbol": "freezeMessage/createMessage/createAssistantMessage",
+      "lines": [
+        212,
+        270
+      ],
+      "expected": "消息构造分离并深冻结，生成新持久id",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          267,
+          286
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C08",
+      "limits": "不可变构造不替代Session合法性校验"
+    },
+    {
+      "id": "H12-16",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/types.ts",
+      "symbol": "ToolCallBlock",
+      "lines": [
+        111,
+        119
+      ],
+      "expected": "ToolCallBlock的arguments保持JSON字符串，id关联结果",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          124,
+          144
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C02/C08/D-tool-chain",
+      "limits": "Assembler不负责通用JSON或业务权限检查"
+    },
+    {
+      "id": "H12-17",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/types.ts",
+      "symbol": "StreamChunk",
+      "lines": [
+        488,
+        508
+      ],
+      "expected": "StreamChunk是七分支闭联合，index关联交错内容块",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          229,
+          253
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C02/AST",
+      "limits": "StreamChunk.index与live帧交付index不同"
+    },
+    {
+      "id": "H12-18",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/types.ts",
+      "symbol": "FinishReasonMap",
+      "lines": [
+        159,
+        172
+      ],
+      "expected": "FinishReason包含stop/tool-calls/max-tokens/error/aborted",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          188,
+          212
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "AST/D各终态",
+      "limits": "原因联合可扩展；不是只数finish标签"
+    },
+    {
+      "id": "H12-19",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/types.ts",
+      "symbol": "TokenUsage",
+      "lines": [
+        174,
+        196
+      ],
+      "expected": "usage缓存字段不与input重复，reasoning已含在output",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          23,
+          65
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "SOURCE_READ + C02",
+      "limits": "夹具用量不证明真实计费或性能"
+    },
+    {
+      "id": "H12-20",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "BlockAssembler.push/ensure",
+      "lines": [
+        49,
+        105
+      ],
+      "expected": "按index保存PartialBlock，另记首次出现顺序",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          1,
+          46
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C01/C02",
+      "limits": "不按数值排序，非单一字符串"
+    },
+    {
+      "id": "H12-21",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "push closed guards",
+      "lines": [
+        62,
+        83
+      ],
+      "expected": "首个block-end权威，关闭后delta及重复close被忽略",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          216,
+          227
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C03",
+      "limits": "容忍迟到不等于修复全部畸形流"
+    },
+    {
+      "id": "H12-22",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "assemble",
+      "lines": [
+        108,
+        119
+      ],
+      "expected": "开放核心块可从delta组装，开放未知类型会抛错",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          64,
+          71
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C06",
+      "limits": "类型扩展还需消费端支持"
+    },
+    {
+      "id": "H12-23",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "assembled/blocks",
+      "lines": [
+        130,
+        159
+      ],
+      "expected": "max-tokens去掉所有tool-call，Replay逐块条目同步裁剪",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          124,
+          186
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C04/C07/D-max-tokens",
+      "limits": "包括已关闭合法工具；不只过滤半截JSON"
+    },
+    {
+      "id": "H12-24",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "interruptedBlocks",
+      "lines": [
+        162,
+        179
+      ],
+      "expected": "取消安全前缀只留非空白text/reasoning，工具全部省略",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          229,
+          263
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C05/D-cancel-*",
+      "limits": "安全指协议保留规则，不担保内容正确或副作用回滚"
+    },
+    {
+      "id": "H12-25",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assembler.ts",
+      "symbol": "usage/finish/replayState getters",
+      "lines": [
+        181,
+        198
+      ],
+      "expected": "usage可缺失；缺finish getter默认stop",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assembler.spec.ts",
+        "lines": [
+          1,
+          63
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C01/C02",
+      "limits": "默认不是已收到终态的证据"
+    },
+    {
+      "id": "H12-26",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "TimedStreamChunk/AssistantStreamRecord",
+      "lines": [
+        13,
+        44
+      ],
+      "expected": "紧凑记录分别容纳文本/推理/工具run与raw chunk",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          23,
+          65
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C09/AST",
+      "limits": "紧凑流不是另一套逐chunk Session事件"
+    },
+    {
+      "id": "H12-27",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "AssistantStreamAccumulator.push",
+      "lines": [
+        108,
+        177
+      ],
+      "expected": "Accumulator先无损JSON快照，再按兼容连续run压紧",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          23,
+          85
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C09/C10/D通用对照",
+      "limits": "不合并原分片成员；name身份变化会拆run"
+    },
+    {
+      "id": "H12-28",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "snapshot",
+      "lines": [
+        179,
+        193
+      ],
+      "expected": "snapshot返回分离不可变记录，后续push不改旧快照",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          68,
+          100
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C10",
+      "limits": "不声明CPU/内存实测收益"
+    },
+    {
+      "id": "H12-29",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "expandAssistantStream",
+      "lines": [
+        196,
+        232
+      ],
+      "expected": "expand逐成员还原时间；记录校验不等于终止顺序校正",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          23,
+          100
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C09/C11",
+      "limits": "时间间隔可负；raw记录只检查所列结构/JSON"
+    },
+    {
+      "id": "H12-30",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "validateRecord/validateRun",
+      "lines": [
+        456,
+        534
+      ],
+      "expected": "校验精确key、非空成员、索引、dt长度及安全整数",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          147,
+          220
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C11三个负例",
+      "limits": "不是所有协议坏状态的验证器"
+    },
+    {
+      "id": "H12-31",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/assistant-stream.ts",
+      "symbol": "assembleAssistantStream",
+      "lines": [
+        415,
+        453
+      ],
+      "expected": "记录级组装可按run喂Assembler，但信任已校验的类型",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/assistant-stream.spec.ts",
+        "lines": [
+          452,
+          486
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C09",
+      "limits": "持久边界仍先expand校验"
+    },
+    {
+      "id": "H12-32",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "symbol": "AssistantStreamAttempt constructor/start",
+      "lines": [
+        18,
+        57
+      ],
+      "expected": "start早于首片；attemptId与帧revision独立于块index",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          79,
+          124
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D全部框架检查",
+      "limits": "准备失败未start的分支本课仅静态"
+    },
+    {
+      "id": "H12-33",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "symbol": "AssistantStreamAttempt.push",
+      "lines": [
+        59,
+        71
+      ],
+      "expected": "每片先累积快照，再组装，再发实时chunk帧",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          79,
+          124
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D全部紧凑流/帧逐项对照",
+      "limits": "不是逐片提交Session"
+    },
+    {
+      "id": "H12-34",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/assistant-stream.ts",
+      "symbol": "settle/abandon",
+      "lines": [
+        73,
+        108
+      ],
+      "expected": "settle先append取seq再committed end；拒绝则abandon并重抛",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          126,
+          153
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-write-failure/D-attempt-write-failure",
+      "limits": "使用夹具Session append拒绝，不冒称磁盘故障"
+    },
+    {
+      "id": "H12-35",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "symbol": "ReactLoopAgent.step success",
+      "lines": [
+        566,
+        597
+      ],
+      "expected": "正常message先结算，之后提取调用并进入工具系统",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          491,
+          525
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-tool-chain",
+      "limits": "不展开完整工具执行/权限生命周期"
+    },
+    {
+      "id": "H12-36",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "symbol": "step finish failure branch",
+      "lines": [
+        541,
+        563
+      ],
+      "expected": "规范化失败终态结算attempt，request-error决定是否continue",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          188,
+          212
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-failure/D-throw/D-retry",
+      "limits": "同Step重试两Attempt；不是Runtime自动重试"
+    },
+    {
+      "id": "H12-37",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "symbol": "step catch interruption",
+      "lines": [
+        499,
+        539
+      ],
+      "expected": "本地signal中断按安全前缀决定message或attempt",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/cancel.spec.ts",
+        "lines": [
+          574,
+          608
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-cancel-empty/partial/reasoning/tools",
+      "limits": "前缀不是任务成功；不验证硬退出恢复"
+    },
+    {
+      "id": "H12-38",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "symbol": "step aborted finish branch",
+      "lines": [
+        541,
+        563
+      ],
+      "expected": "仅提供方aborted而本地未取消进入失败终态支路",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/cancel.spec.ts",
+        "lines": [
+          701,
+          779
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-in-band-aborted",
+      "limits": "该夹具Turn error，不按字符串猜用户取消"
+    },
+    {
+      "id": "H12-39",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "symbol": "step finalization catch",
+      "lines": [
+        566,
+        607
+      ],
+      "expected": "最终块组装失败且无成功结算时abandon",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          155,
+          185
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-assembly-failure",
+      "limits": "不是把未知块或空内容静默改成文本"
+    },
+    {
+      "id": "H12-40",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "adapterStream/adapterFailureChunk",
+      "lines": [
+        1063,
+        1195
+      ],
+      "expected": "Adapter查找/分发/iterator/next异常规范化；middleware等不在其catch内",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          407,
+          656
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C14/C21/C22/C23/D-throw",
+      "limits": "不把所有基础设施异常都当Provider失败"
+    },
+    {
+      "id": "H12-41",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/index.ts",
+      "symbol": "adapterStream iteration loop",
+      "lines": [
+        1129,
+        1156
+      ],
+      "expected": "Runtime正常yield逐项转发，不补缺finish或删除finish后片段",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          579,
+          607
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C25 + CONTROL_FLOW_READ",
+      "limits": "坏Adapter反例；合规终止仍由Adapter履约"
+    },
+    {
+      "id": "H12-42",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm/src/adapter-failure.ts",
+      "symbol": "normalizeLlmFailure/failureSnapshot",
+      "lines": [
+        16,
+        107
+      ],
+      "expected": "LlmFailure结构化事实验证复制；普通Error码回退UNKNOWN",
+      "officialTest": {
+        "path": "packages/llm/llm/tests/service.spec.ts",
+        "lines": [
+          495,
+          578
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C21/C22",
+      "limits": "signal可影响终态kind但不凭空把所有code改为ABORTED"
+    },
+    {
+      "id": "H12-43",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm-deepseek/src/translate.ts",
+      "symbol": "translate",
+      "lines": [
+        104,
+        165
+      ],
+      "expected": "DeepSeek原生事件到公共块，usage在message_stop时先于finish",
+      "officialTest": {
+        "path": "packages/llm/llm-deepseek/tests/stream.spec.ts",
+        "lines": [
+          1,
+          120
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "C27/C28",
+      "limits": "官方translate真实执行；SSE/HTTP链仅源码核读"
+    },
+    {
+      "id": "H12-44",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm-deepseek/src/adapter.ts",
+      "symbol": "prepareCall/generate",
+      "lines": [
+        50,
+        88
+      ],
+      "expected": "DeepSeek准备捕获connection；流异常映射Transport/Timeout/Aborted",
+      "officialTest": {
+        "path": "packages/llm/llm-deepseek/tests/prepared-call.spec.ts",
+        "lines": [
+          1,
+          59
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "SOURCE_READ + C19类比夹具",
+      "limits": "未执行完整官方Adapter；有文件修复分支，不能许诺只一HTTP请求"
+    },
+    {
+      "id": "H12-45",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm-pi-ai/src/stream.ts",
+      "symbol": "toStreamChunks",
+      "lines": [
+        144,
+        244
+      ],
+      "expected": "pi-ai完成工具参数再序列化，done/error映为usage后finish",
+      "officialTest": {
+        "path": "packages/llm/llm-pi-ai/tests/completed-tool-arguments.spec.ts",
+        "lines": [
+          1,
+          100
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "SOURCE_READ",
+      "limits": "本轮未执行pi-ai或网络协议测试"
+    },
+    {
+      "id": "H12-46",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/llm/llm-pi-ai/src/adapter.ts",
+      "symbol": "profileOptions maxRetries",
+      "lines": [
+        127,
+        143
+      ],
+      "expected": "pi-ai禁库重试并捕获内部snapshot代次",
+      "officialTest": {
+        "path": "packages/llm/llm-pi-ai/tests/sdk-options.spec.ts",
+        "lines": [
+          1,
+          75
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "SOURCE_READ；snapshot另见344-369",
+      "limits": "不替代H20策略预算或H26多Provider工程"
+    },
+    {
+      "id": "H12-47",
+      "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "path": "packages/core/session/src/index.ts",
+      "symbol": "Session.commit",
+      "lines": [
+        892,
+        911
+      ],
+      "expected": "Session事件接纳与deriveMessages分开；失败attempt不自动进正常历史",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "lines": [
+          188,
+          212
+        ],
+        "status": "LOCATED; selected setup/action/assertions read, not executed"
+      },
+      "authorEvidence": "D-failure/D-tool-chain；derive另见999-1029",
+      "limits": "官方真实内存Session；无storage backend/flush验证"
+    }
+  ]
+}

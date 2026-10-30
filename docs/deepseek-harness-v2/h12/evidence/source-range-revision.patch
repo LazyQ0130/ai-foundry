@@ -1,0 +1,23 @@
+--- write-source-checklist.py before
++++ write-source-checklist.py final
+@@ -37,7 +37,7 @@
+  ('snapshot返回分离不可变记录，后续push不改旧快照',S,179,193,'snapshot',CT,68,100,'C10','不声明CPU/内存实测收益'),
+  ('expand逐成员还原时间；记录校验不等于终止顺序校正',S,196,232,'expandAssistantStream',CT,23,100,'C09/C11','时间间隔可负；raw记录只检查所列结构/JSON'),
+  ('校验精确key、非空成员、索引、dt长度及安全整数',S,456,534,'validateRecord/validateRun',CT,147,220,'C11三个负例','不是所有协议坏状态的验证器'),
+- ('记录级组装可按run喂Assembler，但信任已校验的类型',S,415,453,'assembleAssistantStream',CT,452,504,'C09','持久边界仍先expand校验'),
++ ('记录级组装可按run喂Assembler，但信任已校验的类型',S,415,453,'assembleAssistantStream',CT,452,486,'C09','持久边界仍先expand校验'),
+  ('start早于首片；attemptId与帧revision独立于块index',F,18,57,'AssistantStreamAttempt constructor/start',LT,79,124,'D全部框架检查','准备失败未start的分支本课仅静态'),
+  ('每片先累积快照，再组装，再发实时chunk帧',F,59,71,'AssistantStreamAttempt.push',LT,79,124,'D全部紧凑流/帧逐项对照','不是逐片提交Session'),
+  ('settle先append取seq再committed end；拒绝则abandon并重抛',F,73,108,'settle/abandon',LT,126,153,'D-write-failure/D-attempt-write-failure','使用夹具Session append拒绝，不冒称磁盘故障'),
+@@ -50,9 +50,9 @@
+  ('Runtime正常yield逐项转发，不补缺finish或删除finish后片段',I,1129,1156,'adapterStream iteration loop',ST,579,607,'C25 + CONTROL_FLOW_READ','坏Adapter反例；合规终止仍由Adapter履约'),
+  ('LlmFailure结构化事实验证复制；普通Error码回退UNKNOWN','packages/llm/llm/src/adapter-failure.ts',16,107,'normalizeLlmFailure/failureSnapshot',ST,495,578,'C21/C22','signal可影响终态kind但不凭空把所有code改为ABORTED'),
+  ('DeepSeek原生事件到公共块，usage在message_stop时先于finish','packages/llm/llm-deepseek/src/translate.ts',104,165,'translate','packages/llm/llm-deepseek/tests/stream.spec.ts',1,120,'C27/C28','官方translate真实执行；SSE/HTTP链仅源码核读'),
+- ('DeepSeek准备捕获connection；流异常映射Transport/Timeout/Aborted','packages/llm/llm-deepseek/src/adapter.ts',50,88,'prepareCall/generate','packages/llm/llm-deepseek/tests/prepared-call.spec.ts',1,100,'SOURCE_READ + C19类比夹具','未执行完整官方Adapter；有文件修复分支，不能许诺只一HTTP请求'),
++ ('DeepSeek准备捕获connection；流异常映射Transport/Timeout/Aborted','packages/llm/llm-deepseek/src/adapter.ts',50,88,'prepareCall/generate','packages/llm/llm-deepseek/tests/prepared-call.spec.ts',1,59,'SOURCE_READ + C19类比夹具','未执行完整官方Adapter；有文件修复分支，不能许诺只一HTTP请求'),
+  ('pi-ai完成工具参数再序列化，done/error映为usage后finish','packages/llm/llm-pi-ai/src/stream.ts',144,244,'toStreamChunks','packages/llm/llm-pi-ai/tests/completed-tool-arguments.spec.ts',1,100,'SOURCE_READ','本轮未执行pi-ai或网络协议测试'),
+- ('pi-ai禁库重试并捕获内部snapshot代次','packages/llm/llm-pi-ai/src/adapter.ts',127,143,'profileOptions maxRetries','packages/llm/llm-pi-ai/tests/sdk-options.spec.ts',1,100,'SOURCE_READ；snapshot另见344-369','不替代H20策略预算或H26多Provider工程'),
++ ('pi-ai禁库重试并捕获内部snapshot代次','packages/llm/llm-pi-ai/src/adapter.ts',127,143,'profileOptions maxRetries','packages/llm/llm-pi-ai/tests/sdk-options.spec.ts',1,75,'SOURCE_READ；snapshot另见344-369','不替代H20策略预算或H26多Provider工程'),
+  ('Session事件接纳与deriveMessages分开；失败attempt不自动进正常历史','packages/core/session/src/index.ts',892,911,'Session.commit',LT,188,212,'D-failure/D-tool-chain；derive另见999-1029','官方真实内存Session；无storage backend/flush验证'),
+ ]
+ items=[]

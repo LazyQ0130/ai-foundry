@@ -1,0 +1,304 @@
+TAP version 13
+# Subtest: A01 minimal AsyncIterable yields one accumulated state per piece
+ok 1 - A01 minimal AsyncIterable yields one accumulated state per piece
+  ---
+  duration_ms: 1.2025
+  type: 'test'
+  ...
+# Subtest: C01 segmented text progresses without premature completion; absent finish defaults to stop
+ok 2 - C01 segmented text progresses without premature completion; absent finish defaults to stop
+  ---
+  duration_ms: 0.2528
+  type: 'test'
+  ...
+# Subtest: C02 interleaved indexes retain first-seen order, reasoning and raw tool JSON separately
+ok 3 - C02 interleaved indexes retain first-seen order, reasoning and raw tool JSON separately
+  ---
+  duration_ms: 1.3683
+  type: 'test'
+  ...
+# Subtest: C03 first block-end is authoritative and ignores later deltas and re-close
+ok 4 - C03 first block-end is authoritative and ignores later deltas and re-close
+  ---
+  duration_ms: 0.1226
+  type: 'test'
+  ...
+# Subtest: C04 max-tokens drops every tool including closed valid JSON and aligns replay metadata
+ok 5 - C04 max-tokens drops every tool including closed valid JSON and aligns replay metadata
+  ---
+  duration_ms: 0.6318
+  type: 'test'
+  ...
+# Subtest: C05 interrupted prefix keeps nonblank open/closed text and reasoning, omits every tool
+ok 6 - C05 interrupted prefix keeps nonblank open/closed text and reasoning, omits every tool
+  ---
+  duration_ms: 0.1178
+  type: 'test'
+  ...
+# Subtest: C06 incomplete unknown block fails normal assembly but interrupted prefix omits it
+ok 7 - C06 incomplete unknown block fails normal assembly but interrupted prefix omits it
+  ---
+  duration_ms: 0.3295
+  type: 'test'
+  ...
+# Subtest: C07 misaligned replay entries discard metadata without discarding content
+ok 8 - C07 misaligned replay entries discard metadata without discarding content
+  ---
+  duration_ms: 0.0846
+  type: 'test'
+  ...
+# Subtest: C08 message and tool result are distinct frozen identified role values
+ok 9 - C08 message and tool result are distinct frozen identified role values
+  ---
+  duration_ms: 0.8643
+  type: 'test'
+  ...
+# Subtest: C09 compact runs preserve original delta boundaries/timestamps and equal expanded assembly
+ok 10 - C09 compact runs preserve original delta boundaries/timestamps and equal expanded assembly
+  ---
+  duration_ms: 0.3101
+  type: 'test'
+  ...
+# Subtest: C10 compact snapshots detach chunks and earlier snapshots from later pushes
+ok 11 - C10 compact snapshots detach chunks and earlier snapshots from later pushes
+  ---
+  duration_ms: 0.1224
+  type: 'test'
+  ...
+# Subtest: C11 strict durable expansion rejects dt length
+ok 12 - C11 strict durable expansion rejects dt length
+  ---
+  duration_ms: 0.0746
+  type: 'test'
+  ...
+# Subtest: C11 strict durable expansion rejects index
+ok 13 - C11 strict durable expansion rejects index
+  ---
+  duration_ms: 0.0341
+  type: 'test'
+  ...
+# Subtest: C11 strict durable expansion rejects keys
+ok 14 - C11 strict durable expansion rejects keys
+  ---
+  duration_ms: 0.0361
+  type: 'test'
+  ...
+# Subtest: C12 provider routes register atomically and disposal is precise
+ok 15 - C12 provider routes register atomically and disposal is precise
+  ---
+  duration_ms: 6.3708
+  type: 'test'
+  ...
+# Subtest: C13 advisory catalog can be empty while an exact model routes; defaults and waterfall execute
+ok 16 - C13 advisory catalog can be empty while an exact model routes; defaults and waterfall execute
+  ---
+  duration_ms: 3.1847
+  type: 'test'
+  ...
+# Subtest: C14 prepare rejects absent route while direct stream normalizes absence
+ok 17 - C14 prepare rejects absent route while direct stream normalizes absence
+  ---
+  duration_ms: 1.5104
+  type: 'test'
+  ...
+# Subtest: C15 malformed exact model defaults and unsupported effort fail before dispatch
+ok 18 - C15 malformed exact model defaults and unsupported effort fail before dispatch
+  ---
+  duration_ms: 2.7656
+  type: 'test'
+  ...
+# Subtest: C16 prepared config detached/frozen; mismatch does not consume valid dispatch, reuse does
+ok 19 - C16 prepared config detached/frozen; mismatch does not consume valid dispatch, reuse does
+  ---
+  duration_ms: 1.5974
+  type: 'test'
+  ...
+# Subtest: C17 post-handle config drift is caught at lazy final dispatch
+ok 20 - C17 post-handle config drift is caught at lazy final dispatch
+  ---
+  duration_ms: 1.2187
+  type: 'test'
+  ...
+# Subtest: C18 prepare keeps old registration after route replacement; next call uses new adapter
+ok 21 - C18 prepare keeps old registration after route replacement; next call uses new adapter
+  ---
+  duration_ms: 1.2029
+  type: 'test'
+  ...
+# Subtest: C19 adapter override binds its own changing settings generation
+ok 22 - C19 adapter override binds its own changing settings generation
+  ---
+  duration_ms: 1.1162
+  type: 'test'
+  ...
+# Subtest: C20 cancellation during exact-model lookup rejects preparation before dispatch
+ok 23 - C20 cancellation during exact-model lookup rejects preparation before dispatch
+  ---
+  duration_ms: 1.1181
+  type: 'test'
+  ...
+# Subtest: C21 adapter dispatch exception becomes terminal structured failure
+ok 24 - C21 adapter dispatch exception becomes terminal structured failure
+  ---
+  duration_ms: 1.1138
+  type: 'test'
+  ...
+# Subtest: C21 adapter iterator exception becomes terminal structured failure
+ok 25 - C21 adapter iterator exception becomes terminal structured failure
+  ---
+  duration_ms: 0.8613
+  type: 'test'
+  ...
+# Subtest: C21 adapter iteration exception becomes terminal structured failure
+ok 26 - C21 adapter iteration exception becomes terminal structured failure
+  ---
+  duration_ms: 0.9369
+  type: 'test'
+  ...
+# Subtest: C22 plain Error remains UNKNOWN while aborted signal changes terminal kind only
+ok 27 - C22 plain Error remains UNKNOWN while aborted signal changes terminal kind only
+  ---
+  duration_ms: 1.0125
+  type: 'test'
+  ...
+# Subtest: C23 middleware failures remain thrown, not adapter error finish
+ok 28 - C23 middleware failures remain thrown, not adapter error finish
+  ---
+  duration_ms: 0.8842
+  type: 'test'
+  ...
+# Subtest: C24 waterfall short-circuit need not reach adapter lookup
+ok 29 - C24 waterfall short-circuit need not reach adapter lookup
+  ---
+  duration_ms: 0.9525
+  type: 'test'
+  ...
+# Subtest: C25 raw malformed adapter ordering is not automatically validated by Runtime
+ok 30 - C25 raw malformed adapter ordering is not automatically validated by Runtime
+  ---
+  duration_ms: 1.1338
+  type: 'test'
+  ...
+# Subtest: C26 replay passes only to adapter instance currently owning the historical route
+ok 31 - C26 replay passes only to adapter instance currently owning the historical route
+  ---
+  duration_ms: 1.4584
+  type: 'test'
+  ...
+# Subtest: C27 official DeepSeek translator maps native events to usage-before-finish and normalized index
+ok 32 - C27 official DeepSeek translator maps native events to usage-before-finish and normalized index
+  ---
+  duration_ms: 3.3944
+  type: 'test'
+  ...
+# Subtest: C28 official DeepSeek translator rejects stream without terminal message_stop
+ok 33 - C28 official DeepSeek translator rejects stream without terminal message_stop
+  ---
+  duration_ms: 0.257
+  type: 'test'
+  ...
+# Subtest: C29 configure sees frozen proposal before defaults, keeps captured route, and failures reject preparation
+ok 34 - C29 configure sees frozen proposal before defaults, keeps captured route, and failures reject preparation
+  ---
+  duration_ms: 1.2412
+  type: 'test'
+  ...
+# Subtest: D-success real Loop/Session settlement and live framing
+ok 35 - D-success real Loop/Session settlement and live framing
+  ---
+  duration_ms: 15.8323
+  type: 'test'
+  ...
+# Subtest: D-failure real Loop/Session settlement and live framing
+ok 36 - D-failure real Loop/Session settlement and live framing
+  ---
+  duration_ms: 9.3485
+  type: 'test'
+  ...
+# Subtest: D-throw real Loop/Session settlement and live framing
+ok 37 - D-throw real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.7633
+  type: 'test'
+  ...
+# Subtest: D-cancel-empty real Loop/Session settlement and live framing
+ok 38 - D-cancel-empty real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.8107
+  type: 'test'
+  ...
+# Subtest: D-cancel-partial real Loop/Session settlement and live framing
+ok 39 - D-cancel-partial real Loop/Session settlement and live framing
+  ---
+  duration_ms: 7.4791
+  type: 'test'
+  ...
+# Subtest: D-cancel-reasoning real Loop/Session settlement and live framing
+ok 40 - D-cancel-reasoning real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.7188
+  type: 'test'
+  ...
+# Subtest: D-cancel-tools real Loop/Session settlement and live framing
+ok 41 - D-cancel-tools real Loop/Session settlement and live framing
+  ---
+  duration_ms: 8.4537
+  type: 'test'
+  ...
+# Subtest: D-max-tokens real Loop/Session settlement and live framing
+ok 42 - D-max-tokens real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.8086
+  type: 'test'
+  ...
+# Subtest: D-write-failure real Loop/Session settlement and live framing
+ok 43 - D-write-failure real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.7134
+  type: 'test'
+  ...
+# Subtest: D-attempt-write-failure real Loop/Session settlement and live framing
+ok 44 - D-attempt-write-failure real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.3963
+  type: 'test'
+  ...
+# Subtest: D-assembly-failure real Loop/Session settlement and live framing
+ok 45 - D-assembly-failure real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.0045
+  type: 'test'
+  ...
+# Subtest: D-middleware-failure real Loop/Session settlement and live framing
+ok 46 - D-middleware-failure real Loop/Session settlement and live framing
+  ---
+  duration_ms: 7.9499
+  type: 'test'
+  ...
+# Subtest: D-retry real Loop/Session settlement and live framing
+ok 47 - D-retry real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.9992
+  type: 'test'
+  ...
+# Subtest: D-in-band-aborted real Loop/Session settlement and live framing
+ok 48 - D-in-band-aborted real Loop/Session settlement and live framing
+  ---
+  duration_ms: 6.1325
+  type: 'test'
+  ...
+# Subtest: D-tool-chain real Loop/Session settlement and live framing
+ok 49 - D-tool-chain real Loop/Session settlement and live framing
+  ---
+  duration_ms: 9.3536
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 535.9418
