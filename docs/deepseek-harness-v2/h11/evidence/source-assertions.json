@@ -1,0 +1,821 @@
+{
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "assertions": [
+    {
+      "id": "H11-01",
+      "assertion": "展示对象只有sections/contexts/variables；完整assembly另含tools",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 120,
+      "end": 134,
+      "symbol": "PromptPresentation / PromptAssembly",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/tool-order.spec.ts",
+        "start": 81,
+        "end": 89,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C23 + AST",
+      "conditions": "类型表面与返回覆盖分开核",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-02",
+      "assertion": "Section同层同名拒绝，order须有限数",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 483,
+      "end": 491,
+      "symbol": "SystemPrompt.section",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 355,
+        "end": 372,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C06",
+      "conditions": "没有把name套用Variable的命名正则",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-03",
+      "assertion": "Section先按作用域同名合并，隐藏全局文本不求值",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 635,
+      "end": 672,
+      "symbol": "assemble section definitions",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 66,
+        "end": 79,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C15/D09",
+      "conditions": "本轮验证全局/单Scope与两个独立Agent，未执行全部祖先链组合",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-04",
+      "assertion": "Section排序为order升序，同序按名称代码单元",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 247,
+      "end": 259,
+      "symbol": "compareNames / comparePromptSections",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 305,
+        "end": 312,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C01",
+      "conditions": "不是localeCompare或加载序；Waterfall可改最终展示序",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-05",
+      "assertion": "默认身份/prefix/suffix分别-1000/0/10200，prefix/suffix默认空",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 450,
+      "end": 473,
+      "symbol": "SystemPrompt constructor",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 220,
+        "end": 252,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "SOURCE_READ + C01",
+      "conditions": "默认true来自构造器/Config；本课组件夹具明确关闭身份，非完整Profile默认验证",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-06",
+      "assertion": "变量名正则、同层重复拒绝，Provider可返回undefined",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 558,
+      "end": 574,
+      "symbol": "SystemPrompt.variable",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 642,
+        "end": 657,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02/C06",
+      "conditions": "登记与取值不同；undefined仅在实际被引用时render失败",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-07",
+      "assertion": "变量先全局再Scope远到近求值，近值覆盖但全局Provider仍执行",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 624,
+      "end": 634,
+      "symbol": "assemble variables",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 84,
+        "end": 103,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C08/C16",
+      "conditions": "变量遍历可重入细节仅选读；不承诺全局Provider被跳过",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-08",
+      "assertion": "assemble求文本但不插值；renderPrompt按段插值、删零长度、空行连接",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 286,
+      "end": 300,
+      "symbol": "renderPrompt",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 282,
+        "end": 303,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C01/C07",
+      "conditions": "空格不trim；替身没有重写此函数",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-09",
+      "assertion": "未知变量与注册但无值分别报错，拒绝原型属性冒充",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 364,
+      "end": 377,
+      "symbol": "interpolate variable lookup",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 729,
+        "end": 749,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02/C07",
+      "conditions": "原型边界另见PT783–800；不是类型声明检查",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-10",
+      "assertion": "合法完整组才解析；无后续闭括号的孤立开组保留，替换值不递归扫描",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 345,
+      "end": 381,
+      "symbol": "interpolate",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 752,
+        "end": 810,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02/C07",
+      "conditions": "不宣称所有含花括号文本都报错",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-11",
+      "assertion": "interpolate=false保留原段/Context文本，不查占位符",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 295,
+      "end": 341,
+      "symbol": "renderPrompt / renderContextSections",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 699,
+        "end": 715,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C02/C09",
+      "conditions": "literal是字面保留，不能变出缺失目录",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-12",
+      "assertion": "同名覆盖后计有效complete，多于一个在组装拒绝",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 635,
+      "end": 661,
+      "symbol": "assemble complete validation",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 515,
+        "end": 523,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C04 + CONTROL_FLOW_READ",
+      "conditions": "同名遮蔽后计数的所有组合未逐个执行",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-13",
+      "assertion": "complete副本在Waterfall后恢复唯一段，变换后的变量仍生效",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 662,
+      "end": 693,
+      "symbol": "assemble complete restoration",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 497,
+        "end": 513,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C03",
+      "conditions": "不是最终字节不受变量影响；不是删除注册表其他贡献",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-14",
+      "assertion": "complete不跳过其他Section Provider求值，Provider throw仍失败",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 657,
+      "end": 672,
+      "symbol": "assemble text providers",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 497,
+        "end": 523,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C05",
+      "conditions": "官方相关主要验证恢复/冲突；作者补Provider throw相邻路径",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-15",
+      "assertion": "Context登记有限order/同层唯一；组装仅按order排序，同序稳定收集",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 518,
+      "end": 526,
+      "symbol": "context / assemble contexts",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 374,
+        "end": 383,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C14 + CONTROL_FLOW_READ",
+      "conditions": "排序另见676–679；没有Section的名称二级比较",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-16",
+      "assertion": "Context独立渲染成带name文本，join形成完整快照，不附加到系统段",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 302,
+      "end": 342,
+      "symbol": "renderContextSections / joinContextSections",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 559,
+        "end": 577,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C09/D04",
+      "conditions": "空快照和带来源消息由Loop另处理",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-17",
+      "assertion": "includeRuntimeContext=false安装全局抑制器，required仍参与",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 435,
+      "end": 473,
+      "symbol": "Config / constructor suppression",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 36,
+        "end": 53,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C12",
+      "conditions": "抑制可选Provider与Waterfall额外项，未关闭事实所属服务",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-18",
+      "assertion": "抑制器为独立可释放登记，当前全局或Scope任一存在即抑制",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 529,
+      "end": 541,
+      "symbol": "suppressRuntimeContext",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 146,
+        "end": 161,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C10/C17/D05",
+      "conditions": "当前抑制判定另见587–596；撤单个不等全部撤销",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-19",
+      "assertion": "刷新补回缺失required，包含当前新required，非全量新增optional",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 587,
+      "end": 607,
+      "symbol": "refreshContext required restoration",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 87,
+        "end": 101,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C11/C13",
+      "conditions": "不是Waterfall一结束就保证所有必需名字存在；Loop接纳前再刷新",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-20",
+      "assertion": "刷新只遍历传入已接纳Context名字；无Provider保留接纳文本",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 593,
+      "end": 598,
+      "symbol": "refreshContext accepted names",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 54,
+        "end": 85,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C09/C10",
+      "conditions": "被过滤的optional不能靠刷新filtered对象自动重新收集",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-21",
+      "assertion": "refresh保留Section/tools/variables，不重跑它们或Waterfall",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 577,
+      "end": 607,
+      "symbol": "refreshContext",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 54,
+        "end": 85,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C09/D04/D08",
+      "conditions": "Provider计数实测；变量仍是接纳值",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-22",
+      "assertion": "匿名Tool Provider全局与匹配Scope一起参与，不是按名字替换",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 638,
+      "end": 656,
+      "symbol": "assemble tool providers",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 165,
+        "end": 175,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C18",
+      "conditions": "真正工具定义覆盖由Tools处理；文档概括需细分",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-23",
+      "assertion": "Tools提供方用当前executor.describe可见定义，并保留限制前knownNames",
+      "source": "packages/core/tools/src/index.ts",
+      "start": 111,
+      "end": 117,
+      "symbol": "ToolsService constructor",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 190,
+        "end": 204,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D03/D09 + C20",
+      "conditions": "C20只模拟Schema/knownNames分离；D才用真实ToolRuntime",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-24",
+      "assertion": "Step先resolve当前工具集合，再把toolSet传给Prompt assemble",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 287,
+      "end": 295,
+      "symbol": "preStep",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 1325,
+        "end": 1351,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D03/D09 + CONTROL_FLOW_READ",
+      "conditions": "工具条件/执行完整生命周期留H13；无实际文件工具",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-25",
+      "assertion": "工具Schema参数structuredClone，单次变更不污染Provider原对象",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 645,
+      "end": 655,
+      "symbol": "assemble schema detachment",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 525,
+        "end": 544,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C23",
+      "conditions": "不把可变assembly误称最终冻结请求",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-26",
+      "assertion": "toolOrder需rest恰一次且无重复，形状在构造加载阶段校验",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 209,
+      "end": 224,
+      "symbol": "validateToolOrder",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/tool-order.spec.ts",
+        "start": 91,
+        "end": 108,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C21 ×2",
+      "conditions": "错误配置未放松；类型形状之外的语义分阶段校验",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-27",
+      "assertion": "未配置按名称排序；显式顺序在rest处插入未列可见工具",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 226,
+      "end": 245,
+      "symbol": "orderTools",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/tool-order.spec.ts",
+        "start": 27,
+        "end": 49,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C19",
+      "conditions": "不是以工具注册/插件加载先后直接呈现",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-28",
+      "assertion": "knownNames使已注册但隐藏名字正常缺席，typo在组装拒绝",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 237,
+      "end": 244,
+      "symbol": "orderTools name validation",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 190,
+        "end": 204,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C20/D06-tool-order-error",
+      "conditions": "toolOrder不会授权或复活隐藏工具",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-29",
+      "assertion": "Provider不可把rest标记当真实工具名称返回",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 231,
+      "end": 235,
+      "symbol": "orderTools reserved guard",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/tool-order.spec.ts",
+        "start": 64,
+        "end": 72,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C22",
+      "conditions": "注册与展示保留名机制不同，不展开其他保留名",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-30",
+      "assertion": "Waterfall不收到工具数组；返回伪造tools仍由Provider-owned tools覆盖",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 673,
+      "end": 693,
+      "symbol": "assemble presentation waterfall",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/tool-order.spec.ts",
+        "start": 81,
+        "end": 89,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C23",
+      "conditions": "同进程可信插件契约，不是恶意代码安全沙箱",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-31",
+      "assertion": "无complete时Waterfall返回展示权威，能改变量或段序且不自动重排",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 682,
+      "end": 693,
+      "symbol": "assemble transformed presentation",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 458,
+        "end": 495,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C24",
+      "conditions": "C24还验证throw传播；不能用bail继续值解释未调用next",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-32",
+      "assertion": "assemble事件按Scope筛选，change通知不使用同一筛选",
+      "source": "packages/core/system-prompt/src/index.ts",
+      "start": 18,
+      "end": 37,
+      "symbol": "Events augmentation",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/scoped.spec.ts",
+        "start": 229,
+        "end": 245,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C17/D09 + STATIC_ONLY",
+      "conditions": "Scope匹配实测；change全局广播为源码审读，未另做坏观察者专项",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-33",
+      "assertion": "登记用当前Context的Effect归属Scope，精确Disposer撤销后回落",
+      "source": "packages/core/scope/src/store.ts",
+      "start": 219,
+      "end": 260,
+      "symbol": "ScopedLayers.effect",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 619,
+        "end": 640,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "C15/D09",
+      "conditions": "不展开H09所有权/Factory teardown；无批量删除",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-34",
+      "assertion": "Loop只登记provider/model变量，cwd不内置",
+      "source": "packages/core/agent-loop/src/index.ts",
+      "start": 337,
+      "end": 338,
+      "symbol": "AgentLoop init variables",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 551,
+        "end": 566,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D06-render-error + SOURCE_READ",
+      "conditions": "官方测试自行注册cwd不能反推内置；未展开所有可选插件变量",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-35",
+      "assertion": "官方WorkingDirectory贡献required且不插值的动态目录",
+      "source": "packages/session/working-directory/src/index.ts",
+      "start": 90,
+      "end": 95,
+      "symbol": "WorkingDirectoryService context registration",
+      "officialTest": {
+        "path": "packages/core/system-prompt/tests/system-prompt.spec.ts",
+        "start": 124,
+        "end": 149,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "SOURCE_READ + C09",
+      "conditions": "本课目录是纯变量夹具，未挂此服务或执行chdir/FS",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-36",
+      "assertion": "候选Step先assemble，再pre-step，默认回调渲染Context候选",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 283,
+      "end": 317,
+      "symbol": "ReactLoopAgent.preStep",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 1325,
+        "end": 1369,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D06-context-error/D07-cancel-assemble",
+      "conditions": "默认Context render失败可零Step；非所有监听器必委托默认回调",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-37",
+      "assertion": "正式Step内先renderPrompt，后prepareRequest",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 435,
+      "end": 445,
+      "symbol": "ReactLoopAgent.step",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 568,
+        "end": 606,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D06-render-error",
+      "conditions": "未知Section变量1Step0请求，尚未用户/系统接纳",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-38",
+      "assertion": "prepareRequest经过request Waterfall及配置约束，prepareCall绑定当前调用能力",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 613,
+      "end": 652,
+      "symbol": "ReactLoopAgent.prepareRequest",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 432,
+        "end": 459,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D07-cancel-prepare + CONTROL_FLOW_READ",
+      "conditions": "NO_ADAPTER兼容分支和metadata内部取消仅选读；不展开H12绑定实现",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-39",
+      "assertion": "prepare绑定后刷新/渲染Context；刷新不重新传候选toolSet",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 445,
+      "end": 451,
+      "symbol": "step request admission",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 846,
+        "end": 865,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D04/D05 + CONTROL_FLOW_READ",
+      "conditions": "不同render时刻不能合并；metadata等待内部取消未本轮执行",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-40",
+      "assertion": "初次尝试接纳输入一次，runtime snapshot按当前值提交，retry仍刷新",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 452,
+      "end": 479,
+      "symbol": "step firstAttempt admission",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 867,
+        "end": 909,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D08",
+      "conditions": "Context Provider组装1+两刷新，普通用户1；不证明全部重试策略",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-41",
+      "assertion": "系统投影初始即使为空也预留节点，未变可不新增消息",
+      "source": "packages/core/agent-loop/src/runtime-context.ts",
+      "start": 93,
+      "end": 107,
+      "symbol": "SystemPromptProjection.project",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 622,
+        "end": 674,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D11/D01",
+      "conditions": "初始空日志节点不等于模型收到非空system角色消息",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-42",
+      "assertion": "plain协调已有节点；in-history序列延续可追加非空更新",
+      "source": "packages/core/agent-loop/src/runtime-context.ts",
+      "start": 99,
+      "end": 107,
+      "symbol": "SystemPromptProjection.project",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 86,
+        "end": 124,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01-plain/D01-in-history",
+      "conditions": "依本次prepareCall能力，不靠历史request/context猜",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-43",
+      "assertion": "新序列文本未变保留节点，变化时协调已有有效节点",
+      "source": "packages/core/agent-loop/src/runtime-context.ts",
+      "start": 99,
+      "end": 107,
+      "symbol": "SystemPromptProjection.project",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 126,
+        "end": 158,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D02",
+      "conditions": "仅显式新序列实跑，compaction/resume/switch组合未执行",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-44",
+      "assertion": "完整文本为空清空生效系统节点，记录替换，不改旧事件",
+      "source": "packages/core/agent-loop/src/runtime-context.ts",
+      "start": 93,
+      "end": 114,
+      "symbol": "SystemPromptProjection.project / replace",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 187,
+        "end": 224,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01",
+      "conditions": "本课从有到空并重复空；不运行恢复后清空组合",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-45",
+      "assertion": "动态快照不变不新增，变空写清除说明；旧事实保留",
+      "source": "packages/core/agent-loop/src/runtime-context.ts",
+      "start": 151,
+      "end": 167,
+      "symbol": "RuntimeContextProjection.project",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/loop.spec.ts",
+        "start": 911,
+        "end": 940,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D10",
+      "conditions": "无Compaction，清除说明不是删除整个历史",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-46",
+      "assertion": "buildRequest按需记header/context，derive并冻结messages；tools独立，无system字段",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 656,
+      "end": 743,
+      "symbol": "ReactLoopAgent.buildRequest",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 43,
+        "end": 61,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01/D03/D11",
+      "conditions": "公共MockAdapter边界，非供应商HTTP wire或Token实测",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-47",
+      "assertion": "准备/assemble取消不接纳待进入系统/用户消息，Step边界取决于位置",
+      "source": "packages/core/agent-loop/src/agent.ts",
+      "start": 283,
+      "end": 317,
+      "symbol": "preStep cancellation checks",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 432,
+        "end": 459,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D07-cancel-assemble/D07-cancel-prepare",
+      "conditions": "Step内检查另见435–451；自制等待门会释放，不声称强制杀Promise",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    },
+    {
+      "id": "H11-48",
+      "assertion": "Session commit是内存log接纳并通知，derive从当前surface取消息",
+      "source": "packages/core/session/src/index.ts",
+      "start": 892,
+      "end": 911,
+      "symbol": "Session.commit",
+      "officialTest": {
+        "path": "packages/core/agent-loop/tests/system-prompt-admission.spec.ts",
+        "start": 43,
+        "end": 61,
+        "status": "SELECTED_READ_NOT_RUN"
+      },
+      "authorTest": "D01 + SOURCE_READ",
+      "conditions": "deriveMessages另见999–1029；无磁盘后端/flush承诺",
+      "method": "Fixed control-flow reading; named actual component/integration tests where listed; byte/range/AST separately"
+    }
+  ]
+}

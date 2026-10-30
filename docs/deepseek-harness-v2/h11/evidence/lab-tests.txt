@@ -1,0 +1,250 @@
+TAP version 13
+# Subtest: C01 sections sort by order then code-unit name; assembly is unresolved and render uses captured variables
+ok 1 - C01 sections sort by order then code-unit name; assembly is unresolved and render uses captured variables
+  ---
+  duration_ms: 7.3952
+  type: 'test'
+  ...
+# Subtest: C02 unknown, undefined and malformed references fail explicitly; literal section survives
+ok 2 - C02 unknown, undefined and malformed references fail explicitly; literal section survives
+  ---
+  duration_ms: 2.0803
+  type: 'test'
+  ...
+# Subtest: C03 complete restores exact chosen section after waterfall while transformed variables/tools survive
+ok 3 - C03 complete restores exact chosen section after waterfall while transformed variables/tools survive
+  ---
+  duration_ms: 1.8213
+  type: 'test'
+  ...
+# Subtest: C04 multiple effective complete sections reject assembly
+ok 4 - C04 multiple effective complete sections reject assembly
+  ---
+  duration_ms: 2.0519
+  type: 'test'
+  ...
+# Subtest: C05 complete does not skip evaluation failures from other registered section providers
+ok 5 - C05 complete does not skip evaluation failures from other registered section providers
+  ---
+  duration_ms: 1.4053
+  type: 'test'
+  ...
+# Subtest: C06 duplicate names, nonfinite order and invalid variable names reject registration
+ok 6 - C06 duplicate names, nonfinite order and invalid variable names reject registration
+  ---
+  duration_ms: 4.3375
+  type: 'test'
+  ...
+# Subtest: C07 renderer keeps whitespace/lone opening braces, does not recursively substitute values or consult prototype
+ok 7 - C07 renderer keeps whitespace/lone opening braces, does not recursively substitute values or consult prototype
+  ---
+  duration_ms: 2.392
+  type: 'test'
+  ...
+# Subtest: C08 all registered variable providers run at assembly, even unused ones
+ok 8 - C08 all registered variable providers run at assembly, even unused ones
+  ---
+  duration_ms: 0.9576
+  type: 'test'
+  ...
+# Subtest: C09 refresh updates registered runtime facts while accepted sections/variables/tools/waterfall additions remain
+ok 9 - C09 refresh updates registered runtime facts while accepted sections/variables/tools/waterfall additions remain
+  ---
+  duration_ms: 2.1542
+  type: 'test'
+  ...
+# Subtest: C10 independent suppressors keep required context; restore depends on the accepted input being refreshed
+ok 10 - C10 independent suppressors keep required context; restore depends on the accepted input being refreshed
+  ---
+  duration_ms: 2.4018
+  type: 'test'
+  ...
+# Subtest: C11 refresh adds missing required registrations, does not collect new optional ones
+ok 11 - C11 refresh adds missing required registrations, does not collect new optional ones
+  ---
+  duration_ms: 2.037
+  type: 'test'
+  ...
+# Subtest: C12 includeRuntimeContext=false suppresses optional providers and expert additions, keeps required
+ok 12 - C12 includeRuntimeContext=false suppresses optional providers and expert additions, keeps required
+  ---
+  duration_ms: 1.2782
+  type: 'test'
+  ...
+# Subtest: C13 refresh restores required context removed by presentation waterfall
+ok 13 - C13 refresh restores required context removed by presentation waterfall
+  ---
+  duration_ms: 1.2356
+  type: 'test'
+  ...
+# Subtest: C14 context ties preserve collection order, unlike section code-unit name ties
+ok 14 - C14 context ties preserve collection order, unlike section code-unit name ties
+  ---
+  duration_ms: 1.1822
+  type: 'test'
+  ...
+# Subtest: C15 scoped section shadows before evaluation and exact disposer restores global
+ok 15 - C15 scoped section shadows before evaluation and exact disposer restores global
+  ---
+  duration_ms: 1.7567
+  type: 'test'
+  ...
+# Subtest: C16 scoped variable wins value although global provider is still evaluated first
+ok 16 - C16 scoped variable wins value although global provider is still evaluated first
+  ---
+  duration_ms: 3.2631
+  type: 'test'
+  ...
+# Subtest: C17 scoped context suppression affects only matching scope and scoped listener does not see global assembly
+ok 17 - C17 scoped context suppression affects only matching scope and scoped listener does not see global assembly
+  ---
+  duration_ms: 1.666
+  type: 'test'
+  ...
+# Subtest: C18 anonymous global and matching scoped Tool Providers add contributions, not same-name overrides
+ok 18 - C18 anonymous global and matching scoped Tool Providers add contributions, not same-name overrides
+  ---
+  duration_ms: 1.5214
+  type: 'test'
+  ...
+# Subtest: C19 default/configured toolOrder is canonical, with lexicographic rest insertion
+ok 19 - C19 default/configured toolOrder is canonical, with lexicographic rest insertion
+  ---
+  duration_ms: 2.2636
+  type: 'test'
+  ...
+# Subtest: C20 known hidden tool is absent normally; unknown toolOrder name rejects
+ok 20 - C20 known hidden tool is absent normally; unknown toolOrder name rejects
+  ---
+  duration_ms: 2.0091
+  type: 'test'
+  ...
+# Subtest: C21 bad toolOrder shape read
+ok 21 - C21 bad toolOrder shape read
+  ---
+  duration_ms: 1.5173
+  type: 'test'
+  ...
+# Subtest: C21 bad toolOrder shape <unlisted-tools>,read,read
+ok 22 - C21 bad toolOrder shape <unlisted-tools>,read,read
+  ---
+  duration_ms: 0.9443
+  type: 'test'
+  ...
+# Subtest: C22 provider cannot return reserved rest name as an actual tool
+ok 23 - C22 provider cannot return reserved rest name as an actual tool
+  ---
+  duration_ms: 1.148
+  type: 'test'
+  ...
+# Subtest: C23 presentation waterfall cannot add/replace provider tools; tool parameters are detached
+ok 24 - C23 presentation waterfall cannot add/replace provider tools; tool parameters are detached
+  ---
+  duration_ms: 1.3327
+  type: 'test'
+  ...
+# Subtest: C24 waterfall text is authoritative without complete; failures propagate
+ok 25 - C24 waterfall text is authoritative without complete; failures propagate
+  ---
+  duration_ms: 1.4916
+  type: 'test'
+  ...
+# Subtest: D01-plain prompt updates, unchanged render and empty clearing use real prepared route capabilities
+ok 26 - D01-plain prompt updates, unchanged render and empty clearing use real prepared route capabilities
+  ---
+  duration_ms: 24.5832
+  type: 'test'
+  ...
+# Subtest: D01-in-history prompt updates, unchanged render and empty clearing use real prepared route capabilities
+ok 27 - D01-in-history prompt updates, unchanged render and empty clearing use real prepared route capabilities
+  ---
+  duration_ms: 13.6106
+  type: 'test'
+  ...
+# Subtest: D02 series start preserves unchanged in-history prompt; changed text consolidates active nodes
+ok 28 - D02 series start preserves unchanged in-history prompt; changed text consolidates active nodes
+  ---
+  duration_ms: 10.4932
+  type: 'test'
+  ...
+# Subtest: D03 tool visibility changes declarations/header and dependent guidance; earlier requests keep old data
+ok 29 - D03 tool visibility changes declarations/header and dependent guidance; earlier requests keep old data
+  ---
+  duration_ms: 11.4986
+  type: 'test'
+  ...
+# Subtest: D04 admission refresh changes dynamic snapshot without re-evaluating prompt variable
+ok 30 - D04 admission refresh changes dynamic snapshot without re-evaluating prompt variable
+  ---
+  duration_ms: 8.4374
+  type: 'test'
+  ...
+# Subtest: D05 suppression enabled during request preparation keeps required context only
+ok 31 - D05 suppression enabled during request preparation keeps required context only
+  ---
+  duration_ms: 7.4302
+  type: 'test'
+  ...
+# Subtest: D06-render-error failure phase records correct boundaries without model/user admission
+ok 32 - D06-render-error failure phase records correct boundaries without model/user admission
+  ---
+  duration_ms: 6.5966
+  type: 'test'
+  ...
+# Subtest: D06-context-error failure phase records correct boundaries without model/user admission
+ok 33 - D06-context-error failure phase records correct boundaries without model/user admission
+  ---
+  duration_ms: 6.0555
+  type: 'test'
+  ...
+# Subtest: D06-tool-order-error failure phase records correct boundaries without model/user admission
+ok 34 - D06-tool-order-error failure phase records correct boundaries without model/user admission
+  ---
+  duration_ms: 5.8739
+  type: 'test'
+  ...
+# Subtest: D07-cancel-prepare cancellation before admission commits no pending prompt/input
+ok 35 - D07-cancel-prepare cancellation before admission commits no pending prompt/input
+  ---
+  duration_ms: 6.0028
+  type: 'test'
+  ...
+# Subtest: D07-cancel-assemble cancellation before admission commits no pending prompt/input
+ok 36 - D07-cancel-assemble cancellation before admission commits no pending prompt/input
+  ---
+  duration_ms: 8.1001
+  type: 'test'
+  ...
+# Subtest: D08 retry refreshes context per attempt, but assembles/evaluates variables once and admits user once
+ok 37 - D08 retry refreshes context per attempt, but assembles/evaluates variables once and admits user once
+  ---
+  duration_ms: 7.0606
+  type: 'test'
+  ...
+# Subtest: D09 two real Agents see scoped persona/variable/tools/listeners and exact disposer restores defaults
+ok 38 - D09 two real Agents see scoped persona/variable/tools/listeners and exact disposer restores defaults
+  ---
+  duration_ms: 11.3014
+  type: 'test'
+  ...
+# Subtest: D10 changed/empty runtime context appends full snapshot and one clearing marker, preserving prior facts
+ok 39 - D10 changed/empty runtime context appends full snapshot and one clearing marker, preserving prior facts
+  ---
+  duration_ms: 14.0221
+  type: 'test'
+  ...
+# Subtest: D11 initially empty prompt reserves an empty system node, no model system message until nonempty update
+ok 40 - D11 initially empty prompt reserves an empty system node, no model system message until nonempty update
+  ---
+  duration_ms: 9.1487
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 40
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 768.4486
