@@ -1,0 +1,1248 @@
+{
+  "label": "A",
+  "requests": [
+    {
+      "provider": "fixture",
+      "model": "text",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only the controlled audit fixtures."
+            }
+          ],
+          "role": "user",
+          "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "approval:policy",
+                "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "audit_sum",
+            "description": "Controlled audit fixture; no external operation",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "audit_sum",
+          "description": "Controlled audit fixture; no external operation",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "m4-A"
+    },
+    {
+      "provider": "fixture",
+      "model": "text",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only the controlled audit fixtures."
+            }
+          ],
+          "role": "user",
+          "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "approval:policy",
+                "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "visible-denied",
+              "name": "audit_sum",
+              "arguments": "{}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "text"
+          },
+          "id": "3c2f72b1-b662-4182-bcf8-d390e391cbf0"
+        },
+        {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "visible-denied"
+          },
+          "toolCallId": "visible-denied",
+          "content": [
+            {
+              "type": "text",
+              "text": "Error: controlled owner denial"
+            }
+          ],
+          "isError": true,
+          "id": "dec47f27-20f3-450d-81da-15e06d950a4f"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "audit_sum",
+            "description": "Controlled audit fixture; no external operation",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "audit_sum",
+          "description": "Controlled audit fixture; no external operation",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "m4-A"
+    }
+  ],
+  "loopRequests": [
+    {
+      "provider": "fixture",
+      "model": "text",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only the controlled audit fixtures."
+            }
+          ],
+          "role": "user",
+          "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "approval:policy",
+                "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "audit_sum",
+            "description": "Controlled audit fixture; no external operation",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "audit_sum",
+          "description": "Controlled audit fixture; no external operation",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "m4-A"
+    },
+    {
+      "provider": "fixture",
+      "model": "text",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only the controlled audit fixtures."
+            }
+          ],
+          "role": "user",
+          "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "approval:policy",
+                "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "visible-denied",
+              "name": "audit_sum",
+              "arguments": "{}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "text"
+          },
+          "id": "3c2f72b1-b662-4182-bcf8-d390e391cbf0"
+        },
+        {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "visible-denied"
+          },
+          "toolCallId": "visible-denied",
+          "content": [
+            {
+              "type": "text",
+              "text": "Error: controlled owner denial"
+            }
+          ],
+          "isError": true,
+          "id": "dec47f27-20f3-450d-81da-15e06d950a4f"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "audit_sum",
+            "description": "Controlled audit fixture; no external operation",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "audit_sum",
+          "description": "Controlled audit fixture; no external operation",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "m4-A"
+    }
+  ],
+  "prefixes": [
+    {
+      "events": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793617632243,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "source": {
+                  "kind": "user"
+                },
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use only the controlled audit fixtures."
+                  }
+                ],
+                "role": "user",
+                "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793617632244,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793617632244,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793617632245,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793617632246,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are an AI agent powered by DeepSeek Harness."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793617632247,
+          "data": {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only the controlled audit fixtures."
+              }
+            ],
+            "role": "user",
+            "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793617632247,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "approval:policy",
+                  "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793617632247,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "text",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "audit_sum",
+                  "description": "Controlled audit fixture; no external operation",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793617632247,
+          "data": {
+            "provider": "fixture",
+            "model": "text",
+            "contextWindow": 16000
+          }
+        }
+      ],
+      "reconstruction": "PASS messages/config/tools/toolHistory, second actual Session"
+    },
+    {
+      "events": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793617632243,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "source": {
+                  "kind": "user"
+                },
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use only the controlled audit fixtures."
+                  }
+                ],
+                "role": "user",
+                "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793617632244,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793617632244,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793617632245,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793617632246,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are an AI agent powered by DeepSeek Harness."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793617632247,
+          "data": {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only the controlled audit fixtures."
+              }
+            ],
+            "role": "user",
+            "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793617632247,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "approval:policy",
+                  "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793617632247,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "text",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "audit_sum",
+                  "description": "Controlled audit fixture; no external operation",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793617632247,
+          "data": {
+            "provider": "fixture",
+            "model": "text",
+            "contextWindow": 16000
+          }
+        },
+        {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793617632250,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool-call",
+                  "id": "visible-denied",
+                  "name": "audit_sum",
+                  "arguments": "{}"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "text"
+              },
+              "id": "3c2f72b1-b662-4182-bcf8-d390e391cbf0"
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793617632249,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "tool-call"
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793617632250,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "tool-call",
+                    "id": "visible-denied",
+                    "name": "audit_sum",
+                    "arguments": "{}"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793617632250,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "tool-calls"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "tool/call",
+          "seq": 10,
+          "time": 1793617632251,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "callId": "visible-denied",
+            "name": "audit_sum",
+            "arguments": "{}"
+          }
+        },
+        {
+          "type": "approval/asked",
+          "seq": 11,
+          "time": 1793617632251,
+          "data": {
+            "id": "69746fcc-8d0a-466e-946d-330996f3c119",
+            "toolName": "audit_sum",
+            "callId": "visible-denied",
+            "reason": "one controlled action"
+          }
+        },
+        {
+          "type": "approval/decided",
+          "seq": 12,
+          "time": 1793617632251,
+          "data": {
+            "id": "69746fcc-8d0a-466e-946d-330996f3c119",
+            "outcome": "allowed-once"
+          }
+        },
+        {
+          "type": "tool/result",
+          "seq": 13,
+          "time": 1793617632252,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "tool",
+              "source": {
+                "kind": "tool",
+                "callId": "visible-denied"
+              },
+              "toolCallId": "visible-denied",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error: controlled owner denial"
+                }
+              ],
+              "isError": true,
+              "id": "dec47f27-20f3-450d-81da-15e06d950a4f"
+            }
+          },
+          "sourceEventSeqs": [
+            10
+          ],
+          "surfaceOp": "append"
+        },
+        {
+          "type": "step/end",
+          "seq": 14,
+          "time": 1793617632252,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 15,
+          "time": 1793617632253,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      ],
+      "reconstruction": "PASS messages/config/tools/toolHistory, second actual Session"
+    }
+  ],
+  "observed": [
+    {
+      "callId": "visible-denied",
+      "name": "audit_sum",
+      "result": {
+        "isError": true,
+        "error": {
+          "message": "controlled owner denial"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Error: controlled owner denial"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "facts": [
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 0,
+      "time": 1793617632243,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "inserted": [
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only the controlled audit fixtures."
+              }
+            ],
+            "role": "user",
+            "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+          }
+        ]
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 1,
+      "time": 1793617632244,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 2,
+      "time": 1793617632244,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "removedCount": 1,
+        "inserted": []
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 3,
+      "time": 1793617632245,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 4,
+      "time": 1793617632246,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are an AI agent powered by DeepSeek Harness."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "714090fb-68df-4e84-a87f-5d1e124b7545"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 5,
+      "time": 1793617632247,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Use only the controlled audit fixtures."
+          }
+        ],
+        "role": "user",
+        "id": "b25b9562-1336-4fe4-8284-dab2f443c40d"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 6,
+      "time": 1793617632247,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+          }
+        ],
+        "source": {
+          "kind": "runtime-context",
+          "form": "snapshot",
+          "sections": [
+            {
+              "name": "approval:policy",
+              "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+            }
+          ]
+        },
+        "role": "user",
+        "id": "e2208955-3ae6-49bf-9ab7-0e06c40eee30"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 7,
+      "time": 1793617632247,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "text",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "audit_sum",
+              "description": "Controlled audit fixture; no external operation",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "request/context",
+      "seq": 8,
+      "time": 1793617632247,
+      "data": {
+        "provider": "fixture",
+        "model": "text",
+        "contextWindow": 16000
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 9,
+      "time": 1793617632250,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "visible-denied",
+              "name": "audit_sum",
+              "arguments": "{}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "text"
+          },
+          "id": "3c2f72b1-b662-4182-bcf8-d390e391cbf0"
+        },
+        "stream": [
+          {
+            "type": "chunk",
+            "time": 1793617632249,
+            "chunk": {
+              "type": "block-start",
+              "index": 0,
+              "blockType": "tool-call"
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793617632250,
+            "chunk": {
+              "type": "block-end",
+              "index": 0,
+              "block": {
+                "type": "tool-call",
+                "id": "visible-denied",
+                "name": "audit_sum",
+                "arguments": "{}"
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793617632250,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "tool-calls"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "tool/call",
+      "seq": 10,
+      "time": 1793617632251,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "callId": "visible-denied",
+        "name": "audit_sum",
+        "arguments": "{}"
+      }
+    },
+    {
+      "type": "approval/asked",
+      "seq": 11,
+      "time": 1793617632251,
+      "data": {
+        "id": "69746fcc-8d0a-466e-946d-330996f3c119",
+        "toolName": "audit_sum",
+        "callId": "visible-denied",
+        "reason": "one controlled action"
+      }
+    },
+    {
+      "type": "approval/decided",
+      "seq": 12,
+      "time": 1793617632251,
+      "data": {
+        "id": "69746fcc-8d0a-466e-946d-330996f3c119",
+        "outcome": "allowed-once"
+      }
+    },
+    {
+      "type": "tool/result",
+      "seq": 13,
+      "time": 1793617632252,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "visible-denied"
+          },
+          "toolCallId": "visible-denied",
+          "content": [
+            {
+              "type": "text",
+              "text": "Error: controlled owner denial"
+            }
+          ],
+          "isError": true,
+          "id": "dec47f27-20f3-450d-81da-15e06d950a4f"
+        }
+      },
+      "sourceEventSeqs": [
+        10
+      ],
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 14,
+      "time": 1793617632252,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 15,
+      "time": 1793617632253,
+      "data": {
+        "turn": 1,
+        "step": 2
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 16,
+      "time": 1793617632254,
+      "data": {
+        "turn": 1,
+        "step": 2,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "audit fixture settled"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "text"
+          },
+          "id": "90125150-8fae-4f9b-a6bd-7eb81a2303cb"
+        },
+        "stream": [
+          {
+            "type": "chunk",
+            "time": 1793617632254,
+            "chunk": {
+              "type": "block-start",
+              "index": 0,
+              "blockType": "text"
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793617632254,
+            "chunk": {
+              "type": "block-end",
+              "index": 0,
+              "block": {
+                "type": "text",
+                "text": "audit fixture settled"
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793617632254,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "stop"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 17,
+      "time": 1793617632254,
+      "data": {
+        "turn": 1,
+        "step": 2
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 18,
+      "time": 1793617632254,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "completed"
+        }
+      }
+    }
+  ]
+}

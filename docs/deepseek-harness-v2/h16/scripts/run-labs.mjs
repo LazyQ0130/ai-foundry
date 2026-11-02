@@ -25,12 +25,13 @@ const zodLock = JSON.parse(await readFile(resolve(zodAnchor, '../../../package-l
 const zodPackage = zodLock.packages['node_modules/zod'];
 assert.ok((await readFile(resolve(source,'pnpm-lock.yaml'),'utf8')).includes(zodPackage.integrity));
 await writeFile(resolve(root,'evidence/zod-dependency.json'), JSON.stringify(zodPackage,null,2)+'\n');
-const fsAnchor=process.env.H16_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/h15-probe-deps/node_modules/chokidar/index.js';
+const fsAnchor=process.env.H16_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/module-four-probe-deps/node_modules/chokidar/index.js';
 const fsLock=JSON.parse(await readFile(resolve(fsAnchor,'../../../package-lock.json'),'utf8'));
 const upstreamLock=await readFile(resolve(source,'pnpm-lock.yaml'),'utf8');
 for(const [name,version] of [['chokidar','5.0.0'],['koffi','3.1.1'],['yaml','2.9.0']]){
  const pkg=fsLock.packages['node_modules/'+name];assert.equal(pkg.version,version);assert.ok(upstreamLock.includes(pkg.integrity),name);
 }
+for(const [name,pkg] of Object.entries(fsLock.packages))if(name)assert.ok(pkg.integrity&&upstreamLock.includes(pkg.integrity),name+' differs from fixed upstream; pin transitive readdirp to 5.0.0 in an isolated dependency tree');
 await writeFile(resolve(root,'evidence/fs-dependencies.json'),JSON.stringify(fsLock,null,2)+'\n');
 const ecoAnchor=process.env.H16_ECO_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/h16-probe-deps/package.json';
 const ecoLock=JSON.parse(await readFile(resolve(ecoAnchor,'../package-lock.json'),'utf8'));

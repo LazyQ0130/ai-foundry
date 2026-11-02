@@ -1,0 +1,197 @@
+TAP version 13
+# Subtest: C approval allow
+ok 1 - C approval allow
+  ---
+  duration_ms: 12.8376
+  type: 'test'
+  ...
+# Subtest: C approval reject
+ok 2 - C approval reject
+  ---
+  duration_ms: 3.889
+  type: 'test'
+  ...
+# Subtest: C approval cancel-answer
+ok 3 - C approval cancel-answer
+  ---
+  duration_ms: 3.6134
+  type: 'test'
+  ...
+# Subtest: C approval unavailable
+ok 4 - C approval unavailable
+  ---
+  duration_ms: 4.6519
+  type: 'test'
+  ...
+# Subtest: C approval missing
+ok 5 - C approval missing
+  ---
+  duration_ms: 3.1765
+  type: 'test'
+  ...
+# Subtest: C approval throw-sync
+ok 6 - C approval throw-sync
+  ---
+  duration_ms: 3.1729
+  type: 'test'
+  ...
+# Subtest: C approval throw-async
+ok 7 - C approval throw-async
+  ---
+  duration_ms: 3.3475
+  type: 'test'
+  ...
+# Subtest: C approval invalid
+ok 8 - C approval invalid
+  ---
+  duration_ms: 3.3365
+  type: 'test'
+  ...
+# Subtest: C approval delegate
+ok 9 - C approval delegate
+  ---
+  duration_ms: 3.9328
+  type: 'test'
+  ...
+# Subtest: C approval never
+ok 10 - C approval never
+  ---
+  duration_ms: 4.0835
+  type: 'test'
+  ...
+# Subtest: C approval pre-abort
+ok 11 - C approval pre-abort
+  ---
+  duration_ms: 4.1877
+  type: 'test'
+  ...
+# repeated-approval-audit [{"type":"approval/asked","seq":1,"time":1793617627721,"data":{"id":"b279410d-6473-4886-a5a5-7ff0576c9a41","toolName":"fixture","callId":"same-call"}},{"type":"approval/decided","seq":2,"time":1793617627721,"data":{"id":"b279410d-6473-4886-a5a5-7ff0576c9a41","outcome":"allowed-once"}},{"type":"approval/asked","seq":3,"time":1793617627721,"data":{"id":"d1dac95b-09e7-4593-8b87-cac318bd9a9e","toolName":"fixture","callId":"same-call"}},{"type":"approval/decided","seq":4,"time":1793617627721,"data":{"id":"d1dac95b-09e7-4593-8b87-cac318bd9a9e","outcome":"rejected"}}]
+# Subtest: C approval late
+ok 12 - C approval late
+  ---
+  duration_ms: 15.859
+  type: 'test'
+  ...
+# Subtest: C approval rejects idle
+ok 13 - C approval rejects idle
+  ---
+  duration_ms: 4.4307
+  type: 'test'
+  ...
+# Subtest: C approval rejects closed
+ok 14 - C approval rejects closed
+  ---
+  duration_ms: 4.1467
+  type: 'test'
+  ...
+# Subtest: C approval audit commit failure cannot return grant
+ok 15 - C approval audit commit failure cannot return grant
+  ---
+  duration_ms: 4.1026
+  type: 'test'
+  ...
+# Subtest: C approval per-session policy and runtime context are not transcript
+ok 16 - C approval per-session policy and runtime context are not transcript
+  ---
+  duration_ms: 4.9347
+  type: 'test'
+  ...
+# Subtest: C allowed-once is not a cached grant for a repeated callId
+ok 17 - C allowed-once is not a cached grant for a repeated callId
+  ---
+  duration_ms: 4.5522
+  type: 'test'
+  ...
+# Subtest: C deployment never, cancelled signal, and session ask precedence
+ok 18 - C deployment never, cancelled signal, and session ask precedence
+  ---
+  duration_ms: 4.5692
+  type: 'test'
+  ...
+# Subtest: D pipeline allow
+ok 19 - D pipeline allow
+  ---
+  duration_ms: 8.7848
+  type: 'test'
+  ...
+# Subtest: D pipeline deny
+ok 20 - D pipeline deny
+  ---
+  duration_ms: 5.4726
+  type: 'test'
+  ...
+# Subtest: D pipeline ask-allow
+ok 21 - D pipeline ask-allow
+  ---
+  duration_ms: 5.4957
+  type: 'test'
+  ...
+# Subtest: D pipeline ask-reject
+ok 22 - D pipeline ask-reject
+  ---
+  duration_ms: 6.7847
+  type: 'test'
+  ...
+# Subtest: D pipeline ask-missing
+ok 23 - D pipeline ask-missing
+  ---
+  duration_ms: 4.9414
+  type: 'test'
+  ...
+# Subtest: D pipeline guard
+ok 24 - D pipeline guard
+  ---
+  duration_ms: 4.6662
+  type: 'test'
+  ...
+# Subtest: D pipeline override-deny
+ok 25 - D pipeline override-deny
+  ---
+  duration_ms: 4.9951
+  type: 'test'
+  ...
+# Subtest: D pipeline override-guard
+ok 26 - D pipeline override-guard
+  ---
+  duration_ms: 5.1701
+  type: 'test'
+  ...
+# Subtest: D pipeline approved-guard
+ok 27 - D pipeline approved-guard
+  ---
+  duration_ms: 5.3518
+  type: 'test'
+  ...
+# Subtest: D pipeline cancel-approval
+ok 28 - D pipeline cancel-approval
+  ---
+  duration_ms: 5.3043
+  type: 'test'
+  ...
+# Subtest: D pipeline pre-abort
+ok 29 - D pipeline pre-abort
+  ---
+  duration_ms: 5.1155
+  type: 'test'
+  ...
+# Subtest: D SandboxPolicy + Session + Approval + simulated local provider
+ok 30 - D SandboxPolicy + Session + Approval + simulated local provider
+  ---
+  duration_ms: 18.0188
+  type: 'test'
+  ...
+# Subtest: D real local filesystem + fence + observations across lifecycle
+ok 31 - D real local filesystem + fence + observations across lifecycle
+  ---
+  duration_ms: 59.0914
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 706.5663

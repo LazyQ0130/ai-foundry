@@ -13,7 +13,7 @@
 
 在仓库根目录使用Node 24与Python。先准备固定上游源码缓存及tsconfig，缓存环境变量为HARNESS_SOURCE_CACHE / HARNESS_GIT_CACHE；runner核对Git blob与SHA256。运行 `node docs/deepseek-harness-v2/h15/scripts/run-checks.mjs`，可分别调用同目录各脚本诊断。`prepare.py`仅保留初次脚手架记录，已有lab时会拒绝覆盖，不是日常门禁步骤。
 
-依赖解析入口：H15_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js；H15_ZOD_ANCHOR指向Zod4.4.3的index.js；H15_FS_DEPS_ANCHOR指向本课隔离依赖chokidar/index.js。依赖版本/integrity分别从H04证据、上游pnpm-lock及本课fs-dependencies.json核验。新增chokidar5.0.0、koffi3.1.1、yaml2.9.0安装在研究目录，不写业务package.json或锁文件。完整依赖清单可在新隔离目录按固定版本安装，再修改anchor。
+依赖解析入口：H15_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js；H15_ZOD_ANCHOR指向Zod4.4.3的index.js；H15_FS_DEPS_ANCHOR指向隔离依赖chokidar/index.js。第四模块集中审查发现原缓存传递依赖readdirp漂移至5.1.1，原运行器只核直接依赖；现补齐整棵文件依赖树integrity检查，默认改用新建module-four-probe-deps目录，不改历史缓存与报告。固定chokidar5.0.0、koffi3.1.1、yaml2.9.0、readdirp5.0.0，并在隔离package.json加 `overrides: {"readdirp":"5.0.0"}`，执行 `npm install --ignore-scripts --no-audit --no-fund`；再把H15_FS_DEPS_ANCHOR指向该目录的node_modules/chokidar/index.js。完整安装包与本轮日志见[集中审查](../module-four-review/README.md)。不在业务目录安装，不用最新传递依赖代替锁定版本。
 
 Playwright使用AIFOUNDRY_QA_NODE_MODULES与AIFOUNDRY_QA_CHROME可配置入口；私有localhost服务测试后关闭，不新增产品路由、课程目录或public资源。四图由draw_figures.py生成SVG，再由Chrome生成PNG；无需外部图片服务。
 

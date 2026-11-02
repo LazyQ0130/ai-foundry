@@ -1,0 +1,379 @@
+{
+  "records": [
+    {
+      "id": "h13",
+      "lessonSha256": "7108c1a0b7412fc50ea8e8f8a96e5dedb419007ffa6ff0dcf62bb541747185c7",
+      "metrics": {
+        "allBodyCjk": 9295,
+        "defaultBodyCjk": 6990,
+        "codeBlocks": 21,
+        "codeLines": 333,
+        "defaultCodeLines": 53,
+        "details": 21
+      },
+      "conceptGroups": [
+        "ToolDefinition",
+        "Schema DSL",
+        "canonical value/render",
+        "registration lifetime",
+        "Scope view/restriction",
+        "Step admission",
+        "executor description"
+      ],
+      "estimatedTime": "190～250 分钟（分三段：定义与 Schema 65～85 分钟，Scope 与准入 60～80 分钟，综合实践与推导 65～85 分钟；作者估计，待学员试读）",
+      "figures": 4,
+      "exercises": 4,
+      "combined": 0,
+      "thoughts": 10,
+      "linkedSourceFiles": 8,
+      "linkedRanges": 12,
+      "linkedUnionLines": 629,
+      "estimatedMinutes": [
+        190,
+        250
+      ],
+      "blueprintMinutes": [
+        90,
+        125
+      ]
+    },
+    {
+      "id": "h14",
+      "lessonSha256": "b464d1739591e218071543f7dc4325ce6dcc0b3d8852deee8e293d1f0f3d001f",
+      "metrics": {
+        "allBodyCjk": 8765,
+        "defaultBodyCjk": 6482,
+        "codeBlocks": 13,
+        "codeLines": 253,
+        "defaultCodeLines": 21,
+        "details": 21
+      },
+      "conceptGroups": [
+        "batch vs invocation",
+        "prepare/dispatch/complete",
+        "Waterfall and guard",
+        "identity/snapshot",
+        "canonical and projected results",
+        "rolling pool and barrier",
+        "ordered settlement",
+        "cancel and internal failure"
+      ],
+      "estimatedTime": "230～310 分钟（建议分三段：单次调用70～95、结果处理80～105、调度与综合实践80～110分钟；作者估计，待试读）",
+      "figures": 4,
+      "exercises": 4,
+      "combined": 0,
+      "thoughts": 10,
+      "linkedSourceFiles": 6,
+      "linkedRanges": 10,
+      "linkedUnionLines": 471,
+      "estimatedMinutes": [
+        230,
+        310
+      ],
+      "blueprintMinutes": [
+        110,
+        150
+      ]
+    },
+    {
+      "id": "h15",
+      "lessonSha256": "cc5ba80974c0dd838112d03444708d1984e743ef216c05cf239469fb88914c84",
+      "metrics": {
+        "allBodyCjk": 11400,
+        "defaultBodyCjk": 8737,
+        "codeBlocks": 10,
+        "codeLines": 255,
+        "defaultCodeLines": 19,
+        "details": 21
+      },
+      "conceptGroups": [
+        "six distinct responsibilities",
+        "approval policy/outcomes/audit",
+        "ordinary waterfall vs monotonic guard",
+        "per-call sandbox policy",
+        "file modes vs enforcement",
+        "platform boundary and fail closed",
+        "observation states and lifecycle",
+        "canonical targets and residual TOCTOU"
+      ],
+      "estimatedTime": "200～270 分钟（分三段；作者估算，环境准备另计，待真实试读）",
+      "figures": 4,
+      "exercises": 4,
+      "combined": 0,
+      "thoughts": 10,
+      "linkedSourceFiles": 18,
+      "linkedRanges": 34,
+      "linkedUnionLines": 1200,
+      "estimatedMinutes": [
+        200,
+        270
+      ],
+      "blueprintMinutes": [
+        110,
+        150
+      ]
+    },
+    {
+      "id": "h16",
+      "lessonSha256": "57029ae59cdaf4e30257feb354921d52534b370070488595b1037205f31c4248",
+      "metrics": {
+        "allBodyCjk": 11260,
+        "defaultBodyCjk": 8348,
+        "codeBlocks": 10,
+        "codeLines": 302,
+        "defaultCodeLines": 2,
+        "details": 24
+      },
+      "conceptGroups": [
+        "definition/provider/consumer",
+        "registration/admission/execution",
+        "File windows and image gates",
+        "Shell/env/Jobs",
+        "Web search/fetch/selection/readiness",
+        "MCP names/sync/connection",
+        "resource vs tool",
+        "common results with distinct trust boundaries"
+      ],
+      "estimatedTime": "240～320 分钟（分三段；作者估算，安装另计，真实学员时长待验证）",
+      "figures": 4,
+      "exercises": 4,
+      "combined": 1,
+      "thoughts": 10,
+      "linkedSourceFiles": 28,
+      "linkedRanges": 34,
+      "linkedUnionLines": 1950,
+      "estimatedMinutes": [
+        240,
+        320
+      ],
+      "blueprintMinutes": [
+        100,
+        135
+      ]
+    }
+  ],
+  "glossary": [
+    [
+      "ToolDefinition",
+      "H13",
+      "完整宿主定义，包含函数与输出契约"
+    ],
+    [
+      "ToolSchema",
+      "H13",
+      "模型声明字段投影，不是完整定义"
+    ],
+    [
+      "ToolCallBlock",
+      "H12/H13",
+      "模型提议，arguments为字符串"
+    ],
+    [
+      "ToolResultMessage",
+      "H12/H13",
+      "工具角色消息，关联toolCallId"
+    ],
+    [
+      "ToolsService",
+      "H13",
+      "ctx.tools访问的服务；不是假想ToolRegistry类"
+    ],
+    [
+      "ToolExecutor",
+      "H13",
+      "describe/execute的提供方契约"
+    ],
+    [
+      "NativeToolExecutor",
+      "H13/H14",
+      "原始工具描述与批次执行"
+    ],
+    [
+      "ToolExecutionPipeline",
+      "H14",
+      "单项prepare/dispatch/complete"
+    ],
+    [
+      "ToolBatchInput",
+      "H14",
+      "原始调用批次与agent/signal/set/log"
+    ],
+    [
+      "ToolExecutionInput",
+      "H14",
+      "单项执行身份及unknown参数"
+    ],
+    [
+      "ResolvedToolSet",
+      "H13",
+      "本Step准入身份与实时有效性"
+    ],
+    [
+      "when",
+      "H13",
+      "轻量条件；非动态业务授权"
+    ],
+    [
+      "Agent Scope",
+      "H09/H13",
+      "同进程贡献路由与继承"
+    ],
+    [
+      "Effect/Disposer",
+      "H07/H13",
+      "登记所属Fiber与撤销"
+    ],
+    [
+      "Waterfall/next",
+      "H06/H14",
+      "去程委托与回程；非投票交集"
+    ],
+    [
+      "PreToolDecision",
+      "H14",
+      "allow/deny/ask/cancel"
+    ],
+    [
+      "guard",
+      "H14/H15",
+      "最终allow后只拒绝或不表态"
+    ],
+    [
+      "ApprovalService",
+      "H15",
+      "实际请求/取消/审计与应答链"
+    ],
+    [
+      "ApprovalPolicy",
+      "H15",
+      "ask或never，会话覆盖部署"
+    ],
+    [
+      "ApprovalOutcome",
+      "H15",
+      "四结果，只有allowed-once授权"
+    ],
+    [
+      "ApprovalRequestId",
+      "H15",
+      "每请求新审批身份"
+    ],
+    [
+      "ToolCallId",
+      "H12/H14",
+      "调用关联，不是授权缓存key"
+    ],
+    [
+      "SandboxMode",
+      "H15",
+      "文件效果词汇，非网络保证"
+    ],
+    [
+      "SandboxPolicy",
+      "H15",
+      "逐调用解析模式/根，不自动审批"
+    ],
+    [
+      "SandboxProvider",
+      "H15",
+      "confine返回包装argv等，消费者spawn"
+    ],
+    [
+      "SandboxEnforcement",
+      "H15",
+      "full/partial与mode正交"
+    ],
+    [
+      "FsTarget",
+      "H15",
+      "targetKey/displayPath/processPath分工"
+    ],
+    [
+      "expected/version",
+      "H15",
+      "创建或替换的版本前提"
+    ],
+    [
+      "fs/observed",
+      "H15",
+      "消费者发同步观察，不是持久消息"
+    ],
+    [
+      "fs/*-intent",
+      "H15",
+      "可选单槽意图，不是guard交集"
+    ],
+    [
+      "TOCTOU",
+      "H15",
+      "检查与使用之间竞态"
+    ],
+    [
+      "WorkingDirectory",
+      "H16",
+      "当前cwd与Session原始根不同"
+    ],
+    [
+      "ShellExecutor",
+      "H16",
+      "执行器不同于bash/pwsh模型工具"
+    ],
+    [
+      "Jobs",
+      "H16",
+      "后台任务生命周期不等于工具批次"
+    ],
+    [
+      "WebRuntime",
+      "H16",
+      "独立Search/Fetch注册与逐调用选择"
+    ],
+    [
+      "available/ready",
+      "H16",
+      "本地选择条件与路线准入，非网络健康"
+    ],
+    [
+      "Search/Fetch Provider",
+      "H16",
+      "发现来源与取得指定资源分开"
+    ],
+    [
+      "MCP Transport",
+      "H16",
+      "stdio/HTTP消息通道，不是沙箱"
+    ],
+    [
+      "publicToolName/rawName",
+      "H16",
+      "模型公开名与wire原名分开"
+    ],
+    [
+      "connection generation",
+      "H16",
+      "连接拥有者与代际，不是Session恢复"
+    ],
+    [
+      "MCP Resource",
+      "H16",
+      "按server/uri按需读资料"
+    ],
+    [
+      "Server instructions",
+      "H16",
+      "独立有归属Prompt贡献，非资源自动灌入"
+    ],
+    [
+      "canonical value/content/meta",
+      "H13/H14",
+      "规范值、模型内容、展示事实分层"
+    ],
+    [
+      "tools/result 与 tool/result",
+      "H14",
+      "运行时观察与条件性Session事实"
+    ]
+  ],
+  "glossaryEntries": 44,
+  "meaning": "Author estimates; no learner measurements; source range unions are not required total reading"
+}

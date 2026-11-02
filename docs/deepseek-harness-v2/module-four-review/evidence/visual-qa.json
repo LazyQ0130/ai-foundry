@@ -1,0 +1,683 @@
+{
+  "status": "PASS",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "cssSha256": "dbebfacf4fc7e358176887258f86e71f7424e4d78908b5966ae6153c88f21bf4",
+  "viewports": [
+    {
+      "id": "h13",
+      "width": 1440,
+      "status": "PASS",
+      "documentWidth": 1440,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "模型声明字段投影成 ToolSchema，执行、输出与 Host 展示回调留在进程内",
+          "caption": "图 1｜箭头只表示 projectToolSchema 的显式字段投影；其他分组表示职责，不是执行时序。工具输出 Schema 没有随这个投影发送。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "全局工具被两个隔离 Scope 继承，自己的同名定义优先；限制取交集但保留自身登记",
+          "caption": "图 2｜卡片表示 Scope 视图，省略插件 Fiber；限制过滤继承工具，包含祖先贡献。父级自身工具到子级后成为可过滤的继承工具。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "resolve 生成一个 Step 的准入集合，同 Step 重试复用；每次读取仍核对注册身份、当前可见性和集合状态",
+          "caption": "图 3｜按可见注册串行等待条件；省略细化失败分支。取消需要条件配合，不会硬终止任意 Promise；已开始执行后的控制留 H14。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "插件登记后经过 Scope、Step 准入、执行器描述与 SystemPrompt 进入请求；模型提出 ToolCallBlock 后还要核对当前资格",
+          "caption": "图 4｜主要数据与控制链，省略 Runtime 的能力及历史投影。PTC 的 SDK 属于提示内容；Registry 不替模型选择工具。后续流水线只作为衔接。",
+          "width": 760
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h13",
+      "width": 390,
+      "status": "PASS",
+      "documentWidth": 390,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "模型声明字段投影成 ToolSchema，执行、输出与 Host 展示回调留在进程内",
+          "caption": "图 1｜箭头只表示 projectToolSchema 的显式字段投影；其他分组表示职责，不是执行时序。工具输出 Schema 没有随这个投影发送。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "全局工具被两个隔离 Scope 继承，自己的同名定义优先；限制取交集但保留自身登记",
+          "caption": "图 2｜卡片表示 Scope 视图，省略插件 Fiber；限制过滤继承工具，包含祖先贡献。父级自身工具到子级后成为可过滤的继承工具。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "resolve 生成一个 Step 的准入集合，同 Step 重试复用；每次读取仍核对注册身份、当前可见性和集合状态",
+          "caption": "图 3｜按可见注册串行等待条件；省略细化失败分支。取消需要条件配合，不会硬终止任意 Promise；已开始执行后的控制留 H14。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "插件登记后经过 Scope、Step 准入、执行器描述与 SystemPrompt 进入请求；模型提出 ToolCallBlock 后还要核对当前资格",
+          "caption": "图 4｜主要数据与控制链，省略 Runtime 的能力及历史投影。PTC 的 SDK 属于提示内容；Registry 不替模型选择工具。后续流水线只作为衔接。",
+          "width": 358
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h13",
+      "width": 320,
+      "status": "PASS",
+      "documentWidth": 320,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "模型声明字段投影成 ToolSchema，执行、输出与 Host 展示回调留在进程内",
+          "caption": "图 1｜箭头只表示 projectToolSchema 的显式字段投影；其他分组表示职责，不是执行时序。工具输出 Schema 没有随这个投影发送。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "全局工具被两个隔离 Scope 继承，自己的同名定义优先；限制取交集但保留自身登记",
+          "caption": "图 2｜卡片表示 Scope 视图，省略插件 Fiber；限制过滤继承工具，包含祖先贡献。父级自身工具到子级后成为可过滤的继承工具。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "resolve 生成一个 Step 的准入集合，同 Step 重试复用；每次读取仍核对注册身份、当前可见性和集合状态",
+          "caption": "图 3｜按可见注册串行等待条件；省略细化失败分支。取消需要条件配合，不会硬终止任意 Promise；已开始执行后的控制留 H14。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "插件登记后经过 Scope、Step 准入、执行器描述与 SystemPrompt 进入请求；模型提出 ToolCallBlock 后还要核对当前资格",
+          "caption": "图 4｜主要数据与控制链，省略 Runtime 的能力及历史投影。PTC 的 SDK 属于提示内容；Registry 不替模型选择工具。后续流水线只作为衔接。",
+          "width": 288
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h14",
+      "width": 1440,
+      "status": "PASS",
+      "documentWidth": 1440,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "工具批次进入Native，准备、分发与完成各有分支；成功路径最终按模型顺序记录结果",
+          "caption": "图 1｜实线为成功控制路径，分支框标明跳过阶段。输入Schema由defineTool执行包装验证；不能把prepare画成所有参数检查已经通过。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "pre返回决策，guard只能拒绝或不表态，execute包住主体，post处理结果，三种next返回的对象不同",
+          "caption": "图 2｜只画允许路径的阶段位置；其他分支见正文表。Waterfall的next与短路遵守各事件契约，单调守卫不等于操作系统沙箱。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "A和B重叠运行，B先结束但等A，按A/B提交后才启动独占C；完成顺序与提交顺序不同",
+          "caption": "图 3｜本例用门闩控制主体结束；pipeline.complete与主体结束分开。轨迹来自真实Loop/Native/Session，不把它推广成固定分组或固定完成时间。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "规范值经过内容和元数据投影，先通知tools/result，再按log提交Session的tool/result；附加上下文独立交给Loop",
+          "caption": "图 4｜箭头表示产物传递和结算位置。additionalContexts是另一通道；有log才有根级Session记录，内存接受不证明磁盘flush。",
+          "width": 760
+        }
+      ],
+      "copies": 6,
+      "horizontal": 6,
+      "originalImages": 4
+    },
+    {
+      "id": "h14",
+      "width": 390,
+      "status": "PASS",
+      "documentWidth": 390,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "工具批次进入Native，准备、分发与完成各有分支；成功路径最终按模型顺序记录结果",
+          "caption": "图 1｜实线为成功控制路径，分支框标明跳过阶段。输入Schema由defineTool执行包装验证；不能把prepare画成所有参数检查已经通过。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "pre返回决策，guard只能拒绝或不表态，execute包住主体，post处理结果，三种next返回的对象不同",
+          "caption": "图 2｜只画允许路径的阶段位置；其他分支见正文表。Waterfall的next与短路遵守各事件契约，单调守卫不等于操作系统沙箱。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "A和B重叠运行，B先结束但等A，按A/B提交后才启动独占C；完成顺序与提交顺序不同",
+          "caption": "图 3｜本例用门闩控制主体结束；pipeline.complete与主体结束分开。轨迹来自真实Loop/Native/Session，不把它推广成固定分组或固定完成时间。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "规范值经过内容和元数据投影，先通知tools/result，再按log提交Session的tool/result；附加上下文独立交给Loop",
+          "caption": "图 4｜箭头表示产物传递和结算位置。additionalContexts是另一通道；有log才有根级Session记录，内存接受不证明磁盘flush。",
+          "width": 358
+        }
+      ],
+      "copies": 6,
+      "horizontal": 6,
+      "originalImages": 4
+    },
+    {
+      "id": "h14",
+      "width": 320,
+      "status": "PASS",
+      "documentWidth": 320,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "工具批次进入Native，准备、分发与完成各有分支；成功路径最终按模型顺序记录结果",
+          "caption": "图 1｜实线为成功控制路径，分支框标明跳过阶段。输入Schema由defineTool执行包装验证；不能把prepare画成所有参数检查已经通过。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "pre返回决策，guard只能拒绝或不表态，execute包住主体，post处理结果，三种next返回的对象不同",
+          "caption": "图 2｜只画允许路径的阶段位置；其他分支见正文表。Waterfall的next与短路遵守各事件契约，单调守卫不等于操作系统沙箱。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "A和B重叠运行，B先结束但等A，按A/B提交后才启动独占C；完成顺序与提交顺序不同",
+          "caption": "图 3｜本例用门闩控制主体结束；pipeline.complete与主体结束分开。轨迹来自真实Loop/Native/Session，不把它推广成固定分组或固定完成时间。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "规范值经过内容和元数据投影，先通知tools/result，再按log提交Session的tool/result；附加上下文独立交给Loop",
+          "caption": "图 4｜箭头表示产物传递和结算位置。additionalContexts是另一通道；有log才有根级Session记录，内存接受不证明磁盘flush。",
+          "width": 288
+        }
+      ],
+      "copies": 6,
+      "horizontal": 6,
+      "originalImages": 4
+    },
+    {
+      "id": "h15",
+      "width": 1440,
+      "status": "PASS",
+      "documentWidth": 1440,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合",
+          "caption": "图 1｜上部箭头是通用工具允许路径，下部两类能力分开接线。不是所有工具都会进入审批、进程沙箱和文件观察三条路径。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果",
+          "caption": "图 2｜审批 ID 配对 asked/decided；callId 关联工具调用。无 Turn 或审计提交失败是抛错出口，不伪造正常审计对。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内",
+          "caption": "图 3｜平台实现是固定源码事实，本轮没有启动这些原生进程 runner。Windows 为 partial；旧 Landlock ABI 也可能 partial。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态",
+          "caption": "图 4｜要有正确发事件的消费者、观察插件与遵守 expected 的后端。原子发布不等于消除与任意外部程序之间的所有竞态。",
+          "width": 760
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h15",
+      "width": 390,
+      "status": "PASS",
+      "documentWidth": 390,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合",
+          "caption": "图 1｜上部箭头是通用工具允许路径，下部两类能力分开接线。不是所有工具都会进入审批、进程沙箱和文件观察三条路径。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果",
+          "caption": "图 2｜审批 ID 配对 asked/decided；callId 关联工具调用。无 Turn 或审计提交失败是抛错出口，不伪造正常审计对。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内",
+          "caption": "图 3｜平台实现是固定源码事实，本轮没有启动这些原生进程 runner。Windows 为 partial；旧 Landlock ABI 也可能 partial。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态",
+          "caption": "图 4｜要有正确发事件的消费者、观察插件与遵守 expected 的后端。原子发布不等于消除与任意外部程序之间的所有竞态。",
+          "width": 358
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h15",
+      "width": 320,
+      "status": "PASS",
+      "documentWidth": 320,
+      "h1": 1,
+      "details": 21,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合",
+          "caption": "图 1｜上部箭头是通用工具允许路径，下部两类能力分开接线。不是所有工具都会进入审批、进程沙箱和文件观察三条路径。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果",
+          "caption": "图 2｜审批 ID 配对 asked/decided；callId 关联工具调用。无 Turn 或审计提交失败是抛错出口，不伪造正常审计对。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内",
+          "caption": "图 3｜平台实现是固定源码事实，本轮没有启动这些原生进程 runner。Windows 为 partial；旧 Landlock ABI 也可能 partial。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态",
+          "caption": "图 4｜要有正确发事件的消费者、观察插件与遵守 expected 的后端。原子发布不等于消除与任意外部程序之间的所有竞态。",
+          "width": 288
+        }
+      ],
+      "copies": 7,
+      "horizontal": 7,
+      "originalImages": 4
+    },
+    {
+      "id": "h16",
+      "width": 1440,
+      "status": "PASS",
+      "documentWidth": 1440,
+      "h1": 1,
+      "details": 24,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+          "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+          "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+          "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+          "width": 760
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+          "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+          "width": 760
+        }
+      ],
+      "copies": 9,
+      "horizontal": 9,
+      "originalImages": 4
+    },
+    {
+      "id": "h16",
+      "width": 390,
+      "status": "PASS",
+      "documentWidth": 390,
+      "h1": 1,
+      "details": 24,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+          "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+          "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+          "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+          "width": 358
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+          "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+          "width": 358
+        }
+      ],
+      "copies": 9,
+      "horizontal": 9,
+      "originalImages": 4
+    },
+    {
+      "id": "h16",
+      "width": 320,
+      "status": "PASS",
+      "documentWidth": 320,
+      "h1": 1,
+      "details": 24,
+      "images": [
+        {
+          "naturalWidth": 1280,
+          "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+          "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+          "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+          "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+          "width": 288
+        },
+        {
+          "naturalWidth": 1280,
+          "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+          "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+          "width": 288
+        }
+      ],
+      "copies": 9,
+      "horizontal": 9,
+      "originalImages": 4
+    },
+    {
+      "id": "assessment",
+      "width": 1440,
+      "status": "PASS",
+      "documentWidth": 1440,
+      "h1": 1,
+      "details": 18,
+      "images": [],
+      "copies": 0,
+      "horizontal": 0,
+      "originalImages": 0
+    },
+    {
+      "id": "assessment",
+      "width": 390,
+      "status": "PASS",
+      "documentWidth": 390,
+      "h1": 1,
+      "details": 18,
+      "images": [],
+      "copies": 0,
+      "horizontal": 0,
+      "originalImages": 0
+    },
+    {
+      "id": "assessment",
+      "width": 320,
+      "status": "PASS",
+      "documentWidth": 320,
+      "h1": 1,
+      "details": 18,
+      "images": [],
+      "copies": 0,
+      "horizontal": 0,
+      "originalImages": 0
+    }
+  ],
+  "figures": [
+    {
+      "id": "h13-01",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h13-02",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h13-03",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h13-04",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h14-01",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h14-02",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h14-03",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h14-04",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h15-01",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h15-02",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h15-03",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h15-04",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h16-01",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h16-02",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h16-03",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    },
+    {
+      "id": "h16-04",
+      "out": [],
+      "overlaps": [],
+      "font": true,
+      "minFont": 28,
+      "byteIdentical": true
+    }
+  ],
+  "content": [
+    {
+      "id": "h13",
+      "sha256": "7108c1a0b7412fc50ea8e8f8a96e5dedb419007ffa6ff0dcf62bb541747185c7",
+      "embeddedPrograms": [
+        "progressive.ts",
+        "support.ts",
+        "demo.ts",
+        "definitions.ts",
+        "scopes.ts",
+        "admission.ts",
+        "requests.ts"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "h14",
+      "sha256": "b464d1739591e218071543f7dc4325ce6dcc0b3d8852deee8e293d1f0f3d001f",
+      "embeddedPrograms": [
+        "support.ts",
+        "demo.ts",
+        "flow.ts",
+        "scheduling.ts",
+        "failures.ts",
+        "requests.ts"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "h15",
+      "sha256": "cc5ba80974c0dd838112d03444708d1984e743ef216c05cf239469fb88914c84",
+      "embeddedPrograms": [
+        "bootstrap.mjs",
+        "support.ts",
+        "approval.ts",
+        "pipeline.ts",
+        "sandbox.ts",
+        "filesystem.ts",
+        "demo.ts"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "h16",
+      "sha256": "57029ae59cdaf4e30257feb354921d52534b370070488595b1037205f31c4248",
+      "embeddedPrograms": [
+        "bootstrap.mjs",
+        "support.ts",
+        "file.ts",
+        "shell.ts",
+        "web.ts",
+        "mcp-server.mjs",
+        "mcp.ts",
+        "combined.ts",
+        "demo.ts"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "assessment",
+      "sha256": "93c9224660c22e0c8de2a8f2bc30c41b86cf27ff6b366f2e3ae69209517c44d7",
+      "embeddedPrograms": [],
+      "status": "PASS"
+    }
+  ],
+  "manualReview": "Separate manual-review.json; geometry/interaction do not prove comprehension"
+}

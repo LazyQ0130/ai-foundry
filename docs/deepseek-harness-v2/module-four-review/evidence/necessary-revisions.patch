@@ -1,0 +1,32 @@
+diff --git a/docs/deepseek-harness-v2/h15/README.md b/docs/deepseek-harness-v2/h15/README.md
+index 9888a98..8143975 100644
+--- a/docs/deepseek-harness-v2/h15/README.md
++++ b/docs/deepseek-harness-v2/h15/README.md
+@@ -16 +16 @@
+-依赖解析入口：H15_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js；H15_ZOD_ANCHOR指向Zod4.4.3的index.js；H15_FS_DEPS_ANCHOR指向本课隔离依赖chokidar/index.js。依赖版本/integrity分别从H04证据、上游pnpm-lock及本课fs-dependencies.json核验。新增chokidar5.0.0、koffi3.1.1、yaml2.9.0安装在研究目录，不写业务package.json或锁文件。完整依赖清单可在新隔离目录按固定版本安装，再修改anchor。
++依赖解析入口：H15_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js；H15_ZOD_ANCHOR指向Zod4.4.3的index.js；H15_FS_DEPS_ANCHOR指向隔离依赖chokidar/index.js。第四模块集中审查发现原缓存传递依赖readdirp漂移至5.1.1，原运行器只核直接依赖；现补齐整棵文件依赖树integrity检查，默认改用新建module-four-probe-deps目录，不改历史缓存与报告。固定chokidar5.0.0、koffi3.1.1、yaml2.9.0、readdirp5.0.0，并在隔离package.json加 `overrides: {"readdirp":"5.0.0"}`，执行 `npm install --ignore-scripts --no-audit --no-fund`；再把H15_FS_DEPS_ANCHOR指向该目录的node_modules/chokidar/index.js。完整安装包与本轮日志见[集中审查](../module-four-review/README.md)。不在业务目录安装，不用最新传递依赖代替锁定版本。
+diff --git a/docs/deepseek-harness-v2/h15/scripts/run-labs.mjs b/docs/deepseek-harness-v2/h15/scripts/run-labs.mjs
+index aaf95f8..29cacb1 100644
+--- a/docs/deepseek-harness-v2/h15/scripts/run-labs.mjs
++++ b/docs/deepseek-harness-v2/h15/scripts/run-labs.mjs
+@@ -28 +28 @@ await writeFile(resolve(root,'evidence/zod-dependency.json'), JSON.stringify(zod
+-const fsAnchor=process.env.H15_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/h15-probe-deps/node_modules/chokidar/index.js';
++const fsAnchor=process.env.H15_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/module-four-probe-deps/node_modules/chokidar/index.js';
+@@ -33,0 +34 @@ for(const [name,version] of [['chokidar','5.0.0'],['koffi','3.1.1'],['yaml','2.9
++for(const [name,pkg] of Object.entries(fsLock.packages))if(name)assert.ok(pkg.integrity&&upstreamLock.includes(pkg.integrity),name+' differs from fixed upstream; pin transitive readdirp to 5.0.0 in an isolated dependency tree');
+diff --git a/docs/deepseek-harness-v2/h16/README.md b/docs/deepseek-harness-v2/h16/README.md
+index daeba48..16363b3 100644
+--- a/docs/deepseek-harness-v2/h16/README.md
++++ b/docs/deepseek-harness-v2/h16/README.md
+@@ -15 +15 @@
+-H16_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js，H16_FS_DEPS_ANCHOR指向H15隔离chokidar/index.js，H16_ECO_DEPS_ANCHOR指向本课隔离依赖目录的package.json。H16_ZOD_ANCHOR保留H09锁定Zod核验入口；实际解析用本课同版本4.4.3。新增SDKclient/server/core2.2.0、turndown7.2.4、GFM1.0.67、diff9.0.0等完整依赖树见ecosystem-dependencies.json，全部integrity与固定上游pnpm-lock一致。为避免宽范围依赖漂移，eventsource-parser3.1.0、jose6.2.3、zod4.4.3显式固定。安装仅在研究目录，不修改业务依赖。
++H16_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js，H16_FS_DEPS_ANCHOR指向锁定文件依赖树的chokidar/index.js，H16_ECO_DEPS_ANCHOR指向本课隔离依赖目录的package.json。第四模块审查后文件依赖默认使用新module-four-probe-deps目录并核完整传递integrity；旧缓存readdirp5.1.1不满足固定上游5.0.0，应按[H15复现说明](../h15/README.md)新建隔离树，不覆盖历史记录。H16_ZOD_ANCHOR保留H09锁定Zod核验入口；实际解析用本课同版本4.4.3。新增SDKclient/server/core2.2.0、turndown7.2.4、GFM1.0.67、diff9.0.0等完整依赖树见ecosystem-dependencies.json，全部integrity与固定上游pnpm-lock一致。为避免宽范围依赖漂移，eventsource-parser3.1.0、jose6.2.3、zod4.4.3显式固定。安装仅在研究目录，不修改业务依赖。
+diff --git a/docs/deepseek-harness-v2/h16/scripts/run-labs.mjs b/docs/deepseek-harness-v2/h16/scripts/run-labs.mjs
+index bc2b6b4..641bd81 100644
+--- a/docs/deepseek-harness-v2/h16/scripts/run-labs.mjs
++++ b/docs/deepseek-harness-v2/h16/scripts/run-labs.mjs
+@@ -28 +28 @@ await writeFile(resolve(root,'evidence/zod-dependency.json'), JSON.stringify(zod
+-const fsAnchor=process.env.H16_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/h15-probe-deps/node_modules/chokidar/index.js';
++const fsAnchor=process.env.H16_FS_DEPS_ANCHOR??'C:/Users/QYF/.codex/research/module-four-probe-deps/node_modules/chokidar/index.js';
+@@ -33,0 +34 @@ for(const [name,version] of [['chokidar','5.0.0'],['koffi','3.1.1'],['yaml','2.9
++for(const [name,pkg] of Object.entries(fsLock.packages))if(name)assert.ok(pkg.integrity&&upstreamLock.includes(pkg.integrity),name+' differs from fixed upstream; pin transitive readdirp to 5.0.0 in an isolated dependency tree');

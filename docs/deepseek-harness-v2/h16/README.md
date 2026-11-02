@@ -12,7 +12,7 @@
 
 仓库根使用Node24、Python及当前仓库开发依赖。运行 `node docs/deepseek-harness-v2/h16/scripts/run-checks.mjs`；各子脚本可单独复查。prepare.py只保留首次脚手架记录，有lab时拒绝覆盖，不在日常门禁中运行。固定源码缓存由HARNESS_SOURCE_CACHE / HARNESS_GIT_CACHE选择，脚本核Git blob与SHA256，不跟随main。
 
-H16_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js，H16_FS_DEPS_ANCHOR指向H15隔离chokidar/index.js，H16_ECO_DEPS_ANCHOR指向本课隔离依赖目录的package.json。H16_ZOD_ANCHOR保留H09锁定Zod核验入口；实际解析用本课同版本4.4.3。新增SDKclient/server/core2.2.0、turndown7.2.4、GFM1.0.67、diff9.0.0等完整依赖树见ecosystem-dependencies.json，全部integrity与固定上游pnpm-lock一致。为避免宽范围依赖漂移，eventsource-parser3.1.0、jose6.2.3、zod4.4.3显式固定。安装仅在研究目录，不修改业务依赖。
+H16_DEPS_ANCHOR指向H04隔离依赖中的commander/index.js，H16_FS_DEPS_ANCHOR指向锁定文件依赖树的chokidar/index.js，H16_ECO_DEPS_ANCHOR指向本课隔离依赖目录的package.json。第四模块审查后文件依赖默认使用新module-four-probe-deps目录并核完整传递integrity；旧缓存readdirp5.1.1不满足固定上游5.0.0，应按[H15复现说明](../h15/README.md)新建隔离树，不覆盖历史记录。H16_ZOD_ANCHOR保留H09锁定Zod核验入口；实际解析用本课同版本4.4.3。新增SDKclient/server/core2.2.0、turndown7.2.4、GFM1.0.67、diff9.0.0等完整依赖树见ecosystem-dependencies.json，全部integrity与固定上游pnpm-lock一致。为避免宽范围依赖漂移，eventsource-parser3.1.0、jose6.2.3、zod4.4.3显式固定。安装仅在研究目录，不修改业务依赖。
 
 Playwright入口由AIFOUNDRY_QA_NODE_MODULES / AIFOUNDRY_QA_CHROME配置。静态HTML来自实际LessonMarkdown SSR；原生折叠可用，静态页不保留未水合复制按钮，复制用真实React挂载另测。私有localhost服务测试后关闭，无公开路由。
 
