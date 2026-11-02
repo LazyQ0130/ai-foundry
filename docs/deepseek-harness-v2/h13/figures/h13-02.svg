@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1290" viewBox="0 0 640 1290" role="img"><title>同一注册表，不同作用域视图</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1290" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">同一注册表，不同作用域视图</text>
+<rect x="32" y="100" width="576" height="114" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">全局工具</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">shared · metrics · style</text>
+<text x="32" y="270" font-size="28" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">A / B 都继承全局；自身登记优先</text>
+<rect x="32" y="296" width="280" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="339" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">代码 Agent A</text>
+<text x="52" y="383" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">自己的工具：</text>
+<text x="52" y="425" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">analyze</text>
+<text x="52" y="467" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">style = code</text>
+<rect x="328" y="296" width="280" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="348" y="339" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">文档 Agent B</text>
+<text x="348" y="383" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">自己的工具：</text>
+<text x="348" y="425" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">outline</text>
+<text x="348" y="467" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">继承 style</text>
+<rect x="32" y="590" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="633" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">A 的两个继承过滤器</text>
+<text x="52" y="677" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">allow: shared, style</text>
+<text x="52" y="719" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">deny: shared, style</text>
+<path d="M320 755 V811" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="790" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">取交集</text>
+<rect x="32" y="836" width="576" height="114" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="879" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">A 剩下 analyze、自己的 style</text>
+<text x="52" y="923" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">自身登记不被这两个限制隐藏</text>
+<rect x="32" y="974" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1017" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">撤销 A 限制，再看子级</text>
+<text x="52" y="1061" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">analyze 对子级变成继承工具</text>
+<text x="52" y="1103" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">子级可再用 deny 隐藏它</text>
+<text x="32" y="1215" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Scope 路由受信任贡献，不构成安全沙箱</text>
+<text x="32" y="1262" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 教学简图</text>
+</svg>

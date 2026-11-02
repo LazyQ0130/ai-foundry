@@ -1,0 +1,532 @@
+[
+  {
+    "id": "S01",
+    "claim": "ToolsService 是 Cordis Service，ctx.tools 提供访问",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 99,
+    "end": 114,
+    "symbol": "export class ToolsService",
+    "validation": "AST + 静态；C01/D01 挂载真实服务",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S02",
+    "claim": "ToolDefinition 继承声明，但包含执行/输出/展示信息",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 26,
+    "end": 100,
+    "symbol": "export interface ToolDefinition",
+    "validation": "AST + S04–S09 分项核；C08",
+    "limit": "类型接口不自动验证外部数据"
+  },
+  {
+    "id": "S03",
+    "claim": "output 的 schema/render/presentationMeta 分工",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 16,
+    "end": 25,
+    "symbol": "export interface ToolOutputDefinition",
+    "validation": "C01/C07；D01 持久消息无 value",
+    "limit": "不展开 post/metadata 全流水线"
+  },
+  {
+    "id": "S04",
+    "claim": "projectContent 是策略前内容投影，finalizeContent 是最后内容转换",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 49,
+    "end": 64,
+    "symbol": "projectContent?",
+    "validation": "静态接口与注释；未单测 H14 钩子",
+    "limit": "仅识别职责，不声称已验策略顺序"
+  },
+  {
+    "id": "S05",
+    "claim": "timeoutMs 只声明正有限合作预算，不会由登记自动计时",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 63,
+    "end": 69,
+    "symbol": "Cooperative tool-call timeout budget",
+    "validation": "register/defineTool 校验 C20；实际强制机制见下项",
+    "limit": "未运行真实时间截止实验"
+  },
+  {
+    "id": "S06",
+    "claim": "截止时间由专用策略包装提供",
+    "path": "packages/guard/timeout-policy/src/index.ts",
+    "start": 55,
+    "end": 80,
+    "symbol": "export function apply",
+    "validation": "静态阅读 timeout policy 包装与 signal 恢复",
+    "limit": "未执行该策略，H14/H15 再深入"
+  },
+  {
+    "id": "S07",
+    "claim": "isConcurrencySafe 是分类器，不是全局安全证明",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 83,
+    "end": 85,
+    "symbol": "isConcurrencySafe?",
+    "validation": "静态；tools/tests/execution-mode.spec.ts 阅读",
+    "limit": "未新测并行调度"
+  },
+  {
+    "id": "S08",
+    "claim": "Host presenters 是纯展示；入参软校验失败回退",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 614,
+    "end": 637,
+    "symbol": "if (userPresentCall)",
+    "validation": "静态包装；cookbook 实现约定",
+    "limit": "不承诺用户回调自己抛错也被普遍捕获"
+  },
+  {
+    "id": "S09",
+    "claim": "内置 Web Client 不直接消费 Host presenter",
+    "path": "docs/cookbook/adding-a-tool.zh.md",
+    "start": 95,
+    "end": 103,
+    "symbol": "## Web Client 展示",
+    "validation": "固定文档原文阅读",
+    "limit": "未启动 Web Client"
+  },
+  {
+    "id": "S10",
+    "claim": "ValueSchemaSpec 的节点与 oneOf",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 86,
+    "end": 102,
+    "symbol": "export type ValueSchemaSpec",
+    "validation": "C22–C25；官方 schema.spec 阅读",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S11",
+    "claim": "隐式参数根开放，required 属于属性",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 450,
+    "end": 463,
+    "symbol": "export function parameterSchemaSpecToJsonSchema",
+    "validation": "C02/C05/C26/C31；官方 schema.spec",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S12",
+    "claim": "显式 object 必须声明 additionalProperties",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 366,
+    "end": 396,
+    "symbol": "case 'object':",
+    "validation": "C04/C25；官方 schema.spec",
+    "limit": "作者 DSL 与 raw Schema 默认开放区别"
+  },
+  {
+    "id": "S13",
+    "claim": "enum / const 必须是正确标量且相容",
+    "path": "packages/core/tools/src/json-schema.ts",
+    "start": 352,
+    "end": 377,
+    "symbol": "const hasEnum =",
+    "validation": "C22 + 官方 schema.spec/json-schema.spec",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S14",
+    "claim": "raw 支持关键字被显式限制，注解不强制业务约束",
+    "path": "packages/core/tools/src/json-schema.ts",
+    "start": 227,
+    "end": 392,
+    "symbol": "function checkSchemaNode",
+    "validation": "C25/C26；官方 json-schema.spec",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S15",
+    "claim": "exact-one 判断命中次数，number 与 integer 会重叠",
+    "path": "packages/core/tools/src/json-schema.ts",
+    "start": 522,
+    "end": 527,
+    "symbol": "if (frame.kind === 'oneOf')",
+    "validation": "C23；正文思考3",
+    "limit": "TS union 不等于 exact-one"
+  },
+  {
+    "id": "S16",
+    "claim": "json 接受无损 JSON，不接受非 JSON 对象或非有限值",
+    "path": "packages/core/tools/src/json-schema.ts",
+    "start": 548,
+    "end": 552,
+    "symbol": "if (nodeType === undefined)",
+    "validation": "C24",
+    "limit": "不限制成对象根"
+  },
+  {
+    "id": "S17",
+    "claim": "required 检查自有属性，closed 对象拒绝额外键",
+    "path": "packages/core/tools/src/json-schema.ts",
+    "start": 561,
+    "end": 594,
+    "symbol": "const required = Object.hasOwn(frame.node",
+    "validation": "C02–C05；A 原始诊断",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S18",
+    "claim": "精确类型推断有16层容器边界",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 155,
+    "end": 173,
+    "symbol": "Depth['length'] extends 16",
+    "validation": "官方类型测试静态阅读；未新跑全仓 tsc",
+    "limit": "运行时仍遍历完整 Schema"
+  },
+  {
+    "id": "S19",
+    "claim": "validateArgs 接受作者参数映射，返回诊断列表",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 479,
+    "end": 481,
+    "symbol": "export function validateArgs",
+    "validation": "C26/C31",
+    "limit": "不能把 raw Schema 当 DSL 传入"
+  },
+  {
+    "id": "S20",
+    "claim": "defineTool 编译一次；execute 包装校验输入后调用主体",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 555,
+    "end": 612,
+    "symbol": "export function defineTool",
+    "validation": "C02/C03/C31",
+    "limit": "输出校验在共享流水线，不在该 execute 包装"
+  },
+  {
+    "id": "S21",
+    "claim": "直接调 execute 不证明输出已验证",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 601,
+    "end": 603,
+    "symbol": "return userExecute",
+    "validation": "C27 对照 C07",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S22",
+    "claim": "投影只选 name/description/parameters/deferLoading",
+    "path": "packages/core/tools/src/schema.ts",
+    "start": 641,
+    "end": 646,
+    "symbol": "export function projectToolSchema",
+    "validation": "C08/C30；AST",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S23",
+    "claim": "注册校验 output、timeout 和保留名，并走层 Effect",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 128,
+    "end": 153,
+    "symbol": "register(definition:",
+    "validation": "C08/C12/C20",
+    "limit": "受信任只读借用；不宣称全字段自动克隆验证"
+  },
+  {
+    "id": "S24",
+    "claim": "同一层重复名称失败，精确 disposer 移除原登记",
+    "path": "packages/core/scope/src/store.ts",
+    "start": 30,
+    "end": 90,
+    "symbol": "export class NamedEntries",
+    "validation": "C20/C30；官方 scoped.spec",
+    "limit": "局部遮蔽不是同层重复"
+  },
+  {
+    "id": "S25",
+    "claim": "Context 同时决定登记可见层和 Fiber 归属",
+    "path": "packages/core/scope/src/store.ts",
+    "start": 224,
+    "end": 267,
+    "symbol": "effect(",
+    "validation": "C12；H07 Effect 语义",
+    "limit": "未做独立 B 重复计数"
+  },
+  {
+    "id": "S26",
+    "claim": "Scope 父链显式绑定且检查环",
+    "path": "packages/core/scope/src/index.ts",
+    "start": 72,
+    "end": 82,
+    "symbol": "export function bindScopeParent",
+    "validation": "C11/C28 + 静态",
+    "limit": "不是自动读取 parentAgent"
+  },
+  {
+    "id": "S27",
+    "claim": "createScope 建立带 tag 上下文与配对释放",
+    "path": "packages/core/scope/src/index.ts",
+    "start": 137,
+    "end": 150,
+    "symbol": "export function createScope",
+    "validation": "C09/C12/C28",
+    "limit": "C 使用结构化键；D 创建真实 Agent"
+  },
+  {
+    "id": "S28",
+    "claim": "Scope 仅路由受信任同进程贡献，不是安全边界",
+    "path": "packages/core/scope/README.zh.md",
+    "start": 58,
+    "end": 62,
+    "symbol": "### 设计理念",
+    "validation": "固定文档 + 机制静态审阅",
+    "limit": "未运行 OS 沙箱实验"
+  },
+  {
+    "id": "S29",
+    "claim": "restriction 需要 scoped Context 与已知继承名",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 162,
+    "end": 189,
+    "symbol": "restrict(filter:",
+    "validation": "C21",
+    "limit": "unknown/global 文案不限制为只有全局层"
+  },
+  {
+    "id": "S30",
+    "claim": "view 合并祖先，过滤继承，再叠加自身登记",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 199,
+    "end": 234,
+    "symbol": "private view(",
+    "validation": "C09–C11/C30；官方 scoped ancestor 测试",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S31",
+    "claim": "多个限制取交集，名称列表编译为独立集合",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 79,
+    "end": 88,
+    "symbol": "admits(name:",
+    "validation": "C10 + restrict162–188 + scoped.spec 静态",
+    "limit": "输入数组后改动与未来工具行为由官方测试阅读补充"
+  },
+  {
+    "id": "S32",
+    "claim": "get 是检查；executable 无 set 排除条件工具",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 239,
+    "end": 269,
+    "symbol": "get(name:",
+    "validation": "C13；D02",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S33",
+    "claim": "条件上下文是 agent / 捕获模型 / signal",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 105,
+    "end": 125,
+    "symbol": "export interface ToolActivationContext",
+    "validation": "C14/C19；D03 captured selection",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S34",
+    "claim": "resolve 顺序等待，false 排除，throw 包装且不交部分集合",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 264,
+    "end": 284,
+    "symbol": "async resolve(",
+    "validation": "C14/C18/C19；官方 activation.spec",
+    "limit": "未声称回滚条件自身副作用"
+  },
+  {
+    "id": "S35",
+    "claim": "set 读时检查 exact agent、当前注册记录及 definition 身份",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 287,
+    "end": 305,
+    "symbol": "const current = this.view",
+    "validation": "C15/C16/C28/C29；D04–D06",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S36",
+    "claim": "dispose 关闭 set，不注销定义",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 283,
+    "end": 288,
+    "symbol": "dispose: () =>",
+    "validation": "C17/C28；D 全部集结束为空",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S37",
+    "claim": "definitions/schemas 的 set 可选，schemas 深复制参数",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 305,
+    "end": 326,
+    "symbol": "definitions(scope?",
+    "validation": "C08/C30 + 静态",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S38",
+    "claim": "Registry 委托最近作用域执行器处理原始批次",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 375,
+    "end": 381,
+    "symbol": "async execute(input:",
+    "validation": "D01–D06 + 静态",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S39",
+    "claim": "ToolExecutor 有 describe 和 execute 两项核心入口",
+    "path": "packages/core/tools/src/executor.ts",
+    "start": 64,
+    "end": 91,
+    "symbol": "export interface ToolExecutor",
+    "validation": "AST；Native 实际 C/D",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S40",
+    "claim": "Native describe 逐个投影当前能力",
+    "path": "packages/core/tool-executor-native/src/index.ts",
+    "start": 15,
+    "end": 18,
+    "symbol": "describe(tools:",
+    "validation": "C08/D01 请求 tools",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S41",
+    "claim": "PTC describe 只给 run_code，SDK 另使用当前定义",
+    "path": "packages/core/tool-executor-ptc/src/index.ts",
+    "start": 41,
+    "end": 54,
+    "symbol": "describe(_tools:",
+    "validation": "静态；ptc.spec.ts:306–324 阅读",
+    "limit": "未启动 PTC Runtime 或执行程序"
+  },
+  {
+    "id": "S42",
+    "claim": "ToolsService 构造时贡献 SystemPrompt 工具 provider",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 113,
+    "end": 117,
+    "symbol": "ctx.systemPrompt.tools",
+    "validation": "D01–D06 跨边界声明",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S43",
+    "claim": "SystemPrompt 独立收集复制排序工具，文本 waterfall 不拥有声明",
+    "path": "packages/core/system-prompt/src/index.ts",
+    "start": 619,
+    "end": 697,
+    "symbol": "async assemble(context:",
+    "validation": "D01/C08 + 静态",
+    "limit": "不重新教授 H11 全部排序规则"
+  },
+  {
+    "id": "S44",
+    "claim": "Loop 捕获 selection，resolve 先于 assembly",
+    "path": "packages/core/agent-loop/src/agent.ts",
+    "start": 292,
+    "end": 317,
+    "symbol": "const toolSet = await",
+    "validation": "D01/D03 准入观察与请求",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S45",
+    "claim": "同 Step retry 复用 decision/assembly，只有明确 retry 决策才继续",
+    "path": "packages/core/agent-loop/src/agent.ts",
+    "start": 435,
+    "end": 595,
+    "symbol": "private async step(",
+    "validation": "D03 两 Step/三请求/两 when/一次主体",
+    "limit": "非所有失败自动重试"
+  },
+  {
+    "id": "S46",
+    "claim": "Step 结束释放 set，包括失败路径",
+    "path": "packages/core/agent-loop/src/agent.ts",
+    "start": 392,
+    "end": 395,
+    "symbol": "decision.toolSet.dispose()",
+    "validation": "D01–D06 released + 静态",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S47",
+    "claim": "Loop 把 ToolCallBlock 与本步 set 交给真实执行器",
+    "path": "packages/core/agent-loop/src/agent.ts",
+    "start": 592,
+    "end": 597,
+    "symbol": "toolSet: decision.toolSet",
+    "validation": "D01–D06 调用/结果/主体计数",
+    "limit": "只支持这一条结论；不推导完整安全/应用保证"
+  },
+  {
+    "id": "S48",
+    "claim": "Runtime 对不支持 toolUpdate 的路线过滤 developer 消息",
+    "path": "packages/llm/llm/src/content.ts",
+    "start": 424,
+    "end": 436,
+    "symbol": "export function projectToolUpdates",
+    "validation": "D03/D04/D06 对照两份完整输入；QA01",
+    "limit": "不改变当前活动 tools 列表"
+  },
+  {
+    "id": "S49",
+    "claim": "输出验证、快照与渲染由真实共享流水线完成",
+    "path": "packages/core/tools/src/pipeline.ts",
+    "start": 537,
+    "end": 570,
+    "symbol": "private createSuccessResult",
+    "validation": "C01/C07/C27；相关完整函数静态审阅",
+    "limit": "不扩展成所有 H14 策略都已经测试"
+  },
+  {
+    "id": "S50",
+    "claim": "规范 value 仅执行期，不作为持久事件值全存",
+    "path": "packages/core/tools/src/contracts.ts",
+    "start": 322,
+    "end": 334,
+    "symbol": "export interface ToolExecutionSuccess",
+    "validation": "D01 tool/result.message 无 value；静态 batch 提交",
+    "limit": "模型内容/持久 metadata 另分层"
+  },
+  {
+    "id": "S51",
+    "claim": "ToolCallBlock 的 id/name 与 arguments 字符串",
+    "path": "packages/llm/llm/src/types.ts",
+    "start": 112,
+    "end": 124,
+    "symbol": "export interface ToolCallBlock",
+    "validation": "D01–D06 与 H12 原始类型；AST",
+    "limit": "模型提议不等于主体执行"
+  },
+  {
+    "id": "S52",
+    "claim": "ToolResultMessage 用 toolCallId 关联并保留 content/isError",
+    "path": "packages/llm/llm/src/message.ts",
+    "start": 173,
+    "end": 184,
+    "symbol": "export interface ToolResultMessage",
+    "validation": "D01–D06；H12 类型语义",
+    "limit": "没有把执行期规范 value 全量加入此消息"
+  },
+  {
+    "id": "S53",
+    "claim": "ToolRuntime 是 ToolsService 的导出别名",
+    "path": "packages/core/tools/src/index.ts",
+    "start": 412,
+    "end": 412,
+    "symbol": "ToolsService as ToolRuntime",
+    "validation": "静态末行 + 实际导入运行",
+    "limit": "不是另一个独立注册服务"
+  }
+]

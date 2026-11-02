@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1480" viewBox="0 0 640 1480" role="img"><title>从插件注册到模型提出调用</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1480" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">从插件注册到模型提出调用</text>
+<rect x="32" y="100" width="576" height="114" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">插件：register(ToolDefinition)</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Context 决定 Scope 与 Effect 所有者</text>
+<path d="M320 223 V279" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="258" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Scope 过滤</text>
+<rect x="32" y="304" width="576" height="114" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="347" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">AgentLoop：本 Step resolve</text>
+<text x="52" y="391" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">ToolsService 保存完整定义与准入</text>
+<path d="M320 427 V483" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="462" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">executor.describe</text>
+<rect x="32" y="508" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="551" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">SystemPrompt 接收模型工具声明</text>
+<text x="52" y="595" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Native：当前原始工具 Schema</text>
+<text x="52" y="637" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">PTC：run_code + 提示中的 SDK</text>
+<path d="M320 673 V729" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="708" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">组装请求</text>
+<rect x="32" y="754" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="797" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">LLM Request → Runtime → Adapter</text>
+<text x="52" y="841" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">声明使模型知道怎样提出调用</text>
+<text x="52" y="883" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Registry 不替模型决定选哪个工具</text>
+<path d="M320 919 V975" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="954" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型输出</text>
+<rect x="32" y="1000" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1043" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">ToolCallBlock：模型提议</text>
+<text x="52" y="1087" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">id / name / arguments 字符串</text>
+<text x="52" y="1129" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">执行器接收批次，核对当前资格</text>
+<text x="52" y="1171" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不是执行成功的证明</text>
+<path d="M320 1207 V1263" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="348" y="1242" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">H14 继续</text>
+<rect x="32" y="1288" width="576" height="114" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1331" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">ToolResultMessage → 下一请求</text>
+<text x="52" y="1375" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">实验观察结果，本课不展开流水线</text>
+<text x="32" y="1452" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 教学简图</text>
+</svg>

@@ -1,0 +1,230 @@
+{
+  "status": "PASS",
+  "lessonSha256": "7108c1a0b7412fc50ea8e8f8a96e5dedb419007ffa6ff0dcf62bb541747185c7",
+  "parser": "actual parseLessonContent",
+  "renderer": "actual LessonMarkdown SSR",
+  "uniqueCheckKeys": true,
+  "programs": [
+    "support.ts",
+    "progressive.ts",
+    "definitions.ts",
+    "scopes.ts",
+    "admission.ts",
+    "requests.ts",
+    "demo.ts"
+  ],
+  "previewExactSsr": true,
+  "members": [
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "register",
+      "line": 128
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "restrict",
+      "line": 162
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "get",
+      "line": 239
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "executable",
+      "line": 251
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "resolve",
+      "line": 264
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "definitions",
+      "line": 305
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "schemas",
+      "line": 316
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "setExecutor",
+      "line": 325
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "execute",
+      "line": 375
+    },
+    {
+      "file": "packages/core/tool-executor-native/src/index.ts",
+      "className": "NativeToolExecutor",
+      "name": "describe",
+      "line": 15
+    },
+    {
+      "file": "packages/core/tool-executor-native/src/index.ts",
+      "className": "NativeToolExecutor",
+      "name": "execute",
+      "line": 19
+    },
+    {
+      "file": "packages/core/tool-executor-ptc/src/index.ts",
+      "className": "PtcExecutor",
+      "name": "describe",
+      "line": 41
+    },
+    {
+      "file": "packages/core/tool-executor-ptc/src/index.ts",
+      "className": "PtcExecutor",
+      "name": "renderSdk",
+      "line": 45
+    },
+    {
+      "file": "packages/core/tool-executor-ptc/src/index.ts",
+      "className": "PtcExecutor",
+      "name": "execute",
+      "line": 54
+    },
+    {
+      "file": "packages/core/system-prompt/src/index.ts",
+      "className": "SystemPrompt",
+      "name": "tools",
+      "line": 550
+    },
+    {
+      "file": "packages/core/system-prompt/src/index.ts",
+      "className": "SystemPrompt",
+      "name": "assemble",
+      "line": 619
+    },
+    {
+      "file": "packages/core/agent-loop/src/agent.ts",
+      "className": "ReactLoopAgent",
+      "name": "step",
+      "line": 435
+    },
+    {
+      "file": "packages/core/agent-loop/src/agent.ts",
+      "className": "ReactLoopAgent",
+      "name": "buildRequest",
+      "line": 656
+    }
+  ],
+  "interfaces": [
+    {
+      "file": "packages/core/tools/src/contracts.ts",
+      "name": "ToolDefinition",
+      "actual": [
+        "output",
+        "execute",
+        "projectContent",
+        "finalizeContent",
+        "timeoutMs",
+        "isConcurrencySafe",
+        "presentCall",
+        "presentResult"
+      ]
+    },
+    {
+      "file": "packages/core/tools/src/contracts.ts",
+      "name": "ToolActivationContext",
+      "actual": [
+        "agent",
+        "modelSelection",
+        "signal"
+      ]
+    },
+    {
+      "file": "packages/core/tools/src/contracts.ts",
+      "name": "ResolvedToolSet",
+      "actual": [
+        "dispose",
+        "view"
+      ]
+    },
+    {
+      "file": "packages/llm/llm/src/types.ts",
+      "name": "ToolSchema",
+      "actual": [
+        "deferLoading",
+        "name",
+        "description",
+        "parameters"
+      ]
+    },
+    {
+      "file": "packages/llm/llm/src/types.ts",
+      "name": "ToolCallBlock",
+      "actual": [
+        "type",
+        "id",
+        "name",
+        "arguments"
+      ]
+    }
+  ],
+  "exportedFunctions": [
+    {
+      "file": "packages/core/tools/src/schema.ts",
+      "name": "defineTool",
+      "line": 555
+    },
+    {
+      "file": "packages/core/tools/src/schema.ts",
+      "name": "validateArgs",
+      "line": 479
+    },
+    {
+      "file": "packages/core/tools/src/schema.ts",
+      "name": "parameterSchemaSpecToJsonSchema",
+      "line": 450
+    },
+    {
+      "file": "packages/core/tools/src/schema.ts",
+      "name": "valueSchemaSpecToJsonSchema",
+      "line": 439
+    },
+    {
+      "file": "packages/core/tools/src/schema.ts",
+      "name": "projectToolSchema",
+      "line": 641
+    }
+  ],
+  "metrics": {
+    "allBodyCjk": 9295,
+    "defaultBodyCjk": 6990,
+    "codeBlocks": 21,
+    "codeLines": 333,
+    "defaultCodeLines": 53,
+    "details": 21,
+    "coreConcepts": 7,
+    "coreConceptNames": [
+      "ToolDefinition",
+      "Schema DSL",
+      "canonical value/render",
+      "registration lifetime",
+      "Scope view/restriction",
+      "Step admission",
+      "executor description"
+    ],
+    "coreSourceFiles": 5,
+    "exercises": 4,
+    "thoughts": 10,
+    "figures": 4,
+    "scope": "CJK excludes code/URLs/comments; default excludes deepdive; counts are not measured learning time"
+  }
+}

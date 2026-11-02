@@ -1,0 +1,53 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "registry.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h13-lab-8xuTjR",
+  "programs": [
+    {
+      "name": "admission.ts",
+      "sha256": "52276c18bb89fafe6bf3b4e5d002197346a9c64de79a68faeafe38f70acc32d0"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "3598b8ef133bd86eb895741b9d9e1727a063b09edd3783a522b41cabbf68d985"
+    },
+    {
+      "name": "definitions.ts",
+      "sha256": "db2402fbfad26bfd0fa1b3f997d6d02813c8c01f4f16cf84332a488139f91c90"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "ca32c6ee7608fa71ff7087a0b33d4ff56c5929f19a7fff6dcb229b2de0feb52e"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "4476889b94269d2b4027d810511af0296d3847f665dabaaaa54c89f1ce032642"
+    },
+    {
+      "name": "progressive.ts",
+      "sha256": "8efde56595b97f1bb0718e9cde742f9bacdb457777eb187d80ff4cc752efeab0"
+    },
+    {
+      "name": "registry.test.ts",
+      "sha256": "83a75620e5a32e4436167ea0454b8f343b6b5a74d0ae7de1a4505b263f92b5f3"
+    },
+    {
+      "name": "requests.ts",
+      "sha256": "110da12c5509b1e2989e4d6f7df5747bd5841ea58032b7d16c671bc863432cbd"
+    },
+    {
+      "name": "scopes.ts",
+      "sha256": "76e5eaeaa6da677f6fe2c5795b1c3cb64fa5c6a77c5ddb22a2cd7a73bb7ddc2f"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "95215b931f23391c83dedaa9877cc32cbe828f4c0c0c5d954e50318a070da236"
+    }
+  ],
+  "exit": 0,
+  "stdout": "TAP version 13\n# Subtest: C01 valid canonical JSON and model rendering are distinct\nok 1 - C01 valid canonical JSON and model rendering are distinct\n  ---\n  duration_ms: 1.0294\n  type: 'test'\n  ...\n# Subtest: C02 missing required input never reaches body\nok 2 - C02 missing required input never reaches body\n  ---\n  duration_ms: 0.0859\n  type: 'test'\n  ...\n# Subtest: C03 wrong nested array element rejected with runtime error\nok 3 - C03 wrong nested array element rejected with runtime error\n  ---\n  duration_ms: 0.0541\n  type: 'test'\n  ...\n# Subtest: C04 nested closed object rejects unknown properties\nok 4 - C04 nested closed object rejects unknown properties\n  ---\n  duration_ms: 0.0453\n  type: 'test'\n  ...\n# Subtest: C05 parameter root remains open\nok 5 - C05 parameter root remains open\n  ---\n  duration_ms: 0.0517\n  type: 'test'\n  ...\n# Subtest: C06 business constraint is not supplied by array schema\nok 6 - C06 business constraint is not supplied by array schema\n  ---\n  duration_ms: 0.1411\n  type: 'test'\n  ...\n# Subtest: C07 actual shared pipeline rejects invalid canonical output\nok 7 - C07 actual shared pipeline rejects invalid canonical output\n  ---\n  duration_ms: 0.0542\n  type: 'test'\n  ...\n# Subtest: C08 schemas whitelist model fields and disposer unregisters\nok 8 - C08 schemas whitelist model fields and disposer unregisters\n  ---\n  duration_ms: 0.0733\n  type: 'test'\n  ...\n# Subtest: C09 isolated scopes share globals and keep own tools\nok 9 - C09 isolated scopes share globals and keep own tools\n  ---\n  duration_ms: 0.0996\n  type: 'test'\n  ...\n# Subtest: C10 intersected restrictions exempt own shadow definitions\nok 10 - C10 intersected restrictions exempt own shadow definitions\n  ---\n  duration_ms: 0.0806\n  type: 'test'\n  ...\n# Subtest: C11 descendant can filter inherited ancestor registration\nok 11 - C11 descendant can filter inherited ancestor registration\n  ---\n  duration_ms: 0.0938\n  type: 'test'\n  ...\n# Subtest: C12 plugin and scope disposal unwind real registry effects\nok 12 - C12 plugin and scope disposal unwind real registry effects\n  ---\n  duration_ms: 0.0629\n  type: 'test'\n  ...\n# Subtest: C13 registered conditional inspection differs from executable without set\nok 13 - C13 registered conditional inspection differs from executable without set\n  ---\n  duration_ms: 0.0556\n  type: 'test'\n  ...\n# Subtest: C14 resolve captures condition once and next set evaluates again\nok 14 - C14 resolve captures condition once and next set evaluates again\n  ---\n  duration_ms: 0.0566\n  type: 'test'\n  ...\n# Subtest: C15 live restriction can mask and restore an admitted registration\nok 15 - C15 live restriction can mask and restore an admitted registration\n  ---\n  duration_ms: 0.051\n  type: 'test'\n  ...\n# Subtest: C16 unregister and same-object replacement invalidate old admission\nok 16 - C16 unregister and same-object replacement invalidate old admission\n  ---\n  duration_ms: 0.0293\n  type: 'test'\n  ...\n# Subtest: C17 disposed set stays empty and does not unregister definition\nok 17 - C17 disposed set stays empty and does not unregister definition\n  ---\n  duration_ms: 0.0235\n  type: 'test'\n  ...\n# Subtest: C18 false and throwing activation are distinct\nok 18 - C18 false and throwing activation are distinct\n  ---\n  duration_ms: 0.0261\n  type: 'test'\n  ...\n# Subtest: C19 abort does not race an uncooperative when promise\nok 19 - C19 abort does not race an uncooperative when promise\n  ---\n  duration_ms: 0.0229\n  type: 'test'\n  ...\n# Subtest: C20 duplicate name, reserved name, and invalid timeout fail registration\nok 20 - C20 duplicate name, reserved name, and invalid timeout fail registration\n  ---\n  duration_ms: 5.4588\n  type: 'test'\n  ...\n# Subtest: C21 restrict requires scope and known inherited names\nok 21 - C21 restrict requires scope and known inherited names\n  ---\n  duration_ms: 2.284\n  type: 'test'\n  ...\n# Subtest: C22 scalar DSL enforces integer enum const boolean null\nok 22 - C22 scalar DSL enforces integer enum const boolean null\n  ---\n  duration_ms: 0.3204\n  type: 'test'\n  ...\n# Subtest: C23 oneOf demands exactly one matching branch\nok 23 - C23 oneOf demands exactly one matching branch\n  ---\n  duration_ms: 0.1631\n  type: 'test'\n  ...\n# Subtest: C24 json accepts lossless JSON but not undefined, nonfinite or exotic\nok 24 - C24 json accepts lossless JSON but not undefined, nonfinite or exotic\n  ---\n  duration_ms: 0.1187\n  type: 'test'\n  ...\n# Subtest: C25 DSL rejects unsupported keywords, missing object openness and required false\nok 25 - C25 DSL rejects unsupported keywords, missing object openness and required false\n  ---\n  duration_ms: 0.1414\n  type: 'test'\n  ...\n# Subtest: C26 annotations default do not fill missing required input\nok 26 - C26 annotations default do not fill missing required input\n  ---\n  duration_ms: 0.119\n  type: 'test'\n  ...\n# Subtest: C31 progressive two-number definition produces each advertised stage\nok 27 - C31 progressive two-number definition produces each advertised stage\n  ---\n  duration_ms: 2.6935\n  type: 'test'\n  ...\n# Subtest: C27 raw defineTool.execute validates input, not its own output\nok 28 - C27 raw defineTool.execute validates input, not its own output\n  ---\n  duration_ms: 0.1504\n  type: 'test'\n  ...\n# Subtest: C28 admission is tied to exact agent object and release keeps registrations\nok 29 - C28 admission is tied to exact agent object and release keeps registrations\n  ---\n  duration_ms: 2.5848\n  type: 'test'\n  ...\n# Subtest: C29 unregister during pending when cannot resurrect tool\nok 30 - C29 unregister during pending when cannot resurrect tool\n  ---\n  duration_ms: 1.9536\n  type: 'test'\n  ...\n# Subtest: C30 scoped shadow is exact definition, root schema projection detached\nok 31 - C30 scoped shadow is exact definition, root schema projection detached\n  ---\n  duration_ms: 3.7777\n  type: 'test'\n  ...\n# Subtest: D01 real loop success: request schemas, calls, results and live eligibility\nok 32 - D01 real loop success: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 20.4008\n  type: 'test'\n  ...\n# Subtest: D02 real loop false: request schemas, calls, results and live eligibility\nok 33 - D02 real loop false: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 10.8035\n  type: 'test'\n  ...\n# Subtest: D03 real loop retry: request schemas, calls, results and live eligibility\nok 34 - D03 real loop retry: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 12.7934\n  type: 'test'\n  ...\n# Subtest: D04 real loop remove: request schemas, calls, results and live eligibility\nok 35 - D04 real loop remove: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 11.6831\n  type: 'test'\n  ...\n# Subtest: D05 real loop replace: request schemas, calls, results and live eligibility\nok 36 - D05 real loop replace: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 10.8365\n  type: 'test'\n  ...\n# Subtest: D06 real loop restrict: request schemas, calls, results and live eligibility\nok 37 - D06 real loop restrict: request schemas, calls, results and live eligibility\n  ---\n  duration_ms: 11.5729\n  type: 'test'\n  ...\n1..37\n# tests 37\n# suites 0\n# pass 37\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 568.0451\n",
+  "stderr": ""
+}

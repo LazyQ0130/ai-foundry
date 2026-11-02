@@ -1,0 +1,68 @@
+from pathlib import Path
+import json
+R=Path(__file__).resolve().parents[1];lock=json.loads((R/'evidence/source-lock.json').read_text(encoding='utf-8'));S=Path(lock['sourceCache']);C=lock['commit']
+rows=[]
+def add(claim,path,needle,span,validation,limit=''):
+ lines=(S/path).read_text(encoding='utf-8').splitlines();start=next(i+1 for i,line in enumerate(lines) if needle in line);end=min(start+span,len(lines));
+ rows.append({'id':f'S{len(rows)+1:02}','claim':claim,'path':path,'start':start,'end':end,'symbol':needle,'validation':validation,'limit':limit or '只支持这一条结论；不推导完整安全/应用保证'})
+T='packages/core/tools/src/';L='packages/llm/llm/src/';A='packages/core/agent-loop/src/';SP='packages/core/system-prompt/src/'
+add('ToolsService 是 Cordis Service，ctx.tools 提供访问',T+'index.ts','export class ToolsService',15,'AST + 静态；C01/D01 挂载真实服务')
+add('ToolDefinition 继承声明，但包含执行/输出/展示信息',T+'contracts.ts','export interface ToolDefinition',74,'AST + S04–S09 分项核；C08','类型接口不自动验证外部数据')
+add('output 的 schema/render/presentationMeta 分工',T+'contracts.ts','export interface ToolOutputDefinition',9,'C01/C07；D01 持久消息无 value','不展开 post/metadata 全流水线')
+add('projectContent 是策略前内容投影，finalizeContent 是最后内容转换',T+'contracts.ts','projectContent?',15,'静态接口与注释；未单测 H14 钩子','仅识别职责，不声称已验策略顺序')
+add('timeoutMs 只声明正有限合作预算，不会由登记自动计时',T+'contracts.ts','Cooperative tool-call timeout budget',6,'register/defineTool 校验 C20；实际强制机制见下项','未运行真实时间截止实验')
+add('截止时间由专用策略包装提供', 'packages/guard/timeout-policy/src/index.ts','export function apply',25,'静态阅读 timeout policy 包装与 signal 恢复','未执行该策略，H14/H15 再深入')
+add('isConcurrencySafe 是分类器，不是全局安全证明',T+'contracts.ts','isConcurrencySafe?',2,'静态；tools/tests/execution-mode.spec.ts 阅读','未新测并行调度')
+add('Host presenters 是纯展示；入参软校验失败回退',T+'schema.ts','if (userPresentCall)',23,'静态包装；cookbook 实现约定','不承诺用户回调自己抛错也被普遍捕获')
+add('内置 Web Client 不直接消费 Host presenter','docs/cookbook/adding-a-tool.zh.md','## Web Client 展示',10,'固定文档原文阅读','未启动 Web Client')
+add('ValueSchemaSpec 的节点与 oneOf',T+'schema.ts','export type ValueSchemaSpec',16,'C22–C25；官方 schema.spec 阅读')
+add('隐式参数根开放，required 属于属性',T+'schema.ts','export function parameterSchemaSpecToJsonSchema',13,'C02/C05/C26/C31；官方 schema.spec')
+add('显式 object 必须声明 additionalProperties',T+'schema.ts',"case 'object':",30,'C04/C25；官方 schema.spec','作者 DSL 与 raw Schema 默认开放区别')
+add('enum / const 必须是正确标量且相容',T+'json-schema.ts','const hasEnum =',25,'C22 + 官方 schema.spec/json-schema.spec')
+add('raw 支持关键字被显式限制，注解不强制业务约束',T+'json-schema.ts','function checkSchemaNode',165,'C25/C26；官方 json-schema.spec')
+add('exact-one 判断命中次数，number 与 integer 会重叠',T+'json-schema.ts',"if (frame.kind === 'oneOf')",5,'C23；正文思考3','TS union 不等于 exact-one')
+add('json 接受无损 JSON，不接受非 JSON 对象或非有限值',T+'json-schema.ts','if (nodeType === undefined)',4,'C24','不限制成对象根')
+add('required 检查自有属性，closed 对象拒绝额外键',T+'json-schema.ts','const required = Object.hasOwn(frame.node',33,'C02–C05；A 原始诊断')
+add('精确类型推断有16层容器边界',T+'schema.ts',"Depth['length'] extends 16",18,'官方类型测试静态阅读；未新跑全仓 tsc','运行时仍遍历完整 Schema')
+add('validateArgs 接受作者参数映射，返回诊断列表',T+'schema.ts','export function validateArgs',2,'C26/C31','不能把 raw Schema 当 DSL 传入')
+add('defineTool 编译一次；execute 包装校验输入后调用主体',T+'schema.ts','export function defineTool',57,'C02/C03/C31','输出校验在共享流水线，不在该 execute 包装')
+add('直接调 execute 不证明输出已验证',T+'schema.ts','return userExecute',2,'C27 对照 C07')
+add('投影只选 name/description/parameters/deferLoading',T+'schema.ts','export function projectToolSchema',6,'C08/C30；AST')
+add('注册校验 output、timeout 和保留名，并走层 Effect',T+'index.ts','register(definition:',25,'C08/C12/C20','受信任只读借用；不宣称全字段自动克隆验证')
+add('同一层重复名称失败，精确 disposer 移除原登记','packages/core/scope/src/store.ts','export class NamedEntries',60,'C20/C30；官方 scoped.spec','局部遮蔽不是同层重复')
+add('Context 同时决定登记可见层和 Fiber 归属','packages/core/scope/src/store.ts','effect(',45,'C12；H07 Effect 语义','未做独立 B 重复计数')
+add('Scope 父链显式绑定且检查环','packages/core/scope/src/index.ts','export function bindScopeParent',10,'C11/C28 + 静态','不是自动读取 parentAgent')
+add('createScope 建立带 tag 上下文与配对释放','packages/core/scope/src/index.ts','export function createScope',13,'C09/C12/C28','C 使用结构化键；D 创建真实 Agent')
+add('Scope 仅路由受信任同进程贡献，不是安全边界','packages/core/scope/README.zh.md','### 设计理念',4,'固定文档 + 机制静态审阅','未运行 OS 沙箱实验')
+add('restriction 需要 scoped Context 与已知继承名',T+'index.ts','restrict(filter:',27,'C21','unknown/global 文案不限制为只有全局层')
+add('view 合并祖先，过滤继承，再叠加自身登记',T+'index.ts','private view(',35,'C09–C11/C30；官方 scoped ancestor 测试')
+add('多个限制取交集，名称列表编译为独立集合',T+'index.ts','admits(name:',9,'C10 + restrict162–188 + scoped.spec 静态','输入数组后改动与未来工具行为由官方测试阅读补充')
+add('get 是检查；executable 无 set 排除条件工具',T+'index.ts','get(name:',30,'C13；D02')
+add('条件上下文是 agent / 捕获模型 / signal',T+'contracts.ts','export interface ToolActivationContext',20,'C14/C19；D03 captured selection')
+add('resolve 顺序等待，false 排除，throw 包装且不交部分集合',T+'index.ts','async resolve(',20,'C14/C18/C19；官方 activation.spec','未声称回滚条件自身副作用')
+add('set 读时检查 exact agent、当前注册记录及 definition 身份',T+'index.ts','const current = this.view',18,'C15/C16/C28/C29；D04–D06')
+add('dispose 关闭 set，不注销定义',T+'index.ts','dispose: () =>',5,'C17/C28；D 全部集结束为空')
+add('definitions/schemas 的 set 可选，schemas 深复制参数',T+'index.ts','definitions(scope?',21,'C08/C30 + 静态')
+add('Registry 委托最近作用域执行器处理原始批次',T+'index.ts','async execute(input:',6,'D01–D06 + 静态')
+add('ToolExecutor 有 describe 和 execute 两项核心入口',T+'executor.ts','export interface ToolExecutor',27,'AST；Native 实际 C/D')
+add('Native describe 逐个投影当前能力','packages/core/tool-executor-native/src/index.ts','describe(tools:',3,'C08/D01 请求 tools')
+add('PTC describe 只给 run_code，SDK 另使用当前定义','packages/core/tool-executor-ptc/src/index.ts','describe(_tools:',13,'静态；ptc.spec.ts:306–324 阅读','未启动 PTC Runtime 或执行程序')
+add('ToolsService 构造时贡献 SystemPrompt 工具 provider',T+'index.ts','ctx.systemPrompt.tools',4,'D01–D06 跨边界声明')
+add('SystemPrompt 独立收集复制排序工具，文本 waterfall 不拥有声明',SP+'index.ts','async assemble(context:',90,'D01/C08 + 静态','不重新教授 H11 全部排序规则')
+add('Loop 捕获 selection，resolve 先于 assembly',A+'agent.ts','const toolSet = await',25,'D01/D03 准入观察与请求')
+add('同 Step retry 复用 decision/assembly，只有明确 retry 决策才继续',A+'agent.ts','private async step(',160,'D03 两 Step/三请求/两 when/一次主体','非所有失败自动重试')
+add('Step 结束释放 set，包括失败路径',A+'agent.ts','decision.toolSet.dispose()',3,'D01–D06 released + 静态')
+add('Loop 把 ToolCallBlock 与本步 set 交给真实执行器',A+'agent.ts','toolSet: decision.toolSet',5,'D01–D06 调用/结果/主体计数')
+add('Runtime 对不支持 toolUpdate 的路线过滤 developer 消息',L+'content.ts','export function projectToolUpdates',12,'D03/D04/D06 对照两份完整输入；QA01','不改变当前活动 tools 列表')
+add('输出验证、快照与渲染由真实共享流水线完成',T+'pipeline.ts','private createSuccessResult',33,'C01/C07/C27；相关完整函数静态审阅','不扩展成所有 H14 策略都已经测试')
+add('规范 value 仅执行期，不作为持久事件值全存',T+'contracts.ts','export interface ToolExecutionSuccess',12,'D01 tool/result.message 无 value；静态 batch 提交','模型内容/持久 metadata 另分层')
+add('ToolCallBlock 的 id/name 与 arguments 字符串',L+'types.ts','export interface ToolCallBlock',12,'D01–D06 与 H12 原始类型；AST','模型提议不等于主体执行')
+add('ToolResultMessage 用 toolCallId 关联并保留 content/isError',L+'message.ts','export interface ToolResultMessage',11,'D01–D06；H12 类型语义','没有把执行期规范 value 全量加入此消息')
+add('ToolRuntime 是 ToolsService 的导出别名',T+'index.ts','ToolsService as ToolRuntime',0,'静态末行 + 实际导入运行','不是另一个独立注册服务')
+
+out=['# H13 固定 Commit 源码断言清单','',f'锁定 `{C}`；{len(rows)} 条。链接行号由实际本地锁定源码生成，再做字节/边界与 AST 检查。语义来自逐段阅读及列出的行为测试，自动范围校验不能代替语义审查。','', '官方测试为已阅读参考，**没有执行上游 Vitest 全套**；避免其与本轮自有 Node 测试混数。','', '| ID | 关键结论 | 源码定位 | 验证 | 限制 |','| --- | --- | --- | --- | --- |']
+for r in rows:
+ url=f'https://github.com/deepseek-ai/deepseek-harness/blob/{C}/{r["path"]}#L{r["start"]}-L{r["end"]}'
+ out.append(f'| {r["id"]} | {r["claim"]} | [{r["path"]}:{r["start"]}–{r["end"]}]({url}) | {r["validation"]} | {r["limit"]} |')
+out+=['','## 已阅读的官方测试定位','','| 官方测试 | 对照范围 |','| --- | --- |','| tools/tests/schema.spec.ts | 节点、开放根、显式 object、literal 与 TS 类型测试 |','| tools/tests/json-schema.spec.ts | raw 子集、值遍历与 exact-one |','| tools/tests/scoped.spec.ts | 同层重复、遮蔽、交集、祖先继承与生命周期 |','| tools/tests/activation.spec.ts | false/true、exact scope、注册身份、取消与异常 |','| tools/tests/execution-mode.spec.ts | 并发分类仅明确 true；本课未跑调度 |','| tool-executor-ptc/tests/ptc.spec.ts:306–324 | Native/PTC 声明与 SDK 差异 |','','完整文件均已纳入 source-lock；官方测试中更广的策略、并发、PTC执行不属于本轮实测。']
+(R/'source-checklist.md').write_text('\n'.join(out)+'\n',encoding='utf-8');(R/'evidence/source-assertions.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(f'{len(rows)} assertions generated')

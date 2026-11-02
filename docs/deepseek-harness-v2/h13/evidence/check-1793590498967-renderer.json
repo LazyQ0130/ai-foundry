@@ -1,0 +1,34 @@
+{
+  "name": "renderer",
+  "command": "D:\\Program Files\\nodejs\\node.exe",
+  "args": [
+    "--import",
+    "tsx",
+    "--test",
+    "--test-reporter=tap",
+    "tests/lesson-renderer.test.ts"
+  ],
+  "started": "2026-11-02T03:34:56.894Z",
+  "ended": "2026-11-02T03:34:58.967Z",
+  "exit": 0,
+  "stdout": "TAP version 13\n# Subtest: V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys\nok 1 - V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys\n  ---\n  duration_ms: 15.7348\n  type: 'test'\n  ...\n# Subtest: V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON\nok 2 - V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON\n  ---\n  duration_ms: 8.8123\n  type: 'test'\n  ...\n# Subtest: Markdown renders headings, prose, formatting, code, GFM, links and captioned images\nok 3 - Markdown renders headings, prose, formatting, code, GFM, links and captioned images\n  ---\n  duration_ms: 13.6159\n  type: 'test'\n  ...\n# Subtest: all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed\nok 4 - all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed\n  ---\n  duration_ms: 22.5946\n  type: 'test'\n  ...\n# Subtest: directive allowlist rejects arbitrary components/attributes and malformed prompts\nok 5 - directive allowlist rejects arbitrary components/attributes and malformed prompts\n  ---\n  duration_ms: 5.9241\n  type: 'test'\n  ...\n# Subtest: help extraction ignores prose and fenced examples and uses the directive allowlist\nok 6 - help extraction ignores prose and fenced examples and uses the directive allowlist\n  ---\n  duration_ms: 0.8485\n  type: 'test'\n  ...\n# Subtest: help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks\nok 7 - help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks\n  ---\n  duration_ms: 6.9958\n  type: 'test'\n  ...\n# Subtest: help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks\nok 8 - help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks\n  ---\n  duration_ms: 887.9116\n  type: 'test'\n  ...\n# Subtest: raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed\nok 9 - raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed\n  ---\n  duration_ms: 1.5662\n  type: 'test'\n  ...\n# Subtest: resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML\nok 10 - resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML\n  ---\n  duration_ms: 4.7357\n  type: 'test'\n  ...\n# Subtest: published courses render in full with unique stable progress keys\nok 11 - published courses render in full with unique stable progress keys\n  ---\n  duration_ms: 160.9937\n  type: 'test'\n  ...\n# Subtest: every authored lesson parses and renders with globally unique progress keys\nok 12 - every authored lesson parses and renders with globally unique progress keys\n  ---\n  duration_ms: 391.5368\n  type: 'test'\n  ...\n1..12\n# tests 12\n# suites 0\n# pass 12\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 2018.7093\n",
+  "stderr": "",
+  "inputs": {
+    "course-content/internal/deepseek-harness/h13/lesson.md": "7108c1a0b7412fc50ea8e8f8a96e5dedb419007ffa6ff0dcf62bb541747185c7",
+    "src/components/LessonMarkdown.tsx": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+    "src/index.css": "dbebfacf4fc7e358176887258f86e71f7424e4d78908b5966ae6153c88f21bf4",
+    "docs/deepseek-harness-v2/h13/scripts/check-content.ts": "6200f8b6b2c42f3e1546b5f068eee63e58c88726bcb9d297b11745ca5300296b",
+    "docs/deepseek-harness-v2/h13/scripts/check-sources.py": "8fe550a104f179cb3f95309c1467257bc0511e6aa659cf0b2b071a176903376c",
+    "docs/deepseek-harness-v2/h13/scripts/draw_figures.py": "006f20374ee278bca4ecdabc4594e224bbba6e3ae7cbaeffee69840987f878cd",
+    "docs/deepseek-harness-v2/h13/scripts/final-audit.py": "75a91372630ca8b07ad7ef08bd8d84183b13535fa29bbad3a95b5ae0574c705b",
+    "docs/deepseek-harness-v2/h13/scripts/make-reading-preview.tsx": "466f3afce14089dcfca16fa41096bea9e7eeca5646dfac89eaaad6450545b521",
+    "docs/deepseek-harness-v2/h13/scripts/prepare.py": "e61b87b323b28cfa82e6b61a19a7076723f6b6ea6f0b6efbb460da0952ddffb9",
+    "docs/deepseek-harness-v2/h13/scripts/preview-and-qa.tsx": "2ee628b1b09e9d6400718672d9d9f76369e12a90a72d96dee5e6b2735e4a9c11",
+    "docs/deepseek-harness-v2/h13/scripts/run-checks.mjs": "049fccac0d0b2124e956872b4e51caacf20bfcf7134899f124b9e7dda5fbf2c0",
+    "docs/deepseek-harness-v2/h13/scripts/run-labs.mjs": "015be23f6a7e11af1b031a8d823dbb888dc3aa2326bb1062ebc9019e92272127",
+    "docs/deepseek-harness-v2/h13/scripts/snapshot.py": "5a7506700793deaf8ea4c5b4523d3902229ed24486fd14ec47711aed3b2ace64",
+    "docs/deepseek-harness-v2/h13/scripts/sync-lab.py": "6a84f276e5bd0fc544a740c235b4e440b6494ec676868364106ef974f9fb6041",
+    "docs/deepseek-harness-v2/h13/scripts/write-reports.py": "14f3ba0616a8459baad3d5345e98d85ed0ab5cabceaf08649f2ce4e4790a1f80",
+    "docs/deepseek-harness-v2/h13/scripts/write-source-checklist.py": "4bd4f038d56146a8693bb5959668119568f2ee8c5417a233df45e08f2376899d"
+  }
+}
