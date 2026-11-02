@@ -1,0 +1,55 @@
+{
+  "args": [
+    "negative-answer.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h16-lab-Yoqmpx",
+  "programs": [
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "ca73c2adf1e5b1991f95b78b76ebce2f7d0c8585003185e1469a217d52e19dbb"
+    },
+    {
+      "name": "combined.ts",
+      "sha256": "de33bf4ca7948fef48d3e529f86f386e0413fcbf2b8062591d84798e30fad786"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "ceb5a1a0c54f4f25db8ff6190b12fc0f231212377694aae7256704206b98fce3"
+    },
+    {
+      "name": "ecosystem.test.ts",
+      "sha256": "e0208045bc15eb4b446e53f8e6995f2f1d111924990d3f883f69d6139c6e37ea"
+    },
+    {
+      "name": "file.ts",
+      "sha256": "e0533771f65da24b7dac1b4dccb7865e8a600aa4e661525b11056500e1db2ac8"
+    },
+    {
+      "name": "mcp-server.mjs",
+      "sha256": "7b0efc0c8f8220e930827d25ad559476b5ac435f890fe2ad7e4cdd2b0004137e"
+    },
+    {
+      "name": "mcp.ts",
+      "sha256": "c8d04e7a9bf9e76dd0a2fd0890be3794408342992743f6310926b5de04930d5c"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "ba61f6d47b01e6105bb63ccad10f8e8c7847ad3249344c60859d73ddb43ff295"
+    },
+    {
+      "name": "shell.ts",
+      "sha256": "f5c008cbeeab0028435cb601ef6f1ef9942d0aa07e19e3d5c5833c951e2e747a"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "9797e5cd5ee207fe736aaf78953e6403eef93ebe347c7022ae6dfae72c9072f9"
+    },
+    {
+      "name": "web.ts",
+      "sha256": "383f5bc7aeca4e60239b8e7547341c460e33af289f32bc9e36b7ce9e1509153f"
+    }
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "node:internal/modules/run_main:107\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: 工具注册与后端可用性不是同一个状态\r\n+ actual - expected\r\n\r\n+ [\r\n+   {\r\n+     description: 'Search the web for current information. Returns an optional summary answer and a list of source URLs.',\r\n+     name: 'web_search',\r\n+     parameters: {\r\n+       properties: {\r\n+         queries: {\r\n+           description: '1–4 search queries; their results are merged.',\r\n+           items: {\r\n+             type: 'string'\r\n+           },\r\n+           type: 'array'\r\n+         }\r\n+       },\r\n+       required: [\r\n+         'queries'\r\n+       ],\r\n+       type: 'object'\r\n+     }\r\n+   },\r\n+   {\r\n+     description: 'Fetch the content of a specific HTTP(S) URL and return it decoded to text.',\r\n+     name: 'web_fetch',\r\n+     parameters: {\r\n+       properties: {\r\n+         url: {\r\n+           description: 'The HTTP(S) URL to fetch.',\r\n+           type: 'string'\r\n+         }\r\n+       },\r\n+       required: [\r\n+         'url'\r\n+       ],\r\n+       type: 'object'\r\n+     }\r\n+   }\r\n+ ]\r\n- []\r\n\r\n    at <anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h16-lab-Yoqmpx\\negative-answer.ts:4:8) {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: [\r\n    {\r\n      name: 'web_search',\r\n      description: 'Search the web for current information. Returns an optional summary answer and a list of source URLs.',\r\n      parameters: {\r\n        type: 'object',\r\n        properties: {\r\n          queries: {\r\n            type: 'array',\r\n            description: '1–4 search queries; their results are merged.',\r\n            items: [Object]\r\n          }\r\n        },\r\n        required: [ 'queries' ]\r\n      }\r\n    },\r\n    {\r\n      name: 'web_fetch',\r\n      description: 'Fetch the content of a specific HTTP(S) URL and return it decoded to text.',\r\n      parameters: {\r\n        type: 'object',\r\n        properties: {\r\n          url: { type: 'string', description: 'The HTTP(S) URL to fetch.' }\r\n        },\r\n        required: [ 'url' ]\r\n      }\r\n    }\r\n  ],\r\n  expected: [],\r\n  operator: 'deepStrictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v24.16.0\r\n"
+}

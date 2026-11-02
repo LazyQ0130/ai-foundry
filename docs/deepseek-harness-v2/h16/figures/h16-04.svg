@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1630" viewBox="0 0 640 1630" role="img"><title>综合夹具：五次调用进入历史</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1630" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">综合夹具：五次调用进入历史</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">真实 AgentLoop 装配本 Step</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Scope 只允许五个指定工具</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型回复由脚本 Adapter 提供</text>
+<path d="M320 265 V321" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="300" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">调用批次</text>
+<rect x="32" y="346" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="389" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">1 File → 2 Shell</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">File：真实工具 / 后端读取新夹具</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Shell：真实工具 + Mock Executor</text>
+<text x="52" y="517" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不启动 Bash / PowerShell 命令</text>
+<path d="M320 553 V609" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="588" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">顺序示例</text>
+<rect x="32" y="634" width="576" height="156" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="677" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">3 Search → 4 Fetch → 5 MCP</text>
+<text x="52" y="721" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Web：真实 Runtime + 离线提供方</text>
+<text x="52" y="763" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">MCP：实际 SDK / stdio / 本地 Server</text>
+<path d="M320 799 V855" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="834" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">结算</text>
+<rect x="32" y="880" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="923" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工具结果 → Session → 下一请求</text>
+<text x="52" y="967" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">实际 tool/call 与 tool/result</text>
+<text x="52" y="1009" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">第二 Session 重建请求前缀核对</text>
+<text x="52" y="1051" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">脚本 Adapter 据工具历史生成说明</text>
+<rect x="32" y="1104" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1147" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">拒绝分支：远端还声明 write</text>
+<text x="52" y="1191" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">本地允许集合没有这个工具</text>
+<text x="52" y="1233" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">工具结果失败；服务器计数仍为 0</text>
+<text x="52" y="1275" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">发现不能自行扩大本地权限</text>
+<text x="32" y="1602" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 条件组合教学图</text>
+</svg>

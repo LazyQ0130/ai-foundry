@@ -1,0 +1,83 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 工具注册与后端可用性不是同一个状态
++ actual - expected
+
++ [
++   {
++     description: 'Search the web for current information. Returns an optional summary answer and a list of source URLs.',
++     name: 'web_search',
++     parameters: {
++       properties: {
++         queries: {
++           description: '1–4 search queries; their results are merged.',
++           items: {
++             type: 'string'
++           },
++           type: 'array'
++         }
++       },
++       required: [
++         'queries'
++       ],
++       type: 'object'
++     }
++   },
++   {
++     description: 'Fetch the content of a specific HTTP(S) URL and return it decoded to text.',
++     name: 'web_fetch',
++     parameters: {
++       properties: {
++         url: {
++           description: 'The HTTP(S) URL to fetch.',
++           type: 'string'
++         }
++       },
++       required: [
++         'url'
++       ],
++       type: 'object'
++     }
++   }
++ ]
+- []
+
+    at <anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h16-lab-ZykSPc\negative-answer.ts:4:8) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      name: 'web_search',
+      description: 'Search the web for current information. Returns an optional summary answer and a list of source URLs.',
+      parameters: {
+        type: 'object',
+        properties: {
+          queries: {
+            type: 'array',
+            description: '1–4 search queries; their results are merged.',
+            items: [Object]
+          }
+        },
+        required: [ 'queries' ]
+      }
+    },
+    {
+      name: 'web_fetch',
+      description: 'Fetch the content of a specific HTTP(S) URL and return it decoded to text.',
+      parameters: {
+        type: 'object',
+        properties: {
+          url: { type: 'string', description: 'The HTTP(S) URL to fetch.' }
+        },
+        required: [ 'url' ]
+      }
+    }
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0

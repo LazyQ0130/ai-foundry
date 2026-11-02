@@ -1,0 +1,24 @@
+{
+  "host": "nt",
+  "node": "v24.16.0",
+  "actualOS": "Windows win32 x64 in this run",
+  "File": "Actual tool-fs + fs-sandbox/local + working-directory/observation; native Windows file IO; cleanup hook only replaced",
+  "Shell": "Actual tool-pwsh/shell-env/Jobs/Tools; explicit FixtureShell, no Bash/PowerShell process",
+  "Web": "Actual WebRuntime/tool-web/activation; memory providers only; HTTP URL hygiene pure function; no DNS/network",
+  "MCP": "Actual mcp-client plugin + SDK client/server/core2.2.0 + stdio Node child processes; local fixture Server logic",
+  "MCPReconnect": "One actual stdio disconnect/reconnect observed with new PID; disabled reconnect retained tools and failing calls",
+  "MCPResourceScope": "Actual resource runtime/layers; scope-only provider explicitly memory fake",
+  "AgentLoop": "Actual multi-family scoped Loop/Native/Session; scripted adapter, per-request replay prefixes checked",
+  "NOT_RUN": [
+    "complete application E",
+    "real LLM/API credentials",
+    "actual web search/fetch/network targets",
+    "native Bash/PowerShell and process sandbox Linux/macOS/Windows",
+    "MCP Streamable HTTP/external server authentication",
+    "full reconnect/backoff/exhaustion/late-generation/closure-failure matrix",
+    "real image decode/attachment storage",
+    "hostile filesystem races",
+    "independent external review",
+    "learner trial and measured time"
+  ]
+}

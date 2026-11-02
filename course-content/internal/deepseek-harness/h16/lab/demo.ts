@@ -1,0 +1,12 @@
+import {filePractice} from './file.ts';
+import {shellPractice} from './shell.ts';
+import {webPractice,webCases} from './web.ts';
+import {mcpPractice} from './mcp.ts';
+import {combinedPractice} from './combined.ts';
+console.log('A_file',JSON.stringify(await filePractice()));
+console.log('B_shell',JSON.stringify(await shellPractice()));
+for(const kind of webCases)console.log('C_'+kind,JSON.stringify(await webPractice(kind)));
+console.log('D_mcp',JSON.stringify(await mcpPractice()));
+console.log('D_reconnect',JSON.stringify(await mcpPractice(true)));
+console.log('X_combined',JSON.stringify(await combinedPractice()));
+console.log('X_restricted',JSON.stringify(await combinedPractice(true)));

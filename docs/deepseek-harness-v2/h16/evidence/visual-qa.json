@@ -1,0 +1,378 @@
+{
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "57029ae59cdaf4e30257feb354921d52534b370070488595b1037205f31c4248",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h16-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1420,
+      "sourceSha256": "a22e7bdf57c0f1185f14ee79c4a8a15a8b47e05dcc3e67a210a57b8bf53a6a31",
+      "imageSha256": "d58c34813410e1da75b8ddfbbaf6f426f8b02f00573db57130fb6c4e5bf50ccf"
+    },
+    {
+      "id": "h16-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1500,
+      "sourceSha256": "64020e6ddd6f8b55798f61f1473e0e0d761da489f731f871fafd260c1058afff",
+      "imageSha256": "3d89ac3c01ece1bb7ddde084ff5fa1c9052967f0008f88a9d01982253af7e72b"
+    },
+    {
+      "id": "h16-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1630,
+      "sourceSha256": "fe5d4e8d0c2e0e66812956ec517dd4e738fd81cff9e884b0c7bcdb2a7c447148",
+      "imageSha256": "f1d2d04e627da6ee007091ce2a2e05b93117f79761d7bb8bfed48266ffa0b46e"
+    },
+    {
+      "id": "h16-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1630,
+      "sourceSha256": "e0f5ccd8c90621f250df27e9b0b842237fe87324b628b56ee6c0925a0c8bfe85",
+      "imageSha256": "b9894853386a6df19e3519e1de1711572e996797df3575cbc6966819e7f2c43b"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+            "src": "/course-media/harness-v2/h16/h16-01.png"
+          },
+          {
+            "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+            "src": "/course-media/harness-v2/h16/h16-02.png"
+          },
+          {
+            "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+            "src": "/course-media/harness-v2/h16/h16-03.png"
+          },
+          {
+            "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+            "src": "/course-media/harness-v2/h16/h16-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "bootstrap.mjs",
+        "support.ts",
+        "file.ts",
+        "shell.ts",
+        "web.ts",
+        "mcp-server.mjs",
+        "mcp.ts",
+        "combined.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 10,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 1791,
+        "scrolled": 1080
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 24
+      },
+      "answerGeometry": {
+        "top": 8.484375,
+        "bottom": 409.25,
+        "viewport": 950,
+        "height": 400.765625,
+        "content": "想深入再看：实践 A 详细参考答案创建返回成功，window给出行号2和3、totalLines=4，说明窗口与全文件行数分开。ambiguous失败且error.info.code为FS_AMBIGUOUS_EDIT；edit修改title后verify看到title=ne及明确的8字符截断提示，不能据截断显示误判实际保存只剩8字符。length-cap同样保留last-lin并追加提示。另一Session没有观察，edit得到FS_NOT_OBSERVED。取消的read失败；卸载观察插件后同一Session可不带自动版本条件编辑当前内容，但fs-sandbox仍在，不是所有保护一起消失。没有附件服务时read_image不注册，Mock附件服务出现后注册，未知模型路线在文件IO之前拒绝，附件卸载后工具又消失。这没有验证真实图像内容处理。将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。",
+        "lastParagraph": "将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+            "src": "/course-media/harness-v2/h16/h16-01.png"
+          },
+          {
+            "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+            "src": "/course-media/harness-v2/h16/h16-02.png"
+          },
+          {
+            "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+            "src": "/course-media/harness-v2/h16/h16-03.png"
+          },
+          {
+            "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+            "src": "/course-media/harness-v2/h16/h16-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "bootstrap.mjs",
+        "support.ts",
+        "file.ts",
+        "shell.ts",
+        "web.ts",
+        "mcp-server.mjs",
+        "mcp.ts",
+        "combined.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 10,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 1783,
+        "scrolled": 1462
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 24
+      },
+      "answerGeometry": {
+        "top": 7.640625,
+        "bottom": 721.171875,
+        "viewport": 950,
+        "height": 713.53125,
+        "content": "想深入再看：实践 A 详细参考答案创建返回成功，window给出行号2和3、totalLines=4，说明窗口与全文件行数分开。ambiguous失败且error.info.code为FS_AMBIGUOUS_EDIT；edit修改title后verify看到title=ne及明确的8字符截断提示，不能据截断显示误判实际保存只剩8字符。length-cap同样保留last-lin并追加提示。另一Session没有观察，edit得到FS_NOT_OBSERVED。取消的read失败；卸载观察插件后同一Session可不带自动版本条件编辑当前内容，但fs-sandbox仍在，不是所有保护一起消失。没有附件服务时read_image不注册，Mock附件服务出现后注册，未知模型路线在文件IO之前拒绝，附件卸载后工具又消失。这没有验证真实图像内容处理。将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。",
+        "lastParagraph": "将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.6625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "Agent 当前步骤的 Schema 和 ToolCallBlock 经统一工具入口处理，随后分到 File、Shell、Web、MCP 各自能力路径；每类保留自己的后端、约束和资源责任",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜上部是统一调用控制，下部是能力分支。注册、步骤准入和实际执行分别判断，不能由同一个“可用”状态替代。",
+            "src": "/course-media/harness-v2/h16/h16-01.png"
+          },
+          {
+            "alt": "File、Shell、Web 的能力服务、提供方和消费者分层；MCP 以每服务器桥接接入 Registry，并另有共享资源服务，没有通用ctx.mcp",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜角色归属图，不是同步执行顺序。ToolDefinition与能力服务契约不同，四家族不要求结构完全一致。",
+            "src": "/course-media/harness-v2/h16/h16-02.png"
+          },
+          {
+            "alt": "Web 注册与步骤ready分开，选择失败留给调用报告；MCP 发现与发布分两阶段，断线、重连和资源工具也各有生命周期",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 3｜上下为独立状态例子。MCP发现失败保留上代，注册冲突回滚本服务器新一代；完整重连竞态留待H27。",
+            "src": "/course-media/harness-v2/h16/h16-03.png"
+          },
+          {
+            "alt": "真实AgentLoop只允许五个指定工具，依次得到File、Shell替身、Web离线资料与MCP本地stdio结果，再提交Session并形成下一请求；额外远端write仍被Scope拒绝",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜本例并行上限为1，箭头只是受控顺序。第二Session核对每个请求前缀；模型与Shell/Web为替身，MCP和文件本地原语实际运行，不是完整E应用。",
+            "src": "/course-media/harness-v2/h16/h16-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "bootstrap.mjs",
+        "support.ts",
+        "file.ts",
+        "shell.ts",
+        "web.ts",
+        "mcp-server.mjs",
+        "mcp.ts",
+        "combined.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 10,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 1783,
+        "scrolled": 1532
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 24
+      },
+      "answerGeometry": {
+        "top": 7.796875,
+        "bottom": 922.90625,
+        "viewport": 996,
+        "height": 915.109375,
+        "content": "想深入再看：实践 A 详细参考答案创建返回成功，window给出行号2和3、totalLines=4，说明窗口与全文件行数分开。ambiguous失败且error.info.code为FS_AMBIGUOUS_EDIT；edit修改title后verify看到title=ne及明确的8字符截断提示，不能据截断显示误判实际保存只剩8字符。length-cap同样保留last-lin并追加提示。另一Session没有观察，edit得到FS_NOT_OBSERVED。取消的read失败；卸载观察插件后同一Session可不带自动版本条件编辑当前内容，但fs-sandbox仍在，不是所有保护一起消失。没有附件服务时read_image不注册，Mock附件服务出现后注册，未知模型路线在文件IO之前拒绝，附件卸载后工具又消失。这没有验证真实图像内容处理。将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。",
+        "lastParagraph": "将write/edit/readImage关闭后只保留read；工具插件卸载后注册为空，明确夹具文件删除，空目录保留。若图片或文件工具缺失，先看依赖和配置，不直接修改模型Prompt要求它强行调用不存在的工具。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.6
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

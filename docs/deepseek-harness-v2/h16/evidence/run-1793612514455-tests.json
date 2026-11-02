@@ -1,0 +1,57 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "ecosystem.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h16-lab-QAmAr9",
+  "programs": [
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "ca73c2adf1e5b1991f95b78b76ebce2f7d0c8585003185e1469a217d52e19dbb"
+    },
+    {
+      "name": "combined.ts",
+      "sha256": "de33bf4ca7948fef48d3e529f86f386e0413fcbf2b8062591d84798e30fad786"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "ceb5a1a0c54f4f25db8ff6190b12fc0f231212377694aae7256704206b98fce3"
+    },
+    {
+      "name": "ecosystem.test.ts",
+      "sha256": "cafbced8f10c0add9085103867492ab0f026bf20fdd6339de61a9a26a1c9016d"
+    },
+    {
+      "name": "file.ts",
+      "sha256": "e0533771f65da24b7dac1b4dccb7865e8a600aa4e661525b11056500e1db2ac8"
+    },
+    {
+      "name": "mcp-server.mjs",
+      "sha256": "7b0efc0c8f8220e930827d25ad559476b5ac435f890fe2ad7e4cdd2b0004137e"
+    },
+    {
+      "name": "mcp.ts",
+      "sha256": "c8d04e7a9bf9e76dd0a2fd0890be3794408342992743f6310926b5de04930d5c"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "ba61f6d47b01e6105bb63ccad10f8e8c7847ad3249344c60859d73ddb43ff295"
+    },
+    {
+      "name": "shell.ts",
+      "sha256": "f5c008cbeeab0028435cb601ef6f1ef9942d0aa07e19e3d5c5833c951e2e747a"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "9797e5cd5ee207fe736aaf78953e6403eef93ebe347c7022ae6dfae72c9072f9"
+    },
+    {
+      "name": "web.ts",
+      "sha256": "383f5bc7aeca4e60239b8e7547341c460e33af289f32bc9e36b7ce9e1509153f"
+    }
+  ],
+  "exit": 1,
+  "stdout": "TAP version 13\n# Subtest: C File argument offset-zero\nok 1 - C File argument offset-zero\n  ---\n  duration_ms: 0.7447\n  type: 'test'\n  ...\n# Subtest: C File argument limit-over-cap\nok 2 - C File argument limit-over-cap\n  ---\n  duration_ms: 0.0901\n  type: 'test'\n  ...\n# Subtest: C File argument blank-path\nok 3 - C File argument blank-path\n  ---\n  duration_ms: 0.0674\n  type: 'test'\n  ...\n# Subtest: C HTTP URL hygiene file:///fixture\nok 4 - C HTTP URL hygiene file:///fixture\n  ---\n  duration_ms: 0.1424\n  type: 'test'\n  ...\n# Subtest: C HTTP URL hygiene ftp://fixture.invalid\nok 5 - C HTTP URL hygiene ftp://fixture.invalid\n  ---\n  duration_ms: 0.084\n  type: 'test'\n  ...\n# Subtest: C HTTP URL hygiene https://name:pass@fixture.invalid\nok 6 - C HTTP URL hygiene https://name:pass@fixture.invalid\n  ---\n  duration_ms: 0.0626\n  type: 'test'\n  ...\n# Subtest: C HTTP URL hygiene https://fixture.invalid/xxxxxxxxxxx\nok 7 - C HTTP URL hygiene https://fixture.invalid/xxxxxxxxxxx\n  ---\n  duration_ms: 0.048\n  type: 'test'\n  ...\n# Subtest: C MCP normalized names preserve identity and budget\nok 8 - C MCP normalized names preserve identity and budget\n  ---\n  duration_ms: 0.2539\n  type: 'test'\n  ...\n# Subtest: C MCP long raw names are stable and bounded\nok 9 - C MCP long raw names are stable and bounded\n  ---\n  duration_ms: 0.1085\n  type: 'test'\n  ...\n# Subtest: D A real File tools, streaming window, edits, optional policy and lifecycle\nnot ok 10 - D A real File tools, streaming window, edits, optional policy and lifecycle\n  ---\n  duration_ms: 79.7845\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h16-lab-QAmAr9\\\\ecosystem.test.ts:1:1598'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + 'title=ne... (line truncated to 8 chars)'\n    - 'title=ne'\n               ^\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'title=ne'\n  actual: 'title=ne... (line truncated to 8 chars)'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h16-lab-QAmAr9\\ecosystem.test.ts:20:114)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D B real Shell consumer/env/Jobs over explicit Mock Executor\nok 11 - D B real Shell consumer/env/Jobs over explicit Mock Executor\n  ---\n  duration_ms: 35.2308\n  type: 'test'\n  ...\n# Subtest: D C Web unique\nok 12 - D C Web unique\n  ---\n  duration_ms: 10.7943\n  type: 'test'\n  ...\n# Subtest: D C Web explicit\nok 13 - D C Web explicit\n  ---\n  duration_ms: 4.912\n  type: 'test'\n  ...\n# Subtest: D C Web none\nok 14 - D C Web none\n  ---\n  duration_ms: 4.2765\n  type: 'test'\n  ...\n# Subtest: D C Web ambiguous\nok 15 - D C Web ambiguous\n  ---\n  duration_ms: 4.5496\n  type: 'test'\n  ...\n# Subtest: D C Web configured-missing\nok 16 - D C Web configured-missing\n  ---\n  duration_ms: 4.5532\n  type: 'test'\n  ...\n# Subtest: D C Web configured-unavailable\nok 17 - D C Web configured-unavailable\n  ---\n  duration_ms: 5.7964\n  type: 'test'\n  ...\n# Subtest: D C Web not-ready\nok 18 - D C Web not-ready\n  ---\n  duration_ms: 4.6919\n  type: 'test'\n  ...\n# Subtest: D C Web cancel\nok 19 - D C Web cancel\n  ---\n  duration_ms: 5.0369\n  type: 'test'\n  ...\n# Subtest: D D actual MCP SDK stdio disconnect retained\nok 20 - D D actual MCP SDK stdio disconnect retained\n  ---\n  duration_ms: 774.9233\n  type: 'test'\n  ...\n# Subtest: D D actual MCP SDK stdio one reconnect\nok 21 - D D actual MCP SDK stdio one reconnect\n  ---\n  duration_ms: 1127.1292\n  type: 'test'\n  ...\n# Subtest: D integrated AgentLoop four families\nok 22 - D integrated AgentLoop four families\n  ---\n  duration_ms: 367.3167\n  type: 'test'\n  ...\n# Subtest: D integrated AgentLoop remote discovery cannot expand allowlist\nok 23 - D integrated AgentLoop remote discovery cannot expand allowlist\n  ---\n  duration_ms: 359.8138\n  type: 'test'\n  ...\n1..23\n# tests 23\n# suites 0\n# pass 22\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 3450.3244\n",
+  "stderr": ""
+}

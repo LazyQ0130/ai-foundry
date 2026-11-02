@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1500" viewBox="0 0 640 1500" role="img"><title>三种角色，四类能力的接线</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1500" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">三种角色，四类能力的接线</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Definition：约定能做什么</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">能力服务契约 ≠ 单个 ToolDefinition</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Provider 落实能力；Consumer 声明工具</text>
+<rect x="32" y="282" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="325" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">File</text>
+<text x="52" y="369" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">契约：FileSystem（ctx.fs）</text>
+<text x="52" y="411" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">提供方：fs-local 或 fs-sandbox</text>
+<text x="52" y="453" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">消费者：tool-fs</text>
+<rect x="32" y="506" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="549" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Shell</text>
+<text x="52" y="593" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">契约：ShellExecutor（ctx.shell）</text>
+<text x="52" y="635" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">提供方：local 或 sandbox 执行器</text>
+<text x="52" y="677" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">消费者：tool-bash 或 tool-pwsh</text>
+<rect x="32" y="730" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="773" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Web</text>
+<text x="52" y="817" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">契约与选择：WebRuntime（ctx.web）</text>
+<text x="52" y="859" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">提供方：独立 Search / Fetch 实现</text>
+<text x="52" y="901" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">消费者：tool-web</text>
+<rect x="32" y="954" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="997" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">MCP：桥接而非通用 ctx.mcp</text>
+<text x="52" y="1041" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">外部 Server + SDK + 每服务器连接</text>
+<text x="52" y="1083" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">client 注册适配后的 ToolDefinition</text>
+<text x="52" y="1125" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">资源另由 ctx.mcpResources 分派</text>
+<rect x="32" y="1178" width="576" height="156" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1221" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">这些角色不强迫每家族同构</text>
+<text x="52" y="1265" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">同名工具协议不复制后端能力</text>
+<text x="52" y="1307" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">替换执行环境后要重新判断保证</text>
+<text x="32" y="1472" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 条件组合教学图</text>
+</svg>

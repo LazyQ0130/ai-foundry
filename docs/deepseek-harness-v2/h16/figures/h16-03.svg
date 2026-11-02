@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1630" viewBox="0 0 640 1630" role="img"><title>注册、准入与连接，分别变化</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1630" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">注册、准入与连接，分别变化</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Web：工具已按配置注册</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">ready=false → 本 Step 不准入</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">选择失败 → ready 为 true</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">调用时再报告结构化选择错误</text>
+<rect x="32" y="324" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="367" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Web：执行时选择提供方</text>
+<text x="52" y="411" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">显式 ID 可用则选它</text>
+<text x="52" y="453" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">未指定：必须恰好一个可用</text>
+<text x="52" y="495" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">无提供方不等于工具已被卸载</text>
+<rect x="32" y="548" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="591" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">MCP：连接 → 发现 → 发布</text>
+<text x="52" y="635" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">先取完整工具清单，才切换注册</text>
+<text x="52" y="677" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">发现失败：保留上代工具</text>
+<text x="52" y="719" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">注册冲突：回滚本服务器新一代</text>
+<rect x="32" y="772" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="815" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">MCP：断线后不必立刻消失</text>
+<text x="52" y="859" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">重连关闭：保留旧工具，调用失败</text>
+<text x="52" y="901" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">重连开启：等待并尝试新连接</text>
+<text x="52" y="943" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">重试预算耗尽：撤销服务器工具</text>
+<rect x="32" y="996" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1039" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">资源工具有另一条生命周期</text>
+<text x="52" y="1083" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">有可见服务器注册时存在</text>
+<text x="52" y="1125" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">连接失效不自动撤销服务器条目</text>
+<text x="52" y="1167" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">调用先按 Agent Scope 找服务器</text>
+<rect x="32" y="1220" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1263" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">本轮运行与未运行分开</text>
+<text x="52" y="1307" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Web：内存提供方；不发网络请求</text>
+<text x="52" y="1349" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">MCP：真实本地 stdio 与一次重连</text>
+<text x="52" y="1391" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">完整重连竞态留待 H27</text>
+<text x="32" y="1602" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 条件组合教学图</text>
+</svg>
