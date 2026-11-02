@@ -1,0 +1,6 @@
+Initial final-audit.py run, 2026-11-02:
+Protected-file hash check passed.
+Local-link check rejected acceptance.md -> evidence/final-audit.json because this script had not created its own result file yet.
+AssertionError: [{'from': 'acceptance.md', 'target': 'evidence/final-audit.json'}]
+Fix: recognize only this exact self-generated destination while validating links; write it after all other assertions pass.
+No course files or test assertions changed.

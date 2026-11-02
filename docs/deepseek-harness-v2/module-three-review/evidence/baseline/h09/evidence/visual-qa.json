@@ -1,0 +1,315 @@
+{
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "4af903c6f45324b6a54b47f3c9024934e381b1c92b7ce9c1e0b738c42f4c11ca",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h09-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1395,
+      "sourceSha256": "47d1aacf293ade33f6372680dbc147c39e05c33a8d7f2d155bfc98174a9ffd9c",
+      "imageSha256": "d57cda0ad0256fd6c2520d64dc248942e5124253a348097da0b70dea256375a3"
+    },
+    {
+      "id": "h09-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1745,
+      "sourceSha256": "f876cf10863752b9f27335cb57521c51aaeaf693367160584d59057db2c69295",
+      "imageSha256": "81be5e63dde907d85d50b00f92b462bacd1fa175559002dcb94a091ecc81e0fe"
+    },
+    {
+      "id": "h09-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1610,
+      "sourceSha256": "35fc4ce7ec5266a388dde4d93339ebcd10636c52e8b746e1b7e739ebc709b99b",
+      "imageSha256": "ff6b8b9918bd4c59fb183170793ba2a3bfa1ff3ba09d164edcb854af2c672e4f"
+    },
+    {
+      "id": "h09-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1790,
+      "sourceSha256": "e6109e2aed2e6308e41b25bc72359612e1466efbd67bb5307cd45c3c3bdb48e3",
+      "imageSha256": "b055531a8eaf1fac92eee26d541cce445e05d93d3614600e9c71234abccf4819"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "消费方通过Registry委托Factory创建，取得包含Agent与dispose的Handle；观察方查询只取得Agent。AgentLoop提供工厂并承担共同生命周期责任",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜实线分别标明创建、查询与释放能力；琥珀框是默认实现的内部收尾。Registry管理实时登记，Factory实现创建，Handle携带释放入口。框不是进程，查询线不产生新的所有者。",
+            "src": "/course-media/harness-v2/h09/h09-01.png"
+          },
+          {
+            "alt": "Session准备和作用域构造之后，Session先进入Store并完成同步创建通知；setup等待完成及同步commit之后，Agent进入Registry并等待串行创建通知；最后ready并退出维护，放行待办，创建Promise返回Handle",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜默认创建与恢复共用的发布段，顺序以initializeAgent为准。Session通知是同步边界，Agent通知是串行等待边界；失败转图四。图中不把Agent登记时刻当成create已经成功，也不承诺首轮工作晚于调用方取得Handle。",
+            "src": "/course-media/harness-v2/h09/h09-02.png"
+          },
+          {
+            "alt": "调用方P的Fiber、Handle持有者M、显式parentAgent A、Session历史父级X以及当前发起方分开列出。只有显式parentAgent决定Registry的运行时owner字段，另外几项不会自动互相推导",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜资源生命周期、释放能力、实时父级、持久谱系、因果归因是五个维度。图中没有默认级联销毁或Scope父链；委派协议如何建立这些连接属于H21。",
+            "src": "/course-media/harness-v2/h09/h09-03.png"
+          },
+          {
+            "alt": "正常关闭与初始化失败都进入共享teardown，等待在途发布和工作，再撤销Scope、关闭可选写句柄、移除Agent和Session。失败路径仅对已经开始的创建通知配对disposed；未发布Agent不虚构退出事件",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜正常释放与失败补偿共享运行资源收尾；每步会尝试继续，具体异常处理见正文。setup失败通常只有Session通知需配对；Agent创建通知开始后失败，则两种disposed都要配对。它不是删除历史或撤回外部副作用的流程。",
+            "src": "/course-media/harness-v2/h09/h09-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "registry.ts",
+        "ownership.ts",
+        "failures.ts",
+        "demo.ts"
+      ],
+      "clipboard": "five full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 975,
+        "scrolled": 264
+      },
+      "codeScroll": {
+        "tested": "full ownership program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 15
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "消费方通过Registry委托Factory创建，取得包含Agent与dispose的Handle；观察方查询只取得Agent。AgentLoop提供工厂并承担共同生命周期责任",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜实线分别标明创建、查询与释放能力；琥珀框是默认实现的内部收尾。Registry管理实时登记，Factory实现创建，Handle携带释放入口。框不是进程，查询线不产生新的所有者。",
+            "src": "/course-media/harness-v2/h09/h09-01.png"
+          },
+          {
+            "alt": "Session准备和作用域构造之后，Session先进入Store并完成同步创建通知；setup等待完成及同步commit之后，Agent进入Registry并等待串行创建通知；最后ready并退出维护，放行待办，创建Promise返回Handle",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜默认创建与恢复共用的发布段，顺序以initializeAgent为准。Session通知是同步边界，Agent通知是串行等待边界；失败转图四。图中不把Agent登记时刻当成create已经成功，也不承诺首轮工作晚于调用方取得Handle。",
+            "src": "/course-media/harness-v2/h09/h09-02.png"
+          },
+          {
+            "alt": "调用方P的Fiber、Handle持有者M、显式parentAgent A、Session历史父级X以及当前发起方分开列出。只有显式parentAgent决定Registry的运行时owner字段，另外几项不会自动互相推导",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 3｜资源生命周期、释放能力、实时父级、持久谱系、因果归因是五个维度。图中没有默认级联销毁或Scope父链；委派协议如何建立这些连接属于H21。",
+            "src": "/course-media/harness-v2/h09/h09-03.png"
+          },
+          {
+            "alt": "正常关闭与初始化失败都进入共享teardown，等待在途发布和工作，再撤销Scope、关闭可选写句柄、移除Agent和Session。失败路径仅对已经开始的创建通知配对disposed；未发布Agent不虚构退出事件",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜正常释放与失败补偿共享运行资源收尾；每步会尝试继续，具体异常处理见正文。setup失败通常只有Session通知需配对；Agent创建通知开始后失败，则两种disposed都要配对。它不是删除历史或撤回外部副作用的流程。",
+            "src": "/course-media/harness-v2/h09/h09-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "registry.ts",
+        "ownership.ts",
+        "failures.ts",
+        "demo.ts"
+      ],
+      "clipboard": "five full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 967,
+        "scrolled": 646
+      },
+      "codeScroll": {
+        "tested": "full ownership program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 15
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.6625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "消费方通过Registry委托Factory创建，取得包含Agent与dispose的Handle；观察方查询只取得Agent。AgentLoop提供工厂并承担共同生命周期责任",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜实线分别标明创建、查询与释放能力；琥珀框是默认实现的内部收尾。Registry管理实时登记，Factory实现创建，Handle携带释放入口。框不是进程，查询线不产生新的所有者。",
+            "src": "/course-media/harness-v2/h09/h09-01.png"
+          },
+          {
+            "alt": "Session准备和作用域构造之后，Session先进入Store并完成同步创建通知；setup等待完成及同步commit之后，Agent进入Registry并等待串行创建通知；最后ready并退出维护，放行待办，创建Promise返回Handle",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜默认创建与恢复共用的发布段，顺序以initializeAgent为准。Session通知是同步边界，Agent通知是串行等待边界；失败转图四。图中不把Agent登记时刻当成create已经成功，也不承诺首轮工作晚于调用方取得Handle。",
+            "src": "/course-media/harness-v2/h09/h09-02.png"
+          },
+          {
+            "alt": "调用方P的Fiber、Handle持有者M、显式parentAgent A、Session历史父级X以及当前发起方分开列出。只有显式parentAgent决定Registry的运行时owner字段，另外几项不会自动互相推导",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 3｜资源生命周期、释放能力、实时父级、持久谱系、因果归因是五个维度。图中没有默认级联销毁或Scope父链；委派协议如何建立这些连接属于H21。",
+            "src": "/course-media/harness-v2/h09/h09-03.png"
+          },
+          {
+            "alt": "正常关闭与初始化失败都进入共享teardown，等待在途发布和工作，再撤销Scope、关闭可选写句柄、移除Agent和Session。失败路径仅对已经开始的创建通知配对disposed；未发布Agent不虚构退出事件",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜正常释放与失败补偿共享运行资源收尾；每步会尝试继续，具体异常处理见正文。setup失败通常只有Session通知需配对；Agent创建通知开始后失败，则两种disposed都要配对。它不是删除历史或撤回外部副作用的流程。",
+            "src": "/course-media/harness-v2/h09/h09-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "registry.ts",
+        "ownership.ts",
+        "failures.ts",
+        "demo.ts"
+      ],
+      "clipboard": "five full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 7,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 967,
+        "scrolled": 716
+      },
+      "codeScroll": {
+        "tested": "full ownership program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 15
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.6
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

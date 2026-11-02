@@ -1,0 +1,57 @@
+TAP version 13
+# Subtest: D-M3-A
+ok 1 - D-M3-A
+  ---
+  duration_ms: 30.723
+  type: 'test'
+  ...
+# Subtest: D-M3-B
+not ok 2 - D-M3-B
+  ---
+  duration_ms: 15.7873
+  type: 'test'
+  location: 'C:\\Users\\QYF\\AppData\\Local\\Temp\\m3-cross-course-xF9WH7\\cross-course.test.ts:1:11079'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - 'module-read'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'module-read'
+  operator: 'strictEqual'
+  stack: |-
+    scenario (C:\Users\QYF\AppData\Local\Temp\m3-cross-course-xF9WH7\cross-course.test.ts:123:11)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: D-M3-C-retry
+ok 3 - D-M3-C-retry
+  ---
+  duration_ms: 14.8966
+  type: 'test'
+  ...
+# Subtest: D-M3-C-cancel
+ok 4 - D-M3-C-cancel
+  ---
+  duration_ms: 10.9016
+  type: 'test'
+  ...
+# Subtest: D-M3-C-max-tokens
+ok 5 - D-M3-C-max-tokens
+  ---
+  duration_ms: 12.0059
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 455.1505

@@ -1,0 +1,12 @@
+2026-11-02, initial local audit tooling failures; original course files unchanged.
+
+run-audit.py content baseline:
+All four content checks exit 0. Renderer exit 0, 12 passed.
+Outer Python print failed with UnicodeEncodeError: gbk cannot encode U+2714.
+The run-content.json and renderer-tests.tap had already been saved.
+Fix: sys.stdout.reconfigure(encoding='utf-8').
+
+qa-assessment.mjs first run:
+AssertionError at document.documentElement.scrollWidth <= innerWidth.
+Second diagnostic run recorded width=390, scrollWidth=391, overflow=[] at right>width+1 threshold.
+Diagnostic failure-*.json and failure-*-390.png retained in assessment-visual.

@@ -1,0 +1,442 @@
+diff --git a/docs/lesson-renderer-v2.md b/docs/lesson-renderer-v2.md
+index b20c03c..963aa7d 100644
+--- a/docs/lesson-renderer-v2.md
++++ b/docs/lesson-renderer-v2.md
+@@ -73,6 +73,10 @@ checkKeys:
+ 
+ 第一处 Prompt 自动获得 `lesson-prompt` 锚点；第一处 Stuck 为 `lesson-help`，后续同类型加数字后缀。不要自行插入 HTML 锚点。
+ 
++课程页会从已授权加载的正文中提取全部 `stuck` 块，作为“卡住了怎么办”面板的内容；正文中的原块与锚点保留。桌面入口位于右侧任务区顶部，小屏入口位于吸顶课程工具条。没有 `stuck` 块时不显示入口。每块的 `title` 会用作面板折叠项标题，建议写清具体症状；未填写时使用“排查建议 N”。
++
++`extractLessonHelp` 使用相同的 remark 解析与白名单校验，从 AST 源位置提取正文并保留引用链接定义。面板复用 `LessonMarkdown` 的可选 `anchorPrefix` 参数隔离教学块与资源 ID，避免和正文重复；默认不传时原有锚点保持不变。
++
+ ## 课程资源下载
+ 
+ 资源块只声明固定 ID，不接受标题、URL、路径或正文。标题、说明、文件名来自 `src/data/courseAssets.ts` 白名单，文件大小从服务端查询。
+diff --git a/src/components/CourseResource.tsx b/src/components/CourseResource.tsx
+index d72d6a8..76875bf 100644
+--- a/src/components/CourseResource.tsx
++++ b/src/components/CourseResource.tsx
+@@ -3,7 +3,7 @@ import { Download, FileArchive } from 'lucide-react'
+ import { courseAssets, isCourseAssetId } from '../data/courseAssets.js'
+ import { authPath } from '../lib/authNavigation.js'
+ 
+-export function CourseResource({ asset, compact = false }: { asset: string; compact?: boolean }) {
++export function CourseResource({ asset, compact = false, anchorPrefix = '' }: { asset: string; compact?: boolean; anchorPrefix?: string }) {
+   const item = isCourseAssetId(asset) ? courseAssets[asset] : undefined
+   const stage = /^stage([234])-(?:starter|tools)$/.exec(asset)?.[1]
+   const isTools = asset.endsWith('-tools')
+@@ -48,7 +48,7 @@ export function CourseResource({ asset, compact = false }: { asset: string; comp
+     </div>
+     {message && <p className="mt-2 text-[12px] text-slate-500" role="status">{message}</p>}
+   </div>
+-  return <aside id={`course-resource-${asset}`} className="lesson-resource scroll-mt-24" aria-label="课程资源">
++  return <aside id={`${anchorPrefix}course-resource-${asset}`} className="lesson-resource scroll-mt-24" aria-label="课程资源">
+     <FileArchive size={24} className="lesson-resource-icon" aria-hidden="true"/>
+     <div className="lesson-resource-info">
+       <div className="lesson-resource-label">课程资源</div>
+diff --git a/src/components/LessonLayout.tsx b/src/components/LessonLayout.tsx
+index b0f4b55..a25a90e 100644
+--- a/src/components/LessonLayout.tsx
++++ b/src/components/LessonLayout.tsx
+@@ -1,25 +1,33 @@
+-import { useEffect, useRef, useState, type ReactNode } from 'react'
+-import { ListChecks, X } from 'lucide-react'
++import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
++import { CircleHelp, ListChecks, X } from 'lucide-react'
++import type { LessonHelpItem } from '../lib/lessonMarkdown.js'
++
++const LessonHelpPanel = lazy(() => import('./LessonHelpPanel.js'))
+ 
+ /** Shared reading shell; each course keeps its own navigation and progress. */
+-export function LessonLayout({ sidebar, workbench, children, remainingTasks }: {
++export function LessonLayout({ sidebar, workbench, children, remainingTasks, lessonKey, lessonTitle = '', helpItems = [] }: {
+   sidebar: (close: () => void, idPrefix: string) => ReactNode
+   workbench: ReactNode
+   children: ReactNode
+   remainingTasks: number
++  lessonKey?: string
++  lessonTitle?: string
++  helpItems?: LessonHelpItem[]
+ }) {
+-  const [drawer, setDrawer] = useState(false)
++  const [drawer, setDrawer] = useState<'directory' | 'help' | null>(null)
++  const closeDrawer = useCallback(() => setDrawer(null), [])
+   const trigger = useRef<HTMLButtonElement>(null)
+   const panel = useRef<HTMLDivElement>(null)
++  useEffect(closeDrawer, [lessonKey, closeDrawer])
+   useEffect(() => {
+-    if (!drawer) return
++    if (drawer !== 'directory') return
+     const previousOverflow = document.body.style.overflow
+     document.body.style.overflow = 'hidden'
+-    panel.current?.querySelector<HTMLButtonElement>('button')?.focus()
++    panel.current?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true })
+     const keydown = (event: KeyboardEvent) => {
+-      if (event.key === 'Escape') setDrawer(false)
++      if (event.key === 'Escape') { event.preventDefault(); closeDrawer() }
+       if (event.key !== 'Tab') return
+-      const items = panel.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
++      const items = Array.from(panel.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []).filter(element => element.getClientRects().length)
+       if (!items?.length) return
+       const first = items[0], last = items[items.length - 1]
+       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+@@ -27,33 +35,38 @@ export function LessonLayout({ sidebar, workbench, children, remainingTasks }: {
+     }
+     document.addEventListener('keydown', keydown)
+     const desktop = window.matchMedia('(min-width: 1360px)')
+-    const closeOnDesktop = () => { if (desktop.matches) setDrawer(false) }
++    const closeOnDesktop = () => { if (desktop.matches) closeDrawer() }
+     desktop.addEventListener('change', closeOnDesktop)
+     return () => {
+       document.body.style.overflow = previousOverflow
+       document.removeEventListener('keydown', keydown)
+       desktop.removeEventListener('change', closeOnDesktop)
+-      trigger.current?.focus()
++      trigger.current?.focus({ preventScroll: true })
+     }
+-  }, [drawer])
++  }, [drawer, closeDrawer])
+   return <div className="mx-auto w-full max-w-[1440px] px-5 pb-10 pt-3 sm:px-6 min-[1360px]:pb-6">
+-    <div className="mb-3 flex items-center justify-between gap-2 min-[1360px]:hidden">
+-      <button ref={trigger} type="button" aria-expanded={drawer} aria-controls="lesson-directory" onClick={() => setDrawer(true)} className="btn btn-sm btn-outline"><ListChecks className="h-3.5 w-3.5" />课程目录</button>
+-      <a href="#lesson-workbench" className="btn btn-sm btn-outline">任务与进度{remainingTasks > 0 && <span className="text-xs text-slate-500"> · {remainingTasks} 待确认</span>}</a>
++    <div aria-label="课程工具" className="sticky top-14 z-30 -mx-5 mb-3 flex items-center justify-between gap-1 border-b border-slate-200 bg-white px-3 py-2 sm:-mx-6 sm:justify-start sm:gap-2 sm:px-6 min-[1360px]:hidden">
++      <button ref={trigger} type="button" aria-label="课程目录" aria-expanded={drawer === 'directory'} aria-controls="lesson-directory" onClick={() => setDrawer('directory')} className="btn btn-sm btn-outline shrink-0 px-2"><ListChecks aria-hidden="true" className="h-3.5 w-3.5" />目录</button>
++      <a href="#lesson-workbench" aria-label={`任务与进度${remainingTasks > 0 ? `，${remainingTasks} 项待确认` : ''}`} className="btn btn-sm btn-outline shrink-0 px-2">任务与进度{remainingTasks > 0 && <span className="hidden text-xs text-slate-500 sm:inline"> · {remainingTasks} 待确认</span>}</a>
++      {helpItems.length > 0 && <button type="button" aria-haspopup="dialog" aria-expanded={drawer === 'help'} aria-controls="lesson-help-panel" onClick={() => setDrawer('help')} className="btn btn-sm btn-outline shrink-0 px-2"><CircleHelp aria-hidden="true" className="h-3.5 w-3.5" />本课排查</button>}
+     </div>
+     <div className="grid grid-cols-[minmax(0,1fr)] gap-y-10 min-[1360px]:grid-cols-[260px_minmax(0,1fr)_260px] min-[1360px]:gap-6">
+       <aside className="hidden w-[260px] shrink-0 min-[1360px]:block">
+-        <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">{sidebar(() => setDrawer(false), 'desktop')}</div>
++        <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">{sidebar(closeDrawer, 'desktop')}</div>
+       </aside>
+       <div className="mx-auto w-full min-w-0 max-w-[740px]">{children}</div>
+-      <aside id="lesson-workbench" aria-label="学习任务与进度" className="mx-auto w-full min-w-0 max-w-[740px] scroll-mt-20 min-[1360px]:max-w-none"><div className="pb-2 min-[1360px]:sticky min-[1360px]:top-20 min-[1360px]:max-h-[calc(100vh-6rem)] min-[1360px]:overflow-y-auto">{workbench}</div></aside>
++      <aside id="lesson-workbench" aria-label="学习任务与进度" className="mx-auto w-full min-w-0 max-w-[740px] scroll-mt-32 min-[1360px]:max-w-none min-[1360px]:scroll-mt-20"><div className="min-[1360px]:sticky min-[1360px]:top-20 min-[1360px]:flex min-[1360px]:max-h-[calc(100dvh-6rem)] min-[1360px]:flex-col">
++        {helpItems.length > 0 && <button type="button" aria-haspopup="dialog" aria-expanded={drawer === 'help'} aria-controls="lesson-help-panel" onClick={() => setDrawer('help')} className="btn btn-md btn-outline mb-4 hidden w-full shrink-0 min-[1360px]:flex"><CircleHelp aria-hidden="true" className="h-4 w-4" />卡住了怎么办</button>}
++        <div className="min-h-0 pb-2 min-[1360px]:overflow-y-auto">{workbench}</div>
++      </div></aside>
+     </div>
+-    {drawer && <div className="fixed inset-0 z-50 min-[1360px]:hidden">
+-      <button type="button" aria-label="关闭目录" onClick={() => setDrawer(false)} className="absolute inset-0 bg-slate-900/40" tabIndex={-1} />
++    {drawer === 'directory' && <div className="fixed inset-0 z-50 min-[1360px]:hidden">
++      <button type="button" aria-label="关闭目录" onClick={closeDrawer} className="absolute inset-0 bg-slate-900/40" tabIndex={-1} />
+       <div ref={panel} id="lesson-directory" role="dialog" aria-modal="true" aria-label="课程目录" className="absolute inset-y-0 left-0 flex w-[280px] max-w-[85vw] flex-col overflow-hidden bg-white shadow-2xl">
+-        <div className="flex justify-end px-2 pt-2"><button type="button" onClick={() => setDrawer(false)} aria-label="关闭" className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 hover:bg-slate-100"><X className="h-4 w-4" /></button></div>
+-        <div className="min-h-0 flex-1">{sidebar(() => setDrawer(false), 'drawer')}</div>
++        <div className="flex justify-end px-2 pt-2"><button type="button" onClick={closeDrawer} aria-label="关闭" className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 hover:bg-slate-100"><X className="h-4 w-4" /></button></div>
++        <div className="min-h-0 flex-1">{sidebar(closeDrawer, 'drawer')}</div>
+       </div>
+     </div>}
++    {drawer === 'help' && helpItems.length > 0 && <Suspense fallback={<p role="status" className="fixed bottom-4 right-4 z-50 rounded-lg bg-white p-3 text-sm shadow-card">正在加载本课排查…</p>}><LessonHelpPanel key={lessonKey} lessonTitle={lessonTitle} items={helpItems} onClose={closeDrawer} /></Suspense>}
+   </div>
+ }
+diff --git a/src/components/LessonMarkdown.tsx b/src/components/LessonMarkdown.tsx
+index 6155ed6..f5fc3f6 100644
+--- a/src/components/LessonMarkdown.tsx
++++ b/src/components/LessonMarkdown.tsx
+@@ -62,7 +62,8 @@ const components = {
+   'lesson-resource': CourseResource,
+ } as Components
+ 
+-export function LessonMarkdown({ body }: { body: string }) {
+-  return <div className="lesson-prose"><ReactMarkdown skipHtml remarkPlugins={[remarkGfm, remarkDirective, remarkLessonBlocks]} components={components} urlTransform={lessonUrl}>{body}</ReactMarkdown></div>
++export function LessonMarkdown({ body, anchorPrefix = '' }: { body: string; anchorPrefix?: string }) {
++  const scopedComponents = anchorPrefix ? { ...components, 'lesson-resource': (props: { asset: string }) => <CourseResource {...props} anchorPrefix={anchorPrefix} /> } as Components : components
++  return <div className="lesson-prose"><ReactMarkdown skipHtml remarkPlugins={[remarkGfm, remarkDirective, [remarkLessonBlocks, { anchorPrefix }]]} components={scopedComponents} urlTransform={lessonUrl}>{body}</ReactMarkdown></div>
+ }
+ 
+diff --git a/src/index.css b/src/index.css
+index 9342445..b1c25a1 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -175,6 +175,10 @@
+ .lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+ .lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+ .lesson-table th { background: #f8fafc; font-weight: 600; }
++.lesson-help-item .lesson-prose { font-size: 15px; }
++.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
++.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
++@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+ @media (max-width: 639px) {
+   .lesson-title { font-size: 29px; line-height: 1.3; }
+   .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+diff --git a/src/lib/lessonMarkdown.ts b/src/lib/lessonMarkdown.ts
+index c664219..124c5f2 100644
+--- a/src/lib/lessonMarkdown.ts
++++ b/src/lib/lessonMarkdown.ts
+@@ -13,9 +13,10 @@ export const calloutLabels = {
+   deepdive: '想深入再看', 'image-placeholder': '配图待补充',
+ } as const
+ export type CalloutKind = keyof typeof calloutLabels
++export type LessonHelpItem = { id: string; title: string; body: string }
+ 
+ /** Only these attributes are forwarded. Author HTML, event handlers and styles never are. */
+-export function remarkLessonBlocks() {
++export function remarkLessonBlocks({ anchorPrefix = '' }: { anchorPrefix?: string } = {}) {
+   return (tree: Root, file: VFile) => {
+     const counts: Record<string, number> = {}
+     visit(tree, (node, index, parent) => {
+@@ -47,7 +48,7 @@ export function remarkLessonBlocks() {
+       const anchor = node.name === 'stuck' ? 'lesson-help' : `lesson-${node.name}`
+       node.data = { hName: 'lesson-callout', hProperties: {
+         kind: node.name, title,
+-        id: `${anchor}${counts[node.name] === 1 ? '' : `-${counts[node.name]}`}`,
++        id: `${anchorPrefix}${anchor}${counts[node.name] === 1 ? '' : `-${counts[node.name]}`}`,
+       } }
+     })
+   }
+@@ -59,6 +60,30 @@ export function validateLessonMarkdown(body: string) {
+   processor.runSync(tree, { value: body })
+ }
+ 
++/** Extract from the validated Markdown AST, retaining the author's exact source and references. */
++export function extractLessonHelp(body: string): LessonHelpItem[] {
++  // Micromark ignores a leading BOM when reporting source offsets.
++  if (body.charCodeAt(0) === 0xfeff) body = body.slice(1)
++  const processor = unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(remarkLessonBlocks)
++  const tree = processor.runSync(processor.parse(body), { value: body }) as Root
++  const definitions: string[] = []
++  visit(tree, 'definition', node => {
++    definitions.push(body.slice(node.position?.start.offset, node.position?.end.offset))
++  })
++  const items: LessonHelpItem[] = []
++  visit(tree, node => {
++    if (node.type !== 'containerDirective' || node.name !== 'stuck') return
++    const first = node.children[0]?.position?.start.offset
++    const last = node.children[node.children.length - 1]?.position?.end.offset
++    items.push({
++      id: `lesson-help${items.length ? `-${items.length + 1}` : ''}`,
++      title: node.attributes?.title || `排查建议 ${items.length + 1}`,
++      body: [first === undefined || last === undefined ? '' : body.slice(first, last), ...definitions].join('\n\n'),
++    })
++  })
++  return items
++}
++
+ /** Restrict links and images even if the Markdown parser recognizes another protocol. */
+ export function lessonUrl(url: string, key: string) {
+   if (/[\u0000-\u0020\\]/.test(url) || url.startsWith('//')) return ''
+diff --git a/src/pages/AuthPage.tsx b/src/pages/AuthPage.tsx
+index 2b0f155..37855d8 100644
+--- a/src/pages/AuthPage.tsx
++++ b/src/pages/AuthPage.tsx
+@@ -1,8 +1,9 @@
+-import { useState, type FormEvent } from 'react'
++import { useEffect, useRef, useState, type FormEvent } from 'react'
+ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+ import { useAuth, type User } from '../auth/AuthProvider.js'
+ import { errorMessage } from '../lib/api.js'
+ import EmailSecurity from '../components/EmailSecurity.js'
++import { PasswordField } from '../components/PasswordField.js'
+ import { authDestination, authPath, isLessonDestination } from '../lib/authNavigation.js'
+ import { projectPricingIntent } from '../lib/projectPricingNavigation.js'
+ 
+@@ -16,11 +17,18 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
+   const pricingReturnMessage = `完成${register ? '账号设置' : '登录'}后会回到项目版方案，并保留${pricingIntent?.lesson ? ` ${pricingIntent.lesson.id.toUpperCase()} 的课程去向` : '项目工坊入口'}。`
+   const [phone, setPhone] = useState('')
+   const [password, setPassword] = useState('')
++  const [confirmation, setConfirmation] = useState('')
++  const [confirmationTouched, setConfirmationTouched] = useState(false)
++  const confirmationInput = useRef<HTMLInputElement>(null)
++  const confirmationError = confirmationTouched && password !== confirmation ? '两次输入的密码不一致' : ''
+   const [nickname, setNickname] = useState('')
+   const [acceptedTerms, setAcceptedTerms] = useState(false)
+   const [registration, setRegistration] = useState<{ user: User; password: string } | null>(null)
+   const [error, setError] = useState('')
+   const [pending, setPending] = useState(false)
++  useEffect(() => {
++    setPassword(''); setConfirmation(''); setConfirmationTouched(false); setAcceptedTerms(false); setError(''); setRegistration(null)
++  }, [register])
+   const continueToApp = (user: User) => {
+     const next = params.get('next')
+     setRegistration(null)
+@@ -28,12 +36,19 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
+     navigate(authDestination(next, user.role), { replace: true })
+   }
+   const submit = async (event: FormEvent) => {
+-    event.preventDefault(); setPending(true); setError('')
++    event.preventDefault(); setError('')
++    if (register && password !== confirmation) {
++      setConfirmationTouched(true)
++      confirmationInput.current?.focus()
++      return
++    }
++    setPending(true)
+     try {
+       const user = register ? await auth.register(phone, password, nickname, acceptedTerms) : await auth.login(phone, password)
+       if (register) {
+         setRegistration({ user, password })
+         setPassword('')
++        setConfirmation(''); setConfirmationTouched(false)
+         return
+       }
+       continueToApp(user)
+@@ -58,7 +73,8 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
+     <form onSubmit={submit} className="mt-5 space-y-4">
+     <label className="block text-sm">手机号<input autoComplete="tel" inputMode="tel" pattern="1[3-9][0-9]{9}" title="请输入 11 位中国大陆手机号" maxLength={11} required value={phone} onChange={(e) => setPhone(e.target.value)} className={field} /></label>
+     {register && <label className="block text-sm">昵称（可选）<input autoComplete="nickname" maxLength={50} value={nickname} onChange={(e) => setNickname(e.target.value)} className={field} /></label>}
+-    <label className="block text-sm">密码<input autoComplete={register ? 'new-password' : 'current-password'} type="password" required minLength={8} maxLength={72} value={password} onChange={(e) => setPassword(e.target.value)} className={field} /><span className="mt-1 block text-xs text-slate-400">8～72 个字符</span></label>
++    <PasswordField key={register ? 'register-password' : 'login-password'} label="密码" autoComplete={register ? 'new-password' : 'current-password'} value={password} onChange={setPassword} hint="8～72 个字符" />
++    {register && <PasswordField label="确认密码" autoComplete="new-password" value={confirmation} onChange={setConfirmation} onBlur={() => setConfirmationTouched(true)} error={confirmationError} inputRef={confirmationInput} />}
+     {register && <>
+       <p className="text-xs leading-5 text-slate-500">请核对手机号，管理员将据此开通课程；目前手机号不验证归属。</p>
+       <label className="flex items-start gap-2 text-sm leading-6"><input className="mt-1.5" type="checkbox" required checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)} /><span>我已阅读并同意<Link to="/terms" target="_blank" rel="noopener noreferrer" className="text-brand-600">《用户协议》</Link>与<Link to="/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-600">《隐私政策》</Link></span></label>
+@@ -66,5 +82,6 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
+     {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+     <button disabled={pending || (register && !acceptedTerms)} className="btn btn-md btn-primary w-full">{pending ? '请稍候…' : register ? '创建账号，下一步' : '登录'}</button>
+     {!register && <Link to="/forgot-password" className="block text-sm text-brand-600">忘记密码？</Link>}
++    {!register && <p className="text-xs leading-6 text-slate-500"><Link to="/terms" target="_blank" rel="noopener noreferrer" className="text-brand-600">《用户协议》</Link><span aria-hidden="true"> · </span><Link to="/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-600">《隐私政策》</Link></p>}
+   </form><p className="mt-4 text-xs leading-6 text-slate-500">手机号用于登录，请妥善保管密码。</p><Link className="mt-4 block text-sm text-brand-600" to={authPath(register ? 'login' : 'register', params.get('next'))}>{register ? '已有账号？登录' : '还没有账号？注册'}</Link></div></div></section>
+ }
+diff --git a/src/pages/CapstoneLessonPage.tsx b/src/pages/CapstoneLessonPage.tsx
+index bf16280..c8134a8 100644
+--- a/src/pages/CapstoneLessonPage.tsx
++++ b/src/pages/CapstoneLessonPage.tsx
+@@ -6,11 +6,11 @@ import {api,errorMessage} from '../lib/api.js'
+ import {useCapstone} from '../data/capstoneProgress.js'
+ import {capstoneLessons} from '../data/capstoneLessons.js'
+ import type {LessonContent} from '../data/lessonContent.js'
+-import {LessonLayout} from '../components/LessonLayout.js'
+ import {CapstoneSidebar,CapstoneLessonHeader,CapstoneLessonNavigation} from '../components/CapstoneLearning.js'
+ import {LessonProgressStrip,LessonTaskCard} from '../components/LessonTaskPanel.js'
+ import {projectPricingPath} from '../lib/projectPricingNavigation.js'
+ const LessonMarkdown=lazy(()=>import('../components/LessonMarkdown.js').then(m=>({default:m.LessonMarkdown})))
++const LessonLayout=lazy(()=>import('../components/LessonReadingLayout.js'))
+ export default function CapstoneLessonPage(){
+  const {lessonId=''}=useParams(),{user}=useAuth(),lab=useCapstone()
+  const [loaded,setLoaded]=useState<{id:string;owner:string;content:LessonContent}|null>(null),[error,setError]=useState('')
+@@ -30,11 +30,11 @@ export default function CapstoneLessonPage(){
+    <LessonTaskCard items={content.meta.checklist} checked={checked} disabled={false} saving={lab.saving} done={done} onToggle={i=>void lab.setCheck(lessonId,content.meta.checkKeys[i],!checked[i])} onComplete={()=>void lab.completeLesson(lessonId)}/>
+    {done&&next&&<Link to={'/capstone/lessons/'+next.id} className="btn btn-md btn-outline w-full">进入下一课：{next.id.toUpperCase()}<ArrowRight className="h-4 w-4"/></Link>}
+  </div>
+- return <LessonLayout remainingTasks={content.meta.checkKeys.filter(key=>!progress?.checks[lessonId]?.[key]).length} sidebar={close=><CapstoneSidebar currentLessonId={lessonId} progress={progress} lessons={lessons} onNavigate={close}/>} workbench={workbench}>
++ return <Suspense fallback={<p role="status" className="shell py-12">正在排版课程…</p>}><LessonLayout lessonKey={lessonId} lessonTitle={`${lessonId.toUpperCase()} ${meta.title}`} body={content.body} remainingTasks={content.meta.checkKeys.filter(key=>!progress?.checks[lessonId]?.[key]).length} sidebar={close=><CapstoneSidebar currentLessonId={lessonId} progress={progress} lessons={lessons} onNavigate={close}/>} workbench={workbench}>
+    <article className="lesson-article mx-auto w-full min-w-0 max-w-[740px]">
+      <CapstoneLessonHeader lesson={meta} objective={content.meta.objective}/>
+      <Suspense fallback={<p role="status">正在排版课程…</p>}><LessonMarkdown body={content.body}/></Suspense>
+      <CapstoneLessonNavigation lessonId={lessonId}/>
+    </article>
+- </LessonLayout>
++ </LessonLayout></Suspense>
+ }
+diff --git a/src/pages/LessonPage.tsx b/src/pages/LessonPage.tsx
+index 42ae812..cb4b164 100644
+--- a/src/pages/LessonPage.tsx
++++ b/src/pages/LessonPage.tsx
+@@ -1,5 +1,4 @@
+ import { lazy, Suspense, useEffect, useState } from 'react'
+-import { LessonLayout } from '../components/LessonLayout'
+ import { LessonProgressStrip, LessonTaskCard } from '../components/LessonTaskPanel'
+ import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
+ import { ExperienceNextStep, LessonSignInActions } from '../components/LessonContinuation'
+@@ -18,6 +17,7 @@ import { stageLessonCount, type Lesson, type Stage } from '../data/courses'
+ import { nextLessonOf, prevLessonOf, stageCompletedCount } from '../data/learningProgress'
+ import type { LessonContent } from '../data/lessonContent'
+ const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
++const LessonLayout = lazy(() => import('../components/LessonReadingLayout'))
+ import { api, ApiError, errorMessage } from '../lib/api'
+ import { useAuth } from '../auth/AuthProvider'
+ import { useProgress } from '../data/progress'
+@@ -319,13 +319,16 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson;
+   const toggleStage = (stageId: number) => setExpandedStageId(current => current === stageId ? null : stageId)
+   const sidebarProps = { currentLessonId: lesson.id, checkKeys: content.meta.checkKeys, expandedStageId, onToggleStage: toggleStage }
+ 
+-  return <LessonLayout
++  return <Suspense fallback={<p role="status" className="shell py-12">正在排版课程…</p>}><LessonLayout
++    lessonKey={lesson.id}
++    lessonTitle={`${lesson.code} ${lesson.title}`}
++    body={content.body}
+     remainingTasks={remainingTasks}
+     sidebar={(close, idPrefix) => <LessonSidebar {...sidebarProps} onNavigate={close} idPrefix={idPrefix} />}
+     workbench={<Workbench stage={stage} lesson={lesson} content={content} />}
+   >
+     <LessonArticle stage={stage} lesson={lesson} content={content} />
+-  </LessonLayout>
++  </LessonLayout></Suspense>
+ }
+ 
+ function ProtectedLesson({ stage, lesson }: { stage: Stage; lesson: Lesson }) {
+diff --git a/tests/experience-navigation.test.ts b/tests/experience-navigation.test.ts
+index b7527f7..7b0186b 100644
+--- a/tests/experience-navigation.test.ts
++++ b/tests/experience-navigation.test.ts
+@@ -74,3 +74,19 @@ test('course task return anchor targets one shared workbench on desktop and mobi
+   assert.match(html, /href="#lesson-workbench"/)
+ })
+ 
++test('course help controls appear only for lessons with help and leave article anchors in place', () => {
++  const props = {
++    sidebar: () => h('nav', null, '目录'), workbench: h('div', null, '任务'),
++    children: h('article', null, h('aside', { id: 'lesson-help' }, '原文排查')),
++    remainingTasks: 19, lessonKey: 's2-l8', lessonTitle: '部署上线',
++  }
++  const absent = render(h(LessonLayout, props))
++  assert.doesNotMatch(absent, /本课排查|卡住了怎么办/)
++  const present = render(h(LessonLayout, { ...props, helpItems: [{ id: 'lesson-help', title: '构建失败', body: '检查日志。' }] }))
++  assert.match(present, /本课排查/)
++  assert.match(present, /卡住了怎么办/)
++  assert.equal((present.match(/aria-controls="lesson-help-panel"/g) ?? []).length, 2)
++  assert.equal((present.match(/id="lesson-help"/g) ?? []).length, 1)
++  assert.doesNotMatch(present, /<dialog/)
++})
++
+diff --git a/tests/lesson-renderer.test.ts b/tests/lesson-renderer.test.ts
+index c4f4d3f..1db679c 100644
+--- a/tests/lesson-renderer.test.ts
++++ b/tests/lesson-renderer.test.ts
+@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
+ import { stringify } from 'yaml'
+ import { parseLessonContent } from '../server/services/lesson-parser.js'
+ import { LessonMarkdown } from '../src/components/LessonMarkdown.js'
+-import { lessonUrl } from '../src/lib/lessonMarkdown.js'
++import { extractLessonHelp, lessonUrl } from '../src/lib/lessonMarkdown.js'
+ 
+ const metadata = {
+   estimatedTime: '15 分钟', difficulty: '入门', objective: '验证页面',
+@@ -82,6 +82,44 @@ test('directive allowlist rejects arbitrary components/attributes and malformed
+   assert.match(render(':script[alert]'), /:script\[alert\]/)
+ })
+ 
++test('help extraction ignores prose and fenced examples and uses the directive allowlist', () => {
++  assert.deepEqual(extractLessonHelp('## 卡住了怎么办\n\n普通正文\n\n```text\n:::stuck\n这只是示例\n:::\n```'), [])
++  assert.throws(() => extractLessonHelp(':::stuck{onclick="alert(1)"}\n坏属性\n:::'))
++})
++
++test('help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks', () => {
++  const inner = '### 终端报错\n\n**保留提示**，查看[文档][docs]和[本课提示词](#lesson-prompt)。\n\n```bash\nnpm run dev\n```\n\n:::warning{title="先保留数据"}\n不要删除文件。\n:::'
++  const source = `## 操作\n\n::::stuck{title="启动失败"}\n\n${inner}\n\n::::\n\n继续正文。\n\n:::stuck\n\n第二处排查。\n\n:::\n\n[docs]: https://example.com/docs`
++  for (const body of [source, source.replace(/\n/g, '\r\n'), '\uFEFF' + source]) {
++    const items = extractLessonHelp(body)
++    assert.deepEqual(items.map(({ id, title }) => ({ id, title })), [
++      { id: 'lesson-help', title: '启动失败' }, { id: 'lesson-help-2', title: '排查建议 2' },
++    ])
++    assert.ok(items[0].body.startsWith(body.includes('\r\n') ? inner.replace(/\n/g, '\r\n') : inner))
++    assert.doesNotMatch(items[0].body, /继续正文/)
++    const html = renderToStaticMarkup(createElement(LessonMarkdown, { body: items[0].body, anchorPrefix: 'panel-1-' }))
++    for (const fragment of ['<h3>终端报错</h3>', 'npm run dev', 'href="https://example.com/docs"', 'href="#lesson-prompt"', 'id="panel-1-lesson-warning"']) assert.ok(html.includes(fragment), fragment)
++  }
++})
++
++test('help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks', async () => {
++  let most = 0, count = 0
++  for (const directory of (await readdir('course-content', { withFileTypes: true })).filter(entry => entry.isDirectory() && /^(stage-\d+|capstone)$/.test(entry.name))) {
++    for (const file of (await readdir(`course-content/${directory.name}`)).filter(name => name.endsWith('.md'))) {
++      const { body } = parseLessonContent(await readFile(`course-content/${directory.name}/${file}`, 'utf8'))
++      const items = extractLessonHelp(body)
++      const original = render(body)
++      assert.equal(items.length, (original.match(/class="lesson-callout lesson-stuck"/g) ?? []).length, file)
++      const panel = items.map((item, index) => renderToStaticMarkup(createElement(LessonMarkdown, { body: item.body, anchorPrefix: `help-panel-${index + 1}-` }))).join('')
++      const ids = Array.from((original + panel).matchAll(/\sid="([^"]+)"/g), match => match[1])
++      assert.equal(ids.length, new Set(ids).size, `${file}: unique IDs across article and panel`)
++      most = Math.max(most, items.length); count++
++    }
++  }
++  assert.equal(most, 19)
++  assert.equal(count, 39)
++})
++
+ test('raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed', () => {
+   const html = render('<script>alert(1)</script>\n\n<img src=x onerror=alert(1)>\n\n<iframe src="https://evil.example"></iframe>\n\n<lesson-callout kind="prompt">forged</lesson-callout>\n\n[bad](javascript:alert%281%29)\n\n![bad](data:image/svg+xml,bad)\n\n[bad](//evil.example)')
+   assert.doesNotMatch(html, /<script|<iframe|onerror=|javascript:|data:image|src="x"|<lesson-callout|href="\/\//)

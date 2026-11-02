@@ -1,0 +1,235 @@
+{
+  "status": "PASS",
+  "lessonSha256": "a3536f8c8ee3e888e10630fe805aa8cc496c20ade3b4d8589cd1645d394e618f",
+  "parser": "actual parseLessonContent",
+  "renderer": "actual LessonMarkdown SSR",
+  "uniqueCheckKeys": true,
+  "programs": [
+    "support.ts",
+    "iterable.ts",
+    "assembly.ts",
+    "runtime.ts",
+    "settlement.ts",
+    "chain.ts",
+    "demo.ts"
+  ],
+  "controlledAdapter": true,
+  "previewExactSsr": true,
+  "members": [
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "registerAdapter",
+      "line": 401
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "listProviders",
+      "line": 482
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "listModels",
+      "line": 718
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "resolveModelInfo",
+      "line": 760
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "prepareCall",
+      "line": 960
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "stream",
+      "line": 1170
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmRuntime",
+      "member": "adapterStream",
+      "line": 1068
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmAdapter",
+      "member": "prepareCall",
+      "line": 290
+    },
+    {
+      "file": "packages/llm/llm/src/index.ts",
+      "className": "LlmAdapter",
+      "member": "stream",
+      "line": 302
+    },
+    {
+      "file": "packages/llm/llm/src/assembler.ts",
+      "className": "BlockAssembler",
+      "member": "push",
+      "line": 49
+    },
+    {
+      "file": "packages/llm/llm/src/assembler.ts",
+      "className": "BlockAssembler",
+      "member": "blocks",
+      "line": 158
+    },
+    {
+      "file": "packages/llm/llm/src/assembler.ts",
+      "className": "BlockAssembler",
+      "member": "interruptedBlocks",
+      "line": 169
+    },
+    {
+      "file": "packages/llm/llm/src/assembler.ts",
+      "className": "BlockAssembler",
+      "member": "message",
+      "line": 205
+    },
+    {
+      "file": "packages/llm/llm/src/assistant-stream.ts",
+      "className": "AssistantStreamAccumulator",
+      "member": "push",
+      "line": 108
+    },
+    {
+      "file": "packages/llm/llm/src/assistant-stream.ts",
+      "className": "AssistantStreamAccumulator",
+      "member": "snapshot",
+      "line": 183
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "start",
+      "line": 49
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "push",
+      "line": 60
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "settle",
+      "line": 78
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "abandon",
+      "line": 100
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "blocks",
+      "line": 117
+    },
+    {
+      "file": "packages/core/agent-loop/src/assistant-stream.ts",
+      "className": "AssistantStreamAttempt",
+      "member": "interruptedBlocks",
+      "line": 122
+    },
+    {
+      "file": "packages/core/agent-loop/src/agent.ts",
+      "className": "ReactLoopAgent",
+      "member": "step",
+      "line": 435
+    },
+    {
+      "file": "packages/core/agent-loop/src/agent.ts",
+      "className": "ReactLoopAgent",
+      "member": "buildRequest",
+      "line": 656
+    }
+  ],
+  "interfaceMembers": [
+    {
+      "file": "packages/llm/llm/src/types.ts",
+      "name": "ToolCallBlock",
+      "members": [
+        "type",
+        "id",
+        "name",
+        "arguments"
+      ]
+    },
+    {
+      "file": "packages/llm/llm/src/types.ts",
+      "name": "FinishReasonMap",
+      "members": [
+        "stop",
+        "tool-calls",
+        "max-tokens",
+        "aborted",
+        "error"
+      ]
+    },
+    {
+      "file": "packages/llm/llm/src/types.ts",
+      "name": "GenerateOptions",
+      "members": [
+        "provider",
+        "model",
+        "reasoningEffort",
+        "messages",
+        "system",
+        "tools",
+        "toolHistory",
+        "temperature",
+        "maxTokens",
+        "stop",
+        "signal",
+        "sessionId",
+        "purpose"
+      ]
+    }
+  ],
+  "exportedFunctions": [
+    {
+      "file": "packages/llm/llm/src/assistant-stream.ts",
+      "name": "expandAssistantStream",
+      "line": 202
+    },
+    {
+      "file": "packages/llm/llm/src/assistant-stream.ts",
+      "name": "assembleAssistantStream",
+      "line": 425
+    }
+  ],
+  "metrics": {
+    "allBodyCjk": 9365,
+    "defaultBodyCjk": 7269,
+    "codeBlocks": 9,
+    "codeLines": 184,
+    "defaultCodeLines": 8,
+    "details": 21,
+    "coreConcepts": 7,
+    "coreConceptNames": [
+      "LlmRuntime",
+      "LlmAdapter",
+      "PreparedLlmCall",
+      "ContentBlock",
+      "StreamChunk",
+      "BlockAssembler",
+      "Settlement"
+    ],
+    "coreSourceFiles": 5,
+    "exercises": 4,
+    "thoughts": 10,
+    "figures": 4,
+    "scope": "CJK excludes code/URLs/comments; default excludes deepdive; counts are not measured learning time"
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "status": "PASS",
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "node": "v24.16.0",
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h09-lab-Ou1X3l",
+  "sourceFilesChecked": 1590,
+  "tests": 24,
+  "mutation": {
+    "exit": 1,
+    "status": "EXPECTED_FAILURE"
+  },
+  "results": {
+    "tests": {
+      "exit": 0,
+      "stdout": "TAP version 13\n# Subtest: C01 Registry without factory rejects both creation operations\nok 1 - C01 Registry without factory rejects both creation operations\n  ---\n  duration_ms: 8.382\n  type: 'test'\n  ...\n# Subtest: C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot\nok 2 - C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot\n  ---\n  duration_ms: 5.2368\n  type: 'test'\n  ...\n# Subtest: C03 real entry identity and advanced detach reject mismatch, collision and stale teardown\nok 3 - C03 real entry identity and advanced detach reject mismatch, collision and stale teardown\n  ---\n  duration_ms: 1.9661\n  type: 'test'\n  ...\n# Subtest: D01 A uses real Loop: queries, roots, snapshots and collisions\nok 4 - D01 A uses real Loop: queries, roots, snapshots and collisions\n  ---\n  duration_ms: 11.2605\n  type: 'test'\n  ...\n# Subtest: D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement\nok 5 - D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement\n  ---\n  duration_ms: 6.7727\n  type: 'test'\n  ...\n# Subtest: D03-setup initialization/cleanup path\nok 6 - D03-setup initialization/cleanup path\n  ---\n  duration_ms: 4.5629\n  type: 'test'\n  ...\n# Subtest: D03-commit initialization/cleanup path\nok 7 - D03-commit initialization/cleanup path\n  ---\n  duration_ms: 4.5158\n  type: 'test'\n  ...\n# Subtest: D03-session-listener initialization/cleanup path\nok 8 - D03-session-listener initialization/cleanup path\n  ---\n  duration_ms: 6.081\n  type: 'test'\n  ...\n# Subtest: D03-agent-listener initialization/cleanup path\nok 9 - D03-agent-listener initialization/cleanup path\n  ---\n  duration_ms: 4.9622\n  type: 'test'\n  ...\n# Subtest: D03-cancel initialization/cleanup path\nok 10 - D03-cancel initialization/cleanup path\n  ---\n  duration_ms: 4.8102\n  type: 'test'\n  ...\n# Subtest: D03-normal initialization/cleanup path\nok 11 - D03-normal initialization/cleanup path\n  ---\n  duration_ms: 5.8415\n  type: 'test'\n  ...\n# Subtest: D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations\nok 12 - D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations\n  ---\n  duration_ms: 6.5537\n  type: 'test'\n  ...\n# Subtest: D05 serial listener barrier holds create; failed creation preserves queued input without starting model\nok 13 - D05 serial listener barrier holds create; failed creation preserves queued input without starting model\n  ---\n  duration_ms: 14.4798\n  type: 'test'\n  ...\n# Subtest: D06 owner unload during async creation listener waits for listener and scope before detaching\nok 14 - D06 owner unload during async creation listener waits for listener and scope before detaching\n  ---\n  duration_ms: 6.612\n  type: 'test'\n  ...\n# Subtest: D07-handle stops and drains real maintenance before scope/registries\nok 15 - D07-handle stops and drains real maintenance before scope/registries\n  ---\n  duration_ms: 6.5874\n  type: 'test'\n  ...\n# Subtest: D07-owner stops and drains real maintenance before scope/registries\nok 16 - D07-owner stops and drains real maintenance before scope/registries\n  ---\n  duration_ms: 6.6384\n  type: 'test'\n  ...\n# Subtest: D07-factory stops and drains real maintenance before scope/registries\nok 17 - D07-factory stops and drains real maintenance before scope/registries\n  ---\n  duration_ms: 6.8745\n  type: 'test'\n  ...\n# Subtest: D08 explicit parentAgent, caller, historical parent and object identity are independent\nok 18 - D08 explicit parentAgent, caller, historical parent and object identity are independent\n  ---\n  duration_ms: 7.0112\n  type: 'test'\n  ...\n# Subtest: D09 real resume rejects absent backend; pre-aborted create announces nothing\nok 19 - D09 real resume rejects absent backend; pre-aborted create announces nothing\n  ---\n  duration_ms: 6.5951\n  type: 'test'\n  ...\n# Subtest: D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts\nok 20 - D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts\n  ---\n  duration_ms: 6.9973\n  type: 'test'\n  ...\n# Subtest: D11 teardown attempts registry cleanup after write-close failure and preserves rejection\nok 21 - D11 teardown attempts registry cleanup after write-close failure and preserves rejection\n  ---\n  duration_ms: 5.0168\n  type: 'test'\n  ...\n# Subtest: D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call\nok 22 - D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call\n  ---\n  duration_ms: 8.9434\n  type: 'test'\n  ...\n# Subtest: D13 aborting the creation signal after success does not dispose the live Agent\nok 23 - D13 aborting the creation signal after success does not dispose the live Agent\n  ---\n  duration_ms: 5.4253\n  type: 'test'\n  ...\n# Subtest: D14 concurrent same-id preparation publishes one lifecycle and preserves winner\nok 24 - D14 concurrent same-id preparation publishes one lifecycle and preserves winner\n  ---\n  duration_ms: 6.383\n  type: 'test'\n  ...\n1..24\n# tests 24\n# suites 0\n# pass 24\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 826.8177\n",
+      "stderr": ""
+    },
+    "demo": {
+      "exit": 0,
+      "stdout": "A {\"sameReference\":true,\"active\":[\"reader-A\",\"writer-B\",\"tester-C\"],\"roots\":[\"reader-A\",\"writer-B\"],\"missing\":true,\"emptyLookup\":true}\nB {\"bareHasDispose\":false,\"handleHasDispose\":true,\"runtimeChild\":true,\"historyParent\":\"different-history\",\"staleDisposePreservedReplacement\":true}\nC {\"kind\":\"setup\",\"trace\":[\"session/created\",\"setup\",\"scope-clean\",\"session/disposed\"],\"cleanups\":1,\"agentAbsent\":true,\"sessionAbsent\":true}\nC {\"kind\":\"commit\",\"trace\":[\"session/created\",\"setup\",\"commit\",\"scope-clean\",\"session/disposed\"],\"cleanups\":1,\"agentAbsent\":true,\"sessionAbsent\":true}\nC {\"kind\":\"session-listener\",\"trace\":[\"session/created\",\"session/disposed\"],\"cleanups\":0,\"agentAbsent\":true,\"sessionAbsent\":true}\nC {\"kind\":\"agent-listener\",\"trace\":[\"session/created\",\"setup\",\"commit\",\"agent/created\",\"scope-clean\",\"agent/disposed\",\"session/disposed\"],\"cleanups\":1,\"agentAbsent\":true,\"sessionAbsent\":true}\nC {\"kind\":\"cancel\",\"trace\":[\"session/created\",\"setup\",\"scope-clean\",\"session/disposed\"],\"cleanups\":1,\"agentAbsent\":true,\"sessionAbsent\":true}\nC {\"kind\":\"normal\",\"trace\":[\"session/created\",\"setup\",\"commit\",\"agent/created\",\"later-listener\",\"scope-clean\",\"agent/disposed\",\"session/disposed\"],\"cleanups\":1,\"agentAbsent\":true,\"sessionAbsent\":true}\n",
+      "stderr": ""
+    }
+  },
+  "levels": {
+    "A": "NOT_RUN: no Registry simulator",
+    "B": "NOT_RUN as standalone grade: Cordis executes inside C/D",
+    "C": "PASS: 3 real Registry tests with structural Agent/factory fixtures",
+    "D": "PASS: 21 real AgentLoop tests; persistence only uses an explicitly authored memory fixture",
+    "E": "NOT_RUN: no complete Harness integration, real backend, model, or upstream Vitest suite"
+  },
+  "isolation": "Only new OS fixture directories, allowlisted environment, no model/network/private Home; retained without cleanup",
+  "dependencies": {
+    "anchor": "C:/Users/QYF/.codex/research/h04-probe-deps/node_modules/commander/index.js",
+    "packages": [
+      {
+        "name": "@eslint-community/regexpp",
+        "version": "4.12.2",
+        "integrity": "sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew=="
+      },
+      {
+        "name": "ajv",
+        "version": "8.20.0",
+        "integrity": "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="
+      },
+      {
+        "name": "argparse",
+        "version": "2.0.1",
+        "integrity": "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="
+      },
+      {
+        "name": "commander",
+        "version": "15.0.0",
+        "integrity": "sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg=="
+      },
+      {
+        "name": "fast-deep-equal",
+        "version": "3.1.3",
+        "integrity": "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
+      },
+      {
+        "name": "fast-uri",
+        "version": "3.1.8",
+        "integrity": "sha512-GZMtZUTNRpOVIECoXwLNZS5xUGE+mVNbTB8h/7Rwh2TFWcBQiPzTgyZi05BF9UMZKkLJv8XBRJTlU7zg8+ZfMg=="
+      },
+      {
+        "name": "js-yaml",
+        "version": "4.3.2",
+        "integrity": "sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA=="
+      },
+      {
+        "name": "json-schema-traverse",
+        "version": "1.0.0",
+        "integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="
+      },
+      {
+        "name": "node-addon-native-custom-loader",
+        "version": "0.1.9",
+        "integrity": "sha512-Zh87aubSc1UF8CzZsRws1KtSwXiPDH0tbcg8V/2OA8Tcq9yGJRESFcEOC5NGLFama5IGfC3aJhubZbrj9Un2qA=="
+      },
+      {
+        "name": "node-addon-require-builtin",
+        "version": "0.1.9",
+        "integrity": "sha512-BCxXCMZDs/VLLh64SwKNw/me7Qx1I7Be4qxWwYVRRm8tJoOB8fL7qg6CmXhSXeUqsKt72t8RaKCX4EN+5nocVg=="
+      },
+      {
+        "name": "node-addon-require-builtin-darwin-arm64",
+        "version": "0.1.9",
+        "integrity": "sha512-n45xEILQVOLZ2hVhzRXesTMYS4odHquyI/B/IkPMPUCONa8PjNfBag6lYBH4wDrhgpLNNBwMsUD8d8O/13QPPA=="
+      },
+      {
+        "name": "node-addon-require-builtin-darwin-x64",
+        "version": "0.1.9",
+        "integrity": "sha512-Sm4Liqh1uo9zgJB2F/pACPPZdHu+fj9Qniyr1Q99dDQB0v71VgZgkAgv3K0/E1iPQBlZq9rakFkY7MGUIfWc0A=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-arm64-gnu",
+        "version": "0.1.9",
+        "integrity": "sha512-ToU4wGtOD/069i2y4fJ3cjDJiiWtcjSQTZMf0YKlotb5BmTM7FjhR3X1aub8J/YjlOwl6665J/XAYuvCaDO5sA=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-arm64-musl",
+        "version": "0.1.9",
+        "integrity": "sha512-85Z5Avp++wfa9iiTIH8LC/r6qvlC/CiwpifiwIz0gYQ9PzajTSkz06gX7YDqf1oUqWYxU9uwNEOmo7mktHOOfA=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-x64-gnu",
+        "version": "0.1.9",
+        "integrity": "sha512-fh3K3/JvBfSYwU8vEOpp4Wdp4N/jX0EnZYq5GsaftlQin1FVqgve/yDNoh+asxBMOQyHOG8F4dXlV1WCierrfg=="
+      },
+      {
+        "name": "node-addon-require-builtin-linux-x64-musl",
+        "version": "0.1.9",
+        "integrity": "sha512-B6fu/5xmbRxnifM7nWz0IESkYnUl8dwFZmRDMsxdhzv2nb+EtBRFAXg4lf73qhX3yoZD4SnWJILBQMlIAwBCzw=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-arm64-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-FOQuzNe8B1BANu886rJgdbQuRxPGUQmewkykw87wSr32U0ibQ3AWGuUM/Gh7LG4RekjFaifj7gEI/tq2+6GU6g=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-ia32-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-N29P0kmIBT6hnkNNFYzxn+o9ydT6OYZe9RFAi8dSxV1rNSul1FlxtuKWYe8w2sQpbQGYuGDEtpOwdeFtq2iFTg=="
+      },
+      {
+        "name": "node-addon-require-builtin-win32-x64-msvc",
+        "version": "0.1.9",
+        "integrity": "sha512-+i6N4A7m7txjbw8pDYESdWXiKO9EEVq0SzTzwPS0WZuV4F1MzQnaDJwJJnO7T6zAc0BvqHXBOkpharCrUjFhbQ=="
+      },
+      {
+        "name": "require-from-string",
+        "version": "2.0.2",
+        "integrity": "sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw=="
+      },
+      {
+        "name": "resolve.exports",
+        "version": "2.0.3",
+        "integrity": "sha512-OcXjMsGdhL4XnbShKpAcSqPMzQoYkYyhbEaeSko47MjRP9NfEQMhZkXL1DoFlt9LWQn4YttrdnV6X2OiyzBi+A=="
+      },
+      {
+        "name": "semver",
+        "version": "7.8.5",
+        "integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA=="
+      }
+    ]
+  },
+  "programs": [
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "e8b5711e4e5b4947d7bc4cf2ca1ada868f773d73cdc6ffddfd64ca3efa286984"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "1e4135301ea289aaf679e86178237496474345198a385bb96eff02f3af926dda"
+    },
+    {
+      "name": "failures.ts",
+      "sha256": "0f355e592010ae843c6d7f819f2c666578cf3b501be3a9d5e557012529631eac"
+    },
+    {
+      "name": "lifecycle.test.ts",
+      "sha256": "c973f13cb65d56fa2baca8104393613ae990d01a37aadc2d9545ddca2afe8232"
+    },
+    {
+      "name": "ownership.ts",
+      "sha256": "aa61f6f90d0f1edf91daeaf93b35243feeb7d51d4a7419607daa4126a71b1bf5"
+    },
+    {
+      "name": "registry.ts",
+      "sha256": "8dd21919e8065180a14c4e7e633209ef5e4945ad5f082f03b7002714e3234782"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "d3079c71b643125adcfc1c468ff7cc73c458f9790dd0952469b02abb04d3bdb6"
+    }
+  ]
+}

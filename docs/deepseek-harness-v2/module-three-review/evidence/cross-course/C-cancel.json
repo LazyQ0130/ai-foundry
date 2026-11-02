@@ -1,0 +1,1227 @@
+{
+  "mode": "C-cancel",
+  "level": "D",
+  "components": [
+    "Cordis",
+    "Registry",
+    "AgentLoop factory/driver",
+    "Scope",
+    "SystemPrompt",
+    "SessionStore/Session/projections",
+    "LlmRuntime",
+    "Assembler",
+    "Accumulator",
+    "AssistantStreamAttempt",
+    "Tools/NativeExecutor"
+  ],
+  "mocks": [
+    "controlled LlmAdapter, no HTTP",
+    "fixed string tool, no filesystem"
+  ],
+  "storage": "real in-memory Session; no persistence backend",
+  "counts": {
+    "assembleCount": 1,
+    "preStepCount": 1,
+    "requestCount": 1,
+    "bodyCalls": 0
+  },
+  "trace": [
+    {
+      "position": 0,
+      "channel": "control",
+      "type": "registry.create",
+      "data": {}
+    },
+    {
+      "position": 1,
+      "channel": "live",
+      "type": "session/created",
+      "data": {
+        "id": "m3-C-cancel"
+      }
+    },
+    {
+      "position": 2,
+      "channel": "control",
+      "type": "setup",
+      "data": {
+        "sessionVisible": true,
+        "agentVisible": false
+      }
+    },
+    {
+      "position": 3,
+      "channel": "control",
+      "type": "setup.commit",
+      "data": {}
+    },
+    {
+      "position": 4,
+      "channel": "live",
+      "type": "agent/created",
+      "data": {
+        "id": "m3-C-cancel",
+        "registered": true
+      }
+    },
+    {
+      "position": 5,
+      "channel": "control",
+      "type": "create-return",
+      "data": {
+        "sameReference": true,
+        "handleDispose": "function"
+      }
+    },
+    {
+      "position": 6,
+      "channel": "fact",
+      "type": "agent/inbox/spliced",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793587532479,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "请概括固定README"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "position": 7,
+      "channel": "fact",
+      "type": "turn/start",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793587532479,
+          "data": {
+            "turn": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 8,
+      "channel": "fact",
+      "type": "agent/inbox/spliced",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793587532479,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      }
+    },
+    {
+      "position": 9,
+      "channel": "control",
+      "type": "assemble",
+      "data": {
+        "sections": [
+          {
+            "name": "deployment:persona-prefix",
+            "text": ""
+          },
+          {
+            "name": "role",
+            "text": "代码助手：{{tone}}"
+          },
+          {
+            "name": "deployment:persona-suffix",
+            "text": ""
+          }
+        ],
+        "variables": {
+          "provider": "fixture",
+          "model": "scripted",
+          "tone": "简洁"
+        },
+        "contexts": [
+          {
+            "name": "directory",
+            "text": "/fixture/before",
+            "interpolate": false
+          }
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "channel": "control",
+      "type": "pre-step",
+      "data": {}
+    },
+    {
+      "position": 11,
+      "channel": "fact",
+      "type": "step/start",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793587532480,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 12,
+      "channel": "control",
+      "type": "agent/request",
+      "data": {}
+    },
+    {
+      "position": 13,
+      "channel": "request",
+      "type": "adapter.prepareCall",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted"
+      }
+    },
+    {
+      "position": 14,
+      "channel": "fact",
+      "type": "system/message",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793587532480,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "代码助手：简洁"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 15,
+      "channel": "fact",
+      "type": "user/message",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793587532480,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 16,
+      "channel": "fact",
+      "type": "user/message",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793587532480,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 17,
+      "channel": "fact",
+      "type": "request/header",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793587532480,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 96
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "read_fixture",
+                  "description": "fixed constant only",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "part": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      }
+    },
+    {
+      "position": 18,
+      "channel": "fact",
+      "type": "request/context",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793587532480,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted",
+            "contextWindow": 4096
+          }
+        }
+      }
+    },
+    {
+      "position": 19,
+      "channel": "live",
+      "type": "assistant/start",
+      "data": {
+        "type": "start",
+        "attemptId": "m3-C-cancel:1",
+        "revision": 1,
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "position": 20,
+      "channel": "request",
+      "type": "llm/stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-C-cancel"
+      }
+    },
+    {
+      "position": 21,
+      "channel": "external-model",
+      "type": "adapter.stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-C-cancel"
+      }
+    },
+    {
+      "position": 22,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-C-cancel:1",
+        "revision": 2,
+        "index": 0,
+        "time": 1793587532481,
+        "chunk": {
+          "type": "text-delta",
+          "index": 7,
+          "text": "可保留前缀"
+        }
+      }
+    },
+    {
+      "position": 23,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-C-cancel:1",
+        "revision": 3,
+        "index": 1,
+        "time": 1793587532481,
+        "chunk": {
+          "type": "tool-call-delta",
+          "index": 2,
+          "id": "never-run",
+          "name": "read_fixture",
+          "argumentsDelta": "{\"part\":"
+        }
+      }
+    },
+    {
+      "position": 24,
+      "channel": "fact",
+      "type": "assistant/message",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793587532481,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "可保留前缀"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "975b7c96-c5fc-49a3-a35a-abfe409e4926"
+            },
+            "interrupted": true,
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793587532481,
+                "index": 7,
+                "dt": [],
+                "texts": [
+                  "可保留前缀"
+                ]
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793587532481,
+                "index": 2,
+                "dt": [],
+                "id": "never-run",
+                "name": "read_fixture",
+                "args": [
+                  "{\"part\":"
+                ]
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 25,
+      "channel": "live",
+      "type": "assistant/end",
+      "data": {
+        "type": "end",
+        "attemptId": "m3-C-cancel:1",
+        "revision": 4,
+        "index": 2,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/message",
+          "seq": 9
+        }
+      }
+    },
+    {
+      "position": 26,
+      "channel": "fact",
+      "type": "step/end",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "step/end",
+          "seq": 10,
+          "time": 1793587532481,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 27,
+      "channel": "fact",
+      "type": "turn/end",
+      "data": {
+        "sessionId": "m3-C-cancel",
+        "event": {
+          "type": "turn/end",
+          "seq": 11,
+          "time": 1793587532481,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "aborted",
+              "reason": {
+                "kind": "user"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "position": 28,
+      "channel": "live",
+      "type": "agent/disposed",
+      "data": {
+        "id": "m3-C-cancel",
+        "absent": true
+      }
+    },
+    {
+      "position": 29,
+      "channel": "live",
+      "type": "session/disposed",
+      "data": {
+        "id": "m3-C-cancel"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 0,
+      "time": 1793587532479,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "inserted": [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+          }
+        ]
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 1,
+      "time": 1793587532479,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 2,
+      "time": 1793587532479,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "removedCount": 1,
+        "inserted": []
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 3,
+      "time": 1793587532480,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 4,
+      "time": 1793587532480,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：简洁"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 5,
+      "time": 1793587532480,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "请概括固定README"
+          }
+        ],
+        "source": {
+          "kind": "user"
+        },
+        "role": "user",
+        "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 6,
+      "time": 1793587532480,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+          }
+        ],
+        "source": {
+          "kind": "runtime-context",
+          "form": "snapshot",
+          "sections": [
+            {
+              "name": "directory",
+              "text": "/fixture/after"
+            }
+          ]
+        },
+        "role": "user",
+        "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 7,
+      "time": 1793587532480,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 96
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "request/context",
+      "seq": 8,
+      "time": 1793587532480,
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "contextWindow": 4096
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 9,
+      "time": 1793587532481,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "可保留前缀"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "scripted"
+          },
+          "id": "975b7c96-c5fc-49a3-a35a-abfe409e4926"
+        },
+        "interrupted": true,
+        "stream": [
+          {
+            "type": "text-chunks",
+            "time0": 1793587532481,
+            "index": 7,
+            "dt": [],
+            "texts": [
+              "可保留前缀"
+            ]
+          },
+          {
+            "type": "tool-call-chunks",
+            "time0": 1793587532481,
+            "index": 2,
+            "dt": [],
+            "id": "never-run",
+            "name": "read_fixture",
+            "args": [
+              "{\"part\":"
+            ]
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 10,
+      "time": 1793587532481,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 11,
+      "time": 1793587532481,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "aborted",
+          "reason": {
+            "kind": "user"
+          }
+        }
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "代码助手：简洁"
+        }
+      ],
+      "source": {
+        "kind": "system-prompt"
+      },
+      "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+    },
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "请概括固定README"
+        }
+      ],
+      "source": {
+        "kind": "user"
+      },
+      "role": "user",
+      "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+    },
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+        }
+      ],
+      "source": {
+        "kind": "runtime-context",
+        "form": "snapshot",
+        "sections": [
+          {
+            "name": "directory",
+            "text": "/fixture/after"
+          }
+        ]
+      },
+      "role": "user",
+      "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "可保留前缀"
+        }
+      ],
+      "source": {
+        "kind": "model",
+        "provider": "fixture",
+        "model": "scripted"
+      },
+      "id": "975b7c96-c5fc-49a3-a35a-abfe409e4926"
+    }
+  ],
+  "assemblies": [
+    {
+      "sections": [
+        {
+          "name": "deployment:persona-prefix",
+          "text": ""
+        },
+        {
+          "name": "role",
+          "text": "代码助手：{{tone}}"
+        },
+        {
+          "name": "deployment:persona-suffix",
+          "text": ""
+        }
+      ],
+      "contexts": [
+        {
+          "name": "directory",
+          "text": "/fixture/before",
+          "interpolate": false
+        }
+      ],
+      "variables": {
+        "provider": "fixture",
+        "model": "scripted",
+        "tone": "简洁"
+      }
+    }
+  ],
+  "loopRequests": [
+    {
+      "request": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-C-cancel"
+      },
+      "throughSeq": 8,
+      "reconstruction": "messages/config/tools/toolHistory match real Session rebuilt from prefix"
+    }
+  ],
+  "adapterRequests": [
+    {
+      "provider": "fixture",
+      "model": "scripted",
+      "maxTokens": 96,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：简洁"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "8e1d6e93-d65c-4390-bb91-c0dae574309d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "请概括固定README"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "278c8b09-1324-40a2-a54f-d9c7a1a5835d"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "directory",
+                "text": "/fixture/after"
+              }
+            ]
+          },
+          "role": "user",
+          "id": "3fc6b58f-f497-4b68-90a0-d98eff788a59"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "read_fixture",
+          "description": "fixed constant only",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "part": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "sessionId": "m3-C-cancel"
+    }
+  ]
+}

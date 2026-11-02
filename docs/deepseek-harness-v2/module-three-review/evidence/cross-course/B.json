@@ -1,0 +1,2439 @@
+{
+  "mode": "B",
+  "level": "D",
+  "components": [
+    "Cordis",
+    "Registry",
+    "AgentLoop factory/driver",
+    "Scope",
+    "SystemPrompt",
+    "SessionStore/Session/projections",
+    "LlmRuntime",
+    "Assembler",
+    "Accumulator",
+    "AssistantStreamAttempt",
+    "Tools/NativeExecutor"
+  ],
+  "mocks": [
+    "controlled LlmAdapter, no HTTP",
+    "fixed string tool, no filesystem"
+  ],
+  "storage": "real in-memory Session; no persistence backend",
+  "counts": {
+    "assembleCount": 2,
+    "preStepCount": 2,
+    "requestCount": 2,
+    "bodyCalls": 1
+  },
+  "trace": [
+    {
+      "position": 0,
+      "channel": "control",
+      "type": "registry.create",
+      "data": {}
+    },
+    {
+      "position": 1,
+      "channel": "live",
+      "type": "session/created",
+      "data": {
+        "id": "m3-B"
+      }
+    },
+    {
+      "position": 2,
+      "channel": "control",
+      "type": "setup",
+      "data": {
+        "sessionVisible": true,
+        "agentVisible": false
+      }
+    },
+    {
+      "position": 3,
+      "channel": "control",
+      "type": "setup.commit",
+      "data": {}
+    },
+    {
+      "position": 4,
+      "channel": "live",
+      "type": "agent/created",
+      "data": {
+        "id": "m3-B",
+        "registered": true
+      }
+    },
+    {
+      "position": 5,
+      "channel": "control",
+      "type": "create-return",
+      "data": {
+        "sameReference": true,
+        "handleDispose": "function"
+      }
+    },
+    {
+      "position": 6,
+      "channel": "fact",
+      "type": "agent/inbox/spliced",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793587532450,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "请概括固定README"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "position": 7,
+      "channel": "fact",
+      "type": "turn/start",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793587532450,
+          "data": {
+            "turn": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 8,
+      "channel": "fact",
+      "type": "agent/inbox/spliced",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793587532450,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      }
+    },
+    {
+      "position": 9,
+      "channel": "control",
+      "type": "assemble",
+      "data": {
+        "sections": [
+          {
+            "name": "deployment:persona-prefix",
+            "text": ""
+          },
+          {
+            "name": "role",
+            "text": "代码助手：{{tone}}"
+          },
+          {
+            "name": "deployment:persona-suffix",
+            "text": ""
+          }
+        ],
+        "variables": {
+          "provider": "fixture",
+          "model": "scripted",
+          "tone": "简洁"
+        },
+        "contexts": [
+          {
+            "name": "directory",
+            "text": "/fixture/before",
+            "interpolate": false
+          }
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "channel": "control",
+      "type": "pre-step",
+      "data": {}
+    },
+    {
+      "position": 11,
+      "channel": "fact",
+      "type": "step/start",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793587532450,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 12,
+      "channel": "control",
+      "type": "agent/request",
+      "data": {}
+    },
+    {
+      "position": 13,
+      "channel": "request",
+      "type": "adapter.prepareCall",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted"
+      }
+    },
+    {
+      "position": 14,
+      "channel": "fact",
+      "type": "system/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793587532451,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "代码助手：简洁"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 15,
+      "channel": "fact",
+      "type": "user/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793587532451,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 16,
+      "channel": "fact",
+      "type": "user/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793587532451,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 17,
+      "channel": "fact",
+      "type": "request/header",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793587532451,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 96
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "read_fixture",
+                  "description": "fixed constant only",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "part": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      }
+    },
+    {
+      "position": 18,
+      "channel": "fact",
+      "type": "request/context",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793587532451,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted",
+            "contextWindow": 4096
+          }
+        }
+      }
+    },
+    {
+      "position": 19,
+      "channel": "live",
+      "type": "assistant/start",
+      "data": {
+        "type": "start",
+        "attemptId": "m3-B:1",
+        "revision": 1,
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "position": 20,
+      "channel": "request",
+      "type": "llm/stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      }
+    },
+    {
+      "position": 21,
+      "channel": "external-model",
+      "type": "adapter.stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      }
+    },
+    {
+      "position": 22,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:1",
+        "revision": 2,
+        "index": 0,
+        "time": 1793587532452,
+        "chunk": {
+          "type": "text-delta",
+          "index": 7,
+          "text": "先读资料"
+        }
+      }
+    },
+    {
+      "position": 23,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:1",
+        "revision": 3,
+        "index": 1,
+        "time": 1793587532452,
+        "chunk": {
+          "type": "tool-call-delta",
+          "index": 2,
+          "id": "module-read",
+          "name": "read_fixture",
+          "argumentsDelta": "{\"part\":"
+        }
+      }
+    },
+    {
+      "position": 24,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:1",
+        "revision": 4,
+        "index": 2,
+        "time": 1793587532452,
+        "chunk": {
+          "type": "tool-call-delta",
+          "index": 2,
+          "id": "module-read",
+          "argumentsDelta": "\"README\"}"
+        }
+      }
+    },
+    {
+      "position": 25,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:1",
+        "revision": 5,
+        "index": 3,
+        "time": 1793587532452,
+        "chunk": {
+          "type": "block-end",
+          "index": 2,
+          "block": {
+            "type": "tool-call",
+            "id": "module-read",
+            "name": "read_fixture",
+            "arguments": "{\"part\":\"README\"}"
+          }
+        }
+      }
+    },
+    {
+      "position": 26,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:1",
+        "revision": 6,
+        "index": 4,
+        "time": 1793587532452,
+        "chunk": {
+          "type": "finish",
+          "reason": {
+            "kind": "tool-calls"
+          }
+        }
+      }
+    },
+    {
+      "position": 27,
+      "channel": "fact",
+      "type": "assistant/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793587532453,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "先读资料"
+                },
+                {
+                  "type": "tool-call",
+                  "id": "module-read",
+                  "name": "read_fixture",
+                  "arguments": "{\"part\":\"README\"}"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793587532452,
+                "index": 7,
+                "dt": [],
+                "texts": [
+                  "先读资料"
+                ]
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793587532452,
+                "index": 2,
+                "dt": [],
+                "id": "module-read",
+                "name": "read_fixture",
+                "args": [
+                  "{\"part\":"
+                ]
+              },
+              {
+                "type": "tool-call-chunks",
+                "time0": 1793587532452,
+                "index": 2,
+                "dt": [],
+                "id": "module-read",
+                "args": [
+                  "\"README\"}"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793587532452,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 2,
+                  "block": {
+                    "type": "tool-call",
+                    "id": "module-read",
+                    "name": "read_fixture",
+                    "arguments": "{\"part\":\"README\"}"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793587532452,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "tool-calls"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 28,
+      "channel": "live",
+      "type": "assistant/end",
+      "data": {
+        "type": "end",
+        "attemptId": "m3-B:1",
+        "revision": 7,
+        "index": 5,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/message",
+          "seq": 9
+        }
+      }
+    },
+    {
+      "position": 29,
+      "channel": "fact",
+      "type": "tool/call",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "tool/call",
+          "seq": 10,
+          "time": 1793587532453,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "callId": "module-read",
+            "name": "read_fixture",
+            "arguments": "{\"part\":\"README\"}"
+          }
+        }
+      }
+    },
+    {
+      "position": 30,
+      "channel": "tool",
+      "type": "tool-body",
+      "data": {
+        "part": "README"
+      }
+    },
+    {
+      "position": 31,
+      "channel": "fact",
+      "type": "tool/result",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "tool/result",
+          "seq": 11,
+          "time": 1793587532455,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "tool",
+              "source": {
+                "kind": "tool",
+                "callId": "module-read"
+              },
+              "toolCallId": "module-read",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "README: MODULE THREE FIXTURE"
+                }
+              ],
+              "isError": false,
+              "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+            }
+          },
+          "sourceEventSeqs": [
+            10
+          ],
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 32,
+      "channel": "fact",
+      "type": "step/end",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "step/end",
+          "seq": 12,
+          "time": 1793587532455,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      }
+    },
+    {
+      "position": 33,
+      "channel": "control",
+      "type": "assemble",
+      "data": {
+        "sections": [
+          {
+            "name": "deployment:persona-prefix",
+            "text": ""
+          },
+          {
+            "name": "role",
+            "text": "代码助手：{{tone}}"
+          },
+          {
+            "name": "deployment:persona-suffix",
+            "text": ""
+          }
+        ],
+        "variables": {
+          "provider": "fixture",
+          "model": "scripted",
+          "tone": "详细"
+        },
+        "contexts": [
+          {
+            "name": "directory",
+            "text": "/fixture/after",
+            "interpolate": false
+          }
+        ]
+      }
+    },
+    {
+      "position": 34,
+      "channel": "control",
+      "type": "pre-step",
+      "data": {}
+    },
+    {
+      "position": 35,
+      "channel": "fact",
+      "type": "step/start",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "step/start",
+          "seq": 13,
+          "time": 1793587532456,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      }
+    },
+    {
+      "position": 36,
+      "channel": "control",
+      "type": "agent/request",
+      "data": {}
+    },
+    {
+      "position": 37,
+      "channel": "request",
+      "type": "adapter.prepareCall",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted"
+      }
+    },
+    {
+      "position": 38,
+      "channel": "fact",
+      "type": "system/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "system/message",
+          "seq": 14,
+          "time": 1793587532456,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "代码助手：详细"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+            }
+          },
+          "sourceEventSeqs": [
+            4
+          ],
+          "surfaceOp": {
+            "op": "replace",
+            "startSeq": 4,
+            "endSeq": 4
+          }
+        }
+      }
+    },
+    {
+      "position": 39,
+      "channel": "fact",
+      "type": "request/header",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "request/header",
+          "seq": 15,
+          "time": 1793587532456,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 96
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "read_fixture",
+                  "description": "fixed constant only",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "part": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "reason": "series"
+          }
+        }
+      }
+    },
+    {
+      "position": 40,
+      "channel": "live",
+      "type": "assistant/start",
+      "data": {
+        "type": "start",
+        "attemptId": "m3-B:2",
+        "revision": 8,
+        "turn": 1,
+        "step": 2
+      }
+    },
+    {
+      "position": 41,
+      "channel": "request",
+      "type": "llm/stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：详细"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "先读资料"
+              },
+              {
+                "type": "tool-call",
+                "id": "module-read",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"README\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "module-read"
+            },
+            "toolCallId": "module-read",
+            "content": [
+              {
+                "type": "text",
+                "text": "README: MODULE THREE FIXTURE"
+              }
+            ],
+            "isError": false,
+            "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      }
+    },
+    {
+      "position": 42,
+      "channel": "external-model",
+      "type": "adapter.stream",
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：详细"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "先读资料"
+              },
+              {
+                "type": "tool-call",
+                "id": "module-read",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"README\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "module-read"
+            },
+            "toolCallId": "module-read",
+            "content": [
+              {
+                "type": "text",
+                "text": "README: MODULE THREE FIXTURE"
+              }
+            ],
+            "isError": false,
+            "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      }
+    },
+    {
+      "position": 43,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:2",
+        "revision": 9,
+        "index": 0,
+        "time": 1793587532457,
+        "chunk": {
+          "type": "text-delta",
+          "index": 7,
+          "text": "已根据工具结果回答"
+        }
+      }
+    },
+    {
+      "position": 44,
+      "channel": "live",
+      "type": "assistant/chunk",
+      "data": {
+        "type": "chunk",
+        "attemptId": "m3-B:2",
+        "revision": 10,
+        "index": 1,
+        "time": 1793587532457,
+        "chunk": {
+          "type": "finish",
+          "reason": {
+            "kind": "stop"
+          }
+        }
+      }
+    },
+    {
+      "position": 45,
+      "channel": "fact",
+      "type": "assistant/message",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "assistant/message",
+          "seq": 16,
+          "time": 1793587532458,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "已根据工具结果回答"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "8a416355-64e6-405d-bf7f-e860eb80a1d9"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793587532457,
+                "index": 7,
+                "dt": [],
+                "texts": [
+                  "已根据工具结果回答"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793587532457,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      }
+    },
+    {
+      "position": 46,
+      "channel": "live",
+      "type": "assistant/end",
+      "data": {
+        "type": "end",
+        "attemptId": "m3-B:2",
+        "revision": 11,
+        "index": 2,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/message",
+          "seq": 16
+        }
+      }
+    },
+    {
+      "position": 47,
+      "channel": "fact",
+      "type": "step/end",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "step/end",
+          "seq": 17,
+          "time": 1793587532458,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      }
+    },
+    {
+      "position": 48,
+      "channel": "fact",
+      "type": "turn/end",
+      "data": {
+        "sessionId": "m3-B",
+        "event": {
+          "type": "turn/end",
+          "seq": 18,
+          "time": 1793587532458,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      }
+    },
+    {
+      "position": 49,
+      "channel": "live",
+      "type": "agent/disposed",
+      "data": {
+        "id": "m3-B",
+        "absent": true
+      }
+    },
+    {
+      "position": 50,
+      "channel": "live",
+      "type": "session/disposed",
+      "data": {
+        "id": "m3-B"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 0,
+      "time": 1793587532450,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "inserted": [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          }
+        ]
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 1,
+      "time": 1793587532450,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 2,
+      "time": 1793587532450,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "removedCount": 1,
+        "inserted": []
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 3,
+      "time": 1793587532450,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 4,
+      "time": 1793587532451,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：简洁"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 5,
+      "time": 1793587532451,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "请概括固定README"
+          }
+        ],
+        "source": {
+          "kind": "user"
+        },
+        "role": "user",
+        "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 6,
+      "time": 1793587532451,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+          }
+        ],
+        "source": {
+          "kind": "runtime-context",
+          "form": "snapshot",
+          "sections": [
+            {
+              "name": "directory",
+              "text": "/fixture/after"
+            }
+          ]
+        },
+        "role": "user",
+        "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 7,
+      "time": 1793587532451,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 96
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "request/context",
+      "seq": 8,
+      "time": 1793587532451,
+      "data": {
+        "provider": "fixture",
+        "model": "scripted",
+        "contextWindow": 4096
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 9,
+      "time": 1793587532453,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "先读资料"
+            },
+            {
+              "type": "tool-call",
+              "id": "module-read",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"README\"}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "scripted"
+          },
+          "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+        },
+        "stream": [
+          {
+            "type": "text-chunks",
+            "time0": 1793587532452,
+            "index": 7,
+            "dt": [],
+            "texts": [
+              "先读资料"
+            ]
+          },
+          {
+            "type": "tool-call-chunks",
+            "time0": 1793587532452,
+            "index": 2,
+            "dt": [],
+            "id": "module-read",
+            "name": "read_fixture",
+            "args": [
+              "{\"part\":"
+            ]
+          },
+          {
+            "type": "tool-call-chunks",
+            "time0": 1793587532452,
+            "index": 2,
+            "dt": [],
+            "id": "module-read",
+            "args": [
+              "\"README\"}"
+            ]
+          },
+          {
+            "type": "chunk",
+            "time": 1793587532452,
+            "chunk": {
+              "type": "block-end",
+              "index": 2,
+              "block": {
+                "type": "tool-call",
+                "id": "module-read",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"README\"}"
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793587532452,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "tool-calls"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "tool/call",
+      "seq": 10,
+      "time": 1793587532453,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "callId": "module-read",
+        "name": "read_fixture",
+        "arguments": "{\"part\":\"README\"}"
+      }
+    },
+    {
+      "type": "tool/result",
+      "seq": 11,
+      "time": 1793587532455,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "module-read"
+          },
+          "toolCallId": "module-read",
+          "content": [
+            {
+              "type": "text",
+              "text": "README: MODULE THREE FIXTURE"
+            }
+          ],
+          "isError": false,
+          "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+        }
+      },
+      "sourceEventSeqs": [
+        10
+      ],
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 12,
+      "time": 1793587532455,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 13,
+      "time": 1793587532456,
+      "data": {
+        "turn": 1,
+        "step": 2
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 14,
+      "time": 1793587532456,
+      "data": {
+        "turn": 1,
+        "step": 2,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：详细"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+        }
+      },
+      "sourceEventSeqs": [
+        4
+      ],
+      "surfaceOp": {
+        "op": "replace",
+        "startSeq": 4,
+        "endSeq": 4
+      }
+    },
+    {
+      "type": "request/header",
+      "seq": 15,
+      "time": 1793587532456,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 96
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "reason": "series"
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 16,
+      "time": 1793587532458,
+      "data": {
+        "turn": 1,
+        "step": 2,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "已根据工具结果回答"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "scripted"
+          },
+          "id": "8a416355-64e6-405d-bf7f-e860eb80a1d9"
+        },
+        "stream": [
+          {
+            "type": "text-chunks",
+            "time0": 1793587532457,
+            "index": 7,
+            "dt": [],
+            "texts": [
+              "已根据工具结果回答"
+            ]
+          },
+          {
+            "type": "chunk",
+            "time": 1793587532457,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "stop"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 17,
+      "time": 1793587532458,
+      "data": {
+        "turn": 1,
+        "step": 2
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 18,
+      "time": 1793587532458,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "completed"
+        }
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "代码助手：详细"
+        }
+      ],
+      "source": {
+        "kind": "system-prompt"
+      },
+      "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+    },
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "请概括固定README"
+        }
+      ],
+      "source": {
+        "kind": "user"
+      },
+      "role": "user",
+      "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+    },
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+        }
+      ],
+      "source": {
+        "kind": "runtime-context",
+        "form": "snapshot",
+        "sections": [
+          {
+            "name": "directory",
+            "text": "/fixture/after"
+          }
+        ]
+      },
+      "role": "user",
+      "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "先读资料"
+        },
+        {
+          "type": "tool-call",
+          "id": "module-read",
+          "name": "read_fixture",
+          "arguments": "{\"part\":\"README\"}"
+        }
+      ],
+      "source": {
+        "kind": "model",
+        "provider": "fixture",
+        "model": "scripted"
+      },
+      "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+    },
+    {
+      "role": "tool",
+      "source": {
+        "kind": "tool",
+        "callId": "module-read"
+      },
+      "toolCallId": "module-read",
+      "content": [
+        {
+          "type": "text",
+          "text": "README: MODULE THREE FIXTURE"
+        }
+      ],
+      "isError": false,
+      "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "已根据工具结果回答"
+        }
+      ],
+      "source": {
+        "kind": "model",
+        "provider": "fixture",
+        "model": "scripted"
+      },
+      "id": "8a416355-64e6-405d-bf7f-e860eb80a1d9"
+    }
+  ],
+  "assemblies": [
+    {
+      "sections": [
+        {
+          "name": "deployment:persona-prefix",
+          "text": ""
+        },
+        {
+          "name": "role",
+          "text": "代码助手：{{tone}}"
+        },
+        {
+          "name": "deployment:persona-suffix",
+          "text": ""
+        }
+      ],
+      "contexts": [
+        {
+          "name": "directory",
+          "text": "/fixture/before",
+          "interpolate": false
+        }
+      ],
+      "variables": {
+        "provider": "fixture",
+        "model": "scripted",
+        "tone": "简洁"
+      }
+    },
+    {
+      "sections": [
+        {
+          "name": "deployment:persona-prefix",
+          "text": ""
+        },
+        {
+          "name": "role",
+          "text": "代码助手：{{tone}}"
+        },
+        {
+          "name": "deployment:persona-suffix",
+          "text": ""
+        }
+      ],
+      "contexts": [
+        {
+          "name": "directory",
+          "text": "/fixture/after",
+          "interpolate": false
+        }
+      ],
+      "variables": {
+        "provider": "fixture",
+        "model": "scripted",
+        "tone": "详细"
+      }
+    }
+  ],
+  "loopRequests": [
+    {
+      "request": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：简洁"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      },
+      "throughSeq": 8,
+      "reconstruction": "messages/config/tools/toolHistory match real Session rebuilt from prefix"
+    },
+    {
+      "request": {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 96,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "代码助手：详细"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "请概括固定README"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "directory",
+                  "text": "/fixture/after"
+                }
+              ]
+            },
+            "role": "user",
+            "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "先读资料"
+              },
+              {
+                "type": "tool-call",
+                "id": "module-read",
+                "name": "read_fixture",
+                "arguments": "{\"part\":\"README\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "module-read"
+            },
+            "toolCallId": "module-read",
+            "content": [
+              {
+                "type": "text",
+                "text": "README: MODULE THREE FIXTURE"
+              }
+            ],
+            "isError": false,
+            "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read_fixture",
+              "description": "fixed constant only",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "part": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "sessionId": "m3-B"
+      },
+      "throughSeq": 15,
+      "reconstruction": "messages/config/tools/toolHistory match real Session rebuilt from prefix"
+    }
+  ],
+  "adapterRequests": [
+    {
+      "provider": "fixture",
+      "model": "scripted",
+      "maxTokens": 96,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：简洁"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "48e38c57-23b5-4c4e-aa0b-bbddcbdee888"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "请概括固定README"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "directory",
+                "text": "/fixture/after"
+              }
+            ]
+          },
+          "role": "user",
+          "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "read_fixture",
+          "description": "fixed constant only",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "part": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "sessionId": "m3-B"
+    },
+    {
+      "provider": "fixture",
+      "model": "scripted",
+      "maxTokens": 96,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "代码助手：详细"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "0b09337b-a670-44be-9f34-2ccc13015c69"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "请概括固定README"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "f0bb8e65-7ca9-4cde-8a69-996064f9c678"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n/fixture/after"
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "directory",
+                "text": "/fixture/after"
+              }
+            ]
+          },
+          "role": "user",
+          "id": "414cf18f-114d-4052-8107-edc90fc30c98"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "先读资料"
+            },
+            {
+              "type": "tool-call",
+              "id": "module-read",
+              "name": "read_fixture",
+              "arguments": "{\"part\":\"README\"}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "scripted"
+          },
+          "id": "3a0bcc8d-908d-409d-9b58-d5b182c17256"
+        },
+        {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "module-read"
+          },
+          "toolCallId": "module-read",
+          "content": [
+            {
+              "type": "text",
+              "text": "README: MODULE THREE FIXTURE"
+            }
+          ],
+          "isError": false,
+          "id": "3865fc74-6b9f-484e-affb-19ba59220b4f"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "read_fixture",
+            "description": "fixed constant only",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "read_fixture",
+          "description": "fixed constant only",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "part": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "sessionId": "m3-B"
+    }
+  ]
+}

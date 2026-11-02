@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: C01 Registry without factory rejects both creation operations
+ok 1 - C01 Registry without factory rejects both creation operations
+  ---
+  duration_ms: 8.382
+  type: 'test'
+  ...
+# Subtest: C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot
+ok 2 - C02 real Registry delegates caller fiber, rejects duplicate factory and releases slot
+  ---
+  duration_ms: 5.2368
+  type: 'test'
+  ...
+# Subtest: C03 real entry identity and advanced detach reject mismatch, collision and stale teardown
+ok 3 - C03 real entry identity and advanced detach reject mismatch, collision and stale teardown
+  ---
+  duration_ms: 1.9661
+  type: 'test'
+  ...
+# Subtest: D01 A uses real Loop: queries, roots, snapshots and collisions
+ok 4 - D01 A uses real Loop: queries, roots, snapshots and collisions
+  ---
+  duration_ms: 11.2605
+  type: 'test'
+  ...
+# Subtest: D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement
+ok 5 - D02 B: public Agent lacks dispose; stale Handle and former caller cannot delete replacement
+  ---
+  duration_ms: 6.7727
+  type: 'test'
+  ...
+# Subtest: D03-setup initialization/cleanup path
+ok 6 - D03-setup initialization/cleanup path
+  ---
+  duration_ms: 4.5629
+  type: 'test'
+  ...
+# Subtest: D03-commit initialization/cleanup path
+ok 7 - D03-commit initialization/cleanup path
+  ---
+  duration_ms: 4.5158
+  type: 'test'
+  ...
+# Subtest: D03-session-listener initialization/cleanup path
+ok 8 - D03-session-listener initialization/cleanup path
+  ---
+  duration_ms: 6.081
+  type: 'test'
+  ...
+# Subtest: D03-agent-listener initialization/cleanup path
+ok 9 - D03-agent-listener initialization/cleanup path
+  ---
+  duration_ms: 4.9622
+  type: 'test'
+  ...
+# Subtest: D03-cancel initialization/cleanup path
+ok 10 - D03-cancel initialization/cleanup path
+  ---
+  duration_ms: 4.8102
+  type: 'test'
+  ...
+# Subtest: D03-normal initialization/cleanup path
+ok 11 - D03-normal initialization/cleanup path
+  ---
+  duration_ms: 5.8415
+  type: 'test'
+  ...
+# Subtest: D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations
+ok 12 - D04 setup sees live writable Session and unpublished Agent; created sees committed scoped registrations
+  ---
+  duration_ms: 6.5537
+  type: 'test'
+  ...
+# Subtest: D05 serial listener barrier holds create; failed creation preserves queued input without starting model
+ok 13 - D05 serial listener barrier holds create; failed creation preserves queued input without starting model
+  ---
+  duration_ms: 14.4798
+  type: 'test'
+  ...
+# Subtest: D06 owner unload during async creation listener waits for listener and scope before detaching
+ok 14 - D06 owner unload during async creation listener waits for listener and scope before detaching
+  ---
+  duration_ms: 6.612
+  type: 'test'
+  ...
+# Subtest: D07-handle stops and drains real maintenance before scope/registries
+ok 15 - D07-handle stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.5874
+  type: 'test'
+  ...
+# Subtest: D07-owner stops and drains real maintenance before scope/registries
+ok 16 - D07-owner stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.6384
+  type: 'test'
+  ...
+# Subtest: D07-factory stops and drains real maintenance before scope/registries
+ok 17 - D07-factory stops and drains real maintenance before scope/registries
+  ---
+  duration_ms: 6.8745
+  type: 'test'
+  ...
+# Subtest: D08 explicit parentAgent, caller, historical parent and object identity are independent
+ok 18 - D08 explicit parentAgent, caller, historical parent and object identity are independent
+  ---
+  duration_ms: 7.0112
+  type: 'test'
+  ...
+# Subtest: D09 real resume rejects absent backend; pre-aborted create announces nothing
+ok 19 - D09 real resume rejects absent backend; pre-aborted create announces nothing
+  ---
+  duration_ms: 6.5951
+  type: 'test'
+  ...
+# Subtest: D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts
+ok 20 - D10 real resume reconstructs new objects through memory backend fixture; dispose retains stored facts
+  ---
+  duration_ms: 6.9973
+  type: 'test'
+  ...
+# Subtest: D11 teardown attempts registry cleanup after write-close failure and preserves rejection
+ok 21 - D11 teardown attempts registry cleanup after write-close failure and preserves rejection
+  ---
+  duration_ms: 5.0168
+  type: 'test'
+  ...
+# Subtest: D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call
+ok 22 - D12 queued wake starts only after serial creation listeners; pre-step rejects before any model call
+  ---
+  duration_ms: 8.9434
+  type: 'test'
+  ...
+# Subtest: D13 aborting the creation signal after success does not dispose the live Agent
+ok 23 - D13 aborting the creation signal after success does not dispose the live Agent
+  ---
+  duration_ms: 5.4253
+  type: 'test'
+  ...
+# Subtest: D14 concurrent same-id preparation publishes one lifecycle and preserves winner
+ok 24 - D14 concurrent same-id preparation publishes one lifecycle and preserves winner
+  ---
+  duration_ms: 6.383
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 826.8177
