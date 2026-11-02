@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1440" viewBox="0 0 640 1440" role="img"><title>一次审批，四种闭合结果</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1440" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">一次审批，四种闭合结果</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">有效 Turn 内 request(req)</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">新审批 ID；关联可选 callId</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">先提交 approval/asked</text>
+<path d="M320 265 V321" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="300" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">decide</text>
+<rect x="32" y="346" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="389" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">先检查取消，再检查策略</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">已取消 → cancelled</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">never → rejected；不问应答者</text>
+<path d="M320 511 V567" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="546" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">ask</text>
+<rect x="32" y="592" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="635" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">approval/request Waterfall</text>
+<text x="52" y="679" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">负责则答；否则 next()</text>
+<text x="52" y="721" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">缺失、抛错、非法答案 → unavailable</text>
+<rect x="32" y="774" width="576" height="156" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="817" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">只有 allowed-once 才授权本请求</text>
+<text x="52" y="861" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">rejected：拒绝；cancelled：撤回</text>
+<text x="52" y="903" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">unavailable：无可靠决定，拒绝</text>
+<path d="M320 939 V995" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="974" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">提交决定</text>
+<rect x="32" y="1020" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1063" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">approval/decided 使用同一审批 ID</text>
+<text x="52" y="1107" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">正常配对后才返回结果</text>
+<text x="52" y="1149" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">取消后迟到批准不改变原结果</text>
+<rect x="32" y="1202" width="576" height="156" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1245" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">失败出口</text>
+<text x="52" y="1289" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">无有效 Turn：抛错，不开启请求</text>
+<text x="52" y="1331" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">审计提交失败：不得返回未记录授权</text>
+<text x="32" y="1412" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 条件组合教学图</text>
+</svg>

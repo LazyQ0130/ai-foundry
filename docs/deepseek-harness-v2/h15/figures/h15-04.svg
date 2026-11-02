@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1450" viewBox="0 0 640 1450" role="img"><title>观察、版本条件与重新读取</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1450" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">观察、版本条件与重新读取</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">消费者读取并发出 fs/observed</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">记录 present(version) 或 absent</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">直接 ctx.fs.readText 不自动发事件</text>
+<path d="M320 265 V321" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="300" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">编辑意图</text>
+<rect x="32" y="346" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="389" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">观察插件按 Session 对象查状态</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">未见 → FS_NOT_OBSERVED</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">确认缺失 → FS_NOT_FOUND</text>
+<text x="52" y="517" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">存在 → 返回先前版本</text>
+<path d="M320 553 V609" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="588" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">后端检查</text>
+<rect x="32" y="634" width="576" height="156" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="677" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">版本未变：匹配并原子发布</text>
+<text x="52" y="721" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">版本不同 → FS_STALE_VERSION</text>
+<text x="52" y="763" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">重新读取并重新判断，再尝试</text>
+<rect x="32" y="816" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="859" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">write 的规则不同</text>
+<text x="52" y="903" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">未见或缺失 → createIfAbsent</text>
+<text x="52" y="945" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">已有文件不能被这种创建盲目覆盖</text>
+<rect x="32" y="998" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1041" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">生命周期与边界</text>
+<text x="52" y="1085" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">新 Session 对象无旧 WeakMap 状态</text>
+<text x="52" y="1127" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">卸载观察插件，版本条件不再自动给出</text>
+<text x="52" y="1169" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">原子发布不消除所有外部 TOCTOU</text>
+<text x="32" y="1422" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 条件组合教学图</text>
+</svg>

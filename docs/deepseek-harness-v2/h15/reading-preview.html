@@ -1,0 +1,4106 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H15｜Agent 安全执行：审批、权限、沙箱与文件系统守卫</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H15 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Agent 安全执行：审批、权限、沙箱与文件系统守卫</h1><p>200～270 分钟（分三段；作者估算，环境准备另计，待真实试读）</p></header><div class="lesson-prose"><h2>“检查配置并修复构建”，究竟批准了什么？</h2>
+<p>用户只说：“检查项目配置，并修改某个文件解决构建错误。”模型可能先读取配置，再修改路径、执行测试、安装依赖，最后建议删除旧构建产物。前两项似乎合理，后几项也可能有用，但这些动作的影响范围并不相同。</p>
+<p>如果路径写错，读取可能接触任务之外的数据，修改可能覆盖另一个项目；如果另一程序刚刚改过配置，按旧内容保存可能丢失新修改；如果没有人在场，审批不能一直等，更不能默认同意。如果执行环境没有可用沙箱，悄悄裸跑也没有兑现原来的约束。</p>
+<p>这节围绕同一个任务回答：<strong>一次调用实际得到哪些能力，谁可以批准，谁还可以拒绝，执行时又由谁限制文件效果？</strong> 先预测，再运行四项小实验，最后按证据检查自己的结论。课程不执行安装、删除或高权限 Shell；计算只在内存中，文件只用新建无敏感夹具。</p>
+<p>源码锁定 <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>，不是跟随最新分支。固定版本的官方安全说明把项目定位为尚未安全审计的实验软件；本课的局部验证也不构成正式安全审计。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/SAFETY.zh.md#L5-L13" target="_blank" rel="noopener noreferrer">实验性状态</a></p>
+<h2>先接上 H13、H14，再补齐七个词</h2>
+<p>H13区分工具定义、可见集合与步骤准入；H14在真实流水线中区分 <code>tools/pre-execute</code>、审批解析、单调守卫和工具主体。我们只复用这些位置，不重新推导全部输出投影与批次调度。</p>
+<p>H06的 Waterfall 是“当前监听器可以回答，也可以通过 <code>next()</code> 委托下游”；它不是把所有监听器的意见自动求最严格交集。H07的 Effect 将监听器、状态与资源退出绑定到所属插件；卸载后原有规则可能随之消失。H10的 <code>AbortSignal</code> 是取消通知；取消不会把已经发生的外部写入倒回去。</p>
+<p>路径也先复习清楚：相对路径依赖某个 cwd，绝对路径有完整起点，但“绝对”不等于“在工作区内”。子进程是由父进程启动的另一个执行实体；父进程里的一次路径检查，不会自动限制子进程之后打开的所有文件。</p>
+<p>把下面的词落到这次配置修改，再看定义：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>先看具体问题</th><th>技术名称与含义</th><th>这个说法的局限</th></tr></thead><tbody><tr><td>模型给出一个路径，谁来决定是否允许打开？</td><td>Trust Boundary，信任边界：输入从较少信任的一方进入承担约束的实现</td><td>插件与宿主在同一进程时，不能把每个 Context 当成独立 OS 边界</td></tr><tr><td>只需修改本项目一份配置，为什么给整个磁盘写权限？</td><td>Least Privilege，最小权限：仅授予这项任务所需的能力与范围</td><td>最小到什么程度仍需业务判断；合理权限也能被错误使用</td></tr><tr><td>没有可靠应答者或 runner 时怎么办？</td><td>Fail Closed，失败关闭：不能确认允许或不能兑现约束时停止</td><td>并非所有业务错误都叫安全拒绝，仍须分类记录</td></tr><tr><td>审批通过后，为什么还检查文件路径和版本？</td><td>Defense in Depth，纵深防御：不同机制处理不同失败位置</td><td>多层不等于天然独立；全部依赖同一错误配置仍可能失效</td></tr><tr><td>检查时路径在工作区，使用时父目录链接却换了呢？</td><td>TOCTOU，检查与使用之间的竞态：检查成立的事实可能在操作前改变</td><td>缩短窗口能降低风险，不等于消除并发攻击</td></tr><tr><td><code>ctx.fs</code>、<code>ctx.shell</code> 分别让插件能做什么？</td><td>Capability，能力：可调用的操作与对应资源访问条件</td><td>持有服务引用不自动保证最小权限，具体后端与配置仍重要</td></tr><tr><td>事后怎样知道谁问了什么、最终怎样决定？</td><td>Audit Log，审计日志：有身份关联的请求、决定等事实记录</td><td>记录事实不等于解释全部意图，更不等于磁盘已可靠落盘</td></tr></tbody></table></div>
+<p>“多道门”的类比有助于区分责任，却不能证明门彼此独立或无法绕过。下面直接用实际接口、插件组合和反例判断。</p>
+<h2>六层机制在回答六个不同问题</h2>
+<p><span class="lesson-figure" role="group" aria-label="Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合"><img src="figures/h15-01.png" alt="Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜上部箭头是通用工具允许路径，下部两类能力分开接线。不是所有工具都会进入审批、进程沙箱和文件观察三条路径。</span><a class="lesson-image-expand" href="figures/h15-01.png" target="_blank" rel="noopener noreferrer" aria-label="Registry 管可见与提出；pre、审批和 guard 管一次调用是否进入主体；Shell 与文件分别接入各自执行约束；Session 记录审批事实；所有保护均取决于实际组合，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>层</th><th>本次配置任务中回答的问题</th><th>不能替代什么</th></tr></thead><tbody><tr><td>工具可见性与准入</td><td>模型是否看见工具，提出的调用能否进入处理？</td><td>不能独自限制一个已启动子进程的文件访问</td></tr><tr><td>执行前策略</td><td>此次调用应 allow、deny、ask 还是 cancel？</td><td>普通 Waterfall 的 deny 不自带不可放宽性质</td></tr><tr><td>用户审批</td><td>是否由负责的人工或受控应答者批准这个具体请求？</td><td>不代替路径、版本或 OS 约束</td></tr><tr><td>执行约束</td><td>本次能力的后端实际限制哪些文件效果？</td><td>不判断模型修改的配置是否正确</td></tr><tr><td>文件状态保护</td><td>是否见过此目标；版本是否仍符合条件？</td><td>不限制任意 Shell 命令的全部文件行为</td></tr><tr><td>审计记录</td><td>请求、决定与具体调用如何关联？</td><td>不自动产生模型可见的完整提示内容</td></tr></tbody></table></div>
+<p>Schema只验证参数形状。例如 <code>file_path</code> 是字符串，并不能证明它在任务工作区。用户批准“修改配置”也不能修正错误路径。即使文件效果被完整限制在允许区域，模型仍可能把配置值改错。三者都需要，但职责不同。</p>
+<p>还有组合前提：并非所有 Profile 都挂载相同服务和后端，H08已说明 <code>sdk-minimal</code> 的真实策略配置也有自己的选择。要检查最终插件树及实际服务，不能从 Profile 名字猜安全等级。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/sdk-minimal/cordis.patch.yml#L71-L79" target="_blank" rel="noopener noreferrer">sandbox-policy</a></p>
+<h2>ApprovalService：一个请求，一个闭合结果</h2>
+<p><code>ctx.approval</code> 由 <code>ApprovalService</code> 提供。调用方创建 <code>ApprovalRequest</code>，带上 <code>agent</code>、<code>toolName</code>、可选的 <code>callId</code>、原因和取消信号。通用工具流水线在最终前置决策为 <code>ask</code> 时调用它；具体文件/Shell消费者也可能为单次升权调用它。审批服务不是自动拦截所有工具的全局弹窗。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L434-L455" target="_blank" rel="noopener noreferrer">serviceAsk</a></p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 接口用法片段；agent 必须有处于有效 Turn 的真实 Session。
+const outcome = await ctx.approval.request({
+  agent,
+  toolName: &#x27;sum_fixture&#x27;,
+  callId,
+  reason: &#x27;批准本次常量计算&#x27;,
+  signal,
+})
+if (outcome !== &#x27;allowed-once&#x27;) {
+  // 调用方结束这一操作，不能把其余结果当作授权。
+}</code></pre></div>
+<p><code>ApprovalPolicy</code> 确切只有 <code>ask | never</code>。<code>ask</code> 允许进入已组合的应答者决策链，并不表示批准；无人负责时返回 <code>unavailable</code>。<code>never</code> 在服务内部确定性拒绝询问操作，不调用应答者，后来 prepend 的监听器也不能越过它。已经取消的信号先返回 <code>cancelled</code>，因此“never 的所有请求必然都是 rejected”还要排除预先取消的情况。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L66-L307" target="_blank" rel="noopener noreferrer">ApprovalPolicy / decide</a></p>
+<p>四种 <code>ApprovalOutcome</code> 是闭合集合：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>结果</th><th>含义</th><th>调用方应怎样处理</th></tr></thead><tbody><tr><td>allowed-once</td><td>这个请求获得一次批准</td><td>只继续所问的具体操作，再经过其他有效检查</td></tr><tr><td>rejected</td><td>明确拒绝，或 never 策略拒绝</td><td>停止该操作并解释，不换路径绕过决定</td></tr><tr><td>cancelled</td><td>请求被撤回或已取消</td><td>停止；迟到答案不能重新授权</td></tr><tr><td>unavailable</td><td>没有可靠、合规的应答结果</td><td>失败关闭，不能猜测用户同意</td></tr></tbody></table></div>
+<p>服务通过带 agent 路由的 <code>approval/request</code> Waterfall 分发同一个只读请求。负责处理的应答者返回一种结果；不负责则 <code>next()</code>。同步抛错、异步拒绝、非法返回值和链末无人应答都归到 <code>unavailable</code>。Waterfall保留由哪个通道负责的组合空间；它并非“收齐所有人的投票再多数通过”。同进程应答者本身也是可信部署的一部分，恶意插件不能靠类型定义被隔离。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L306-L320" target="_blank" rel="noopener noreferrer">decide</a></p>
+<p><code>allowed-once</code> 是调用方应遵守的一次性语义，不是一张可复制的永久凭据。服务每次请求生成新审批 ID，不按 <code>callId</code> 缓存授权；测试对同一个 <code>callId</code> 连问两次，第一次允许、第二次拒绝，各有一对独立审计记录。服务也不负责证明请求者之后确实只执行了一次。</p>
+<h2>取消与审计：先提交事实，再返回决定</h2>
+<p><span class="lesson-figure" role="group" aria-label="有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果"><img src="figures/h15-02.png" alt="有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜审批 ID 配对 asked/decided；callId 关联工具调用。无 Turn 或审计提交失败是抛错出口，不伪造正常审计对。</span><a class="lesson-image-expand" href="figures/h15-02.png" target="_blank" rel="noopener noreferrer" aria-label="有效 Turn 内先记录 asked，再根据取消与策略决定是否进入应答者 Waterfall，只有 allowed-once 授权，四种结果均正常提交 decided，迟到答案不能改变已取消结果，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>正常请求顺序是：确认所属 Session 有尚未结束的 Turn；生成服务自己的 <code>ApprovalRequestId</code>；追加 <code>approval/asked</code>；取得结果；追加同 ID 的 <code>approval/decided</code>；然后返回结果。无有效 Turn 时在产生请求审计前抛错。若提交决定之前发生真正的日志写入失败，不能返回一个没有被可靠接受的授权。正常配对不表示故障情况下强行补造一个决定。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L242-L265" target="_blank" rel="noopener noreferrer">request</a></p>
+<p>审批 ID 与工具调用 ID 分工不同。一次调用可能有不同的审批请求，服务生成的 ID 配对问答；请求中的 <code>callId</code> 让应答 UI 或审计读者关联到既有工具调用。<strong>应答者收到的 <code>ApprovalRequest</code> 没有服务生成的审批 ID 字段</strong>，也不复制整份工具参数；不要在示例里读取 <code>req.id</code>。<code>displayReason</code> 可以用于本地化呈现，审计保存的是 <code>reason</code> 等请求事实，不能据此重建所有界面文本。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L126-L261" target="_blank" rel="noopener noreferrer">ApprovalRequest / request</a></p>
+<p>取消具有很具体的含义：审批 Promise 可以立即以 <code>cancelled</code> 结算，正在等待的应答者可能仍继续运行，但其迟到 <code>allowed-once</code> 不再改变结果。实践 A 用门闩保证顺序为“应答者进入 → abort → 请求先返回 cancelled → 再释放批准”。这与 H14 某些主体或策略代码需要协作结算的情形不同，不把“取消立即停止所有工作”推广到所有能力。</p>
+<p>审计提交前失败与提交后观察者抛错也要分开：Session已经接受事件后，普通 <code>session/event</code> 观察失败会被约束和报告，不能简单等同于事件从未存在。实践 A 的审计故障注入明确拦在 <code>approval/decided</code> 提交之前；它验证不返回 grant，没有测试真实磁盘故障、断电或日志存储可靠性。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L321-L336" target="_blank" rel="noopener noreferrer">decide</a></p>
+<h3>会话策略不是普通聊天消息</h3>
+<p>部署的默认 policy 由服务配置提供；会话最后一条 <code>approval/policy</code> 覆盖它。源码中的 <code>effectivePolicy(session)</code> 实现生效值回退，<code>overrideOf(session)</code> 只读日志覆盖，<code>setApprovalPolicy</code> 通过持久事件写入且校验合法策略。两个 Session 可以在同一部署下分别使用 never 与 ask。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L268-L277" target="_blank" rel="noopener noreferrer">effectivePolicy / overrideOf</a></p>
+<p>这里有固定版本差异：官方文档推荐消费方调用effectivePolicy，但实现把它声明为TypeScript private。随附实验用显式any与方括号读取作私有诊断，不将它当公开稳定API；授权仍以实际request结果为准。不能因为tsx能执行TypeScript private方法，就宣称该方法是公开契约。</p>
+<p>可选的 SystemPrompt接线把当前完整含义作为名为 <code>approval:policy</code> 的运行时上下文贡献给请求装配。<code>approval/asked</code>、<code>approval/decided</code> 和 <code>approval/policy</code> 本身是 log-only，不等于模型对话正文。面向活跃 Agent 的 <code>setPolicy(agent, policy)</code> 还会在变化后注入带来源的切换说明；普通持久 helper 与这个面向运行中 Agent 的操作不要混用。当前上下文快照怎样成为后续模型请求输入，仍沿 H11/H12 的装配路径判断。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/user-approval/src/index.ts#L189-L221" target="_blank" rel="noopener noreferrer">Service.init / setPolicy</a></p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="先预测：两个相同 callId"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">先预测：两个相同 callId</div><div class="lesson-callout-body"><p>同一 Session、同一 callId 连续询问两次。应答者第一次允许、第二次拒绝。写出审批 ID 的数量、asked/decided 的数量和第二次结果；再解释为什么第一次批准不能跳过第二次问询。</p></div></aside>
+<h2>pre 的 allow 以后，单调守卫仍能拒绝</h2>
+<p>通用流水线先取得 <code>tools/pre-execute</code> 最终决策；如果是 ask，再请求审批并转成执行决定。只有最终 allow 才进入 <code>checkGuards</code>。所有者通过 <code>ctx.tools.guard()</code> 注册的检查只能拒绝或不表态；拒绝后不会回到普通策略链请另一个监听器重新授权。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L197-L219" target="_blank" rel="noopener noreferrer">prepare</a></p>
+<p>这项单调性属于可信插件约定下的守卫接口，不是抵抗同进程恶意代码的 OS 边界。普通 Waterfall 的外层监听器却可以在 <code>await next()</code> 后改写下游 deny。实践 B 把两者并排运行：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>输入轨迹</th><th>审批</th><th>守卫</th><th>主体次数与结果</th></tr></thead><tbody><tr><td>pre allow</td><td>不问</td><td>不表态</td><td>1，返回 5</td></tr><tr><td>pre deny</td><td>不问</td><td>不进入</td><td>0，失败</td></tr><tr><td>pre ask，应答 allow</td><td>允许一次</td><td>不表态</td><td>1，返回 5</td></tr><tr><td>pre ask，应答 reject 或无人</td><td>非授权</td><td>不进入</td><td>0，失败</td></tr><tr><td>外层把普通 deny 改 allow</td><td>不问</td><td>不表态</td><td>1，说明普通拒绝可被改写</td></tr><tr><td>同样改成 allow，但 guard 拒绝</td><td>不问</td><td>拒绝</td><td>0，失败</td></tr><tr><td>pre ask 已批准，guard 拒绝</td><td>允许一次</td><td>拒绝</td><td>0，批准不能越过守卫</td></tr><tr><td>等审批时取消</td><td>cancelled</td><td>不继续授权</td><td>0，取消结果</td></tr></tbody></table></div>
+<p>工具成功或拒绝后的结果再按 H14 的分支处理。<code>tools/result</code> 是运行时最终结果观察，不等于已经写入 Session 的 <code>tool/result</code>。实践 B没有提供完整 Loop或工具日志 sink，因此保留真实 ToolResult和审批审计，不制造 Session工具结果记录。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L407-L415" target="_blank" rel="noopener noreferrer">notifyResult</a></p>
+<h2>SandboxMode 只描述文件系统效果</h2>
+<p><span class="lesson-figure" role="group" aria-label="read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内"><img src="figures/h15-03.png" alt="read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜平台实现是固定源码事实，本轮没有启动这些原生进程 runner。Windows 为 partial；旧 Landlock ABI 也可能 partial。</span><a class="lesson-image-expand" href="figures/h15-03.png" target="_blank" rel="noopener noreferrer" aria-label="read-only、workspace-write、danger-full-access 分别表示文件效果策略；full/partial 是正交的后端完整度；Linux、macOS、Windows 实现不同；网络与完整系统隔离不在词汇承诺内，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>模式</th><th>文件读取与写入的承诺</th><th>提供方是否被调用</th></tr></thead><tbody><tr><td>read-only</td><td>要求拒绝文件写入；POSIX runner保留 <code>/dev/null</code> 等必要接收器，平台仍有各自边界</td><td>沙箱化进程消费者对受限模式调用 provider</td></tr><tr><td>workspace-write</td><td>允许工作区、显式额外可写目录与后端定义的临时区域；不表示只看得见工作区</td><td>同上；应检查实际 enforcement</td></tr><tr><td>danger-full-access</td><td>绕过文件沙箱约束，仍可能受宿主原有权限及其他机制影响</td><td>bash/pwsh消费者直接走非沙箱执行，不调用 sandbox provider</td></tr></tbody></table></div>
+<p><code>SandboxMode</code> 不承诺网络隔离、全部进程能力控制或整个系统隔离。<code>read-only</code>不能据此推出“无网络”；<code>workspace-write</code>不能据此推出“其他目录不可读”。本课不把 <code>danger-full-access</code> 当实验默认值，相关绕过仅做静态分析。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/index.ts#L25-L36" target="_blank" rel="noopener noreferrer">SandboxMode</a></p>
+<p><code>full / partial</code> 是另一维：前者报告该后端管控了模式所承诺的文件效果，后者只管控其中一部分。它不是模型质量、整套应用安全或正式审计等级。要求完整边界的消费者应拒绝 partial，或至少显式上报并由部署处理；不能改个标签继续宣称完整。</p>
+<h2>SandboxPolicy：这一次调用到底用哪份策略？</h2>
+<p><code>SandboxPolicyService</code> 持有部署默认模式、无 Session时的工作区回退根与显式额外可写目录。实际能力调用通过 <code>ctx.sandboxPolicy.resolve()</code> 逐次取得完整策略，不应只在插件启动时读一次默认值。优先级确认为：<strong>调用方传入且已经获批的单次 mode → Session最后一条 sandbox/mode → 部署默认模式</strong>。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-policy/src/index.ts#L198-L206" target="_blank" rel="noopener noreferrer">resolve</a></p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 只解析策略，不执行文件或进程；mode 的批准发生在调用方。
+const ordinary = ctx.sandboxPolicy.resolve({ session: agent.session })
+const once = ctx.sandboxPolicy.resolve({
+  session: agent.session,
+  mode: approvedMode,
+})</code></pre></div>
+<p>关键在“已获批”由可信调用方保证：<code>resolve()</code> 不弹窗、不替你调用 ApprovalService，它只是解析器。任意插件直接传一个更宽 mode，并不因为经过 resolve 就变成受控升权。</p>
+<p>Session header 中不可变的 cwd 是该会话调用的 workspaceRoot；没有 cwd 才用部署回退根。cwd冻结保存的是执行世界的路径写法，并不代表其对应物理目录永远不变。服务检查绝对路径与 NUL 等语法条件，实际存在位置的规范化与目录合法性由执行端进一步检查。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-policy/src/index.ts#L158-L207" target="_blank" rel="noopener noreferrer">resolve / constructor</a></p>
+<p>实践 C 的输入与预期如下：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>对象</th><th>输入</th><th>解析结果</th></tr></thead><tbody><tr><td>同一部署</td><td>默认 read-only，回退根 fixture</td><td>无会话覆盖时 read-only</td></tr><tr><td>Session A</td><td>cwd=workspace，持久写入 workspace-write</td><td>workspace-write，根为workspace</td></tr><tr><td>Session B</td><td>cwd=extra，无持久覆盖</td><td>read-only，根为extra</td></tr><tr><td>B本次批准</td><td>一次 approvedMode=workspace-write</td><td>只有本次使用workspace-write</td></tr><tr><td>B下次普通调用</td><td>不再传mode</td><td>回到read-only；B没有新增sandbox/mode</td></tr><tr><td>A重建新Session</td><td>回放原事件和header</td><td>持久模式仍为workspace-write</td></tr></tbody></table></div>
+<p><code>sandbox/mode</code> 是 log-only 的会话持久设置，<code>setSandboxMode</code> 追加这个事件；单次批准不应调用它来永久改变会话。<code>sandbox:policy</code> 运行时上下文说明当前策略，但不是后端可用能力清单。把“模型被告知了限制”和“执行端真正强制限制”分开验证。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-policy/src/session-mode.ts#L52-L55" target="_blank" rel="noopener noreferrer">setSandboxMode</a></p>
+<h3>additionalWritableRoots 与临时目录不能省略</h3>
+<p>额外根是明确扩大写入范围的授权。固定版本共享根工具在实际宿主上要求额外可写根存在、为目录且采用物理规范路径；缺失、非目录或链接写法不合法时抛 <code>SANDBOX_INVALID_ROOT</code>。工作区根走canonicalPath，解析失败保留原写法，不执行这套额外根的严格校验。策略服务的语法校验与执行端的物理检查是不同阶段，远端执行世界也应由远端检查。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/roots.ts#L33-L90" target="_blank" rel="noopener noreferrer">additionalRoot / workspaceWritableRoots</a></p>
+<p><code>workspace-write</code> 的共享 writable roots还包含平台临时区域；所以本课在 <code>os.tmpdir()</code> 下创建的夹具，其兄弟目录未必是“越出所有可写根”。实验不能把临时目录外于 workspace 的一次成功误判成逃逸。Windows ACL进程后端不支持额外写根，会报不支持策略；不能从 <code>fs-sandbox</code> 支持该字段推断所有进程后端也支持。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/roots.ts#L97-L100" target="_blank" rel="noopener noreferrer">writableRoots</a></p>
+<h2>本地进程沙箱：选择 runner，不静默裸跑</h2>
+<p><code>SandboxProvider.confine(argv, policy, signal)</code> 接收程序及参数数组，返回包装后的 argv、<code>enforcement</code>、拒绝签名和 runner失败分类规则；真正 spawn由消费方承担。传给provider的策略只有受限模式。不要把 argv数组拼接误当成所有工具都共用的一段Shell字符串。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/index.ts#L101-L197" target="_blank" rel="noopener noreferrer">SandboxProvider / ConfinedArgv</a></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>平台</th><th>本地选择链与事实</th><th>本轮证据</th></tr></thead><tbody><tr><td>Linux</td><td>bwrap优先，再Landlock；多候选用功能探测选择，旧Landlock ABI可能partial</td><td>代码/官方测试静态核对；provider选择用模拟探测实测；未启动原生runner</td></tr><tr><td>macOS</td><td>Seatbelt；单候选可直接选择，执行时拒绝仍须失败关闭</td><td>静态核对，原生未测</td></tr><tr><td>Windows</td><td>ACL受限令牌runner，报告partial；原生调用有自己的权限与临时授权生命周期</td><td>静态核对；模拟选择/argv实测；ACL进程原生未测</td></tr></tbody></table></div>
+<p>“探测成功”与“选中单候选”也不同。固定版本允许单候选不做仲裁探测，不能把选中Windows runner写成已经验证它能够正确执行；runner启动、政策落实或执行前失败还要由消费方识别。配置自定义 runner也是部署者的断言，不是检测出来的完整隔离证据。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-local/src/index.ts#L158-L524" target="_blank" rel="noopener noreferrer">chainVerdict / selectRunner</a></p>
+<p>Windows的已知 partial边界包括：NTFS硬链接让同一文件对象可有不同路径别名；读取不受完整限制；AppContainer ACL树与低完整度子进程存在读取限制问题。工作区的 standing授权与每个活跃 Session/工作区随机私有临时目录的可撤销授权也有不同生命周期，不能把一次grant概括成“所有权限退出时全都撤销”。本课不创建这些进程授权，也不把真实文件原子替换测试当作ACL沙箱测试。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-local/src/index.ts#L186-L282" target="_blank" rel="noopener noreferrer">STATIC_ENFORCEMENT / materializeAclGrant</a></p>
+<p>无可用runner时，<code>SANDBOX_UNAVAILABLE</code>明确拒绝受限执行。消费者还要区分“沙箱正常工作，命令文件效果被拒绝”和“runner自身执行前失败”：后者可能依据非零退出、规定退出码及stderr致命签名综合归因，不能只看一个permission字样。bash与pwsh沙箱消费者都处理自身runner事实，没有合法的静默无隔离透传分支。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/shell/bash-sandbox/src/index.ts#L119-L128" target="_blank" rel="noopener noreferrer">SandboxBashExecutor.execute</a></p>
+<p>宿主进程沙箱主要约束特定子进程的文件效果，并不因此等于完整容器或虚拟机。容器/虚拟机也有各自配置边界；本课不以这些名词互相替代保证。Linux/macOS/Windows原生runner均保留NOT_RUN，后续若要验证必须在对应平台上独立执行并记录。</p>
+<h2>文件观察：读过，还要确认版本没有变</h2>
+<p>配置最初是 <code>mode=old</code>。Agent读到它后，编辑器改成了 <code>mode=external-longer</code>。此时模型按旧内容保存，即使路径正确、审批通过，也可能覆盖他人的修改。</p>
+<p>观察插件保存“这个Session对象对这个目标最近观察了什么”，再把它变成提供方的条件；提供方在变更时检查条件。它不负责读取文件，也不自己进行磁盘写入。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-observation-policy/src/index.ts#L26-L46" target="_blank" rel="noopener noreferrer">ObservedStateGate</a></p>
+<p><span class="lesson-figure" role="group" aria-label="消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态"><img src="figures/h15-04.png" alt="消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜要有正确发事件的消费者、观察插件与遵守 expected 的后端。原子发布不等于消除与任意外部程序之间的所有竞态。</span><a class="lesson-image-expand" href="figures/h15-04.png" target="_blank" rel="noopener noreferrer" aria-label="消费者读取后记录 present 或 absent；观察插件分别处理未见、缺失和存在状态；后端拒绝陈旧版本；重新读取重新判断；卸载和新 Session 对象改变观察状态，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>记录</th><th>fs/edit-intent</th><th>fs/write-intent</th></tr></thead><tbody><tr><td>未见此目标，或无可用owner</td><td>FS_NOT_OBSERVED</td><td>createIfAbsent，只尝试不覆盖创建</td></tr><tr><td>确认缺失 absent</td><td>FS_NOT_FOUND</td><td>createIfAbsent</td></tr><tr><td>存在 present(version)</td><td>返回旧version作为编辑条件</td><td>replaceIfVersion，携带旧version</td></tr></tbody></table></div>
+<p>因此“没读过就禁止一切写入”不准确。未见目标可以防护创建；遇到已有文件必须拒绝盲目覆盖。确认缺失也不是授权编辑一个不存在的文件。后端版本不匹配时报告 <code>FS_STALE_VERSION</code>，而不是把错误伪装成新内容里找不到旧字符串。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-observation-policy/src/index.ts#L67-L91" target="_blank" rel="noopener noreferrer">writeIntent / editIntent</a></p>
+<p><code>fs/write-intent</code>、<code>fs/edit-intent</code> 是无绑定carrier的单槽 Waterfall，默认返回undefined表示裸提供方操作；观察插件占据决定槽，不通过next累积最严格规则。由它占据该槽是部署约定，不是单调守卫那样的不可重新放行不变式。一个更早拦截事件、错误返回undefined的插件，或根本不分发事件的调用方，都可能绕开自动新鲜度条件。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs/src/index.ts#L50-L73" target="_blank" rel="noopener noreferrer">Events</a></p>
+<p><code>fs/observed</code> 是同步记录事件，监听器应同步且不抛错；它不是审批审计，也不是自动持久化观察表。模型文件工具负责发事件，<strong>直接 <code>ctx.fs.readText</code> 不自动发事件</strong>。直接调用方如果要使用观察策略，应明确采集权威版本并正确分发事件，不要仅因拿到文本就认为插件知道了这次读取。</p>
+<p>插件按 <code>WeakMap&lt;Session对象, Map&lt;targetKey, observation&gt;&gt;</code> 存状态。不读取Session ID字符串作为key，所以同ID新建或恢复的Session对象也不会继承旧观察；插件卸载清空内存，重载从未见开始。持久的sandbox模式能回放，与文件观察不持久，是两种不同生命周期。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-observation-policy/src/index.ts#L56-L130" target="_blank" rel="noopener noreferrer">clear / apply</a></p>
+<h2>fs-local、fs-sandbox 与原子发布</h2>
+<p><code>ctx.fs</code> 是文件服务契约；<code>fs-local</code>提供真实本地后端；<code>fs-sandbox</code>继承本地原语并在write/edit前增加逐调用围栏。它们应按部署替换提供者，而不是同时注册两个同名fs服务。裸后端省略expected时允许无条件写/编辑；可选观察插件不会自动进入每次服务方法。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-sandbox/src/index.ts#L53-L62" target="_blank" rel="noopener noreferrer">SandboxedFileSystem</a></p>
+<p>消费者先把输入解析成 <code>FsTarget</code>：<code>targetKey</code> 是后端拥有的不透明身份，<code>displayPath</code> 用于展示。子进程需要打开的坐标由 <code>processPath</code> 提供。即使本地targetKey看起来像绝对路径，也不能把这种实现细节推广到远端后端或自行解析所有key。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs/src/types.ts#L58-L73" target="_blank" rel="noopener noreferrer">FsTarget</a></p>
+<p>fs-sandbox的读取不加这个写围栏；read-only拒绝所有变更；workspace-write在委托前重新规范化展示路径，检查新目标是否位于工作区、显式额外根或共享临时区域，并把新检查过的目标交给本地实现。danger模式直接不加围栏地委托。相似字符串前缀不是包含关系，符号链接与Windows别名也需要真实身份处理。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-sandbox/src/index.ts#L123-L141" target="_blank" rel="noopener noreferrer">checkedTarget</a></p>
+<p>这些是可信实现中针对模型控制路径的检查，不是允许任意不可信代码运行的内核边界。源码明确接受“再次规范化后、系统调用前祖先链接被替换”的剩余TOCTOU风险。本课没有执行符号链接攻击，也没有证明该风险已消除。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-sandbox/src/index.ts#L9-L22" target="_blank" rel="noopener noreferrer">threat model</a></p>
+<p>本地后端对同targetKey的变更用进程内锁串行化；先检查版本，再读取/匹配，写入私有暂存文件，最后原子发布。createIfAbsent用不替换的发布原语阻止创建时碰到已有文件；Windows替换还采用DACL复制与ReplaceFileW等实现。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/fs-local/src/index.ts#L207-L243" target="_blank" rel="noopener noreferrer">writeText / editText</a></p>
+<p>要把“原子”讲准：原子发布使读者不看到一半的新文件，进程内锁使同提供方变更不互相穿插；版本前置检查降低旧内容覆盖风险。它不等于针对任意外部写入者的内核级compare-and-swap事务，外部程序仍可能在检查与发布之间改变事实。实践D只验证明确安排在检查之前的外部修改会被拒绝，不验证全部并发竞态。</p>
+<h2>一次性升权：显式请求、审批、只覆盖本次</h2>
+<p>某次只读策略拒绝写配置后，模型可以在支持这项能力的消费者中明确提出更宽模式与理由。共享 <code>approveEscalation</code> 检查当前有效模式与请求模式：相同模式直接返回，不需要新授权；真正扩大则必须在严格更宽表中，并具备审批服务与Agent；非授权结果抛错。参数配对另由 <code>validateEscalationArgs</code> 校验。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox/src/escalation.ts#L172-L190" target="_blank" rel="noopener noreferrer">approveEscalation</a></p>
+<p>升权规则是：read-only可向workspace-write或danger扩大；workspace-write只能向danger扩大。实际应选择足以完成同一被拒绝操作的最窄更宽模式。Schema里的可选目标不等于此次已经获准，执行时还要根据会话当前策略判断。工具消费者拿到approvedMode后仅传入本次策略，不写sandbox/mode。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/shell/tool-bash/src/index.ts#L480-L489" target="_blank" rel="noopener noreferrer">execute / approveBashEscalation</a></p>
+<p>共享helper并不核验“之前真的有一条被拒绝的完全相同命令”这一历史事实；同一操作重试是消费者协议与审批呈现要遵守的语义，不能把它宣传成helper自动验证的强绑定。显式审批前也不应先试着在宽权限下执行。即使批准，其他单调守卫、版本条件与适用约束仍有效。H20再展开未知结果、幂等和更完整重试，本课不在失败后自动循环升权。</p>
+<h2>实践准备：每次只触碰新夹具</h2>
+<p>四个程序都导入固定缓存中的官方组件，教学代码只搭建输入、应答者、门闩和断言。A使用真实Approval/Session；B再接Tools/Native/Pipeline；C组合真实策略与审批，并以模拟探测调用真实provider的选择算法；D用真实本地存储、fs-sandbox和观察插件。结构性Agent载体沿用官方组件测试方式，不是完整AgentLoop。</p>
+<p>验证分级按本节约定：A为教学Mock；B为独立Cordis；C为真实官方组件；D为多个真实组件的局部组合；E为完整应用及原生平台后端集成。本轮18项C、13项D，共31项TAP检查；Cordis等依赖不重复计级，C/D中的受控应答者不是原生平台证据。E与三平台原生进程runner都未运行。</p>
+<p>下载本课随附lab全部文件，保留文件名。作者仓库内可运行下面命令；runner先核验2218份固定源码/配置/文档字节，复制lab到全新临时目录，清理环境变量，并设置新的DSH_HOME，不使用模型凭据。依赖安装在仓库之外；Node需支持本示例使用的Node24 API。若缓存位置不同，按交付包README配置环境变量，不修改官方源码来迎合测试。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>python docs/deepseek-harness-v2/h15/scripts/check-sources.py
+node docs/deepseek-harness-v2/h15/scripts/run-labs.mjs</code></pre></div>
+<p>预期报告是31项通过、0失败；故意错误答案程序必须非零退出。每次原始args、stdout、stderr、退出码、程序hash和临时路径保存在带时间戳的evidence中；不要只看最后一行PASS。</p>
+<p><strong>清理例外有明确来源：本工作区用户指令禁止批量删除。</strong> 程序自动创建隔离目录，自动逐个删除明确的夹具文件；官方原子写入默认的递归清理被专用清理钩子替换，每次只处理一个经核验的暂存文件，保留空目录。没有批量删除或要求学员关闭保护。复制到其他环境也可保留这一做法；空目录位置在输出中，可由所有者另行处理。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：依赖接线完整程序</summary><div class="lesson-callout-body"><p><code>bootstrap.mjs</code> 只把包名解析到锁定的隔离依赖，不改变官方实现。运行器还核对版本与上游integrity；安装来源与未运行的原生能力见交付包。</p><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// Node 24：解析到隔离安装、与固定上游锁文件核对过的依赖。
+import { registerHooks, createRequire } from &#x27;node:module&#x27;;
+import { pathToFileURL } from &#x27;node:url&#x27;;
+const req = createRequire(pathToFileURL(process.env.H15_DEPS_ANCHOR));
+const extra = createRequire(pathToFileURL(process.env.H15_FS_DEPS_ANCHOR));
+const zod = createRequire(pathToFileURL(process.env.H15_ZOD_ANCHOR));
+const names=[&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;];
+const entries=new Map(names.map(n=&gt;[n,pathToFileURL(req.resolve(n)).href]));
+for(const n of [&#x27;chokidar&#x27;,&#x27;koffi&#x27;,&#x27;yaml&#x27;])entries.set(n,pathToFileURL(extra.resolve(n)).href);
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+registerHooks({resolve(s,c,next){return next(entries.get(s)??s,c);}});</code></pre></div></div></details>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：完整公共准备</summary><div class="lesson-callout-body"><p>保存为support.ts。carrier仅提供真实Session与路由所需结构，没有模型、Shell或完整AgentLoop。主体调用由实践B中的真实工具执行器承担。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { Context } from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore, { SessionId, Session, SESSION_FORMAT_VERSION } from &#x27;@deepseek-ai/dsh-session&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService, { defineTool } from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import { NativeToolExecutor } from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import { ToolCallId } from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import ApprovalService from &#x27;@deepseek-ai/dsh-user-approval&#x27;;
+import SandboxPolicyService from &#x27;@deepseek-ai/dsh-sandbox-policy&#x27;;
+export { Context, SessionId, Session, defineTool, ToolCallId };
+export const gate=&lt;T=void&gt;()=&gt;Promise.withResolvers&lt;T&gt;();
+export const textOf=(r:any)=&gt;r.content?.filter((b:any)=&gt;b.type===&#x27;text&#x27;).map((b:any)=&gt;b.text).join(&#x27;&#x27;)??&#x27;&#x27;;
+export const audit=(session:Session)=&gt;session.snapshotEvents().filter(e=&gt;e.type.startsWith(&#x27;approval/&#x27;));
+// 与官方 approval.spec 一致的结构性 Agent 载体；不是 AgentLoop 或完整应用。
+export function carrier(ctx:Context,id=&#x27;fixture&#x27;,open=true,cwd?:string){
+ const session=cwd===undefined?ctx.sessions.create(SessionId(id)):
+  Session.create(SessionId(id),undefined,{version:SESSION_FORMAT_VERSION,id:SessionId(id),createdAt:0,isSeeded:false,cwd});
+ if(open)session.append(&#x27;turn/start&#x27;,{turn:1});
+ return {session} as any;
+}
+export async function components(options:{approval?:boolean;approvalConfig?:any;policy?:any;tools?:boolean}={}){
+ const ctx=new Context();
+ for(const p of [SessionStore,SessionProjectionRegistry,SystemPrompt])await ctx.plugin(p as any);
+ if(options.approval!==false)await ctx.plugin(ApprovalService,options.approvalConfig??{});
+ if(options.policy!==false)await ctx.plugin(SandboxPolicyService,options.policy??{});
+ if(options.tools!==false){await ctx.plugin(ToolsService);ctx.tools.setExecutor(new NativeToolExecutor(ctx));}
+ return {ctx,close:()=&gt;ctx.fiber.dispose()};
+}
+export const call=(id:string)=&gt;({type:&#x27;tool-call&#x27; as const,id:ToolCallId(id),name:&#x27;sum_fixture&#x27;,arguments:&#x27;{&quot;a&quot;:2,&quot;b&quot;:3}&#x27;});</code></pre></div></div></details>
+<h2>实践 A：真实审批决策与审计</h2>
+<p>先预测allow、never、missing和late四个输入的结果，以及应答者会不会运行。再运行完整矩阵，逐项检查asked/decided的ID、callId和outcome，不把approval/policy误算成一条问答。</p>
+<p>输入包括四种结果、无人、同步/异步异常、非法答案、next委托、预先取消、迟到批准、无Turn/已结束Turn与提交前审计故障。另有同callId重复询问及部署never/会话ask覆盖测试。输出保存 <code>A_*</code> 与原始TAP证据；验收同时要求结果、主体授权布尔值和审计事实一致。</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><p>保存为approval.ts。audit-fail改的是本夹具Session的提交入口，不修改固定源码；生产系统不能拿这种注入替代真实存储故障测试。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { setApprovalPolicy } from &#x27;@deepseek-ai/dsh-user-approval&#x27;;
+import { components,carrier,gate,audit,ToolCallId } from &#x27;./support.ts&#x27;;
+export const approvalCases=[&#x27;allow&#x27;,&#x27;reject&#x27;,&#x27;cancel-answer&#x27;,&#x27;unavailable&#x27;,&#x27;missing&#x27;,&#x27;throw-sync&#x27;,&#x27;throw-async&#x27;,&#x27;invalid&#x27;,&#x27;delegate&#x27;,&#x27;never&#x27;,&#x27;pre-abort&#x27;,&#x27;late&#x27;,&#x27;idle&#x27;,&#x27;closed&#x27;,&#x27;audit-fail&#x27;] as const;
+export type ApprovalCase=typeof approvalCases[number];
+export async function approvalPractice(kind:ApprovalCase=&#x27;allow&#x27;){
+ const h=await components({tools:false}),trace:any[]=[],entered=gate(),late=gate&lt;any&gt;();let answers=0,grant=false;
+ try{
+  const agent=carrier(h.ctx,&#x27;approval-&#x27;+kind,![&#x27;idle&#x27;].includes(kind));
+  if(kind===&#x27;closed&#x27;)agent.session.append(&#x27;turn/end&#x27;,{turn:1,reason:{kind:&#x27;completed&#x27;}});
+  if(kind===&#x27;never&#x27;)setApprovalPolicy(agent.session,&#x27;never&#x27;);
+  const controller=new AbortController();if(kind===&#x27;pre-abort&#x27;)controller.abort();
+  if(kind!==&#x27;missing&#x27;)h.ctx.on(&#x27;approval/request&#x27;,async(req,next)=&gt;{
+   answers++;trace.push({stage:&#x27;answerer&#x27;,toolName:req.toolName,callId:req.callId,hasRequestId:&#x27;id&#x27; in req});entered.resolve();
+   if(kind===&#x27;delegate&#x27;)return next();
+   if(kind===&#x27;throw-async&#x27;)throw Error(&#x27;controlled async answerer failure&#x27;);
+   if(kind===&#x27;late&#x27;){await late.promise;trace.push({stage:&#x27;late-answer&#x27;,outcome:&#x27;allowed-once&#x27;});return &#x27;allowed-once&#x27;;}
+   return ({reject:&#x27;rejected&#x27;,&#x27;cancel-answer&#x27;:&#x27;cancelled&#x27;,unavailable:&#x27;unavailable&#x27;,invalid:&#x27;bad-answer&#x27;} as any)[kind]??&#x27;allowed-once&#x27;;
+  });
+  if(kind===&#x27;throw-sync&#x27;)h.ctx.on(&#x27;approval/request&#x27;,()=&gt;{throw Error(&#x27;controlled sync failure&#x27;);},true);
+  if(kind===&#x27;audit-fail&#x27;){
+   // 受控故障：拦截提交之前，而不是让提交后的观察者抛错。
+   const append=agent.session.append.bind(agent.session);
+   agent.session.append=(type:any,...args:any[])=&gt;{if(type===&#x27;approval/decided&#x27;)throw Error(&#x27;controlled audit commit failure&#x27;);return append(type,...args);};
+  }
+  const pending=h.ctx.approval.request({agent,toolName:&#x27;sum_fixture&#x27;,callId:ToolCallId(&#x27;call-&#x27;+kind),reason:&#x27;批准本次常量计算&#x27;,signal:controller.signal});
+  if(kind===&#x27;late&#x27;){
+   await entered.promise;controller.abort();
+   const outcome=await pending;trace.push({stage:&#x27;settled-before-late&#x27;,outcome});late.resolve();
+   await new Promise(r=&gt;setImmediate(r));
+   return {kind,outcome,answers,trace,audit:audit(agent.session),grant:outcome===&#x27;allowed-once&#x27;};
+  }
+  try{const outcome=await pending;grant=outcome===&#x27;allowed-once&#x27;;return {kind,outcome,answers,trace,audit:audit(agent.session),grant};}
+  catch(error){return {kind,error:String(error),answers,trace,audit:audit(agent.session),grant};}
+ }finally{late.resolve();await h.close();}
+}
+export async function approvalPolicyPractice(){
+ const h=await components({tools:false});try{
+  const a=carrier(h.ctx,&#x27;policy-a&#x27;),b=carrier(h.ctx,&#x27;policy-b&#x27;);setApprovalPolicy(a.session,&#x27;never&#x27;);
+  const assembled=await h.ctx.systemPrompt.assemble({agent:a});
+  // 固定源码将 effectivePolicy 声明为 private；文档虽推荐它，仍只作诊断。
+  const effective=(session:any)=&gt;(h.ctx.approval as any)[&#x27;effectivePolicy&#x27;](session);
+  return {a:effective(a.session),b:effective(b.session),diagnostic:&#x27;private effectivePolicy access; not a public stable API&#x27;,
+   override:h.ctx.approval.overrideOf(a.session),contexts:assembled.contexts,events:a.session.snapshotEvents(),
+   messages:a.session.deriveMessages()};
+ }finally{await h.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>allow进入应答者并得到allowed-once；never在应答者前拒绝，answers为0。missing与next走链末返回unavailable；同步抛错、异步拒绝和非法返回值也不能升级成批准。预先取消先得到cancelled，不调用应答者。late的trace先出现answerer，再出现settled-before-late(cancelled)，最后才出现late-answer(allowed-once)；decided仍为cancelled且只有一条，没有第二次授权。</p><p>正常问答各有一条asked和decided，共享服务生成的审批ID；callId只在asked中关联具体工具调用，不能拿它替代审批ID。never还保留策略事件，所以完整audit可有三项；应先按事件类型分组。idle/closed在任何asked之前抛错。audit-fail只留下asked，调用Promise拒绝，grant为false；不能为了配对好看伪造decided。</p><p>策略测试中A为never、B仍ask，运行时上下文有approval:policy，但deriveMessages没有因log-only事件自动新增聊天消息。重复同callId测试得到两个不同审批ID及两对事件，第二次照样拒绝。若输出不符，先查应答者注册顺序、Turn是否打开与过滤事件的方法，不把失败关闭改成默认允许。</p></div></details>
+<h2>实践 B：批准后仍然可能到不了主体</h2>
+<p>这是一个只返回2+3的真实工具。先按前面的八行表画轨迹，再查看 <code>B_*</code> 的pre、outer、approval-answer、guard、body和tools/result。额外输入pre-abort在批次起点已取消，不能强行要求它也走完整流水线观察。</p>
+<p>验收：allow、ask-allow、override-deny三项主体各1次且值为5；其余主体0次。approved-guard既有allowed-once审计，也必须没有body。cancel-approval不因受控应答者随后返回允许而执行。它验证了真实流水线接入审批与守卫的局部组合，没有测试文件/Shell安全。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><p>保存为pipeline.ts。这里明确使用普通Waterfall改写deny作对照；不要把这种演示监听器复制为安全部署规则。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {components,carrier,defineTool,call,gate,audit} from &#x27;./support.ts&#x27;;
+export const pipelineCases=[&#x27;allow&#x27;,&#x27;deny&#x27;,&#x27;ask-allow&#x27;,&#x27;ask-reject&#x27;,&#x27;ask-missing&#x27;,&#x27;guard&#x27;,&#x27;override-deny&#x27;,&#x27;override-guard&#x27;,&#x27;approved-guard&#x27;,&#x27;cancel-approval&#x27;,&#x27;pre-abort&#x27;] as const;
+export type PipelineCase=typeof pipelineCases[number];
+export async function pipelinePractice(kind:PipelineCase=&#x27;allow&#x27;){
+ const h=await components(),trace:any[]=[],entered=gate(),late=gate&lt;any&gt;(),controller=new AbortController();let bodies=0;
+ try{
+  const agent=carrier(h.ctx,&#x27;pipeline-&#x27;+kind);
+  h.ctx.tools.register(defineTool({name:&#x27;sum_fixture&#x27;,description:&#x27;仅计算两个整数之和，不访问文件或Shell&#x27;,
+   parameters:{a:{type:&#x27;integer&#x27;,required:true},b:{type:&#x27;integer&#x27;,required:true}},
+   output:{schema:{type:&#x27;integer&#x27;},render:(_a,v)=&gt;[{type:&#x27;text&#x27;,text:String(v)}]},
+   async execute(a){bodies++;trace.push({stage:&#x27;body&#x27;});return a.a+a.b;}}));
+  if(kind.startsWith(&#x27;override&#x27;))h.ctx.on(&#x27;tools/pre-execute&#x27;,async(_exec,next)=&gt;{
+   trace.push({stage:&#x27;outer-enter&#x27;});const d=await next();trace.push({stage:&#x27;outer-return&#x27;,from:d.kind,to:&#x27;allow&#x27;});return {kind:&#x27;allow&#x27;};});
+  h.ctx.on(&#x27;tools/pre-execute&#x27;,async(_exec,next)=&gt;{
+   trace.push({stage:&#x27;pre&#x27;});
+   if(kind.startsWith(&#x27;ask&#x27;)||kind===&#x27;approved-guard&#x27;||kind===&#x27;cancel-approval&#x27;)return {kind:&#x27;ask&#x27;,reason:&#x27;本次计算需要应答&#x27;};
+   if(kind===&#x27;deny&#x27;||kind.startsWith(&#x27;override&#x27;))return {kind:&#x27;deny&#x27;,reason:&#x27;普通拒绝&#x27;};
+   return next();});
+  if(kind!==&#x27;ask-missing&#x27;)h.ctx.on(&#x27;approval/request&#x27;,async()=&gt;{
+   trace.push({stage:&#x27;approval-answer&#x27;});entered.resolve();
+   if(kind===&#x27;cancel-approval&#x27;){await late.promise;return &#x27;allowed-once&#x27;;}
+   return kind===&#x27;ask-reject&#x27;?&#x27;rejected&#x27;:&#x27;allowed-once&#x27;;});
+  h.ctx.tools.guard(()=&gt;{trace.push({stage:&#x27;guard&#x27;});return [&#x27;guard&#x27;,&#x27;override-guard&#x27;,&#x27;approved-guard&#x27;].includes(kind)?&#x27;所有者守卫拒绝&#x27;:undefined;});
+  h.ctx.on(&#x27;tools/result&#x27;,(_exec,result)=&gt;trace.push({stage:&#x27;tools/result&#x27;,result:structuredClone(result)}));
+  if(kind===&#x27;pre-abort&#x27;)controller.abort();
+  const pending=h.ctx.tools.execute({calls:[call(&#x27;sum-&#x27;+kind)],agent,signal:controller.signal});
+  if(kind===&#x27;cancel-approval&#x27;){await entered.promise;controller.abort();late.resolve();}
+  const batch=await pending;
+  return {kind,bodies,trace,result:batch.results[0].result,audit:audit(agent.session),
+   boundary:&#x27;Actual Tools/Native/Pipeline + Approval + real Session; structural Agent; no Loop or Session tool-result log sink&#x27;};
+ }finally{late.resolve();await h.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>allow在pre委托链末得到allow，guard不表态，主体返回5。deny短路后不需要审批，也不检查guard。ask-allow先经真实ApprovalService，允许后才到guard；ask-reject与ask-missing都生成非授权决定，主体不启动。override-deny中外层确实收到了deny并改为allow，所以普通拒绝不能承担不可放宽约束。</p><p>override-guard保留同样的外层allow，但之后的guard返回拒绝原因，主体次数仍为0。approved-guard先有allowed-once，再有guard拒绝，恰好说明审批与所有者约束处理不同问题。cancel-approval先让应答者挂起，再abort，工具主体没有开始；最终失败/取消ToolResult与审批cancelled相符。pre-abort则在批次更早位置跳过，没有审批事件，不应编造guard或tools/result行。</p><p>判断顺序要同时看trace、bodies与result，而不是只搜索“允许”一词。失败结果并不保证所有阶段都运行过。这里没有工具日志sink，因而不能声称观察到Session的tool/result；要分析提交位置，回到H14的真实Loop证据。</p></div></details>
+<h2>实践 C：两个 Session，一次批准，三类证据</h2>
+<p>先填写Session A/B与一次覆盖的表，再观察 <code>C_policy</code>。原生层保持不开启：provider只包装 <code>fixture-command-never-executed</code>，没有spawn。probe钩子分别返回不可用、full与partial，Windows选择也只生成argv。<code>strictConsumer</code> 是教学判定“若要求full应怎样处理”，不是已经运行了真实bash/pwsh消费方。</p>
+<p>验收：A持久workspace-write可回放；B单次扩大后仍read-only；不可用抛SANDBOX_UNAVAILABLE而无裸argv返回；缺失额外根抛SANDBOX_INVALID_ROOT；full与partial保留不同报告；无理由、非更宽模式或无审批服务的扩大请求失败。实际根中须计入临时区域。</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><p>保存为sandbox.ts。真实policy、真实审批和真实provider选择算法是受测对象；平台探测结果与launcher路径是明确替身。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import { mkdtemp,mkdir } from &#x27;node:fs/promises&#x27;;
+import { tmpdir } from &#x27;node:os&#x27;;
+import { resolve } from &#x27;node:path&#x27;;
+import { setSandboxMode } from &#x27;@deepseek-ai/dsh-sandbox-policy&#x27;;
+import { LocalSandboxProvider } from &#x27;@deepseek-ai/dsh-sandbox-local&#x27;;
+import { workspaceWritableRoots,writableRoots,approveEscalation,validateEscalationArgs } from &#x27;@deepseek-ai/dsh-sandbox&#x27;;
+import { components,carrier,Session,audit,ToolCallId,Context } from &#x27;./support.ts&#x27;;
+export async function sandboxPractice(){
+ const fixture=await mkdtemp(resolve(tmpdir(),&#x27;aifoundry-h15-policy-&#x27;));
+ const workspace=resolve(fixture,&#x27;workspace&#x27;),extra=resolve(fixture,&#x27;extra&#x27;);await mkdir(workspace);await mkdir(extra);
+ const h=await components({tools:false,policy:{workspaceRoot:fixture,additionalWritableRoots:[extra]}});
+ try{
+  const a=carrier(h.ctx,&#x27;sandbox-a&#x27;,true,workspace),b=carrier(h.ctx,&#x27;sandbox-b&#x27;,true,extra),p=h.ctx.sandboxPolicy;
+  const initial=p.resolve({session:a.session});setSandboxMode(a.session,&#x27;workspace-write&#x27;);
+  const sessionA=p.resolve({session:a.session}),sessionB=p.resolve({session:b.session});
+  h.ctx.on(&#x27;approval/request&#x27;,async()=&gt; &#x27;allowed-once&#x27;);
+  const mode=await approveEscalation({requestedMode:&#x27;workspace-write&#x27;,effectiveMode:&#x27;read-only&#x27;,justification:&#x27;仅批准夹具配置更新&#x27;,subject:&#x27;operation&#x27;},
+   {approver:h.ctx.approval,agent:b,callId:ToolCallId(&#x27;escalate-fixture&#x27;),toolName:&#x27;fixture-write&#x27;});
+  const once=p.resolve({session:b.session,mode}),after=p.resolve({session:b.session});
+  // 相同 ID 的全新 Session，从真实事件重建持久模式。
+  const restored=Session.create(a.session.id,a.session.snapshotEvents(),a.session.header);
+  const replay=p.resolve({session:restored});
+  const roots=workspaceWritableRoots(sessionA),allWritable=writableRoots(sessionA);
+  let invalidRoot:any;try{workspaceWritableRoots({...sessionA,additionalWritableRoots:[resolve(fixture,&#x27;missing&#x27;)]});}catch(e:any){invalidRoot={code:e.code,message:e.message};}
+  const reports:any[]=[];
+  // 只调用真实 provider 的选择/argv 包装算法；所有探测均被测试钩子替代，没有 spawn。
+  for(const kind of [&#x27;unavailable&#x27;,&#x27;full&#x27;,&#x27;partial&#x27;,&#x27;windows-partial&#x27;] as const){
+   const owner=new Context();
+   const local=new LocalSandboxProvider(owner,{runnerCommand:[],runnerFailureSignatures:[],probeTimeoutMs:100});
+   local.internals=kind===&#x27;windows-partial&#x27;?{chain:[&#x27;windows-acl&#x27;],windowsAclRunnerArgs:[&#x27;fixture-runner-never-executed&#x27;]}:
+    {chain:kind===&#x27;unavailable&#x27;?[]:[&#x27;bwrap&#x27;,&#x27;landlock&#x27;],probeBwrap:()=&gt;kind===&#x27;full&#x27;,probeLandlock:()=&gt; &#x27;partial&#x27;,landlockLauncher:&#x27;fixture-landlock-never-executed&#x27;};
+   try{const wrapped=await local.confine([&#x27;fixture-command-never-executed&#x27;],{mode:&#x27;read-only&#x27;,workspaceRoot:workspace});
+    reports.push({kind,verification:&#x27;SIMULATED_PROBE_REAL_PROVIDER&#x27;,...wrapped,strictConsumer:wrapped.enforcement===&#x27;full&#x27;?&#x27;would-accept&#x27;:&#x27;would-refuse&#x27;});
+   }catch(e:any){reports.push({kind,verification:&#x27;SIMULATED_PROBE_REAL_PROVIDER&#x27;,code:e.code,message:e.message});}
+   // 没有 workspace-write ACL grant，dispose 不触发目录清理。
+   await owner.fiber.dispose();
+  }
+  let malformed:any,narrower:any,missingApprover:any;
+  try{validateEscalationArgs(&#x27;workspace-write&#x27;,undefined);}catch(e){malformed=String(e);}
+  try{await approveEscalation({requestedMode:&#x27;read-only&#x27;,effectiveMode:&#x27;workspace-write&#x27;,justification:&#x27;bad&#x27;,subject:&#x27;operation&#x27;},{} as any);}catch(e){narrower=String(e);}
+  try{await approveEscalation({requestedMode:&#x27;workspace-write&#x27;,effectiveMode:&#x27;read-only&#x27;,justification:&#x27;fixture&#x27;,subject:&#x27;operation&#x27;},{} as any);}catch(e){missingApprover=String(e);}
+  return {fixture,host:{platform:process.platform,arch:process.arch},initial,sessionA,sessionB,once,after,replay,roots,allWritable,invalidRoot,reports,
+   malformed,narrower,missingApprover,audit:audit(b.session),aEvents:a.session.snapshotEvents(),bEvents:b.session.snapshotEvents(),
+   contexts:(await h.ctx.systemPrompt.assemble({agent:a})).contexts,
+   native:{linux:&#x27;NOT_RUN&#x27;,darwin:&#x27;NOT_RUN&#x27;,windowsACL:&#x27;NOT_RUN&#x27;},cleanup:&#x27;Empty fixture directories retained under no-bulk-delete instruction&#x27;};
+ }finally{await h.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>部署默认read-only，A记入sandbox/mode后变workspace-write，B没有覆盖仍read-only；两个会话根来自各自cwd。B经真实审批得到一次workspace-write，resolve带mode才使用它，随后不带mode立即回到read-only。B事件里没有sandbox/mode，说明它没有被永久放开。A的同ID新Session从事件重建后仍workspace-write，这是持久状态的回放。</p><p>missing额外根在物理根校验时报SANDBOX_INVALID_ROOT；这与provider选择没有可用链时报SANDBOX_UNAVAILABLE不同。模拟bwrap成功报告full；模拟Landlock返回partial，程序保留该事实，并给出严格消费者应拒绝的教学判断。Windows只读模拟包装同样报告partial，未启动受限令牌runner，也未授予真实工作区ACL。</p><p>不能据此填写“Linux沙箱验证通过”或“Windows隔离已验证”。本轮实际宿主是Windows，真实policy与文件后端在该宿主运行，但三平台进程runner均NOT_RUN。即使full分支返回了完整argv，也只证明选择和包装在这组受控输入下正确，不证明内核已执行所有限制。</p></div></details>
+<h2>实践 D：真实文件、真实观察策略、受控外部修改</h2>
+<p>先预测：直接readText后能否edit？同ID恢复Session是否有旧观察？插件卸载后read-only是否还拒绝？再运行 <code>D_files</code>，按label逐项检查。本程序里的consumer是明确的夹具适配器：它调用官方fs事件并保存版本，没有把它命名为模型文件工具，也没有提前开发H16。</p>
+<p>输入文件固定为新目录中的 <code>fixture.cfg</code>，先创建 <code>mode=old</code>。正常编辑后外部writeFile仅改这一夹具，再用旧观察尝试编辑，应该报FS_STALE_VERSION。重读更新观察后恢复编辑。之后单个删除此明确文件，记录缺失并防护创建；最后测试卸载、重载与后端围栏。</p>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><p>保存为filesystem.ts。自动清理仅涉及明确夹具文件与每次已知的单个暂存文件，空目录保留。Windows上未替换platform、DACL或ReplaceFileW原语，实际使用宿主本地实现；这仍不是Windows进程ACL沙箱。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import { mkdtemp,writeFile,unlink,stat } from &#x27;node:fs/promises&#x27;;
+import { tmpdir } from &#x27;node:os&#x27;;
+import { resolve,dirname,basename,relative,isAbsolute } from &#x27;node:path&#x27;;
+import SandboxedFileSystem from &#x27;@deepseek-ai/dsh-fs-sandbox&#x27;;
+import * as Observation from &#x27;@deepseek-ai/dsh-fs-observation-policy&#x27;;
+import { components,carrier,Session } from &#x27;./support.ts&#x27;;
+export async function filesystemPractice(){
+ const fixture=await mkdtemp(resolve(tmpdir(),&#x27;aifoundry-h15-files-&#x27;)),file=resolve(fixture,&#x27;fixture.cfg&#x27;);
+ const h=await components({tools:false,policy:{mode:&#x27;workspace-write&#x27;,workspaceRoot:fixture}}),trace:any[]=[],retained:string[]=[];
+ let stageFile:string|undefined;
+ const inside=(p:string)=&gt;{const r=relative(fixture,resolve(p));assert.ok(r!==&#x27;&#x27;&amp;&amp;!r.startsWith(&#x27;..&#x27;)&amp;&amp;!isAbsolute(r),&#x27;fixture containment&#x27;);};
+ const exists=async(p:string)=&gt;{try{await stat(p);return true;}catch(e:any){if(e.code===&#x27;ENOENT&#x27;)return false;throw e;}};
+ const code=async(label:string,fn:()=&gt;any)=&gt;{try{const value=await fn();trace.push({label,value});return value;}catch(e:any){trace.push({label,code:e.code,message:e.message});return e.code;}};
+ try{
+  await h.ctx.plugin(SandboxedFileSystem,{cwd:fixture});
+  // 官方原子发布实现原封不动；只替换清理钩子，禁止上游默认递归 rm。
+  // 每次只删除一个经过 containment 与名称核验的明确临时文件；留下空目录。
+  (h.ctx.fs as SandboxedFileSystem).internals={
+   inspectTemp({stagingDir,tempPath}){inside(tempPath);assert.equal(dirname(tempPath),stagingDir);assert.equal(basename(tempPath),&#x27;fixture.cfg.tmp&#x27;);stageFile=tempPath;},
+   async removeStagingDir(dir){inside(dir);assert.ok(stageFile&amp;&amp;dirname(stageFile)===dir);if(await exists(stageFile))await unlink(stageFile);retained.push(dir);stageFile=undefined;},
+  };
+  const policy=await h.ctx.plugin(Observation),a=carrier(h.ctx,&#x27;fs-a&#x27;),actor={agent:a},target=await h.ctx.fs.resolve(file);
+  const mode=h.ctx.sandboxPolicy.resolve({session:a.session});
+  const wi=(who:any=actor)=&gt;h.ctx.waterfall(&#x27;fs/write-intent&#x27;,target,who,()=&gt;undefined);
+  const ei=(who:any=actor)=&gt;h.ctx.waterfall(&#x27;fs/edit-intent&#x27;,target,who,()=&gt;undefined);
+  const observe=async()=&gt;{
+   const info=await h.ctx.fs.stat(target);if(!info){h.ctx.emit(&#x27;fs/observed&#x27;,target,{kind:&#x27;absent&#x27;},actor);trace.push({label:&#x27;observe-missing&#x27;,code:&#x27;FS_NOT_FOUND&#x27;});return;}
+   const content=await h.ctx.fs.readText(target);h.ctx.emit(&#x27;fs/observed&#x27;,target,{kind:&#x27;present&#x27;,version:info.version},actor);trace.push({label:&#x27;observe&#x27;,content,version:info.version});
+  };
+  const edit=async(oldString:string,newString:string,who:any=actor)=&gt;h.ctx.fs.editText(target,{oldString,newString,replaceAll:false},await ei(who),undefined,mode);
+  await code(&#x27;create-unseen&#x27;,async()=&gt;h.ctx.fs.writeText(target,&#x27;mode=old\n&#x27;,await wi(),undefined,mode));
+  await h.ctx.fs.readText(target);await code(&#x27;direct-read-no-observation&#x27;,()=&gt;ei());
+  await observe();await code(&#x27;normal-edit&#x27;,()=&gt;edit(&#x27;old&#x27;,&#x27;new&#x27;));await observe();
+  await code(&#x27;unseen-session-edit&#x27;,()=&gt;edit(&#x27;new&#x27;,&#x27;no&#x27;,{agent:carrier(h.ctx,&#x27;fs-unseen&#x27;)}));
+  await writeFile(file,&#x27;mode=external-longer\n&#x27;);trace.push({label:&#x27;external-fixture-write&#x27;});
+  await code(&#x27;stale-edit&#x27;,()=&gt;edit(&#x27;new&#x27;,&#x27;bad&#x27;));
+  await observe();await code(&#x27;refresh-edit&#x27;,()=&gt;edit(&#x27;external-longer&#x27;,&#x27;fresh&#x27;));await observe();
+  const restored=Session.create(a.session.id,a.session.snapshotEvents(),a.session.header);
+  await code(&#x27;restored-same-id&#x27;,()=&gt;ei({agent:{session:restored}}));
+  await code(&#x27;read-only-denied&#x27;,()=&gt;h.ctx.fs.writeText(target,&#x27;forbidden&#x27;,undefined,undefined,{...mode,mode:&#x27;read-only&#x27;}));
+  inside(file);await unlink(file);await observe();await code(&#x27;missing-edit&#x27;,()=&gt;ei());
+  await code(&#x27;guarded-create-after-missing&#x27;,async()=&gt;h.ctx.fs.writeText(target,&#x27;mode=recreated\n&#x27;,await wi(),undefined,mode));
+  await code(&#x27;same-create-cannot-overwrite&#x27;,async()=&gt;h.ctx.fs.writeText(target,&#x27;bad&#x27;,await wi(),undefined,mode));
+  await observe();await policy.dispose();
+  const unguarded=await ei();trace.push({label:&#x27;plugin-unloaded&#x27;,guardIsUndefined:unguarded===undefined});
+  await code(&#x27;unguarded-current-edit&#x27;,()=&gt;edit(&#x27;recreated&#x27;,&#x27;unguarded&#x27;));
+  // 观察策略卸载后，fs-sandbox 的 read-only 围栏仍存在。
+  await code(&#x27;unloaded-still-read-only&#x27;,()=&gt;h.ctx.fs.editText(target,{oldString:&#x27;unguarded&#x27;,newString:&#x27;bad&#x27;,replaceAll:false},undefined,undefined,{...mode,mode:&#x27;read-only&#x27;}));
+  const finalContent=await h.ctx.fs.readText(target);
+  await h.ctx.plugin(Observation);await code(&#x27;remount-lost-state&#x27;,()=&gt;ei());
+  inside(file);await unlink(file);
+  return {fixture,file,host:process.platform,trace,finalContent,fileRemoved:!(await exists(file)),retainedDirectories:[fixture,...retained],
+   scope:&#x27;Actual local storage + fs-sandbox + observation + Session; explicit fixture consumer emits official events; no model-facing tool-fs, no OS process sandbox&#x27;,
+   nativeFilePublication:process.platform===&#x27;win32&#x27;?&#x27;Actual Koffi DACL copy / ReplaceFileW, no platform override&#x27;:&#x27;Actual host rename/link&#x27;,
+   limits:&#x27;No concurrent symlink/hostile race, no atomic-CAS proof against arbitrary external writers; no recursive cleanup; empty directories retained&#x27;};
+ }finally{
+  // 一次仅一个明确夹具文件；不扫描目录、不过滤后批量删除。
+  inside(file);if(await exists(file))await unlink(file);
+  await h.close();
+ }
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>create-unseen返回create，因为观察策略给的是createIfAbsent。直接readText没有发fs/observed，因此direct-read-no-observation仍为FS_NOT_OBSERVED。显式observe记录权威版本后normal-edit成功；另一个Session未见文件，编辑拒绝。外部先写入更长内容后stale-edit使用旧version，后端在匹配旧字符串前拒绝为FS_STALE_VERSION；重新observe后refresh-edit成功。</p><p>restored-same-id仍是FS_NOT_OBSERVED：Session的持久事件能回放，不会复制以旧Session对象为key的WeakMap。read-only-denied验证fs-sandbox仍在后端拒绝变更。删掉明确夹具后observe记录absent，missing-edit得到FS_NOT_FOUND；write意图变createIfAbsent并创建成功。未再更新观察前重复相同创建不能覆盖已有文件，报FS_NOT_OBSERVED。</p><p>卸载策略后edit-intent返回undefined，裸版本条件消失，当前内容编辑成功；但换成read-only的后端调用仍FS_SANDBOX_DENIED，说明两层约束独立存在。重载观察插件丢失旧状态，再次FS_NOT_OBSERVED。最终内容mode=unguarded，明确文件已删除，空目录列在retainedDirectories。</p><p>这个实验没有制造检查与发布之间的恶意竞态，没有验证符号链接换祖先攻击，也没有把一次原子替换当作外部并发CAS证明。若真实后端不能运行，应保留错误及平台未验证记录，不能把editText换成自制字符串替换后继续记真实PASS。</p></div></details>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><p>保存为demo.ts；由作者runner在隔离副本中运行，它输出全部A/B场景与C/D完整证据。随附safety.test.ts提供31项断言，negative-answer.ts故意把“批准绕过守卫”预测为真，预期失败。</p><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {approvalPractice,approvalCases,approvalPolicyPractice} from &#x27;./approval.ts&#x27;;
+import {pipelinePractice,pipelineCases} from &#x27;./pipeline.ts&#x27;;
+import {sandboxPractice} from &#x27;./sandbox.ts&#x27;;
+import {filesystemPractice} from &#x27;./filesystem.ts&#x27;;
+for(const kind of approvalCases)console.log(&#x27;A_&#x27;+kind,JSON.stringify(await approvalPractice(kind)));
+console.log(&#x27;A_policy&#x27;,JSON.stringify(await approvalPolicyPractice()));
+for(const kind of pipelineCases)console.log(&#x27;B_&#x27;+kind,JSON.stringify(await pipelinePractice(kind)));
+console.log(&#x27;C_policy&#x27;,JSON.stringify(await sandboxPractice()));
+console.log(&#x27;D_files&#x27;,JSON.stringify(await filesystemPractice()));</code></pre></div></div></details>
+<h2>回到配置修改：按组合定位每个检查</h2>
+<p>假定部署确实挂载Tools/Native/Pipeline、Approval、SandboxPolicy、fs-sandbox、观察插件，以及正确发事件的文件消费者。它读取配置并记下版本v1，然后模型提出edit。可以按下面的责任清单追踪：</p>
+<ol>
+<li>Registry查工具与调用身份；H13的可见性和Schema仍不等于权限。</li>
+<li>通用流水线取得pre决策；需要ask时在有效Turn中取得审批。</li>
+<li>最终allow之后检查单调guard；拒绝则不进入主体。</li>
+<li>文件消费者在自己的主体内解析本次Session策略，处理显式升权请求，并取得fs/edit-intent的版本条件。</li>
+<li>fs-sandbox重新检查目标路径与写模式，再委托本地后端；后端检查v1是否仍匹配，匹配才进行编辑和原子发布。</li>
+<li>消费者在适当时机更新观察并形成工具结果；通用流水线继续其适用的project/post/finalize与观察，若有日志接线再提交Session工具结果。</li>
+<li>审批服务在请求过程中记录asked/decided；没有询问就不能凭空补审批审计。</li>
+</ol>
+<p>注意这里“取得意图”在消费者里，而“检查版本”在后端里；模式解析也不是通用Pipeline统一调用的阶段。换成Shell能力，主体会把策略交给shell执行器，由它调用进程sandbox provider，不自动经过fs/edit-intent。没有观察插件的文件组合会失去自动新鲜度条件；裸fs-local不因为传入策略参数就获得fs-sandbox围栏。这是多条接线的责任核对，不能画成所有工具共享的一条固定总链。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/fs/tool-fs/src/edit.ts#L131-L140" target="_blank" rel="noopener noreferrer">file tool execution</a></p>
+<p>如果构建仍失败，不应自动删除目录或扩大到danger。先报告哪层拒绝、是否有已发生效果、哪份证据可靠，再根据任务需要决定是否重新读取、缩小修改或明确请求一次更宽授权。复杂重试和未知结果处理留到H20。</p>
+<h2>十道推导题：先写结果，再展开理由</h2>
+<p><strong>思考1｜配置推导。</strong> 部署ask，Session记never，后来有prepend应答者总返回allowed-once。信号未取消。结果是什么，应答者运行吗？</p>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>结果是rejected，应答者不运行。有效策略优先读取Session最后的approval/policy，never在服务内部、Waterfall分发前决定，prepend只能改变应答者链的顺序，不能把它搬到服务策略判断之前。若信号已取消，则先返回cancelled；两个结果都不授权。配置判断需写清信号前提，不能只记一句“never永远拒绝”。</p></div></details>
+<p><strong>思考2｜轨迹推导。</strong> pre外层await next得到deny，然后返回allow；随后guard返回“禁止”。工具主体运行几次？若guard不存在呢？</p>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>有guard时0次，最终allow之后才检查它，拒绝后没有普通策略链重新放行。无guard且没有取消或其他失败时1次，因为普通Waterfall外层已把下游deny改写成allow。这解释了为什么所有者的不可放宽规则要使用适合的守卫接口，而不是依赖普通监听器登记在最后。接口单调性仍以可信插件遵守调用约定为前提，不抵抗同进程恶意修改。</p></div></details>
+<p><strong>思考3｜事件推导。</strong> 审批先cancelled，迟到答案为allowed-once。为什么不能再追加第二条decided来启动原工具？</p>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>原请求已经撤回并完成，迟到批准不再拥有这次决定权。为同一个请求再造授权决定会破坏审计与执行的一致性，并可能在用户以为任务停止后启动工具。服务的race结算只保留先得到的有效结果；实践A释放迟到门闩后也不会改变原decided。若用户明确重试，应创建新请求、关联新的问答事实，不能把旧迟到答案当永久许可。</p></div></details>
+<p><strong>思考4｜配置推导。</strong> 默认read-only，A持久workspace-write，B无覆盖；B有一次批准的workspace-write。两次普通调用和一次覆盖调用分别是什么？</p>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>A普通调用是workspace-write，B普通调用是read-only，B带批准mode的那次是workspace-write；B之后普通调用仍read-only。优先级是已批准单次mode、会话覆盖、部署默认，不会把一次参数自动写成sandbox/mode。resolve本身不验证批准，所以还必须检查是谁提供了mode、是否经过真实审批，以及B的事件中是否意外多出持久设置。</p></div></details>
+<p><strong>思考5｜文件轨迹。</strong> readText成功但没有fs/observed，随后edit-intent会怎样？确认缺失后write与edit又怎样？</p>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>有观察插件且没有别的槽位覆盖时，直接readText仍未记录观察，edit-intent得到FS_NOT_OBSERVED。确认缺失的观察允许write取得createIfAbsent，只能在不存在时创建；edit则FS_NOT_FOUND。若无观察插件，默认意图是undefined，不能套用上述拒绝结论。保护的前提包括正确发事件的消费者、所属Session对象及遵守条件的后端，文本读取成功本身并不满足全部前提。</p></div></details>
+<p><strong>思考6｜full是否意味着安全？</strong> 一个full文件效果runner中，模型把本项目配置值改错，并向网络发送允许读取的数据。full能否证明这些事不会发生？</p>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>不能。full只报告该后端对模式承诺的文件效果实施完整程度，没有判断业务修改正确性，也没有在这个词汇里承诺网络隔离。获准写入的配置仍可被写错，获准读取的数据也不因此得到用途限制。需要额外的任务校验与独立网络等控制，并按真实部署验证；给同一个runner再贴“安全”标签不会增加它实际承担的责任。</p></div></details>
+<p><strong>思考7｜平台外推。</strong> 模拟bwrap探测成功、返回full；Windows文件编辑也成功。能否写Windows原生进程沙箱通过？</p>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>不能。前者只测试真实provider在模拟探测结果下选择与包装，后者测试可信fs实现中的真实宿主文件原语，二者都没有启动Windows ACL受限令牌runner。该后端固定报告partial，还存在硬链接、读取与AppContainer ACL边界。报告应分实际宿主、受测组件、替身及未运行能力，Linux或macOS的原生通过也不能替Windows原生验证签字。</p></div></details>
+<p><strong>思考8｜为什么先读仍要重读？</strong> 文件观察后被外部编辑器修改，为什么不能继续使用旧version，或简单捕获错误后无条件覆盖？</p>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>旧观察是过去事实，外部修改后它不再说明当前内容。FS_STALE_VERSION要求重新读取、比较新内容并重新判断修改是否仍适用；捕获后去掉expected会绕过原本保护他人修改的条件。重读也只是更新依据，不保证模型修改正确或消除下一次检查与发布之间的全部竞态。恢复应结合结果与任务意图，而不是为了PASS把保护删掉。</p></div></details>
+<p><strong>思考9｜Scope为什么不等于OS权限？</strong> 某工具只对Agent A可见，能否据此允许它启动任意不可信代码？</p>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>不能。Scope约束注册、发现与事件路由等同进程组合行为，不是内核对这个进程打开文件、创建子进程或访问网络的权限限制。一个已启动的不可信子进程不会自动按工具注册Scope执行。必须另查所挂载执行器、逐调用策略与可用后端；即使有沙箱，也要检查其文件效果与full/partial边界，不能把同一个“隔离”词推广到不同层面。</p></div></details>
+<p><strong>思考10｜无人审批、runner不可用。</strong> 为什么不分别默认同意和裸跑一次？请同时说明审计能解决什么、不能解决什么。</p>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>无人审批时没有可负责的授权决定，应返回unavailable并拒绝；受限执行没有可兑现约束的runner，应报SANDBOX_UNAVAILABLE。默认同意或裸跑会在条件缺失时反而扩大能力，违反失败关闭。审计能保留请求、具体调用关联和决定，支持追踪与诊断，但记录一次危险裸跑不能使它变安全，也不能证明未记录的效果没有发生，更不能单靠内存接受事件证明真实存储已可靠持久化。</p></div></details>
+<h2>完成标准与下一讲边界</h2>
+<p>请用自己的话说明一次配置修改的六层责任，给每层一个不能解决的反例；独立推导两条审批轨迹、两个Session的策略与一次陈旧编辑；能从原始结果指出真实组件、模拟边界和NOT_RUN，而不是只复述术语。</p>
+<p>作者已验证局部组件行为、静态预览、真实Renderer及三宽度交互；没有真实学员试读、实际学习时长、独立安全审计或完整应用E验证。课程预计时长按三段安排：审批与守卫、沙箱与平台、文件实验与综合推导；可隔日完成，环境准备时间另计。</p>
+<p>H16将研究真实文件、Shell、Web、MCP等消费者怎样发现、调用与组合能力。带过去的是：可见不等于授权；resolve不等于审批；fs围栏不等于进程沙箱；观察状态不等于持久Session配置；原始结果、实时观察与审计日志分开核对。H20再处理更完整取消、重试、未知副作用和恢复。本课到此停止，不以配套练习提前替代后续课程。</p></div></main></body></html>

@@ -1,0 +1,57 @@
+{
+  "host": {
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+  "nativeProcessRunners": {
+    "linux-bwrap": "NOT_RUN",
+    "linux-landlock": "NOT_RUN",
+    "macos-seatbelt": "NOT_RUN",
+    "windows-acl": "NOT_RUN"
+  },
+  "simulatedProbesRealProvider": [
+    {
+      "kind": "unavailable",
+      "code": "SANDBOX_UNAVAILABLE",
+      "enforcement": null,
+      "spawn": false
+    },
+    {
+      "kind": "full",
+      "code": null,
+      "enforcement": "full",
+      "spawn": false
+    },
+    {
+      "kind": "partial",
+      "code": null,
+      "enforcement": "partial",
+      "spawn": false
+    },
+    {
+      "kind": "windows-partial",
+      "code": null,
+      "enforcement": "partial",
+      "spawn": false
+    }
+  ],
+  "actualFilesystem": {
+    "platform": "win32",
+    "backend": "SandboxedFileSystem extends LocalFileSystem",
+    "publication": "Actual Koffi DACL copy / ReplaceFileW, no platform override",
+    "nativeOverrides": false,
+    "cleanupHookOnly": true,
+    "fileRemoved": true
+  },
+  "E": "NOT_RUN",
+  "notTested": [
+    "hostile symlink/alias race",
+    "external writer during validation/publication",
+    "native process full/partial enforcement",
+    "network/process visibility",
+    "runner failure stderr classification execution",
+    "ACL grant/revoke lifecycle",
+    "actual model tool-fs/Shell consumers"
+  ]
+}

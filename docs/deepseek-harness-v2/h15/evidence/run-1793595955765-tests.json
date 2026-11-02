@@ -1,0 +1,49 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "safety.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h15-lab-JuZebG",
+  "programs": [
+    {
+      "name": "approval.ts",
+      "sha256": "15861fa459eb7a761cceeea346795065ab045f27da2b389644e8cac98dc80bcd"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "a1bfff538d8b37f58e2ecb83686913ed6d229af5fd00395f2abce55ddbec5c3b"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "01701ee1fb5589790e00830e8bef34ba7fb149136b75bcf73dd09c8ccb3b9809"
+    },
+    {
+      "name": "filesystem.ts",
+      "sha256": "92bcbdb3da4b7ca2e6d19e81cea3d36043e993e6485959979a81b41b42ea75bc"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "b80aa1fd759f23d5e0c2d06ee394d02d45965e0caf1c9ddca45b45f9779e0c7f"
+    },
+    {
+      "name": "pipeline.ts",
+      "sha256": "043050cae4db5e2ce60dab4dc621c6eec0b7441d46acea5f4a3ae65d895fdc67"
+    },
+    {
+      "name": "safety.test.ts",
+      "sha256": "ba269c69af7be279f8338fd4beab84848a40d0e4363f301b7652b77434cf1acb"
+    },
+    {
+      "name": "sandbox.ts",
+      "sha256": "2557f7d0a1bd032da220fcc1d00c88018ee8848ff93d9d496ebcc46d63b27976"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "a520a150f6f2f5588d094570de6b4ceae82454e1b91ffef461d5e99294e04fc8"
+    }
+  ],
+  "exit": 0,
+  "stdout": "TAP version 13\n# Subtest: C approval allow\nok 1 - C approval allow\n  ---\n  duration_ms: 18.449\n  type: 'test'\n  ...\n# Subtest: C approval reject\nok 2 - C approval reject\n  ---\n  duration_ms: 4.3933\n  type: 'test'\n  ...\n# Subtest: C approval cancel-answer\nok 3 - C approval cancel-answer\n  ---\n  duration_ms: 3.9374\n  type: 'test'\n  ...\n# Subtest: C approval unavailable\nok 4 - C approval unavailable\n  ---\n  duration_ms: 3.8155\n  type: 'test'\n  ...\n# Subtest: C approval missing\nok 5 - C approval missing\n  ---\n  duration_ms: 5.2848\n  type: 'test'\n  ...\n# Subtest: C approval throw-sync\nok 6 - C approval throw-sync\n  ---\n  duration_ms: 3.337\n  type: 'test'\n  ...\n# Subtest: C approval throw-async\nok 7 - C approval throw-async\n  ---\n  duration_ms: 3.1676\n  type: 'test'\n  ...\n# Subtest: C approval invalid\nok 8 - C approval invalid\n  ---\n  duration_ms: 3.0972\n  type: 'test'\n  ...\n# Subtest: C approval delegate\nok 9 - C approval delegate\n  ---\n  duration_ms: 3.555\n  type: 'test'\n  ...\n# Subtest: C approval never\nok 10 - C approval never\n  ---\n  duration_ms: 4.0638\n  type: 'test'\n  ...\n# Subtest: C approval pre-abort\nok 11 - C approval pre-abort\n  ---\n  duration_ms: 4.3772\n  type: 'test'\n  ...\n# Subtest: C approval late\nok 12 - C approval late\n  ---\n  duration_ms: 17.3318\n  type: 'test'\n  ...\n# Subtest: C approval rejects idle\nok 13 - C approval rejects idle\n  ---\n  duration_ms: 5.8634\n  type: 'test'\n  ...\n# Subtest: C approval rejects closed\nok 14 - C approval rejects closed\n  ---\n  duration_ms: 5.1551\n  type: 'test'\n  ...\n# Subtest: C approval audit commit failure cannot return grant\nok 15 - C approval audit commit failure cannot return grant\n  ---\n  duration_ms: 9.1628\n  type: 'test'\n  ...\n# Subtest: C approval per-session policy and runtime context are not transcript\nok 16 - C approval per-session policy and runtime context are not transcript\n  ---\n  duration_ms: 5.1038\n  type: 'test'\n  ...\n# Subtest: D pipeline allow\nok 17 - D pipeline allow\n  ---\n  duration_ms: 12.0749\n  type: 'test'\n  ...\n# Subtest: D pipeline deny\nok 18 - D pipeline deny\n  ---\n  duration_ms: 6.2623\n  type: 'test'\n  ...\n# Subtest: D pipeline ask-allow\nok 19 - D pipeline ask-allow\n  ---\n  duration_ms: 8.3019\n  type: 'test'\n  ...\n# Subtest: D pipeline ask-reject\nok 20 - D pipeline ask-reject\n  ---\n  duration_ms: 13.5172\n  type: 'test'\n  ...\n# Subtest: D pipeline ask-missing\nok 21 - D pipeline ask-missing\n  ---\n  duration_ms: 10.0941\n  type: 'test'\n  ...\n# Subtest: D pipeline guard\nok 22 - D pipeline guard\n  ---\n  duration_ms: 7.0662\n  type: 'test'\n  ...\n# Subtest: D pipeline override-deny\nok 23 - D pipeline override-deny\n  ---\n  duration_ms: 11.0822\n  type: 'test'\n  ...\n# Subtest: D pipeline override-guard\nok 24 - D pipeline override-guard\n  ---\n  duration_ms: 10.4936\n  type: 'test'\n  ...\n# Subtest: D pipeline approved-guard\nok 25 - D pipeline approved-guard\n  ---\n  duration_ms: 8.9734\n  type: 'test'\n  ...\n# Subtest: D pipeline cancel-approval\nok 26 - D pipeline cancel-approval\n  ---\n  duration_ms: 9.7507\n  type: 'test'\n  ...\n# Subtest: D pipeline pre-abort\nok 27 - D pipeline pre-abort\n  ---\n  duration_ms: 10.468\n  type: 'test'\n  ...\n# Subtest: D SandboxPolicy + Session + Approval + simulated local provider\nok 28 - D SandboxPolicy + Session + Approval + simulated local provider\n  ---\n  duration_ms: 29.7026\n  type: 'test'\n  ...\n# Subtest: D real local filesystem + fence + observations across lifecycle\nok 29 - D real local filesystem + fence + observations across lifecycle\n  ---\n  duration_ms: 99.2713\n  type: 'test'\n  ...\n1..29\n# tests 29\n# suites 0\n# pass 29\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 789.5263\n",
+  "stderr": ""
+}

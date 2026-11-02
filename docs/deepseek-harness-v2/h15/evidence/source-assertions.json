@@ -1,0 +1,943 @@
+[
+  {
+    "id": "S01",
+    "fact": "实验软件尚未安全审计；本课不升级其保证",
+    "path": "SAFETY.zh.md",
+    "symbol": "实验性状态",
+    "start": 5,
+    "end": 13,
+    "anchors": [
+      "尚未接受安全审计"
+    ],
+    "sourceSha256": "d021947c09c83eb352961cf12c95f4b5781d3987663e78c4a8b621d2e3be07a3",
+    "evidence": "static",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S02",
+    "fact": "minimal Profile不意味着最小文件权限",
+    "path": "packages/bundle/sdk-minimal/cordis.patch.yml",
+    "symbol": "sandbox-policy",
+    "start": 71,
+    "end": 79,
+    "anchors": [
+      "danger-full-access"
+    ],
+    "sourceSha256": "e4d4af718a8876ab280df474b5902aaf2fb47a899301962a6ff919f7f2beabd5",
+    "evidence": "static",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S03",
+    "fact": "Pipeline最终ask才调审批，缺服务/Agent拒绝",
+    "path": "packages/core/tools/src/pipeline.ts",
+    "symbol": "serviceAsk",
+    "start": 434,
+    "end": 455,
+    "anchors": [
+      "const approval = this.ctx.get('approval')",
+      "const outcome = await approval.request({"
+    ],
+    "sourceSha256": "07f0a7150b3ef190e0922189628764d1544e0cb2796fc6a6a5deb22b27da13c4",
+    "evidence": "B_ask-missing / B_ask-allow",
+    "level": "D",
+    "officialTest": "packages/core/agent-loop/tests/tool-calls.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S04",
+    "fact": "闭合policy；取消先于never，应答者不能绕过never",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "ApprovalPolicy / decide",
+    "start": 66,
+    "end": 307,
+    "anchors": [
+      "export type ApprovalPolicy = 'ask' | 'never'",
+      "if (signal?.aborted) return 'cancelled'",
+      "if (this.effectivePolicy(session) === 'never') return 'rejected'"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_never / A_pre-abort / C deployment never",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S05",
+    "fact": "应答Waterfall路由、缺失、同步异步异常和非法结果失败关闭",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "decide",
+    "start": 306,
+    "end": 320,
+    "anchors": [
+      "scopeTarget(req.agent, req.agent), 'approval/request', req",
+      "outcome => OUTCOMES.includes(outcome) ? outcome : 'unavailable'"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_missing / A_throw-sync / A_throw-async / A_invalid / A_delegate",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S06",
+    "fact": "Turn前提与正常审计配对；提交前故障不返回grant",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "request",
+    "start": 242,
+    "end": 265,
+    "anchors": [
+      "if (!this.approvalStateOf(session).turnOpen)",
+      "session.append('approval/asked'",
+      "session.append('approval/decided', { id, outcome })"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_idle / A_closed / A_audit-fail",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S07",
+    "fact": "审批ID服务生成；callId关联调用，不传req.id",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "ApprovalRequest / request",
+    "start": 126,
+    "end": 261,
+    "anchors": [
+      "export interface ApprovalRequest extends ApprovalRequestEvent",
+      "const id = ApprovalRequestId(randomUUID())",
+      "...req.callId !== undefined ? { callId: req.callId } : {}"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_allow / repeated-approval-audit",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S08",
+    "fact": "取消先结算，迟到答案为settled Promise no-op",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "decide",
+    "start": 321,
+    "end": 336,
+    "anchors": [
+      "resolve('cancelled')",
+      "resolve(outcome)"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_late；提交后观察失败仅静态",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S09",
+    "fact": "会话override优先配置；effectivePolicy在实现中private",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "effectivePolicy / overrideOf",
+    "start": 268,
+    "end": 277,
+    "anchors": [
+      "private effectivePolicy(session: Session)",
+      "return this.overrideOf(session) ?? this.config.policy ?? 'ask'"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_policy / C deployment never；私有诊断",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S10",
+    "fact": "运行时policy上下文与setPolicy切换说明分工",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "Service.init / setPolicy",
+    "start": 189,
+    "end": 221,
+    "anchors": [
+      "name: 'approval:policy'",
+      "setPolicy(agent: Agent, policy: ApprovalPolicy)",
+      "agent.inject(createUserMessage({"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_policy；setPolicy仅静态",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S11",
+    "fact": "pre决策、ask解析后仅allow检查guard",
+    "path": "packages/core/tools/src/pipeline.ts",
+    "symbol": "prepare",
+    "start": 197,
+    "end": 219,
+    "anchors": [
+      "const gate = await this.ctx.waterfall(",
+      "? await this.serviceAsk(exec, gate)",
+      "decision.kind === 'allow' ? this.tools.checkGuards(exec)"
+    ],
+    "sourceSha256": "07f0a7150b3ef190e0922189628764d1544e0cb2796fc6a6a5deb22b27da13c4",
+    "evidence": "B_override-deny / B_override-guard / B_approved-guard",
+    "level": "D",
+    "officialTest": "packages/core/agent-loop/tests/tool-calls.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S12",
+    "fact": "最终观察与Session提交是两种事件，日志需单独接线",
+    "path": "packages/core/tools/src/pipeline.ts",
+    "symbol": "notifyResult",
+    "start": 407,
+    "end": 415,
+    "anchors": [
+      "'tools/result'"
+    ],
+    "sourceSha256": "07f0a7150b3ef190e0922189628764d1544e0cb2796fc6a6a5deb22b27da13c4",
+    "evidence": "B_*；Session tool/result沿H14，非本轮集成",
+    "level": "D",
+    "officialTest": "packages/core/agent-loop/tests/tool-calls.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S13",
+    "fact": "三种mode只定义文件效果；danger绕过",
+    "path": "packages/sandbox/sandbox/src/index.ts",
+    "symbol": "SandboxMode",
+    "start": 25,
+    "end": 36,
+    "anchors": [
+      "export type SandboxMode",
+      "Network",
+      "danger-full-access"
+    ],
+    "sourceSha256": "0a44c9d691a200068ecfff4c1659dd205d0d6a776513a03823b54e51d5df468a",
+    "evidence": "static + C policy（不执行danger）",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S14",
+    "fact": "逐调用覆盖 > Session > default",
+    "path": "packages/sandbox/sandbox-policy/src/index.ts",
+    "symbol": "resolve",
+    "start": 198,
+    "end": 206,
+    "anchors": [
+      "mode: request.mode ?? (session === undefined ? undefined : this.overrideOf(session)) ?? this.defaultMode"
+    ],
+    "sourceSha256": "de18aa0f8f2ab668876f9f181dd521b72910da428eab185fb85dd30163af8d35",
+    "evidence": "C_policy",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S15",
+    "fact": "会话cwd胜过回退root，保留执行世界路径",
+    "path": "packages/sandbox/sandbox-policy/src/index.ts",
+    "symbol": "resolve / constructor",
+    "start": 158,
+    "end": 207,
+    "anchors": [
+      "workspaceRoot: resolveWorkspaceRoot(session?.header.cwd ?? this.workspaceRoot)",
+      "this.workspaceRoot = resolveWorkspaceRoot(config.workspaceRoot ?? process.cwd())"
+    ],
+    "sourceSha256": "de18aa0f8f2ab668876f9f181dd521b72910da428eab185fb85dd30163af8d35",
+    "evidence": "C_policy",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S16",
+    "fact": "sandbox/mode持久事件；单次不写事件",
+    "path": "packages/sandbox/sandbox-policy/src/session-mode.ts",
+    "symbol": "setSandboxMode",
+    "start": 52,
+    "end": 55,
+    "anchors": [
+      "session.append('sandbox/mode', { mode })"
+    ],
+    "sourceSha256": "afe650fc43e87031eb7b50d9a1717b926906e4fcaab01199cd434235586714d7",
+    "evidence": "C_policy aEvents / bEvents / replay",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S17",
+    "fact": "额外根严格物理目录校验，workspace仅canonicalPath",
+    "path": "packages/sandbox/sandbox/src/roots.ts",
+    "symbol": "additionalRoot / workspaceWritableRoots",
+    "start": 33,
+    "end": 90,
+    "anchors": [
+      "physical = realpathSync.native(path)",
+      "if (!directory) throw new SandboxInvalidRootError",
+      "canonicalPath(policy.workspaceRoot)"
+    ],
+    "sourceSha256": "96efb4b8386d429ae100df377e7683d8026327d906f1dc3021399203319062e1",
+    "evidence": "C_policy invalidRoot；链接/非目录未实测",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/extra-roots.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S18",
+    "fact": "workspace-write含临时区域；Windows不支持extra roots",
+    "path": "packages/sandbox/sandbox/src/roots.ts",
+    "symbol": "writableRoots",
+    "start": 97,
+    "end": 100,
+    "anchors": [
+      "canonicalPath('/tmp'), canonicalPath(tmpdir())"
+    ],
+    "sourceSha256": "96efb4b8386d429ae100df377e7683d8026327d906f1dc3021399203319062e1",
+    "evidence": "C_policy allWritable；Windows拒绝额外根静态",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/extra-roots.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S19",
+    "fact": "Provider返回argv/完整度/诊断，consumer spawn",
+    "path": "packages/sandbox/sandbox/src/index.ts",
+    "symbol": "SandboxProvider / ConfinedArgv",
+    "start": 101,
+    "end": 197,
+    "anchors": [
+      "export interface ConfinedArgv",
+      "abstract confine("
+    ],
+    "sourceSha256": "0a44c9d691a200068ecfff4c1659dd205d0d6a776513a03823b54e51d5df468a",
+    "evidence": "C_policy reports（模拟探测）",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/local.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S20",
+    "fact": "平台链、单候选免仲裁、不可用拒绝",
+    "path": "packages/sandbox/sandbox-local/src/index.ts",
+    "symbol": "chainVerdict / selectRunner",
+    "start": 158,
+    "end": 524,
+    "anchors": [
+      "const PLATFORM_CHAINS",
+      "if (rest.length === 0)",
+      "throw new SandboxUnavailableError(mode)"
+    ],
+    "sourceSha256": "a7a531c067547da088f37867b0c24dc366dab0a045fa53f7a16ff7d8b4a100ef",
+    "evidence": "C_policy reports；原生未运行",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/local.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S21",
+    "fact": "Windows partial边界与两种授权生命周期",
+    "path": "packages/sandbox/sandbox-local/src/index.ts",
+    "symbol": "STATIC_ENFORCEMENT / materializeAclGrant",
+    "start": 186,
+    "end": 282,
+    "anchors": [
+      "'windows-acl': 'partial'",
+      "private readonly workspaceGrants",
+      "private readonly tempCapabilities"
+    ],
+    "sourceSha256": "a7a531c067547da088f37867b0c24dc366dab0a045fa53f7a16ff7d8b4a100ef",
+    "evidence": "静态；C_policy windows-partial仅模拟argv",
+    "level": "STATIC",
+    "officialTest": "packages/sandbox/sandbox-local/tests/acl-grants.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S22",
+    "fact": "bash消费者区分runner失败和策略拒绝，不静默裸跑",
+    "path": "packages/shell/bash-sandbox/src/index.ts",
+    "symbol": "SandboxBashExecutor.execute",
+    "start": 119,
+    "end": 128,
+    "anchors": [
+      "if (runnerFailure !== undefined)",
+      "throw new SandboxUnavailableError(mode, runnerFailure.detail)"
+    ],
+    "sourceSha256": "45dec72853eb9ab2f40697b7618dd922eefc7d5a5c7eb427dcd590898ab1ad9f",
+    "evidence": "仅静态，不执行Shell",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S23",
+    "fact": "观察插件无IO，按owner/target存状态",
+    "path": "packages/fs/fs-observation-policy/src/index.ts",
+    "symbol": "ObservedStateGate",
+    "start": 26,
+    "end": 46,
+    "anchors": [
+      "private observed = new WeakMap<object, Map<string, FsObservation>>()",
+      "return (actor as FsObservationActor | undefined)?.agent?.session"
+    ],
+    "sourceSha256": "def6cb5ed29c6d9ba7bccd3a9936349ea1fc1b6d439ca709a077ae88794afc06",
+    "evidence": "D_files",
+    "level": "D",
+    "officialTest": "packages/fs/fs-observation-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S24",
+    "fact": "未见/缺失write防护创建；edit分别拒绝",
+    "path": "packages/fs/fs-observation-policy/src/index.ts",
+    "symbol": "writeIntent / editIntent",
+    "start": 67,
+    "end": 91,
+    "anchors": [
+      "? { kind: 'replaceIfVersion', version: prior.version }",
+      ": { kind: 'createIfAbsent' }",
+      "'FS_NOT_OBSERVED'",
+      "'FS_NOT_FOUND'"
+    ],
+    "sourceSha256": "def6cb5ed29c6d9ba7bccd3a9936349ea1fc1b6d439ca709a077ae88794afc06",
+    "evidence": "D_files create-unseen / missing-edit / same-create-cannot-overwrite",
+    "level": "D",
+    "officialTest": "packages/fs/fs-observation-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S25",
+    "fact": "fs意图单槽且默认无guard，不是单调交集",
+    "path": "packages/fs/fs/src/index.ts",
+    "symbol": "Events",
+    "start": 50,
+    "end": 73,
+    "anchors": [
+      "'fs/edit-intent'",
+      "'fs/write-intent'",
+      "Single-slot"
+    ],
+    "sourceSha256": "bb3e351a975fde0f5d313cf9374af958b5d92f85b9f7c6688ccc7098409690d7",
+    "evidence": "D_files plugin-unloaded；错误抢槽仅静态",
+    "level": "D",
+    "officialTest": "packages/fs/fs-observation-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S26",
+    "fact": "观察内存按对象身份，卸载清空并移除监听",
+    "path": "packages/fs/fs-observation-policy/src/index.ts",
+    "symbol": "clear / apply",
+    "start": 56,
+    "end": 130,
+    "anchors": [
+      "this.observed = new WeakMap()",
+      "gate.clear()",
+      "ctx.on('fs/observed'"
+    ],
+    "sourceSha256": "def6cb5ed29c6d9ba7bccd3a9936349ea1fc1b6d439ca709a077ae88794afc06",
+    "evidence": "D_files restored-same-id / remount-lost-state",
+    "level": "D",
+    "officialTest": "packages/fs/fs-observation-policy/tests/policy.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S27",
+    "fact": "bare可省略expected；受限fs替换local",
+    "path": "packages/fs/fs-sandbox/src/index.ts",
+    "symbol": "SandboxedFileSystem",
+    "start": 53,
+    "end": 62,
+    "anchors": [
+      "export class SandboxedFileSystem extends LocalFileSystem",
+      "static inject = ['sandboxPolicy']"
+    ],
+    "sourceSha256": "449b45690b07ddacef26460208f4fb36e87641e2a5031114a3838bdd18a1f012",
+    "evidence": "D_files",
+    "level": "D",
+    "officialTest": "packages/fs/fs-sandbox/tests/fs-sandbox.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S28",
+    "fact": "targetKey不透明；展示与process坐标分开",
+    "path": "packages/fs/fs/src/types.ts",
+    "symbol": "FsTarget",
+    "start": 58,
+    "end": 73,
+    "anchors": [
+      "export interface FsTarget",
+      "targetKey: FsTargetKey",
+      "displayPath: string"
+    ],
+    "sourceSha256": "5918ac1953e92aaeadb00d209c6043a8207c165e82085c9fdef4581f0b2933a4",
+    "evidence": "静态；D使用真实resolve不解析key",
+    "level": "STATIC",
+    "officialTest": "packages/fs/fs-local/tests/filesystem.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S29",
+    "fact": "mutation围栏按模式重新resolve并检查包含",
+    "path": "packages/fs/fs-sandbox/src/index.ts",
+    "symbol": "checkedTarget",
+    "start": 123,
+    "end": 141,
+    "anchors": [
+      "if (mode === 'danger-full-access')",
+      "const fresh = await this.resolve(target.displayPath)",
+      "await isPathUnder(fresh.targetKey, root)"
+    ],
+    "sourceSha256": "449b45690b07ddacef26460208f4fb36e87641e2a5031114a3838bdd18a1f012",
+    "evidence": "D_files read-only-denied；越界/别名攻击未运行",
+    "level": "D",
+    "officialTest": "packages/fs/fs-sandbox/tests/fs-sandbox.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S30",
+    "fact": "可信路径围栏，接受剩余祖先链接TOCTOU",
+    "path": "packages/fs/fs-sandbox/src/index.ts",
+    "symbol": "threat model",
+    "start": 9,
+    "end": 22,
+    "anchors": [
+      "NOT a kernel boundary",
+      "TOCTOU"
+    ],
+    "sourceSha256": "449b45690b07ddacef26460208f4fb36e87641e2a5031114a3838bdd18a1f012",
+    "evidence": "静态威胁模型，未攻击验证",
+    "level": "STATIC",
+    "officialTest": "packages/fs/fs-sandbox/tests/fs-sandbox.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S31",
+    "fact": "local变更锁、版本检查、原子发布",
+    "path": "packages/fs/fs-local/src/index.ts",
+    "symbol": "writeText / editText",
+    "start": 207,
+    "end": 243,
+    "anchors": [
+      "return this.withLock(target.targetKey",
+      "existing.version !== expected.version",
+      "await writeFileAtomic("
+    ],
+    "sourceSha256": "12ea487a15f16b22a5797e48d5bba62fb47afc4ef123cbb498201cc5e047d06a",
+    "evidence": "D_files normal/stale/refresh + native Windows publication",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/filesystem.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S32",
+    "fact": "相同mode无询问，严格扩大才需approver与agent",
+    "path": "packages/sandbox/sandbox/src/escalation.ts",
+    "symbol": "approveEscalation",
+    "start": 172,
+    "end": 190,
+    "anchors": [
+      "if (mode === effectiveMode) return effectiveMode",
+      "WIDER_MODES[effectiveMode]",
+      "approval.approver === undefined",
+      "approval.agent === undefined"
+    ],
+    "sourceSha256": "880b6e61be017679e4f810abe9c5528eaa27329f9da9ff36df32947750372648",
+    "evidence": "C_policy once / narrower / missingApprover",
+    "level": "D",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S33",
+    "fact": "工具消费者逐次解析，显式参数才发起升权",
+    "path": "packages/shell/tool-bash/src/index.ts",
+    "symbol": "execute / approveBashEscalation",
+    "start": 480,
+    "end": 489,
+    "anchors": [
+      "const approvedMode = args.sandbox_permissions !== undefined && args.justification !== undefined",
+      "await approveBashEscalation("
+    ],
+    "sourceSha256": "de24abe9436d4ee4c9d9773538da58621d1d028abac78a53ad3b9e47a5fca7fd",
+    "evidence": "静态，不运行Shell或完整工具消费者",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S34",
+    "fact": "文件consumer取得意图后传后端；非通用Pipeline阶段",
+    "path": "packages/fs/tool-fs/src/edit.ts",
+    "symbol": "file tool execution",
+    "start": 131,
+    "end": 140,
+    "anchors": [
+      "'fs/edit-intent'",
+      "ctx.fs.editText("
+    ],
+    "sourceSha256": "2602b2482f5234ab26cddf656cbe0020b53dc69a36bb8a835b57a55ed23a2055",
+    "evidence": "静态；D_files夹具consumer不同于tool-fs",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S35",
+    "fact": "确切四种ApprovalOutcome",
+    "path": "packages/interaction/user-approval/src/types.ts",
+    "symbol": "ApprovalOutcome",
+    "start": 30,
+    "end": 38,
+    "anchors": [
+      "'allowed-once' | 'rejected' | 'cancelled' | 'unavailable'"
+    ],
+    "sourceSha256": "4413da55040e100e5700b5b89dccf387e08275587ac21876cba8cbab2df34037",
+    "evidence": "A_allow/reject/cancel-answer/unavailable",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S36",
+    "fact": "policy helper先验证再append",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "setApprovalPolicy",
+    "start": 116,
+    "end": 127,
+    "anchors": [
+      "if (!APPROVAL_POLICIES.includes(policy))",
+      "session.append('approval/policy', { policy })"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "静态；合法覆盖C已测",
+    "level": "STATIC",
+    "officialTest": "packages/interaction/user-approval/tests/approval.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S37",
+    "fact": "审批state投影跟踪turn边界",
+    "path": "packages/interaction/user-approval/src/index.ts",
+    "symbol": "approvalStateDefinition",
+    "start": 99,
+    "end": 109,
+    "anchors": [
+      "case 'turn/start':",
+      "case 'turn/end':"
+    ],
+    "sourceSha256": "afa2f16553b8dcf5ea74f4bf09555cc8aa633d8203146d3e369210a5ef043cff",
+    "evidence": "A_idle/closed",
+    "level": "C",
+    "officialTest": "packages/interaction/user-approval/tests/projection.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S38",
+    "fact": "mode只在workspace-write推导写根",
+    "path": "packages/sandbox/sandbox/src/roots.ts",
+    "symbol": "writableRoots",
+    "start": 81,
+    "end": 89,
+    "anchors": [
+      "if (policy.mode !== 'workspace-write') return []"
+    ],
+    "sourceSha256": "96efb4b8386d429ae100df377e7683d8026327d906f1dc3021399203319062e1",
+    "evidence": "C_policy roots",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/extra-roots.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S39",
+    "fact": "canonical失败保留原写法，非扩大fallback",
+    "path": "packages/sandbox/sandbox/src/roots.ts",
+    "symbol": "canonicalPath",
+    "start": 61,
+    "end": 72,
+    "anchors": [
+      "return realpathSync.native(path)",
+      "return path"
+    ],
+    "sourceSha256": "96efb4b8386d429ae100df377e7683d8026327d906f1dc3021399203319062e1",
+    "evidence": "静态；不伪装成extra验证",
+    "level": "STATIC",
+    "officialTest": "packages/sandbox/sandbox-local/tests/extra-roots.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S40",
+    "fact": "full/partial只针对文件效果",
+    "path": "packages/sandbox/sandbox/src/index.ts",
+    "symbol": "SandboxEnforcement",
+    "start": 65,
+    "end": 73,
+    "anchors": [
+      "export type SandboxEnforcement = 'full' | 'partial'"
+    ],
+    "sourceSha256": "0a44c9d691a200068ecfff4c1659dd205d0d6a776513a03823b54e51d5df468a",
+    "evidence": "C_policy reports只测报告",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/local.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S41",
+    "fact": "bwrap与Landlock探测分别返回完整度",
+    "path": "packages/sandbox/sandbox-local/src/index.ts",
+    "symbol": "probeRunner",
+    "start": 533,
+    "end": 547,
+    "anchors": [
+      "case 'bwrap': {",
+      "case 'landlock': {",
+      "return probe(this.landlockLauncher())"
+    ],
+    "sourceSha256": "a7a531c067547da088f37867b0c24dc366dab0a045fa53f7a16ff7d8b4a100ef",
+    "evidence": "C_policy simulated full/partial",
+    "level": "D",
+    "officialTest": "packages/sandbox/sandbox-local/tests/local.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S42",
+    "fact": "Windows额外根被明确拒绝",
+    "path": "packages/sandbox/sandbox-local/src/index.ts",
+    "symbol": "windowsAclRunnerArgv",
+    "start": 369,
+    "end": 377,
+    "anchors": [
+      "Windows ACL confinement does not support additional writable directories"
+    ],
+    "sourceSha256": "a7a531c067547da088f37867b0c24dc366dab0a045fa53f7a16ff7d8b4a100ef",
+    "evidence": "静态，原生未测",
+    "level": "STATIC",
+    "officialTest": "packages/sandbox/sandbox-local/tests/local.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S43",
+    "fact": "pwsh危险模式绕过provider",
+    "path": "packages/shell/pwsh-sandbox/src/index.ts",
+    "symbol": "execute",
+    "start": 97,
+    "end": 107,
+    "anchors": [
+      "if (mode === 'danger-full-access')",
+      "await super.execute(spec)"
+    ],
+    "sourceSha256": "4bb0357149f229f554aa7db09140fce0ecdc66149dcab5d86480453267a069a6",
+    "evidence": "静态，不执行危险模式",
+    "level": "STATIC",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S44",
+    "fact": "失效版本先于literal匹配拒绝",
+    "path": "packages/fs/fs-local/src/index.ts",
+    "symbol": "editText",
+    "start": 267,
+    "end": 285,
+    "anchors": [
+      "throw new FsError(`cannot edit",
+      "const edited = applyLiteralEdit("
+    ],
+    "sourceSha256": "12ea487a15f16b22a5797e48d5bba62fb47afc4ef123cbb498201cc5e047d06a",
+    "evidence": "D_files stale-edit",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/filesystem.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S45",
+    "fact": "同provider target锁仅进程内串行",
+    "path": "packages/fs/fs-local/src/index.ts",
+    "symbol": "withLock",
+    "start": 117,
+    "end": 125,
+    "anchors": [
+      "private async withLock"
+    ],
+    "sourceSha256": "12ea487a15f16b22a5797e48d5bba62fb47afc4ef123cbb498201cc5e047d06a",
+    "evidence": "D_files顺序路径；并发证明未测",
+    "level": "STATIC",
+    "officialTest": "packages/fs/fs-local/tests/filesystem.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S46",
+    "fact": "本地版本源自stat身份和纳秒元数据",
+    "path": "packages/fs/fs-local/src/fsio.ts",
+    "symbol": "versionOf",
+    "start": 75,
+    "end": 83,
+    "anchors": [
+      "${info.dev}:${info.ino}:${info.size}:${info.mtimeNs}:${info.ctimeNs}"
+    ],
+    "sourceSha256": "afbc5cb2d6e9b98b564b03724aeee79f63b2672c10be5a2ac3787a7665946244",
+    "evidence": "D_files opaque版本变化",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/fsio.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S47",
+    "fact": "createIfAbsent用不替换发布",
+    "path": "packages/fs/fs-local/src/fsio.ts",
+    "symbol": "writeFileAtomic",
+    "start": 647,
+    "end": 655,
+    "anchors": [
+      "await linkFile(tempPath, absolutePath)"
+    ],
+    "sourceSha256": "afbc5cb2d6e9b98b564b03724aeee79f63b2672c10be5a2ac3787a7665946244",
+    "evidence": "D_files guarded-create",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/fsio.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S48",
+    "fact": "Windows发布使用实际DACL与ReplaceFileW",
+    "path": "packages/fs/fs-local/src/win32.ts",
+    "symbol": "copyFileDaclWin32 / replaceFileWin32",
+    "start": 106,
+    "end": 128,
+    "anchors": [
+      "export async function copyFileDaclWin32",
+      "export async function replaceFileWin32"
+    ],
+    "sourceSha256": "2fa3696f3c852a3206c21221f6269673c3e1c1cb15fb1f6f7fa75b27b1ea7d77",
+    "evidence": "D_files nativeFilePublication；无原语替身",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/win32.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S49",
+    "fact": "默认清理递归；本实验只替换清理钩子",
+    "path": "packages/fs/fs-local/src/fsio.ts",
+    "symbol": "writeFileAtomic",
+    "start": 623,
+    "end": 631,
+    "anchors": [
+      "const removeStagingDir = internals.removeStagingDir"
+    ],
+    "sourceSha256": "afbc5cb2d6e9b98b564b03724aeee79f63b2672c10be5a2ac3787a7665946244",
+    "evidence": "D_files retainedDirectories；逐个明确文件",
+    "level": "D",
+    "officialTest": "packages/fs/fs-local/tests/fsio.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S50",
+    "fact": "包含判断考虑Windows别名身份",
+    "path": "packages/fs/fs-sandbox/src/containment.ts",
+    "symbol": "isPathUnder",
+    "start": 61,
+    "end": 76,
+    "anchors": [
+      "if (isLexicallyUnder(path, root, caseSensitive)) return true",
+      "sameIdentity(ancestorInfo, rootInfo)"
+    ],
+    "sourceSha256": "36dd20f6c63bb6a263bf9e424346d65ce34483944ab260259a37f829c54bb1ed",
+    "evidence": "静态；未做别名或符号链接攻击",
+    "level": "STATIC",
+    "officialTest": "packages/fs/fs-sandbox/tests/fs-sandbox.spec.ts",
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S51",
+    "fact": "扩大参数与理由配对，空理由拒绝",
+    "path": "packages/sandbox/sandbox/src/escalation.ts",
+    "symbol": "validateEscalationArgs",
+    "start": 51,
+    "end": 65,
+    "anchors": [
+      "sandboxPermissions !== undefined && justification === undefined",
+      "justification.trim().length === 0"
+    ],
+    "sourceSha256": "880b6e61be017679e4f810abe9c5528eaa27329f9da9ff36df32947750372648",
+    "evidence": "C_policy malformed（缺理由），其余静态",
+    "level": "D",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  },
+  {
+    "id": "S52",
+    "fact": "严格更宽表不保留持久会话设置",
+    "path": "packages/sandbox/sandbox/src/escalation.ts",
+    "symbol": "WIDER_MODES / approveEscalation",
+    "start": 28,
+    "end": 206,
+    "anchors": [
+      "'read-only': ['workspace-write', 'danger-full-access']",
+      "case 'allowed-once': return mode as SandboxMode"
+    ],
+    "sourceSha256": "880b6e61be017679e4f810abe9c5528eaa27329f9da9ff36df32947750372648",
+    "evidence": "C_policy once / after / bEvents；不运行danger",
+    "level": "D",
+    "officialTest": null,
+    "officialTestExecution": "NOT_RUN; selected static reference only",
+    "semanticReview": "author reviewed; fragment assertions and range validity are not a security proof"
+  }
+]
