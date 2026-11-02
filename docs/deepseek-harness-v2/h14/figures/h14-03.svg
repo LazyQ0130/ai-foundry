@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1220" viewBox="0 0 640 1220" role="img"><title>主体完成顺序，不是结果提交顺序</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1220" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">主体完成顺序，不是结果提交顺序</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">模型调用顺序：A → B → C</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">A / B 可并发；C 必须独占</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">本例上限2，Promise门闩控制结束</text>
+<path d="M320 265 V321" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="300" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">补入池</text>
+<rect x="32" y="346" width="576" height="114" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="389" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">A、B 均已启动，尚未完成</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">C 等待当前并发组结算</text>
+<path d="M320 469 V525" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="504" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">放行 B</text>
+<rect x="32" y="550" width="576" height="114" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="593" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">B 先完成，A 仍在途</text>
+<text x="52" y="637" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">B 的最终 complete / 提交还在等 A</text>
+<path d="M320 673 V729" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="708" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">再放行 A</text>
+<rect x="32" y="754" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="797" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">依次完成与提交 A、B</text>
+<text x="52" y="841" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">tools/result 观察也按模型顺序</text>
+<text x="52" y="883" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">两项提交后才启动独占 C</text>
+<path d="M320 919 V975" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="954" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">放行 C</text>
+<rect x="32" y="1000" width="576" height="114" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1043" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">完成：B → A → C</text>
+<text x="52" y="1087" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">提交：A → B → C</text>
+<text x="32" y="1192" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 教学简图</text>
+</svg>

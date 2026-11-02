@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1400" viewBox="0 0 640 1400" role="img"><title>执行期结果、观察与 Session 事实</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1400" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">执行期结果、观察与 Session 事实</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">规范值：{title, chars}</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">output.schema 校验；执行期冻结</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">render 生成 content；meta另行投影</text>
+<path d="M320 265 V321" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="300" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">内容策略</text>
+<rect x="32" y="346" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="389" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">project → post → finalize</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">改 content 不自动改 value / meta</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">换 value 则重新校验、渲染与投影</text>
+<path d="M320 511 V567" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="546" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">物化与冻结</text>
+<rect x="32" y="592" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="635" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">tools/result：运行时观察</text>
+<text x="52" y="679" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">exec 与权威结果已冻结</text>
+<text x="52" y="721" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">监听失败被记录，不改权威结果</text>
+<path d="M320 757 V813" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="792" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">有 log 才写</text>
+<rect x="32" y="838" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="881" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">tool/result：Session 事实</text>
+<text x="52" y="925" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">message：toolCallId、content、isError</text>
+<text x="52" y="967" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">data.error / data.meta 按需记录</text>
+<text x="52" y="1009" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不全量保存规范 value</text>
+<rect x="32" y="1062" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1105" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">additionalContexts：另一条通道</text>
+<text x="52" y="1149" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">按调用顺序收集，交下一步骤队列</text>
+<text x="52" y="1191" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Loop 接纳时才追加 user/message</text>
+<text x="52" y="1233" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不是塞进 tool/result 的正文</text>
+<text x="32" y="1320" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">内存记录被接受，不等于磁盘已 flush</text>
+<text x="32" y="1372" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 教学简图</text>
+</svg>

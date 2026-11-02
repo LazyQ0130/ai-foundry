@@ -1,0 +1,219 @@
+{
+  "status": "PASS",
+  "lessonSha256": "b464d1739591e218071543f7dc4325ce6dcc0b3d8852deee8e293d1f0f3d001f",
+  "parser": "actual parseLessonContent",
+  "renderer": "actual LessonMarkdown SSR",
+  "programs": [
+    "support.ts",
+    "flow.ts",
+    "scheduling.ts",
+    "failures.ts",
+    "requests.ts",
+    "demo.ts"
+  ],
+  "uniqueCheckKeys": true,
+  "previewExactSsr": true,
+  "members": [
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "executionMode",
+      "line": 105
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "prepare",
+      "line": 190
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "dispatch",
+      "line": 295
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "complete",
+      "line": 336
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "postExecute",
+      "line": 486
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "createSuccessResult",
+      "line": 537
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "finish",
+      "line": 374
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "className": "ToolExecutionPipeline",
+      "name": "notifyResult",
+      "line": 400
+    },
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "className": "BatchSettlement",
+      "name": "start",
+      "line": 243
+    },
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "className": "BatchSettlement",
+      "name": "commit",
+      "line": 252
+    },
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "className": "BatchSettlement",
+      "name": "skip",
+      "line": 271
+    },
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "className": "BatchSettlement",
+      "name": "result",
+      "line": 282
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "execute",
+      "line": 375
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "guard",
+      "line": 384
+    },
+    {
+      "file": "packages/core/tools/src/index.ts",
+      "className": "ToolsService",
+      "name": "checkGuards",
+      "line": 393
+    },
+    {
+      "file": "packages/core/tool-executor-native/src/index.ts",
+      "className": "NativeToolExecutor",
+      "name": "describe",
+      "line": 15
+    },
+    {
+      "file": "packages/core/tool-executor-native/src/index.ts",
+      "className": "NativeToolExecutor",
+      "name": "execute",
+      "line": 19
+    },
+    {
+      "file": "packages/core/session/src/repair.ts",
+      "className": "ToolCallRecovery",
+      "name": "observe",
+      "line": 116
+    },
+    {
+      "file": "packages/core/session/src/repair.ts",
+      "className": "ToolCallRecovery",
+      "name": "results",
+      "line": 157
+    }
+  ],
+  "interfaces": [
+    {
+      "file": "packages/core/tools/src/executor.ts",
+      "name": "ToolBatchInput",
+      "members": [
+        "calls",
+        "signal",
+        "maxParallelToolCalls",
+        "agent",
+        "toolSet",
+        "log"
+      ]
+    },
+    {
+      "file": "packages/core/tools/src/executor.ts",
+      "name": "ToolExecutor",
+      "members": [
+        "sections",
+        "describe",
+        "execute"
+      ]
+    },
+    {
+      "file": "packages/core/tools/src/contracts.ts",
+      "name": "ToolExecutionInput",
+      "members": [
+        "callId",
+        "rootCallId",
+        "name",
+        "schema",
+        "arguments",
+        "agent",
+        "toolSet",
+        "parent",
+        "signal"
+      ]
+    },
+    {
+      "file": "packages/core/tools/src/contracts.ts",
+      "name": "ToolRunContext",
+      "members": [
+        "deferContext",
+        "concludeTurn"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "name": "executeToolBatch",
+      "line": 50
+    },
+    {
+      "file": "packages/core/tools/src/batch.ts",
+      "name": "parseArguments",
+      "line": 99
+    },
+    {
+      "file": "packages/core/tools/src/pipeline.ts",
+      "name": "fuseToolSignals",
+      "line": 714
+    }
+  ],
+  "metrics": {
+    "allBodyCjk": 8765,
+    "defaultBodyCjk": 6482,
+    "codeBlocks": 13,
+    "codeLines": 253,
+    "defaultCodeLines": 21,
+    "details": 21,
+    "coreConcepts": 8,
+    "coreConceptNames": [
+      "batch vs invocation",
+      "prepare/dispatch/complete",
+      "Waterfall and guard",
+      "identity/snapshot",
+      "canonical and projected results",
+      "rolling pool and barrier",
+      "ordered settlement",
+      "cancel and internal failure"
+    ],
+    "coreSourceFiles": 5,
+    "exercises": 4,
+    "thoughts": 10,
+    "figures": 4,
+    "scope": "CJK excludes code/URLs/comments; default excludes deepdive; no conversion to measured reading time"
+  }
+}

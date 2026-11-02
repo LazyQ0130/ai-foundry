@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1480" viewBox="0 0 640 1480" role="img"><title>工具批次：成功主线与失败出口</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1480" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工具批次：成功主线与失败出口</text>
+<rect x="32" y="100" width="576" height="114" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">ToolCallBlock[] → Native 批次</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">解析参数；有 log 时先记 tool/call</text>
+<path d="M320 223 V279" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="258" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">prepare</text>
+<rect x="32" y="304" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="347" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">快照参数，再作前置决策</text>
+<text x="52" y="391" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">pre → ask 通道（需要时）→ guard</text>
+<text x="52" y="433" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">参数 Schema 尚未因此全部通过</text>
+<path d="M320 469 V525" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="504" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">dispatch</text>
+<rect x="32" y="550" width="576" height="156" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="593" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">tools/execute 包住工具定义</text>
+<text x="52" y="637" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">defineTool 包装校验参数，再入主体</text>
+<text x="52" y="679" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">成功值 → 校输出 → render / meta</text>
+<path d="M320 715 V771" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="750" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">complete</text>
+<rect x="32" y="796" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="839" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">project → post → finalize</text>
+<text x="52" y="883" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">候选与最终结果均有物化检查</text>
+<text x="52" y="925" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">最终 tools/result 观察已冻结结果</text>
+<path d="M320 961 V1017" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="996" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">有 log</text>
+<rect x="32" y="1042" width="576" height="114" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1085" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">按模型顺序提交 tool/result</text>
+<text x="52" y="1129" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">附加上下文由批次收集，再交 Loop</text>
+<rect x="32" y="1182" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1225" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">分支不全走成功主线</text>
+<text x="52" y="1269" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">deny：跳主体，仍进 project / post</text>
+<text x="52" y="1311" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">pre 或 wrapper 抛错：跳这两项</text>
+<text x="52" y="1353" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">批次 skip：合成结果，不进流水线</text>
+<text x="32" y="1452" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定源码 f3803c9 · 教学简图</text>
+</svg>
