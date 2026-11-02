@@ -1,0 +1,4153 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H17｜Session Event Sourcing：Agent 的历史为何可以重建？</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H17 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Session Event Sourcing：Agent 的历史为何可以重建？</h1><p>210～280 分钟（分三段：事实与顺序55～75、Surface与请求70～90、Projection与推理85～115；作者估算，环境另计，待试读）</p></header><div class="lesson-prose"><h2>聊天界面留下的东西，够解释这次执行吗？</h2>
+<p>代码研究 Agent 收到：“读取 README，检查测试文件，再汇总项目结构。”它开始一个 Turn，在 Step 中请求工具，拿到结果后继续回答，最后结束 Turn。假设我们只保存界面上最终的消息列表。</p>
+<p>明天同事问：模型最初请求了什么参数？哪一 Step 产生回答？有一次请求失败后是否重试？工具调用有没有对应结果？界面隐藏的旧内容是否已经消失？能否证明模型输入来自当时已记录的事实？一个只有“用户问、助手答”的数组，很难独自回答这些问题。</p>
+<p>H10教过执行循环，H12教过输出结算，H14教过工具结果；今天改变观察方向：<strong>执行过的事实怎样成为可以重新计算的历史？</strong> 最终产物是一张你能手工推导、再用真实组件核对的事件表，而不是一段背熟的 Event Sourcing 定义。</p>
+<p>固定官方 Commit 为 <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。本课只研究事件、Surface、模型历史与基础 Projection。所有运行实验使用内存 Session、受控 Adapter 和常量工具，零模型费用。持久化后端、恢复、Fork 与崩溃修复留H18，压缩策略留H19，完整取消与重试策略留H20。</p>
+<p>蓝图估100～140分钟；正式稿加入四项真实组件实践、综合推理和失败反例，作者估210～280分钟，增加110～140分钟，尚无学员实测。建议第一段做到事件顺序暂停，第二段手算完Surface与请求暂停，第三段再运行投影和综合实验。折叠区保留完整可复制程序，不要求一次通读。</p>
+<h2>先把“当前值”和“发生过的事”拆开</h2>
+<p>一个待办项当前是“已完成”。传统保存方法可以更新一行 <code>status = completed</code>。这足够回答现在是什么，却不能仅凭这一行知道它什么时候开始、进度怎样变化。</p>
+<p>教学简化：先记录“任务创建、任务开始、进度更新为50%、任务完成”四个事实。令初始状态为未开始，按顺序每读一个事件就更新一次计算结果，最后得到已完成。这个过程叫<strong>折叠（fold）</strong>：上一步状态加下一条事件，算出下一步状态。</p>
+<p>事件溯源（Event Sourcing）把这些有顺序的事实作为重建状态的权威输入，当前值成为计算结果。它解决的是“只剩结果，解释不了变化”的缺口。普通调试日志可能缺字段、乱格式或被采样；这里的事件必须有可解释的格式、顺序及折叠规则。保存一串自然语言，并不会自动获得可重建性。</p>
+<p>先预测：如果只保留完成状态，能否证明出现过50%的进度？如果四条事件齐全，但把完成事件的含义改成“失败”，同一数据还能按旧规则解释吗？两问分别检验事实是否保留、解释规则是否一致。</p>
+<p><span class="lesson-figure" role="group" aria-label="保存当前任务状态与保存有序事实的两种方案；事件方案按规则折叠成当前状态，不能据此重复外部动作"><img src="figures/h17-01.png" alt="保存当前任务状态与保存有序事实的两种方案；事件方案按规则折叠成当前状态，不能据此重复外部动作" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜上半部比较保存对象，下半部展开折叠。任务词汇仅为教学类比，不是核心Session事件；流水可重算不承诺外部动作可以重做。</span><a class="lesson-image-expand" href="figures/h17-01.png" target="_blank" rel="noopener noreferrer" aria-label="保存当前任务状态与保存有序事实的两种方案；事件方案按规则折叠成当前状态，不能据此重复外部动作，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>银行流水也能帮助理解余额与事实的区别，但这个类比不能推出金融级事务保证。日志记下“已经发送邮件”，重新折叠可以恢复“邮件已发送”的状态；重新发送邮件是另一项外部动作，需要另行判断幂等与授权。</p>
+<h2>从 H09 的两个生命周期回到 Session</h2>
+<p>先做7分钟自足回顾：H03把请求串到模型和工具；H09区分运行 Agent 与 Session 历史；H10用 Turn/Step 标记边界；H11把系统文本、消息和调用配置组装成请求；H12把实时输出结算成事实；H14把工具提议、运行时结果与 Session结果分开。旧Stage 4的Run/Step表也保存执行事实，但它不是Harness的同名实现。有原课权限者可选复习<a href="/lesson/stage-4/s4-l6">Run与Step持久化</a>，本课无需该权限。</p>
+<p><strong>Session</strong>拥有会话的事件日志及其派生读模型，本身不调用模型。<strong>SessionStore</strong>是 <code>ctx.sessions</code>，管理当前活跃的Session对象，并为它们接上创建、事件和释放通知。Agent使用Session推进一次工作；Agent不是Session，活跃Store也不是所有持久历史的目录。没有活跃Agent，只能说明当前运行对象不在，不能据此断言磁盘历史不存在；反过来，纯内存Session退出也没有凭空落盘。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L521-L699" target="_blank" rel="noopener noreferrer">Session / Session.create</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L1126-L1205" target="_blank" rel="noopener noreferrer">SessionStore.create / prepare</a>。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>const ctx = new Context();
+await ctx.plugin(SessionStore);
+const session = ctx.sessions.create(SessionId(&#x27;project-study&#x27;));
+ctx.sessions.get(session.id) === session; // true
+session.seq === 0; // 创建元数据不占事件位置</code></pre></div>
+<p>这是正式API的小片段，完整接线见公共准备程序。<code>create</code>完成登记和创建公告后才允许写入；<code>prepare</code>只构造未发布对象，不能拿来随意追加。H09的Agent工厂会把Session与Agent的资源归属组合起来，本课不再展开整套创建事务。实践A及membership测试会对照“存在一个对象”和“允许追加”的差别。</p>
+<p><code>SessionId</code>标识某一个会话；<code>SessionHeader</code>保存格式版本、会话ID、创建时间和可选工作目录等不可变元数据，位于事件日志之外。不要把Header算作seq=0的普通事件，也不要把这里的Session等同网站登录会话。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L92-L162" target="_blank" rel="noopener noreferrer">SessionHeader</a>。</p>
+<h2>事件不是一排普通聊天消息</h2>
+<p>先看<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L287-L532" target="_blank" rel="noopener noreferrer">SessionEventMap</a>中的SessionEventMap，再看SessionEvent信封。一个事件至少包含 <code>type</code>、<code>seq</code>、<code>time</code> 和 <code>data</code>；可选的 <code>ignorable</code> 与条件性的Surface元数据有各自约束。<code>seq</code>描述位置，<code>data</code>承载该类型的事实，<code>time</code>不能替代顺序号排序。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>教学分组</th><th>真实事件类型</th><th>产生普通模型Message吗？</th></tr></thead><tbody><tr><td>生命周期边界</td><td>turn/start、turn/end、step/start、step/end</td><td>不产生；描述何时进入或离开</td></tr><tr><td>消息来源</td><td>user/message、system/message、developer/message、assistant/message</td><td>属于Surface候选；还要按节点与空内容规则派生</td></tr><tr><td>工具提议与结果</td><td>tool/call、tool/result</td><td>call仅日志；result属于Surface候选</td></tr><tr><td>请求配置与路由</td><td>request/header、request/context</td><td>都不直接产生Message</td></tr><tr><td>尝试诊断</td><td>assistant/attempt</td><td>不产生正常Assistant消息</td></tr></tbody></table></div>
+<p>这只是教学分组，<strong>并非全部词汇清单</strong>。真实Loop还会记录agent/inbox/spliced等其他插件事件；综合夹具则只挑本课需要的类型。完整目录见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/persistence-catalog.zh.md#L1-L18" target="_blank" rel="noopener noreferrer">持久化事件目录</a>。不能因某事件不在上表就默认它无关，也不能遇未知的必需事件时静默跳过继续重建。</p>
+<p><code>user/message</code>可能来自人的输入，也可能来自插件注入；role描述模型消息角色，source记录来源。插件提供的是user角色上下文，并不变成人类授权。<code>tool/result</code>则是一等tool角色消息，以toolCallId关联调用，而不是把结果随意贴成Assistant说的话。工具规范value、模型content与展示meta的区别沿用H14，不假定日志保存了运行时结果的所有字段。</p>
+<h2>同一个数字，为什么要区分 Seq 和 Offset？</h2>
+<p>一份日志有4条事件时，现有位置是0、1、2、3，长度是4。<code>SessionSeq(3)</code>可以表示最后一条事件；<code>SessionLogOffset(4)</code>可以表示读到结尾的边界。半开区间 <code>[0, 4)</code>恰好包含这4条。<code>session.seq</code>的公开类型是Offset，表示下一次追加的位置，也就是当前长度；它不是“当前最后一条事件”。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L33-L78" target="_blank" rel="noopener noreferrer">SessionSeq / SessionLogOffset / Cursor</a>。</p>
+<p>品牌化数字类型就像给相同数字贴上用途标签，让TypeScript阻止把长度误当已有位置。运行时构造函数仍返回数字，并拒绝负数、负零、小数和非安全整数；它们本身不知道某个具体日志是否真的有该位置，因此<code>SessionSeq(4)</code>构造成功也不证明4在这份四条日志里存在。</p>
+<p><code>SessionSeqCursor</code>允许 <code>-1</code>，表示空日志还没有任何事件；<code>OptionalSessionSeq</code>用 <code>null</code>表示没有某个可选事件位置。不要拿两种空值交换使用。一个前缀长度为3时包含seq0、1、2；将来Fork若使用“包含到某个Seq”的接口，还要正确换算长度。本课只建立数的语义，H18才处理完整Fork边界。</p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="第一段停顿：不用源码说出边界"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第一段停顿：不用源码说出边界</div><div class="lesson-callout-body"><p>写下长度为6的日志的首条Seq、末条Seq、结尾Offset，以及前缀[0,3)包含的Seq。再解释Header是否占一条。答案应为0、5、6与0/1/2，Header不占事件位置；若把6当末条事件，先回到这一节再运行A。</p></div></aside>
+<h2>append 到底先做什么？</h2>
+<p>阅读<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L806-L838" target="_blank" rel="noopener noreferrer">Session.append</a>及<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L869-L915" target="_blank" rel="noopener noreferrer">publicationEntry / commit</a>，按输入、处理、提交、失败四步追，而不是把“追加一条数据”想成 <code>array.push</code>。</p>
+<p>输入是事件类型、对应载荷，以及消息事件必需的Surface意图。Session先检查当前对象是否允许写入，再用一次无损JSON读取/复制过程生成载荷和Surface元数据快照；之后再次检查归属，构造带连续Seq和time的深冻结事件，执行局部事件校验。</p>
+<p>提交阶段先调用SurfaceManager.validateNext规划并验证下一次Surface变化，接着解析观察者列表。以上都成功后才push进私有日志；此时事件已提交。随后调用session/event观察者，逐监听者容纳失败。观察者失败不会把已提交事件倒回去，也不会让后面的监听者错过它。接受/发布期间的重入append会被拒绝。</p>
+<p><strong>这里不能画成“先修改所有派生状态，再发布”。</strong> SurfaceManager先验证计划，提交后的访问会应用该计划；消息、请求头和工具历史含增量缓存，在相应读取时推进。SessionProjectionRegistry则订阅session/event驱动自己的业务折叠。日志提交是共同边界，具体缓存何时计算由各读模型负责。图与蓝图概括的精度差异在源码清单中登记。</p>
+<p>事件载荷必须无损地表示成JSON值。<code>undefined</code>、BigInt、NaN、Infinity、负零、函数、Symbol、稀疏数组、循环引用、Date/Map等均不能悄悄被JSON.stringify改写后存入。实践A逐个拒绝这些值，并检查长度、观察事件、Surface和派生消息都未改变。输入是快照，调用方以后改原对象也不能改写日志；事件本身深冻结。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/util/values/src/index.ts#L172-L280" target="_blank" rel="noopener noreferrer">snapshotJsonValue</a>。</p>
+<p>还要看清校验强度：Session做无损JSON、相关字段一致性与Surface约束，<strong>并不在append中运行每种事件所有嵌套字段的完整持久化Schema</strong>。教学代码使用官方类型与构造函数；运行时乱造一个“看起来可JSON”的载荷，不能据此推论它符合整个历史格式。</p>
+<p><code>session/event</code>是提交后的通知，函数返回也只证明当前Session接纳了事件。它们还没有证明磁盘数据已经达到某个耐久检查点。flush稍后专门对照。</p>
+<h2>Surface：当前模型需要看哪几条？</h2>
+<p><strong>Session Surface</strong>解决“事实全部保留，但模型当前不必看到全部内容”的问题。把它理解为一列有顺序的事件Seq：它引用日志中的消息来源，不复制出另一套可自由改写的权威聊天记录。</p>
+<p>本版本的SurfaceEventType有五类：system/message、developer/message、user/message、assistant/message、tool/result。每条必须声明怎样进入Surface。<code>surfaceOp: &#x27;append&#x27;</code>进入尾部；replace对象把当前Surface中一段节点替换成新事件节点。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L445-L489" target="_blank" rel="noopener noreferrer">SurfaceEventType / SurfaceOp / SurfaceIntent</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L50-L75" target="_blank" rel="noopener noreferrer">isSurfaceEligibleType / isSurfaceEvent</a>。</p>
+<p>先手算实践B的第一次替换：</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>Seq</th><th>类型/内容</th><th>初始Surface？</th></tr></thead><tbody><tr><td>0</td><td>system/message：只根据材料回答</td><td>是</td></tr><tr><td>1</td><td>user/message：README原文很长</td><td>是</td></tr><tr><td>2</td><td>assistant/message：先检查文件</td><td>是</td></tr><tr><td>3</td><td>assistant/attempt</td><td>否</td></tr><tr><td>4</td><td>tool/result：README有src和tests</td><td>是</td></tr><tr><td>5</td><td>空developer/message</td><td>是，但不产生Message</td></tr><tr><td>6</td><td>注入的user/message摘要，替换1到2</td><td>后来进入替换位置</td></tr></tbody></table></div>
+<p>替换前节点是 <code>[0,1,2,4,5]</code>；新事件6使用 <code>startSeq=1,endSeq=2,sourceEventSeqs=[1,2]</code>，替换后为 <code>[0,6,4,5]</code>。日志条数从6变7，原来的1和2仍在；变化的是模型当前读的节点。先写下你预计的Message数量，再看下一节。</p>
+<p><span class="lesson-figure" role="group" aria-label="实践B中日志由6条增长为7条，当前Surface由0、1、2、4、5改为0、6、4、5，原始1和2仍保留"><img src="figures/h17-02.png" alt="实践B中日志由6条增长为7条，当前Surface由0、1、2、4、5改为0、6、4、5，原始1和2仍保留" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜第一次替换的精确节点：6在日志末尾提交，却进入Surface中部。空节点5仍在Surface，attempt3不在；模型历史是进一步派生的结果。</span><a class="lesson-image-expand" href="figures/h17-02.png" target="_blank" rel="noopener noreferrer" aria-label="实践B中日志由6条增长为7条，当前Surface由0、1、2、4、5改为0、6、4、5，原始1和2仍保留，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>替换端点不是任意数组下标，也不是日志的数值闭区间筛选。两个端点都要是当前Surface节点，按当前节点先后定位，范围包含两端；sourceEventSeqs必须覆盖全部被遮蔽节点，且引用唯一、已存在的更早事实。已经被遮蔽的1和2不能再充当当前端点。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L415-L436" target="_blank" rel="noopener noreferrer">replacementRange</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L330-L369" target="_blank" rel="noopener noreferrer">assertSourceEventReferences</a>。</p>
+<p>第二次替换尤其值得预测：当前 <code>[0,6,4,5]</code>中，<code>startSeq=6,endSeq=4</code>是否非法？它在Surface里恰好前后相邻，所以引用齐全时合法，尽管6大于4。换成start=4,end=6则位置颠倒。实践B会运行这两个方向，禁止用数字排序代替节点顺序。</p>
+<p>还有两项保护不能省略：如果Surface第0节点是system/message，覆盖它的替换只能是另一条system/message且只覆盖它；tool/result作为替换事件时，只能改写当前一条tool/result的content，其余调用身份、错误事实等必须一致。assistant/message不能携带sourceEventSeqs，因而不能拿来覆盖需要源引用的非空区间。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L493-L510" target="_blank" rel="noopener noreferrer">assertSystemHeadRewrite</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L456-L485" target="_blank" rel="noopener noreferrer">assertToolResultRewrite</a>。这些规则不等于官方保证你随意选择的范围在业务上都合理；H19再讲压缩选择策略与配对保护。</p>
+<h2>deriveMessages：从节点到真正的 Message</h2>
+<p><a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L999-L1029" target="_blank" rel="noopener noreferrer">Session.deriveMessages / deriveEventMessage</a>按Surface顺序读取每个来源事件，再交给deriveEventMessage。对照<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L120-L155" target="_blank" rel="noopener noreferrer">deriveEventMessage</a>：user/message直接派生其数据；system/developer/assistant取data.message，空content时返回null；tool/result取其tool消息；其他类型返回null。不要把“Surface节点数”和“模型Message数”当同一个数。</p>
+<p>因此上例替换后有4个节点，却只有3条Message：system的0、注入user摘要的6、tool结果的4。5保留一个空developer节点而不产出消息，3从未进入Surface。user消息的空content并没有被该函数一律过滤；本课额外测试会对照这项类型差别，不能把空规则扩成所有消息。</p>
+<p>Message的role、source、content各有用途：role决定对话角色，source解释是谁提供，content是内容块列表。Assistant的tool-call块在assistant/message内；tool/call事件本身并不再增加一条Assistant消息。若你把两者都塞进模型历史，工具提议就会被错误复制两次。</p>
+<p><code>deriveMessages()</code>每次返回新数组，后续追加不会长到你已持有的数组里。内部Message对象可以共享，但深冻结。你pop返回数组不改日志；直接改其中消息会失败。Surface内容代次变化会让缓存重建，纯尾部增长可以只派生新节点。</p>
+<p>有插件消息投影时，实例方法会应用已提交解释器；离线deriveEventMessage如果只接事件、没接同一前缀foldSurface的projectedMessages，可能只读原始内容。本课主实践没有挂插件消息投影，不把它与下一节的业务Projection混成一个扩展点。</p>
+<p>Surface也不是完整人类聊天档案：模型用摘要覆盖旧内容，不表示人类看到的旧对话应该消失。官方的isAppendSurfaceEvent可识别append-origin来源供展示选择；replace副本通常是模型侧材料。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L78-L105" target="_blank" rel="noopener noreferrer">isAppendSurfaceEvent / isReplacementSurfaceEvent</a>。实际产品还需依据自己的展示规则，本课不实现完整会话UI。</p>
+<h2>assistant/message 与 assistant/attempt：见过草稿不等于提交了回答</h2>
+<p>H12的实时chunk先经过组装和结算。<code>assistant/message</code>表示已经成功形成可用于历史的消息，携带紧凑Assistant Stream，可能带usage。部分本地取消会按实际条件保留安全的text/reasoning前缀，写成带interrupted的message；它不能被概括成“仅完整正常回答才有message”。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L492-L585" target="_blank" rel="noopener noreferrer">ReactLoopAgent.step / live.settle</a>。</p>
+<p><code>assistant/attempt</code>保存到达结算边界、却未形成正常Surface消息的尝试及其紧凑流。失败草稿、终态和时间边界仍有诊断价值，却不该自动成为下次模型的Assistant陈述。实践D_failure实际得到attempt，deriveMessages中Assistant消息为0。</p>
+<p>更早的硬中断或结算被拒绝时，也可能没有持久attempt事实。本课D_rejected保留实时帧，但同时拒绝两类Assistant追加；结果没有对应Session消息或attempt，实时end为abandoned。它验证的是结算失败边界，<strong>没有模拟真实断电或证明所有硬中断路径</strong>。正常committed帧必须关联实际已接受的seq；append成功仍只到内存边界。完整Stream展开复用H12，不在这里重讲组装器。</p>
+<h2>请求重建还缺什么？</h2>
+<p>模型输入不仅有messages，还包含provider/model、调用参数和工具Schema。只有文本列表，无法回答当时选择了哪一模型、哪一版工具定义。</p>
+<p><code>request/header</code>记录完整EpochHeader快照。canonicalHeader把空tools与空adapterDefaults规范成缺省字段；直接append空tools等非规范形态会被拒绝。foldRequestHeader按顺序保留最新完整快照，而不是把各条配置随意深合并。新快照没有temperature时，旧temperature不会残留。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/request-header.ts#L20-L29" target="_blank" rel="noopener noreferrer">canonicalHeader</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/request-header.ts#L63-L69" target="_blank" rel="noopener noreferrer">foldRequestHeader</a>。</p>
+<p>Loop第一次请求记录initial；已有日志上的新Loop首次请求可能记resume；后续头变化记录change；新的消息系列或Surface内容变化也可能要求series记录。配置没变时，下一请求可以继承已记录快照，不必每Step重复写一份。实践D有两次请求而只有一条request/header，第二次按同一基线重建。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L666-L695" target="_blank" rel="noopener noreferrer">ReactLoopAgent.buildRequest</a>。</p>
+<p>System Prompt不在header.system字符串里。本版本它属于Surface上的system/message，随messages派生。request/context另记路由容量、systemPromptUpdate等元数据，不产生Message，也不参与header相等与请求头折叠；请求准入用绑定的prepared call能力，不能用过去的context快照代替当前能力。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L710-L731" target="_blank" rel="noopener noreferrer">ReactLoopAgent.buildRequest requestContext</a>。</p>
+<p>工具声明尤其要保存历史。今天Registry里的read工具可能已卸载或变了description；若昨天模型见到的定义只靠今天Registry查询，就可能解释错历史。ToolHistoryProjection从request/header和developer/message折叠，新增工具通过headerSeq解析当时完整Schema，删除不抹掉早先已记录定义。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/tool-history.ts#L9-L75" target="_blank" rel="noopener noreferrer">ToolHistoryProjection</a>。本课historical tools测试先加入、再移除、再改变调用方对象，重建仍得到旧定义；它不要求把工具执行函数放进JSON日志。</p>
+<p>还要区分Loop请求和Adapter实际请求。Runtime可按绑定能力继续投影工具更新、图片或文件。本课每次保存Loop边界与Adapter输入，重建目标先是Loop已记录的消息与封装；本夹具无附件、无动态更新，所以实际第二请求消息也相等。这不证明任意Adapter内部都不再转换。</p>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="第二段停顿：算出模型实际读到的东西"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第二段停顿：算出模型实际读到的东西</div><div class="lesson-callout-body"><p>只看B第一次替换后的日志，写下节点[0,6,4,5]，再逐个标role或null。然后解释请求头为什么不能被当成第四条Message，工具call为什么不再产生一次提议。能够给出事件Seq与派生依据后，再进入Projection。</p></div></aside>
+<h2>Projection：同一份事实怎样给出任务当前状态？</h2>
+<p>现在会话侧栏需要显示“当前任务运行中”。我们无需维护一张可以独立任意改状态的第二真源，而是定义另一个折叠规则：初始idle；遇turn/start变running并记录turn；遇turn/end按结局变completed/error并增加finished；其他事件原样返回状态。这里的“任务”是<strong>教学读模型</strong>，一Turn暂映射一次任务，不代表官方Todo领域服务的完整语义。</p>
+<p>输入 <code>[turn/start,step/start,step/end,turn/end(completed)]</code>经过该规则得到 <code>{status:&#x27;completed&#x27;,turn:1,finished:1}</code>。这就是Session Projection：按领域规则把会话事件折叠成当前值。它与Surface的模型消息选择是两个读法。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/src/index.ts#L81-L131" target="_blank" rel="noopener noreferrer">ProjectionDefinition</a>。</p>
+<p>ProjectionDefinition声明init、同步apply、stateSchema、stateVersion及可选wire。init定义空日志和会话元数据下的初态；apply只做纯同步计算，不能在里面发HTTP再等返回，否则同一seq时刻的多个读模型可能看到不同进度。想获取外部事实，应由别的执行路径记录事件，再折叠它。</p>
+<p>无关事件必须返回原状态引用。这个要求影响通知，不只是代码风格：注册表用Object.is判断状态有没有变化，wire.view的原始输出再用引用比较抑制下游工作。每次都复制一个内容相同的对象，会制造不必要的更新；返回一个被原地改过的旧对象，又可能让变化没有通知。实践C同时检查值和引用，按新对象更新有关状态。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>const handle = await ctx.sessionProjections.register(taskDefinition);
+const state = handle.stateOf(session);
+const snapshot = ctx.sessionProjections.snapshot(session);
+// snapshot.asOfSeq 是最后已覆盖事件；空日志为 -1。
+// snapshot.values 是已注册、具备 wire 的完整客户端值。</code></pre></div>
+<p>先await注册，再通过handle读取。不要新增已弃用的registry.stateOf(session,key)。onChanged给出会话、key、全量value及seq；dispose让该注册退出全局快照与通知。<strong>已经保留的handle仍能用原单元读取后续事件</strong>，不能误教成注销后reader必然失效。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/src/index.ts#L294-L420" target="_blank" rel="noopener noreferrer">SessionProjectionRegistry.register / acquire</a>至<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/src/index.ts#L51-L77" target="_blank" rel="noopener noreferrer">ProjectionHandle</a>。</p>
+<p>stateVersion用于缓存解释规则的兼容性；同key同时注册不同版本会拒绝共享。stateSchema主要验证存储状态进入折叠的形状，不是每次live apply都自动全面校验。C只用内存构造的checkpoint行调用viewCheckpoint，观察版本不匹配或状态Schema不合法的行不输出该key；它没有读写真实磁盘缓存。wire.viewSchema则验证离开host的视图。复杂缓存加载、恢复与尾部计算留H18。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-projection/src/index.ts#L599-L623" target="_blank" rel="noopener noreferrer">viewCheckpoint</a>。</p>
+<p><span class="lesson-figure" role="group" aria-label="Session的同一事件前缀分别驱动模型Surface、任务Projection和请求工具历史，各读视图都依赖事实与解释规则"><img src="figures/h17-03.png" alt="Session的同一事件前缀分别驱动模型Surface、任务Projection和请求工具历史，各读视图都依赖事实与解释规则" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜三个框是并列读法：模型消息、教学任务状态、请求与工具历史。业务Projection注册表不接管所有Surface规则；任一缓存都不是独立权威记录。</span><a class="lesson-image-expand" href="figures/h17-03.png" target="_blank" rel="noopener noreferrer" aria-label="Session的同一事件前缀分别驱动模型Surface、任务Projection和请求工具历史，各读视图都依赖事实与解释规则，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>对象/操作</th><th>它回答的问题</th><th>权威边界</th></tr></thead><tbody><tr><td>Session Event Log</td><td>已经提交过什么事实？</td><td>读模型共同的事实来源；这里是概念名称，不是新造的导出类</td></tr><tr><td>SessionSurface</td><td>当前模型消息来源有哪些、顺序怎样？</td><td>从日志折叠；替换不物理删日志</td></tr><tr><td>deriveMessages</td><td>这些来源最终形成哪些Message？</td><td>依节点、内容与解释器派生</td></tr><tr><td>SessionProjection</td><td>某领域当前状态是什么？</td><td>init/apply及版本规则下的结果</td></tr><tr><td>Session Persistence</td><td>哪些事件已可靠存储？</td><td>独立后端与耐久性承诺</td></tr></tbody></table></div>
+<p>这张表解释本课最后的问题：多份读模型可以各有缓存、布局和用途，但不需要多份互相独立的权威事实。重建时必须使用相同事件前缀、正确格式和解释规则；不能只说“同一日志”就忽略版本与插件定义。</p>
+<h2>一次真实 Agent 的提交时间线</h2>
+<p>实践D实际挂载Cordis、SessionStore、ProjectionRegistry、SystemPrompt、LlmRuntime、AgentRegistry、AgentLoop、ToolsService与Native执行器。模型是脚本Adapter；工具只返回内存中的“src/与tests/”，不读文件、不运行命令。</p>
+<p><span class="lesson-figure" role="group" aria-label="真实Loop事件从Turn和Step进入请求、Assistant工具提议、工具call/result，再到第二请求与回答；实时帧和flush分列"><img src="figures/h17-04.png" alt="真实Loop事件从Turn和Step进入请求、Assistant工具提议、工具call/result，再到第二请求与回答；实时帧和flush分列" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜来自D的实际seq：请求一读取[0,8)，请求二读取[0,13)。16条事实在内存中提交；flush框仅说明独立API，没有声称发生磁盘fsync。</span><a class="lesson-image-expand" href="figures/h17-04.png" target="_blank" rel="noopener noreferrer" aria-label="真实Loop事件从Turn和Step进入请求、Assistant工具提议、工具call/result，再到第二请求与回答；实时帧和flush分列，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>位置</th><th>事实或观察</th><th>在下一份模型历史中的作用</th></tr></thead><tbody><tr><td>seq0/2</td><td>agent/inbox/spliced</td><td>队列事实，仅日志</td></tr><tr><td>seq1、3</td><td>turn/start、step/start</td><td>边界，仅日志</td></tr><tr><td>seq4/5</td><td>system/message、user/message</td><td>第一请求的两条消息</td></tr><tr><td>seq6/7</td><td>request/header、request/context</td><td>配置与路由事实，不是Message</td></tr><tr><td>seq8</td><td>assistant/message含readme工具块</td><td>后续请求中的Assistant提议</td></tr><tr><td>seq9</td><td>tool/call</td><td>调度接手记录，不能单凭它证明主体成功</td></tr><tr><td>无seq</td><td>tools/result</td><td>运行时观察，在提交结果前</td></tr><tr><td>seq10</td><td>tool/result</td><td>toolCallId=readme，引用seq9</td></tr><tr><td>seq11/12</td><td>step/end、下一step/start</td><td>第二请求前的执行边界</td></tr><tr><td>seq13～15</td><td>最终assistant/message、step/end、turn/end</td><td>回答成为历史，Turn关闭</td></tr></tbody></table></div>
+<p>第二请求读取到seq12为止的13条事实，但只有system、user、assistant、tool四条Message。seq13的最终回答不可能已经出现在产生它的请求里。测试在每次llm/stream边界截取当时的已提交事件，再由第二个真实Session核对messages、config、tools和toolHistory，避免拿最终日志倒推过去请求而不切前缀。</p>
+<p>重建Session的构造器会追加一个session/end-seed标记，它只属于重建实例，不属于原事件前缀。这个标记不产生Message；比较原始条数时必须分开。我们只用它重建读模型，不调用resume或fork，不给重建对象执行工具。</p>
+<h2>Flush：内存接受与耐久检查点之间</h2>
+<p><code>Session.append</code>成功后，session/event发布的是已接受事实；存储插件可据此缓冲。需要耐久检查点时，调用 <code>await ctx.sessions.flush(session)</code>，由Store统一找到所属通知载体，等待全部session/flush监听者settle；若有失败，全部等待后抛出按注册顺序找到的首个失败。无监听者返回false，有监听者成功返回true。见<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L1342-L1363" target="_blank" rel="noopener noreferrer">SessionStore.flush</a>与<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L68-L85" target="_blank" rel="noopener noreferrer">session/event / session/flush</a>。</p>
+<p>这个布尔值也不是“磁盘fsync认证”。后端挂了什么、承诺何种耐久性，才决定flush究竟保证什么。实践A先无后端调用得到false，后来只加一个计数监听器得到true；计数器明确不是存储。该反例防止把“调用过API”误当“崩溃后可读”。</p>
+<p>Loop不在每个turn/end处自动等待flush；请求前的检查点策略另有所有者。本课D没有挂它与持久后端，所以whenIdle只供观察工作空闲，不能拿来证明磁盘最新。SessionHandle、JSONL、单写者、跨进程与损坏日志恢复都留H18。</p>
+<p>能够重建的是<strong>确实已记录且按需要持久保存的事实与读模型</strong>。已经消失的进程、未记录的瞬态变量、第三方实时连接、未结算模型流、当前OS权限，都不能从文本日志里变回来。外部工具已发生但结果未知时，缺result更不能推出“没有副作用，可以重做”。</p>
+<h2>实验准备：先预测，再运行，再对照</h2>
+<p>本仓库根运行环境为Node24、Python与现有作者依赖；官方源码通过HARNESS_SOURCE_CACHE与HARNESS_GIT_CACHE定位固定Commit，隔离依赖由H17_DEPS_ANCHOR和H17_ZOD_ANCHOR定位。完整树的版本和integrity必须对齐上游pnpm-lock，不往业务项目安装Harness依赖。换机接线与命令见本课lab/README及作者README；不要求联网模型或个人Harness Home。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>python -X utf8 docs/deepseek-harness-v2/h17/scripts/check-sources.py
+node docs/deepseek-harness-v2/h17/scripts/run-labs.mjs</code></pre></div>
+<p>runner会把这些随课文件复制到新的临时目录，在该处接入固定源码paths，保留原始stdout/stderr、退出值与程序hash。失败记录也保留。输出在H17的evidence目录，不覆盖output与前课。没有递归清理命令，临时目录保留。</p>
+<p>下面是共用程序；理解公共fixture如何在创建前订阅session/event即可，完整长代码可待运行时展开。它只收集新建内存Session的提交，不是持久化后端，也不使用新增的弃用同步读取调用。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：依赖接线完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// Node 24；隔离依赖完整树由 run-labs.mjs 在运行前核对固定上游 lock。
+import { registerHooks, createRequire } from &#x27;node:module&#x27;;
+import { pathToFileURL } from &#x27;node:url&#x27;;
+const dep = createRequire(pathToFileURL(process.env.H17_DEPS_ANCHOR));
+const zod = createRequire(pathToFileURL(process.env.H17_ZOD_ANCHOR));
+const entries = new Map([&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;]
+  .map(name =&gt; [name,pathToFileURL(dep.resolve(name)).href]));
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+registerHooks({resolve(specifier,context,next){return next(entries.get(specifier)??specifier,context);}});</code></pre></div></div></details>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：公共准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import { Context } from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore, { Session, SessionId, SessionSeq, SessionLogOffset, foldSurface, foldRequestHeader, canonicalHeader } from &#x27;@deepseek-ai/dsh-session&#x27;;
+import type { SessionEvent } from &#x27;@deepseek-ai/dsh-session&#x27;;
+import { createUserMessage, createAssistantMessage, createSystemMessage, createDeveloperMessage, createToolResultMessage, ToolCallId } from &#x27;@deepseek-ai/dsh-llm&#x27;;
+export { assert, Context, SessionStore, Session, SessionId, SessionSeq, SessionLogOffset, foldSurface, foldRequestHeader, canonicalHeader,
+  createUserMessage, createAssistantMessage, createSystemMessage, createDeveloperMessage, createToolResultMessage, ToolCallId };
+export type { SessionEvent };
+declare module &#x27;@deepseek-ai/dsh-llm&#x27; { interface MessageSourceMap { &#x27;h17-fixture&#x27;: {kind:&#x27;h17-fixture&#x27;} } }
+export const user=(text:string)=&gt;createUserMessage({content:[{type:&#x27;text&#x27;,text}],source:{kind:&#x27;user&#x27;}});
+export const injected=(text:string)=&gt;createUserMessage({content:[{type:&#x27;text&#x27;,text}],source:{kind:&#x27;h17-fixture&#x27;}});
+export const assistant=(text:string)=&gt;createAssistantMessage({content:text?[{type:&#x27;text&#x27;,text}]:[],source:{provider:&#x27;fixture&#x27;,model:&#x27;scripted&#x27;}});
+export const system=(text:string)=&gt;createSystemMessage(text);
+export const textOf=(m:any)=&gt;m.content.filter((b:any)=&gt;b.type===&#x27;text&#x27;).map((b:any)=&gt;b.text).join(&#x27;&#x27;);
+// 只订阅新建 Session 的提交源；不新增弃用同步读 API 调用，也不是磁盘后端。
+export async function fixture(id:string){
+ const ctx=new Context();await ctx.plugin(SessionStore);
+ const events:SessionEvent[]=[];
+ ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{if(s.id===id)events.push(e);});
+ const session=ctx.sessions.create(SessionId(id),{meta:{createdAt:0}});
+ return {ctx,session,events,close:()=&gt;ctx.fiber.dispose()};
+}
+export function view(session:Session,events:readonly SessionEvent[]){
+ return {eventOrder:events.map(e=&gt;({seq:e.seq,type:e.type,surfaceOp:e.surfaceOp??null})),
+  nodes:[...session.surface.nodes],messages:session.deriveMessages().map(m=&gt;({role:m.role,source:m.source,content:m.content})),
+  header:session.requestHeader()??null};
+}
+// 只重建读模型；seed 构造会另加一个 session/end-seed 标记，不冒充原轨迹。
+export function rebuild(events:readonly SessionEvent[]){return Session.create(SessionId(&#x27;read-model&#x27;),events);}</code></pre></div></div></details>
+<h3>实践 A：实际追加与拒绝是否原子？</h3>
+<p>先预测：创建Session后事件数是多少？修改传入对象能否改变已记录消息？11种非法JSON值逐一拒绝后Seq会不会出现空洞？append会不会主动调用我们后来加的flush计数器？再运行A并对照eventOrder、nodes、messages、rejected与flushCalls。</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {assert,fixture,user,SessionSeq,SessionLogOffset,view} from &#x27;./support.ts&#x27;;
+export async function appendPractice(){
+ const f=await fixture(&#x27;h17-A&#x27;);const {session:s,events,ctx}=f;
+ try{
+  assert.equal(ctx.sessions.get(s.id),s);assert.equal(events.length,0); // Header 在日志之外。
+  s.append(&#x27;turn/start&#x27;,{turn:1});
+  const input=structuredClone(user(&#x27;读取 README&#x27;));const event=s.append(&#x27;user/message&#x27;,input,{surfaceOp:&#x27;append&#x27;});
+  (input.content[0] as {text:string}).text=&#x27;调用方后来改写&#x27;;
+  assert.equal((event.data.content[0] as {text:string}).text,&#x27;读取 README&#x27;);
+  assert.ok(Object.isFrozen(event)&amp;&amp;Object.isFrozen(event.data.content));
+  assert.throws(()=&gt;{(event.data.content[0] as {text:string}).text=&#x27;改日志&#x27;;},TypeError);
+  const before=s.deriveMessages(),nodes=[...s.surface.nodes],count=s.seq;
+  const invalid=[undefined,NaN,Infinity,-0,1n,()=&gt;0,Symbol(&#x27;x&#x27;),new Date(),new Map(),[,1]];
+  const cycle:any={};cycle.self=cycle;invalid.push(cycle);
+  for(const bad of invalid){
+   assert.throws(()=&gt;s.append(&#x27;turn/start&#x27;,{turn:1,bad} as any),/JSON/);
+   assert.equal(s.seq,count);assert.equal(events.length,count);
+   assert.deepEqual(s.deriveMessages(),before);assert.deepEqual(s.surface.nodes,nodes);
+  }
+  s.append(&#x27;step/start&#x27;,{turn:1,step:1});
+  assert.deepEqual(events.map(e=&gt;e.seq),[0,1,2]);
+  assert.equal(SessionSeq(2),2);assert.equal(SessionLogOffset(s.seq),3);
+  const noBackend=await ctx.sessions.flush(s);assert.equal(noBackend,false);
+  let calls=0;ctx.on(&#x27;session/flush&#x27;,()=&gt;{calls++;});
+  s.append(&#x27;step/end&#x27;,{turn:1,step:1});assert.equal(calls,0);
+  assert.equal(await ctx.sessions.flush(s),true);assert.equal(calls,1);
+  return {...view(s,events),rejected:invalid.length,snapshotFrozen:true,noBackend,flushCalls:calls,
+   limitation:&#x27;flush listener is a counter, not a persistence backend&#x27;};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>创建Header不占事件，所以从0条开始。turn/start为0，用户为1，step/start为2，step/end为3；最终4条，Surface只有[1]，模型只有用户消息。调用方改的是structuredClone后的输入，事件仍是“读取README”；直接改冻结事件应抛TypeError。</p><p>11个无损JSON反例全在commit前被拒绝，拒绝后长度、已收集事实、Surface和派生状态均与前值一致，下次合法追加仍连续。没有持久后端时flush=false；计数监听器注册后，append不增加计数，显式flush后才为1且返回true。这个监听器没有耐久保证，不能宣称数据已落盘。自评10分：Header/Seq2，快照与冻结2，拒绝原子性3，append/flush与反例3；只写“JSON报错了”而不核前后状态，不能得原子性分。</p></div></details>
+<h3>实践 B：三行输出，三种不同对象</h3>
+<p>先手写eventOrder、Surface nodes、deriveMessages三个结果。对第一次替换预测日志7条、节点4个、消息3条；再判断第二次start6/end4是否合法。还要解释四种被拒绝替换为什么失败，不能只记异常文本。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {assert,fixture,user,injected,assistant,system,createDeveloperMessage,createToolResultMessage,ToolCallId,SessionSeq,view,foldSurface,textOf} from &#x27;./support.ts&#x27;;
+export async function surfacePractice(){
+ const f=await fixture(&#x27;h17-B&#x27;);const {session:s,events}=f;
+ try{
+  s.append(&#x27;system/message&#x27;,{turn:1,step:1,message:system(&#x27;只根据给定材料回答&#x27;)},{surfaceOp:&#x27;append&#x27;}); // 0
+  s.append(&#x27;user/message&#x27;,user(&#x27;README 原文很长&#x27;),{surfaceOp:&#x27;append&#x27;}); // 1
+  s.append(&#x27;assistant/message&#x27;,{turn:1,step:1,message:assistant(&#x27;先检查文件&#x27;),stream:[]},{surfaceOp:&#x27;append&#x27;}); // 2
+  s.append(&#x27;assistant/attempt&#x27;,{turn:1,step:1,stream:[]}); // 3，仅日志
+  s.append(&#x27;tool/result&#x27;,{turn:1,step:1,message:createToolResultMessage({callId:ToolCallId(&#x27;readme&#x27;),content:[{type:&#x27;text&#x27;,text:&#x27;README 有 src 和 tests&#x27;}],isError:false})},{surfaceOp:&#x27;append&#x27;}); // 4
+  s.append(&#x27;developer/message&#x27;,{turn:1,step:1,message:createDeveloperMessage({content:[],source:{kind:&#x27;tool-registry&#x27;}})},{surfaceOp:&#x27;append&#x27;}); // 5，空节点
+  const before=view(s,events),held=s.deriveMessages();assert.equal(held.length,4);
+  const replace={surfaceOp:{op:&#x27;replace&#x27; as const,startSeq:SessionSeq(1),endSeq:SessionSeq(2)},sourceEventSeqs:[SessionSeq(1),SessionSeq(2)]};
+  s.append(&#x27;user/message&#x27;,injected(&#x27;历史摘要：请求读取 README；助手准备检查&#x27;),replace); // 6
+  assert.deepEqual(s.surface.nodes,[0,6,4,5]);assert.equal(s.seq,7);assert.equal(events.length,7);
+  assert.equal(s.deriveMessages().length,3);assert.equal(held.length,4);
+  const current=s.deriveMessages();assert.notEqual(current,s.deriveMessages());
+  assert.equal(current[0],s.deriveMessages()[0]);assert.ok(Object.isFrozen(current[0]));
+  current.pop();assert.equal(s.deriveMessages().length,3);
+  assert.deepEqual(foldSurface(events).nodes,s.surface.nodes);
+  const at=s.seq,visible=s.deriveMessages();
+  const invalid=[
+   {surfaceOp:{op:&#x27;replace&#x27;,startSeq:1,endSeq:2},sourceEventSeqs:[1,2]}, // 已被遮蔽
+   {surfaceOp:{op:&#x27;replace&#x27;,startSeq:6,endSeq:4},sourceEventSeqs:[6]}, // 漏掉4
+   {surfaceOp:{op:&#x27;replace&#x27;,startSeq:0,endSeq:0},sourceEventSeqs:[0]}, // 破坏system头
+   {surfaceOp:{op:&#x27;replace&#x27;,startSeq:4,endSeq:6},sourceEventSeqs:[4,6]}, // Surface顺序颠倒
+  ];
+  for(const opts of invalid){assert.throws(()=&gt;s.append(&#x27;user/message&#x27;,injected(&#x27;错误替换&#x27;),opts as any));assert.equal(s.seq,at);assert.deepEqual(s.deriveMessages(),visible);}
+  // 当前节点是[0,6,4,5]，数值6&gt;4仍是合法的前→后位置跨度。
+  s.append(&#x27;user/message&#x27;,injected(&#x27;合并摘要与只读工具结果&#x27;),{surfaceOp:{op:&#x27;replace&#x27;,startSeq:SessionSeq(6),endSeq:SessionSeq(4)},sourceEventSeqs:[SessionSeq(6),SessionSeq(4)]});
+  assert.deepEqual(s.surface.nodes,[0,7,5]);
+  return {before,afterFirst:{nodes:[0,6,4,5],texts:visible.map(textOf)},final:view(s,events),rejected:invalid.length,oldEventsRetained:events[1].type===&#x27;user/message&#x27;};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>第一次替换前日志6条、节点[0,1,2,4,5]、消息4条；attempt3是日志诊断，空developer5占节点不产消息。追加6后日志7条、节点[0,6,4,5]、消息system/user/tool共3条，原1/2保留。调用前持有的4条消息数组保持4条，pop新返回数组也不改Session；内部消息共享且冻结。</p><p>再用1/2作端点会因已遮蔽失败；替换6到4却只引用6会漏4；用user覆盖system头失败；start4/end6在当前节点中倒置。四次失败没有增长日志和改变历史。随后引用[6,4]、start6/end4成功，得到日志8条、节点[0,7,5]、消息2条。数值6&gt;4不妨碍Surface位置从前到后。自评10分：三种计数3，空节点/attempt2，端点与源覆盖3，保留和不可变2；把替换说成删除原始事件，关键项不通过。</p></div></details>
+<h3>实践 C：用原有事件折叠任务状态</h3>
+<p>代码不假设todo/upsert或todo/completed已在核心EventMap中；使用turn/start/end和step边界，单独声明本课wire key。先预测：无关step事件是否触发通知？dispose以后snapshot是否还有该key？原handle还能不能继续读取？版本2或坏Schema行会发生什么？</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {z} from &#x27;zod&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import type {ProjectionDefinition} from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import {assert,fixture} from &#x27;./support.ts&#x27;;
+export type TaskState={status:&#x27;idle&#x27;|&#x27;running&#x27;|&#x27;completed&#x27;|&#x27;error&#x27;;turn:number;finished:number};
+declare module &#x27;@deepseek-ai/dsh-session-projection/types&#x27; {interface SessionProjectionMap {&#x27;h17/task&#x27;:TaskState}}
+const schema=z.object({status:z.enum([&#x27;idle&#x27;,&#x27;running&#x27;,&#x27;completed&#x27;,&#x27;error&#x27;]),turn:z.number().int().nonnegative(),finished:z.number().int().nonnegative()});
+export const taskDefinition={key:&#x27;h17/task&#x27;,stateSchema:schema,stateVersion:1,
+ init:()=&gt;({status:&#x27;idle&#x27;,turn:0,finished:0} as TaskState),
+ apply:(state:TaskState,event)=&gt;event.type===&#x27;turn/start&#x27;?{...state,status:&#x27;running&#x27; as const,turn:event.data.turn}
+  :event.type===&#x27;turn/end&#x27;?{...state,status:event.data.reason.kind===&#x27;completed&#x27;?&#x27;completed&#x27; as const:&#x27;error&#x27; as const,finished:state.finished+1}:state,
+ wire:{viewSchema:schema,view:(state:TaskState)=&gt;state},
+} satisfies ProjectionDefinition&lt;&#x27;h17/task&#x27;,TaskState&gt;;
+export async function projectionPractice(){
+ const f=await fixture(&#x27;h17-C&#x27;);const {ctx,session:s}=f;
+ try{
+  await ctx.plugin(SessionProjectionRegistry);
+  const handle=await ctx.sessionProjections.register(taskDefinition),changes:any[]=[];
+  const stop=ctx.sessionProjections.onChanged((session,key,value,seq)=&gt;changes.push({id:session.id,key,value,seq}));
+  const initial=handle.stateOf(s);assert.equal(initial.status,&#x27;idle&#x27;);
+  s.append(&#x27;turn/start&#x27;,{turn:1});const running=handle.stateOf(s);assert.notEqual(running,initial);
+  s.append(&#x27;step/start&#x27;,{turn:1,step:1});assert.equal(handle.stateOf(s),running);assert.equal(changes.length,1);
+  s.append(&#x27;step/end&#x27;,{turn:1,step:1});assert.equal(handle.stateOf(s),running);assert.equal(changes.length,1);
+  s.append(&#x27;turn/end&#x27;,{turn:1,reason:{kind:&#x27;completed&#x27;}});
+  assert.equal(changes.length,2);const snap=ctx.sessionProjections.snapshot(s);
+  assert.equal(snap.asOfSeq,3);assert.deepEqual(snap.values[&#x27;h17/task&#x27;],{status:&#x27;completed&#x27;,turn:1,finished:1});
+  // register 的兼容返回值既可调用(disposer)又可 await；assert.rejects 必须接 Promise。
+  await assert.rejects(Promise.resolve(ctx.sessionProjections.register({...taskDefinition,stateVersion:2})),/stateVersion/);
+  const cached={ &#x27;h17/task&#x27;:{ver:1,seq:3,val:handle.stateOf(s)} };
+  assert.deepEqual(ctx.sessionProjections.viewCheckpoint(cached),snap.values);
+  assert.deepEqual(ctx.sessionProjections.viewCheckpoint({&#x27;h17/task&#x27;:{ver:2,seq:3,val:handle.stateOf(s)}}),{});
+  assert.deepEqual(ctx.sessionProjections.viewCheckpoint({&#x27;h17/task&#x27;:{ver:1,seq:3,val:{status:123}}}),{});
+  stop();await handle.dispose();assert.deepEqual(ctx.sessionProjections.snapshot(s).values,{});
+  s.append(&#x27;turn/start&#x27;,{turn:2});assert.equal(handle.stateOf(s).status,&#x27;running&#x27;);assert.equal(changes.length,2);
+  return {initial,snapshot:snap,changes,retainedReader:handle.stateOf(s),incompatibleVersion:&#x27;rejected/skipped&#x27;,malformedState:&#x27;skipped&#x27;,
+   limitation:&#x27;viewCheckpoint receives in-memory rows; no disk cache or restore test&#x27;};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>init为idle/0/0。seq0 turn/start变running/1/0，通知1；seq1 step/start和seq2 step/end均保留running的相同引用，仍通知1；seq3 turn/end(completed)变completed/1/1，通知2。snapshot.asOfSeq=3，values中的任务与这个切面一致。这样既有真实Turn/Step先后，又能核对无关事件的引用与通知。</p><p>同key版本2注册拒绝；viewCheckpoint对ver=2行不提供key，对ver=1却不满足stateSchema的行也不提供key。这里只传内存行，没有磁盘缓存恢复。取消监听与dispose后全局snapshot.values为空，随后turn2开始，保留handle仍可算到running/2/1，但不会重新加入全局通知。自评10分：状态推导3，引用与通知3，兼容2，dispose与保留reader2。register兼容返回值既可调用又可await，给Node assert.rejects时使用Promise.resolve包成Promise，避免被当作disposer执行。</p></div></details>
+<h3>实践 D：由真实工具轨迹重建过去的请求</h3>
+<p>先画两次请求的事件截止位置，再运行success。把ToolCallBlock的readme、tool/call的callId、tool/result的toolCallId及sourceEventSeqs连起来；比较运行时tools/result与已提交tool/result的观察先后。随后运行failure与rejected-settlement，预测两种情况下日志与实时帧有何差别。</p>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import LlmRuntime,{LlmAdapter} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import type {GenerateOptions,StreamChunk} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService,{defineTool} from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import {NativeToolExecutor} from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import {assert,Context,SessionStore,SessionId,ToolCallId,user,rebuild,textOf,type SessionEvent} from &#x27;./support.ts&#x27;;
+const textChunks=(text:string):StreamChunk[]=&gt;[{type:&#x27;text-delta&#x27;,index:0,text},{type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}}];
+class Adapter extends LlmAdapter{
+ readonly requests:any[]=[];
+ constructor(readonly responses:StreamChunk[][]){super();}
+ async resolveModel(provider:string,model:string){return {provider,id:model,name:model,defaultMaxTokens:128,context:{contextWindow:4096}};}
+ async *stream(options:GenerateOptions){this.requests.push(structuredClone({...options,signal:undefined}));
+  const response=this.responses.shift();if(!response)throw Error(&#x27;fixture exhausted&#x27;);yield* response;}
+}
+export async function agentPractice(kind:&#x27;success&#x27;|&#x27;failure&#x27;|&#x27;rejected-settlement&#x27;=&#x27;success&#x27;){
+ const ctx=new Context(),facts:SessionEvent[]=[],trace:any[]=[],prefixes:any[]=[];
+ const record=(channel:string,data:any)=&gt;trace.push({position:trace.length,channel,data:structuredClone(data)});
+ for(const p of [LlmRuntime,SessionStore,SessionProjectionRegistry])await ctx.plugin(p as any);
+ await ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,personaPrefix:&#x27;只分析内存项目材料。&#x27;});
+ await ctx.plugin(ToolsService);
+ await ctx.plugin({inject:[&#x27;tools&#x27;],apply(owner:Context){owner.tools.setExecutor(new NativeToolExecutor(owner));}});
+ await ctx.plugin(AgentRegistry);await ctx.plugin(AgentLoop,{agents:[]});
+ const call={type:&#x27;tool-call&#x27; as const,id:ToolCallId(&#x27;readme&#x27;),name:&#x27;inspect_fixture&#x27;,arguments:&#x27;{}&#x27;};
+ const toolChunks:StreamChunk[]=[{type:&#x27;block-start&#x27;,index:0,blockType:&#x27;tool-call&#x27;},{type:&#x27;block-end&#x27;,index:0,block:call},{type:&#x27;finish&#x27;,reason:{kind:&#x27;tool-calls&#x27;}}];
+ const failed:StreamChunk[]=[{type:&#x27;text-delta&#x27;,index:0,text:&#x27;失败草稿&#x27;},{type:&#x27;finish&#x27;,reason:{kind:&#x27;error&#x27;,failure:{code:&#x27;SERVER&#x27;,message:&#x27;受控失败&#x27;}}}];
+ const adapter=new Adapter(kind===&#x27;success&#x27;?[toolChunks,textChunks(&#x27;src 放实现，tests 放测试。&#x27;)]:[kind===&#x27;failure&#x27;?failed:textChunks(&#x27;无法结算的回答&#x27;)]);
+ ctx.llm.registerAdapter([&#x27;fixture&#x27;],adapter);
+ let handle:any;let bodies=0;
+ ctx.on(&#x27;session/event&#x27;,(_s,e)=&gt;{facts.push(e);record(&#x27;session&#x27;,e);});
+ ctx.on(&#x27;agent/assistant-stream&#x27;,({frame})=&gt;record(&#x27;live&#x27;,frame));
+ ctx.on(&#x27;tools/result&#x27;,(exec,result)=&gt;record(&#x27;tools/result&#x27;,{id:exec.callId,result}));
+ ctx.on(&#x27;agent/error&#x27;,event=&gt;record(&#x27;agent/error&#x27;,{error:String(event.error)}));
+ ctx.on(&#x27;llm/stream&#x27;,async function*(options,next){
+  const events=[...facts],rebuilt=rebuild(events),header=rebuilt.requestHeader()!;
+  assert.deepEqual(rebuilt.deriveMessages(),options.messages);
+  for(const [key,value] of Object.entries(header.config))assert.deepEqual((options as any)[key],value);
+  assert.deepEqual(header.tools??[],options.tools??[]);assert.deepEqual(rebuilt.toolHistory(),options.toolHistory);
+  prefixes.push({events,asOfSeq:events.at(-1)?.seq,messages:options.messages,header,toolHistory:options.toolHistory,reconstruction:&#x27;PASS&#x27;});
+  record(&#x27;loop-request&#x27;,{asOfSeq:events.at(-1)?.seq});yield* next();
+ });
+ try{
+  handle=await ctx.agents.create({sessionId:SessionId(&#x27;h17-D-&#x27;+kind),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;scripted&#x27;}});
+  ctx.tools.register(defineTool({name:&#x27;inspect_fixture&#x27;,description:&#x27;返回内存目录，不接触磁盘&#x27;,parameters:{},
+   output:{schema:{type:&#x27;string&#x27;},render:(_args,value)=&gt;[{type:&#x27;text&#x27;,text:value}]},
+   async execute(){bodies++;return &#x27;src/ 与 tests/&#x27;;}}));
+  if(kind===&#x27;rejected-settlement&#x27;){
+   const append=handle.agent.session.append.bind(handle.agent.session);
+   // 受控实例故障，不修改官方源码；拒绝两种结算，验证实时帧不能制造日志事实。
+   Object.defineProperty(handle.agent.session,&#x27;append&#x27;,{value:(type:string,...args:any[])=&gt;{
+    if(type===&#x27;assistant/message&#x27;||type===&#x27;assistant/attempt&#x27;)throw Error(&#x27;fixture settlement rejection&#x27;);
+    return append(type,...args);
+   }});
+  }
+  handle.agent.followup(user(&#x27;读取 README，检查测试文件，再汇总项目结构。&#x27;));
+  await handle.agent.whenIdle();
+  const messages=handle.agent.session.deriveMessages();
+  assert.ok(prefixes.length&gt;=1);assert.ok(trace.some(t=&gt;t.channel===&#x27;live&#x27;));
+  if(kind===&#x27;success&#x27;){
+   assert.equal(bodies,1);assert.equal(adapter.requests.length,2);
+   const result=facts.find(e=&gt;e.type===&#x27;tool/result&#x27;)!;assert.equal(result.data.message.toolCallId,&#x27;readme&#x27;);
+   const callEvent=facts.find(e=&gt;e.type===&#x27;tool/call&#x27;)!;assert.ok(result.sourceEventSeqs?.includes(callEvent.seq));
+   assert.ok(adapter.requests[1].messages.some((m:any)=&gt;m.role===&#x27;tool&#x27;&amp;&amp;m.toolCallId===&#x27;readme&#x27;));
+   assert.deepEqual(adapter.requests[1].messages,prefixes[1].messages);
+   const notice=trace.find(t=&gt;t.channel===&#x27;tools/result&#x27;)!,committed=trace.find(t=&gt;t.channel===&#x27;session&#x27;&amp;&amp;t.data.type===&#x27;tool/result&#x27;)!;
+   assert.ok(notice.position&lt;committed.position);
+  }else if(kind===&#x27;failure&#x27;){
+   assert.equal(facts.filter(e=&gt;e.type===&#x27;assistant/attempt&#x27;).length,1);
+   assert.equal(messages.filter(m=&gt;m.role===&#x27;assistant&#x27;).length,0);
+  }else{
+   assert.equal(facts.filter(e=&gt;e.type.startsWith(&#x27;assistant/&#x27;)).length,0);
+   assert.ok(trace.some(t=&gt;t.channel===&#x27;live&#x27;&amp;&amp;JSON.stringify(t.data).includes(&#x27;abandoned&#x27;)));
+  }
+  return {kind,bodies,facts,nodes:[...handle.agent.session.surface.nodes],messages,prefixes,adapterRequests:adapter.requests,trace,
+   texts:messages.map(textOf),persistence:&#x27;memory only; no checkpoint policy or backend&#x27;};
+ }finally{if(handle)await handle.dispose();await ctx.fiber.dispose();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>success运行一次常量工具、两次模型请求，原日志16条，完整seq见上表。请求一截至7，只见system/user；请求二截至12，见system/user/assistant/tool。唯一request/header在seq6，两次请求共享其快照。每份事件前缀在第二真实Session重建时，都与Loop的messages/config/tools/toolHistory相等；第二Adapter消息也相等，本例没有附件与动态工具投影。</p><p>readme调用的结果通过toolCallId关联，sourceEventSeqs包含seq9。tools/result是运行时观察，先于seq10提交；规范value不被当作全量模型结果存档。failure有已结算attempt和紧凑失败流，却没有模型Assistant消息。rejected-settlement有实时输出，但两类Assistant结算都被夹具拒绝，无Assistant事实，不能制造持久attempt补齐；真实硬崩溃尚未测试。自评10分：请求前缀3，调用/结果关联2，实时/结算2，失败两分支2，内存与E边界1；拿最终回答加入产生它的第二请求，不得前缀分。</p></div></details>
+<h2>综合事件轨迹推理：先遮住答案</h2>
+<p>这份确定性组件夹具使用合法核心事件，固定time与MessageId，并由第二真实Session接纳重建；空stream仅省略手工成功消息的H12流细节，真实流结算在D另测。它不是完整Loop轨迹，省略inbox与实际重试调度，seq与D不同。seq11记录失败尝试，随后seq12代表同Step后一次成功结算；不要由这份夹具推论系统默认一定重试。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>Seq</th><th>事件与必要输入</th></tr></thead><tbody><tr><td>0</td><td>turn/start，turn1</td></tr><tr><td>1</td><td>step/start，step1</td></tr><tr><td>2</td><td>system/message：只根据项目材料作答，append</td></tr><tr><td>3</td><td>user/message：读取README并检查tests，append</td></tr><tr><td>4</td><td>request/header：fixture/scripted，inspect_fixture完整Schema，initial</td></tr><tr><td>5</td><td>request/context：contextWindow4096</td></tr><tr><td>6</td><td>assistant/message：ToolCallBlock(readme,inspect_fixture,{})，append</td></tr><tr><td>7</td><td>tool/call：readme</td></tr><tr><td>8</td><td>tool/result：readme，src/实现；tests/测试，append，sourceEventSeqs=[7]</td></tr><tr><td>9</td><td>step/end，step1</td></tr><tr><td>10</td><td>step/start，step2</td></tr><tr><td>11</td><td>assistant/attempt：一次error终态的紧凑流</td></tr><tr><td>12</td><td>assistant/message：项目有实现目录和测试目录，append</td></tr><tr><td>13</td><td>step/end，step2</td></tr><tr><td>14</td><td>turn/end，completed</td></tr><tr><td>15</td><td>user/message注入摘要，replace(start3,end3)，sourceEventSeqs=[3]</td></tr></tbody></table></div>
+<p>请独立写出八项产出：原日志条数；当前Surface；最终Message的Seq与role；仅日志事件；被遮蔽但仍保留的事件；工具配对证据；attempt为何不是消息；按C的单元折叠的当前任务值。再加一问：产生seq6响应的第一次请求，只能读取到哪个前缀？</p>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实践完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {taskDefinition} from &#x27;./projection.ts&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import {assert,Context,SessionStore,Session,SessionId,SessionSeq,ToolCallId,user,injected,assistant,system,createToolResultMessage,foldSurface,foldRequestHeader,rebuild,view,type SessionEvent} from &#x27;./support.ts&#x27;;
+// 确定性、合法的组件夹具。手工消息的空 stream 表示省略 H12 细节；完整真实流见实践D。
+export function tracePractice(){
+ const s=Session.create(SessionId(&#x27;h17-X&#x27;)),events:SessionEvent[]=[];
+ const append=(...args:any[])=&gt;{const e=Reflect.apply(s.append,s,args) as SessionEvent;
+  // 生成器的 UUID / time 在这里规范化为固定夹具值，再交第二个真实 Session 校验。
+  const fixed=structuredClone(e) as any;fixed.time=1000+e.seq;
+  const message=fixed.type===&#x27;user/message&#x27;?fixed.data:fixed.data.message;
+  if(message)message.id=&#x27;h17-message-&#x27;+e.seq;events.push(fixed);return e;};
+ append(&#x27;turn/start&#x27;,{turn:1}); // 0
+ append(&#x27;step/start&#x27;,{turn:1,step:1}); // 1
+ append(&#x27;system/message&#x27;,{turn:1,step:1,message:system(&#x27;只根据项目材料作答&#x27;)},{surfaceOp:&#x27;append&#x27;}); // 2
+ append(&#x27;user/message&#x27;,user(&#x27;读取 README 并检查 tests&#x27;),{surfaceOp:&#x27;append&#x27;}); // 3
+ append(&#x27;request/header&#x27;,{reason:&#x27;initial&#x27;,header:{config:{provider:&#x27;fixture&#x27;,model:&#x27;scripted&#x27;},tools:[{name:&#x27;inspect_fixture&#x27;,description:&#x27;内存只读&#x27;,parameters:{type:&#x27;object&#x27;}}]}}); // 4
+ append(&#x27;request/context&#x27;,{provider:&#x27;fixture&#x27;,model:&#x27;scripted&#x27;,contextWindow:4096}); // 5
+ const tool=assistant(&#x27;&#x27;);const message={...tool,content:[{type:&#x27;tool-call&#x27;,id:ToolCallId(&#x27;readme&#x27;),name:&#x27;inspect_fixture&#x27;,arguments:&#x27;{}&#x27;}]};
+ append(&#x27;assistant/message&#x27;,{turn:1,step:1,message,stream:[]},{surfaceOp:&#x27;append&#x27;}); // 6
+ append(&#x27;tool/call&#x27;,{turn:1,step:1,callId:ToolCallId(&#x27;readme&#x27;),name:&#x27;inspect_fixture&#x27;,arguments:&#x27;{}&#x27;}); // 7
+ append(&#x27;tool/result&#x27;,{turn:1,step:1,message:createToolResultMessage({callId:ToolCallId(&#x27;readme&#x27;),content:[{type:&#x27;text&#x27;,text:&#x27;src/ 实现；tests/ 测试&#x27;}],isError:false})},{surfaceOp:&#x27;append&#x27;,sourceEventSeqs:[SessionSeq(7)]}); // 8
+ append(&#x27;step/end&#x27;,{turn:1,step:1}); // 9
+ append(&#x27;step/start&#x27;,{turn:1,step:2}); // 10
+ append(&#x27;assistant/attempt&#x27;,{turn:1,step:2,stream:[{type:&#x27;chunk&#x27;,time:1011,chunk:{type:&#x27;finish&#x27;,reason:{kind:&#x27;error&#x27;,failure:{code:&#x27;SERVER&#x27;,message:&#x27;受控失败&#x27;}}}}]}); // 11
+ append(&#x27;assistant/message&#x27;,{turn:1,step:2,message:assistant(&#x27;项目有实现目录和测试目录&#x27;),stream:[]},{surfaceOp:&#x27;append&#x27;}); // 12
+ append(&#x27;step/end&#x27;,{turn:1,step:2}); // 13
+ append(&#x27;turn/end&#x27;,{turn:1,reason:{kind:&#x27;completed&#x27;}}); // 14
+ append(&#x27;user/message&#x27;,injected(&#x27;任务摘要：已检查 README 和 tests&#x27;),{surfaceOp:{op:&#x27;replace&#x27;,startSeq:SessionSeq(3),endSeq:SessionSeq(3)},sourceEventSeqs:[SessionSeq(3)]}); // 15
+ const rebuilt=rebuild(events),state=events.reduce(taskDefinition.apply,taskDefinition.init());
+ assert.deepEqual(rebuilt.surface.nodes,[2,15,6,8,12]);assert.equal(events.length,16);
+ assert.equal(rebuilt.deriveMessages().length,5);assert.equal(state.status,&#x27;completed&#x27;);
+ assert.equal(rebuilt.seq,17); // 额外的 session/end-seed 只属于重建实例。
+ assert.deepEqual(foldSurface(events).nodes,rebuilt.surface.nodes);
+ assert.deepEqual(foldRequestHeader(events),rebuilt.requestHeader());
+ return {events,...view(rebuilt,events),state,sourceEventCount:16,reconstructionEventCount:rebuilt.seq,
+  atRequest1:{prefixLength:6,nodes:foldSurface(events.slice(0,6)).nodes,messages:rebuild(events.slice(0,6)).deriveMessages()},
+  logOnly:events.filter(e=&gt;!e.surfaceOp).map(e=&gt;e.seq),shadowed:[3]};
+}
+export async function traceRegistryPractice(){
+ const x=tracePractice(),ctx=new Context();
+ try{
+  await ctx.plugin(SessionStore);await ctx.plugin(SessionProjectionRegistry);
+  const handle=await ctx.sessionProjections.register(taskDefinition);
+  const session=ctx.sessions.create(SessionId(&#x27;h17-X-registry&#x27;),{seed:x.events,meta:{createdAt:0}});
+  assert.deepEqual(handle.stateOf(session),x.state);
+  return {...x,projectionSnapshot:ctx.sessionProjections.snapshot(session),projectionVerified:&#x27;real registry equals independent fold&#x27;};
+ }finally{await ctx.fiber.dispose();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实践详细参考答案</summary><div class="lesson-callout-body"><p>原日志16条，现有Seq0～15，结尾Offset16。Surface依次为[2,15,6,8,12]；最终5条Message依次为system、注入user、含工具提议的assistant、readme工具结果、最终assistant。15进入原3所在位置，不能按数值Seq排序成[2,6,8,12,15]。原3仍在日志，当前被遮蔽；成功消息6/12与结果8继续在模型历史里。</p><p>仅日志Seq为[0,1,4,5,7,9,10,11,13,14]。readme同时出现在6的ToolCallBlock.id、7的callId和8的message.toolCallId，8的sourceEventSeqs再指向7。attempt11不携带SurfaceOp，deriveEventMessage返回null，不能因为它记录过error前的草稿而插入Assistant历史。任务单元先idle，遇0变running/1/0，遇14变completed/1/1；其他14条事件保留状态，当前即该值。</p><p>产生6之前的前缀是[0,6)，包含0～5，当前节点[2,3]，消息只有system和原用户。最后再做一次[0,16)重建不能当作当时请求。第二Session额外追加session/end-seed，所以它自己的seq=17；这不能把原轨迹条数改成17。程序同时核离线foldSurface和foldRequestHeader，当前task值使用与C相同的apply从头计算，再由真实Registry重新折叠对照。Registry快照覆盖附加标记至asOfSeq16，任务值不因无关标记改变。</p><p>作者建议20分自评：条数/身份2，Surface位置4，五消息3，log-only2，保留历史2，工具关联2，attempt解释2，Projection2，过去前缀1。阈值尚未校准；替换=删除、所有事件=消息、append=耐久三项关键误解须先修正，不用其余分数冲抵。</p></div></details>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {appendPractice} from &#x27;./append.ts&#x27;;
+import {surfacePractice} from &#x27;./surface.ts&#x27;;
+import {projectionPractice} from &#x27;./projection.ts&#x27;;
+import {agentPractice} from &#x27;./agent.ts&#x27;;
+import {traceRegistryPractice} from &#x27;./trace.ts&#x27;;
+for(const [key,run] of Object.entries({A:appendPractice,B:surfacePractice,C:projectionPractice,D:()=&gt;agentPractice(),D_failure:()=&gt;agentPractice(&#x27;failure&#x27;),D_rejected:()=&gt;agentPractice(&#x27;rejected-settlement&#x27;),X:traceRegistryPractice}))
+ if(!process.argv[2]||process.argv[2]===key)console.log(key+&#x27; &#x27;+JSON.stringify(await run()));</code></pre></div></div></details>
+<h2>思考与迁移</h2>
+<ol>
+<li>只保存聊天列表，为什么不能准确解释请求失败和工具是否执行？</li>
+</ol>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>列表是某种展示结果，通常没有Turn/Step、请求头、失败attempt及调度接手事实。D中的tool/call与tools/result发生在不同边界，最终相同文本也可能来自不同执行路径。应补齐有序事实和来源，才能区分提议、接手、结果与结算；增加一段“成功了”的文字仍不能替代事件证据。</p></div></details>
+<ol start="2">
+<li>推导：日志只有Seq0～3，session.seq为4。读取[1,4)有几条？SessionSeq(4)构造成功说明什么？</li>
+</ol>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>半开区间包括1、2、3共3条，4是边界。SessionSeq构造函数只验证非负安全整数且不是负零，并不了解某个日志，不能证明4是已有事件。具体拥有日志的操作还须检查存在性。Cursor在空日志用-1，OptionalSessionSeq用null；不能拿边界4或空值随意冒充某条事实。</p></div></details>
+<ol start="3">
+<li>推导：当前Surface[0,6,4,5]，replace(6,4)只给sourceEventSeqs=[6]，随后改为[6,4]。两次有什么差别？</li>
+</ol>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>范围按Surface位置包含6和4，不按数值大小判断。第一次缺4，校验失败且日志和派生状态不变；第二次源覆盖完整，在本课user替换前提下合法。新节点落在6原位置，旧6/4留日志。若把起止反过来，当前位置顺序颠倒；若覆盖的是受保护system头，还需满足额外类型约束。</p></div></details>
+<ol start="4">
+<li>推导：Surface有空system、空assistant、空user、tool/result，以及一个仅日志attempt。模型得到几条消息？</li>
+</ol>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>attempt根本不在Surface；空system和空assistant派生null；空user按该函数规则仍返回用户消息，tool/result返回tool消息，因此2条。这个答案来自各类型分支，不能用“所有空内容都忽略”概括。消息是否最终能被某Provider接受还属Adapter边界，本题只推导Session的deriveMessages，不给Provider兼容保证。</p></div></details>
+<ol start="5">
+<li>为什么仅追加日志也允许Surface替换？人类聊天展示应直接照Surface吗？</li>
+</ol>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>替换也是新事实，追加新事件说明怎样改读视图，没有修改旧事件。模型当前可以读摘要，人类先前看到的对话仍有append-origin来源可展示。若直接把Surface当人类完整档案，会让被摘要遮蔽的对话从展示中消失。应区分不同读模型的用途，再选规则，而不是让展示和模型窗口共用一个可变权威数组。</p></div></details>
+<ol start="6">
+<li>失败attempt已经含草稿，为什么不把它自动变成assistant/message？硬中断一定留attempt吗？</li>
+</ol>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>草稿曾经流出只证明瞬时观察，失败结算的意图是保留诊断而不承诺那段话成为正常模型历史。D_failure实际有attempt但无Assistant消息；D_rejected更早在结算入口失败，只有实时帧、无对应事实。真实硬退出也可能早于结算，所以不能保证attempt一定存在。部分本地取消可以按安全内容规则保留interrupted message，那是另一个明确条件分支。</p></div></details>
+<ol start="7">
+<li>推导：header1有temperature和工具read，header2只有provider/model。然后Registry换了read定义。当前头与历史声明怎样判断？</li>
+</ol>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>header是完整快照，header2不继承被省掉的temperature或read；折叠当前头只保留其规范字段。历史请求1应切到当时前缀，仍有原Schema。工具新增的历史解释则根据对应developer消息的headerSeq解析，不能查现在Registry补定义。当前头、历史头和工具历史系列是关联读法，不能把任何一个等同“当前所有注册工具”。</p></div></details>
+<ol start="8">
+<li>推导：Projection无关事件每次返回{...state}，内容没变。onChanged一定没通知吗？dispose后handle又怎样？</li>
+</ol>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>新对象让状态引用变化；若wire.view也返回新对象，Object.is比较同样认为改变，可能产生无意义通知。无关事件应返回原引用，wire也需适当复用；反过来原地修改旧状态会掩盖变化。dispose让注册退出全局驱动与snapshot，保留handle仍按原单元读取新事件，不代表重新注册，也不意味着缓存变成真源。</p></div></details>
+<ol start="9">
+<li>append成功且session/event观察到了，紧接着进程退出，为什么不能保证重启可见？</li>
+</ol>
+<details id="lesson-deepdive-22" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>这些证据只到内存提交和通知，存储插件可能还在缓冲，甚至没有后端。应检查是否调用受支持的flush、后端是否参与、承诺及结果是否成功。A的计数器甚至能使flush返回true而没有任何磁盘写入，所以不能用布尔值替代后端证据。真正跨进程与崩溃恢复须在H18用实际后端另外测试。</p></div></details>
+<ol start="10">
+<li>tool/call已记录却没有result，能否恢复时再执行一次写工具把日志补完整？</li>
+</ol>
+<details id="lesson-deepdive-23" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>不能仅凭缺结果作此决定。外部动作可能已生效，只是结果没到或没提交，重做可能重复写入。历史重建只解释已记录事实，不恢复原进程、连接或OS权限，也不授予新操作权。应先核阶段、外部状态及幂等机制，保守处理未知结果；具体修复协议属于H18/H20，不在本课伪造一个成功result。</p></div></details>
+<ol start="11">
+<li>为什么stateSchema与stateVersion都需要？同一日志能不能用任意新apply折叠出“同一个状态”？</li>
+</ol>
+<details id="lesson-deepdive-24" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 11 参考答案</summary><div class="lesson-callout-body"><p>Schema检查序列化状态的形状，版本声明解释规则是否兼容；字段形状相同也可能因为apply语义变化而不兼容。日志不变并不意味着任意算法结果相同，重建还需要正确格式、事件顺序与单元定义。C测试坏行和版本错行不出视图，不能因此说live apply每步都过stateSchema，更不能把一次缓存结果当成独立权威。</p></div></details>
+<ol start="12">
+<li>同一日志为何能同时供模型请求、聊天展示、工具历史和任务状态使用？代价是什么？</li>
+</ol>
+<details id="lesson-deepdive-25" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 12 参考答案</summary><div class="lesson-callout-body"><p>各视图共享已提交事实与身份，不必各维护一份可互相矛盾的权威记录；按用途分别选择append-origin、Surface、header/工具声明或领域折叠。代价是必须维护顺序、格式/版本、源引用与解释规则，控制缓存一致切面，保留必要插件定义。还要为耐久性与外部副作用另设边界。一份日志能产生多种读法，不代表这些读法可以脱离规则无限自由解释。</p></div></details>
+<h2>本课停在哪里</h2>
+<p>现在你应该能够拿一份明确前缀，把“事实还在”“当前节点有哪些”“模型实际读哪些消息”“任务是什么状态”分别算出，并指出哪个结论依赖哪个事件。验收以综合实验的独立推导为主，测试通过只验证列明行为。</p>
+<p>H18接着问这些事实怎样存到可靠介质、怎样只读重建或继续执行、怎样Fork并处理不完整尾部；H19再决定怎样管理上下文，H20再讨论失败与重试策略。H17到此停止，不把重建等同外部动作重做，不发布课程。</p></div></main></body></html>

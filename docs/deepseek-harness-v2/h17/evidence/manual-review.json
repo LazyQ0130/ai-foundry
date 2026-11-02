@@ -1,0 +1,79 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "reviewer": "same author; actual tool image viewing, not independent external review",
+  "date": "2026-11-02",
+  "samples": [
+    {
+      "path": "figures/h17-01.png",
+      "sha256": "ef78648cb8327602d0d6728ac309fb215a78806ab975218525825fb6ae47f48f",
+      "observation": "状态与有序事实分开；折叠前提及外部副作用限制清晰；未发现遮挡。"
+    },
+    {
+      "path": "figures/h17-02.png",
+      "sha256": "79702c433cda79251163d741cb1d6e4a0deba9c152b27977289adf8e1ace4b6f",
+      "observation": "节点由[0,1,2,4,5]变[0,6,4,5]，日志保留7条而消息为3条；空节点与attempt分开。"
+    },
+    {
+      "path": "figures/h17-03.png",
+      "sha256": "d22f3f8a38f187d6315eacc374352f0fd686e747fd3dcc000db7db001f332a90",
+      "observation": "三种读法并列；Header在日志之外；注册表与业务投影没有画成模型历史必经链。"
+    },
+    {
+      "path": "figures/h17-04.png",
+      "sha256": "a457a80f18208993f20033160d4e3fedc17eac207cac57617bc830fc01bf8c6d",
+      "observation": "与D的0至15顺序一致；实时帧没有seq；flush单列且无后端/fsync声明明确。"
+    },
+    {
+      "path": "figures/qa/h17-01-320.png",
+      "sha256": "2fb4f79936d2cf8a9dab2119d00218b01c4f1ea2bb03f87be03245ba03d36de2",
+      "observation": "320宽度正文中的图一及中文图注可读，图内无重叠或裁切。"
+    },
+    {
+      "path": "figures/qa/h17-02-320.png",
+      "sha256": "193929e8b50ed4830188e2c17221ace855af8c6dff3bf2fee2fa1e06f2cd3c7a",
+      "observation": "320宽度中替换前后节点及事实/消息计数可读。"
+    },
+    {
+      "path": "figures/qa/h17-03-320.png",
+      "sha256": "63b9c72767889ac997758663e2566ae3cf95aa2aaa56bc3402fc921ccdb7282c",
+      "observation": "320宽度中三种读法及投影引用规则可读。"
+    },
+    {
+      "path": "figures/qa/h17-04-320.png",
+      "sha256": "8b2e81bf0db40a38852c4ccf7a03a9dde14efcae34b0c0ac3d317c74f97c2fe4",
+      "observation": "320宽度中分段时间线可读，长英文事件名未越界。"
+    },
+    {
+      "path": "figures/qa/answer-320.png",
+      "sha256": "5be00667475f9ff7e64f69a9ae3e0e33397c4d3534cd858f9b47b21a5c50870f",
+      "observation": "实践A长答案完整，内容自然换行且无横向正文裁切。"
+    },
+    {
+      "path": "figures/qa/answer-390.png",
+      "sha256": "8d93869a053fa5d47a15863910e166fa41742275822eb66a0e4a658219717486",
+      "observation": "390宽度长答案展开完整；详细边界与自评条目可读。"
+    },
+    {
+      "path": "figures/qa/combined-answer-320.png",
+      "sha256": "6cdb3788698eb3ef164a53f2d51dc5c94d214781cf0906dd143c1df5f262b0ea",
+      "observation": "综合答案完整：16事实/5消息、替换位置、工具关联、前缀和end-seed计数均可读。"
+    },
+    {
+      "path": "figures/qa/static-intro-1440.png",
+      "sha256": "224d28bf6ca82a9a8403b0787798f1b96afc1339773543f8d25437b5f89f8c1c",
+      "observation": "桌面静态预览首屏层级、标题和导入可读。"
+    },
+    {
+      "path": "figures/qa/static-intro-390.png",
+      "sha256": "c3f5d25c934f6f840c4458a40b119f2b83be45886a3aba89b0513814dee10450",
+      "observation": "手机静态预览首屏自然换行、无正文溢出。"
+    }
+  ],
+  "automatedChecks": "visual-qa.json separately records actual React interactions at 1440/390/320",
+  "limitations": [
+    "not a real learner trial",
+    "not independent review",
+    "no low-vision user study",
+    "sample review does not claim every pixel of long full-page screenshots was manually read"
+  ]
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1550" viewBox="0 0 640 1550" role="img"><title>日志保留，模型可见顺序可以变化</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1550" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">日志保留，模型可见顺序可以变化</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">B：仅追加事件日志</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">0 system；1 user；2 assistant</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">3 attempt；4 tool result；5 空developer</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">后来追加 6：替换当前节点 1 到 2</text>
+<path d="M320 307 V363" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="342" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Surface规则</text>
+<rect x="32" y="388" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="431" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">替换前 → 替换后</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">[0, 1, 2, 4, 5] → [0, 6, 4, 5]</text>
+<text x="52" y="517" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">端点为当前节点；两端均包含</text>
+<text x="52" y="559" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">sourceEventSeqs 必须覆盖 1、2</text>
+<path d="M320 595 V651" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="630" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">消息派生</text>
+<rect x="32" y="676" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="719" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">deriveMessages() 的三条消息</text>
+<text x="52" y="763" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">0：system；6：user 摘要</text>
+<text x="52" y="805" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">4：tool；5 空节点不产生 Message</text>
+<text x="52" y="847" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">3 attempt 从未加入 Surface</text>
+<rect x="32" y="904" width="576" height="156" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="947" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">7 条事实仍全部保留</text>
+<text x="52" y="991" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">事件 1、2 被遮蔽，没有物理删除</text>
+<text x="52" y="1033" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">节点顺序不同于日志追加顺序</text>
+<rect x="32" y="1090" width="576" height="156" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1133" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">不把 Surface 当人类聊天档案</text>
+<text x="52" y="1177" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">展示历史另选 append-origin 事实</text>
+<text x="52" y="1219" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">图示省略插件消息投影扩展</text>
+<text x="32" y="1522" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

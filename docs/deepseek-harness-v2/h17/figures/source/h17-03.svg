@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1530" viewBox="0 0 640 1530" role="img"><title>同一份事实，多个有规则的读视图</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1530" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">同一份事实，多个有规则的读视图</text>
+<rect x="32" y="100" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Session 已提交事件前缀</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">按 seq 连续；保留原始事实</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Header 元数据位于事件日志之外</text>
+<rect x="32" y="286" width="576" height="156" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="329" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">读法一：模型历史</text>
+<text x="52" y="373" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Surface 决定节点与顺序</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">deriveMessages 把节点变为 Message</text>
+<rect x="32" y="472" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="515" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">读法二：任务状态 Projection</text>
+<text x="52" y="559" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">init：idle；turn/start：running</text>
+<text x="52" y="601" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">turn/end：completed 或 error</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">无关事件返回同一状态引用</text>
+<rect x="32" y="700" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="743" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">读法三：请求与工具历史</text>
+<text x="52" y="787" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">最新 request/header → 配置 / Schema</text>
+<text x="52" y="829" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">ToolHistoryProjection → 历史声明</text>
+<text x="52" y="871" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不依赖现在的 Tool Registry</text>
+<rect x="32" y="928" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="971" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">注册表驱动，领域单元只计算</text>
+<text x="52" y="1015" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">await register → handle.stateOf</text>
+<text x="52" y="1057" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">snapshot 返回同一 seq 的全量视图</text>
+<text x="52" y="1099" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">onChanged 受状态和 view 引用门控</text>
+<rect x="32" y="1156" width="576" height="156" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1199" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">缓存不是独立真源</text>
+<text x="52" y="1243" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">按正确事件格式与版本重算</text>
+<text x="52" y="1285" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">持久存储是另一项能力</text>
+<text x="32" y="1502" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

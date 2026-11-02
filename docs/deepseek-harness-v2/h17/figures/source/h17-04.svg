@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1740" viewBox="0 0 640 1740" role="img"><title>真实执行：实时、提交与检查点</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1740" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">真实执行：实时、提交与检查点</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">D：第一个请求之前</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">0 / 2 inbox：仅日志；1 turn/start</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">3 step/start；4 system；5 user</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">6 request/header；7 request/context</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">请求一与实时响应</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Loop读取前缀 [0, 8)</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">实时 start / chunk 没有 Session seq</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">8 assistant/message：结算工具提议</text>
+<rect x="32" y="556" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="599" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工具接手与结果提交</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">9 tool/call：仅日志</text>
+<text x="52" y="685" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">tools/result：运行时观察，无 seq</text>
+<text x="52" y="727" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">10 tool/result：模型可见结果</text>
+<rect x="32" y="784" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="827" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">下一 Step 与最终回答</text>
+<text x="52" y="871" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">11 step/end；12 step/start</text>
+<text x="52" y="913" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">请求二读取前缀 [0, 13)</text>
+<text x="52" y="955" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">13 assistant/message：最终回答</text>
+<rect x="32" y="1012" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="1055" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">结束不是磁盘保证</text>
+<text x="52" y="1099" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">14 step/end；15 turn/end</text>
+<text x="52" y="1141" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">图中16条事实已在内存提交</text>
+<text x="52" y="1183" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">仅日志事件不会全部变聊天消息</text>
+<rect x="32" y="1240" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1283" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">单独的耐久性边界</text>
+<text x="52" y="1327" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">调用 ctx.sessions.flush(session)</text>
+<text x="52" y="1369" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">等待实际后端承诺；本例无后端</text>
+<text x="52" y="1411" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">本图不表示 fsync 已发生</text>
+<text x="32" y="1712" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

@@ -1,0 +1,54 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "session.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h17-lab-DihJlu",
+  "programs": [
+    {
+      "name": "agent.ts",
+      "sha256": "342dcccc3608d1ebc154fb6e49e8f3c9f156d3161370ce3130f26e9451b80206"
+    },
+    {
+      "name": "append.ts",
+      "sha256": "f2ff7fbfb59ac51e3787f64d38415baf4cd7764455aa28d9db96f69e93905057"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "101e001912de88b0d175eb0b0dae6abf599554964b612a0948d5dfbc72d74b9a"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "560882fab926334b453ca6e0ebdbd479fbea2b62123d5e4c36fde7b8226bd71c"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "d1cbf120d51316bd61442b0b82f97dc330a485c2ca8b3c0cb855b78fac020c8a"
+    },
+    {
+      "name": "projection.ts",
+      "sha256": "eccbe782dc9108f7243f4800f79bce9043ca6788bdaddb13b58592306f311c08"
+    },
+    {
+      "name": "session.test.ts",
+      "sha256": "10d288c06b0c31f70f09dd397e866cbb603d8c2f38deb1763a70f907a62cdeb6"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "7276a515589b3fa789b5fc3bd4f270b4edf3af385ea4bc1842d0a45cc32ed8be"
+    },
+    {
+      "name": "surface.ts",
+      "sha256": "ac411725e4080184d4010c94d744c737b8ace6bb52e7e3cebd4ea380edb3a242"
+    },
+    {
+      "name": "trace.ts",
+      "sha256": "a15a557b7298fe36a4ff2f278253e674c1d53b29584f60d340e407669cfba614"
+    }
+  ],
+  "exit": 0,
+  "stdout": "TAP version 13\n# Subtest: C A: lossless JSON rejection, immutable snapshot and flush boundaries\nok 1 - C A: lossless JSON rejection, immutable snapshot and flush boundaries\n  ---\n  duration_ms: 8.5629\n  type: 'test'\n  ...\n# Subtest: C brands: reject negative zero, fractional and unsafe numbers\nok 2 - C brands: reject negative zero, fractional and unsafe numbers\n  ---\n  duration_ms: 0.147\n  type: 'test'\n  ...\n# Subtest: C membership: prepared session cannot write; header creates no event\nok 3 - C membership: prepared session cannot write; header creates no event\n  ---\n  duration_ms: 1.3537\n  type: 'test'\n  ...\n# Subtest: C observer: failed listener cannot undo commit or suppress later listener\nok 4 - C observer: failed listener cannot undo commit or suppress later listener\n  ---\n  duration_ms: 1.8097\n  type: 'test'\n  ...\n# Subtest: C publication: reentrant append is rejected before log growth\nok 5 - C publication: reentrant append is rejected before log growth\n  ---\n  duration_ms: 1.2684\n  type: 'test'\n  ...\n# Subtest: C flush: waits all listeners before reporting registered first failure\nok 6 - C flush: waits all listeners before reporting registered first failure\n  ---\n  duration_ms: 1.3365\n  type: 'test'\n  ...\n# Subtest: C B: positional replacement, complete source coverage and retained facts\nok 7 - C B: positional replacement, complete source coverage and retained facts\n  ---\n  duration_ms: 2.9854\n  type: 'test'\n  ...\n# Subtest: C surface eligibility: log-only cannot carry operation, message requires it\nok 8 - C surface eligibility: log-only cannot carry operation, message requires it\n  ---\n  duration_ms: 0.2377\n  type: 'test'\n  ...\n# Subtest: C empty content: system/developer/assistant dormant nodes, user remains\nok 9 - C empty content: system/developer/assistant dormant nodes, user remains\n  ---\n  duration_ms: 0.3574\n  type: 'test'\n  ...\n# Subtest: C canonical header: empty optional fields omitted; full snapshot supersedes\nok 10 - C canonical header: empty optional fields omitted; full snapshot supersedes\n  ---\n  duration_ms: 1.3877\n  type: 'test'\n  ...\n# Subtest: C historical tools: addition resolves recorded schema after current removal\nok 11 - C historical tools: addition resolves recorded schema after current removal\n  ---\n  duration_ms: 2.1092\n  type: 'test'\n  ...\n# Subtest: C C: init/apply identity, snapshot, notification, disposal and compatibility\nok 12 - C C: init/apply identity, snapshot, notification, disposal and compatibility\n  ---\n  duration_ms: 7.2176\n  type: 'test'\n  ...\n# Subtest: C X: deterministic legal log yields current surface and task state\nok 13 - C X: deterministic legal log yields current surface and task state\n  ---\n  duration_ms: 1.4928\n  type: 'test'\n  ...\n# Subtest: C X: request-time prefix differs from final history\nok 14 - C X: request-time prefix differs from final history\n  ---\n  duration_ms: 2.5193\n  type: 'test'\n  ...\n# Subtest: C replay rejects gapped seed; no silent reorder\nok 15 - C replay rejects gapped seed; no silent reorder\n  ---\n  duration_ms: 0.9264\n  type: 'test'\n  ...\n# Subtest: D success: real Loop/Native submits tool pair and rebuilds both requests\nok 16 - D success: real Loop/Native submits tool pair and rebuilds both requests\n  ---\n  duration_ms: 18.7849\n  type: 'test'\n  ...\n# Subtest: D failure: settled attempt retains stream without assistant model message\nok 17 - D failure: settled attempt retains stream without assistant model message\n  ---\n  duration_ms: 7.2206\n  type: 'test'\n  ...\n# Subtest: D rejected settlement: live chunks exist but no fabricated persistent attempt\nok 18 - D rejected settlement: live chunks exist but no fabricated persistent attempt\n  ---\n  duration_ms: 7.0531\n  type: 'test'\n  ...\n1..18\n# tests 18\n# suites 0\n# pass 18\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 485.6635\n",
+  "stderr": "",
+  "error": null
+}

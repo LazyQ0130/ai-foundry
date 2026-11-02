@@ -1,0 +1,15 @@
+--- projection-before.ts
++++ projection.ts
+@@ -18,9 +18,9 @@
+   const handle=await ctx.sessionProjections.register(taskDefinition),changes:any[]=[];
+   const stop=ctx.sessionProjections.onChanged((session,key,value,seq)=>changes.push({id:session.id,key,value,seq}));
+   const initial=handle.stateOf(s);assert.equal(initial.status,'idle');
+-  s.append('step/start',{turn:1,step:1});assert.equal(handle.stateOf(s),initial);assert.equal(changes.length,0);
+-  s.append('turn/start',{turn:1});assert.notEqual(handle.stateOf(s),initial);
+-  s.append('step/end',{turn:1,step:1});assert.equal(changes.length,1);
++  s.append('turn/start',{turn:1});const running=handle.stateOf(s);assert.notEqual(running,initial);
++  s.append('step/start',{turn:1,step:1});assert.equal(handle.stateOf(s),running);assert.equal(changes.length,1);
++  s.append('step/end',{turn:1,step:1});assert.equal(handle.stateOf(s),running);assert.equal(changes.length,1);
+   s.append('turn/end',{turn:1,reason:{kind:'completed'}});
+   assert.equal(changes.length,2);const snap=ctx.sessionProjections.snapshot(s);
+   assert.equal(snap.asOfSeq,3);assert.deepEqual(snap.values['h17/task'],{status:'completed',turn:1,finished:1});
