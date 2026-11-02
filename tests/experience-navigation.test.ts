@@ -74,3 +74,19 @@ test('course task return anchor targets one shared workbench on desktop and mobi
   assert.match(html, /href="#lesson-workbench"/)
 })
 
+test('course help controls appear only for lessons with help and leave article anchors in place', () => {
+  const props = {
+    sidebar: () => h('nav', null, '目录'), workbench: h('div', null, '任务'),
+    children: h('article', null, h('aside', { id: 'lesson-help' }, '原文排查')),
+    remainingTasks: 19, lessonKey: 's2-l8', lessonTitle: '部署上线',
+  }
+  const absent = render(h(LessonLayout, props))
+  assert.doesNotMatch(absent, /本课排查|卡住了怎么办/)
+  const present = render(h(LessonLayout, { ...props, helpItems: [{ id: 'lesson-help', title: '构建失败', body: '检查日志。' }] }))
+  assert.match(present, /本课排查/)
+  assert.match(present, /卡住了怎么办/)
+  assert.equal((present.match(/aria-controls="lesson-help-panel"/g) ?? []).length, 2)
+  assert.equal((present.match(/id="lesson-help"/g) ?? []).length, 1)
+  assert.doesNotMatch(present, /<dialog/)
+})
+

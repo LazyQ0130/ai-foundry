@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { LessonLayout } from '../components/LessonLayout'
 import { LessonProgressStrip, LessonTaskCard } from '../components/LessonTaskPanel'
 import { FreeExperience, PrepFeedback } from '../components/FreeExperience'
 import { ExperienceNextStep, LessonSignInActions } from '../components/LessonContinuation'
@@ -18,6 +17,7 @@ import { stageLessonCount, type Lesson, type Stage } from '../data/courses'
 import { nextLessonOf, prevLessonOf, stageCompletedCount } from '../data/learningProgress'
 import type { LessonContent } from '../data/lessonContent'
 const LessonMarkdown = lazy(() => import('../components/LessonMarkdown').then(module => ({ default: module.LessonMarkdown })))
+const LessonLayout = lazy(() => import('../components/LessonReadingLayout'))
 import { api, ApiError, errorMessage } from '../lib/api'
 import { useAuth } from '../auth/AuthProvider'
 import { useProgress } from '../data/progress'
@@ -319,13 +319,16 @@ function LessonView({ stage, lesson, content }: { stage: Stage; lesson: Lesson; 
   const toggleStage = (stageId: number) => setExpandedStageId(current => current === stageId ? null : stageId)
   const sidebarProps = { currentLessonId: lesson.id, checkKeys: content.meta.checkKeys, expandedStageId, onToggleStage: toggleStage }
 
-  return <LessonLayout
+  return <Suspense fallback={<p role="status" className="shell py-12">正在排版课程…</p>}><LessonLayout
+    lessonKey={lesson.id}
+    lessonTitle={`${lesson.code} ${lesson.title}`}
+    body={content.body}
     remainingTasks={remainingTasks}
     sidebar={(close, idPrefix) => <LessonSidebar {...sidebarProps} onNavigate={close} idPrefix={idPrefix} />}
     workbench={<Workbench stage={stage} lesson={lesson} content={content} />}
   >
     <LessonArticle stage={stage} lesson={lesson} content={content} />
-  </LessonLayout>
+  </LessonLayout></Suspense>
 }
 
 function ProtectedLesson({ stage, lesson }: { stage: Stage; lesson: Lesson }) {

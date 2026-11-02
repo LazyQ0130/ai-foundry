@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { stringify } from 'yaml'
 import { parseLessonContent } from '../server/services/lesson-parser.js'
 import { LessonMarkdown } from '../src/components/LessonMarkdown.js'
-import { lessonUrl } from '../src/lib/lessonMarkdown.js'
+import { extractLessonHelp, lessonUrl } from '../src/lib/lessonMarkdown.js'
 
 const metadata = {
   estimatedTime: '15 分钟', difficulty: '入门', objective: '验证页面',
@@ -80,6 +80,44 @@ test('directive allowlist rejects arbitrary components/attributes and malformed 
   const url = '[http://localhost:3000](http://localhost:3000)'
   assert.match(render(url), /http:\/\/localhost:3000/)
   assert.match(render(':script[alert]'), /:script\[alert\]/)
+})
+
+test('help extraction ignores prose and fenced examples and uses the directive allowlist', () => {
+  assert.deepEqual(extractLessonHelp('## 卡住了怎么办\n\n普通正文\n\n```text\n:::stuck\n这只是示例\n:::\n```'), [])
+  assert.throws(() => extractLessonHelp(':::stuck{onclick="alert(1)"}\n坏属性\n:::'))
+})
+
+test('help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks', () => {
+  const inner = '### 终端报错\n\n**保留提示**，查看[文档][docs]和[本课提示词](#lesson-prompt)。\n\n```bash\nnpm run dev\n```\n\n:::warning{title="先保留数据"}\n不要删除文件。\n:::'
+  const source = `## 操作\n\n::::stuck{title="启动失败"}\n\n${inner}\n\n::::\n\n继续正文。\n\n:::stuck\n\n第二处排查。\n\n:::\n\n[docs]: https://example.com/docs`
+  for (const body of [source, source.replace(/\n/g, '\r\n'), '\uFEFF' + source]) {
+    const items = extractLessonHelp(body)
+    assert.deepEqual(items.map(({ id, title }) => ({ id, title })), [
+      { id: 'lesson-help', title: '启动失败' }, { id: 'lesson-help-2', title: '排查建议 2' },
+    ])
+    assert.ok(items[0].body.startsWith(body.includes('\r\n') ? inner.replace(/\n/g, '\r\n') : inner))
+    assert.doesNotMatch(items[0].body, /继续正文/)
+    const html = renderToStaticMarkup(createElement(LessonMarkdown, { body: items[0].body, anchorPrefix: 'panel-1-' }))
+    for (const fragment of ['<h3>终端报错</h3>', 'npm run dev', 'href="https://example.com/docs"', 'href="#lesson-prompt"', 'id="panel-1-lesson-warning"']) assert.ok(html.includes(fragment), fragment)
+  }
+})
+
+test('help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks', async () => {
+  let most = 0, count = 0
+  for (const directory of (await readdir('course-content', { withFileTypes: true })).filter(entry => entry.isDirectory() && /^(stage-\d+|capstone)$/.test(entry.name))) {
+    for (const file of (await readdir(`course-content/${directory.name}`)).filter(name => name.endsWith('.md'))) {
+      const { body } = parseLessonContent(await readFile(`course-content/${directory.name}/${file}`, 'utf8'))
+      const items = extractLessonHelp(body)
+      const original = render(body)
+      assert.equal(items.length, (original.match(/class="lesson-callout lesson-stuck"/g) ?? []).length, file)
+      const panel = items.map((item, index) => renderToStaticMarkup(createElement(LessonMarkdown, { body: item.body, anchorPrefix: `help-panel-${index + 1}-` }))).join('')
+      const ids = Array.from((original + panel).matchAll(/\sid="([^"]+)"/g), match => match[1])
+      assert.equal(ids.length, new Set(ids).size, `${file}: unique IDs across article and panel`)
+      most = Math.max(most, items.length); count++
+    }
+  }
+  assert.equal(most, 19)
+  assert.equal(count, 39)
 })
 
 test('raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed', () => {

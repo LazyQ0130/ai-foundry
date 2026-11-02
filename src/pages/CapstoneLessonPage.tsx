@@ -6,11 +6,11 @@ import {api,errorMessage} from '../lib/api.js'
 import {useCapstone} from '../data/capstoneProgress.js'
 import {capstoneLessons} from '../data/capstoneLessons.js'
 import type {LessonContent} from '../data/lessonContent.js'
-import {LessonLayout} from '../components/LessonLayout.js'
 import {CapstoneSidebar,CapstoneLessonHeader,CapstoneLessonNavigation} from '../components/CapstoneLearning.js'
 import {LessonProgressStrip,LessonTaskCard} from '../components/LessonTaskPanel.js'
 import {projectPricingPath} from '../lib/projectPricingNavigation.js'
 const LessonMarkdown=lazy(()=>import('../components/LessonMarkdown.js').then(m=>({default:m.LessonMarkdown})))
+const LessonLayout=lazy(()=>import('../components/LessonReadingLayout.js'))
 export default function CapstoneLessonPage(){
  const {lessonId=''}=useParams(),{user}=useAuth(),lab=useCapstone()
  const [loaded,setLoaded]=useState<{id:string;owner:string;content:LessonContent}|null>(null),[error,setError]=useState('')
@@ -30,11 +30,11 @@ export default function CapstoneLessonPage(){
    <LessonTaskCard items={content.meta.checklist} checked={checked} disabled={false} saving={lab.saving} done={done} onToggle={i=>void lab.setCheck(lessonId,content.meta.checkKeys[i],!checked[i])} onComplete={()=>void lab.completeLesson(lessonId)}/>
    {done&&next&&<Link to={'/capstone/lessons/'+next.id} className="btn btn-md btn-outline w-full">进入下一课：{next.id.toUpperCase()}<ArrowRight className="h-4 w-4"/></Link>}
  </div>
- return <LessonLayout remainingTasks={content.meta.checkKeys.filter(key=>!progress?.checks[lessonId]?.[key]).length} sidebar={close=><CapstoneSidebar currentLessonId={lessonId} progress={progress} lessons={lessons} onNavigate={close}/>} workbench={workbench}>
+ return <Suspense fallback={<p role="status" className="shell py-12">正在排版课程…</p>}><LessonLayout lessonKey={lessonId} lessonTitle={`${lessonId.toUpperCase()} ${meta.title}`} body={content.body} remainingTasks={content.meta.checkKeys.filter(key=>!progress?.checks[lessonId]?.[key]).length} sidebar={close=><CapstoneSidebar currentLessonId={lessonId} progress={progress} lessons={lessons} onNavigate={close}/>} workbench={workbench}>
    <article className="lesson-article mx-auto w-full min-w-0 max-w-[740px]">
      <CapstoneLessonHeader lesson={meta} objective={content.meta.objective}/>
      <Suspense fallback={<p role="status">正在排版课程…</p>}><LessonMarkdown body={content.body}/></Suspense>
      <CapstoneLessonNavigation lessonId={lessonId}/>
    </article>
- </LessonLayout>
+ </LessonLayout></Suspense>
 }

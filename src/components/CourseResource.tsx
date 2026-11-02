@@ -3,7 +3,7 @@ import { Download, FileArchive } from 'lucide-react'
 import { courseAssets, isCourseAssetId } from '../data/courseAssets.js'
 import { authPath } from '../lib/authNavigation.js'
 
-export function CourseResource({ asset, compact = false }: { asset: string; compact?: boolean }) {
+export function CourseResource({ asset, compact = false, anchorPrefix = '' }: { asset: string; compact?: boolean; anchorPrefix?: string }) {
   const item = isCourseAssetId(asset) ? courseAssets[asset] : undefined
   const stage = /^stage([234])-(?:starter|tools)$/.exec(asset)?.[1]
   const isTools = asset.endsWith('-tools')
@@ -48,7 +48,7 @@ export function CourseResource({ asset, compact = false }: { asset: string; comp
     </div>
     {message && <p className="mt-2 text-[12px] text-slate-500" role="status">{message}</p>}
   </div>
-  return <aside id={`course-resource-${asset}`} className="lesson-resource scroll-mt-24" aria-label="课程资源">
+  return <aside id={`${anchorPrefix}course-resource-${asset}`} className="lesson-resource scroll-mt-24" aria-label="课程资源">
     <FileArchive size={24} className="lesson-resource-icon" aria-hidden="true"/>
     <div className="lesson-resource-info">
       <div className="lesson-resource-label">课程资源</div>
