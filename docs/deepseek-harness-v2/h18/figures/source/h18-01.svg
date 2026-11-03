@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1500" viewBox="0 0 640 1500" role="img"><title>谁持有历史，谁拥有写入通道？</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1500" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">谁持有历史，谁拥有写入通道？</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">运行对象：Store 与 Session</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">SessionStore → 活跃 Session</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">内存事件日志 → 派生消息</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Agent 使用 Session 推进工作</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工厂取得存储通道</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Persistence.create / open(write)</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">每个会话取得自己的 Handle</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">普通 sessions.create 不自动落盘</text>
+<rect x="32" y="556" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="599" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">存储能力与具体提供方</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">SessionPersistence 是契约</text>
+<text x="52" y="685" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">JSONL Backend 实现该服务</text>
+<text x="52" y="727" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不存在按 ID 随意 append 的入口</text>
+<rect x="32" y="784" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="827" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">同一 Handle 接口，两种模式</text>
+<text x="52" y="871" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">read：观察，不取得写权</text>
+<text x="52" y="913" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">write：可读、单写者、有退出义务</text>
+<text x="52" y="955" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">close：排空工作并释放写权</text>
+<rect x="32" y="1012" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1055" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">磁盘产物与运行实例分开</text>
+<text x="52" y="1099" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Header + 连续逻辑事件</text>
+<text x="52" y="1141" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Agent 退出不删除已存历史</text>
+<text x="52" y="1183" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">恢复不找回旧 Promise 或连接</text>
+<text x="32" y="1472" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

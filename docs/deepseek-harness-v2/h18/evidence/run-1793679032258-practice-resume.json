@@ -1,0 +1,53 @@
+{
+  "args": [
+    "demo.ts",
+    "resume"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-RwKyJD",
+  "programs": [
+    {
+      "name": "agent.ts",
+      "sha256": "38895c1c8cd7eebe8bffbfbf883cd271fc3cfedee06f4ab323225641bcde7044"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "e67877118f2014cddb059f7c30bb0f66b0d2827b0ba1e40f3fa934e3c3b19cd4"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "fc4bda8fa819a4cf3aa0f5f12813afb715e407807f93413a4dc322fc94ce10c3"
+    },
+    {
+      "name": "disk.ts",
+      "sha256": "dd8edfcec4c02d2bfdb0f84e7e1b68d507fc5cb8063d4469e0f56c26a3f13f6f"
+    },
+    {
+      "name": "fork.ts",
+      "sha256": "ff9f3569b689ec0a57ff9e6e47c3ab4366d9e319051dbc1adbbd941278873d7c"
+    },
+    {
+      "name": "handle.ts",
+      "sha256": "61894dfee17dea987f83ac6f31528cbe5926644681128d82065b967aad55c14b"
+    },
+    {
+      "name": "process.ts",
+      "sha256": "fa8ffc23c3942c4e47fb9d11b69178943157ff7da42dc5a487ae1e8d182cb30a"
+    },
+    {
+      "name": "recovery.ts",
+      "sha256": "ee830acd6a090dd71a0499bd5b93d3e4e952f276cd070d23ee5ab3e020d6ea81"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "4e60728299054079ee9d736bfc15a96c7345e83f307b1cd691c0a82bd2f4110a"
+    },
+    {
+      "name": "worker.ts",
+      "sha256": "ee9061eca5a7d4015712da7d74c1e44bc7a45ccafa370d3dc9012c4afa94f18e"
+    }
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:855\r\n      throw new SessionPersistenceCorruptionError(`session \"${expectedId}\": stored log is corrupt: ${String(error)} (raw log: ${path})`, { cause: error })\r\n            ^\r\n\r\nSessionPersistenceCorruptionError: session \"resume-crash\": stored log is corrupt: SessionFormatError: system/message requires a protected first surface head (raw log: C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-RwKyJD\\h18-resume-4iZeEW\\_no-cwd\\resume-crash\\session.v4.jsonl)\r\n    at Proxy.decodeStoredLog (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:855:13)\r\n    at Object.apply (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\cordis\\src\\utils.ts:160:40)\r\n    at Proxy.requireStoredLog (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:625:17)\r\n    at async Proxy.open (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:399:18)\r\n    at async Object.stored (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-RwKyJD\\agent.ts:31:43)\r\n    at async resumePractice (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-RwKyJD\\agent.ts:91:19)\r\n    at async <anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-RwKyJD\\demo.ts:7:123) {\r\n  [cause]: SessionFormatError: system/message requires a protected first surface head\r\n      at Relationships.foldSurface (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-format-v3-to-v4\\src\\relationships.ts:127:13)\r\n      at Relationships.accept (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-format-v3-to-v4\\src\\relationships.ts:273:10)\r\n      at assertV4LifecycleRelationships (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-format-v3-to-v4\\src\\relationships.ts:384:46)\r\n      at assertReleasedV4Relationships (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-format-v3-to-v4\\src\\validation.ts:129:3)\r\n      at SessionLogScanner.finish (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\format.ts:468:5)\r\n      at scanLog (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\format.ts:537:18)\r\n      at Proxy.decodeStoredLog (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:834:71)\r\n      at Object.apply (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\cordis\\src\\utils.ts:160:40)\r\n      at Proxy.requireStoredLog (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:625:17)\r\n      at async Proxy.open (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-persistence-jsonl\\src\\index.ts:399:18)\r\n}\r\n\r\nNode.js v24.16.0\r\n",
+  "error": null
+}

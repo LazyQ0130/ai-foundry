@@ -1,0 +1,74 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "persistence.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h18-lab-Kgs5r5",
+  "programs": [
+    {
+      "name": "agent.ts",
+      "sha256": "a42ca63aad8da5a15927c04e9cb6deddc5d2be0526a75024ad0f7e7344cee5ea"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "e67877118f2014cddb059f7c30bb0f66b0d2827b0ba1e40f3fa934e3c3b19cd4"
+    },
+    {
+      "name": "buffer.ts",
+      "sha256": "17d8b58e03285573bcf55352134adfa3d1ec84a784bfc90f69d962b5de4e8ead"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "8ae9ef309dd7d428b3bf9ca74e888d62f7e0900c08e274c0804b134af870e233"
+    },
+    {
+      "name": "disk.ts",
+      "sha256": "dd8edfcec4c02d2bfdb0f84e7e1b68d507fc5cb8063d4469e0f56c26a3f13f6f"
+    },
+    {
+      "name": "fork.ts",
+      "sha256": "ff9f3569b689ec0a57ff9e6e47c3ab4366d9e319051dbc1adbbd941278873d7c"
+    },
+    {
+      "name": "format.ts",
+      "sha256": "efb9c344c37976ecbf5b70a17690d65f4761af5af55bdf6c2f02997207374878"
+    },
+    {
+      "name": "handle.ts",
+      "sha256": "61894dfee17dea987f83ac6f31528cbe5926644681128d82065b967aad55c14b"
+    },
+    {
+      "name": "negative-answer.ts",
+      "sha256": "f0b4ad0e7592ff3598884d3778d7fad03751bdd79f5b9bace08333dc44be8388"
+    },
+    {
+      "name": "ownership.ts",
+      "sha256": "9945501e2b98c4b223a7d87a70bb76576ad3ad489e9354085276f046d779a911"
+    },
+    {
+      "name": "persistence.test.ts",
+      "sha256": "375b0eb1933c4eb5c3872f60aa47f197131a0b1d9fff171f33158b23cda6977d"
+    },
+    {
+      "name": "process.ts",
+      "sha256": "fa8ffc23c3942c4e47fb9d11b69178943157ff7da42dc5a487ae1e8d182cb30a"
+    },
+    {
+      "name": "recovery.ts",
+      "sha256": "ee830acd6a090dd71a0499bd5b93d3e4e952f276cd070d23ee5ab3e020d6ea81"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "4e60728299054079ee9d736bfc15a96c7345e83f307b1cd691c0a82bd2f4110a"
+    },
+    {
+      "name": "worker.ts",
+      "sha256": "ee9061eca5a7d4015712da7d74c1e44bc7a45ccafa370d3dc9012c4afa94f18e"
+    }
+  ],
+  "exit": 0,
+  "stdout": "TAP version 13\n# Subtest: C A: real JSONL handle access, ownership, lifecycle and contiguous batches\nok 1 - C A: real JSONL handle access, ownership, lifecycle and contiguous batches\n  ---\n  duration_ms: 60.2958\n  type: 'test'\n  ...\n# Subtest: C B raw: new backend and independent process reopen exactly the stored log\nok 2 - C B raw: new backend and independent process reopen exactly the stored log\n  ---\n  duration_ms: 425.4922\n  type: 'test'\n  ...\n# Subtest: C B default compressed: actual Zstandard round trip and independent process\nok 3 - C B default compressed: actual Zstandard round trip and independent process\n  ---\n  duration_ms: 385.4617\n  type: 'test'\n  ...\n# Subtest: C empty: pending visibility, close discard and explicit flush materialization\nok 4 - C empty: pending visibility, close discard and explicit flush materialization\n  ---\n  duration_ms: 12.3477\n  type: 'test'\n  ...\n# Subtest: C lease: actual second process denied; reads allowed; release and holder exit\nok 5 - C lease: actual second process denied; reads allowed; release and holder exit\n  ---\n  duration_ms: 1385.7452\n  type: 'test'\n  ...\n# Subtest: C repair closed: real JSONL prefix and conservative semantic closers\nok 6 - C repair closed: real JSONL prefix and conservative semantic closers\n  ---\n  duration_ms: 13.0398\n  type: 'test'\n  ...\n# Subtest: C repair open: real JSONL prefix and conservative semantic closers\nok 7 - C repair open: real JSONL prefix and conservative semantic closers\n  ---\n  duration_ms: 98.7155\n  type: 'test'\n  ...\n# Subtest: C repair not-started: real JSONL prefix and conservative semantic closers\nok 8 - C repair not-started: real JSONL prefix and conservative semantic closers\n  ---\n  duration_ms: 20.9941\n  type: 'test'\n  ...\n# Subtest: C repair unknown: real JSONL prefix and conservative semantic closers\nok 9 - C repair unknown: real JSONL prefix and conservative semantic closers\n  ---\n  duration_ms: 23.8336\n  type: 'test'\n  ...\n# Subtest: C physical raw: ignore partial final line, repair only on new append\nok 10 - C physical raw: ignore partial final line, repair only on new append\n  ---\n  duration_ms: 20.9224\n  type: 'test'\n  ...\n# Subtest: C physical zstd: recover complete record from torn checksum frame then rewrite\nok 11 - C physical zstd: recover complete record from torn checksum frame then rewrite\n  ---\n  duration_ms: 26.6047\n  type: 'test'\n  ...\n# Subtest: C live routing: failed flush retains events; explicit retry and close drain\nok 12 - C live routing: failed flush retains events; explicit retry and close drain\n  ---\n  duration_ms: 18.4895\n  type: 'test'\n  ...\n# Subtest: C D fork: multi-turn prefixes, marker, independent future, invalid cuts and identity\nok 13 - C D fork: multi-turn prefixes, marker, independent future, invalid cuts and identity\n  ---\n  duration_ms: 4.4041\n  type: 'test'\n  ...\n# Subtest: C fork seed: marker precedes child-owned closers; closed step is not retrospectively repaired\nok 14 - C fork seed: marker precedes child-owned closers; closed step is not retrospectively repaired\n  ---\n  duration_ms: 0.3299\n  type: 'test'\n  ...\n# Subtest: C preparation: exact unpublished Session and synchronous idempotent release\nok 15 - C preparation: exact unpublished Session and synchronous idempotent release\n  ---\n  duration_ms: 1.8525\n  type: 'test'\n  ...\n# Subtest: C format future: refusal/classification and immutable fixture source\nok 16 - C format future: refusal/classification and immutable fixture source\n  ---\n  duration_ms: 9.1884\n  type: 'test'\n  ...\n# Subtest: C format corrupt: refusal/classification and immutable fixture source\nok 17 - C format corrupt: refusal/classification and immutable fixture source\n  ---\n  duration_ms: 5.575\n  type: 'test'\n  ...\n# Subtest: C format ignorable: refusal/classification and immutable fixture source\nok 18 - C format ignorable: refusal/classification and immutable fixture source\n  ---\n  duration_ms: 5.5438\n  type: 'test'\n  ...\n# Subtest: C format required: refusal/classification and immutable fixture source\nok 19 - C format required: refusal/classification and immutable fixture source\n  ---\n  duration_ms: 6.5568\n  type: 'test'\n  ...\n# Subtest: C format historical: refusal/classification and immutable fixture source\nok 20 - C format historical: refusal/classification and immutable fixture source\n  ---\n  duration_ms: 9.7385\n  type: 'test'\n  ...\n# Subtest: C append snapshots the accepted batch before caller mutation\nok 21 - C append snapshots the accepted batch before caller mutation\n  ---\n  duration_ms: 10.9356\n  type: 'test'\n  ...\n# Subtest: C cancellation before backend work does not acknowledge an append\nok 22 - C cancellation before backend work does not acknowledge an append\n  ---\n  duration_ms: 4.6345\n  type: 'test'\n  ...\n# Subtest: D resume: real Loop + JSONL repair and turn continuation without tool replay\nok 23 - D resume: real Loop + JSONL repair and turn continuation without tool replay\n  ---\n  duration_ms: 50.3969\n  type: 'test'\n  ...\n# Subtest: D X: actual Agent task saved, closed, resumed and forked with independent futures\nok 24 - D X: actual Agent task saved, closed, resumed and forked with independent futures\n  ---\n  duration_ms: 51.0183\n  type: 'test'\n  ...\n1..24\n# tests 24\n# suites 0\n# pass 24\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 3136.2262\n",
+  "stderr": "",
+  "error": null
+}

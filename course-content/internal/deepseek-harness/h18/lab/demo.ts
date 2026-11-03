@@ -1,0 +1,10 @@
+import {handlePractice} from './handle.ts';
+import {diskPractice} from './disk.ts';
+import {recoveryPractice,physicalTail} from './recovery.ts';
+import {forkPractice} from './fork.ts';
+import {integratedPractice,resumePractice} from './agent.ts';
+import {leasePractice,emptyPractice} from './ownership.ts';
+import {bufferPractice} from './buffer.ts';
+import {formatPractice} from './format.ts';
+const runs={format:formatPractice,lease:leasePractice,empty:emptyPractice,buffer:bufferPractice,X:integratedPractice,resume:resumePractice,A:handlePractice,B:()=>diskPractice(),B_zstd:()=>diskPractice('zstd'),C:recoveryPractice,D:forkPractice,tail:async()=>({raw:await physicalTail(),zstd:await physicalTail('zstd')})};
+for(const [key,run] of Object.entries(runs))if(!process.argv[2]||process.argv[2]===key)console.log(key+' '+JSON.stringify(await run()));

@@ -1,0 +1,77 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "reviewer": "same author; actual tool image viewing, not independent external review",
+  "date": "2026-11-03",
+  "samples": [
+    {
+      "path": "figures/h18-01.png",
+      "sha256": "b6592571eff2df9d3a49161cc7c55916ff339d0ad5684f9f1ecb42b8ef79a015",
+      "observation": "职责与通道分开，read/write与关闭义务清晰；没有把普通Session存在当已取得writer。"
+    },
+    {
+      "path": "figures/h18-02.png",
+      "sha256": "e2921ca2b2a434c53aeecc3a052388f1f2f38f65e21d752cc1ab63a84ea2a1b3",
+      "observation": "修订后箭头正确：Session通知进入缓冲为入队，缓冲至批次为批写；契约/JSONL更强行为及flush/close分层。"
+    },
+    {
+      "path": "figures/h18-03.png",
+      "sha256": "2c358d8e14953eee547e713487fe668117ddeb4e097b154814747e770bfc3ccd",
+      "observation": "物理前缀与语义开放尾分开；NOT_STARTED/UNKNOWN及源引用差别清晰，未画重做副作用。"
+    },
+    {
+      "path": "figures/h18-04.png",
+      "sha256": "a2f1296dda3e6edfbf57a7a1fa2063868d785989c3b0ebbf0a076f436e41969d",
+      "observation": "与X真实seq9切点一致；继承10、子marker10与closer11至13、父子未来26/23清晰。"
+    },
+    {
+      "path": "figures/qa/h18-01-320.png",
+      "sha256": "baa7c7738a523a9038c365fb6f4bea94de6847c6f882ced4910337b8618440dc",
+      "observation": "320下图内模式与职责文字可辨，图注自然换行，没有横向裁切。"
+    },
+    {
+      "path": "figures/qa/h18-02-320.png",
+      "sha256": "143eecf9f20932d138969e6277e403f9b3454f1d9d80ba9a03793dbcbcb5ac27",
+      "observation": "320下修正后的入队/批写箭头、200ms条件和直接flush限制可辨。"
+    },
+    {
+      "path": "figures/qa/h18-03-320.png",
+      "sha256": "afef6b2e6f359a081d892809a292ecc9e49c9eabeb04531edbdf462839b8dd14",
+      "observation": "320下两个工具错误码与Step/Turn顺序可辨，图注不将UNKNOWN当许可。"
+    },
+    {
+      "path": "figures/qa/h18-04-320.png",
+      "sha256": "fc3da5b4cff1231f85b886b5ddea8a98281a7d1f0c9f21d06c29104f45c33dac",
+      "observation": "320下cut/marker/closer与两条未来计数可辨，图注含限定。"
+    },
+    {
+      "path": "figures/qa/answer-320.png",
+      "sha256": "514bb2908c75a4380476ffff049d84412e749438f7e05c992acf57582e2fa8f7",
+      "observation": "实践A答案完整，模式/错误/Seq/关闭及评分尾段未裁切。"
+    },
+    {
+      "path": "figures/qa/combined-answer-320.png",
+      "sha256": "2d1c85b21154ad36d045bcfe15763e42779102fb18c50b2def1f04ccac810113",
+      "observation": "综合长答案完整；16/17/14与26/23、旧工具0次、新请求2次、保留产物说明可读。"
+    },
+    {
+      "path": "figures/qa/static-intro-1440.png",
+      "sha256": "56f370aa72cae253a819189bb82bf5fe37557ae4382381f879173436e1fcfaa5",
+      "observation": "桌面静态首屏标题/估时与导入可读，无错误星号或布局溢出。"
+    },
+    {
+      "path": "figures/qa/static-intro-390.png",
+      "sha256": "eede4030fb7e4e18b358e85676b2b3e9ad9405308fea4b4d9bf0e73083722577",
+      "observation": "390首屏标题、段落与提示自然换行，未出现正文横向溢出。"
+    },
+    {
+      "path": "figures/qa/lab-open-390.png",
+      "sha256": "360c4057afbf0779cc24fa57cab6625f2b90df029ce047bed4c569e24d197904",
+      "observation": "390代码保持完整原文并可横向滚动；复制按钮清晰，正文没有被长行撑宽。"
+    }
+  ],
+  "limitations": [
+    "not real learner or low-vision user trial",
+    "not independent external review",
+    "sample review does not claim every pixel of long full-page screenshots was manually read"
+  ]
+}

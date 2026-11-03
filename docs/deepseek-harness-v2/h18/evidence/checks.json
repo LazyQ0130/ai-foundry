@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "source-before",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\check-sources.py"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "assertions",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\write-source-checklist.py"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "sync",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\sync-lab.py"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "labs",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\run-labs.mjs"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "single-A",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\run-labs.mjs",
+        "A"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "figures",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\draw_figures.py"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "preview",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\make-reading-preview.tsx"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "content",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\check-content.ts"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "renderer",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "tests/lesson-renderer.test.ts"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "visual",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\preview-and-qa.tsx"
+      ],
+      "exit": 0,
+      "error": null
+    },
+    {
+      "name": "source-final",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h18\\scripts\\check-sources.py"
+      ],
+      "exit": 0,
+      "error": null
+    }
+  ],
+  "manual": "Separate actual viewing and final-audit required"
+}

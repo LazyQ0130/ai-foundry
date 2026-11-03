@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: C A: real JSONL handle access, ownership, lifecycle and contiguous batches
+ok 1 - C A: real JSONL handle access, ownership, lifecycle and contiguous batches
+  ---
+  duration_ms: 92.4725
+  type: 'test'
+  ...
+# Subtest: C B raw: new backend and independent process reopen exactly the stored log
+ok 2 - C B raw: new backend and independent process reopen exactly the stored log
+  ---
+  duration_ms: 494.6846
+  type: 'test'
+  ...
+# Subtest: C B default compressed: actual Zstandard round trip and independent process
+ok 3 - C B default compressed: actual Zstandard round trip and independent process
+  ---
+  duration_ms: 393.8007
+  type: 'test'
+  ...
+# Subtest: C empty: pending visibility, close discard and explicit flush materialization
+ok 4 - C empty: pending visibility, close discard and explicit flush materialization
+  ---
+  duration_ms: 17.717
+  type: 'test'
+  ...
+# Subtest: C lease: actual second process denied; reads allowed; release and holder exit
+ok 5 - C lease: actual second process denied; reads allowed; release and holder exit
+  ---
+  duration_ms: 1484.9578
+  type: 'test'
+  ...
+# Subtest: C repair closed: real JSONL prefix and conservative semantic closers
+ok 6 - C repair closed: real JSONL prefix and conservative semantic closers
+  ---
+  duration_ms: 14.1419
+  type: 'test'
+  ...
+# Subtest: C repair open: real JSONL prefix and conservative semantic closers
+ok 7 - C repair open: real JSONL prefix and conservative semantic closers
+  ---
+  duration_ms: 17.1965
+  type: 'test'
+  ...
+# Subtest: C repair not-started: real JSONL prefix and conservative semantic closers
+ok 8 - C repair not-started: real JSONL prefix and conservative semantic closers
+  ---
+  duration_ms: 18.6442
+  type: 'test'
+  ...
+# Subtest: C repair unknown: real JSONL prefix and conservative semantic closers
+ok 9 - C repair unknown: real JSONL prefix and conservative semantic closers
+  ---
+  duration_ms: 16.4739
+  type: 'test'
+  ...
+# Subtest: C physical raw: ignore partial final line, repair only on new append
+ok 10 - C physical raw: ignore partial final line, repair only on new append
+  ---
+  duration_ms: 20.4449
+  type: 'test'
+  ...
+# Subtest: C physical zstd: recover complete record from torn checksum frame then rewrite
+ok 11 - C physical zstd: recover complete record from torn checksum frame then rewrite
+  ---
+  duration_ms: 32.322
+  type: 'test'
+  ...
+# Subtest: C live routing: failed flush retains events; explicit retry and close drain
+ok 12 - C live routing: failed flush retains events; explicit retry and close drain
+  ---
+  duration_ms: 20.738
+  type: 'test'
+  ...
+# Subtest: C D fork: multi-turn prefixes, marker, independent future, invalid cuts and identity
+ok 13 - C D fork: multi-turn prefixes, marker, independent future, invalid cuts and identity
+  ---
+  duration_ms: 4.4911
+  type: 'test'
+  ...
+# Subtest: C fork seed: marker precedes child-owned closers; closed step is not retrospectively repaired
+ok 14 - C fork seed: marker precedes child-owned closers; closed step is not retrospectively repaired
+  ---
+  duration_ms: 0.3786
+  type: 'test'
+  ...
+# Subtest: C preparation: exact unpublished Session and synchronous idempotent release
+ok 15 - C preparation: exact unpublished Session and synchronous idempotent release
+  ---
+  duration_ms: 1.4052
+  type: 'test'
+  ...
+# Subtest: C format future: refusal/classification and immutable fixture source
+ok 16 - C format future: refusal/classification and immutable fixture source
+  ---
+  duration_ms: 7.5552
+  type: 'test'
+  ...
+# Subtest: C format corrupt: refusal/classification and immutable fixture source
+ok 17 - C format corrupt: refusal/classification and immutable fixture source
+  ---
+  duration_ms: 4.6193
+  type: 'test'
+  ...
+# Subtest: C format ignorable: refusal/classification and immutable fixture source
+ok 18 - C format ignorable: refusal/classification and immutable fixture source
+  ---
+  duration_ms: 6.3759
+  type: 'test'
+  ...
+# Subtest: C format required: refusal/classification and immutable fixture source
+ok 19 - C format required: refusal/classification and immutable fixture source
+  ---
+  duration_ms: 6.5141
+  type: 'test'
+  ...
+# Subtest: C format historical: refusal/classification and immutable fixture source
+ok 20 - C format historical: refusal/classification and immutable fixture source
+  ---
+  duration_ms: 10.2846
+  type: 'test'
+  ...
+# Subtest: C append snapshots the accepted batch before caller mutation
+ok 21 - C append snapshots the accepted batch before caller mutation
+  ---
+  duration_ms: 10.9022
+  type: 'test'
+  ...
+# Subtest: C cancellation before backend work does not acknowledge an append
+ok 22 - C cancellation before backend work does not acknowledge an append
+  ---
+  duration_ms: 2.9203
+  type: 'test'
+  ...
+# Subtest: D resume: real Loop + JSONL repair and turn continuation without tool replay
+ok 23 - D resume: real Loop + JSONL repair and turn continuation without tool replay
+  ---
+  duration_ms: 34.8038
+  type: 'test'
+  ...
+# Subtest: D X: actual Agent task saved, closed, resumed and forked with independent futures
+ok 24 - D X: actual Agent task saved, closed, resumed and forked with independent futures
+  ---
+  duration_ms: 53.6003
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3597.4687

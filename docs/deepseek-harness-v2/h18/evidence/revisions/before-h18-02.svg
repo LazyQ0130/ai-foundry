@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1700" viewBox="0 0 640 1700" role="img"><title>何时看得见，何时承诺保存？</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1700" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">何时看得见，何时承诺保存？</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">通用 Handle 契约</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">append：接受、有序、同实例可见</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">flush：后端承诺的耐久屏障</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不能要求所有后端 append 都同步</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">真实 Session 的实时写路径</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Session.append：内存提交</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">session/event：提交后的通知</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">有活跃 writer 才进入路由缓冲</text>
+<path d="M320 535 V591" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="570" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">排空</text>
+<rect x="32" y="616" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="659" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">JSONL 路由缓冲</text>
+<text x="52" y="703" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">首事件开启固定 200ms 窗口</text>
+<text x="52" y="745" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">后来事件不重置截止时间</text>
+<text x="52" y="787" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">失败保留；显式屏障重试</text>
+<rect x="32" y="844" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="887" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">JSONL 的更强批次实现</text>
+<text x="52" y="931" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">写入行 / 帧，再 await sync</text>
+<text x="52" y="973" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">首次：同步暂存 + 无覆盖发布</text>
+<text x="52" y="1015" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">这些是具体后端实现，非通用最低线</text>
+<rect x="32" y="1072" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="1115" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Session / 服务级 flush</text>
+<text x="52" y="1159" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">先 drainLive，再 handle.flush</text>
+<text x="52" y="1201" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">直接 handle.flush 不负责路由排空</text>
+<text x="52" y="1243" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">无 writer 时布尔 true 仍不证落盘</text>
+<rect x="32" y="1300" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1343" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Close 与保证边界</text>
+<text x="52" y="1387" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">close 自己排空，再释放写权</text>
+<text x="52" y="1429" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不删除历史，不回滚外部副作用</text>
+<text x="52" y="1471" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">本课没有真实断电测试</text>
+<text x="32" y="1672" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

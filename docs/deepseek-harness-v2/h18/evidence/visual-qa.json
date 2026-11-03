@@ -1,0 +1,414 @@
+{
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "3b28a62d11f4278e253386cc3b69ccc55641ed1826dc38f73f69fa9c9e221c9e",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h18-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1500,
+      "sourceSha256": "14e05f4067f273097f2834e0128a4214c7b6dbaf75416daf0ee3b6b197defdd8",
+      "imageSha256": "b6592571eff2df9d3a49161cc7c55916ff339d0ad5684f9f1ecb42b8ef79a015"
+    },
+    {
+      "id": "h18-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1700,
+      "sourceSha256": "49d6ce4a2d8726274c544ff1586a070f4eedf4781ffc3199e02aaa045f838585",
+      "imageSha256": "e2921ca2b2a434c53aeecc3a052388f1f2f38f65e21d752cc1ab63a84ea2a1b3"
+    },
+    {
+      "id": "h18-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1630,
+      "sourceSha256": "fe038cb469ddab61a9d6eb3fd288d6f4c8744f7143d13553aecc2b160ec0ab54",
+      "imageSha256": "2c358d8e14953eee547e713487fe668117ddeb4e097b154814747e770bfc3ccd"
+    },
+    {
+      "id": "h18-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1470,
+      "sourceSha256": "7e337fc8b0446629b54c54c1acb8115032cacb53d16c5823023edf12944bd659",
+      "imageSha256": "a2f1296dda3e6edfbf57a7a1fa2063868d785989c3b0ebbf0a076f436e41969d"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "SessionStore持有活跃Session，Agent工厂经SessionPersistence取得SessionHandle，具体JSONL后端把逻辑事件存到独立产物；写句柄持所有权，读句柄只观察",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜运行对象、存储能力和逐会话通道分层。只有取得并保持活跃写句柄的会话才会被该后端路由；查询到Session不自动取得存储或运行时所有权。",
+            "src": "/course-media/harness-v2/h18/h18-01.png"
+          },
+          {
+            "alt": "内存提交经session/event进入有界缓冲，再排空到句柄；通用append只承诺接受可见，flush是耐久屏障，JSONL批次另有同步写入；close排空后释放",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜通用契约与JSONL实现分层。200ms属于实时路由批写，不是所有后端append的延迟；图没有把session/event画成磁盘确认，也没有把close画成删除历史。",
+            "src": "/course-media/harness-v2/h18/h18-02.png"
+          },
+          {
+            "alt": "正常闭合日志保持原事实；开放Turn按有无tool/call分别补TOOL_NOT_STARTED或TOOL_OUTCOME_UNKNOWN，再补Step和Turn结束；物理尾部由后端另行处理",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜物理有效前缀先由后端给出，语义closer由恢复层追加。未知结果只描述记录缺口，不能当成重新执行副作用的许可；正常已闭合历史不追溯补造结果。",
+            "src": "/course-media/harness-v2/h18/h18-03.png"
+          },
+          {
+            "alt": "综合X从源Seq9处Fork，继承0至9十事件，子Seq10为继承标记、11至13为forked合成闭合，父子之后各自追加；没有重跑工具箭头",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜采用X的真实切点与计数。共同前缀是复制的事实，后续两个方向是独立追加；marker和closer不计入inheritedEventCount，分支不继承父级的外部运行资源。",
+            "src": "/course-media/harness-v2/h18/h18-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "handle.ts",
+        "disk.ts",
+        "process.ts",
+        "worker.ts",
+        "recovery.ts",
+        "fork.ts",
+        "agent.ts",
+        "ownership.ts",
+        "buffer.ts",
+        "format.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 14,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 1314,
+        "scrolled": 603
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 32
+      },
+      "answerGeometry": {
+        "top": 8.109375,
+        "bottom": 351.28125,
+        "viewport": 950,
+        "height": 343.171875,
+        "content": "想深入再看：实践 A 详细参考答案实际后端是compression:none的JSONL。create后本地能列1项，location缺省；read可开且初读0事件，第二write以AlreadyOwned拒绝，重复create是AlreadyExists。read.append与read.flush都是ReadOnly，说明同一接口受运行时访问约束。首批后双方读到0～2；直接写4被拒绝且长度仍3，正确追加3～4后长度5。read(1,2)得到1/2，read(99)为空。两次close返回同一正在收尾的Promise，完成后read/append/flush都Closed；新writer可接管并读到原5事件。清理只unlink这个关闭的测试产物，空目录保留。建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。",
+        "lastParagraph": "建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "SessionStore持有活跃Session，Agent工厂经SessionPersistence取得SessionHandle，具体JSONL后端把逻辑事件存到独立产物；写句柄持所有权，读句柄只观察",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜运行对象、存储能力和逐会话通道分层。只有取得并保持活跃写句柄的会话才会被该后端路由；查询到Session不自动取得存储或运行时所有权。",
+            "src": "/course-media/harness-v2/h18/h18-01.png"
+          },
+          {
+            "alt": "内存提交经session/event进入有界缓冲，再排空到句柄；通用append只承诺接受可见，flush是耐久屏障，JSONL批次另有同步写入；close排空后释放",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜通用契约与JSONL实现分层。200ms属于实时路由批写，不是所有后端append的延迟；图没有把session/event画成磁盘确认，也没有把close画成删除历史。",
+            "src": "/course-media/harness-v2/h18/h18-02.png"
+          },
+          {
+            "alt": "正常闭合日志保持原事实；开放Turn按有无tool/call分别补TOOL_NOT_STARTED或TOOL_OUTCOME_UNKNOWN，再补Step和Turn结束；物理尾部由后端另行处理",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 3｜物理有效前缀先由后端给出，语义closer由恢复层追加。未知结果只描述记录缺口，不能当成重新执行副作用的许可；正常已闭合历史不追溯补造结果。",
+            "src": "/course-media/harness-v2/h18/h18-03.png"
+          },
+          {
+            "alt": "综合X从源Seq9处Fork，继承0至9十事件，子Seq10为继承标记、11至13为forked合成闭合，父子之后各自追加；没有重跑工具箭头",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜采用X的真实切点与计数。共同前缀是复制的事实，后续两个方向是独立追加；marker和closer不计入inheritedEventCount，分支不继承父级的外部运行资源。",
+            "src": "/course-media/harness-v2/h18/h18-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "handle.ts",
+        "disk.ts",
+        "process.ts",
+        "worker.ts",
+        "recovery.ts",
+        "fork.ts",
+        "agent.ts",
+        "ownership.ts",
+        "buffer.ts",
+        "format.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 14,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 1306,
+        "scrolled": 985
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 32
+      },
+      "answerGeometry": {
+        "top": 8.296875,
+        "bottom": 635.4375,
+        "viewport": 950,
+        "height": 627.140625,
+        "content": "想深入再看：实践 A 详细参考答案实际后端是compression:none的JSONL。create后本地能列1项，location缺省；read可开且初读0事件，第二write以AlreadyOwned拒绝，重复create是AlreadyExists。read.append与read.flush都是ReadOnly，说明同一接口受运行时访问约束。首批后双方读到0～2；直接写4被拒绝且长度仍3，正确追加3～4后长度5。read(1,2)得到1/2，read(99)为空。两次close返回同一正在收尾的Promise，完成后read/append/flush都Closed；新writer可接管并读到原5事件。清理只unlink这个关闭的测试产物，空目录保留。建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。",
+        "lastParagraph": "建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.6625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "SessionStore持有活跃Session，Agent工厂经SessionPersistence取得SessionHandle，具体JSONL后端把逻辑事件存到独立产物；写句柄持所有权，读句柄只观察",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜运行对象、存储能力和逐会话通道分层。只有取得并保持活跃写句柄的会话才会被该后端路由；查询到Session不自动取得存储或运行时所有权。",
+            "src": "/course-media/harness-v2/h18/h18-01.png"
+          },
+          {
+            "alt": "内存提交经session/event进入有界缓冲，再排空到句柄；通用append只承诺接受可见，flush是耐久屏障，JSONL批次另有同步写入；close排空后释放",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜通用契约与JSONL实现分层。200ms属于实时路由批写，不是所有后端append的延迟；图没有把session/event画成磁盘确认，也没有把close画成删除历史。",
+            "src": "/course-media/harness-v2/h18/h18-02.png"
+          },
+          {
+            "alt": "正常闭合日志保持原事实；开放Turn按有无tool/call分别补TOOL_NOT_STARTED或TOOL_OUTCOME_UNKNOWN，再补Step和Turn结束；物理尾部由后端另行处理",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 3｜物理有效前缀先由后端给出，语义closer由恢复层追加。未知结果只描述记录缺口，不能当成重新执行副作用的许可；正常已闭合历史不追溯补造结果。",
+            "src": "/course-media/harness-v2/h18/h18-03.png"
+          },
+          {
+            "alt": "综合X从源Seq9处Fork，继承0至9十事件，子Seq10为继承标记、11至13为forked合成闭合，父子之后各自追加；没有重跑工具箭头",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜采用X的真实切点与计数。共同前缀是复制的事实，后续两个方向是独立追加；marker和closer不计入inheritedEventCount，分支不继承父级的外部运行资源。",
+            "src": "/course-media/harness-v2/h18/h18-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "handle.ts",
+        "disk.ts",
+        "process.ts",
+        "worker.ts",
+        "recovery.ts",
+        "fork.ts",
+        "agent.ts",
+        "ownership.ts",
+        "buffer.ts",
+        "format.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 14,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 1306,
+        "scrolled": 1055
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 32
+      },
+      "answerGeometry": {
+        "top": 8.328125,
+        "bottom": 808.25,
+        "viewport": 950,
+        "height": 799.921875,
+        "content": "想深入再看：实践 A 详细参考答案实际后端是compression:none的JSONL。create后本地能列1项，location缺省；read可开且初读0事件，第二write以AlreadyOwned拒绝，重复create是AlreadyExists。read.append与read.flush都是ReadOnly，说明同一接口受运行时访问约束。首批后双方读到0～2；直接写4被拒绝且长度仍3，正确追加3～4后长度5。read(1,2)得到1/2，read(99)为空。两次close返回同一正在收尾的Promise，完成后read/append/flush都Closed；新writer可接管并读到原5事件。清理只unlink这个关闭的测试产物，空目录保留。建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。",
+        "lastParagraph": "建议10分自评：模式/冲突3，连续与拒绝原子性3，关闭与新句柄2，本地可见/实体化2。把read模式当编译期不同类，或把close当删除历史，都应先订正。分值未作学员校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.6
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}
