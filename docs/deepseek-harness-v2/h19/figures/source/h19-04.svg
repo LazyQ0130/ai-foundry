@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1310" viewBox="0 0 640 1310" role="img"><title>三种缩减，各自保留什么？</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1310" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">三种缩减，各自保留什么？</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工具结果修剪：语法式头尾</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">条件：文本码点数超过阈值</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">prune → 新tool/result replace</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不调用模型；中间重要信息可能丢失</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">历史摘要：抽取较早语义</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">start → 辅助LLM → summary</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">user/message replace → end</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">保留近期平衡尾部；摘要有成本</text>
+<rect x="32" y="556" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="599" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">图片省略：按出现位置决定</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">IMAGE_OFFLOAD_REQUIRED → 选图</text>
+<text x="52" y="685" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">image/offload → 消息投影</text>
+<text x="52" y="727" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">节点不换；以后请求使用占位文本</text>
+<rect x="32" y="784" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="827" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">相同附件，不等于相同位置</text>
+<text x="52" y="871" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">(消息Seq, 图片index) 精确定位</text>
+<text x="52" y="913" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">旧位置不会因换大窗口自动恢复</text>
+<text x="52" y="955" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">原附件引用和原事件仍保留</text>
+<rect x="32" y="1012" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1055" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">共同边界</text>
+<text x="52" y="1099" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型输入减少 ≠ 原始存储变小</text>
+<text x="52" y="1141" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">重建需相同解释规则与事件</text>
+<text x="52" y="1183" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">成本、缓存收益需真实Provider测量</text>
+<text x="32" y="1282" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

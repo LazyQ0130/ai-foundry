@@ -1,0 +1,4256 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H19｜Context Compaction：长对话如何控制 Token 预算？</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H19 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Context Compaction：长对话如何控制 Token 预算？</h1><p>260～350 分钟（分三段：计量与决策80～110、范围与事务85～115、缩减机制与综合95～125；作者估算，环境另计，待试读）</p></header><div class="lesson-prose"><h2>历史保存下来了，模型为什么仍然装不下？</h2>
+<p>代码研究 Agent 已经能够保存昨天的任务。今天继续读文件、运行受控测试、解释错误、修改方案，再检查一次。每次 Turn 会增加用户请求，Step 可能增加 Assistant 的工具提议和长工具结果。系统指令、工具 Schema、文件句柄和图片也要占据请求容量。H18解决了历史怎样延续，却没有让模型的窗口随日志一起变大。</p>
+<p>假设工具刚返回六千字符测试输出，模型还需要看最初的约束与最近的修改。最直接的办法是发送全部历史，但模型窗口有限；简单丢掉旧消息又可能丢失需求，甚至切断工具调用与结果。这里需要做一个明确选择：<strong>原始事实继续保存，后续模型只读当前有用的历史表示。</strong></p>
+<p>H17已经提供这项能力的基础：Event Log记录事实，Surface选择当前消息来源，deriveMessages派生模型历史。Compaction在这些规则上追加一个新的取舍决定。它缩短模型输入，不修改模型容量，也不把全部事实变成无损的“永久记忆”。本课最终要交出一条可核对的“测量→修剪→摘要→保存→恢复→继续请求”轨迹。</p>
+<p>我们继续固定官方Commit <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。下文S编号链接指向该版本的具体实现。正文中的数字来自随课真实组件实验；模型回答由Mock Adapter控制，不接付费模型。完整Harness应用、真实成本、缓存收益与学习效果均未验证。</p>
+<h2>先把五种数字分开</h2>
+<p>Context Window是一次调用可以容纳的容量约束，好比书桌能铺开的材料总量。完整Session日志是资料档案，可以持续增长；书桌上只铺当前请求要用的材料。这个比喻只解释容量与历史的区别，具体预算仍须由适配器声明和源码计算。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>名称</th><th>它回答什么</th><th>本课的边界</th></tr></thead><tbody><tr><td>Context Window，W</td><td>该路由声明多大窗口？</td><td>来自精确provider/model的适配器，不是日志长度</td></tr><tr><td>Input Tokens</td><td>本次请求未缓存输入用了多少？</td><td>公共Usage词汇；缓存读写另外记录</td></tr><tr><td>Output Tokens</td><td>本次生成用了多少？</td><td>包含提供方计入其中的reasoning，不再重复相加</td></tr><tr><td>Cache Read / Write</td><td>提供方报告多少缓存流量？</td><td>不能将不同提供方账单规则直接混用</td></tr><tr><td>Max Tokens，O</td><td>会话请求为生成预留多少容量？</td><td>请求配置优先，否则适配器默认，再否则零</td></tr><tr><td>Headroom，B</td><td>输出预留之外再留多少安全余量？</td><td>压缩策略参数，不是实际消耗</td></tr><tr><td>Token Measurement</td><td>当前日志与请求封装下估计多大压力？</td><td>可复用Usage锚点，也可能完全启发式</td></tr><tr><td>Context Pressure Projection</td><td>UI可以展示什么参考？</td><td>最近提示词用量与预测；不是全部压缩决策</td></tr><tr><td>计费金额</td><td>提供方按什么单价收多少钱？</td><td>需要真实规则和独立账单，本课不测</td></tr></tbody></table></div>
+<p>Token是模型使用的计量单位，不等于汉字、英文单词或JavaScript字符。固定版本没有通用精确分词器。启发式常用“每Token四个UTF-16代码单元”，加内容块和角色开销；中文、JSON、emoji在真实分词下的密度都可能不同。不要把四字符规则写成模型的语言学事实。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/estimate.ts#L13-L69" target="_blank" rel="noopener noreferrer">S03 · estimateContent</a>。</p>
+<p>Usage描述已经发生的一次调用；下一次请求还没发生，只能依据保留历史、配置和已知价格预测。容量也不是用量：窗口十万不代表这次用了十万。H12的Usage缺失应保留为不可用，不能为完成图表填零；压缩释放的估算Token也不能直接乘一个虚构单价宣布省钱。</p>
+<h2>TokenMeter：给当前请求定价，而非数所有事件</h2>
+<p><code>ctx.tokenMeter</code>提供<code>measure(session, requestHeader?)</code>和<code>estimateMessage(message)</code>。前者先把计量折叠同步到当前日志，再返回同一revision的不可变快照；后者只做单条消息的固定启发式估价。它不调用模型、不执行压缩，也没有可配置的“上下文窗口”字段。容量在LLM适配器，策略在Compaction后端。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/index.ts#L120-L194" target="_blank" rel="noopener noreferrer">S01 · measure</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/types.ts#L19-L54" target="_blank" rel="noopener noreferrer">S02 · TokenMeasurement/TokenSurfaceNode</a>。</p>
+<p>测量的nodes按<strong>当前Surface位置</strong>排列，每项有事件seq、当前路由价格tokens、固定启发式heuristicTokens。surfaceTokens等于nodes的tokens之和。totalTokens则是压力结果：有合适的Usage基线时，从基线加上带符号的Surface变化；没有时估算当前请求封装和Surface。baseline说明使用none、estimated还是usage；surfaceDeltaTokens说明相对锚点的增减。它们并不是五个同义的“Token总数”。</p>
+<p>为什么不直接扫描所有user文本？因为被摘要遮蔽的旧消息还在日志，却不再进入当前请求；system和工具Schema也有成本，tool/result的role开销同样存在。文件按模型能读到的句柄说明计价，不按附件文件字节数计价。相同日志在不同图片路由下，还可能有不同的视觉价格。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/estimate.ts#L73-L102" target="_blank" rel="noopener noreferrer">S04 · estimateSystemMessage/estimateToolsTokens</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/route-pricing.ts#L32-L76" target="_blank" rel="noopener noreferrer">S08 · priceSurface</a>。</p>
+<p>先手算实践A的最小输入：system文本<code>abcd</code>，user文本<code>abcd</code>。本版本system估价为ceil(4/4)+4=5；user文本块为ceil(4/4)+4，再加role4，得到9。总量14。新增一条16字符user，增加ceil(16/4)+4+4=12。加入本实践的read Schema，JSON字符串72个代码单元，工具封装ceil(72/4)+4=22，因此三个消息节点的总压力为48。这里每个数都有固定计算规则，不是精确Provider分词。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TS</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="ts 代码"><code>const measurement = ctx.tokenMeter.measure(session)
+console.log(measurement.baseline, measurement.totalTokens)
+console.log(measurement.nodes.map(n =&gt; [n.seq, n.tokens, n.heuristicTokens]))</code></pre></div>
+<p>这是接入已有服务的短片段，完整装配在实践A。requestHeader覆盖参数只选择此次测量的封装与计价路由，不会替Session换消息。测量快照也不会在以后append时悄悄长出新节点；返回值深冻结，学生应保存前后两份再比较。</p>
+<h3>什么时候能相信Usage锚点？</h3>
+<p>一次成功Assistant消息有Usage，并不意味着它在任意请求下都可复用。Meter需要匹配步骤与持久请求头，还从内嵌Assistant Stream重建该次输出价格。规范header必须完整相等：仅provider/model相同还不够，工具和temperature等配置变化也会让它回退估算。Usage还必须不小于完整路由锚点的估价，否则不能作为该请求的可靠基线。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/index.ts#L57-L71" target="_blank" rel="noopener noreferrer">S05 · usageTokens/optionalHeaderEquals</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/index.ts#L134-L177" target="_blank" rel="noopener noreferrer">S06 · measure usage branch</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/measurement-projection.ts#L1-L88" target="_blank" rel="noopener noreferrer">S07 · advanceMeasurement</a>。</p>
+<p>实践A构造一致的紧凑流，报告input1000、cacheRead100、cacheWrite20、output50，其中reasoning10已在output内。压力锚点为1170，不是1180；成功输出原样持久时delta为0。再增加<code>abcd</code>用户消息，得到1179。随后只改temperature，baseline变estimated；另一个只有2Token但封装明显更大的Usage样本也不复用。</p>
+<p>UI的contextPressure在该样本只给pressureTokens1120：它是提示词侧input加cache，不含output50。它的contextWindow来自独立的最新request/context，可能在另一时刻更新。contextBreakdown给本实践system5、tools22、messages39，是固定启发式构成，不能把66冒充1179的分项账单。压缩实际读取measure，不读取UI上一个四舍五入的百分比。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/usage-projection.ts#L82-L103" target="_blank" rel="noopener noreferrer">S09 · pressureFrom/usageOf</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/breakdown-projection.ts#L1-L140" target="_blank" rel="noopener noreferrer">S10 · contextBreakdownProjectionDefinition</a>。</p>
+<h3>相同图片，为什么换路由后压力变了？</h3>
+<p>实践A让Mock适配器声明每图片视觉价格：小路由100，大路由2000，加同一个模型可见句柄文本。真实Meter测得单节点111与2011，差1900；两者heuristicTokens相同。省略该图片后，大路由变12，而固定引用启发式不因offloaded元数据改变。这是<strong>受控价格声明</strong>下的路由机制测试，不是任何真实视觉模型的报价。</p>
+<p>文件实验把附件引用投影为官方fileHandleText，再用真实Meter对照。文件有12345字节，不代表12345Token；实际路径或明确无路径说明才是模型请求文本的一部分。路由价格依赖本次执行世界的可见表示；历史恢复一致性需要相同解释规则与能力，不能承诺任意换环境后价格永久相等。</p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="第一段停顿：给数字写来源"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第一段停顿：给数字写来源</div><div class="lesson-callout-body"><p>先算14、48、1170、1179与1120，再指出哪两个可以相减、哪两个不能当成同一账单的分项。给W、O、B、P分别写“容量／预留／策略／压力”。能说清来源，再进入触发条件；不要只记默认0.8。</p></div></aside>
+<h2>谁测量，谁压缩，谁发命令？</h2>
+<p>TokenMeter像测量仪，CompactionEngine像操作契约，BasicCompactionEngine提供随附策略与摘要实现。<code>dsh-compaction</code>的抽象类定义compactIfNeeded、compactNow、compactRegion；单独挂载抽象能力不会自动产生摘要。<code>command-compact</code>负责面向人的显式入口，ToolResultPruner负责无需模型的头尾修剪。AgentLoop提供生命周期扩展点，职责并不全塞在Loop内部。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/index.ts#L106-L195" target="_blank" rel="noopener noreferrer">S11 · CompactionEngine</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/index.ts#L35-L47" target="_blank" rel="noopener noreferrer">S12 · CompactionTrigger</a>。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>YAML</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="yaml 代码"><code>- name: &#x27;@deepseek-ai/dsh-token-meter&#x27;
+- name: &#x27;@deepseek-ai/dsh-compaction-tool-result-pruner&#x27;
+- name: &#x27;@deepseek-ai/dsh-compaction-basic&#x27;
+- name: &#x27;@deepseek-ai/dsh-command-compact&#x27;</code></pre></div>
+<p>这是已有Session、Projection、LLM、Agent与Commands服务中的<strong>组合片段</strong>，不是一份独立可启动的全应用配置。本课的完整fixture把这些依赖逐项装好。选择不同后端可以改变策略和摘要方法，但仍需履行Surface边界、来源、取消与标记契约，不能直接改原日志数组。</p>
+<h2>触发线：窗口的80%只是一个上限</h2>
+<p>固定实现先解析精确provider/model策略，再计算：messageBudget=W−O；pressureBudget=W−O−B；触发阈值T=floor(min(W×thresholdRatio, pressureBudget))。比例保留量R=floor((W−O)×retainRatio)，显式retainTokens则替代比例。messageBudget与pressureBudget必须正，R必须小于T。当前压力P达到T就合格，P&lt;T才直接返回。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/config.ts#L68-L115" target="_blank" rel="noopener noreferrer">S13 · resolveConfig</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/config.ts#L118-L149" target="_blank" rel="noopener noreferrer">S14 · resolveTargetPolicy</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/config.ts#L153-L213" target="_blank" rel="noopener noreferrer">S15 · resolveCompactSpec</a>。</p>
+<p>例：W10000、O1000、B2000、ratio0.8，T=min(8000,7000)=7000。P6999不触发，P7000触发。retainRatio0.16得到R1440，分母是9000，并非扣完headroom的7000。它表示近期尾部的预算目标，实际不可分消息会使保留量跨过目标。</p>
+<p>默认B65536不适合小窗口；W1000、O128时pressureBudget已为负。此时不是“历史短所以一定安全”，而是目标策略配置错误。modelPolicies用精确provider/model覆盖，可以为小模型另配headroom。retainRatio与retainTokens互斥，摘要provider/model要成对设置；未知配置不会被默默忽略。</p>
+<p>还有两个容易同名的maxTokens。请求header中的maxTokens参与O；Basic策略的maxTokens限制<strong>辅助摘要输出</strong>，默认跟随headroom。B设0时必须另给正的摘要maxTokens。把这两个上限混在一起，会让压缩阈值和摘要成本都算错。实践D的会话O128与摘要上限256明确分开。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L70-L72" target="_blank" rel="noopener noreferrer">S16 · reservedCompletionTokens</a>。</p>
+<p><span class="lesson-figure" role="group" aria-label="窗口容量、输出预留和额外余量决定阈值；实际压力由Meter测量，合格后先修剪并重测，再选择平衡历史摘要"><img src="figures/h19-02.png" alt="窗口容量、输出预留和额外余量决定阈值；实际压力由Meter测量，合格后先修剪并重测，再选择平衡历史摘要" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜W10000、O1000、B2000得到T7000与R1440。三条自动入口的失败策略不同；估算和Usage来源不能合成一个无来源的Token数。</span><a class="lesson-image-expand" href="figures/h19-02.png" target="_blank" rel="noopener noreferrer" aria-label="窗口容量、输出预留和额外余量决定阈值；实际压力由Meter测量，合格后先修剪并重测，再选择平衡历史摘要，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>自动压力、模型切换、已确认Overflow是三条路径</h2>
+<p>H10的一步在正式请求前经历pre-step。Basic的自动监听器在这里读取<strong>最新已记录路由</strong>，做常规压力检查。若合格，先调用可选Pruner并重测；已经低于T就不发摘要请求。仍高则保留近期平衡尾部，对较早范围摘要，再重测；最多首次加compactionRetries次收敛尝试。默认1代表最多两次，不代表无限循环。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L155-L175" target="_blank" rel="noopener noreferrer">S17 · pre-step listener</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L320-L378" target="_blank" rel="noopener noreferrer">S22 · compactPressure</a>。</p>
+<p>pre-step的配置、摘要或收敛错误会告警，然后继续Turn。课程不能把“自动压缩失败”一概写成“任务立即结束”，也不能据此认为后续模型一定成功：原请求仍可能超限。D的pre-step-failure使摘要抛错，得到带error的compaction/end，普通模型仍调用一次，Turn完成。没有真实Provider参与这条结论。</p>
+<p>模型切换发生在agent/request。监听器先await后续路由选择，拿目标配置测现有历史，在<strong>目标header写入日志前</strong>要求降到目标阈值以下。摘要仍优先使用显式摘要路由，否则使用旧已记录路由；它不会为了切到小模型，先用已经装不下历史的小模型摘要。失败报告MODEL_SWITCH_COMPACTION_FAILED，旧header保留，已经落下的剪枝或早先摘要不会回滚。D的成功切换用旧large摘要、再发small请求；失败切换普通请求数为0。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L183-L205" target="_blank" rel="noopener noreferrer">S18 · request listener</a>。</p>
+<p>Overflow则必须由规范错误CONTEXT_WINDOW_EXCEEDED确认，不能把任何SERVER错误当窗口问题。agent/request-error在失败Assistant attempt结算后、同Step的请求循环内运行。它绕过常规阈值与retain预算，尝试最大平衡缩减；只有Surface的replaceGeneration前进且未取消，才授权重建请求重试。默认maxOverflowRetries1限制该序列，idle或成功Assistant会重置计数。普通失败交给后续处理。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L215-L265" target="_blank" rel="noopener noreferrer">S19 · request-error listener</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L176-L181" target="_blank" rel="noopener noreferrer">S20 · agent/status listener</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L295-L315" target="_blank" rel="noopener noreferrer">S21 · compactIfNeeded</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L538-L568" target="_blank" rel="noopener noreferrer">S49 · step request-error</a>。</p>
+<p>这解释两个反例。没有可压缩范围时，即使收到了Overflow，也不能无变化重发；D:no-progress只调用模型一次。持续Overflow时，即使首轮成功缩减，第二次也不无限循环；D:overflow-limit总普通调用两次后报错。若剪枝已落下而后续摘要失败，有效替换仍可为一次重试提供进展证据；这个分支来自源码，本课未动态覆盖其全部组合。取消仍优先，不会因“已经缩短一些”而继续发送。</p>
+<p>官方子系统说明将溢出恢复概括成失败步骤关闭后的动作，容易与实际顺序混淆。本课采用实现和D轨迹：<strong>attempt→compaction/start→summary/replace/end→重试，随后才step/end</strong>。重试不是开一个新的普通Step。完整重试与取消策略留H20。</p>
+<h2>选区：从Surface位置找平衡前缀</h2>
+<p>现在有Surface <code>[system, user旧, assistant调用, tool结果, user新, assistant新]</code>。不能按“最近N条事件”剪：中间还可能有request/header、tool/call等仅日志事实，它们不是模型消息节点；也不能只取assistant调用却留下tool结果，造成没有提议的结果。</p>
+<p>selectCompactableRange验证测量nodes仍对应当前Surface，再保护位置0的system/message。从尾向前累计路由价格，达到retain预算后，把切点向前移动到工具配对平衡处。选中的较早范围是从第一个非首system节点至保留尾部之前。尾部可能超过R，因为消息与工具对不能按字符任意拆开。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L117-L158" target="_blank" rel="noopener noreferrer">S23 · selectCompactableRange</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/tool-pairing.ts#L1-L126" target="_blank" rel="noopener noreferrer">S24 · toolPairingBalancedBefore/toolPairingBalancedAfter</a>。</p>
+<p>例一：<code>[S,U,A(call),T(result)]</code>，尾部预算只够T，候选切点原在T之前，但那里仍有待答调用。必须把A与T一起保留，最多压缩U。例二：只有<code>[S,A(call),T(巨大结果)]</code>，整个工具单元被保留，就没有可摘要的较早前缀。可选Pruner可以先缩小结果文本，但不能把“始终能压缩”当保证。例三：有Assistant调用尚无结果，显式范围边界落在它之后会被拒绝；缺结果不能用摘要凭空补齐。</p>
+<p>retain0也不表示源码会随意切开最后节点：遍历先纳入尾节点再检查预算，所以仍至少保留一个节点。然而节点可能是空developer等不产普通文本的材料；不能承诺Overflow必然逐字保留最后一条用户消息。D的Overflow夹具在新增工具声明的序列下，后续可见文本只有system与检查点，这与常规R80保留近期Assistant的结果不同。</p>
+<p>保护的是Surface首system头，不是“所有历史中的每一条system永不摘要”。历史内更新的后续system节点可能被选中；H11的Loop投影随后协调当前指令。显式compactRegion还检查端点存在、位置顺序及两边平衡，并要求开放Turn。完全关闭的会话要用compactNow，不应伪造一个普通Step来绕过状态。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L337-L357" target="_blank" rel="noopener noreferrer">S25 · validateSurfaceRegion</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/surface.ts#L500-L550" target="_blank" rel="noopener noreferrer">S50 · planSurfaceEvent</a>。</p>
+<p><strong>位置与数字再次分开。</strong> 综合实验修剪后，当前工具节点29占原26的位置；摘要选择的shadowedSeqs为[5,8,15,16,23,24,29]。shadowedRange.start=5/end=29不是说日志5～29每个事件都参与。后续新摘要37放回旧5的位置，高Seq可以出现在较小Seq之前，不能按数值重新排序Surface。</p>
+<h2>摘要是一份辅助请求，有自己的失败边界</h2>
+<p>summarizeWithLlm的输入包括选区派生消息、首system头、当前有效工具声明与toolHistory。它把专门的摘要指令放在最后，直接调用ctx.llm.stream，并设purpose=&#x27;compaction&#x27;，不经过普通agent/request路由扩展点，也不制造正常用户任务Step。摘要目标为显式配置对、最新日志路由、AgentOptions对依次回退；没有完整目标会失败。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/summarizer.ts#L120-L185" target="_blank" rel="noopener noreferrer">S34 · summarizeWithLlm</a>。</p>
+<p>指令要求保留目标、技术要点、文件、错误修复、待办、当前工作、下一步与关键约束，旧检查点应与新信息合并。<strong>这是对模型的要求，不是代码已经证明摘要无遗漏。</strong> 实现只验证可用内容与缩减，不逐段核验八个标题，也不检查事实正确性。Mock短摘要用于行为断言，不能当作优质真实摘要样本。</p>
+<p>流经过BlockAssembler，终态error/aborted拒绝；max-tokens即使有半截文本也拒绝，避免把截断当完整检查点。最终只收非空text；reasoning与tool-call输出不进入检查点，图片输出会以UNSUPPORTED_CONTENT拒绝。rawOutput保存完整辅助输出及llmStreamCall:true，便于解释这次调用；它不等于模型下一次会读取的summary文本。实践C:rich真实生成三种块，只保留一份text。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/summarizer.ts#L197-L221" target="_blank" rel="noopener noreferrer">S36 · finishError/summaryText</a>。</p>
+<p>frameSummary再加固定前导和<code>&lt;compacted-summary&gt;</code>标签，形成user检查点。带框后的消息估价必须严格小于所选路由价格；只看summaryText比原文短还不够，因为框架也占Token。非缩减、空内容、图片输出和截断都不是成功压缩。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L361-L429" target="_blank" rel="noopener noreferrer">S29 · prepareCompaction/summarize</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/summarizer.ts#L188-L194" target="_blank" rel="noopener noreferrer">S35 · frameSummary</a>。</p>
+<p>我们的分析：摘要可能保住“修了错误”，却遗漏准确文件路径、用户限制或失败命令。重要约束需要在恢复后复核，不应把摘要当作所有原文的证据替代。前缀回放有机会利用提供方热缓存，但适配器投影、路由和缓存策略决定真实效果；辅助调用仍增加输入、输出与延迟。本课没有测真实命中率、金额或收益百分比。</p>
+<h2>标记、替换与检查点：按实际提交看事务</h2>
+<p>摘要调用会await，期间外部可能注入上下文、修改Surface，甚至取消。一次尝试必须先验证范围和锁，在让出控制权前同步追加compaction/start。自动/显式区域用当前开放Turn的数字归属；手动尝试用turn:null。长调用返回后重新验证稳定性与价格，再提交，不能拿失效摘要覆盖新的事实。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L173-L276" target="_blank" rel="noopener noreferrer">S26 · compactSurfaceRegion</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L431-L444" target="_blank" rel="noopener noreferrer">S30 · assertWholeSurfaceUnchanged</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L447-L468" target="_blank" rel="noopener noreferrer">S31 · assertSelectedSpanStable</a>。</p>
+<p>成功时接着同步追加三条：compaction/summary记录摘要、来源、路由与用量；承载框定摘要的user/message做Surface replace；compaction/end结束尝试。summary与replace相邻，后者sourceEventSeqs列出start、summary及所有被遮蔽节点。compaction/*均为仅日志事件，没有SurfaceOp；<strong>真正改变模型历史的是user替换。</strong> 依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L471-L523" target="_blank" rel="noopener noreferrer">S32 · commitCompactionBody</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/types.ts#L19-L120" target="_blank" rel="noopener noreferrer">S33 · SessionEventMap</a>。</p>
+<p><span class="lesson-figure" role="group" aria-label="开始标记先于异步摘要，摘要返回后核稳定性，再依次记录summary、user替换与end；错误闭合与flush按路径分别处理"><img src="figures/h19-03.png" alt="开始标记先于异步摘要，摘要返回后核稳定性，再依次记录summary、user替换与end；错误闭合与flush按路径分别处理" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜这是逐条留下事实的压缩尝试，不承诺整体回滚。手动闭合后执行检查点；自动区域函数本身不调用flush。结束失败故意留下未匹配start。</span><a class="lesson-image-expand" href="figures/h19-03.png" target="_blank" rel="noopener noreferrer" aria-label="开始标记先于异步摘要，摘要返回后核稳定性，再依次记录summary、user替换与end；错误闭合与flush按路径分别处理，在新窗口查看原图">查看原图 ↗</a></span></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>发生在哪里</th><th>已提交事实和调用结果</th></tr></thead><tbody><tr><td>start之前取消／范围错误／busy</td><td>不为本次尝试制造一对标记</td></tr><tr><td>摘要失败、非缩减、取消、稳定性改变</td><td>原前缀保留；尝试追加带error的end</td></tr><tr><td>summary已写，replace被拒绝</td><td>summary保留，Surface未变；end记录错误</td></tr><tr><td>replace已写，end被拒绝</td><td>新Surface可能已生效，未匹配start保留；不重复闭合掩盖故障</td></tr><tr><td>手动闭合成功，flush失败</td><td>事实与Surface已经改变，报persistence，不宣称已经保存</td></tr></tbody></table></div>
+<p>“事务”在这里表示带身份的受控操作，不是所有事件一起原子提交、一起回滚的数据库事务。实践C的partial-commit与end-failed分别注入这两个提交入口故障，不是假装物理磁盘损坏。重试已失效的旧range会先因端点不存在拒绝；改用当前合法range，才能进一步观察活动锁。</p>
+<p>锁不是一个普通内存布尔值。检查器反向查最新compaction标记和最新session/end-seed；生命周期边界之后的未匹配start是活动锁，之前的残留是陈旧证据。正常闭合释放锁，end失败故意留下busy。新的end-seed不等于原失败从日志消失，更不能靠删除start“修好”历史。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L308-L332" target="_blank" rel="noopener noreferrer">S27 · assertCompactionInactive</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L566-L600" target="_blank" rel="noopener noreferrer">S28 · inspectCompactionEntryState</a>。</p>
+<p>摘要出错还可进入同步compaction/summary-error waterfall。监听者只有<strong>先记录真实输入进展</strong>才返回true，后端再派生、重计价、重新校验后重试。图片省略是实际消费者。该钩子不能写成任意错误无限重试的许可证；取消时不再恢复，已经记录的省略也不回滚。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/region.ts#L389-L406" target="_blank" rel="noopener noreferrer">S37 · summary-error recovery</a>。</p>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="第二段停顿：写一条失败轨迹"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第二段停顿：写一条失败轨迹</div><div class="lesson-callout-body"><p>先写成功的start／summary／replace／end，再分别删去“摘要成功”“替换成功”“结束成功”的前提，推导仍留哪些事件、Surface是否变化、后续为何busy。不得只交一个“失败会回滚”的句子。运行实践C逐项核对。</p></div></aside>
+<h2>三种缩减：头尾、语义与图片位置</h2>
+<p>工具输出可能只是大量重复测试日志。ToolResultPruner无需额外模型，把超过thresholdChars的text块总和裁成头部、固定middle pruned标记和尾部。默认8192／4096／1024；必须严格超过阈值才剪，等于阈值不改。头、标记、尾总和不得超过阈值，保证不会反复增大。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-tool-result-pruner/src/config.ts#L8-L73" target="_blank" rel="noopener noreferrer">S40 · DEFAULTS/resolveConfig</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-tool-result-pruner/src/index.ts#L79-L134" target="_blank" rel="noopener noreferrer">S41 · pruneContent</a>。</p>
+<p>这里按Unicode码点计数，用Array.from保护emoji代理对；不是TokenMeter的UTF-16长度，也不是用户感知字素簇。跨多个text块共享全局头尾预算，中间标记只插一次；非text块不计字符预算，保持相对顺序。组合emoji或带重音字素仍可能被切断。图片与结构化内容不因为text被剪就一起消失。</p>
+<p>pruneSession遍历当前工具结果，先追加compaction/prune记录旧节点固定启发式shadow price，再紧邻追加tool/result replace，引用原seq。消息身份、调用关联、错误与元数据保留，只有content变短。原始结果仍在日志，已提交的早先修剪也不会因后一个失败而撤回。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-tool-result-pruner/src/index.ts#L150-L185" target="_blank" rel="noopener noreferrer">S42 · pruneSession</a>。</p>
+<p><strong>调用时机也属于合法性。</strong> Basic在开放Turn内的压力或Overflow路径调用Pruner。我们发现，把Pruner直接用于已关闭Turn后，内存Session可接纳替换，但JSONL重读的生命周期校验会拒绝“tool/result is outside an open turn”。本课B在开放Turn做组件验证，X在真实下一pre-step内修剪；不教学生在关闭的持久历史上任意剪枝。这个固定版本的分层约束及失败证据另列作者差异记录。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-format-v3-to-v4/src/relationships.ts#L73-L155" target="_blank" rel="noopener noreferrer">S54 · event state validation</a>。</p>
+<aside id="lesson-warning" class="lesson-callout lesson-warning" aria-label="头尾修剪不知道哪一行最重要"><div class="lesson-callout-label">注意风险</div><div class="lesson-callout-title">头尾修剪不知道哪一行最重要</div><div class="lesson-callout-body"><p>中间可能恰好有唯一的错误栈、测试失败原因或用户限制。字符变少不证明语义保留。原文可追溯也不代表模型当前仍看得到；需要精确信息时应按授权重新读取相应材料，不能用一个“已修剪”标记代替核对。</p></div></aside>
+<h3>图片省略，不是图片摘要</h3>
+<p>当支持图片的路由以IMAGE_OFFLOAD_REQUIRED并带offloadImages数量拒绝请求，图片省略插件按当前输入顺序选最旧的仍保留图片，跳过Assistant输出。它追加image/offload，目标为(消息事件Seq，消息内图片index)。同一附件可在不同消息甚至同一消息中出现多次，附件ID不能唯一标识一次出现。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-image-offload/src/projection.ts#L47-L74" target="_blank" rel="noopener noreferrer">S43 · imageOffloadProjection</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-image-offload/src/image-offload.ts#L19-L46" target="_blank" rel="noopener noreferrer">S44 · offloadOldestImages</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-image-offload/src/index.ts#L25-L41" target="_blank" rel="noopener noreferrer">S45 · apply</a>。</p>
+<p>消息投影把选中块标成offloaded:true，节点与消息身份不换。后续适配器使用offloadedImageText占位，说明附件以及可用只读路径；没有路径时明确提示需要再次附加。原始附件引用和事件未物理删除。新的工具读取可以增加新出现位置，却不会恢复旧位置；换更大窗口模型也不自动撤销已经持久的决定。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/content.ts#L108-L119" target="_blank" rel="noopener noreferrer">S46 · offloadedImageText</a>。</p>
+<p>请求错误恢复不消耗普通Provider重试预算，也不追加普通llm/retry事件，因为它是在修复输入。摘要失败则通过summary-error在选区内选图、记录进展，在同一标记对内重试。取消在请求错误路径委派，在摘要路径抛出取消原因，二者不能混写。补充images实验验证精确位置、占位、取消拒绝和摘要恢复；完整真实图片Adapter／Agent请求错误集成本轮未运行。</p>
+<p><span class="lesson-figure" role="group" aria-label="工具头尾修剪、历史摘要和图片省略分别用prune替换、摘要user替换与image/offload消息投影缩减模型输入，原始日志继续保留"><img src="figures/h19-04.png" alt="工具头尾修剪、历史摘要和图片省略分别用prune替换、摘要user替换与image/offload消息投影缩减模型输入，原始日志继续保留" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜三种机制的输入、事件和损失不同。图片省略不替换节点，头尾不理解语义，摘要有辅助模型成本；都不等于物理删除历史。</span><a class="lesson-image-expand" href="figures/h19-04.png" target="_blank" rel="noopener noreferrer" aria-label="工具头尾修剪、历史摘要和图片省略分别用prune替换、摘要user替换与image/offload消息投影缩减模型输入，原始日志继续保留，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>/compact：在人类命令与普通Turn之间画边界</h2>
+<p>手动命令不等达到T才做，也不消耗一次普通模型任务Turn，但摘要器仍可能发辅助LLM请求。command-compact只依赖Commands与Compaction契约，参数必须为空。Commands执行器拥有command/run与command/done；成功done的sourceEventSeq指向summary，界面可以据此归并，而不是解析一段结果文本。两类命令事件都仅日志。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/command-compact/src/index.ts#L22-L107" target="_blank" rel="noopener noreferrer">S47 · apply/executeCompact</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/interaction/commands/src/index.ts#L380-L459" target="_blank" rel="noopener noreferrer">S48 · execute</a>。</p>
+<p>compactNow同步调用runMaintenance预留空闲工作，阻止后来输入抢先开Turn，随后选retain0的有用范围；无范围直接null且不写标记。Agent有运行工作、另一维护或已获优先权的唤醒输入时会busy；命令本身不排队。维护时公共status仍可为idle，不能只检查status就认定可并行修改。真正互斥在内部phase与日志锁。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L409-L456" target="_blank" rel="noopener noreferrer">S38 · compactNow</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L199-L219" target="_blank" rel="noopener noreferrer">S39 · runMaintenance</a>。</p>
+<p>维护期间followup仍接纳并按FIFO等待，每条分别开普通Turn。inject的非唤醒上下文可以在start/end之间追加，因此手动只要求<strong>所选span</strong>连续、相同且平衡，允许范围外新增；自动区域则要求整个Surface稳定。D:manual-fifo显示第一请求含FIFO_ONE而无FIFO_TWO，第二请求才含FIFO_TWO；范围外注入保留。不能把FIFO误画成所有新输入同时进入同一个请求。</p>
+<p>每次已闭合手动尝试都等待ctx.sessions.flush，之后才释放维护并唤醒工作。没有存储监听器时，这个调用不证明落盘；X真正挂载JSONL才构成磁盘证据。手动失败分类包含busy、cancelled、changed、summary、commit、persistence；command映射成人类结果。插件退出先注销命令，再等已经开始的处理器结束，不能越过取消后的闭合和检查点工作。</p>
+<h2>原始事实继续增长，当前模型只读有效历史</h2>
+<p>综合X的原工具结果26有约六千字符。真实开放Turn的pre-step先写28 compaction/prune，29 tool/result替换26。Turn结束后，手动压缩35 start、36 summary、37 user替换、38 end。summary.shadowedSeqs精确列[5,8,15,16,23,24,29]，其固定shadowedTokenCount为1319；原26和被遮蔽节点都在日志。</p>
+<p><span class="lesson-figure" role="group" aria-label="综合X完整日志保留原事件，当前Surface变为系统头、摘要37和近期回答32；JSONL保存后由新实例恢复同一派生消息"><img src="figures/h19-01.png" alt="综合X完整日志保留原事件，当前Surface变为系统头、摘要37和近期回答32；JSONL保存后由新实例恢复同一派生消息" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜事件计数、Surface节点与模型Message分开。summary36不是模型消息，user37才承载检查点；恢复重建已有取舍，不重新生成旧摘要。</span><a class="lesson-image-expand" href="figures/h19-01.png" target="_blank" rel="noopener noreferrer" aria-label="综合X完整日志保留原事件，当前Surface变为系统头、摘要37和近期回答32；JSONL保存后由新实例恢复同一派生消息，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>最终有效Surface为[4,37,32]，模型得到system、摘要user、近期assistant三条消息。37的sourceEventSeqs为[35,36,5,8,15,16,23,24,29]；没有把日志中间全部事件误作摘要输入。保存的原日志共39条，后端再打开和Resume时能按相同事件与解释规则重建相同消息。普通end-seed是新生命周期自己的事实，不能拿恢复后总长多一条判历史不同。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-persistence-jsonl/src/index.ts#L389-L425" target="_blank" rel="noopener noreferrer">S51 · open</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L763-L838" target="_blank" rel="noopener noreferrer">S52 · resumeWith</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L700-L701" target="_blank" rel="noopener noreferrer">S53 · constructor end-seed</a>。</p>
+<p>这种压缩使后续请求不再携带旧原文，但原始存储未变小，甚至因为记录摘要与来源而增长。Event Sourcing保留解释依据，Persistence保存这些事实，Compaction决定模型当前读什么。三者分工清楚，才能既保留可追溯性，又控制模型输入；它们都不让外部工具获得“恰好执行一次”的保证。</p>
+<h2>运行准备与验收方法</h2>
+<p>在AI Foundry仓库根运行以下命令。Node24、Python、固定官方源码和隔离依赖锚点的完整准备见lab/README及作者README。runner先核9619个固定源码／配置／文档的Git blob与SHA256，再核依赖的版本和integrity；把随课程序复制到新的临时根运行，不往业务工程安装Harness依赖。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>python -X utf8 docs/deepseek-harness-v2/h19/scripts/check-sources.py
+node docs/deepseek-harness-v2/h19/scripts/run-labs.mjs A
+node docs/deepseek-harness-v2/h19/scripts/run-labs.mjs B
+node docs/deepseek-harness-v2/h19/scripts/run-labs.mjs C
+node docs/deepseek-harness-v2/h19/scripts/run-labs.mjs D
+node docs/deepseek-harness-v2/h19/scripts/run-labs.mjs X</code></pre></div>
+<p>每项先交预测表，再运行，再解释输出与原预测的差异。默认不带参数运行全部行为测试；实践D各分支在D_CASES，实践C在C_CASES，测试入口均逐项展开。运行器保存args、exit、stdout/stderr、程序hash与临时根。没有删除步骤，所有新产物和空目录留存登记，H18材料保持原样。</p>
+<p>这是34个TAP项：C19、D15；其中数项含多个相关断言，不说成34类独立故障。C/D使用真实Cordis、Session、Meter及压缩组件；D加入真实Loop、Runtime和脚本Adapter。X另挂真实磁盘JSONL，属于同进程关闭后新建后端实例再Resume；<strong>没有独立进程恢复、默认Zstd与真实断电测试</strong>。不能把H18的结果自动转记为H19跨组件通过。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：公共准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import {Context} from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore,{Session,SessionId,canonicalHeader} from &#x27;@deepseek-ai/dsh-session&#x27;;
+import LlmRuntime,{LlmAdapter,createUserMessage,createSystemMessage,createAssistantMessage,createToolResultMessage,ToolCallId} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import TokenMeter from &#x27;@deepseek-ai/dsh-token-meter&#x27;;
+import Basic from &#x27;@deepseek-ai/dsh-compaction-basic&#x27;;
+import Pruner from &#x27;@deepseek-ai/dsh-compaction-tool-result-pruner&#x27;;
+import * as Offload from &#x27;@deepseek-ai/dsh-compaction-image-offload&#x27;;
+import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService,{defineTool} from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import {NativeToolExecutor} from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import * as Jsonl from &#x27;@deepseek-ai/dsh-session-persistence-jsonl&#x27;;
+import {mkdtemp} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+export {assert,Session,SessionId,canonicalHeader,createAssistantMessage,createSystemMessage,createToolResultMessage,ToolCallId,Basic};
+export const signal=()=&gt;new AbortController().signal;
+export const user=(text:string,content?:any[])=&gt;createUserMessage({source:{kind:&#x27;user&#x27;},content:content??[{type:&#x27;text&#x27;,text}]});
+export const blocks=(text:string,finish:any={kind:&#x27;stop&#x27;})=&gt;[{type:&#x27;text-delta&#x27;,index:0,text},{type:&#x27;finish&#x27;,reason:finish}];
+export const textOf=(messages:any[])=&gt;messages.flatMap(m=&gt;m.content).filter(b=&gt;b.type===&#x27;text&#x27;).map(b=&gt;b.text).join(&#x27;\n&#x27;);
+export class Adapter extends LlmAdapter{
+ requests:any[]=[]; summaries:any[]=[]; ordinary=0;
+ summary=&#x27;Goal: inspect fixture. Next: continue safely.&#x27;;
+ summaryMode=&#x27;ok&#x27;; failure=&#x27;&#x27;; gate?:Promise&lt;void&gt;; onSummary?:()=&gt;void;
+ async resolveModel(provider:string,model:string){return {provider,id:model,name:model,defaultMaxTokens:128,context:{contextWindow:model===&#x27;small&#x27;?2000:100000}};}
+ override imageRequestPricing(_provider:string,model:string){return {priceImages:(images:any[])=&gt;images.map(image=&gt;({visualTokens:image.offloaded?0:model===&#x27;vision-big&#x27;?2000:100,text:image.offloaded?&#x27;omitted image&#x27;:&#x27;image handle&#x27;}))};}
+ async *stream(options:any):AsyncGenerator&lt;any&gt;{
+  const captured=structuredClone({...options,signal:undefined});this.requests.push(captured);
+  if(options.purpose===&#x27;compaction&#x27;){
+   this.summaries.push(captured);this.onSummary?.();if(this.gate)await this.gate;options.signal?.throwIfAborted();
+   if(this.summaryMode===&#x27;throw&#x27;)throw Error(&#x27;controlled summary failure&#x27;);
+   if(this.summaryMode===&#x27;image&#x27;){yield {type:&#x27;block-start&#x27;,index:0,blockType:&#x27;image&#x27;};yield {type:&#x27;block-end&#x27;,index:0,block:{type:&#x27;image&#x27;,attachment:imageRef()}};}
+   else if(this.summaryMode===&#x27;rich&#x27;){
+    yield {type:&#x27;block-start&#x27;,index:0,blockType:&#x27;reasoning&#x27;};yield {type:&#x27;block-end&#x27;,index:0,block:{type:&#x27;reasoning&#x27;,text:&#x27;private thought&#x27;}};
+    yield {type:&#x27;block-start&#x27;,index:1,blockType:&#x27;tool-call&#x27;};yield {type:&#x27;block-end&#x27;,index:1,block:{type:&#x27;tool-call&#x27;,id:ToolCallId(&#x27;never-run&#x27;),name:&#x27;work&#x27;,arguments:&#x27;{}&#x27;}};
+    yield {type:&#x27;text-delta&#x27;,index:2,text:this.summary};
+   }else yield {type:&#x27;text-delta&#x27;,index:0,text:this.summaryMode===&#x27;empty&#x27;?&#x27;&#x27;:this.summary};
+   yield {type:&#x27;finish&#x27;,reason:{kind:this.summaryMode===&#x27;max&#x27;?&#x27;max-tokens&#x27;:&#x27;stop&#x27;}};return;
+  }
+  this.ordinary++;
+  if(this.failure===&#x27;always-overflow&#x27;||(this.failure===&#x27;overflow&#x27;&amp;&amp;this.ordinary===1)){
+   yield {type:&#x27;finish&#x27;,reason:{kind:&#x27;error&#x27;,failure:{message:&#x27;controlled context overflow&#x27;,code:&#x27;CONTEXT_WINDOW_EXCEEDED&#x27;}}};return;
+  }
+  if(this.failure===&#x27;server&#x27;){yield {type:&#x27;finish&#x27;,reason:{kind:&#x27;error&#x27;,failure:{message:&#x27;controlled failure&#x27;,code:&#x27;SERVER&#x27;}}};return;}
+  if(textOf([options.messages.at(-1)]).includes(&#x27;RUN_TOOL&#x27;)){
+   yield {type:&#x27;block-start&#x27;,index:0,blockType:&#x27;tool-call&#x27;};
+   yield {type:&#x27;block-end&#x27;,index:0,block:{type:&#x27;tool-call&#x27;,id:ToolCallId(&#x27;work-&#x27;+this.ordinary),name:&#x27;work&#x27;,arguments:&#x27;{}&#x27;}};
+   yield {type:&#x27;finish&#x27;,reason:{kind:&#x27;tool-calls&#x27;}};return;
+  }
+  yield* blocks(&#x27;fixture answer&#x27;);
+ }
+}
+export const imageRef=()=&gt;({attachmentId:&#x27;sha256:&#x27;+ &#x27;ab&#x27;.repeat(32),mediaType:&#x27;image/png&#x27;,bytes:32,width:10,height:10,name:&#x27;fixture.png&#x27;});
+export async function fixture(options:{loop?:boolean;disk?:boolean;auto?:boolean;policy?:any;pruner?:boolean}={}){
+ const ctx=new Context();await ctx.plugin(SessionStore);const facts=new Map&lt;string,any[]&gt;();
+ ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{const a=facts.get(s.id)??[];a.push(e);facts.set(s.id,a);});
+ let root:string|undefined;
+ if(options.disk){assert.ok(process.env.H19_RUN_ROOT);root=await mkdtemp(resolve(process.env.H19_RUN_ROOT!,&#x27;h19-jsonl-&#x27;));await ctx.plugin(Jsonl,{root,compression:&#x27;none&#x27;});}
+ await ctx.plugin(LlmRuntime);await ctx.plugin(SessionProjectionRegistry);await ctx.plugin(TokenMeter);
+ const adapter=new Adapter();ctx.llm.registerAdapter([&#x27;fixture&#x27;],adapter);
+ if(options.pruner)await ctx.plugin(Pruner,{thresholdChars:200,headChars:60,tailChars:60});
+ await ctx.plugin(AgentRegistry);await ctx.plugin(Offload);
+ await ctx.plugin(Basic,{auto:options.auto??false,headroomTokens:0,maxTokens:256,retainTokens:80,...options.policy});const compact=ctx.compaction;
+ const errors:any[]=[];let bodies=0;
+ if(options.loop){
+  await ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,personaPrefix:&#x27;Use only fixture material.&#x27;});
+  await ctx.plugin(ToolsService);ctx.tools.setExecutor(new NativeToolExecutor(ctx));
+  ctx.tools.register(defineTool({name:&#x27;work&#x27;,description:&#x27;Read an in-memory fixture; no filesystem or network&#x27;,parameters:{},output:{schema:{type:&#x27;string&#x27;},render:(_a,v)=&gt;[{type:&#x27;text&#x27;,text:v}]},async execute(){bodies++;return &#x27;HEAD &#x27;+ &#x27;tool body &#x27;.repeat(600)+&#x27; TAIL&#x27;;}}));
+  await ctx.plugin(AgentLoop,{agents:[]});ctx.on(&#x27;agent/error&#x27;,e=&gt;errors.push(String(e.error)));
+ }
+ return {ctx,adapter,compact,facts,errors,root,bodies:()=&gt;bodies,close:()=&gt;ctx.fiber.dispose()};
+}
+// Legitimate component history; fixture appends are recorded as they commit.
+export function history(ctx:any,id=&#x27;history&#x27;,length=2400,turns=3){
+ const s=ctx.sessions.create(SessionId(id));
+ for(let t=1;t&lt;=turns;t++){
+  s.append(&#x27;turn/start&#x27;,{turn:t});s.append(&#x27;step/start&#x27;,{turn:t,step:1});
+  if(t===1){s.append(&#x27;system/message&#x27;,{turn:t,step:1,message:createSystemMessage(&#x27;Use fixture facts.&#x27;)},{surfaceOp:&#x27;append&#x27;});s.append(&#x27;request/header&#x27;,{header:canonicalHeader({config:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}}),reason:&#x27;initial&#x27;});}
+  s.append(&#x27;user/message&#x27;,user((t===1?&#x27;OLD_SENTINEL &#x27;:&#x27;RECENT_&#x27;+t+&#x27; &#x27;)+ &#x27;x&#x27;.repeat(length)),{surfaceOp:&#x27;append&#x27;});
+  s.append(&#x27;assistant/message&#x27;,{turn:t,step:1,message:createAssistantMessage({source:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},content:[{type:&#x27;text&#x27;,text:&#x27;answer &#x27;+t+&#x27; &#x27;+ &#x27;y&#x27;.repeat(length)}]}),stream:[]},{surfaceOp:&#x27;append&#x27;});
+  s.append(&#x27;step/end&#x27;,{turn:t,step:1});s.append(&#x27;turn/end&#x27;,{turn:t,reason:{kind:&#x27;completed&#x27;}});
+ }
+ return s;
+}
+export const componentAgent=(s:any)=&gt;({session:s,options:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}} as any);
+export const open=(s:any)=&gt;s.append(&#x27;turn/start&#x27;,{turn:4});
+export function appendTool(s:any,text:string,content?:any[]){
+ const turn=4,step=1,id=ToolCallId(&#x27;fixture-tool&#x27;);open(s);s.append(&#x27;step/start&#x27;,{turn,step});
+ s.append(&#x27;assistant/message&#x27;,{turn,step,stream:[],message:createAssistantMessage({source:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},content:[{type:&#x27;tool-call&#x27;,id,name:&#x27;work&#x27;,arguments:&#x27;{}&#x27;}]})},{surfaceOp:&#x27;append&#x27;});
+ const call=s.append(&#x27;tool/call&#x27;,{turn,step,callId:id,name:&#x27;work&#x27;,arguments:&#x27;{}&#x27;});
+ return s.append(&#x27;tool/result&#x27;,{turn,step,message:createToolResultMessage({callId:id,content:content??[{type:&#x27;text&#x27;,text}],isError:false})},{surfaceOp:&#x27;append&#x27;,sourceEventSeqs:[call.seq]});
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：隔离依赖完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// 依赖锚点均由作者 runner 按固定上游 lock 完整核验。
+import fs from &#x27;node:fs&#x27;;
+import {registerHooks, createRequire, syncBuiltinESMExports} from &#x27;node:module&#x27;;
+import {pathToFileURL} from &#x27;node:url&#x27;;
+const dep=createRequire(pathToFileURL(process.env.H19_DEPS_ANCHOR));
+const zod=createRequire(pathToFileURL(process.env.H19_ZOD_ANCHOR));
+const native=createRequire(pathToFileURL(process.env.H19_NATIVE_ANCHOR));
+const limit=createRequire(pathToFileURL(process.env.H19_LIMIT_ANCHOR));
+const entries=new Map([&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;]
+ .map(name=&gt;[name,pathToFileURL(dep.resolve(name)).href]));
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+entries.set(&#x27;koffi&#x27;,pathToFileURL(native.resolve(&#x27;koffi&#x27;)).href);
+entries.set(&#x27;p-limit&#x27;,pathToFileURL(limit.resolve(&#x27;p-limit&#x27;)).href);
+entries.set(&#x27;@js-temporal/polyfill&#x27;,pathToFileURL(limit.resolve(&#x27;@js-temporal/polyfill&#x27;)).href);
+for(const file of [&#x27;region&#x27;,&#x27;config&#x27;,&#x27;summarizer&#x27;])entries.set(&#x27;@deepseek-ai/dsh-compaction-basic/src/&#x27;+file+&#x27;.ts&#x27;,pathToFileURL(process.env.HARNESS_SOURCE_CACHE+&#x27;/packages/compaction/compaction-basic/src/&#x27;+file+&#x27;.ts&#x27;).href);
+entries.set(&#x27;@deepseek-ai/dsh-compaction-image-offload/src/image-offload.ts&#x27;,pathToFileURL(process.env.HARNESS_SOURCE_CACHE+&#x27;/packages/compaction/compaction-image-offload/src/image-offload.ts&#x27;).href);
+registerHooks({resolve(specifier,context,next){return next(entries.get(specifier)??specifier,context);}});
+// 用户禁止批量/递归删除；包括上游异常清理路径也不准执行递归 rm。
+const rm=fs.promises.rm;
+fs.promises.rm=async(path,options)=&gt;{
+ if(options?.recursive)throw Error(&#x27;H19 safety guard: recursive removal forbidden&#x27;);
+ return rm(path,options);
+};
+syncBuiltinESMExports();</code></pre></div></div></details>
+<h3>实践 A：数字从哪里来？</h3>
+<p>输入为system四字符、user四字符、read Schema，再增加16字符用户。随后加入一致Usage流，添加新用户、改变temperature，并用声明视觉价格的适配器测同一图片。先预测total、baseline、delta和节点计数；再解释文件字节为何不是Token。另构造四字符工具结果，预测其节点成本，以及tool/call是否增加Surface节点。验收必须写出精确值与来源。</p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,createSystemMessage,createAssistantMessage,canonicalHeader,signal,imageRef,appendTool} from &#x27;./support.ts&#x27;;
+import {AssistantStreamAccumulator,projectFilesToText} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+export async function practiceA(){
+ const f=await fixture();try{
+  const s=f.ctx.sessions.create();const meter=f.ctx.tokenMeter;
+  assert.equal(meter.measure(s).baseline.kind,&#x27;none&#x27;);assert.equal(meter.measure(s).totalTokens,0);
+  s.append(&#x27;system/message&#x27;,{turn:1,step:1,message:createSystemMessage(&#x27;abcd&#x27;)},{surfaceOp:&#x27;append&#x27;});
+  const old=s.append(&#x27;user/message&#x27;,user(&#x27;abcd&#x27;),{surfaceOp:&#x27;append&#x27;});
+  assert.equal(meter.measure(s).totalTokens,14); // system 5 + user 9
+  const tools=[{name:&#x27;read&#x27;,description:&#x27;read&#x27;,parameters:{type:&#x27;object&#x27; as const}}];
+  const h=canonicalHeader({config:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},tools});
+  s.append(&#x27;request/header&#x27;,{header:h,reason:&#x27;initial&#x27;});
+  const schemaPrice=Math.ceil(JSON.stringify(tools).length/4)+4;
+  assert.equal(meter.measure(s).totalTokens,14+schemaPrice);
+  s.append(&#x27;user/message&#x27;,user(&#x27;q&#x27;.repeat(16)),{surfaceOp:&#x27;append&#x27;});
+  const before=meter.measure(s);assert.equal(before.totalTokens,26+schemaPrice);
+  s.append(&#x27;user/message&#x27;,user(&#x27;z&#x27;),{surfaceOp:{op:&#x27;replace&#x27;,startSeq:old.seq,endSeq:old.seq},sourceEventSeqs:[old.seq]});
+  assert.equal(meter.measure(s).nodes.length,3);assert.equal(before.nodes.length,3);assert.ok(Object.isFrozen(before.nodes));
+  // Successful request anchor uses the actual embedded compact stream, not an empty invented stream.
+  s.append(&#x27;turn/start&#x27;,{turn:1});s.append(&#x27;step/start&#x27;,{turn:1,step:1});
+  const acc=new AssistantStreamAccumulator();const usage={inputTokens:1000,outputTokens:50,cacheReadTokens:100,cacheWriteTokens:20,reasoningTokens:10};
+  const chunks:any[]=[{type:&#x27;text-delta&#x27;,index:0,text:&#x27;done&#x27;},{type:&#x27;usage&#x27;,usage},{type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}}];
+  chunks.forEach((chunk,time)=&gt;acc.push({time,chunk}));
+  s.append(&#x27;assistant/message&#x27;,{turn:1,step:1,message:createAssistantMessage({source:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},content:[{type:&#x27;text&#x27;,text:&#x27;done&#x27;}]}),stream:[...acc.snapshot()],usage},{surfaceOp:&#x27;append&#x27;});
+  s.append(&#x27;step/end&#x27;,{turn:1,step:1});s.append(&#x27;turn/end&#x27;,{turn:1,reason:{kind:&#x27;completed&#x27;}});
+  const anchored=meter.measure(s);assert.equal(anchored.baseline.kind,&#x27;usage&#x27;);assert.equal(anchored.totalTokens,1170);assert.equal(anchored.surfaceDeltaTokens,0);
+  s.append(&#x27;user/message&#x27;,user(&#x27;abcd&#x27;),{surfaceOp:&#x27;append&#x27;});assert.equal(meter.measure(s).totalTokens,1179);
+  const changed=meter.measure(s,canonicalHeader({...h,config:{...h.config,temperature:0.5}}));assert.equal(changed.baseline.kind,&#x27;estimated&#x27;);
+  const tiny=f.ctx.sessions.create();tiny.append(&#x27;step/start&#x27;,{turn:1,step:1});tiny.append(&#x27;request/header&#x27;,{header:h,reason:&#x27;initial&#x27;});
+  tiny.append(&#x27;assistant/message&#x27;,{turn:1,step:1,message:createAssistantMessage({source:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},content:[{type:&#x27;text&#x27;,text:&#x27;answer&#x27;}]}),stream:[],usage:{inputTokens:1,outputTokens:1}},{surfaceOp:&#x27;append&#x27;});
+  assert.equal(meter.measure(tiny).baseline.kind,&#x27;estimated&#x27;);
+  const images=f.ctx.sessions.create();const img=images.append(&#x27;user/message&#x27;,user(&#x27;&#x27;,[{type:&#x27;image&#x27;,attachment:imageRef()}]),{surfaceOp:&#x27;append&#x27;});
+  const price=(model:string)=&gt;meter.measure(images,canonicalHeader({config:{provider:&#x27;fixture&#x27;,model}}));
+  const small=price(&#x27;vision-small&#x27;),large=price(&#x27;vision-big&#x27;);assert.equal(large.surfaceTokens-small.surfaceTokens,1900);assert.equal(large.nodes[0].heuristicTokens,small.nodes[0].heuristicTokens);
+  images.append(&#x27;image/offload&#x27;,{targets:[{seq:img.seq,imageIndexes:[0]}]});const omitted=price(&#x27;vision-big&#x27;);assert.ok(omitted.surfaceTokens&lt;large.surfaceTokens);assert.equal(omitted.nodes[0].heuristicTokens,large.nodes[0].heuristicTokens);
+  const files=f.ctx.sessions.create(),ref:any={attachmentId:&#x27;sha256:&#x27;+&#x27;cd&#x27;.repeat(32),name:&#x27;fixture.txt&#x27;,bytes:12345};const file=user(&#x27;&#x27;,[{type:&#x27;file&#x27;,attachment:ref}]);files.append(&#x27;user/message&#x27;,file,{surfaceOp:&#x27;append&#x27;});
+  assert.equal(meter.measure(files).surfaceTokens,meter.estimateMessage(projectFilesToText([file],()=&gt;undefined)[0]));
+  const toolSession=f.ctx.sessions.create(),tool=appendTool(toolSession,&#x27;abcd&#x27;),toolMeasurement=meter.measure(toolSession);
+  assert.equal(toolMeasurement.nodes.find(n=&gt;n.seq===tool.seq)!.tokens,9);assert.equal(toolMeasurement.nodes.length,2); // assistant proposal + tool result; tool/call is log-only
+  return {numeric:{system:5,user:9,schemaPrice,before:before.totalTokens},anchored,afterUser:1179,changed,images:{small,large,omitted},contextPressure:meter.contextPressure(s),breakdown:f.ctx.sessionProjections.snapshot(s).values.contextBreakdown,toolResult:{measurement:toolMeasurement,events:f.facts.get(toolSession.id)},events:f.facts.get(s.id)};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>无消息无头时total0、baseline none；system5+user9=14。read工具声明JSON长度72，工具价22；再加16字符用户12，得到48。单点替换不增加节点数，旧事件仍在日志；保存的测量对象深冻结，不随以后追加改变。独立工具夹具的abcd结果同样为9：文本块5加role4；Surface两节点是Assistant提议与结果，tool/call仅日志。</p><p>成功流的Usage锚点=1000+100+20+50=1170，reasoning10不再加；本次输出未改，delta0。新abcd用户增加9，变1179。改temperature会令完整头不等，回退estimated；小于完整锚点的Usage也不复用。UI提示词压力1120与测量1179并不矛盾，前者不含output且不是同一“当前总量”。构成5/22/39属于启发式，不能拼成Provider账单。</p><p>图片111→2011来自视觉价100→2000的受控声明，差1900；offload后12来自占位文本；heuristicTokens始终按固定引用规则。文件按官方句柄文本投影计价。建议10分：数值推导4，基线与封装3，路由/展示/账单边界3。把1179写成精确费用的关键误解需先订正；评分未经试读校准。</p></div></details>
+<h3>实践 B：保住头尾，是否保住了意思？</h3>
+<p>输入100个😀、一张图片、150个“尾”。预算threshold200、head60、tail60。先预测码点数、标记位置与图片顺序，再把它作为真实工具结果提交，运行Pruner，比较Event Log与Surface。恰好200字符的对照应不修剪。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,history,appendTool,assert,imageRef,textOf} from &#x27;./support.ts&#x27;;
+import {PRUNE_MARKER} from &#x27;@deepseek-ai/dsh-compaction-tool-result-pruner&#x27;;
+export async function practiceB(){
+ const f=await fixture({pruner:true});try{
+  const p=f.ctx.toolResultPruner;assert.equal(p.pruneContent([{type:&#x27;text&#x27;,text:&#x27;a&#x27;.repeat(200)}]),null);
+  const content:any[]=[{type:&#x27;text&#x27;,text:&#x27;😀&#x27;.repeat(100)},{type:&#x27;image&#x27;,attachment:imageRef()},{type:&#x27;text&#x27;,text:&#x27;尾&#x27;.repeat(150)}];
+  const pruned=p.pruneContent(content)!;assert.equal(p.measureContent(content),250);assert.equal(p.measureContent(pruned),120+Array.from(PRUNE_MARKER).length);
+  assert.equal(pruned[0].type,&#x27;text&#x27;);assert.ok((pruned[0] as any).text.startsWith(&#x27;😀&#x27;.repeat(60)));
+  assert.deepEqual(pruned.filter(b=&gt;b.type!==&#x27;text&#x27;),[content[1]]);assert.ok(textOf([{content:pruned}]).endsWith(&#x27;尾&#x27;.repeat(60)));
+  const s=history(f.ctx,&#x27;pruner&#x27;,20),original=appendTool(s,&#x27;&#x27;,content),prior=[...f.facts.get(s.id)!];const before=f.ctx.tokenMeter.measure(s);
+  const result=p.pruneSession(s),events=f.facts.get(s.id)!;assert.equal(result.pruned.length,1);assert.deepEqual(events.slice(0,prior.length),prior);
+  assert.deepEqual(events.slice(-2).map(e=&gt;e.type),[&#x27;compaction/prune&#x27;,&#x27;tool/result&#x27;]);const replacement=events.at(-1)!;
+  assert.deepEqual(replacement.sourceEventSeqs,[original.seq]);assert.equal(replacement.data.message.id,original.data.message.id);
+  assert.ok(!s.surface.nodes.includes(original.seq));assert.ok(s.surface.nodes.includes(replacement.seq));assert.deepEqual(original.data.message.content,content);
+  assert.equal(p.pruneSession(s).pruned.length,0);assert.ok(f.ctx.tokenMeter.measure(s).totalTokens&lt;before.totalTokens);
+  return {original,pruned,result,before,after:f.ctx.tokenMeter.measure(s),surface:s.surface.nodes,events};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>原文本250码点，emoji在JavaScript长度中占200代码单元，在Pruner中仍是100码点。输出为60个😀、一份固定标记、60个“尾”；非文本图片仍在相同相对位置。标记自身39码点，所以输出159码点，小于200；等于200的输入返回null，二次扫描不重复修剪。</p><p>Session新增compaction/prune与tool/result replace，相邻且来源引用旧工具seq；旧事件完整相等，新消息id和调用关联保留。旧节点退出Surface，新节点占原位置，后续派生读短结果。这个实验保持Turn开放，不能拿内存通过推成关闭Turn后的任意持久修剪。建议10分：码点与边界3，富块与文本3，事件/Surface/时机4。原文保留不等于模型没有信息损失，中间独有报错仍可能不见。</p></div></details>
+<h3>实践 C：给每个结果写完整事件尾部</h3>
+<p>输入三个已闭合Turn与一个开放Turn，选择真实Meter计算的平衡前缀。先预测success、noop、unbalanced、below四类是否写标记；再对failure、nonshrinking、max、image、rich、cancel、active、changed、partial-commit、end-failed、stale、policy逐项推演。C名称是实践编号，不是每个分支都做磁盘测试。</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,history,componentAgent,open,appendTool,assert,user,signal,Basic} from &#x27;./support.ts&#x27;;
+import {CompactionId,toolPairingBalancedBefore} from &#x27;@deepseek-ai/dsh-compaction&#x27;;
+import {selectCompactableRange} from &#x27;@deepseek-ai/dsh-compaction-basic/src/region.ts&#x27;;
+import {resolveConfig,resolveTargetPolicy,resolveCompactSpec} from &#x27;@deepseek-ai/dsh-compaction-basic/src/config.ts&#x27;;
+export const C_CASES=[&#x27;success&#x27;,&#x27;noop&#x27;,&#x27;unbalanced&#x27;,&#x27;below&#x27;,&#x27;failure&#x27;,&#x27;nonshrinking&#x27;,&#x27;max&#x27;,&#x27;image&#x27;,&#x27;rich&#x27;,&#x27;cancel&#x27;,&#x27;active&#x27;,&#x27;changed&#x27;,&#x27;partial-commit&#x27;,&#x27;end-failed&#x27;,&#x27;stale&#x27;,&#x27;policy&#x27;];
+export async function practiceC(kind=&#x27;success&#x27;){
+ const f=await fixture();try{
+  const s=history(f.ctx,&#x27;C-&#x27;+kind),a=componentAgent(s);open(s);const log=f.facts.get(s.id)!;const before=[...log],nodes=[...s.surface.nodes];
+  const range=selectCompactableRange(s,f.ctx.tokenMeter.measure(s),80)!;assert.ok(range);
+  const run=()=&gt;f.compact.compactRegion(range.start,range.end,a,signal());
+  if(kind===&#x27;policy&#x27;){
+   const config=resolveConfig({headroomTokens:2000,maxTokens:512,retainRatio:0.16});const policy=resolveTargetPolicy(config,{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;});
+   const spec=resolveCompactSpec(policy,10000,1000);assert.equal(spec.thresholdTokens,7000);assert.equal(spec.retainTokens,1440);
+   assert.throws(()=&gt;resolveCompactSpec(resolveTargetPolicy(resolveConfig(),{provider:&#x27;fixture&#x27;,model:&#x27;small&#x27;}),1000,128));
+   assert.throws(()=&gt;resolveConfig({retainRatio:0.2,retainTokens:10}));return {threshold:7000,retain:1440};
+  }
+  if(kind===&#x27;noop&#x27;){const single=f.ctx.sessions.create();single.append(&#x27;user/message&#x27;,user(&#x27;x&#x27;.repeat(3000)),{surfaceOp:&#x27;append&#x27;});assert.equal(selectCompactableRange(single,f.ctx.tokenMeter.measure(single),0),null);return {noWrite:true};}
+  if(kind===&#x27;below&#x27;){assert.equal(await f.compact.compactIfNeeded(a,&#x27;pressure&#x27;,signal()),null);assert.equal(log.length,before.length);return {noWrite:true};}
+  if(kind===&#x27;unbalanced&#x27;){
+   // Finish previous open turn, then a tool unit; cutting before its result is unsafe.
+   s.append(&#x27;turn/end&#x27;,{turn:4,reason:{kind:&#x27;completed&#x27;}});const t=appendTool(s,&#x27;result&#x27;);assert.equal(toolPairingBalancedBefore(s,t.seq),false);
+   await assert.rejects(f.compact.compactRegion(t.seq,t.seq,a),/balanced/);return {rejectedBeforeResult:true};
+  }
+  if(kind===&#x27;active&#x27;){s.append(&#x27;compaction/start&#x27;,{compactionId:CompactionId(&#x27;active&#x27;),turn:4});const n=log.length;await assert.rejects(run(),/active|progress|busy/);assert.equal(log.length,n);return {busy:true};}
+  if(kind===&#x27;stale&#x27;){s.append(&#x27;compaction/start&#x27;,{compactionId:CompactionId(&#x27;old&#x27;),turn:4});s.append(&#x27;session/end-seed&#x27;,{});}
+  if(kind===&#x27;failure&#x27;)f.adapter.summaryMode=&#x27;throw&#x27;;
+  if(kind===&#x27;nonshrinking&#x27;)f.adapter.summary=&#x27;z&#x27;.repeat(40000);
+  if(kind===&#x27;max&#x27;||kind===&#x27;image&#x27;||kind===&#x27;rich&#x27;)f.adapter.summaryMode=kind;
+  if(kind===&#x27;cancel&#x27;){const c=new AbortController();f.adapter.onSummary=()=&gt;c.abort(Error(&#x27;request cancelled&#x27;));await assert.rejects(f.compact.compactRegion(range.start,range.end,a,c.signal),/cancelled/);}
+  else {
+   if(kind===&#x27;changed&#x27;)f.adapter.onSummary=()=&gt;s.append(&#x27;user/message&#x27;,user(&#x27;external injection&#x27;),{surfaceOp:&#x27;append&#x27;});
+   if(kind===&#x27;partial-commit&#x27;||kind===&#x27;end-failed&#x27;){
+    const original=s.append.bind(s);s.append=((type:any,...args:any[])=&gt;{
+     if(kind===&#x27;partial-commit&#x27;&amp;&amp;type===&#x27;user/message&#x27;)throw Error(&#x27;replacement rejected&#x27;);
+     if(kind===&#x27;end-failed&#x27;&amp;&amp;type===&#x27;compaction/end&#x27;)throw Error(&#x27;end rejected&#x27;);
+     return (original as any)(type,...args);
+    }) as any;
+   }
+   if([&#x27;failure&#x27;,&#x27;nonshrinking&#x27;,&#x27;max&#x27;,&#x27;image&#x27;,&#x27;changed&#x27;,&#x27;partial-commit&#x27;,&#x27;end-failed&#x27;].includes(kind))await assert.rejects(run());
+   else {const result=await run();assert.ok(result.summarySeq&gt;result.startSeq);assert.deepEqual(log.slice(-4).map(e=&gt;e.type),[&#x27;compaction/start&#x27;,&#x27;compaction/summary&#x27;,&#x27;user/message&#x27;,&#x27;compaction/end&#x27;]);const replace=log.at(-2)!;assert.deepEqual(replace.sourceEventSeqs,[result.startSeq,result.summarySeq,...result.shadowedSeqs]);assert.ok(s.deriveMessages().some(m=&gt;JSON.stringify(m).includes(&#x27;&lt;compacted-summary&gt;&#x27;)));assert.equal(s.surface.nodes[0],nodes[0]);if(kind===&#x27;rich&#x27;){assert.equal(log.at(-3).data.rawOutput.length,3);assert.equal(result.summary.length,1);}}
+  }
+  assert.deepEqual(log.slice(0,before.length),before);
+  if([&#x27;failure&#x27;,&#x27;nonshrinking&#x27;,&#x27;max&#x27;,&#x27;image&#x27;,&#x27;cancel&#x27;,&#x27;changed&#x27;].includes(kind)){assert.equal(log.at(-1).type,&#x27;compaction/end&#x27;);assert.ok(log.at(-1).data.error);assert.ok(!log.slice(before.length).some(e=&gt;e.type===&#x27;compaction/summary&#x27;));}
+  if(kind===&#x27;partial-commit&#x27;){assert.equal(log.at(-2).type,&#x27;compaction/summary&#x27;);assert.deepEqual(s.surface.nodes,nodes);}
+  if(kind===&#x27;end-failed&#x27;){assert.ok(log.some(e=&gt;e.type===&#x27;compaction/summary&#x27;));assert.equal(log.at(-1).type,&#x27;user/message&#x27;);const current=selectCompactableRange(s,f.ctx.tokenMeter.measure(s),0)!;await assert.rejects(f.compact.compactRegion(current.start,current.end,a),/active|progress|busy/);}
+  return {kind,priorCount:before.length,events:log,surface:s.surface.nodes,requests:f.adapter.requests};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>success追加start/summary/user replace/end四条，来源为start、summary和准确shadowedSeqs，system头保留。noop只有一个不可分节点，选区null；below使用大窗口、压力不足，不写事件。unbalanced在工具result之前有未答调用，显式只取result被拒绝。policy得到T7000、R1440；默认headroom对小窗口无效，互斥保留配置拒绝。</p><p>摘要throw、非缩减、max-tokens、图片、取消与自动全Surface改变，都保留原前缀并留下带error的end，没有summary。rich保留完整三块rawOutput，但检查点只有文本。active不新增本次标记；stale的start在新end-seed之前，可以发起新尝试。partial-commit已经写summary却拒绝user替换，旧Surface不变；end-failed已经替换却无end，新合法range再进时busy。不能因为测试报错就抹掉这些事实。</p><p>这些是Session与真实Basic/Runtime的C级组件行为，提交失败只在当前fixture的append边界注入。它们不证明真实文件系统会以同样方式坏掉。建议15分：四基本分支4，摘要输出与失败4，锁/稳定性3，部分提交和取消4；声称全部回滚或失败也能报告成功，关键项不通过。</p></div></details>
+<h3>实践 D：让真实Loop走三条自动分支</h3>
+<p>输入是捕获真实Session提交后得到的合法种子，不用私自改内部log。脚本Adapter控制普通响应和辅助摘要。先预测below、pressure、prune-only、pre-step-failure、overflow、overflow-limit、no-progress、switch、switch-failure、failure、cancel、manual-fifo各自的普通请求与摘要请求数量，再运行全部测试核对事件。</p>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,history,assert,user,SessionId,textOf,signal} from &#x27;./support.ts&#x27;;
+export const D_CASES=[&#x27;below&#x27;,&#x27;pressure&#x27;,&#x27;prune-only&#x27;,&#x27;pre-step-failure&#x27;,&#x27;overflow&#x27;,&#x27;overflow-limit&#x27;,&#x27;no-progress&#x27;,&#x27;switch&#x27;,&#x27;switch-failure&#x27;,&#x27;failure&#x27;,&#x27;cancel&#x27;,&#x27;manual-fifo&#x27;];
+export async function practiceD(kind=&#x27;pressure&#x27;){
+ const auto=kind!==&#x27;manual-fifo&#x27;;const f=await fixture({loop:true,auto,pruner:kind===&#x27;prune-only&#x27;,policy:{thresholdRatio:0.5,retainTokens:80}});let h:any;
+ let releaseGate:(()=&gt;void)|undefined;
+ try{
+  // Copy only events captured while the real fixture session accepted them.
+  const seed=history(f.ctx,&#x27;seed-&#x27;+kind,[&#x27;below&#x27;,&#x27;no-progress&#x27;,&#x27;prune-only&#x27;].includes(kind)?4:2400,kind===&#x27;no-progress&#x27;?1:3);
+  const seedEvents=f.facts.get(seed.id)!;
+  h=await f.ctx.agents.create({sessionId:SessionId(&#x27;agent-&#x27;+kind),seed:seedEvents,agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});
+  const agent=h.agent;
+  if(kind===&#x27;overflow&#x27;||kind===&#x27;overflow-limit&#x27;||kind===&#x27;no-progress&#x27;)f.adapter.failure=kind===&#x27;overflow-limit&#x27;?&#x27;always-overflow&#x27;:&#x27;overflow&#x27;;
+  if(kind===&#x27;switch&#x27;||kind===&#x27;switch-failure&#x27;||kind===&#x27;pressure&#x27;){
+   if(kind===&#x27;pressure&#x27;)f.adapter.resolveModel=async(provider:string,model:string)=&gt;({provider,id:model,name:model,defaultMaxTokens:128,context:{contextWindow:6000}});
+   else agent.model.select({provider:&#x27;fixture&#x27;,model:&#x27;small&#x27;});
+  }
+  if(kind===&#x27;switch-failure&#x27;||kind===&#x27;pre-step-failure&#x27;)f.adapter.summaryMode=&#x27;throw&#x27;;
+  if(kind===&#x27;pre-step-failure&#x27;||kind===&#x27;prune-only&#x27;)f.adapter.resolveModel=async(provider:string,model:string)=&gt;({provider,id:model,name:model,defaultMaxTokens:128,context:{contextWindow:kind===&#x27;prune-only&#x27;?2000:6000}});
+  if(kind===&#x27;failure&#x27;)f.adapter.failure=&#x27;server&#x27;;
+  if(kind===&#x27;manual-fifo&#x27;){
+   let release!:()=&gt;void;f.adapter.gate=new Promise&lt;void&gt;(r=&gt;release=r);
+   releaseGate=release;const p=f.compact.compactNow(agent,signal());
+   agent.followup(user(&#x27;FIFO_ONE&#x27;));agent.followup(user(&#x27;FIFO_TWO&#x27;));agent.inject(user(&#x27;outside selected span&#x27;));
+   assert.equal(f.adapter.ordinary,0);await assert.rejects(async()=&gt;f.compact.compactNow(agent,signal()),/active|idle|busy/);
+   release();await p;await agent.whenIdle();const all=f.facts.get(agent.id)!;
+   assert.equal(all.filter(e=&gt;e.type===&#x27;compaction/start&#x27;)[0].data.turn,null);
+   const received=f.adapter.requests.filter(r=&gt;r.purpose!==&#x27;compaction&#x27;).map(r=&gt;textOf(r.messages));
+   assert.equal(received.length,2);assert.ok(received[0].includes(&#x27;FIFO_ONE&#x27;));assert.ok(!received[0].includes(&#x27;FIFO_TWO&#x27;));assert.ok(received[1].includes(&#x27;FIFO_TWO&#x27;));assert.ok(received[0].includes(&#x27;outside selected span&#x27;));
+   return {kind,events:all,requests:f.adapter.requests};
+  }
+  if(kind===&#x27;cancel&#x27;){
+   let release!:()=&gt;void;f.adapter.gate=new Promise&lt;void&gt;(r=&gt;release=r);agent.model.select({provider:&#x27;fixture&#x27;,model:&#x27;small&#x27;});
+   f.adapter.onSummary=()=&gt;agent.cancel({kind:&#x27;user&#x27;});agent.followup(user(&#x27;new input&#x27;));await new Promise&lt;void&gt;(r=&gt;setTimeout(r,5));release();await agent.whenIdle();
+   assert.equal(f.adapter.ordinary,0);assert.equal(f.facts.get(agent.id)!.at(-1).type,&#x27;turn/end&#x27;);return {kind,events:f.facts.get(agent.id),requests:f.adapter.requests};
+  }
+  agent.followup(user(kind===&#x27;prune-only&#x27;?&#x27;RUN_TOOL&#x27;:&#x27;continue current task&#x27;));await agent.whenIdle();const events=f.facts.get(agent.id)??[],summary=events.filter(e=&gt;e.type===&#x27;compaction/summary&#x27;);
+  if(kind===&#x27;prune-only&#x27;){assert.equal(summary.length,0);assert.equal(events.filter(e=&gt;e.type===&#x27;compaction/prune&#x27;).length,1);assert.equal(f.bodies(),1);assert.equal(f.adapter.ordinary,2);assert.equal(f.errors.length,0);}
+  if(kind===&#x27;pre-step-failure&#x27;){assert.equal(f.adapter.ordinary,1);assert.equal(summary.length,0);assert.ok(events.some(e=&gt;e.type===&#x27;compaction/end&#x27;&amp;&amp;e.data.error));assert.equal(f.errors.length,0);}
+  if(kind===&#x27;below&#x27;){assert.equal(summary.length,0);assert.equal(f.adapter.ordinary,1);}
+  if(kind===&#x27;pressure&#x27;||kind===&#x27;overflow&#x27;||kind===&#x27;switch&#x27;){
+   assert.ok(summary.length&gt;0);const final=f.adapter.requests.filter(r=&gt;r.purpose!==&#x27;compaction&#x27;).at(-1)!;
+   assert.ok(textOf(final.messages).includes(&#x27;&lt;compacted-summary&gt;&#x27;));assert.ok(!textOf(final.messages).includes(&#x27;OLD_SENTINEL&#x27;));
+   if(kind!==&#x27;overflow&#x27;)assert.ok(textOf(final.messages).includes(&#x27;answer 3&#x27;));assert.equal(f.errors.length,0);
+  }
+  if(kind===&#x27;overflow&#x27;){assert.equal(f.adapter.ordinary,2);const attempt=events.findIndex(e=&gt;e.type===&#x27;assistant/attempt&#x27;),start=events.findIndex(e=&gt;e.type===&#x27;compaction/start&#x27;),stepEnd=events.findIndex(e=&gt;e.type===&#x27;step/end&#x27;);assert.ok(attempt&lt;start&amp;&amp;start&lt;stepEnd);}
+  if(kind===&#x27;overflow-limit&#x27;){assert.equal(f.adapter.ordinary,2);assert.ok(f.errors.length&gt;0);}
+  if(kind===&#x27;no-progress&#x27;){assert.equal(f.adapter.ordinary,1);assert.equal(summary.length,0);assert.ok(f.errors.length&gt;0);}
+  if(kind===&#x27;switch&#x27;){assert.equal(summary[0].data.model,&#x27;large&#x27;);assert.equal(agent.session.requestHeader().config.model,&#x27;small&#x27;);}
+  if(kind===&#x27;switch-failure&#x27;){assert.equal(f.adapter.ordinary,0);assert.equal(agent.session.requestHeader().config.model,&#x27;large&#x27;);assert.ok(f.errors.some(e=&gt;e.includes(&#x27;Cannot switch&#x27;)));}
+  if(kind===&#x27;failure&#x27;){assert.equal(f.adapter.ordinary,1);assert.equal(summary.length,0);assert.ok(f.errors.length&gt;0);}
+  return {kind,seedEvents,events,requests:f.adapter.requests,errors:f.errors,finalSurface:agent.session.surface.nodes};
+ }finally{releaseGate?.();await h?.dispose();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>below普通请求1、摘要0。pressure先压较早历史，下一请求含检查点和近期answer3、不含OLD_SENTINEL。prune-only在工具结果造成压力后只剪枝，普通调用2、工具执行1、摘要0；pre-step-failure的摘要失败告警后普通请求仍1且Turn完成。</p><p>overflow普通请求2：首失败attempt后在同Step压缩再试；此夹具的retain0不能承诺保留最近用户原文。overflow-limit持续超限也只有2次；no-progress无有效可剪范围，只有1次并报错。switch先用large摘要，再发small请求，header转small；switch-failure普通调用0，旧large头保留。SERVER失败不进入窗口压缩；cancel在摘要期间取消，普通请求0，仍有Turn结束事实。</p><p>manual-fifo的辅助摘要由门控Promise阻塞，期间第二压缩busy，新输入保持FIFO；释放后第一普通请求有ONE无TWO，第二有TWO，范围外inject保留。门控只控制Mock返回，不宣称任意第三方Promise都可强制打断。建议15分：入口/顺序5，调用与预算4，路由/保留3，取消/FIFO3。whenIdle只表示运行空闲，成功与否要看事件和errors。</p></div></details>
+<h2>综合实验：预算下降后，恢复出的模型究竟读什么？</h2>
+<p>这次用真实Agent任务代替手写全轨迹：两个长文本Turn，再请求安全内存工具。初始模型窗口大，auto关闭，以便分别观察测量与操作。第三Turn工具返回长文本；下一pre-step在开放Turn内执行Pruner。最后用真实compactNow摘要旧范围，等待JSONL检查点，关闭Agent和后端，建立新Context和JSONL实例，agents.resume同一ID，再发新输入。</p>
+<p>先预测四个测量时点的大小关系、旧事件是否保留、summary是否自己进入Surface、恢复是否重跑工具。然后写出35～38的四事件、替换来源与最终三个模型角色；最后检查AFTER_REOPEN请求中是否还有TURN 1原文。</p>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实验完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,SessionId,textOf,signal} from &#x27;./support.ts&#x27;;
+export async function integrated(){
+ const f=await fixture({loop:true,disk:true,pruner:true});let h:any;let saved:any,messages:any,measures:any,requests:any;
+ try{
+  h=await f.ctx.agents.create({sessionId:SessionId(&#x27;budget-task&#x27;),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});const a=h.agent;
+  for(let t=1;t&lt;=2;t++){a.followup(user(&#x27;TURN &#x27;+t+&#x27; &#x27;+ &#x27;context &#x27;.repeat(300)));await a.whenIdle();}
+  const initial=f.ctx.tokenMeter.measure(a.session);
+  let long:any,logBefore:any,prune:any,afterPrune:any;
+  const stop=f.ctx.on(&#x27;agent/pre-step&#x27;,async({agent},next)=&gt;{
+   if(agent===a&amp;&amp;f.bodies()===1&amp;&amp;prune===undefined){long=f.ctx.tokenMeter.measure(a.session);logBefore=[...f.facts.get(a.id)!];prune=f.ctx.toolResultPruner.pruneSession(a.session);afterPrune=f.ctx.tokenMeter.measure(a.session);}
+   return next();
+  });
+  a.followup(user(&#x27;RUN_TOOL inspect controlled fixture&#x27;));await a.whenIdle();stop();assert.equal(f.bodies(),1);assert.equal(f.errors.length,0);assert.equal(prune.pruned.length,1);
+  const summary=await f.compact.compactNow(a,signal());assert.ok(summary);const afterSummary=f.ctx.tokenMeter.measure(a.session);
+  assert.ok(afterPrune.totalTokens&lt;long.totalTokens);assert.ok(afterSummary.totalTokens&lt;afterPrune.totalTokens);
+  assert.deepEqual(f.facts.get(a.id)!.slice(0,logBefore.length),logBefore);
+  assert.equal(await f.ctx.sessions.flush(a.session),true);messages=a.session.deriveMessages();
+  const r=await f.ctx.sessionPersistence.open(a.id,&#x27;read&#x27;);try{saved={header:r.header,...await r.read()};}finally{await r.close();}
+  measures={initial,long,afterPrune,afterSummary,prune,summary};requests=f.adapter.requests;
+ }finally{await h?.dispose();await f.close();}
+ // A fresh context and backend instance at the same isolated root. No process-restart claim.
+ const {Context}=await import(&#x27;@deepseek-ai/cordis&#x27;);const Jsonl=await import(&#x27;@deepseek-ai/dsh-session-persistence-jsonl&#x27;);
+ const second=await fixture({loop:true});let restored:any;
+ try{
+  await second.ctx.plugin(Jsonl,{root:f.root!,compression:&#x27;none&#x27;});
+  restored=await second.ctx.agents.resume({resumeSessionId:saved.header.id,agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});
+  assert.deepEqual(restored.agent.session.deriveMessages(),messages);assert.equal(second.adapter.requests.length,0);assert.equal(second.bodies(),0);
+  restored.agent.followup(user(&#x27;AFTER_REOPEN&#x27;));await restored.agent.whenIdle();
+  const next=second.adapter.requests[0];assert.ok(textOf(next.messages).includes(&#x27;&lt;compacted-summary&gt;&#x27;));assert.ok(!textOf(next.messages).includes(&#x27;TURN 1&#x27;));
+  assert.equal(second.errors.length,0);return {root:f.root,platform:process.platform,restoration:&#x27;same process, new context + JSONL backend instance + real agents.resume&#x27;,saved,messages,measures,requests,next,toolExecutions:f.bodies(),replayedToolExecutions:second.bodies(),retention:&#x27;all temporary files and empty directories retained&#x27;};
+ }finally{await restored?.dispose();await second.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合详细参考答案与评分</summary><div class="lesson-callout-body"><p>本次真实输出initial1292，long2830，afterPrune1367，afterSummary174，均为受控封装下的启发式压力。long与afterPrune在工具之后、后续Assistant之前采样；afterSummary在任务完成且手动压缩后，不能把差值都归因于同一操作的精确账单节省。</p><p>保存日志0～38共39事件。26原tool/result保留；28 prune、29替换；35 start(turn:null)、36 summary、37摘要user替换、38 end。shadowedSeqs=[5,8,15,16,23,24,29]，shadow price1319；37.source=[35,36,5,8,15,16,23,24,29]。最终Surface[4,37,32]，角色system/user/assistant，最后保留近期回答。整个保存前缀没有删除或改写。</p><p>同进程的新Context与JSONL实例Resume，派生消息逐对象相等；恢复过程中模型0次、旧工具0次。后续新输入触发普通新请求，只含当前检查点与有效尾部，不含TURN 1原文。最初工具执行1次。原始JSONL落在本轮全新临时根，文件与目录保留登记，未访问个人Harness Home。</p><p>建议20分：时点与数字4，精确序列/位置6，原文与恢复4，请求与工具4，范围边界2。恢复成功不等于真实断电、独立进程或完整Harness E通过；这几项不能靠H18历史报告补分。阈值与用时仍待真实试读校准。</p></div></details>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：补充验证完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,history,componentAgent,open,assert,user,SessionId,signal,imageRef} from &#x27;./support.ts&#x27;;
+import {offloadOldestImages} from &#x27;@deepseek-ai/dsh-compaction-image-offload/src/image-offload.ts&#x27;;
+import {projectOffloadedImages,offloadedImageText,LlmError} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import Commands from &#x27;@deepseek-ai/dsh-commands&#x27;;
+import * as CommandCompact from &#x27;@deepseek-ai/dsh-command-compact&#x27;;
+export async function imageOccurrences(){
+ const f=await fixture();try{
+  const s=history(f.ctx,&#x27;images&#x27;),first=s.append(&#x27;user/message&#x27;,user(&#x27;&#x27;,[{type:&#x27;image&#x27;,attachment:imageRef()},{type:&#x27;image&#x27;,attachment:imageRef()}]),{surfaceOp:&#x27;append&#x27;}),second=s.append(&#x27;user/message&#x27;,user(&#x27;&#x27;,[{type:&#x27;image&#x27;,attachment:imageRef()}]),{surfaceOp:&#x27;append&#x27;});
+  const nodes=[...s.surface.nodes];assert.equal(offloadOldestImages(s,nodes,1),true);assert.equal(offloadOldestImages(s,nodes,1),true);
+  const decisions=f.facts.get(s.id)!.filter(e=&gt;e.type===&#x27;image/offload&#x27;);assert.deepEqual(decisions.map(e=&gt;e.data.targets),[[{seq:first.seq,imageIndexes:[0]}],[{seq:first.seq,imageIndexes:[1]}]]);
+  assert.deepEqual(s.surface.nodes,nodes);assert.equal((s.deriveMessages().at(-1)!.content[0] as any).offloaded,undefined);
+  const projected=projectOffloadedImages(s.deriveMessages(),ref=&gt;offloadedImageText(ref));assert.ok(JSON.stringify(projected).includes(&#x27;image omitted to fit request image limits&#x27;));
+  assert.equal((first.data.content[0] as any).offloaded,undefined);assert.throws(()=&gt;s.append(&#x27;image/offload&#x27;,{targets:[{seq:first.seq,imageIndexes:[0]}]}),/offload|already/);
+  const c=new AbortController();c.abort(Error(&#x27;stop&#x27;));
+  assert.throws(()=&gt;f.ctx.waterfall(&#x27;compaction/summary-error&#x27;,{session:s,sourceEventSeqs:[second.seq],error:new LlmError(&#x27;images&#x27;,&#x27;IMAGE_OFFLOAD_REQUIRED&#x27;,{offloadImages:1}),signal:c.signal},()=&gt;false),/stop/);
+  open(s);let n=0;const original=f.adapter.stream.bind(f.adapter);
+  f.adapter.stream=async function*(options:any){if(options.purpose===&#x27;compaction&#x27;&amp;&amp;n++===0)throw new LlmError(&#x27;images&#x27;,&#x27;IMAGE_OFFLOAD_REQUIRED&#x27;,{offloadImages:1});yield* original(options);};
+  const result=await f.compact.compactRegion(s.surface.nodes[1],second.seq,componentAgent(s),signal());
+  assert.ok(result);assert.equal(f.facts.get(s.id)!.filter(e=&gt;e.type===&#x27;image/offload&#x27;).length,3);
+  assert.equal(f.facts.get(s.id)!.filter(e=&gt;e.type===&#x27;compaction/start&#x27;).length,1);
+  return {events:f.facts.get(s.id),projected,summaryAttempts:n};
+ }finally{await f.close();}
+}
+export async function humanCommand(){
+ const f=await fixture({loop:true});let h:any;try{
+  await f.ctx.plugin(Commands);await f.ctx.plugin(CommandCompact);
+  const seed=history(f.ctx,&#x27;command-seed&#x27;);h=await f.ctx.agents.create({sessionId:SessionId(&#x27;command-agent&#x27;),seed:f.facts.get(seed.id)!,agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});
+  const before=f.adapter.ordinary,answer=await f.ctx.commands.execute(h.agent,&#x27;/compact&#x27;,[],signal());assert.equal(answer!.result.kind,&#x27;success&#x27;);assert.ok(answer!.result.sourceEventSeq!==undefined);assert.equal(f.adapter.ordinary,before);
+  const events=f.facts.get(h.agent.id)!,run=events.find(e=&gt;e.type===&#x27;command/run&#x27;),done=events.find(e=&gt;e.type===&#x27;command/done&#x27;);assert.equal(done.data.commandId,run.data.commandId);assert.equal(done.data.sourceEventSeq,events.find(e=&gt;e.type===&#x27;compaction/summary&#x27;).seq);
+  const bad=await f.ctx.commands.execute(h.agent,&#x27;/compact now&#x27;,[],signal());assert.equal(bad!.result.kind,&#x27;error&#x27;);assert.ok(bad!.result.text.includes(&#x27;no arguments&#x27;));
+  assert.ok(!h.agent.session.surface.nodes.includes(run.seq));assert.ok(!h.agent.session.surface.nodes.includes(done.seq));return {answer,bad,events,ordinaryRequests:before};
+ }finally{await h?.dispose();await f.close();}
+}
+export async function manualPersistenceFailure(){
+ const f=await fixture({loop:true});let h:any;try{
+  const seed=history(f.ctx,&#x27;save-failure-seed&#x27;);h=await f.ctx.agents.create({sessionId:SessionId(&#x27;save-failure&#x27;),seed:f.facts.get(seed.id)!,agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});
+  f.ctx.on(&#x27;session/flush&#x27;,async()=&gt;{throw Error(&#x27;checkpoint unavailable&#x27;);});
+  await assert.rejects(f.compact.compactNow(h.agent,signal()),(e:any)=&gt;e.code===&#x27;persistence&#x27;);const events=f.facts.get(h.agent.id)!;assert.equal(events.at(-1).type,&#x27;compaction/end&#x27;);assert.ok(h.agent.session.deriveMessages().some(m=&gt;JSON.stringify(m).includes(&#x27;&lt;compacted-summary&gt;&#x27;)));return {events};
+ }finally{await h?.dispose();await f.close();}
+}</code></pre></div></div></details>
+<p>补充程序分别检查同一附件的多个出现位置、取消与摘要选区省略恢复；真实Commands生命周期及summary关联；手动flush失败后已改变Surface仍保留、结果分类为persistence。它们提供相邻边界证据，不把未运行的图片Provider、命令UI或磁盘故障升级为PASS。</p>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {writeFile} from &#x27;node:fs/promises&#x27;;
+import {practiceA} from &#x27;./A.ts&#x27;;import {practiceB} from &#x27;./B.ts&#x27;;import {practiceC} from &#x27;./C.ts&#x27;;import {practiceD} from &#x27;./D.ts&#x27;;import {integrated} from &#x27;./X.ts&#x27;;
+const [which=&#x27;X&#x27;,variant]=process.argv.slice(2);const result=which===&#x27;A&#x27;?await practiceA():which===&#x27;B&#x27;?await practiceB():which===&#x27;C&#x27;?await practiceC(variant):which===&#x27;D&#x27;?await practiceD(variant):which===&#x27;X&#x27;?await integrated():(()=&gt;{throw Error(&#x27;choose A/B/C/D/X&#x27;)})();
+console.log(JSON.stringify(result,null,2));</code></pre></div></div></details>
+<h2>五个精读入口</h2>
+<ol>
+<li>TokenMeter <code>src/index.ts</code>：先看measure的输入与输出，再核header相等、Usage下限和有符号delta；用A的1170解释分支。</li>
+<li>Basic <code>src/config.ts</code>：写W/O/B，推导T与R；再看精确modelPolicies覆盖，区分两类maxTokens。</li>
+<li>Basic <code>src/index.ts</code>：分别精读pre-step、request与request-error，再看compactPressure与compactIfNeeded；给每条路径写失败后是否继续。</li>
+<li>Basic <code>src/region.ts</code>：按选区、start、await、重验、summary/replace/end、flush读；每一步写当前已提交事实。</li>
+<li>Basic <code>src/summarizer.ts</code>：先核请求目标与purpose，再核BlockAssembler、终态和安全内容投影。</li>
+</ol>
+<p>Pruner、ImageOffload、命令、Surface与官方测试作为辅助定位材料，不以通读源码代替主线推理。作者断言表给出54项固定路径与测试范围；源码字节校验只保证版本一致，不代替语义验证。上游带递归清理的测试未直接执行，本课另用合规fixture验证。</p>
+<h2>代价与保证对照</h2>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>机制</th><th>已验证或有条件成立</th><th>不能直接推出</th></tr></thead><tbody><tr><td>Meter</td><td>固定估价、匹配Usage锚点、路由声明定价</td><td>通用精确分词或提供方计费</td></tr><tr><td>普通常规压缩</td><td>目标阈值合格后剪枝／摘要，保留平衡尾部</td><td>每次都能降到阈值以下</td></tr><tr><td>模型切换</td><td>先按目标测量，失败保留旧header</td><td>已落下的改写自动回滚</td></tr><tr><td>Overflow恢复</td><td>确认错误、有效替换、有界重试</td><td>所有错误都能恢复、无限重试</td></tr><tr><td>摘要</td><td>选区与来源可追溯，安全文本检查点</td><td>无损、无遗漏、事实必然正确</td></tr><tr><td>Pruner</td><td>按码点头尾，原结果留日志</td><td>中间重要信息仍在模型上下文</td></tr><tr><td>图片省略</td><td>指定出现位置持久，投影成占位</td><td>自动恢复旧图或删除原附件</td></tr><tr><td>手动检查点</td><td>闭合尝试后等待参与后端flush</td><td>无后端也已保存、失败等于回滚</td></tr><tr><td>JSONL重建</td><td>X同进程新后端恢复相同模型历史</td><td>本轮跨进程、Zstd、断电、全平台已验证</td></tr><tr><td>缓存</td><td>可以说明哪些输入前缀改变</td><td>实际命中率、延迟与成本收益</td></tr><tr><td>外部工具</td><td>已记提议、开始、结果与后续取舍</td><td>外部操作恰好执行一次</td></tr></tbody></table></div>
+<h2>十五道思考与迁移</h2>
+<ol>
+<li>为什么日志能持续增长，Context Window却不会一起变大？</li>
+</ol>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>窗口是适配器声明的一次调用容量；日志是已提交事实档案。Surface决定本次使用哪些消息来源，摘要替换只改变读法，档案仍增。依据S01/S23/S32与X，39事件最终只有3条消息。存储保住历史不等于模型每次都看全部历史，也不保证模型长期无损记住被省略内容。</p></div></details>
+<ol start="2">
+<li>推导：system和user都为abcd，工具Schema字符串72代码单元，再加16字符user，总量多少？</li>
+</ol>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>按S03/S04，system=ceil(4/4)+4=5，user=ceil(4/4)+4+4=9，工具=ceil(72/4)+4=22，新增用户=ceil(16/4)+4+4=12，总48。这是A的固定启发式断言，不是任何Provider精确分词；system不再加每块4，漏掉或重复加都会算错。</p></div></details>
+<ol start="3">
+<li>推导：W10000、O1000、B2000、ratio0.8、retainRatio0.16，P7000会怎样？</li>
+</ol>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>S15先得messageBudget9000、pressureBudget7000，T=floor(min(8000,7000))=7000，R=floor(9000×.16)=1440。P等于T合格，先可选修剪再测，仍高才摘要；不能只看80%。R为预算目标，工具对和单消息会使实际尾部超过目标，不能把1440解释成逐Token硬切。</p></div></details>
+<ol start="4">
+<li>推导：Usage输入1000、缓存读100／写20、输出50含推理10，后来加abcd用户，再改temperature？</li>
+</ol>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>S05/S06与A给1170；reasoning已在output不重复加。匹配封装下新增user9，压力1179，UI提示词参考仍可为1120。改temperature使规范完整头不相等，回退estimated；Usage并非消失，只是不再用作当前封装基线。这样才能避免把旧请求计量口径强套到新请求。</p></div></details>
+<ol start="5">
+<li>为什么同一Session在不同模型下可能得到不同压力？</li>
+</ol>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>S08按路由应用视觉价格，文件按实际可见句柄文本，完整请求头变化又可能取消Usage复用。A同一图片111与2011是受控视觉价的结果，固定heuristicTokens却相同。容量变小不必让估价数字变大，但会让相同压力更接近阈值；不能把窗口与请求价格混成一个数字。</p></div></details>
+<ol start="6">
+<li>推导：[S,U,A(call),T(result)]只想保留T，为什么切点要移动？</li>
+</ol>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>T之前有未回答调用，切掉A会留下孤立结果。S23/S24让切点向前到A之前，将A/T整体保留，至多摘要U；如果没有U就可能无可压缩前缀。未配对调用也不能靠摘要制造结果。C:unbalanced动态拒绝result单独范围，工具文本太大可先合法修剪，仍不保证任意单元都能缩小。</p></div></details>
+<ol start="7">
+<li>为什么模型不应该直接读取compaction/summary事件？</li>
+</ol>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>S33定义它为仅日志，保存原摘要、路由、来源与辅助调用事实；其中rawOutput可能含推理或工具块。真正供下一请求读取的是S32写的框定user替换。X的summary36未入Surface，user37占旧范围位置；把两者都作为消息，会重复摘要并可能混入本不该发送的辅助输出。</p></div></details>
+<ol start="8">
+<li>推导：summary已写，replace失败；另一例replace成功而end失败，分别留下什么？</li>
+</ol>
+<details id="lesson-deepdive-22" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>S26/S32是顺序提交：前例保留summary、原Surface不变，再尝试error end；后例保留新Surface且未匹配start，不重复写结束掩盖故障，后续合法范围会busy。C两个注入点分别核对。它们不是整批回滚，报错后应检查当前事实，不能假定重新执行必定从原样状态开始。</p></div></details>
+<ol start="9">
+<li>为什么需要start/end，end-seed为什么又会影响busy？</li>
+</ol>
+<details id="lesson-deepdive-23" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>异步摘要期间需要让其他压缩看到已开始的确切事务；S27/S28从日志标记而非内存布尔恢复这个事实。最新end-seed之后未闭合start是当前活动锁，之前属于旧生命周期遗留证据。边界使新进程可继续，但旧失败仍在日志，不等于可任意删标记或宣称此前尝试成功。</p></div></details>
+<ol start="10">
+<li>头尾修剪不用模型，为什么仍有信息损失？</li>
+</ol>
+<details id="lesson-deepdive-24" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>S41只按码点范围保留头尾，不理解语义，中间独有错误栈可能被删除出当前模型输入。B保护emoji代理对、保留图片顺序，并不保证字素簇完整或重要性。S42让原文留日志供追溯；要让模型再见精确内容仍需合规读取，不能从“原事件还在”推出“本次请求仍拥有全部细节”。</p></div></details>
+<ol start="11">
+<li>同一附件出现三次，省略两次后换大窗口会全部恢复吗？</li>
+</ol>
+<details id="lesson-deepdive-25" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 11 参考答案</summary><div class="lesson-callout-body"><p>不会。S43/S44按消息Seq和image index记录两次具体出现，第三次独立保留；附件ID相同也不能合并位置身份。省略决定进入日志，后来换路由仍投影占位；新的读取可形成新位置，旧位置不会自动解标。images实验前两次都选第一消息的index0/1，第二消息同附件仍未省略。</p></div></details>
+<ol start="12">
+<li>为什么/compact不消耗普通Turn，却仍可能收费和等待？</li>
+</ol>
+<details id="lesson-deepdive-26" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 12 参考答案</summary><div class="lesson-callout-body"><p>S38/S39把操作放维护阶段，不开启普通用户任务Step；S34仍会为摘要发purpose=compaction的额外LLM请求，真实提供方可产生用量与延迟。命令run/done只是簿记，后端还要闭合与flush。humanCommand普通请求0并不表示辅助请求0，也不表示本课Mock观测能给出真实金额。</p></div></details>
+<ol start="13">
+<li>稳定前缀有机会复用缓存，为什么摘要后仍可能下降？</li>
+</ol>
+<details id="lesson-deepdive-27" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 13 参考答案</summary><div class="lesson-callout-body"><p>S32把较早范围换成新检查点，后续请求从该位置起的输入前缀已改变，旧缓存不一定还能复用；辅助请求尽量回放相同system、工具和选区前缀，只提供复用机会。路由、实际协议和提供方规则都会影响命中。本课只有输入与事件证据，没有真实缓存指标，所以不能承诺固定比例的加速或净节费。</p></div></details>
+<ol start="14">
+<li>Overflow为什么要看replaceGeneration，而不只看“调用过压缩函数”？</li>
+</ol>
+<details id="lesson-deepdive-28" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 14 参考答案</summary><div class="lesson-callout-body"><p>S19要求实际输入进展，否则重发同一超限请求没有修复依据。函数可能null、失败或仅留下诊断事件；日志变长也不等于Surface缩短。D:no-progress只请求一次，overflow-limit在有效改写后最多再试一次；若已剪枝后摘要失败，替换进展仍可能有效，取消则始终禁止继续。完整普通Provider重试留H20。</p></div></details>
+<ol start="15">
+<li>保留原日志、保存摘要并恢复成功，为什么仍不能声称无限记忆和外部恰好一次？</li>
+</ol>
+<details id="lesson-deepdive-29" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 15 参考答案</summary><div class="lesson-callout-body"><p>摘要、剪枝和省略都让当前模型失去部分原始细节，恢复只能重建已记录读法，不能让有限窗口装下全部材料。S51/S52与X证明当前条件下持久重建；工具外部动作与日志不是同一原子提交，结果未知窗口仍在，压缩也不执行补偿。精确业务副作用要靠外部协议与核对；完整可靠性策略、真实模型效果和应用集成另行验证。</p></div></details>
+<h2>把上下文预算带到H20</h2>
+<p>现在你可以给每个Token数写来源，给每个切点写平衡依据，给每次失败写已提交事实，再用真实新后端读回证明当前模型历史。验收以这些推导与原始输出为依据，测试绿灯不替代对摘要语义的核查。</p>
+<p>H11解释输入如何冻结，H12解释流与Usage怎样结算，H14提供可追溯工具结果，H17给Surface取舍，H18保存并恢复事实，H19在模型窗口内决定如何缩减。H20接着研究更完整的失败、取消、重试与可靠性；本课只交接窗口溢出的局部分支，不开发H20，也不发布课程。</p></div></main></body></html>

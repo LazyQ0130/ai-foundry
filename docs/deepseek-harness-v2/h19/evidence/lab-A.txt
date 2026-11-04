@@ -1,0 +1,493 @@
+{
+  "numeric": {
+    "system": 5,
+    "user": 9,
+    "schemaPrice": 22,
+    "before": 48
+  },
+  "anchored": {
+    "logRevision": 10,
+    "baseline": {
+      "kind": "usage",
+      "tokens": 1170,
+      "usage": {
+        "inputTokens": 1000,
+        "outputTokens": 50,
+        "cacheReadTokens": 100,
+        "cacheWriteTokens": 20,
+        "reasoningTokens": 10
+      }
+    },
+    "surfaceDeltaTokens": 0,
+    "totalTokens": 1170,
+    "surfaceTokens": 35,
+    "nodes": [
+      {
+        "seq": 0,
+        "tokens": 5,
+        "heuristicTokens": 5
+      },
+      {
+        "seq": 4,
+        "tokens": 9,
+        "heuristicTokens": 9
+      },
+      {
+        "seq": 3,
+        "tokens": 12,
+        "heuristicTokens": 12
+      },
+      {
+        "seq": 7,
+        "tokens": 9,
+        "heuristicTokens": 9
+      }
+    ]
+  },
+  "afterUser": 1179,
+  "changed": {
+    "logRevision": 11,
+    "baseline": {
+      "kind": "estimated",
+      "tokens": 66
+    },
+    "surfaceDeltaTokens": 0,
+    "totalTokens": 66,
+    "surfaceTokens": 44,
+    "nodes": [
+      {
+        "seq": 0,
+        "tokens": 5,
+        "heuristicTokens": 5
+      },
+      {
+        "seq": 4,
+        "tokens": 9,
+        "heuristicTokens": 9
+      },
+      {
+        "seq": 3,
+        "tokens": 12,
+        "heuristicTokens": 12
+      },
+      {
+        "seq": 7,
+        "tokens": 9,
+        "heuristicTokens": 9
+      },
+      {
+        "seq": 10,
+        "tokens": 9,
+        "heuristicTokens": 9
+      }
+    ]
+  },
+  "images": {
+    "small": {
+      "logRevision": 1,
+      "baseline": {
+        "kind": "estimated",
+        "tokens": 111
+      },
+      "surfaceDeltaTokens": 0,
+      "totalTokens": 111,
+      "surfaceTokens": 111,
+      "nodes": [
+        {
+          "seq": 0,
+          "tokens": 111,
+          "heuristicTokens": 58
+        }
+      ]
+    },
+    "large": {
+      "logRevision": 1,
+      "baseline": {
+        "kind": "estimated",
+        "tokens": 2011
+      },
+      "surfaceDeltaTokens": 0,
+      "totalTokens": 2011,
+      "surfaceTokens": 2011,
+      "nodes": [
+        {
+          "seq": 0,
+          "tokens": 2011,
+          "heuristicTokens": 58
+        }
+      ]
+    },
+    "omitted": {
+      "logRevision": 2,
+      "baseline": {
+        "kind": "estimated",
+        "tokens": 12
+      },
+      "surfaceDeltaTokens": 0,
+      "totalTokens": 12,
+      "surfaceTokens": 12,
+      "nodes": [
+        {
+          "seq": 0,
+          "tokens": 12,
+          "heuristicTokens": 58
+        }
+      ]
+    }
+  },
+  "contextPressure": {
+    "pressureTokens": 1120
+  },
+  "breakdown": {
+    "systemTokens": 5,
+    "toolsTokens": 22,
+    "messageTokens": 39
+  },
+  "toolResult": {
+    "measurement": {
+      "logRevision": 5,
+      "baseline": {
+        "kind": "estimated",
+        "tokens": 10
+      },
+      "surfaceDeltaTokens": 9,
+      "totalTokens": 19,
+      "surfaceTokens": 19,
+      "nodes": [
+        {
+          "seq": 2,
+          "tokens": 10,
+          "heuristicTokens": 10
+        },
+        {
+          "seq": 4,
+          "tokens": 9,
+          "heuristicTokens": 9
+        }
+      ]
+    },
+    "events": [
+      {
+        "type": "turn/start",
+        "seq": 0,
+        "time": 1793769362883,
+        "data": {
+          "turn": 4
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 1,
+        "time": 1793769362883,
+        "data": {
+          "turn": 4,
+          "step": 1
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 2,
+        "time": 1793769362883,
+        "data": {
+          "turn": 4,
+          "step": 1,
+          "stream": [],
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "fixture-tool",
+                "name": "work",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "large"
+            },
+            "id": "3b27d3b1-06d7-45d7-9bd8-5152b255c61e"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 3,
+        "time": 1793769362883,
+        "data": {
+          "turn": 4,
+          "step": 1,
+          "callId": "fixture-tool",
+          "name": "work",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 4,
+        "time": 1793769362883,
+        "data": {
+          "turn": 4,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "fixture-tool"
+            },
+            "toolCallId": "fixture-tool",
+            "content": [
+              {
+                "type": "text",
+                "text": "abcd"
+              }
+            ],
+            "isError": false,
+            "id": "18d5c6e2-8181-4d4e-b956-d6720785943f"
+          }
+        },
+        "sourceEventSeqs": [
+          3
+        ],
+        "surfaceOp": "append"
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "system/message",
+      "seq": 0,
+      "time": 1793769362876,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "abcd"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "b3881f29-79ea-41ad-a27c-fe40350de4d0"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 1,
+      "time": 1793769362877,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "abcd"
+          }
+        ],
+        "role": "user",
+        "id": "61076e99-9460-4af6-82cb-b772bfd95353"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 2,
+      "time": 1793769362878,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "large"
+          },
+          "tools": [
+            {
+              "name": "read",
+              "description": "read",
+              "parameters": {
+                "type": "object"
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "user/message",
+      "seq": 3,
+      "time": 1793769362878,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "qqqqqqqqqqqqqqqq"
+          }
+        ],
+        "role": "user",
+        "id": "117f0587-3850-4ced-be2e-8b8e71d31b49"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 4,
+      "time": 1793769362878,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "z"
+          }
+        ],
+        "role": "user",
+        "id": "93168e31-6f07-4a7a-b6ef-3b5f9ec6ffbc"
+      },
+      "sourceEventSeqs": [
+        1
+      ],
+      "surfaceOp": {
+        "op": "replace",
+        "startSeq": 1,
+        "endSeq": 1
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 5,
+      "time": 1793769362879,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 6,
+      "time": 1793769362879,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 7,
+      "time": 1793769362879,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "done"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "large"
+          },
+          "id": "d709a84a-e6b3-4190-9173-ef9f25ab5abb"
+        },
+        "stream": [
+          {
+            "type": "text-chunks",
+            "time0": 0,
+            "index": 0,
+            "dt": [],
+            "texts": [
+              "done"
+            ]
+          },
+          {
+            "type": "chunk",
+            "time": 1,
+            "chunk": {
+              "type": "usage",
+              "usage": {
+                "inputTokens": 1000,
+                "outputTokens": 50,
+                "cacheReadTokens": 100,
+                "cacheWriteTokens": 20,
+                "reasoningTokens": 10
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 2,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "stop"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "inputTokens": 1000,
+          "outputTokens": 50,
+          "cacheReadTokens": 100,
+          "cacheWriteTokens": 20,
+          "reasoningTokens": 10
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 8,
+      "time": 1793769362880,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 9,
+      "time": 1793769362880,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "completed"
+        }
+      }
+    },
+    {
+      "type": "user/message",
+      "seq": 10,
+      "time": 1793769362880,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "abcd"
+          }
+        ],
+        "role": "user",
+        "id": "99eb7c4f-1e5c-4e73-9fb8-478f9e60826b"
+      },
+      "surfaceOp": "append"
+    }
+  ]
+}

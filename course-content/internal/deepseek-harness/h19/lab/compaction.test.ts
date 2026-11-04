@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import {practiceA} from './A.ts';import {practiceB} from './B.ts';import {practiceC,C_CASES} from './C.ts';import {practiceD,D_CASES} from './D.ts';import {integrated} from './X.ts';
+import {imageOccurrences,humanCommand,manualPersistenceFailure} from './extras.ts';
+test('C A: real TokenMeter numeric, usage, schema, route and file pricing',practiceA);
+test('C B: real pruner, Unicode, rich blocks and retained facts',practiceB);
+for(const kind of C_CASES)test('C C: '+kind,()=>practiceC(kind));
+for(const kind of D_CASES)test('D D: '+kind,()=>practiceD(kind));
+test('D X: real JSONL checkpoint, new backend, resume and next model input',integrated);
+test('C images: occurrence identity, placeholder, cancelled and summary recovery',imageOccurrences);
+test('D command: real command runtime, lifecycle and summary correlation',humanCommand);
+test('D manual: closed attempt retained after checkpoint failure',manualPersistenceFailure);

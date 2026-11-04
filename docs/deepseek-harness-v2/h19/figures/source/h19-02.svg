@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1610" viewBox="0 0 640 1610" role="img"><title>先测量，再决定是否缩减历史</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1610" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">先测量，再决定是否缩减历史</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">来源必须分开标注</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">W：适配器声明的窗口容量</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">O：会话输出预留；B：额外余量</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">压力 P：TokenMeter.measure</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">常规阈值与保留预算</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">T = floor(min(W × ratio, W−O−B))</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">R = floor((W−O) × retainRatio)</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不是只看 UI 中的一个百分比</text>
+<rect x="32" y="556" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="599" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">例：W10000 / O1000 / B2000</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">ratio0.8 → T7000；P7000触发</text>
+<text x="52" y="685" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">retainRatio0.16 → R1440</text>
+<text x="52" y="727" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">B 默认65536：小窗口需重配</text>
+<path d="M320 763 V819" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="798" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">P ≥ T</text>
+<rect x="32" y="844" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="887" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">先修剪，再重新测量</text>
+<text x="52" y="931" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">可选 Pruner：无需额外模型请求</text>
+<text x="52" y="973" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">低于T → 结束；否则选择平衡前缀</text>
+<text x="52" y="1015" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">保护system首节点与近期尾部</text>
+<rect x="32" y="1072" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1115" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">摘要后仍要重新测量</text>
+<text x="52" y="1159" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">摘要输出上限另叫 maxTokens</text>
+<text x="52" y="1201" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">P仍高 → 有界收敛尝试</text>
+<text x="52" y="1243" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不可分单元或固定封装仍可能过大</text>
+<rect x="32" y="1300" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="1343" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">三个入口要分开</text>
+<text x="52" y="1387" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">pre-step：失败警告后继续</text>
+<text x="52" y="1429" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型切换：不达标则拒绝目标请求</text>
+<text x="52" y="1471" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">overflow：忽略通常保留，进展后重试</text>
+<text x="32" y="1582" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

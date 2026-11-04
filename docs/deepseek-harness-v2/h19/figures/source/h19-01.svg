@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1430" viewBox="0 0 640 1430" role="img"><title>日志保留，模型窗口可以缩短</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1430" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">日志保留，模型窗口可以缩短</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">完整 Event Log：只追加事实</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">旧 user / assistant / tool 仍保留</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">新增 start → summary → replace</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">最后追加 end；不删除原文</text>
+<path d="M320 307 V363" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="342" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">折叠</text>
+<rect x="32" y="388" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="431" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">当前 Surface：按位置替换</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">原节点：[system, 5, 8, …, 29, 32]</text>
+<text x="52" y="517" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">替换后：[system, 37, 32]</text>
+<text x="52" y="559" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">高 Seq37 回到旧范围的位置</text>
+<path d="M320 595 V651" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="630" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">派生</text>
+<rect x="32" y="676" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="719" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">deriveMessages → 后续请求</text>
+<text x="52" y="763" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">system：生效指令</text>
+<text x="52" y="805" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">user：带标签的摘要检查点</text>
+<text x="52" y="847" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">assistant：保留的近期回答</text>
+<rect x="32" y="904" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="947" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">summary 本身仅写日志</text>
+<text x="52" y="991" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">来源：[start35, summary36,</text>
+<text x="52" y="1033" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">               5, 8, 15, 16, 23, 24, 29]</text>
+<text x="52" y="1075" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型不把每个事件都读作消息</text>
+<rect x="32" y="1132" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1175" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">JSONL 保存后，新实例重建</text>
+<text x="52" y="1219" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">显式 flush；关闭 Agent 和后端</text>
+<text x="52" y="1261" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Resume 重建相同模型历史</text>
+<text x="52" y="1303" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不再调用旧模型或旧工具</text>
+<text x="32" y="1402" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>
