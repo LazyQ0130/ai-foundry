@@ -1,0 +1,121 @@
+{
+  "timestampUtc": "2026-11-04T07:34:24.400827+00:00",
+  "status": "FAIL",
+  "verdict": "CONDITIONAL GO",
+  "checks": [
+    {
+      "name": "protected user changes and output",
+      "status": "PASS",
+      "details": {
+        "userFiles": 15,
+        "outputFiles": 21,
+        "unchanged": true
+      }
+    },
+    {
+      "name": "old courses and evidence",
+      "status": "FAIL",
+      "error": "['course-content/internal/deepseek-harness/h17/lesson.md']"
+    },
+    {
+      "name": "Git scope",
+      "status": "PASS",
+      "details": "Only authorized scope beyond unchanged original user edits; no unrelated staged path"
+    },
+    {
+      "name": "fixed source identity and assertion references",
+      "status": "PASS",
+      "details": {
+        "status": "PASS",
+        "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+        "files": 9619,
+        "errors": [],
+        "assertions": 198,
+        "counts": {
+          "H17": 38,
+          "H18": 50,
+          "H19": 54,
+          "H20": 56
+        },
+        "scope": "Git blob/SHA256 and bounded assertion references; semantic reading and behavior evidence separately reported"
+      }
+    },
+    {
+      "name": "behavior tests and evidence grades",
+      "status": "PASS",
+      "details": {
+        "tests": {
+          "h17": 20,
+          "h18": 24,
+          "h19": 34,
+          "h20": 45,
+          "cross": 5
+        },
+        "total": 128,
+        "reviewedGrades": {
+          "C": 65,
+          "D": 63,
+          "E": 0
+        },
+        "independentFaultCount": "not inferred"
+      }
+    },
+    {
+      "name": "content Renderer and original figures",
+      "status": "PASS",
+      "details": {
+        "rendererTests": 12,
+        "contentChecks": 4,
+        "viewports": 12,
+        "clipboardProgramChecks": 117,
+        "figures": 16
+      }
+    },
+    {
+      "name": "assessment and actual whole trajectory",
+      "status": "PASS",
+      "details": {
+        "questions": 18,
+        "points": 100,
+        "integrated": 5,
+        "sameAgentEvents": 43,
+        "wholePrefixCount": 5
+      }
+    },
+    {
+      "name": "actual visual review hashes",
+      "status": "PASS",
+      "details": {
+        "method": "Author-side rendered-image inspection by the assistant: all 16 original figures in master and 320-width contact sheets; 4 new full-canvas diagrams via final contact sheet; Q14/Q18 full answers at320, quiz intro390, H17 reading route320. Automated geometry and keyboard checks are separate. This is not a human learner study or independent external review.",
+        "observedArtifacts": 17,
+        "independentExternalReview": false
+      }
+    },
+    {
+      "name": "local artifact links",
+      "status": "FAIL",
+      "error": "[['README.md', 'evidence/final-audit.json'], ['regression-report.md', 'evidence/final-audit.json']]"
+    },
+    {
+      "name": "delivery inventory and explicit gate",
+      "status": "PASS",
+      "details": {
+        "files": 21,
+        "requirementGroups": 19,
+        "openP0": 0,
+        "openP1": 0,
+        "openP2": [
+          "M5-P2-01"
+        ],
+        "unverified": [
+          "real Provider cost/performance",
+          "E integration",
+          "learners",
+          "measured learning time",
+          "independent external review",
+          "combined process-crash/power-loss/multiplatform matrix"
+        ]
+      }
+    }
+  ]
+}

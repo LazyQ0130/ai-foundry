@@ -237,6 +237,18 @@ Loop不在每个turn/end处自动等待flush；请求前的检查点策略另有
 
 能够重建的是**确实已记录且按需要持久保存的事实与读模型**。已经消失的进程、未记录的瞬态变量、第三方实时连接、未结算模型流、当前OS权限，都不能从文本日志里变回来。外部工具已发生但结果未知时，缺result更不能推出“没有副作用，可以重做”。
 
+## 五个核心文件：每读一站交一个结果
+
+前面的链接用于核对局部事实，不要求逐个包通读。第一次阅读按这五站走；每站先画输入、提交边界与输出，再运行对应实践：
+
+1. `session/src/types.ts`：先看SessionHeader、Seq/Offset和EventMap，写一张“元数据／消息来源／仅日志”分类表；用A检查Header不占位置。
+2. `session/src/index.ts`：精读append、commit、deriveMessages及Store.flush，圈出哪些失败发生在push前、哪些等待属于后端；不要把函数返回画成磁盘同步。
+3. `session/src/surface.ts`：从deriveEventMessage走到替换范围和来源校验，手算B的[0,6,4,5]与反向端点；区分当前节点顺序和日志数字顺序。
+4. `session-projection/src/index.ts`：先读ProjectionDefinition，再看register、snapshot和viewCheckpoint，用C交出状态、引用及通知三列，不通读缓存恢复算法。
+5. `agent-loop/src/agent.ts`：只追step的请求构造、message/attempt结算与工具结果后续请求，用D标出两份事件截止前缀；H12的流组装与H14的工具策略作为已知边界。
+
+这些名称均指本课已链接的固定版本文件；包前缀分别为`packages/core/`或`packages/session/`。tool-history、无损JSON工具函数、官方文档和测试是辅助核对材料；复杂持久化、恢复与Fork留H18。合上源码能交出上述五份结果，再进入完整程序，避免把链接数量误当必读文件数量。
+
 ## 实验准备：先预测，再运行，再对照
 
 本仓库根运行环境为Node24、Python与现有作者依赖；官方源码通过HARNESS_SOURCE_CACHE与HARNESS_GIT_CACHE定位固定Commit，隔离依赖由H17_DEPS_ANCHOR和H17_ZOD_ANCHOR定位。完整树的版本和integrity必须对齐上游pnpm-lock，不往业务项目安装Harness依赖。换机接线与命令见本课lab/README及作者README；不要求联网模型或个人Harness Home。

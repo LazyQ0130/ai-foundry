@@ -1,0 +1,496 @@
+[
+  {
+    "id": 1,
+    "title": "事件位置与Header",
+    "context": "一个刚创建的Session有不可变Header，随后按顺序接纳6条合法事件。",
+    "input": "日志Seq为0,1,2,3,4,5；读取区间[1,4)；没有持久后端。",
+    "task": "给出长度、末事件Seq、结尾Offset和读取结果，并判断现在可否承诺崩溃后读回。",
+    "answer": "长度6，末Seq5，结尾Offset6；读取1/2/3共3条；Header不占Seq；不能承诺磁盘恢复。",
+    "steps": [
+      "先区分元数据与事件。",
+      "Seq指事件位置，Offset可指结尾；半开区间排除4。",
+      "内存追加没有参与存储或屏障的证据。"
+    ],
+    "rubric": [
+      "长度/末Seq/Offset全对1分",
+      "区间结果1分",
+      "Header不占1分",
+      "解释缺后端/屏障1分"
+    ],
+    "mistakes": [
+      "把Header当seq0，会整体偏一。",
+      "构造SessionSeq(6)可通过数字校验，仍不证明本日志存在事件6。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q01｜事件位置与Header（4分）\n\n一个刚创建的Session有不可变Header，随后按顺序接纳6条合法事件。\n\n**精确输入**\n\n```text\n日志Seq为0,1,2,3,4,5；读取区间[1,4)；没有持久后端。\n```\n\n**任务**：给出长度、末事件Seq、结尾Offset和读取结果，并判断现在可否承诺崩溃后读回。\n",
+    "answerMarkdown": "**标准答案**\n\n长度6，末Seq5，结尾Offset6；读取1/2/3共3条；Header不占Seq；不能承诺磁盘恢复。\n\n**逐步推导**\n\n1. 先区分元数据与事件。\n2. Seq指事件位置，Offset可指结尾；半开区间排除4。\n3. 内存追加没有参与存储或屏障的证据。\n\n**评分 Rubric**\n\n- 长度/末Seq/Offset全对1分\n- 区间结果1分\n- Header不占1分\n- 解释缺后端/屏障1分\n\n**常见错误及分析**\n\n- 把Header当seq0，会整体偏一。\n- 构造SessionSeq(6)可通过数字校验，仍不证明本日志存在事件6。\n"
+  },
+  {
+    "id": 2,
+    "title": "按位置替换Surface",
+    "context": "日志含0 system、1旧user、2assistant、3attempt、4tool结果、5空developer；6已合法替换1..2。",
+    "input": "当前节点[0,6,4,5]。拟追加user摘要7，replace(start6,end4)，sourceEventSeqs=[6]。",
+    "task": "判断是否接纳；修正最小源引用后给节点、消息数和原始日志变化。",
+    "answer": "第一次拒绝，节点和日志不变；来源至少覆盖[6,4]后该user替换合法，节点[0,7,5]，2条消息；原日志增长到8条，旧1/2/4/6都保留。",
+    "steps": [
+      "端点在当前位置6先于4，不能按数值排序。",
+      "缺4导致源覆盖不全，失败发生commit前。",
+      "修正后7占被遮蔽span起点；5为空developer不产Message。"
+    ],
+    "rubric": [
+      "位置判断1分",
+      "拒绝与最小来源1分",
+      "节点/消息数1分",
+      "日志保留且增长1分"
+    ],
+    "mistakes": [
+      "以6>4拒绝合法位置跨度。",
+      "把summary替换解释为删掉旧磁盘记录。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q02｜按位置替换Surface（4分）\n\n日志含0 system、1旧user、2assistant、3attempt、4tool结果、5空developer；6已合法替换1..2。\n\n**精确输入**\n\n```text\n当前节点[0,6,4,5]。拟追加user摘要7，replace(start6,end4)，sourceEventSeqs=[6]。\n```\n\n**任务**：判断是否接纳；修正最小源引用后给节点、消息数和原始日志变化。\n",
+    "answerMarkdown": "**标准答案**\n\n第一次拒绝，节点和日志不变；来源至少覆盖[6,4]后该user替换合法，节点[0,7,5]，2条消息；原日志增长到8条，旧1/2/4/6都保留。\n\n**逐步推导**\n\n1. 端点在当前位置6先于4，不能按数值排序。\n2. 缺4导致源覆盖不全，失败发生commit前。\n3. 修正后7占被遮蔽span起点；5为空developer不产Message。\n\n**评分 Rubric**\n\n- 位置判断1分\n- 拒绝与最小来源1分\n- 节点/消息数1分\n- 日志保留且增长1分\n\n**常见错误及分析**\n\n- 以6>4拒绝合法位置跨度。\n- 把summary替换解释为删掉旧磁盘记录。\n"
+  },
+  {
+    "id": 3,
+    "title": "Projection不是另一份真源",
+    "context": "使用H17任务单元：init=idle/0/0；turn/start设running并更新turn；turn/end把finished加1、按reason设状态；无关事件返回原state。",
+    "input": "依次turn/start(1)、step/start(1,1)、step/end(1,1)、turn/end(completed)。wire.view返回state本身。",
+    "task": "逐步给状态、通知次数和snapshot.asOfSeq；说明将无关事件改成{...state}的风险。",
+    "answer": "idle/0/0→running/1/0→同一running对象→同一对象→completed/1/1；状态变化通知2次，asOfSeq3。无关事件新对象可触发多余通知；反过来原地改旧对象可能掩盖变化。",
+    "steps": [
+      "按事件顺序折叠，不由最终聊天文本猜任务。",
+      "通知受state和view引用门控。",
+      "snapshot说明覆盖切面；解释规则/版本才使重建可重复。"
+    ],
+    "rubric": [
+      "状态轨迹1分",
+      "2次通知与引用1分",
+      "asOfSeq3 1分",
+      "解释新对象或原地修改问题1分"
+    ],
+    "mistakes": [
+      "把snapshot当不依赖事件/单元版本的独立权威数据。",
+      "误称live每步必过完整stateSchema。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q03｜Projection不是另一份真源（4分）\n\n使用H17任务单元：init=idle/0/0；turn/start设running并更新turn；turn/end把finished加1、按reason设状态；无关事件返回原state。\n\n**精确输入**\n\n```text\n依次turn/start(1)、step/start(1,1)、step/end(1,1)、turn/end(completed)。wire.view返回state本身。\n```\n\n**任务**：逐步给状态、通知次数和snapshot.asOfSeq；说明将无关事件改成{...state}的风险。\n",
+    "answerMarkdown": "**标准答案**\n\nidle/0/0→running/1/0→同一running对象→同一对象→completed/1/1；状态变化通知2次，asOfSeq3。无关事件新对象可触发多余通知；反过来原地改旧对象可能掩盖变化。\n\n**逐步推导**\n\n1. 按事件顺序折叠，不由最终聊天文本猜任务。\n2. 通知受state和view引用门控。\n3. snapshot说明覆盖切面；解释规则/版本才使重建可重复。\n\n**评分 Rubric**\n\n- 状态轨迹1分\n- 2次通知与引用1分\n- asOfSeq3 1分\n- 解释新对象或原地修改问题1分\n\n**常见错误及分析**\n\n- 把snapshot当不依赖事件/单元版本的独立权威数据。\n- 误称live每步必过完整stateSchema。\n"
+  },
+  {
+    "id": 4,
+    "title": "读写所有权",
+    "context": "Windows同一登录会话，真实JSONL会话已实体化，A持有write。",
+    "input": "B同实例open(read)；C新后端open(write)；D独立Node进程open(read)；A之后await close。",
+    "task": "给三个打开结果和close后的写权；分别说明哪部分来自seam、哪部分来自JSONL实现。",
+    "answer": "B可读，C写冲突，D可读；A成功close后新writer可取得。seam至少实施同后端实例单写者；JSONL使用内核机制提供指定平台的跨实例/PID排他。",
+    "steps": [
+      "read不占写权。",
+      "跨实例排他不是一个进程Map独自实现。",
+      "关闭释放当前句柄所有权，历史保留。"
+    ],
+    "rubric": [
+      "B/D可读1分",
+      "C拒绝与关闭后接管1分",
+      "seam/JSONL分层1分",
+      "平台范围和close非删除1分"
+    ],
+    "mistakes": [
+      "将Windows已验推广到NFS/POSIX/跨登录全部已验。",
+      "把旧writer重新使用当作新所有者。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q04｜读写所有权（4分）\n\nWindows同一登录会话，真实JSONL会话已实体化，A持有write。\n\n**精确输入**\n\n```text\nB同实例open(read)；C新后端open(write)；D独立Node进程open(read)；A之后await close。\n```\n\n**任务**：给三个打开结果和close后的写权；分别说明哪部分来自seam、哪部分来自JSONL实现。\n",
+    "answerMarkdown": "**标准答案**\n\nB可读，C写冲突，D可读；A成功close后新writer可取得。seam至少实施同后端实例单写者；JSONL使用内核机制提供指定平台的跨实例/PID排他。\n\n**逐步推导**\n\n1. read不占写权。\n2. 跨实例排他不是一个进程Map独自实现。\n3. 关闭释放当前句柄所有权，历史保留。\n\n**评分 Rubric**\n\n- B/D可读1分\n- C拒绝与关闭后接管1分\n- seam/JSONL分层1分\n- 平台范围和close非删除1分\n\n**常见错误及分析**\n\n- 将Windows已验推广到NFS/POSIX/跨登录全部已验。\n- 把旧writer重新使用当作新所有者。\n"
+  },
+  {
+    "id": 5,
+    "title": "Append与Flush",
+    "context": "JSONL已挂载，Session按ID路由到活writer；后台缓冲可能尚未排空。",
+    "input": "s.append(e)成功；随后只await writer.flush()。另一分支先close writer，再s.append(e2)，Store.flush(s)返回true。",
+    "task": "两条路径各缺什么证据？写出包含路由缓冲的正确检查点及失败处置。",
+    "answer": "直接writer.flush不负责drainLive；应对活Session用ctx.sessions.flush或服务flush并确认对应writer与成功结果。无writer的true只说明监听者存在，e2可能仅在内存。失败要观察、保留待写事实并按支持路径重试，不能报告耐久成功。",
+    "steps": [
+      "先定位Promise覆盖的对象。",
+      "区分Session提交、句柄接受与路由排空。",
+      "后端成功屏障才按其契约解释持久性。"
+    ],
+    "rubric": [
+      "直接flush范围1分",
+      "无writer true反例1分",
+      "正确入口及writer前提1分",
+      "失败不宣称已存1分"
+    ],
+    "mistakes": [
+      "把所有同名flush当同一个排空操作。",
+      "把JSONL每批sync推成所有后端append都同步。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q05｜Append与Flush（4分）\n\nJSONL已挂载，Session按ID路由到活writer；后台缓冲可能尚未排空。\n\n**精确输入**\n\n```text\ns.append(e)成功；随后只await writer.flush()。另一分支先close writer，再s.append(e2)，Store.flush(s)返回true。\n```\n\n**任务**：两条路径各缺什么证据？写出包含路由缓冲的正确检查点及失败处置。\n",
+    "answerMarkdown": "**标准答案**\n\n直接writer.flush不负责drainLive；应对活Session用ctx.sessions.flush或服务flush并确认对应writer与成功结果。无writer的true只说明监听者存在，e2可能仅在内存。失败要观察、保留待写事实并按支持路径重试，不能报告耐久成功。\n\n**逐步推导**\n\n1. 先定位Promise覆盖的对象。\n2. 区分Session提交、句柄接受与路由排空。\n3. 后端成功屏障才按其契约解释持久性。\n\n**评分 Rubric**\n\n- 直接flush范围1分\n- 无writer true反例1分\n- 正确入口及writer前提1分\n- 失败不宣称已存1分\n\n**常见错误及分析**\n\n- 把所有同名flush当同一个排空操作。\n- 把JSONL每批sync推成所有后端append都同步。\n"
+  },
+  {
+    "id": 6,
+    "title": "JSONL重新打开的证据",
+    "context": "H18保存Header与5事件，显式flush/close；新后端读取后，另起Node PID读取。",
+    "input": "none文件6行；默认compression分支首魔数0xFD2FB528；某V3物理源只读返回header.version4。",
+    "task": "分别解释三组数字及已验证边界，指出为什么它们不等于完整应用崩溃恢复。",
+    "answer": "none为1 Header+5事件，Seq仍0..4；魔数对应默认Zstd，不能按UTF-8 JSON行直接读；V3源在内存迁移后可返回V4逻辑值，源未必发布后继。新PID正常读取不证明完整Agent崩溃后恢复或断电耐久。",
+    "steps": [
+      "把物理编码、逻辑格式和事件位置分开。",
+      "比对Header/每条事件/消息，而非只看文件存在。",
+      "核是否真实退出进程、哪个组件重新运行。"
+    ],
+    "rubric": [
+      "6行/Seq1分",
+      "Zstd解释1分",
+      "V3/V4/源不变1分",
+      "新PID与真实崩溃/E边界1分"
+    ],
+    "mistakes": [
+      "把只读迁移当写迁移已通过。",
+      "把新后端对象当全新操作系统进程。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q06｜JSONL重新打开的证据（4分）\n\nH18保存Header与5事件，显式flush/close；新后端读取后，另起Node PID读取。\n\n**精确输入**\n\n```text\nnone文件6行；默认compression分支首魔数0xFD2FB528；某V3物理源只读返回header.version4。\n```\n\n**任务**：分别解释三组数字及已验证边界，指出为什么它们不等于完整应用崩溃恢复。\n",
+    "answerMarkdown": "**标准答案**\n\nnone为1 Header+5事件，Seq仍0..4；魔数对应默认Zstd，不能按UTF-8 JSON行直接读；V3源在内存迁移后可返回V4逻辑值，源未必发布后继。新PID正常读取不证明完整Agent崩溃后恢复或断电耐久。\n\n**逐步推导**\n\n1. 把物理编码、逻辑格式和事件位置分开。\n2. 比对Header/每条事件/消息，而非只看文件存在。\n3. 核是否真实退出进程、哪个组件重新运行。\n\n**评分 Rubric**\n\n- 6行/Seq1分\n- Zstd解释1分\n- V3/V4/源不变1分\n- 新PID与真实崩溃/E边界1分\n\n**常见错误及分析**\n\n- 把只读迁移当写迁移已通过。\n- 把新后端对象当全新操作系统进程。\n"
+  },
+  {
+    "id": 7,
+    "title": "Resume、Fork与运行父级",
+    "context": "原任务事件0..15完整；tool/call在9，result在10。",
+    "input": "正常Resume原身份；普通Fork含切点9，新child ID。",
+    "task": "给两条初始长度、子继承数与新增事件顺序，判断是否自动有writer、parentAgent、工具重放。",
+    "answer": "正常Resume多普通marker16，共17；Fork继承0..9共10，子10 tagged marker、11 UNKNOWN引用9、12 step/end、13 turn/end forked，共14。普通sessions.fork仅活内存Session，不自动writer或parentAgent，不重放旧工具。",
+    "steps": [
+      "切点包含，先数原前缀。",
+      "marker与closer属子自有事实。",
+      "普通Fork持久化必须另接工厂writer；谱系与runtime所有权分开。"
+    ],
+    "rubric": [
+      "17/14/继承10 1分",
+      "子新增顺序及原因1分",
+      "无工具重放1分",
+      "writer/parentAgent边界1分"
+    ],
+    "mistakes": [
+      "用父后来result10补回切点9的子历史。",
+      "把Fork等同Subagent激活。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q07｜Resume、Fork与运行父级（4分）\n\n原任务事件0..15完整；tool/call在9，result在10。\n\n**精确输入**\n\n```text\n正常Resume原身份；普通Fork含切点9，新child ID。\n```\n\n**任务**：给两条初始长度、子继承数与新增事件顺序，判断是否自动有writer、parentAgent、工具重放。\n",
+    "answerMarkdown": "**标准答案**\n\n正常Resume多普通marker16，共17；Fork继承0..9共10，子10 tagged marker、11 UNKNOWN引用9、12 step/end、13 turn/end forked，共14。普通sessions.fork仅活内存Session，不自动writer或parentAgent，不重放旧工具。\n\n**逐步推导**\n\n1. 切点包含，先数原前缀。\n2. marker与closer属子自有事实。\n3. 普通Fork持久化必须另接工厂writer；谱系与runtime所有权分开。\n\n**评分 Rubric**\n\n- 17/14/继承10 1分\n- 子新增顺序及原因1分\n- 无工具重放1分\n- writer/parentAgent边界1分\n\n**常见错误及分析**\n\n- 用父后来result10补回切点9的子历史。\n- 把Fork等同Subagent激活。\n"
+  },
+  {
+    "id": 8,
+    "title": "物理尾与语义尾",
+    "context": "两份新建JSONL fixture。",
+    "input": "甲：完整5事件后半截JSON无换行；乙：完整turn/start、step/start、system、user、Assistant提议与call共6条，没有result。",
+    "task": "写甲读取与首次新append的动作，写乙归谁补何种语义。",
+    "answer": "甲返回合法前缀，read和write-open本身不改文件，新append前处理撕裂尾并保持已提交字节。乙不是因开放Turn就物理损坏；Agent恢复层用同writer补UNKNOWN、step/end、turn/end interrupted，再构造生命周期marker。",
+    "steps": [
+      "先检物理记录合法性。",
+      "完整开放生命周期由语义repair处理。",
+      "任何坏Seq/未知必需格式不能用删尾一概处理。"
+    ],
+    "rubric": [
+      "甲读取不修改1分",
+      "甲新append时修尾1分",
+      "乙语义所有者与顺序1分",
+      "完整坏数据拒绝/原前缀保留1分"
+    ],
+    "mistakes": [
+      "删掉完整tool/call以得到看似闭合日志。",
+      "认为所有撕裂Zstd帧必须整帧全丢。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q08｜物理尾与语义尾（4分）\n\n两份新建JSONL fixture。\n\n**精确输入**\n\n```text\n甲：完整5事件后半截JSON无换行；乙：完整turn/start、step/start、system、user、Assistant提议与call共6条，没有result。\n```\n\n**任务**：写甲读取与首次新append的动作，写乙归谁补何种语义。\n",
+    "answerMarkdown": "**标准答案**\n\n甲返回合法前缀，read和write-open本身不改文件，新append前处理撕裂尾并保持已提交字节。乙不是因开放Turn就物理损坏；Agent恢复层用同writer补UNKNOWN、step/end、turn/end interrupted，再构造生命周期marker。\n\n**逐步推导**\n\n1. 先检物理记录合法性。\n2. 完整开放生命周期由语义repair处理。\n3. 任何坏Seq/未知必需格式不能用删尾一概处理。\n\n**评分 Rubric**\n\n- 甲读取不修改1分\n- 甲新append时修尾1分\n- 乙语义所有者与顺序1分\n- 完整坏数据拒绝/原前缀保留1分\n\n**常见错误及分析**\n\n- 删掉完整tool/call以得到看似闭合日志。\n- 认为所有撕裂Zstd帧必须整帧全丢。\n"
+  },
+  {
+    "id": 9,
+    "title": "缺失ToolResult的三种输入",
+    "context": "同一个仍开放Step中Assistant依次提出a,b,c。",
+    "input": "a无call；b有call@7无result；c有匹配append result@9。",
+    "task": "列修复结果、来源与后续结束顺序；说明call是否已证明主体生效。",
+    "answer": "按提议序只补a NOT_STARTED（无call来源）、b UNKNOWN（source=[7]）；c保持原result。再补开放step/end、turn/end interrupted。call是登记接手，早于dispatch，不能单凭它证明主体生效。",
+    "steps": [
+      "Recovery按callId及Turn/Step追待答。",
+      "已有append结果移除待答；关闭Step清集合。",
+      "错误结果陈述证据缺口，不撤销效果。"
+    ],
+    "rubric": [
+      "两码及顺序1分",
+      "来源与c保留1分",
+      "Step/Turn顺序1分",
+      "call/副作用边界1分"
+    ],
+    "mistakes": [
+      "给a伪造一个开始来源。",
+      "把b补成成功或自动执行写工具。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q09｜缺失ToolResult的三种输入（4分）\n\n同一个仍开放Step中Assistant依次提出a,b,c。\n\n**精确输入**\n\n```text\na无call；b有call@7无result；c有匹配append result@9。\n```\n\n**任务**：列修复结果、来源与后续结束顺序；说明call是否已证明主体生效。\n",
+    "answerMarkdown": "**标准答案**\n\n按提议序只补a NOT_STARTED（无call来源）、b UNKNOWN（source=[7]）；c保持原result。再补开放step/end、turn/end interrupted。call是登记接手，早于dispatch，不能单凭它证明主体生效。\n\n**逐步推导**\n\n1. Recovery按callId及Turn/Step追待答。\n2. 已有append结果移除待答；关闭Step清集合。\n3. 错误结果陈述证据缺口，不撤销效果。\n\n**评分 Rubric**\n\n- 两码及顺序1分\n- 来源与c保留1分\n- Step/Turn顺序1分\n- call/副作用边界1分\n\n**常见错误及分析**\n\n- 给a伪造一个开始来源。\n- 把b补成成功或自动执行写工具。\n"
+  },
+  {
+    "id": 10,
+    "title": "Token预算与计量",
+    "context": "使用Basic固定公式，R为比例保留。",
+    "input": "W10000，O1000，B2000，thresholdRatio=.8，retainRatio=.16；P分别6999/7000；Usage input1000/cacheRead100/cacheWrite20/output50，其中reasoning10已含output。",
+    "task": "计算T、R、两个触发结果和Usage总量，并说明UI1120为何不矛盾。",
+    "answer": "T7000，R1440；6999不触发，7000合格；Usage1170，reasoning不重复；1120仅提示词侧input+cache，不含output，不能拿它替代当前完整measure或金额。",
+    "steps": [
+      "T取窗口比例和W−O−B中较小者。",
+      "R分母W−O=9000。",
+      "合格后仍先prune/重测，非保证一定摘要。"
+    ],
+    "rubric": [
+      "T7000及边界1分",
+      "R1440和分母1分",
+      "Usage1170 1分",
+      "UI/measure/费用分层1分"
+    ],
+    "mistakes": [
+      "把所有数都当精确分词或同一账单分项。",
+      "把摘要maxTokens当会话O。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q10｜Token预算与计量（4分）\n\n使用Basic固定公式，R为比例保留。\n\n**精确输入**\n\n```text\nW10000，O1000，B2000，thresholdRatio=.8，retainRatio=.16；P分别6999/7000；Usage input1000/cacheRead100/cacheWrite20/output50，其中reasoning10已含output。\n```\n\n**任务**：计算T、R、两个触发结果和Usage总量，并说明UI1120为何不矛盾。\n",
+    "answerMarkdown": "**标准答案**\n\nT7000，R1440；6999不触发，7000合格；Usage1170，reasoning不重复；1120仅提示词侧input+cache，不含output，不能拿它替代当前完整measure或金额。\n\n**逐步推导**\n\n1. T取窗口比例和W−O−B中较小者。\n2. R分母W−O=9000。\n3. 合格后仍先prune/重测，非保证一定摘要。\n\n**评分 Rubric**\n\n- T7000及边界1分\n- R1440和分母1分\n- Usage1170 1分\n- UI/measure/费用分层1分\n\n**常见错误及分析**\n\n- 把所有数都当精确分词或同一账单分项。\n- 把摘要maxTokens当会话O。\n"
+  },
+  {
+    "id": 11,
+    "title": "Compaction选区与工具配对",
+    "context": "当前Surface按位置为[S,U,A(call x),T(result x)]，S是首system。",
+    "input": "尾部预算仅够T；另一个输入为[S,A(call x),T(巨大结果)]。",
+    "task": "分别给最晚安全保留切点、可压缩范围和无进展时Overflow能否凭空授权重试。",
+    "answer": "第一例必须整体保留A/T，可压缩U；第二例整体工具单元保留后无较早可用范围，可能null。无实际replaceGeneration进展，Basic不能凭这一路授权重试；可按合法开放Turn先prune再测，但不保证最终能装下。",
+    "steps": [
+      "切点前仍有待答调用则向前移。",
+      "保护首system，不能拆消息或配对凑预算。",
+      "执行函数/新增日志不等于模型输入实际变小。"
+    ],
+    "rubric": [
+      "整体保留A/T 1分",
+      "U与第二例null 1分",
+      "进展条件1分",
+      "prune条件与不保证1分"
+    ],
+    "mistakes": [
+      "按最近N个日志事件截断，忽略仅日志与消息节点。",
+      "认为retain0可以随意切断最后一个工具单元。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q11｜Compaction选区与工具配对（4分）\n\n当前Surface按位置为[S,U,A(call x),T(result x)]，S是首system。\n\n**精确输入**\n\n```text\n尾部预算仅够T；另一个输入为[S,A(call x),T(巨大结果)]。\n```\n\n**任务**：分别给最晚安全保留切点、可压缩范围和无进展时Overflow能否凭空授权重试。\n",
+    "answerMarkdown": "**标准答案**\n\n第一例必须整体保留A/T，可压缩U；第二例整体工具单元保留后无较早可用范围，可能null。无实际replaceGeneration进展，Basic不能凭这一路授权重试；可按合法开放Turn先prune再测，但不保证最终能装下。\n\n**逐步推导**\n\n1. 切点前仍有待答调用则向前移。\n2. 保护首system，不能拆消息或配对凑预算。\n3. 执行函数/新增日志不等于模型输入实际变小。\n\n**评分 Rubric**\n\n- 整体保留A/T 1分\n- U与第二例null 1分\n- 进展条件1分\n- prune条件与不保证1分\n\n**常见错误及分析**\n\n- 按最近N个日志事件截断，忽略仅日志与消息节点。\n- 认为retain0可以随意切断最后一个工具单元。\n"
+  },
+  {
+    "id": 12,
+    "title": "Overflow与普通Retry",
+    "context": "真实request-error Waterfall按注册顺序执行。",
+    "input": "normal自定义retryableCodes=[CONTEXT_WINDOW_EXCEEDED]、maxRetries1；Basic.maxOverflowRetries1；输入可摘要；脚本Overflow→成功。比较Retry→Basic与Basic→Retry。",
+    "task": "预测普通计划/辅助摘要数，并判断“全应用最多2次请求”是否成立。",
+    "answer": "Retry先：计划1、摘要0；Basic先：计划0、摘要1；两例普通请求均2。不能推广全局2次；normal耗尽可委派独立Basic，其他输入恢复也可能接手，always又无normal次数上限。",
+    "steps": [
+      "normal合格就自己恢复，不自动先next。",
+      "Basic取得输入进展后直接返回retry。",
+      "预算键/重置和下游所有权必须分别解释。"
+    ],
+    "rubric": [
+      "Retry先结果1分",
+      "Basic先结果1分",
+      "说明Waterfall接手原因1分",
+      "否定全局上限并给独立预算路径1分"
+    ],
+    "mistakes": [
+      "把两个插件都想成每个错误各加一次重试。",
+      "认为always保证成功或默认等同normal。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q12｜Overflow与普通Retry（4分）\n\n真实request-error Waterfall按注册顺序执行。\n\n**精确输入**\n\n```text\nnormal自定义retryableCodes=[CONTEXT_WINDOW_EXCEEDED]、maxRetries1；Basic.maxOverflowRetries1；输入可摘要；脚本Overflow→成功。比较Retry→Basic与Basic→Retry。\n```\n\n**任务**：预测普通计划/辅助摘要数，并判断“全应用最多2次请求”是否成立。\n",
+    "answerMarkdown": "**标准答案**\n\nRetry先：计划1、摘要0；Basic先：计划0、摘要1；两例普通请求均2。不能推广全局2次；normal耗尽可委派独立Basic，其他输入恢复也可能接手，always又无normal次数上限。\n\n**逐步推导**\n\n1. normal合格就自己恢复，不自动先next。\n2. Basic取得输入进展后直接返回retry。\n3. 预算键/重置和下游所有权必须分别解释。\n\n**评分 Rubric**\n\n- Retry先结果1分\n- Basic先结果1分\n- 说明Waterfall接手原因1分\n- 否定全局上限并给独立预算路径1分\n\n**常见错误及分析**\n\n- 把两个插件都想成每个错误各加一次重试。\n- 认为always保证成功或默认等同normal。\n"
+  },
+  {
+    "id": 13,
+    "title": "指数退避与取消",
+    "context": "normal d0=500、M10000、j=.1，r从1起。",
+    "input": "第1次U=0，第2次U=1；另有Provider RetryAfter=20000；已写retry计划而尚在等待时用户取消。",
+    "task": "计算两次本地延迟、normal/always超上限行为及取消后的必要事件区别。",
+    "answer": "450ms和1100ms；normal对20000委派不写本插件计划，always回退本地算法。等待中取消清timer，可有retry无started、无下一请求；started即使存在也只说明等待结束，不证明成功。",
+    "steps": [
+      "先指数封顶，再乘.9+.2U，最后再次封顶。",
+      "Provider延迟在有效范围原样用，超范围不等同截成M。",
+      "signal/lifetime负责取消等待，Step/Turn仍需结束。"
+    ],
+    "rubric": [
+      "450/1100及计算1分",
+      "normal/always区别1分",
+      "计划无started合法1分",
+      "等待/请求/成功区别1分"
+    ],
+    "mistakes": [
+      "第二次仍算550。",
+      "将已提交计划当每个后端fsync完成，或重开自动继续旧timer。"
+    ],
+    "points": 4,
+    "tags": "基础",
+    "promptMarkdown": "## Q13｜指数退避与取消（4分）\n\nnormal d0=500、M10000、j=.1，r从1起。\n\n**精确输入**\n\n```text\n第1次U=0，第2次U=1；另有Provider RetryAfter=20000；已写retry计划而尚在等待时用户取消。\n```\n\n**任务**：计算两次本地延迟、normal/always超上限行为及取消后的必要事件区别。\n",
+    "answerMarkdown": "**标准答案**\n\n450ms和1100ms；normal对20000委派不写本插件计划，always回退本地算法。等待中取消清timer，可有retry无started、无下一请求；started即使存在也只说明等待结束，不证明成功。\n\n**逐步推导**\n\n1. 先指数封顶，再乘.9+.2U，最后再次封顶。\n2. Provider延迟在有效范围原样用，超范围不等同截成M。\n3. signal/lifetime负责取消等待，Step/Turn仍需结束。\n\n**评分 Rubric**\n\n- 450/1100及计算1分\n- normal/always区别1分\n- 计划无started合法1分\n- 等待/请求/成功区别1分\n\n**常见错误及分析**\n\n- 第二次仍算550。\n- 将已提交计划当每个后端fsync完成，或重开自动继续旧timer。\n"
+  },
+  {
+    "id": 14,
+    "title": "综合A：同一Agent跨四课重建请求",
+    "context": "使用本轮M5-whole实际轨迹，省略长载荷但不省事件。节点口径为Loop进入Runtime前的Surface消息来源；Adapter可再作工具声明投影；工具inspect纯内存；Header6用于最初请求，25为后续完整快照，38为恢复后新快照。",
+    "input": "0 inbox;1 turn1/start;2 inbox;3 step1/start;4 system;5旧user;6 header;7 context;8 Assistant(call);9 tool/call;10 result;11 step/end;12 step2/start;13回答;14 step/end;15 turn/end;16 compaction/start(null);17 summary;18摘要user replace(5,10),source=[16,17,5,8,10];19 end;20 inbox;21 turn2/start;22 inbox;23 step1/start;24新user;25 header;26失败attempt;27 retry;28 started;29成功回答;30 step/end;31 turn/end;flush/close;新后端Resume追加32 end-seed;33 inbox;34 turn3/start;35 inbox;36 step1/start;37新user;38 header;39 developer工具声明更新;40回答;41 step/end;42 turn/end。",
+    "task": "列全部普通请求在Loop→Runtime边界的事件截止前缀和消息来源节点；数Turn/Step/普通请求/摘要请求/工具执行；区分39节点与Adapter工具投影，说明恢复边界。",
+    "answer": "普通请求依次从[0,8)读[4,5]，从[0,13)读[4,5,8,10]，从[0,26)读[4,18,13,24]，重试从[0,29)仍读[4,18,13,24]，恢复新任务从[0,40)读[4,18,13,24,29,37,39]。3 Turn、4 Step、5普通请求、1辅助摘要请求、工具主体1次。保存32事实，恢复先加marker32；节点是Loop→Runtime口径，Adapter可把39的工具声明映射为toolHistory更新而不保留普通developer文本。完整重建须含header/tools/toolHistory，不只比messages；不复活原timer/Promise/Adapter或再执行工具。",
+    "steps": [
+      "先按每次响应前的提交前缀截断，不用最终日志直接派生过去。",
+      "18在旧5的位置，遮蔽5/8/10，13作为近期回答仍在。",
+      "26/27/28仅日志，用户24只接纳一次。",
+      "新实例39为当前工具声明更新，不可遗漏；40不能提前进入产生它的请求。",
+      "分别计执行边界和辅助模型调用，避免Step=请求次数。"
+    ],
+    "rubric": [
+      "五个请求前缀+节点各0.8分，共4分",
+      "计数Turn/Step/普通/辅助/工具全对3分",
+      "保存/恢复及无重放2分",
+      "解释header快照、39与Adapter工具投影边界1分"
+    ],
+    "mistakes": [
+      "把26失败分片放进重试历史。",
+      "按Seq数值排序[4,13,18]。",
+      "把原工具随每个请求重做，或认为全部43事件都是模型消息。"
+    ],
+    "points": 10,
+    "tags": "综合 H17 H18 H19 H20",
+    "promptMarkdown": "## Q14｜综合A：同一Agent跨四课重建请求（10分）\n\n使用本轮M5-whole实际轨迹，省略长载荷但不省事件。节点口径为Loop进入Runtime前的Surface消息来源；Adapter可再作工具声明投影；工具inspect纯内存；Header6用于最初请求，25为后续完整快照，38为恢复后新快照。\n\n**精确输入**\n\n```text\n0 inbox;1 turn1/start;2 inbox;3 step1/start;4 system;5旧user;6 header;7 context;8 Assistant(call);9 tool/call;10 result;11 step/end;12 step2/start;13回答;14 step/end;15 turn/end;16 compaction/start(null);17 summary;18摘要user replace(5,10),source=[16,17,5,8,10];19 end;20 inbox;21 turn2/start;22 inbox;23 step1/start;24新user;25 header;26失败attempt;27 retry;28 started;29成功回答;30 step/end;31 turn/end;flush/close;新后端Resume追加32 end-seed;33 inbox;34 turn3/start;35 inbox;36 step1/start;37新user;38 header;39 developer工具声明更新;40回答;41 step/end;42 turn/end。\n```\n\n**任务**：列全部普通请求在Loop→Runtime边界的事件截止前缀和消息来源节点；数Turn/Step/普通请求/摘要请求/工具执行；区分39节点与Adapter工具投影，说明恢复边界。\n",
+    "answerMarkdown": "**标准答案**\n\n普通请求依次从[0,8)读[4,5]，从[0,13)读[4,5,8,10]，从[0,26)读[4,18,13,24]，重试从[0,29)仍读[4,18,13,24]，恢复新任务从[0,40)读[4,18,13,24,29,37,39]。3 Turn、4 Step、5普通请求、1辅助摘要请求、工具主体1次。保存32事实，恢复先加marker32；节点是Loop→Runtime口径，Adapter可把39的工具声明映射为toolHistory更新而不保留普通developer文本。完整重建须含header/tools/toolHistory，不只比messages；不复活原timer/Promise/Adapter或再执行工具。\n\n**逐步推导**\n\n1. 先按每次响应前的提交前缀截断，不用最终日志直接派生过去。\n2. 18在旧5的位置，遮蔽5/8/10，13作为近期回答仍在。\n3. 26/27/28仅日志，用户24只接纳一次。\n4. 新实例39为当前工具声明更新，不可遗漏；40不能提前进入产生它的请求。\n5. 分别计执行边界和辅助模型调用，避免Step=请求次数。\n\n**评分 Rubric**\n\n- 五个请求前缀+节点各0.8分，共4分\n- 计数Turn/Step/普通/辅助/工具全对3分\n- 保存/恢复及无重放2分\n- 解释header快照、39与Adapter工具投影边界1分\n\n**常见错误及分析**\n\n- 把26失败分片放进重试历史。\n- 按Seq数值排序[4,13,18]。\n- 把原工具随每个请求重做，或认为全部43事件都是模型消息。\n"
+  },
+  {
+    "id": 15,
+    "title": "综合B：真实JSONL保存、恢复与Fork",
+    "context": "设计仅作用于新建隔离root的真实局部实验，不调用真实付费Provider；沿用H18 X的完整16事件初任务，call在9。",
+    "input": "保存16事件及Header；关闭Agent和后端；全新后端Resume；从包含Seq9生成持久子分支；父子分别接收PARENT_ONLY/CHILD_ONLY。",
+    "task": "写可运行接线步骤/关键API与断言；给17/14/26/23计数含义，区分普通内存Fork、持久分支和跨进程证据。",
+    "answer": "取得工厂writer→真实任务→sessions.flush→Handle.read核前缀→dispose/close→新Context+JSONL同root→agents.resume；原16条相等，marker后17，模型消息/头相等且旧调用0。sessions.fork用于内存对照，官方buildForkSeed含9+inherited10交agents.create取新writer，子14。父子新任务后26/23，双方旧前缀相等且专有输入不串；单写者冲突拒绝。全部仅同进程新实例，不自动是独立进程崩溃。",
+    "steps": [
+      "每个root来自mkdtemp，所有权与try/finally配对，不读个人Home。",
+      "检查点核真实参与者，不用文件存在或flush布尔单独证明。",
+      "切点包含及子marker/closer与源继承分开。",
+      "保存/重开/继续/分支未来均比对实际对象，最后观察close结果。"
+    ],
+    "rubric": [
+      "隔离root/API/所有权与收尾2分",
+      "保存+新实例Resume的前缀/消息/旧调用0 3分",
+      "持久分支接线+10/14计数3分",
+      "独立未来26/23及平台证据范围2分"
+    ],
+    "mistakes": [
+      "直接sessions.fork后声称已持久化。",
+      "把新后端实例当独立进程，或为清理执行递归删除。"
+    ],
+    "points": 10,
+    "tags": "综合 H17 H18 H20",
+    "promptMarkdown": "## Q15｜综合B：真实JSONL保存、恢复与Fork（10分）\n\n设计仅作用于新建隔离root的真实局部实验，不调用真实付费Provider；沿用H18 X的完整16事件初任务，call在9。\n\n**精确输入**\n\n```text\n保存16事件及Header；关闭Agent和后端；全新后端Resume；从包含Seq9生成持久子分支；父子分别接收PARENT_ONLY/CHILD_ONLY。\n```\n\n**任务**：写可运行接线步骤/关键API与断言；给17/14/26/23计数含义，区分普通内存Fork、持久分支和跨进程证据。\n",
+    "answerMarkdown": "**标准答案**\n\n取得工厂writer→真实任务→sessions.flush→Handle.read核前缀→dispose/close→新Context+JSONL同root→agents.resume；原16条相等，marker后17，模型消息/头相等且旧调用0。sessions.fork用于内存对照，官方buildForkSeed含9+inherited10交agents.create取新writer，子14。父子新任务后26/23，双方旧前缀相等且专有输入不串；单写者冲突拒绝。全部仅同进程新实例，不自动是独立进程崩溃。\n\n**逐步推导**\n\n1. 每个root来自mkdtemp，所有权与try/finally配对，不读个人Home。\n2. 检查点核真实参与者，不用文件存在或flush布尔单独证明。\n3. 切点包含及子marker/closer与源继承分开。\n4. 保存/重开/继续/分支未来均比对实际对象，最后观察close结果。\n\n**评分 Rubric**\n\n- 隔离root/API/所有权与收尾2分\n- 保存+新实例Resume的前缀/消息/旧调用0 3分\n- 持久分支接线+10/14计数3分\n- 独立未来26/23及平台证据范围2分\n\n**常见错误及分析**\n\n- 直接sessions.fork后声称已持久化。\n- 把新后端实例当独立进程，或为清理执行递归删除。\n"
+  },
+  {
+    "id": 16,
+    "title": "综合C：压缩后的历史与失败证据",
+    "context": "使用综合A压缩前节点[4,5,8,10,13]，其中8/10是完整工具对，13为近期回答。",
+    "input": "16 start；17 summary.shadowedSeqs=[5,8,10]；18摘要user replace(5,10),source=[16,17,5,8,10]；19 end。另两次独立故障分别发生在写18与写19的入口。",
+    "task": "给成功后的节点/Message/原日志变化、辅助摘要输入和故障后已存在事实；解释新的生命周期为何可处理陈旧锁。",
+    "answer": "成功节点[4,18,13]，Message为system/摘要user/近期assistant；17不产普通消息，原16条保留且增长到20。辅助摘要读取首system、选区消息和有效工具封装，加专门指令，purpose=compaction，不等于普通Step。拒绝18时17保留、旧节点不变，尝试error end；拒绝19时18已改变Surface且活动start残留，不重复闭合；较新end-seed让此前残留成为旧生命周期证据，不删除失败。",
+    "steps": [
+      "选区按当前节点而非5..10全部日志。",
+      "配对8/10整体遮蔽，9 call仅审计不另作Message。",
+      "summary和承载摘要消息职责分开。",
+      "逐条commit，依据实际失败位置列剩余，不能整体回滚猜测。"
+    ],
+    "rubric": [
+      "节点/角色/原前缀与20条3分",
+      "辅助请求与summary仅日志2分",
+      "两处部分失败事实3分",
+      "锁/新生命周期与不删除2分"
+    ],
+    "mistakes": [
+      "用compaction/summary直接作为模型摘要。",
+      "声称压缩永久删除历史或失败全部回滚。"
+    ],
+    "points": 10,
+    "tags": "综合 H17 H18 H19 H20",
+    "promptMarkdown": "## Q16｜综合C：压缩后的历史与失败证据（10分）\n\n使用综合A压缩前节点[4,5,8,10,13]，其中8/10是完整工具对，13为近期回答。\n\n**精确输入**\n\n```text\n16 start；17 summary.shadowedSeqs=[5,8,10]；18摘要user replace(5,10),source=[16,17,5,8,10]；19 end。另两次独立故障分别发生在写18与写19的入口。\n```\n\n**任务**：给成功后的节点/Message/原日志变化、辅助摘要输入和故障后已存在事实；解释新的生命周期为何可处理陈旧锁。\n",
+    "answerMarkdown": "**标准答案**\n\n成功节点[4,18,13]，Message为system/摘要user/近期assistant；17不产普通消息，原16条保留且增长到20。辅助摘要读取首system、选区消息和有效工具封装，加专门指令，purpose=compaction，不等于普通Step。拒绝18时17保留、旧节点不变，尝试error end；拒绝19时18已改变Surface且活动start残留，不重复闭合；较新end-seed让此前残留成为旧生命周期证据，不删除失败。\n\n**逐步推导**\n\n1. 选区按当前节点而非5..10全部日志。\n2. 配对8/10整体遮蔽，9 call仅审计不另作Message。\n3. summary和承载摘要消息职责分开。\n4. 逐条commit，依据实际失败位置列剩余，不能整体回滚猜测。\n\n**评分 Rubric**\n\n- 节点/角色/原前缀与20条3分\n- 辅助请求与summary仅日志2分\n- 两处部分失败事实3分\n- 锁/新生命周期与不删除2分\n\n**常见错误及分析**\n\n- 用compaction/summary直接作为模型摘要。\n- 声称压缩永久删除历史或失败全部回滚。\n"
+  },
+  {
+    "id": 17,
+    "title": "综合D：Retry与取消的两条未来",
+    "context": "H20 X实际开放前缀0..12：8失败Attempt、9 retry计划、推进500虚拟ms后10 started、11 Assistant提议write/read、12 write call；假效果已1且主体门闩未返回。",
+    "input": "原任务现在cancel并放行；另一全新ID/root副本只保存0..12并真实Resume。",
+    "task": "给原任务与副本各自13以后的事件/错误码，说明取消时whenIdle、恢复时模型与工具次数；再对比若在9等待中取消。",
+    "answer": "原任务13 write ABORTED result、14 read合成call、15 BEFORE_DISPATCH result、16 step/end、17 turn/end aborted；副本13 UNKNOWN引用12、14 NOT_STARTED无虚构call源、15 step/end、16 interrupted、17 end-seed。cancel后门闩放行前idle仍pending，效果仍1；Resume旧模型/工具均0。若在9取消则无10 started、无第二模型请求，计划保留合法。",
+    "steps": [
+      "先固定每份前缀，不能搬用另一未来的结果。",
+      "已启动排空与未派发合成分开。",
+      "恢复先补语义再发布，新事件从Handle读回，不只订阅发布后通知。",
+      "失败Attempt不污染模型，计划提交又不等于即时耐久。"
+    ],
+    "rubric": [
+      "两条未来准确4分",
+      "whenIdle及效果不回滚2分",
+      "旧调用0与退避取消分支2分"
+    ],
+    "mistakes": [
+      "把副本叫普通Fork或实际进程崩溃。",
+      "用原任务ABORTED覆盖副本UNKNOWN，或取消后立即丢Promise。"
+    ],
+    "points": 8,
+    "tags": "综合 H12 H14 H17 H18 H20",
+    "promptMarkdown": "## Q17｜综合D：Retry与取消的两条未来（8分）\n\nH20 X实际开放前缀0..12：8失败Attempt、9 retry计划、推进500虚拟ms后10 started、11 Assistant提议write/read、12 write call；假效果已1且主体门闩未返回。\n\n**精确输入**\n\n```text\n原任务现在cancel并放行；另一全新ID/root副本只保存0..12并真实Resume。\n```\n\n**任务**：给原任务与副本各自13以后的事件/错误码，说明取消时whenIdle、恢复时模型与工具次数；再对比若在9等待中取消。\n",
+    "answerMarkdown": "**标准答案**\n\n原任务13 write ABORTED result、14 read合成call、15 BEFORE_DISPATCH result、16 step/end、17 turn/end aborted；副本13 UNKNOWN引用12、14 NOT_STARTED无虚构call源、15 step/end、16 interrupted、17 end-seed。cancel后门闩放行前idle仍pending，效果仍1；Resume旧模型/工具均0。若在9取消则无10 started、无第二模型请求，计划保留合法。\n\n**逐步推导**\n\n1. 先固定每份前缀，不能搬用另一未来的结果。\n2. 已启动排空与未派发合成分开。\n3. 恢复先补语义再发布，新事件从Handle读回，不只订阅发布后通知。\n4. 失败Attempt不污染模型，计划提交又不等于即时耐久。\n\n**评分 Rubric**\n\n- 两条未来准确4分\n- whenIdle及效果不回滚2分\n- 旧调用0与退避取消分支2分\n\n**常见错误及分析**\n\n- 把副本叫普通Fork或实际进程崩溃。\n- 用原任务ABORTED覆盖副本UNKNOWN，或取消后立即丢Promise。\n"
+  },
+  {
+    "id": 18,
+    "title": "综合E：非幂等未知结果的完整诊断",
+    "context": "某资源创建工具不保证幂等，不能调用真实业务接口。已持久合法开放尾含Assistant提议和tool/call；外部监测在网络断开前可能已经看到创建成功，但结果事件未保存。",
+    "input": "日志缺tool/result；有人建议“always重跑整个Turn，压缩删除旧错误，然后补成功result”；另一个已有相同业务键的只读查询接口可用。",
+    "task": "给安全恢复方案、所需证据、模型请求/工具恢复/Compaction/Cancel各自职责，列不能验证的事实与会阻断准入的错误。",
+    "answer": "拒绝盲重与补造成功；先取得Session写权、读有效前缀并保守补UNKNOWN/开放边界，不执行工具。通过获授权的只读查询核业务键/资源身份/状态，证实已创建则使用既有资源并记录新的有依据核查事实；查不到也不能仅凭缺日志断定未生效，无法确定则请用户决定或停止。真正幂等重发必须由外部系统强制键协议支持。normal/always仅控制明确模型Attempt恢复，不能重接用户或重做所有工具；压缩只改变当前Surface不删事实；取消阻止新工作并排空已启动，不回滚效果。真实外部结果、实际Provider费用与E仍待证据，盲重未知写或虚假耐久/成功为P0阻断。",
+    "steps": [
+      "先分已提交/已持久/外部状态/控制signal四层。",
+      "UNKNOWN是认识边界，自动错误不是撤销通知。",
+      "核业务键与准确资源，不把相同prompt/callId当幂等。",
+      "决定后生成新的有来源事实，保留原错误和原始失败证据。",
+      "评估哪些测试只是Map模拟，哪些是真实JSONL，不能升级E或声称真实学员理解。"
+    ],
+    "rubric": [
+      "故障层与保守修复且不重放3分",
+      "外部只读核查/业务键/无法确定停止3分",
+      "Retry/Compaction/Cancel边界2分",
+      "证据等级/未验证与P0门禁2分"
+    ],
+    "mistakes": [
+      "重发成功就认为原操作没有发生，可能创建两份。",
+      "删除原错误或把合成UNKNOWN当业务回滚。",
+      "只背“幂等”一词却不说明谁实施、如何核查，不能得外部协议分。"
+    ],
+    "points": 10,
+    "tags": "综合 H17 H18 H19 H20",
+    "promptMarkdown": "## Q18｜综合E：非幂等未知结果的完整诊断（10分）\n\n某资源创建工具不保证幂等，不能调用真实业务接口。已持久合法开放尾含Assistant提议和tool/call；外部监测在网络断开前可能已经看到创建成功，但结果事件未保存。\n\n**精确输入**\n\n```text\n日志缺tool/result；有人建议“always重跑整个Turn，压缩删除旧错误，然后补成功result”；另一个已有相同业务键的只读查询接口可用。\n```\n\n**任务**：给安全恢复方案、所需证据、模型请求/工具恢复/Compaction/Cancel各自职责，列不能验证的事实与会阻断准入的错误。\n",
+    "answerMarkdown": "**标准答案**\n\n拒绝盲重与补造成功；先取得Session写权、读有效前缀并保守补UNKNOWN/开放边界，不执行工具。通过获授权的只读查询核业务键/资源身份/状态，证实已创建则使用既有资源并记录新的有依据核查事实；查不到也不能仅凭缺日志断定未生效，无法确定则请用户决定或停止。真正幂等重发必须由外部系统强制键协议支持。normal/always仅控制明确模型Attempt恢复，不能重接用户或重做所有工具；压缩只改变当前Surface不删事实；取消阻止新工作并排空已启动，不回滚效果。真实外部结果、实际Provider费用与E仍待证据，盲重未知写或虚假耐久/成功为P0阻断。\n\n**逐步推导**\n\n1. 先分已提交/已持久/外部状态/控制signal四层。\n2. UNKNOWN是认识边界，自动错误不是撤销通知。\n3. 核业务键与准确资源，不把相同prompt/callId当幂等。\n4. 决定后生成新的有来源事实，保留原错误和原始失败证据。\n5. 评估哪些测试只是Map模拟，哪些是真实JSONL，不能升级E或声称真实学员理解。\n\n**评分 Rubric**\n\n- 故障层与保守修复且不重放3分\n- 外部只读核查/业务键/无法确定停止3分\n- Retry/Compaction/Cancel边界2分\n- 证据等级/未验证与P0门禁2分\n\n**常见错误及分析**\n\n- 重发成功就认为原操作没有发生，可能创建两份。\n- 删除原错误或把合成UNKNOWN当业务回滚。\n- 只背“幂等”一词却不说明谁实施、如何核查，不能得外部协议分。\n"
+  }
+]

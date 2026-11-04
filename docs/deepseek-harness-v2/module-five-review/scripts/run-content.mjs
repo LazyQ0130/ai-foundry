@@ -1,0 +1,12 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';import {fileURLToPath} from 'node:url';import {spawnSync} from 'node:child_process';
+const here=fileURLToPath(new URL('../',import.meta.url)),repo=resolve(here,'../../..'),h=process.argv[2];
+if(!['h17','h18','h19','h20'].includes(h))throw Error('choose h17-h20');
+const original=resolve(here,'..',h),out=resolve(here,'evidence',h);await mkdir(resolve(out,'evidence'),{recursive:true});
+let code=await readFile(resolve(original,'scripts/check-content.ts'),'utf8');
+code=code.replace("fileURLToPath(new URL('../',import.meta.url))",JSON.stringify(original));
+code=code.replaceAll('writeFile(resolve(root,','writeFile(resolve('+JSON.stringify(out)+',');
+const generated=resolve(here,'scripts',`content-${h}.tsx`);await writeFile(generated,code);
+const r=spawnSync(process.execPath,[resolve(repo,'node_modules/tsx/dist/cli.mjs'),generated],{cwd:repo,encoding:'utf8',timeout:60000,maxBuffer:10*1024*1024});
+await writeFile(resolve(out,`content-run-${Date.now()}.json`),JSON.stringify({command:`node docs/deepseek-harness-v2/module-five-review/scripts/run-content.mjs ${h}`,exit:r.status,stdout:r.stdout,stderr:r.stderr},null,2)+'\n');
+process.stdout.write(r.stdout??'');process.stderr.write(r.stderr??'');process.exitCode=r.status??1;

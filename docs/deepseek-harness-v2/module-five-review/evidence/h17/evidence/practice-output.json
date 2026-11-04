@@ -1,0 +1,4025 @@
+{
+  "A": {
+    "eventOrder": [
+      {
+        "seq": 0,
+        "type": "turn/start",
+        "surfaceOp": null
+      },
+      {
+        "seq": 1,
+        "type": "user/message",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 2,
+        "type": "step/start",
+        "surfaceOp": null
+      },
+      {
+        "seq": 3,
+        "type": "step/end",
+        "surfaceOp": null
+      }
+    ],
+    "nodes": [
+      1
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "读取 README"
+          }
+        ]
+      }
+    ],
+    "header": null,
+    "rejected": 11,
+    "snapshotFrozen": true,
+    "noBackend": false,
+    "flushCalls": 1,
+    "limitation": "flush listener is a counter, not a persistence backend"
+  },
+  "B": {
+    "before": {
+      "eventOrder": [
+        {
+          "seq": 0,
+          "type": "system/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 1,
+          "type": "user/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 2,
+          "type": "assistant/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 3,
+          "type": "assistant/attempt",
+          "surfaceOp": null
+        },
+        {
+          "seq": 4,
+          "type": "tool/result",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 5,
+          "type": "developer/message",
+          "surfaceOp": "append"
+        }
+      ],
+      "nodes": [
+        0,
+        1,
+        2,
+        4,
+        5
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "source": {
+            "kind": "system-prompt"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "只根据给定材料回答"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "README 原文很长"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "scripted"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "先检查文件"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "readme"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "README 有 src 和 tests"
+            }
+          ]
+        }
+      ],
+      "header": null
+    },
+    "afterFirst": {
+      "nodes": [
+        0,
+        6,
+        4,
+        5
+      ],
+      "texts": [
+        "只根据给定材料回答",
+        "历史摘要：请求读取 README；助手准备检查",
+        "README 有 src 和 tests"
+      ]
+    },
+    "final": {
+      "eventOrder": [
+        {
+          "seq": 0,
+          "type": "system/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 1,
+          "type": "user/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 2,
+          "type": "assistant/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 3,
+          "type": "assistant/attempt",
+          "surfaceOp": null
+        },
+        {
+          "seq": 4,
+          "type": "tool/result",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 5,
+          "type": "developer/message",
+          "surfaceOp": "append"
+        },
+        {
+          "seq": 6,
+          "type": "user/message",
+          "surfaceOp": {
+            "op": "replace",
+            "startSeq": 1,
+            "endSeq": 2
+          }
+        },
+        {
+          "seq": 7,
+          "type": "user/message",
+          "surfaceOp": {
+            "op": "replace",
+            "startSeq": 6,
+            "endSeq": 4
+          }
+        }
+      ],
+      "nodes": [
+        0,
+        7,
+        5
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "source": {
+            "kind": "system-prompt"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "只根据给定材料回答"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "source": {
+            "kind": "h17-fixture"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "合并摘要与只读工具结果"
+            }
+          ]
+        }
+      ],
+      "header": null
+    },
+    "rejected": 4,
+    "oldEventsRetained": true
+  },
+  "C": {
+    "initial": {
+      "status": "idle",
+      "turn": 0,
+      "finished": 0
+    },
+    "snapshot": {
+      "asOfSeq": 3,
+      "values": {
+        "h17/task": {
+          "status": "completed",
+          "turn": 1,
+          "finished": 1
+        }
+      }
+    },
+    "changes": [
+      {
+        "id": "h17-C",
+        "key": "h17/task",
+        "value": {
+          "status": "running",
+          "turn": 1,
+          "finished": 0
+        },
+        "seq": 0
+      },
+      {
+        "id": "h17-C",
+        "key": "h17/task",
+        "value": {
+          "status": "completed",
+          "turn": 1,
+          "finished": 1
+        },
+        "seq": 3
+      }
+    ],
+    "retainedReader": {
+      "status": "running",
+      "turn": 2,
+      "finished": 1
+    },
+    "incompatibleVersion": "rejected/skipped",
+    "malformedState": "skipped",
+    "limitation": "viewCheckpoint receives in-memory rows; no disk cache or restore test"
+  },
+  "D": {
+    "kind": "success",
+    "bodies": 1,
+    "facts": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793776803938,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793776803938,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793776803939,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793776803940,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793776803941,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793776803941,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "读取 README，检查测试文件，再汇总项目结构。"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793776803941,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "inspect_fixture",
+                "description": "返回内存目录，不接触磁盘",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793776803942,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted",
+          "contextWindow": 4096
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793776803944,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "readme",
+                "name": "inspect_fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793776803943,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793776803944,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "readme",
+                  "name": "inspect_fixture",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793776803944,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 9,
+        "time": 1793776803945,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "readme",
+          "name": "inspect_fixture",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 10,
+        "time": 1793776803947,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "readme"
+            },
+            "toolCallId": "readme",
+            "content": [
+              {
+                "type": "text",
+                "text": "src/ 与 tests/"
+              }
+            ],
+            "isError": false,
+            "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+          }
+        },
+        "sourceEventSeqs": [
+          9
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 11,
+        "time": 1793776803947,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 12,
+        "time": 1793776803947,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 13,
+        "time": 1793776803949,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "src 放实现，tests 放测试。"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "5b85edd6-2fe5-421d-bebd-6eba454ea492"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793776803948,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "src 放实现，tests 放测试。"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793776803948,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 14,
+        "time": 1793776803949,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 15,
+        "time": 1793776803949,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "nodes": [
+      4,
+      5,
+      8,
+      10,
+      13
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "只分析内存项目材料。"
+          }
+        ],
+        "source": {
+          "kind": "system-prompt"
+        },
+        "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+      },
+      {
+        "content": [
+          {
+            "type": "text",
+            "text": "读取 README，检查测试文件，再汇总项目结构。"
+          }
+        ],
+        "source": {
+          "kind": "user"
+        },
+        "role": "user",
+        "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool-call",
+            "id": "readme",
+            "name": "inspect_fixture",
+            "arguments": "{}"
+          }
+        ],
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "scripted"
+        },
+        "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+      },
+      {
+        "role": "tool",
+        "source": {
+          "kind": "tool",
+          "callId": "readme"
+        },
+        "toolCallId": "readme",
+        "content": [
+          {
+            "type": "text",
+            "text": "src/ 与 tests/"
+          }
+        ],
+        "isError": false,
+        "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "text",
+            "text": "src 放实现，tests 放测试。"
+          }
+        ],
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "scripted"
+        },
+        "id": "5b85edd6-2fe5-421d-bebd-6eba454ea492"
+      }
+    ],
+    "prefixes": [
+      {
+        "events": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793776803938,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "读取 README，检查测试文件，再汇总项目结构。"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793776803938,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793776803939,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793776803940,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793776803941,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "只分析内存项目材料。"
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793776803941,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 6,
+            "time": 1793776803941,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "scripted",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "inspect_fixture",
+                    "description": "返回内存目录，不接触磁盘",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 7,
+            "time": 1793776803942,
+            "data": {
+              "provider": "fixture",
+              "model": "scripted",
+              "contextWindow": 4096
+            }
+          }
+        ],
+        "asOfSeq": 7,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+          }
+        ],
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "reconstruction": "PASS"
+      },
+      {
+        "events": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793776803938,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "读取 README，检查测试文件，再汇总项目结构。"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793776803938,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793776803939,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793776803940,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793776803941,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "只分析内存项目材料。"
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793776803941,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 6,
+            "time": 1793776803941,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "scripted",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "inspect_fixture",
+                    "description": "返回内存目录，不接触磁盘",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 7,
+            "time": 1793776803942,
+            "data": {
+              "provider": "fixture",
+              "model": "scripted",
+              "contextWindow": 4096
+            }
+          },
+          {
+            "type": "assistant/message",
+            "seq": 8,
+            "time": 1793776803944,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "tool-call",
+                    "id": "readme",
+                    "name": "inspect_fixture",
+                    "arguments": "{}"
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "scripted"
+                },
+                "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+              },
+              "stream": [
+                {
+                  "type": "chunk",
+                  "time": 1793776803943,
+                  "chunk": {
+                    "type": "block-start",
+                    "index": 0,
+                    "blockType": "tool-call"
+                  }
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793776803944,
+                  "chunk": {
+                    "type": "block-end",
+                    "index": 0,
+                    "block": {
+                      "type": "tool-call",
+                      "id": "readme",
+                      "name": "inspect_fixture",
+                      "arguments": "{}"
+                    }
+                  }
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793776803944,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "tool-calls"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "tool/call",
+            "seq": 9,
+            "time": 1793776803945,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "callId": "readme",
+              "name": "inspect_fixture",
+              "arguments": "{}"
+            }
+          },
+          {
+            "type": "tool/result",
+            "seq": 10,
+            "time": 1793776803947,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "tool",
+                "source": {
+                  "kind": "tool",
+                  "callId": "readme"
+                },
+                "toolCallId": "readme",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "src/ 与 tests/"
+                  }
+                ],
+                "isError": false,
+                "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+              }
+            },
+            "sourceEventSeqs": [
+              9
+            ],
+            "surfaceOp": "append"
+          },
+          {
+            "type": "step/end",
+            "seq": 11,
+            "time": 1793776803947,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 12,
+            "time": 1793776803947,
+            "data": {
+              "turn": 1,
+              "step": 2
+            }
+          }
+        ],
+        "asOfSeq": 12,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "readme",
+                "name": "inspect_fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "readme"
+            },
+            "toolCallId": "readme",
+            "content": [
+              {
+                "type": "text",
+                "text": "src/ 与 tests/"
+              }
+            ],
+            "isError": false,
+            "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+          }
+        ],
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "reconstruction": "PASS"
+      }
+    ],
+    "adapterRequests": [
+      {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "inspect_fixture",
+            "description": "返回内存目录，不接触磁盘",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "h17-D-success"
+      },
+      {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "readme",
+                "name": "inspect_fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "readme"
+            },
+            "toolCallId": "readme",
+            "content": [
+              {
+                "type": "text",
+                "text": "src/ 与 tests/"
+              }
+            ],
+            "isError": false,
+            "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "inspect_fixture",
+            "description": "返回内存目录，不接触磁盘",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "h17-D-success"
+      }
+    ],
+    "trace": [
+      {
+        "position": 0,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793776803938,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "读取 README，检查测试文件，再汇总项目结构。"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "position": 1,
+        "channel": "session",
+        "data": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793776803938,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "position": 2,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793776803939,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "position": 3,
+        "channel": "session",
+        "data": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793776803940,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 4,
+        "channel": "session",
+        "data": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793776803941,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "只分析内存项目材料。"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "945c282b-7085-4a5a-b193-4cdadd52757f"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 5,
+        "channel": "session",
+        "data": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793776803941,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "04287612-127f-45b0-ac1d-7ea2194b85d6"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 6,
+        "channel": "session",
+        "data": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793776803941,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "inspect_fixture",
+                  "description": "返回内存目录，不接触磁盘",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "position": 7,
+        "channel": "session",
+        "data": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793776803942,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted",
+            "contextWindow": 4096
+          }
+        }
+      },
+      {
+        "position": 8,
+        "channel": "live",
+        "data": {
+          "type": "start",
+          "attemptId": "h17-D-success:1",
+          "revision": 1,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "position": 9,
+        "channel": "loop-request",
+        "data": {
+          "asOfSeq": 7
+        }
+      },
+      {
+        "position": 10,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-success:1",
+          "revision": 2,
+          "index": 0,
+          "time": 1793776803943,
+          "chunk": {
+            "type": "block-start",
+            "index": 0,
+            "blockType": "tool-call"
+          }
+        }
+      },
+      {
+        "position": 11,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-success:1",
+          "revision": 3,
+          "index": 1,
+          "time": 1793776803944,
+          "chunk": {
+            "type": "block-end",
+            "index": 0,
+            "block": {
+              "type": "tool-call",
+              "id": "readme",
+              "name": "inspect_fixture",
+              "arguments": "{}"
+            }
+          }
+        }
+      },
+      {
+        "position": 12,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-success:1",
+          "revision": 4,
+          "index": 2,
+          "time": 1793776803944,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "tool-calls"
+            }
+          }
+        }
+      },
+      {
+        "position": 13,
+        "channel": "session",
+        "data": {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793776803944,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool-call",
+                  "id": "readme",
+                  "name": "inspect_fixture",
+                  "arguments": "{}"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "f95c0eb2-f093-4f2e-9334-053724602ae5"
+            },
+            "stream": [
+              {
+                "type": "chunk",
+                "time": 1793776803943,
+                "chunk": {
+                  "type": "block-start",
+                  "index": 0,
+                  "blockType": "tool-call"
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793776803944,
+                "chunk": {
+                  "type": "block-end",
+                  "index": 0,
+                  "block": {
+                    "type": "tool-call",
+                    "id": "readme",
+                    "name": "inspect_fixture",
+                    "arguments": "{}"
+                  }
+                }
+              },
+              {
+                "type": "chunk",
+                "time": 1793776803944,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "tool-calls"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 14,
+        "channel": "live",
+        "data": {
+          "type": "end",
+          "attemptId": "h17-D-success:1",
+          "revision": 5,
+          "index": 3,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 8
+          }
+        }
+      },
+      {
+        "position": 15,
+        "channel": "session",
+        "data": {
+          "type": "tool/call",
+          "seq": 9,
+          "time": 1793776803945,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "callId": "readme",
+            "name": "inspect_fixture",
+            "arguments": "{}"
+          }
+        }
+      },
+      {
+        "position": 16,
+        "channel": "tools/result",
+        "data": {
+          "id": "readme",
+          "result": {
+            "isError": false,
+            "content": [
+              {
+                "type": "text",
+                "text": "src/ 与 tests/"
+              }
+            ],
+            "value": "src/ 与 tests/"
+          }
+        }
+      },
+      {
+        "position": 17,
+        "channel": "session",
+        "data": {
+          "type": "tool/result",
+          "seq": 10,
+          "time": 1793776803947,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "tool",
+              "source": {
+                "kind": "tool",
+                "callId": "readme"
+              },
+              "toolCallId": "readme",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "src/ 与 tests/"
+                }
+              ],
+              "isError": false,
+              "id": "1cee8c47-639e-4556-b1cb-48c1bf4f1c79"
+            }
+          },
+          "sourceEventSeqs": [
+            9
+          ],
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 18,
+        "channel": "session",
+        "data": {
+          "type": "step/end",
+          "seq": 11,
+          "time": 1793776803947,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 19,
+        "channel": "session",
+        "data": {
+          "type": "step/start",
+          "seq": 12,
+          "time": 1793776803947,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      },
+      {
+        "position": 20,
+        "channel": "live",
+        "data": {
+          "type": "start",
+          "attemptId": "h17-D-success:2",
+          "revision": 6,
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "position": 21,
+        "channel": "loop-request",
+        "data": {
+          "asOfSeq": 12
+        }
+      },
+      {
+        "position": 22,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-success:2",
+          "revision": 7,
+          "index": 0,
+          "time": 1793776803948,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "src 放实现，tests 放测试。"
+          }
+        }
+      },
+      {
+        "position": 23,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-success:2",
+          "revision": 8,
+          "index": 1,
+          "time": 1793776803948,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "stop"
+            }
+          }
+        }
+      },
+      {
+        "position": 24,
+        "channel": "session",
+        "data": {
+          "type": "assistant/message",
+          "seq": 13,
+          "time": 1793776803949,
+          "data": {
+            "turn": 1,
+            "step": 2,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "src 放实现，tests 放测试。"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "scripted"
+              },
+              "id": "5b85edd6-2fe5-421d-bebd-6eba454ea492"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793776803948,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "src 放实现，tests 放测试。"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793776803948,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 25,
+        "channel": "live",
+        "data": {
+          "type": "end",
+          "attemptId": "h17-D-success:2",
+          "revision": 9,
+          "index": 2,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/message",
+            "seq": 13
+          }
+        }
+      },
+      {
+        "position": 26,
+        "channel": "session",
+        "data": {
+          "type": "step/end",
+          "seq": 14,
+          "time": 1793776803949,
+          "data": {
+            "turn": 1,
+            "step": 2
+          }
+        }
+      },
+      {
+        "position": 27,
+        "channel": "session",
+        "data": {
+          "type": "turn/end",
+          "seq": 15,
+          "time": 1793776803949,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      }
+    ],
+    "texts": [
+      "只分析内存项目材料。",
+      "读取 README，检查测试文件，再汇总项目结构。",
+      "",
+      "src/ 与 tests/",
+      "src 放实现，tests 放测试。"
+    ],
+    "persistence": "memory only; no checkpoint policy or backend"
+  },
+  "D_failure": {
+    "kind": "failure",
+    "bodies": 0,
+    "facts": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793776803955,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793776803955,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793776803956,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793776803957,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793776803957,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793776803957,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "读取 README，检查测试文件，再汇总项目结构。"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793776803957,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "inspect_fixture",
+                "description": "返回内存目录，不接触磁盘",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793776803957,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted",
+          "contextWindow": 4096
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 8,
+        "time": 1793776803958,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793776803958,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "失败草稿"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793776803958,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "code": "SERVER",
+                    "message": "受控失败"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793776803958,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793776803959,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "error",
+            "error": {
+              "message": "受控失败",
+              "code": "SERVER"
+            }
+          }
+        }
+      }
+    ],
+    "nodes": [
+      4,
+      5
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "只分析内存项目材料。"
+          }
+        ],
+        "source": {
+          "kind": "system-prompt"
+        },
+        "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+      },
+      {
+        "content": [
+          {
+            "type": "text",
+            "text": "读取 README，检查测试文件，再汇总项目结构。"
+          }
+        ],
+        "source": {
+          "kind": "user"
+        },
+        "role": "user",
+        "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+      }
+    ],
+    "prefixes": [
+      {
+        "events": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793776803955,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "读取 README，检查测试文件，再汇总项目结构。"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793776803955,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793776803956,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793776803957,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793776803957,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "只分析内存项目材料。"
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793776803957,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 6,
+            "time": 1793776803957,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "scripted",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "inspect_fixture",
+                    "description": "返回内存目录，不接触磁盘",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 7,
+            "time": 1793776803957,
+            "data": {
+              "provider": "fixture",
+              "model": "scripted",
+              "contextWindow": 4096
+            }
+          }
+        ],
+        "asOfSeq": 7,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+          }
+        ],
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "reconstruction": "PASS"
+      }
+    ],
+    "adapterRequests": [
+      {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "inspect_fixture",
+            "description": "返回内存目录，不接触磁盘",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "h17-D-failure"
+      }
+    ],
+    "trace": [
+      {
+        "position": 0,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793776803955,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "读取 README，检查测试文件，再汇总项目结构。"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "position": 1,
+        "channel": "session",
+        "data": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793776803955,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "position": 2,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793776803956,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "position": 3,
+        "channel": "session",
+        "data": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793776803957,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 4,
+        "channel": "session",
+        "data": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793776803957,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "只分析内存项目材料。"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "5f36951f-e269-4c0c-9c3f-daadab440ec6"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 5,
+        "channel": "session",
+        "data": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793776803957,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "fd0ded02-8e94-4108-9499-e39de333eca4"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 6,
+        "channel": "session",
+        "data": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793776803957,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "inspect_fixture",
+                  "description": "返回内存目录，不接触磁盘",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "position": 7,
+        "channel": "session",
+        "data": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793776803957,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted",
+            "contextWindow": 4096
+          }
+        }
+      },
+      {
+        "position": 8,
+        "channel": "live",
+        "data": {
+          "type": "start",
+          "attemptId": "h17-D-failure:1",
+          "revision": 1,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "position": 9,
+        "channel": "loop-request",
+        "data": {
+          "asOfSeq": 7
+        }
+      },
+      {
+        "position": 10,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-failure:1",
+          "revision": 2,
+          "index": 0,
+          "time": 1793776803958,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "失败草稿"
+          }
+        }
+      },
+      {
+        "position": 11,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-failure:1",
+          "revision": 3,
+          "index": 1,
+          "time": 1793776803958,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "error",
+              "failure": {
+                "code": "SERVER",
+                "message": "受控失败"
+              }
+            }
+          }
+        }
+      },
+      {
+        "position": 12,
+        "channel": "session",
+        "data": {
+          "type": "assistant/attempt",
+          "seq": 8,
+          "time": 1793776803958,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793776803958,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "失败草稿"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793776803958,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "error",
+                    "failure": {
+                      "code": "SERVER",
+                      "message": "受控失败"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "position": 13,
+        "channel": "live",
+        "data": {
+          "type": "end",
+          "attemptId": "h17-D-failure:1",
+          "revision": 4,
+          "index": 2,
+          "outcome": {
+            "kind": "committed",
+            "eventType": "assistant/attempt",
+            "seq": 8
+          }
+        }
+      },
+      {
+        "position": 14,
+        "channel": "session",
+        "data": {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793776803958,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 15,
+        "channel": "agent/error",
+        "data": {
+          "error": "LlmError: 受控失败"
+        }
+      },
+      {
+        "position": 16,
+        "channel": "session",
+        "data": {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793776803959,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "error",
+              "error": {
+                "message": "受控失败",
+                "code": "SERVER"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "texts": [
+      "只分析内存项目材料。",
+      "读取 README，检查测试文件，再汇总项目结构。"
+    ],
+    "persistence": "memory only; no checkpoint policy or backend"
+  },
+  "D_rejected": {
+    "kind": "rejected-settlement",
+    "bodies": 0,
+    "facts": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793776803965,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793776803965,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793776803966,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793776803966,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793776803966,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793776803967,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "读取 README，检查测试文件，再汇总项目结构。"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793776803967,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "inspect_fixture",
+                "description": "返回内存目录，不接触磁盘",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793776803967,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted",
+          "contextWindow": 4096
+        }
+      },
+      {
+        "type": "step/end",
+        "seq": 8,
+        "time": 1793776803967,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 9,
+        "time": 1793776803968,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "error",
+            "error": {
+              "message": "fixture settlement rejection",
+              "code": "UNKNOWN"
+            }
+          }
+        }
+      }
+    ],
+    "nodes": [
+      4,
+      5
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "只分析内存项目材料。"
+          }
+        ],
+        "source": {
+          "kind": "system-prompt"
+        },
+        "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+      },
+      {
+        "content": [
+          {
+            "type": "text",
+            "text": "读取 README，检查测试文件，再汇总项目结构。"
+          }
+        ],
+        "source": {
+          "kind": "user"
+        },
+        "role": "user",
+        "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+      }
+    ],
+    "prefixes": [
+      {
+        "events": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793776803965,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "读取 README，检查测试文件，再汇总项目结构。"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793776803965,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793776803966,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793776803966,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793776803966,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "只分析内存项目材料。"
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793776803967,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "读取 README，检查测试文件，再汇总项目结构。"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 6,
+            "time": 1793776803967,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "scripted",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "inspect_fixture",
+                    "description": "返回内存目录，不接触磁盘",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 7,
+            "time": 1793776803967,
+            "data": {
+              "provider": "fixture",
+              "model": "scripted",
+              "contextWindow": 4096
+            }
+          }
+        ],
+        "asOfSeq": 7,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+          }
+        ],
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "scripted",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "reconstruction": "PASS"
+      }
+    ],
+    "adapterRequests": [
+      {
+        "provider": "fixture",
+        "model": "scripted",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只分析内存项目材料。"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "inspect_fixture",
+              "description": "返回内存目录，不接触磁盘",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "inspect_fixture",
+            "description": "返回内存目录，不接触磁盘",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "h17-D-rejected-settlement"
+      }
+    ],
+    "trace": [
+      {
+        "position": 0,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793776803965,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "读取 README，检查测试文件，再汇总项目结构。"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "position": 1,
+        "channel": "session",
+        "data": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793776803965,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "position": 2,
+        "channel": "session",
+        "data": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793776803966,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "position": 3,
+        "channel": "session",
+        "data": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793776803966,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 4,
+        "channel": "session",
+        "data": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793776803966,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "只分析内存项目材料。"
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "3adc624d-9d65-41c9-ad44-c50e45b982cb"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 5,
+        "channel": "session",
+        "data": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793776803967,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "读取 README，检查测试文件，再汇总项目结构。"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "9f828716-53db-4ace-832d-9bce8ad4c9c9"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "position": 6,
+        "channel": "session",
+        "data": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793776803967,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "scripted",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "inspect_fixture",
+                  "description": "返回内存目录，不接触磁盘",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "position": 7,
+        "channel": "session",
+        "data": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793776803967,
+          "data": {
+            "provider": "fixture",
+            "model": "scripted",
+            "contextWindow": 4096
+          }
+        }
+      },
+      {
+        "position": 8,
+        "channel": "live",
+        "data": {
+          "type": "start",
+          "attemptId": "h17-D-rejected-settlement:1",
+          "revision": 1,
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "position": 9,
+        "channel": "loop-request",
+        "data": {
+          "asOfSeq": 7
+        }
+      },
+      {
+        "position": 10,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-rejected-settlement:1",
+          "revision": 2,
+          "index": 0,
+          "time": 1793776803967,
+          "chunk": {
+            "type": "text-delta",
+            "index": 0,
+            "text": "无法结算的回答"
+          }
+        }
+      },
+      {
+        "position": 11,
+        "channel": "live",
+        "data": {
+          "type": "chunk",
+          "attemptId": "h17-D-rejected-settlement:1",
+          "revision": 3,
+          "index": 1,
+          "time": 1793776803967,
+          "chunk": {
+            "type": "finish",
+            "reason": {
+              "kind": "stop"
+            }
+          }
+        }
+      },
+      {
+        "position": 12,
+        "channel": "live",
+        "data": {
+          "type": "end",
+          "attemptId": "h17-D-rejected-settlement:1",
+          "revision": 4,
+          "index": 2,
+          "outcome": {
+            "kind": "abandoned"
+          }
+        }
+      },
+      {
+        "position": 13,
+        "channel": "session",
+        "data": {
+          "type": "step/end",
+          "seq": 8,
+          "time": 1793776803967,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "position": 14,
+        "channel": "agent/error",
+        "data": {
+          "error": "Error: fixture settlement rejection"
+        }
+      },
+      {
+        "position": 15,
+        "channel": "session",
+        "data": {
+          "type": "turn/end",
+          "seq": 9,
+          "time": 1793776803968,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "error",
+              "error": {
+                "message": "fixture settlement rejection",
+                "code": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "texts": [
+      "只分析内存项目材料。",
+      "读取 README，检查测试文件，再汇总项目结构。"
+    ],
+    "persistence": "memory only; no checkpoint policy or backend"
+  },
+  "X": {
+    "events": [
+      {
+        "type": "turn/start",
+        "seq": 0,
+        "time": 1000,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 1,
+        "time": 1001,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 2,
+        "time": 1002,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "只根据项目材料作答"
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "h17-message-2"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 3,
+        "time": 1003,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "读取 README 并检查 tests"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "h17-message-3"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 4,
+        "time": 1004,
+        "data": {
+          "reason": "initial",
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "tools": [
+              {
+                "name": "inspect_fixture",
+                "description": "内存只读",
+                "parameters": {
+                  "type": "object"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 5,
+        "time": 1005,
+        "data": {
+          "provider": "fixture",
+          "model": "scripted",
+          "contextWindow": 4096
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 6,
+        "time": 1006,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "readme",
+                "name": "inspect_fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "h17-message-6"
+          },
+          "stream": []
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 7,
+        "time": 1007,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "readme",
+          "name": "inspect_fixture",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 8,
+        "time": 1008,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "readme"
+            },
+            "toolCallId": "readme",
+            "content": [
+              {
+                "type": "text",
+                "text": "src/ 实现；tests/ 测试"
+              }
+            ],
+            "isError": false,
+            "id": "h17-message-8"
+          }
+        },
+        "sourceEventSeqs": [
+          7
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1009,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 10,
+        "time": 1010,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 11,
+        "time": 1011,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1011,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "code": "SERVER",
+                    "message": "受控失败"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 12,
+        "time": 1012,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "项目有实现目录和测试目录"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "scripted"
+            },
+            "id": "h17-message-12"
+          },
+          "stream": []
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 13,
+        "time": 1013,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 14,
+        "time": 1014,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      },
+      {
+        "type": "user/message",
+        "seq": 15,
+        "time": 1015,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "任务摘要：已检查 README 和 tests"
+            }
+          ],
+          "source": {
+            "kind": "h17-fixture"
+          },
+          "role": "user",
+          "id": "h17-message-15"
+        },
+        "sourceEventSeqs": [
+          3
+        ],
+        "surfaceOp": {
+          "op": "replace",
+          "startSeq": 3,
+          "endSeq": 3
+        }
+      }
+    ],
+    "eventOrder": [
+      {
+        "seq": 0,
+        "type": "turn/start",
+        "surfaceOp": null
+      },
+      {
+        "seq": 1,
+        "type": "step/start",
+        "surfaceOp": null
+      },
+      {
+        "seq": 2,
+        "type": "system/message",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 3,
+        "type": "user/message",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 4,
+        "type": "request/header",
+        "surfaceOp": null
+      },
+      {
+        "seq": 5,
+        "type": "request/context",
+        "surfaceOp": null
+      },
+      {
+        "seq": 6,
+        "type": "assistant/message",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 7,
+        "type": "tool/call",
+        "surfaceOp": null
+      },
+      {
+        "seq": 8,
+        "type": "tool/result",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 9,
+        "type": "step/end",
+        "surfaceOp": null
+      },
+      {
+        "seq": 10,
+        "type": "step/start",
+        "surfaceOp": null
+      },
+      {
+        "seq": 11,
+        "type": "assistant/attempt",
+        "surfaceOp": null
+      },
+      {
+        "seq": 12,
+        "type": "assistant/message",
+        "surfaceOp": "append"
+      },
+      {
+        "seq": 13,
+        "type": "step/end",
+        "surfaceOp": null
+      },
+      {
+        "seq": 14,
+        "type": "turn/end",
+        "surfaceOp": null
+      },
+      {
+        "seq": 15,
+        "type": "user/message",
+        "surfaceOp": {
+          "op": "replace",
+          "startSeq": 3,
+          "endSeq": 3
+        }
+      }
+    ],
+    "nodes": [
+      2,
+      15,
+      6,
+      8,
+      12
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "source": {
+          "kind": "system-prompt"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "只根据项目材料作答"
+          }
+        ]
+      },
+      {
+        "role": "user",
+        "source": {
+          "kind": "h17-fixture"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "任务摘要：已检查 README 和 tests"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "scripted"
+        },
+        "content": [
+          {
+            "type": "tool-call",
+            "id": "readme",
+            "name": "inspect_fixture",
+            "arguments": "{}"
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "source": {
+          "kind": "tool",
+          "callId": "readme"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "src/ 实现；tests/ 测试"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "scripted"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "项目有实现目录和测试目录"
+          }
+        ]
+      }
+    ],
+    "header": {
+      "config": {
+        "provider": "fixture",
+        "model": "scripted"
+      },
+      "tools": [
+        {
+          "name": "inspect_fixture",
+          "description": "内存只读",
+          "parameters": {
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "state": {
+      "status": "completed",
+      "turn": 1,
+      "finished": 1
+    },
+    "sourceEventCount": 16,
+    "reconstructionEventCount": 17,
+    "atRequest1": {
+      "prefixLength": 6,
+      "nodes": [
+        2,
+        3
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "只根据项目材料作答"
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "h17-message-2"
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "读取 README 并检查 tests"
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "h17-message-3"
+        }
+      ]
+    },
+    "logOnly": [
+      0,
+      1,
+      4,
+      5,
+      7,
+      9,
+      10,
+      11,
+      13,
+      14
+    ],
+    "shadowed": [
+      3
+    ],
+    "projectionSnapshot": {
+      "asOfSeq": 16,
+      "values": {
+        "h17/task": {
+          "status": "completed",
+          "turn": 1,
+          "finished": 1
+        }
+      }
+    },
+    "projectionVerified": "real registry equals independent fold"
+  }
+}

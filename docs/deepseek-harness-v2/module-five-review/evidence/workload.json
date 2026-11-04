@@ -1,0 +1,503 @@
+[
+  {
+    "course": "H17",
+    "defaultBodyCjk": 7652,
+    "allBodyCjk": 10140,
+    "codeBlocks": 11,
+    "codeLines": 285,
+    "details": 25,
+    "practices": 4,
+    "combined": 1,
+    "thoughts": 12,
+    "sequenceOrCodeThoughts": 5,
+    "figures": 4,
+    "coreReadFiles": 5,
+    "estimatedMinutes": [
+      210,
+      280
+    ],
+    "measuredTime": false,
+    "conceptGroups": [
+      "事件溯源/fold",
+      "Header与Seq/Offset",
+      "追加/快照/冻结",
+      "Surface/消息",
+      "请求头/工具历史",
+      "业务Projection",
+      "flush边界"
+    ],
+    "assertions": 38,
+    "sourceFilesReferenced": 9,
+    "assertionUniqueSourceLines": 1874,
+    "sourceRanges": {
+      "packages/core/session/src/index.ts": [
+        68,
+        1363,
+        466
+      ],
+      "packages/core/session/src/types.ts": [
+        33,
+        532,
+        390
+      ],
+      "docs/persistence-catalog.zh.md": [
+        1,
+        18,
+        18
+      ],
+      "packages/util/values/src/index.ts": [
+        172,
+        280,
+        109
+      ],
+      "packages/core/session/src/surface.ts": [
+        50,
+        693,
+        339
+      ],
+      "packages/core/agent-loop/src/agent.ts": [
+        492,
+        731,
+        146
+      ],
+      "packages/core/session/src/request-header.ts": [
+        20,
+        69,
+        17
+      ],
+      "packages/core/session/src/tool-history.ts": [
+        9,
+        75,
+        67
+      ],
+      "packages/session/session-projection/src/index.ts": [
+        51,
+        865,
+        322
+      ]
+    },
+    "lessonSha256": "ff48b627effe7da35f16a699980551de6f8a1733ed1c1a12ae73e60fe0956ede"
+  },
+  {
+    "course": "H18",
+    "defaultBodyCjk": 9008,
+    "allBodyCjk": 11665,
+    "codeBlocks": 15,
+    "codeLines": 453,
+    "details": 32,
+    "practices": 4,
+    "combined": 1,
+    "thoughts": 14,
+    "sequenceOrCodeThoughts": 7,
+    "figures": 4,
+    "coreReadFiles": 5,
+    "estimatedMinutes": [
+      260,
+      350
+    ],
+    "measuredTime": false,
+    "conceptGroups": [
+      "存储seam/Handle",
+      "写所有权",
+      "缓冲/屏障/close",
+      "编码/generation",
+      "物理与语义尾修复",
+      "Resume发布",
+      "Fork与谱系"
+    ],
+    "assertions": 50,
+    "sourceFilesReferenced": 19,
+    "assertionUniqueSourceLines": 2824,
+    "sourceRanges": {
+      "packages/session/session-persistence/src/index.ts": [
+        124,
+        210,
+        87
+      ],
+      "packages/session/session-persistence/src/handle.ts": [
+        22,
+        116,
+        95
+      ],
+      "packages/session/session-persistence/src/errors.ts": [
+        21,
+        137,
+        103
+      ],
+      "packages/session/session-persistence-jsonl/src/index.ts": [
+        93,
+        1462,
+        581
+      ],
+      "packages/session/session-persistence-jsonl/src/storage.ts": [
+        182,
+        569,
+        313
+      ],
+      "packages/session/session-persistence-jsonl/src/lease.ts": [
+        54,
+        135,
+        82
+      ],
+      "packages/session/session-persistence-jsonl/src/win32.ts": [
+        140,
+        173,
+        34
+      ],
+      "packages/core/session/src/index.ts": [
+        636,
+        1469,
+        359
+      ],
+      "packages/session/session-persistence-jsonl/src/format.ts": [
+        50,
+        537,
+        413
+      ],
+      "packages/session/session-persistence-jsonl/src/zstd.ts": [
+        48,
+        126,
+        79
+      ],
+      "packages/session/session-persistence/src/storage-contract.ts": [
+        55,
+        103,
+        49
+      ],
+      "packages/session/session-persistence-jsonl/README.zh.md": [
+        60,
+        106,
+        47
+      ],
+      "packages/core/session/src/types.ts": [
+        1,
+        162,
+        103
+      ],
+      "packages/core/session/src/preparation.ts": [
+        14,
+        48,
+        35
+      ],
+      "packages/core/agent-loop/src/index.ts": [
+        495,
+        831,
+        187
+      ],
+      "packages/core/session/src/repair.ts": [
+        29,
+        210,
+        182
+      ],
+      "packages/core/session/src/fork.ts": [
+        10,
+        29,
+        20
+      ],
+      "packages/core/agent/src/index.ts": [
+        484,
+        535,
+        52
+      ],
+      "docs/subsystems/session.zh.md": [
+        690,
+        692,
+        3
+      ]
+    },
+    "lessonSha256": "3b28a62d11f4278e253386cc3b69ccc55641ed1826dc38f73f69fa9c9e221c9e"
+  },
+  {
+    "course": "H19",
+    "defaultBodyCjk": 8493,
+    "allBodyCjk": 11264,
+    "codeBlocks": 12,
+    "codeLines": 368,
+    "details": 29,
+    "practices": 4,
+    "combined": 1,
+    "thoughts": 15,
+    "sequenceOrCodeThoughts": 5,
+    "figures": 4,
+    "coreReadFiles": 5,
+    "estimatedMinutes": [
+      260,
+      350
+    ],
+    "measuredTime": false,
+    "conceptGroups": [
+      "Meter/Usage/路由计价",
+      "压力/预留预算",
+      "平衡选区",
+      "摘要生命周期/锁",
+      "Pruner",
+      "图片省略",
+      "维护与检查点"
+    ],
+    "assertions": 54,
+    "sourceFilesReferenced": 28,
+    "assertionUniqueSourceLines": 2405,
+    "sourceRanges": {
+      "packages/llm/token-meter/src/index.ts": [
+        57,
+        194,
+        90
+      ],
+      "packages/llm/token-meter/src/types.ts": [
+        19,
+        54,
+        36
+      ],
+      "packages/llm/token-meter/src/estimate.ts": [
+        13,
+        102,
+        87
+      ],
+      "packages/llm/token-meter/src/measurement-projection.ts": [
+        1,
+        88,
+        88
+      ],
+      "packages/llm/token-meter/src/route-pricing.ts": [
+        32,
+        76,
+        45
+      ],
+      "packages/llm/token-meter/src/usage-projection.ts": [
+        82,
+        103,
+        22
+      ],
+      "packages/llm/token-meter/src/breakdown-projection.ts": [
+        1,
+        140,
+        140
+      ],
+      "packages/compaction/compaction/src/index.ts": [
+        35,
+        195,
+        103
+      ],
+      "packages/compaction/compaction-basic/src/config.ts": [
+        68,
+        213,
+        141
+      ],
+      "packages/compaction/compaction-basic/src/index.ts": [
+        70,
+        456,
+        232
+      ],
+      "packages/compaction/compaction-basic/src/region.ts": [
+        117,
+        600,
+        385
+      ],
+      "packages/compaction/compaction/src/tool-pairing.ts": [
+        1,
+        126,
+        126
+      ],
+      "packages/compaction/compaction/src/types.ts": [
+        19,
+        120,
+        102
+      ],
+      "packages/compaction/compaction-basic/src/summarizer.ts": [
+        120,
+        221,
+        98
+      ],
+      "packages/core/agent-loop/src/agent.ts": [
+        199,
+        568,
+        52
+      ],
+      "packages/compaction/compaction-tool-result-pruner/src/config.ts": [
+        8,
+        73,
+        66
+      ],
+      "packages/compaction/compaction-tool-result-pruner/src/index.ts": [
+        79,
+        185,
+        92
+      ],
+      "packages/compaction/compaction-image-offload/src/projection.ts": [
+        47,
+        74,
+        28
+      ],
+      "packages/compaction/compaction-image-offload/src/image-offload.ts": [
+        19,
+        46,
+        28
+      ],
+      "packages/compaction/compaction-image-offload/src/index.ts": [
+        25,
+        41,
+        17
+      ],
+      "packages/llm/llm/src/content.ts": [
+        108,
+        119,
+        12
+      ],
+      "packages/compaction/command-compact/src/index.ts": [
+        22,
+        107,
+        86
+      ],
+      "packages/interaction/commands/src/index.ts": [
+        380,
+        459,
+        80
+      ],
+      "packages/core/session/src/surface.ts": [
+        500,
+        550,
+        51
+      ],
+      "packages/session/session-persistence-jsonl/src/index.ts": [
+        389,
+        425,
+        37
+      ],
+      "packages/core/agent-loop/src/index.ts": [
+        763,
+        838,
+        76
+      ],
+      "packages/core/session/src/index.ts": [
+        700,
+        701,
+        2
+      ],
+      "packages/session/session-format-v3-to-v4/src/relationships.ts": [
+        73,
+        155,
+        83
+      ]
+    },
+    "lessonSha256": "c7f79c097dddc2caefeed1a02a9a2c6d440ef7c3995d478f708e304b5cfaca9c"
+  },
+  {
+    "course": "H20",
+    "defaultBodyCjk": 7840,
+    "allBodyCjk": 10716,
+    "codeBlocks": 12,
+    "codeLines": 275,
+    "details": 29,
+    "practices": 4,
+    "combined": 1,
+    "thoughts": 15,
+    "sequenceOrCodeThoughts": 7,
+    "figures": 4,
+    "coreReadFiles": 5,
+    "estimatedMinutes": [
+      280,
+      380
+    ],
+    "measuredTime": false,
+    "conceptGroups": [
+      "失败规范/Attempt",
+      "Waterfall/策略",
+      "退避/预算",
+      "取消传播",
+      "工具批次排空",
+      "外部未知/幂等",
+      "生命周期恢复"
+    ],
+    "assertions": 56,
+    "sourceFilesReferenced": 17,
+    "assertionUniqueSourceLines": 1444,
+    "sourceRanges": {
+      "packages/llm/llm/src/types.ts": [
+        48,
+        66,
+        19
+      ],
+      "packages/llm/llm/src/index.ts": [
+        96,
+        1183,
+        214
+      ],
+      "packages/llm/llm-deepseek/src/transport.ts": [
+        22,
+        44,
+        23
+      ],
+      "packages/llm/llm/src/adapter-failure.ts": [
+        16,
+        32,
+        17
+      ],
+      "packages/llm/llm/src/retry-policy.ts": [
+        14,
+        195,
+        135
+      ],
+      "packages/llm/llm-retry/src/index.ts": [
+        30,
+        256,
+        141
+      ],
+      "packages/llm/llm-retry/src/types.ts": [
+        16,
+        45,
+        30
+      ],
+      "packages/core/agent-loop/src/agent.ts": [
+        191,
+        566,
+        214
+      ],
+      "packages/core/agent-loop/src/assistant-stream.ts": [
+        78,
+        105,
+        28
+      ],
+      "packages/llm/llm/src/assembler.ts": [
+        169,
+        180,
+        12
+      ],
+      "packages/core/agent/src/runtime-types.ts": [
+        44,
+        412,
+        32
+      ],
+      "packages/core/agent-loop/src/index.ts": [
+        511,
+        838,
+        111
+      ],
+      "packages/core/tools/src/pipeline.ts": [
+        105,
+        364,
+        112
+      ],
+      "packages/core/tools/src/batch.ts": [
+        117,
+        283,
+        133
+      ],
+      "packages/core/session/src/repair.ts": [
+        53,
+        211,
+        148
+      ],
+      "packages/compaction/compaction-basic/src/index.ts": [
+        213,
+        265,
+        53
+      ],
+      "packages/core/session/src/types.ts": [
+        194,
+        310,
+        22
+      ]
+    },
+    "lessonSha256": "00af4fa10cd9fe1a6562bbfd7a2086e0bb1405f39828b19611e43036c4e9206f"
+  }
+]
