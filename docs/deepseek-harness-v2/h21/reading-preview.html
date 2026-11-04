@@ -1,0 +1,4276 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H21｜Subagent、任务委派与多智能体协作</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H21 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Subagent、任务委派与多智能体协作</h1><p>180～250 分钟（分三段；作者估计，真实试读及环境准备另计）</p></header><div class="lesson-prose"><h2>一个项目，两份调查，谁来收尾？</h2>
+<p>项目研究助手收到：“请分析这个项目的架构，同时检查测试体系并总结潜在问题。”它可以先研究架构，再研究测试，最后综合。现在假设测试分析需要读许多材料，适合交给另一位助手；父 Agent 继续整理架构，子 Agent 专门检查测试。</p>
+<p>先想一条具体轨迹：父级调用委派工具，拿到一个子级 ID；此时子级还在工作。子级完成调查，把“测试数量、覆盖缺口和证据限制”发回来，父级据此继续。这里多出的问题是：子级是否知道此前讨论？能用什么工具？谁支付额外模型请求？父级取消后谁负责等待？这些问题决定委派能否正确结束。</p>
+<p>Delegation（委派）就是把一个有边界的任务交给另一个执行实体，并建立结果与退出责任。Subagent 是在这套协议下接受委派的 Agent。它不像普通函数那样只有一次调用栈和一个返回值：它可以有自己的对话、工具选择、多个 Turn，也可能在父级结束当前 Turn 后继续工作。用主编派记者核查资料作类比很直观，但软件中的共享进程、工具权限和句柄所有权仍须单独核对。</p>
+<p><strong>更多 Agent 不保证更快、更便宜或更正确。</strong> 分工带来独立上下文和可能的并行，也增加启动、提示词、消息、重复调查及综合成本。任务很小、材料高度耦合或权限难以划分时，让同一个 Agent 继续，往往更容易管理。这是我们的工程分析，不是源码提供的性能结论。</p>
+<p>本课遵循正式蓝图标题《Subagent、任务委派与多智能体协作》，与任务暂定标题有差异，记录在作者报告中，未修改蓝图。源码继续固定 <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。我们先理解一个父子任务，再读服务和生命周期，之后比较 Spawn/Fork，最后加入消息、发现和限制。Agent Teams 只介绍边界；Workflow、Jobs、Goal、Schedule 留到 H22。</p>
+<aside id="lesson-concept" class="lesson-callout lesson-concept" aria-label="先看结果，再读长程序"><div class="lesson-callout-label">先搞懂这件事</div><div class="lesson-callout-title">先看结果，再读长程序</div><div class="lesson-callout-body"><p>综合实验使用真实 Cordis、AgentRegistry、AgentLoop、Session、Subagent Runtime/Manager、官方 Spawn/Fork 和模型工具。模型由确定性 Mock Adapter 提供，工具只返回虚构项目数据。父级先收到 <code>started subagent &lt;id&gt;</code>，之后才收到子级消息和结算通知。子级完成后退出实时 Registry，历史目录仍可列出它，再发消息可建立新的 Activation。</p><p>本地父子 Agent 处于同一 Node 进程。JSONL 只写新建临时目录；不读取个人 Session、不调用付费 Agent、不执行 Shell 或真实外部变更。这是 C/D 级组件与局部集成，尚无 E 级完整应用证据。</p></div></aside>
+<h2>用五分钟接回已经学过的对象</h2>
+<p>H09 中，Agent 是当前能收输入、驱动工作和被查询的运行对象；AgentHandle 则包含释放<strong>这个确切实例</strong>的 <code>dispose()</code>。Agent Factory 负责创建或恢复；Registry 负责实时登记和所有权查询。H17 的 Session 记录对话和执行事实，H18 的持久化允许重建新实例；旧 Promise、控制器和进程句柄不会因此复活。H20 的取消是合作信号，<code>whenIdle()</code>等待活动收敛，不能证明业务成功或磁盘耐久。</p>
+<p>在这个基础上，Activation（一次激活）是委派管理器掌管的一个子级执行期。可以先想成一次“派工及收尾的责任单”：它持有子级身份、结果承诺和本次释放入口。但它不是普通数据库工单，内部还有实时容量、后代所有权和执行资源。一个持久子会话可以先后经历多个 Activation。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>对象</th><th>本课案例中的作用</th><th>不可互换的边界</th></tr></thead><tbody><tr><td>Agent</td><td>当前实际研究测试的运行实体</td><td>Session 留存不证明它还在运行</td></tr><tr><td>Session</td><td>保存这条调查线的历史</td><td>历史父 ID 不等于当前父 Agent 对象</td></tr><tr><td>Tool</td><td>模型可提议调用的一项能力</td><td>委派工具只是消费委派服务的入口</td></tr><tr><td>AgentHandle</td><td>释放精确运行实例的能力</td><td>查询到裸 Agent 不自动得到 Handle</td></tr><tr><td>Activation</td><td>管理一个执行期及结果交付</td><td>旧 Activation 结束不等于永远不能继续该子会话</td></tr></tbody></table></div>
+<p>Lineage（谱系）在这里描述历史关联，例如子 Session 的 <code>parentSession</code>。必须把它与 Registry 中传入的 <code>parentAgent</code>、结构 Fiber、Handle 持有者和 Activation 所有权分开。仅根据 Session 名称、父 ID 或 <code>origin</code> 字样，不能推断当前完整运行关系。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/child-agent.ts#L135-L153" target="_blank" rel="noopener noreferrer">S17 · childSessionMeta</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/index.ts#L603-L623" target="_blank" rel="noopener noreferrer">S37 · Registry ownership</a></p>
+<h2>一项可选能力，分成几个角色</h2>
+<p>H05 已说明“包存在、类型能导入、服务已注册、模型工具可见”是不同事实。Subagent 也遵守这条规则：<code>ctx.subagents</code> 是委派服务入口，具体类为 <code>SubagentRuntime</code>。它维护具名 Provider，并在 <code>agents</code> 服务出现后建立 Manager。只装这项服务，还没有向模型开放委派。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L194-L237" target="_blank" rel="noopener noreferrer">S01 · SubagentRuntime</a></p>
+<p>Provider（后端提供方）回答“这次用哪种方式建立子级执行”。多个后端可以同时注册为 <code>spawn</code>、<code>fork</code> 或其他名称，请求按名字选择。<code>SubagentCapabilities</code> 则声明是否支持 Agent 选项、独立 Preset、结构化输出及深度限制；服务不会因为字段名字看起来合理就忽略不支持的选项。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L271-L287" target="_blank" rel="noopener noreferrer">S03 · startActivation</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L633-L657" target="_blank" rel="noopener noreferrer">S04 · assertCapabilities</a></p>
+<p>Manager 是 Runtime 内部的管理者，负责本地 Agent 创建与恢复、输入接受、Activation、共享容量、后代清理和交付。对于本地子级，Provider 的 <code>prepareContinuable()</code> 只交回创建数据：Spawn 返回空对象，Fork 返回选好的历史 seed。<strong>真实 Agent 仍由 Manager 调用 <code>ctx.agents.create()</code> / <code>resume()</code>，经 Factory 创建。Agent Factory 与 Subagent Runtime 不是同一个服务。</strong> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L851-L960" target="_blank" rel="noopener noreferrer">S12 · materializeTracked</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-spawn-in-process/src/index.ts#L35-L59" target="_blank" rel="noopener noreferrer">S13 · SpawnInProcessProvider</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-fork-in-process/src/index.ts#L46-L80" target="_blank" rel="noopener noreferrer">S14 · completedTurnPrefix / prepareContinuable</a></p>
+<p>图一先看职责关系；完整启动时序要等后面的图三。</p>
+<p><span class="lesson-figure" role="group" aria-label="父级模型工具通过Runtime按名选择Provider，Manager持有Activation并调用Agent Factory创建本地子级，再管理执行和交付"><img src="figures/h21-01.png" alt="父级模型工具通过Runtime按名选择Provider，Manager持有Activation并调用Agent Factory创建本地子级，再管理执行和交付" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜委派能力分层。Provider提供创建数据或外部执行句柄；Manager管理执行期，Factory负责真实Agent初始化。连接表示协作，不能当作所有后端必经同一条创建链。</span><a class="lesson-image-expand" href="figures/h21-01.png" target="_blank" rel="noopener noreferrer" aria-label="父级模型工具通过Runtime按名选择Provider，Manager持有Activation并调用Agent Factory创建本地子级，再管理执行和交付，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>模型可见的 <code>dsh-tool-subagent</code> 是 Consumer。它绑定一个 Provider，使用真实 Tool Registry、Scope 和 Step 准入机制。Provider 出现时登记工具，消失时撤销；工具描述会根据是否继承父上下文改变。配置中的模型选择仍要经过消费方策略及路线预检，不能因 Provider 支持 <code>agentOptions</code> 就宣称模型任意换路由。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L549-L570" target="_blank" rel="noopener noreferrer">S05 · registerProvider</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/tool-subagent/src/index.ts#L201-L267" target="_blank" rel="noopener noreferrer">S06 · mount / defineTool</a></p>
+<h2>从模型提议，到初始任务被接受</h2>
+<p>下面是<strong>公开 API 的用法片段</strong>，前提是 <code>ctx</code> 和确切在线的 <code>parent</code> 已由公共准备建立；它不是单独可运行的全部程序。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>const activation = await ctx.subagents.startActivation({
+  provider: &#x27;spawn&#x27;,
+  label: &#x27;检查测试体系&#x27;,
+  request: {
+    parent,
+    prompt: [{ type: &#x27;text&#x27;, text: &#x27;只分析提供的虚构测试清单，报告缺口。&#x27; }],
+    maxDepth: 1,
+  },
+  signal: startup.signal,
+  delivery: &#x27;caller&#x27;,
+})
+const result = await activation.result
+await activation.dispose()</code></pre></div>
+<p>预期先得到包含 <code>childId</code> 的 Activation；本地还带有初始 Inbox 的 <code>messageId</code>。<code>await result</code> 才等待最终结果。在模型工具主线中，消费方选择 <code>delivery:&#x27;parent&#x27;</code>，拿到启动回执后直接返回 <code>{kind:&#x27;activation&#x27;, subagentId}</code>，并不在工具调用内部等待整项调查完成。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/tool-subagent/src/index.ts#L268-L332" target="_blank" rel="noopener noreferrer">S07 · execute startActivation</a></p>
+<p>顺着输入、处理、输出和失败读启动链：</p>
+<ol>
+<li>Runtime 按 <code>provider</code> 查后端；不存在就 <code>NO_PROVIDER</code>。检查请求能力与输出 Schema，并核父级是 Registry 中的<strong>同一个在线对象</strong>。</li>
+<li>本地 Manager 核准入，选择初始目录，计算子深度，捕获模型选项、组合及委派策略。Parent Delivery 需要持久化；Caller Delivery 可使用临时本地会话。</li>
+<li>Provider 贡献空 seed 或已完成前缀。Manager 进入物化阶段，在创建/恢复前预留容量，再通过 Factory 创建新 Session、Scope 和 Agent。</li>
+<li>创建窗口写自身 descriptor 与可用的委派策略，组合子级能力；本地 start 生命周期边在驻留后发出。初始任务随后进入真实 Inbox。</li>
+<li>接受成功后，把本地成员事实写入父 Session 的 <code>subagent/catalog</code>，启动结算观察，再返回 <code>childId/messageId</code>。</li>
+</ol>
+<p>具体顺序见 <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L379-L425" target="_blank" rel="noopener noreferrer">S08 · startLocal</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L425-L474" target="_blank" rel="noopener noreferrer">S09 · startLocal acceptance</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L739-L767" target="_blank" rel="noopener noreferrer">S10 · materialize</a>。<code>subagent/start</code> 是观察边，可能先于初始消息接受；听到它不能替代 <code>startActivation()</code> 成功返回。发布前失败可能有部分资源和已观察的边，必须按所在阶段清理。名称、能力、深度或容量失败，通常发生在接纳之前；不能把所有失败都描述成“子级已经开始调查”。</p>
+<p><strong>第一段停点：</strong> 合上类型文件，只说清四句话：工具发起什么，Runtime检查什么，Provider贡献什么，谁持有子 AgentHandle。预计35～45分钟；能解释“工具回执不是最终答案”后再进入生命周期。</p>
+<h2>子级工作结束，结束的是哪一层？</h2>
+<p><code>childId</code> 是子级的稳定身份，本地就是子 SessionId。<code>messageId</code> 标识某条已接受输入；<code>SubagentRunId</code> 标识一次执行期的生命周期配对。继续同一个冷子会话时，childId 可以相同，Agent 对象与 runId 会不同。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/lifecycle.ts#L96-L118" target="_blank" rel="noopener noreferrer">S35 · createActivationObserver</a></p>
+<p>本地自然结算不只检查 <code>status===&#x27;idle&#x27;</code>。Manager 还检查未领取输入、所拥有的后代及同一子级锁下的状态；有停放输入或未释放后代时，Activation 可继续驻留、继续占容量。最终 flush 后还会复查，避免把刚进入的消息漏掉。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1100-L1110" target="_blank" rel="noopener noreferrer">S20 · settlementState</a></p>
+<p><code>SubagentResult</code> 含 <code>output</code>、<code>stopReason</code>，可选 <code>structured</code> 和安全的 <code>diagnostic</code>。本地输出按本执行期后缀选择最后一条非空 Assistant 内容；失败可带部分输出。<code>completed</code>、<code>aborted</code>、<code>error</code>、<code>max-tokens</code>、<code>refusal</code> 的含义不同，不能把正常控制流结束解释为调查结论正确。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/activation.ts#L156-L170" target="_blank" rel="noopener noreferrer">S24 · captureLocalResult</a></p>
+<p>正常结算先捕获结果，再释放 Handle、归还容量、处理父级通知、发终态生命周期边，最后结算 Activation 的结果 Promise。结果捕获故障可使 Promise 拒绝。清理失败则另由 <code>dispose()</code> 报错，生命周期 end 标为 error，而已经捕获的结果及父通知仍可保留执行结果；不要只读其中一条通道宣布全面成功。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1113-L1203" target="_blank" rel="noopener noreferrer">S21 · finishDisposal</a></p>
+<p>图三把“启动回执”和“最终交付”分开，实线表示精选时序；两种 delivery 是选择关系。</p>
+<p><span class="lesson-figure" role="group" aria-label="启动先接受消息并返回childId，后台子级独立工作，Manager捕获结果并清理后选择parent通知或caller结果；interrupt和dispose分别列出"><img src="figures/h21-03.png" alt="启动先接受消息并返回childId，后台子级独立工作，Manager捕获结果并清理后选择parent通知或caller结果；interrupt和dispose分别列出" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜Activation的执行与交付。Parent Delivery在原工具调用之后产生新输入，不能画成同一个同步ToolResult。显式dispose会主动停止并等待其拥有的后代。</span><a class="lesson-image-expand" href="figures/h21-03.png" target="_blank" rel="noopener noreferrer" aria-label="启动先接受消息并返回childId，后台子级独立工作，Manager捕获结果并清理后选择parent通知或caller结果；interrupt和dispose分别列出，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h3>Parent 与 Caller，谁在等待什么？</h3>
+<p>Parent Delivery 由 Manager 在结算后投递 <code>source.kind=&#x27;subagent-settled&#x27;</code> 的 user-role 通知。父级正在工作时走 steer，空闲时走 queue；下一次实际模型请求才消费这些输入。父级缺席或同 ID 下已换成另一个实例时，不向新对象冒投通知。投递异常记录警告；没有持久父邮箱和通用恰好一次保证。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1206-L1224" target="_blank" rel="noopener noreferrer">S22 · notifySettlement</a></p>
+<p>Caller Delivery 由程序调用者直接 <code>await activation.result</code>，不额外产生父级完成通知。<strong>两种 delivery 的本地子级都会进入父目录。</strong> 外部 caller 执行的成员关系则由调用者管理；不能从一个分支推广全部后端。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/catalog.ts#L115-L164" target="_blank" rel="noopener noreferrer">S30 · catalog projection / establishCatalogChild</a></p>
+<p>子 Agent 通过 <code>send_message</code> 发给父级的是 <code>agent-message</code>，属于它选择发送的内容；<code>subagent-settled</code> 是 Runtime 对结局的说明，归属不同。若子级最后一个相关动作是给父级发消息，此后未领取输入、未再记录工具调用，完成通知会用“closing message is omitted”提示省略收尾文本，减少重复；结构化值及诊断依适用分支另外附加。没有调用控制工具的子级仍可通过完成通知回传收尾文本。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/continuation-messages.ts#L140-L173" target="_blank" rel="noopener noreferrer">S34 · createSettlementMessage</a></p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：补充：结果可取得，不等于未来一定能恢复</summary><div class="lesson-callout-body"><p>本地自然结算的最终 <code>sessions.flush</code> 是尽力而为，失败记警告，持久前缀可能陈旧；随后 Handle 的关闭仍可能报告自己的清理失败。Result、通知或 end 不是任意介质的耐久认证。Parent Delivery要求持久化组件存在，也不等于每条通知已持久写入父级：通知要先被Inbox接纳，后续还受父级处理和存储边界约束。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1228-L1237" target="_blank" rel="noopener noreferrer">S23 · flushFinalState</a></p><p>结构化 Schema 是一次 Activation 的结果契约，不作为永久子级设置。历史 descriptor 不保留该 Schema 或本次 maxTokens；冷恢复不能假定自动带回它们。本课未执行结构化捕获及flush故障专项，相关规则按固定实现静态审阅，不能算入动态通过数。</p></div></details>
+<h2>Spawn 与 Fork：子级究竟拿到哪些材料？</h2>
+<p>Spawn 适合独立调查：“这里是三份虚构测试清单，请统计未覆盖项。”它创建新 Session，不复制父对话；任务必须自足。<code>inheritsParentContext=false</code> 的描述只指对话历史，不表示完全没有共享服务或工作目录。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-spawn-in-process/src/index.ts#L35-L59" target="_blank" rel="noopener noreferrer">S13 · SpawnInProcessProvider</a></p>
+<p>Fork Subagent 适合建立在已讨论内容上的研究：“沿用已确认的架构约束，另查测试风险。”固定 Provider 查父日志最后一个 <code>turn/end</code>，取从 Seq0 到该事件<strong>含切点</strong>的连续前缀；当前尚未完成的 Turn 不进入。没有任何已完成 Turn 时返回空创建数据。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent-fork-in-process/src/index.ts#L46-L80" target="_blank" rel="noopener noreferrer">S14 · completedTurnPrefix / prepareContinuable</a></p>
+<p>实践 C 的父级第一轮完整日志为 Seq0～10，第二轮已经开始。Fork 子级继承11条；随后 Seq11 是继承标记 <code>session/end-seed</code>，Seq12 是自身 <code>subagent/descriptor</code>，然后才接受新任务、打开自己的 Turn。并不是把父级当前尚未配对的工具调用带走，再等父级以后补结果。</p>
+<p><span class="lesson-figure" role="group" aria-label="父级第一轮Seq0至10已完成，Spawn不继承；Fork只继承这11条后写自身标记与descriptor，普通Session Fork可另选开放轮次切点"><img src="figures/h21-02.png" alt="父级第一轮Seq0至10已完成，Spawn不继承；Fork只继承这11条后写自身标记与descriptor，普通Session Fork可另选开放轮次切点" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜历史范围对比。数字只属于实践C；Fork是创建时的一次快照，父级后续事件不会自动同步。历史继承与工具权限分别判断。</span><a class="lesson-image-expand" href="figures/h21-02.png" target="_blank" rel="noopener noreferrer" aria-label="父级第一轮Seq0至10已完成，Spawn不继承；Fork只继承这11条后写自身标记与descriptor，普通Session Fork可另选开放轮次切点，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>这份 seed 成为子 Session 自己的初始历史。父级之后结束第二轮，子级不会偷偷追加那些新事件；子级写自己的消息、工具事实和结束边。冷恢复读取已经保存的子日志，而不是重新向父级取最新快照。</p>
+<p><strong>普通 <code>ctx.sessions.fork()</code> 不等于 Subagent Fork。</strong> H18 的普通分支 API 允许选择合法历史切点，固定实现可以为开放尾部生成闭合记录；它没有因此建立 Agent、Activation、Provider 关系或父级子目录成员。H21 Provider主动选择已完成Turn前缀，其选择规则更窄，不能套用普通Fork的开放尾规则。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts#L1403-L1419" target="_blank" rel="noopener noreferrer">S36 · SessionStore.fork</a></p>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：补充：创建选项与实际请求路线分别取证</summary><div class="lesson-callout-body"><p><code>resolveChildAgentOptions</code> 合并父级当前路线和请求覆盖，并写子深度。它证明传给Factory什么，不单独证明后续Adapter实际收到什么。继承历史可能带已有请求基线，实际请求仍经H11的模型选择与准备链。实践C保留继承路线，只验证历史；不把该实验冒称“已验证更换Fork子级模型”。早期夹具把两者混用，导致脚本耗尽，失败记录保留。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/child-agent.ts#L68-L124" target="_blank" rel="noopener noreferrer">S16 · parentAgentOptionsForDelegation / resolveChildAgentOptions</a></p><p>本课Spawn实验与综合实验使用已配置的两条受控模型路线。Provider声明支持模型配置，不代表模型能任意选真实付费路线，更不证明缓存或费用改善。</p></div></details>
+<h2>同一宿主，为什么父子能看到不同工具？</h2>
+<p>H13 的 Agent Scope 控制注册归属与可见视图。父子 Agent 各有自己的 Scope；共享 Host 服务，不等于子级沿用父 Agent Scope 的全部局部注册。综合实验父级有 <code>parent_only</code>，子级在自己的创建通知中登记 <code>child_only</code>：父级看不到 <code>child_only</code>，子级也看不到父级的局部工具。模型声明和执行资格继续经过H13/H14的真实链。</p>
+<p>Preset 是可复用能力组合。本地省略选择时，若组合了 Preset Registry，子级加入父方当前代际；Spawn支持显式选择独立Preset，Fork不支持该选项。它不是把父级所有局部闭包复制一遍。本课不展开完整Preset系统，真实独立Preset挂载仅静态阅读官方实现及测试。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/child-agent.ts#L186-L217" target="_blank" rel="noopener noreferrer">S18 · applyChildComposition</a></p>
+<p>权限也要看具体分支。固定本地实现会捕获实际组合中的权限状态：父级显式 sandbox override、适用权限模式，以及审批服务存在时的 <code>never</code> 固定策略。它不把所有部署默认、一次性批准或任意父局部限制无差别复制。相关策略事件写在继承前缀之后，使子级自己的状态可重建；是否能执行仍取决于工具组合、执行策略、权限及真实沙箱。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/child-agent.ts#L248-L280" target="_blank" rel="noopener noreferrer">S19 · delegated policy capture / append</a></p>
+<p><strong>Agent Scope 是注册与可见性机制，不是独立操作系统沙箱。</strong> 进程内子级仍运行于同一宿主进程；可信插件可持有宿主能力。不能因名字叫“子 Agent”就默认安全，也不能只靠提示词里的范围声明阻止危险操作。实验只装常量工具，不拿本课成功替代H15安全验证。</p>
+<p><span class="lesson-figure" role="group" aria-label="实时父子Registry关系、两个独立Scope、父子Session事实与父目录分层，同childId可经历不同Activation且Scope不等于OS沙箱"><img src="figures/h21-04.png" alt="实时父子Registry关系、两个独立Scope、父子Session事实与父目录分层，同childId可经历不同Activation且Scope不等于OS沙箱" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜所有权与历史结构。当前Agent、持久Session、Scope和父目录有各自的证据；实时运行树与历史父ID不能互相替代。</span><a class="lesson-image-expand" href="figures/h21-04.png" target="_blank" rel="noopener noreferrer" aria-label="实时父子Registry关系、两个独立Scope、父子Session事实与父目录分层，同childId可经历不同Activation且Scope不等于OS沙箱，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p><strong>第二段停点：</strong> 交出一张两列历史表和两个工具集合，解释为什么“继承完整已完成对话”仍不能推出“继承所有权限”。预计45～60分钟；下一段才引入继续消息、限制和发现。</p>
+<h2>消息被接受，与目标已经回答</h2>
+<p><code>ctx.subagents.sendMessage(sender,targetId,content,{signal})</code> 返回 <code>MessageId</code>。模型工具 <code>send_message</code> 把它包装为 <code>{messageId}</code>，只证明相关输入已接受。正在运行的本地目标通过 steer 在最近Step边界接纳，空闲目标可启动新Turn。Agent正在等待一个模型流时，消息可以先进入 Inbox，而目标尚未生成回答。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L537-L563" target="_blank" rel="noopener noreferrer">S25 · sendMessage</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1438-L1460" target="_blank" rel="noopener noreferrer">S26 · submitAdmitted</a></p>
+<p>授权以确切在线 sender 为起点。父级可向<strong>直接可继续子级</strong>发消息；驻留本地子级可以向在线直接父级发送。兄弟、非相邻后代或只有历史父ID的Agent，不能据此冒用相邻权限。祖先能中断更深后代，也不等于能向它直接发送消息。</p>
+<p>冷子级已没有活跃 Agent 时，父级发送继续消息会通过 Session Query 观察持久子日志，核直接父关系，排除继承前缀后读取自身 descriptor，再调用 Factory 恢复新 Agent。恢复不重新调用原 Spawn/Fork Provider；原Provider已撤注册也可按持久描述恢复。旧 Activation 的 <code>dispose()</code>只指向旧执行期，不能误删同childId的新实例。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1349-L1415" target="_blank" rel="noopener noreferrer">S27 · coldResume</a></p>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：补充：冷恢复能恢复什么，不能恢复什么</summary><div class="lesson-callout-body"><p>子级支持的 descriptor 版本、模式及组合必须有效；未知版本或一次性模式不授予继续能力。独立选择Preset的历史还要按自身事件顺序恢复选择，缺失配置不能悄悄换成父级默认。没有Session Query或持久源不可读时，相关操作拒绝。</p><p>这些是新实例重建，不是旧控制器复活。运行中的Inbox、内存所有权图及跨进程协调另有边界；消息接受也没有自动的持久邮箱或恰好一次保证。中断收敛期间接受的消息可能继续排队，直到另一条唤醒发送。实验只验证同进程内新Agent与writer，以及另一个新Context的历史发现，未验证跨进程冷续跑。</p></div></details>
+<h2>深度和容量：两个独立问题</h2>
+<p>固定Runtime配置默认 <code>maxDepth=1</code>、<code>maxActiveSubagents=8</code>。工具未显式给深度时调用 <code>resolveMaxDepth</code>读取当前Host值；工具显式数值或 <code>provider-managed</code>优先。Host用户设置覆盖插件组合配置，这是固定配置机制的规则；本课实验用明确的Volatile配置cell提供数值，<strong>不把它当Host设置UI或完整覆盖链已跑通</strong>。直接调用服务的请求深度是可选项，不会因Runtime默认1就自动补入每个请求。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/index.ts#L244-L250" target="_blank" rel="noopener noreferrer">S02 · resolveMaxDepth</a></p>
+<p>深度计算为父深度加1，再与绝对cap比较。cap为1允许根的直接子级，但不意味着只能创建一个子任务。多个先后完成的直接子级仍都在深度1。持久header的depth是单调下界，恢复后不能假装回到根来绕过限制。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/child-agent.ts#L49-L59" target="_blank" rel="noopener noreferrer">S15 · resolveChildDepth</a></p>
+<p>容量限制的是共享Activation池内<strong>同时驻留或正在物化</strong>的子级。根父级不占槽，连续本地父链接下的子树共享池；冷恢复也先预留，驻留输入复用槽。等待后代、停放Inbox及正在释放的Activation仍可能占槽，释放资源后才归还。历史Session累计数量和Token用量都不是这个计数。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L739-L767" target="_blank" rel="noopener noreferrer">S10 · materialize</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/activation.ts#L24-L37" target="_blank" rel="noopener noreferrer">S11 · ActivationPool.reserve</a></p>
+<p>容量满时抛 <code>ACTIVATION_LIMIT_REACHED</code>，不是默认无限排队。假设容量1，子级A已占唯一槽，又请求B并等待B；若B排队等A释放，而A等B完成，便相互等待。立即拒绝允许调用者调整分工、复用现有Agent或等其它工作结束。调大配置可接纳更多；调小不强杀已有工作，只影响下一次准入。</p>
+<h2>interrupt、cancel 与 dispose：按阶段说明责任</h2>
+<p><code>interrupt_agent</code> 返回 <code>{accepted:true}</code> 时已经发出中断请求，目标可能仍在退出。对本地子级，Manager调用 <code>cancel(...,{keepInbox:true})</code>：保留尚未领取的队列和已发布后代，已领取的工作不会自动退回。对子级的一次性外部执行，则中止并启动释放，不能期待后来继续输入。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L183-L232" target="_blank" rel="noopener noreferrer">S28 · interrupt</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/tool-subagent-control/src/index.ts#L29-L113" target="_blank" rel="noopener noreferrer">S29 · control tools</a></p>
+<p><code>Activation.dispose()</code>关闭这次执行期的准入，停止当前工作，等待其所拥有的子级和正在建立的后代，再等待本地idle、处理结果及资源释放。<code>drainDescendants</code>是宿主按确切父对象关闭该范围的新准入并清理后代的入口。不要只给父Agent发一次cancel，就写成全部后代立即停稳；H09普通父Handle也没有自动安装整套委派协议。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts#L1113-L1203" target="_blank" rel="noopener noreferrer">S21 · finishDisposal</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L465-L550" target="_blank" rel="noopener noreferrer">S38 · Factory teardown</a></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>阶段/入口</th><th>最终由谁负责</th><th>可观察的边界</th></tr></thead><tbody><tr><td>尚未接受的启动</td><td>调用方signal、Manager和Provider各自清理已取得部分</td><td>启动拒绝，不把它当成功Activation</td></tr><tr><td>成功启动返回后</td><td>Manager持有执行；调用者用本次dispose要求取消</td><td>原启动signal后来abort不等于已停止</td></tr><tr><td>sendMessage接受之前</td><td>此次消息操作signal</td><td>取消可阻止接受/冷物化</td></tr><tr><td>sendMessage接受之后</td><td>目标的Inbox与执行期</td><td>MessageId不是回答完成Promise</td></tr><tr><td>interrupt本地</td><td>目标Agent当前活动合作退出</td><td>回执先返回；未领取队列与后代保留</td></tr><tr><td>dispose/drain</td><td>Manager与具体Handle/外部run</td><td>等资源释放，清理故障仍须报告</td></tr></tbody></table></div>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：固定版本差异：不要把一条signal注释当全程保证</summary><div class="lesson-callout-body"><p><code>SubagentStartRequest.signal</code>的接口注释称它是启动前后统一取消通道；而ActivationSpec及包说明把它限制为发布前，发布后由dispose负责。实际Manager在外部start完成后移除启动转发监听；本地创建成功后也不把初始signal当永久执行控制器。实践B的post-accept-abort与C级外部句柄夹具证明：启动已接受后，原signal取消不等于停止执行。</p><p>所以教材按阶段说：启动前signal负责撤回；成功返回的Activation由Manager管理，用dispose控制这个执行期，interrupt只要求停止当前工作。这里的“外部句柄夹具”不创建外部进程，只验证真实Manager的外部分支，不能冒称ACP/Codex已验证。完整差异和原始失败见作者报告。</p></div></details>
+<h2>活跃名单与持久目录，分别回答什么？</h2>
+<p>父级需要保存子级发现信息，才能在它退出实时表后继续定位已做的调查。创建本地子级时，父Session记录 <code>subagent/catalog</code>；子Session记录自身 <code>subagent/descriptor</code>。Descriptor是日志事实，不进入普通模型Surface；目录记录成员关系，不承担当前执行状态。继承来的目录事实不会自动变成新子级自己的成员。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/catalog.ts#L115-L164" target="_blank" rel="noopener noreferrer">S30 · catalog projection / establishCatalogChild</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/descriptor.ts#L220-L269" target="_blank" rel="noopener noreferrer">S31 · snapshot / foldSubagentDescriptor</a></p>
+<p><code>listChildren(parentId)</code>点读父投影；<code>listDescendants(rootId)</code>按可达目录递归，保留父及深度信息，坏分支给诊断，外部条目是叶子。这些读取不必启动或恢复任何Agent。普通Session Fork不会自动入目录，不能把所有历史分支都叫子代理。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/list-children.ts#L29-L133" target="_blank" rel="noopener noreferrer">S32 · listChildren / listDescendants</a></p>
+<p>模型 <code>list_agents</code> 只展示可继续子级。它结合实时Agent Registry判断：status恰为running才显示running，空闲驻留与完全缺席都显示inactive。因此inactive不等于永久不能继续；也不单独证明是否已加载。服务后代列表的activity还有自己的Session来源判断，不能与模型工具状态混作一个枚举。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/tool-subagent-control/src/list-agents.ts#L50-L74" target="_blank" rel="noopener noreferrer">S33 · statusOf / project</a></p>
+<h2>进程外后端，只建立比较框架</h2>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>后端</th><th>本地能力与继续方式</th><th>本课证据</th></tr></thead><tbody><tr><td>Spawn / Fork</td><td>共享宿主进程，经Factory创建本地Agent/Session，可继续及冷恢复</td><td>真实组件与Mock LLM动态验证</td></tr><tr><td>ACP</td><td>外部Agent进程和协议会话，独立工具/权限，一次执行</td><td>固定实现静态阅读；未运行</td></tr><tr><td>DSH SDK</td><td>独立Harness运行时、Profile、Session；支持声明的Agent选项子集</td><td>固定实现静态阅读；未运行</td></tr><tr><td>Codex</td><td>受管理的app-server执行及原生权限配置，一次执行</td><td>未启动真实Codex</td></tr><tr><td>Claude Code</td><td>官方SDK驱动的CLI及原生权限配置，一次执行</td><td>未启动真实Claude Code</td></tr></tbody></table></div>
+<p>“外部没有本地子Session”是相对于父Runtime的本地Store说的，不表示外部产品自己没有会话。不能假定它们复用本地Factory、共享Cordis Context或支持继续消息。模型配置能力由Provider声明；进程释放、故障观察及权限转交需要具体后端协议，本课不作付费安装与E级验证。</p>
+<p>Agent Teams是需显式启用的实验扩展，不从基本父子委派自动获得团队能力。Subagent是执行能力；Workflow可以消费它做编排，两者不是同一个系统。本课不实现Workflow Engine。</p>
+<h2>精读路线：五站够走通主线</h2>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>站点</th><th>输入→处理→输出/失败</th><th>阅读目的</th></tr></thead><tbody><tr><td>subagent/src/index.ts</td><td>spec→名字/能力/精确父校验→分支或拒绝</td><td>找到服务边界；读startActivation与resolveMaxDepth</td></tr><tr><td>subagent/src/manager.ts</td><td>seed/请求→物化/接受/监测→结果/清理</td><td>分三次读startLocal、finishDisposal、coldResume；不一次通读全文件</td></tr><tr><td>spawn-in-process/src/index.ts</td><td>请求→空创建数据→新子级</td><td>明确零父历史</td></tr><tr><td>fork-in-process/src/index.ts</td><td>父日志→最后turn/end前缀→seed</td><td>找到准确切点</td></tr><tr><td>tool-subagent/src/index.ts</td><td>模型参数→startActivation→id</td><td>证明工具未等待最终答案</td></tr></tbody></table></div>
+<p>types、child-agent、descriptor/catalog、控制工具、Session及官方测试为辅助核对。链接和38条断言列在作者源码清单。读官方测试只定位/审读setup、操作与断言，本课没有运行含递归清理的原Vitest钩子；实际运行的是下列保留目录的作者用例。</p>
+<h2>实践准备：先预测，再运行，最后解释</h2>
+<p>在AI Foundry根目录，使用Node24和已锁定的独立源码/依赖缓存；换机配置及无缓存时的安装步骤见随课 <code>lab/README.md</code> 与作者README。Runner先核固定Git字节和全部直接/传递依赖integrity，再把程序复制到新临时目录，使用上游tsconfig路径映射。它设置新DSH_HOME，不带API凭据；所有产物保留，不做批量删除。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs
+node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs A caller
+node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs B spawn
+node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs C
+node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs D messages
+node docs/deepseek-harness-v2/h21/scripts/run-labs.mjs X</code></pre></div>
+<p>预期默认21项通过，C8/D13；每项原始输出、程序hash、临时路径和trace保存在作者evidence。实践编号A/B/C/D与证据等级不是同一套分类。公共准备中的Directory是按官方测试改编的内存目录协作者；Query子类只禁用全文搜索，观察/点读仍是官方SessionQueryEngine；Runtime子类只提供明确配置cell并沿用真实初始化和全部方法。没有自制Manager或模拟父子状态机。</p>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：公共准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import {Context,Service} from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore,{SessionId,SessionSeq} from &#x27;@deepseek-ai/dsh-session&#x27;;
+import LlmRuntime,{LlmAdapter,createUserMessage,ToolCallId} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SessionQueryEngine from &#x27;@deepseek-ai/dsh-session-query&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService,{defineTool} from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import {NativeToolExecutor} from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import SubagentRuntime from &#x27;@deepseek-ai/dsh-subagent&#x27;;
+import * as Spawn from &#x27;@deepseek-ai/dsh-subagent-spawn-in-process&#x27;;
+import * as Fork from &#x27;@deepseek-ai/dsh-subagent-fork-in-process&#x27;;
+import * as Delegate from &#x27;@deepseek-ai/dsh-tool-subagent&#x27;;
+import * as Control from &#x27;@deepseek-ai/dsh-tool-subagent-control&#x27;;
+import * as Jsonl from &#x27;@deepseek-ai/dsh-session-persistence-jsonl&#x27;;
+import {mkdtemp,writeFile} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+import {setImmediate as tick} from &#x27;node:timers/promises&#x27;;
+export {assert,SessionId,SessionSeq};
+export const blocks=(text:string)=&gt;[{type:&#x27;text&#x27; as const,text}];
+export const user=(text:string)=&gt;createUserMessage({source:{kind:&#x27;user&#x27;},content:blocks(text)});
+export const text=(value=&#x27;done&#x27;)=&gt;[{type:&#x27;text-delta&#x27;,index:0,text:value},{type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}}];
+export const call=(name:string,args:object={},id=name)=&gt;[
+ {type:&#x27;block-start&#x27;,index:0,blockType:&#x27;tool-call&#x27;},
+ {type:&#x27;block-end&#x27;,index:0,block:{type:&#x27;tool-call&#x27;,id:ToolCallId(id),name,arguments:JSON.stringify(args)}},
+ {type:&#x27;finish&#x27;,reason:{kind:&#x27;tool-calls&#x27;}},
+];
+export const visible=(messages:any[])=&gt;messages.flatMap(m=&gt;m.content).filter(b=&gt;b.type===&#x27;text&#x27;).map(b=&gt;b.text).join(&#x27;\n&#x27;);
+export function gate(){let release!:()=&gt;void;const promise=new Promise&lt;void&gt;(r=&gt;release=r);return {promise,release};}
+export async function until(check:()=&gt;boolean,label=&#x27;condition&#x27;){
+ for(let i=0;i&lt;3000;i++){if(check())return;await tick();}
+ throw Error(&#x27;bounded fixture did not reach &#x27;+label);
+}
+export async function bounded&lt;T&gt;(p:Promise&lt;T&gt;,label=&#x27;operation&#x27;):Promise&lt;T&gt;{
+ let timer:any;try{return await Promise.race([p,new Promise&lt;never&gt;((_,reject)=&gt;{timer=setTimeout(()=&gt;reject(Error(label+&#x27; timed out&#x27;)),10000);})]);}finally{clearTimeout(timer);}
+}
+// Official test pattern: production observeSession/point reads, no full-text backend.
+class PointQuery extends SessionQueryEngine {
+ override searchSessions():Promise&lt;never&gt;{return Promise.reject(Error(&#x27;full-text search not composed&#x27;));}
+ override searchEvents():Promise&lt;never&gt;{return Promise.reject(Error(&#x27;full-text search not composed&#x27;));}
+}
+// Adapted from official working-directory-fixture.ts. No fs, Shell or directory traversal.
+class FixtureDirectory extends Service {
+ private dirs=new WeakMap&lt;object,string&gt;();
+ constructor(ctx:Context){super(ctx,&#x27;workingDirectory&#x27;);}
+ get(s:any){return this.dirs.get(s)??s.header.cwd??process.env.H21_RUN_ROOT!;}
+ async ensure(a:any,signal?:AbortSignal){signal?.throwIfAborted();return this.get(a.session);}
+ async set(a:any,path:string,signal?:AbortSignal){signal?.throwIfAborted();const p=resolve(this.get(a.session),path);this.dirs.set(a.session,p);return p;}
+}
+export class Adapter extends LlmAdapter {
+ requests:any[]=[];scripts=new Map&lt;string,any[]&gt;();
+ async resolveModel(provider:string,model:string){return {provider,id:model,name:model,context:{contextWindow:100000},defaultMaxTokens:128};}
+ async *stream(options:any):AsyncGenerator&lt;any&gt;{
+  this.requests.push(structuredClone({...options,signal:undefined}));
+  const entry=this.scripts.get(options.model)?.shift();assert.ok(entry,&#x27;script exhausted for &#x27;+options.model);
+  if(entry instanceof Error)throw entry;
+  yield* typeof entry===&#x27;function&#x27;?entry(options):entry;
+ }
+}
+export async function fixture(options:{disk?:boolean;root?:string;capacity?:number;depth?:number;delegate?:boolean;control?:boolean}={}){
+ const ctx=new Context(),facts=new Map&lt;string,any[]&gt;(),lifecycle:any[]=[],errors:string[]=[],warnings:string[]=[];
+ await ctx.plugin(SessionStore);
+ ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{const a=facts.get(s.id)??[];a.push(e);facts.set(s.id,a);});
+ let root=options.root;
+ if(options.disk!==false){assert.ok(process.env.H21_RUN_ROOT);root??=await mkdtemp(resolve(process.env.H21_RUN_ROOT!,&#x27;h21-jsonl-&#x27;));await ctx.plugin(Jsonl,{root,compression:&#x27;none&#x27;});}
+ await ctx.plugin(LlmRuntime);await ctx.plugin(SessionProjectionRegistry);await ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,personaPrefix:&#x27;Analyze controlled, fictional project facts only.&#x27;});
+ await ctx.plugin(ToolsService);ctx.tools.setExecutor(new NativeToolExecutor(ctx));await ctx.plugin(AgentRegistry);await ctx.plugin(AgentLoop,{agents:[],maxParallelToolCalls:2});
+ await ctx.plugin(PointQuery);await ctx.plugin(FixtureDirectory);
+ // Explicit fixture config cells implement Volatile.get. This tests the Runtime,
+ // not Host settings UI, Loader reconciliation or their override precedence.
+ const limits={capacity:options.capacity??8,depth:options.depth??1};
+ class FixtureRuntime extends SubagentRuntime {
+  static Config=undefined as any;
+  constructor(inner:Context){super(inner,{maxActiveSubagents:{get:()=&gt;limits.capacity},maxDepth:{get:()=&gt;limits.depth}} as any);}
+ }
+ await ctx.plugin(FixtureRuntime);
+ const spawnFiber=await ctx.plugin(Spawn,{providerName:&#x27;spawn&#x27;});await ctx.plugin(Fork,{providerName:&#x27;fork&#x27;});
+ if(options.delegate)await ctx.plugin(Delegate,{provider:&#x27;spawn&#x27;,toolName:&#x27;subagent&#x27;});
+ if(options.control)await ctx.plugin(Control);
+ const adapter=new Adapter();ctx.llm.registerAdapter([&#x27;fixture&#x27;],adapter);
+ ctx.on(&#x27;subagent/start&#x27;,p=&gt;{lifecycle.push({edge:&#x27;start&#x27;,...p});});ctx.on(&#x27;subagent/end&#x27;,p=&gt;{lifecycle.push({edge:&#x27;end&#x27;,...p});});ctx.on(&#x27;agent/error&#x27;,p=&gt;{errors.push(String(p.error));});
+ const handles:any[]=[],owned=new Set&lt;any&gt;();
+ const create=async(id=&#x27;parent&#x27;,setup?:any)=&gt;{const h=await ctx.agents.create({sessionId:SessionId(id),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;parent&#x27;},setup});handles.push(h);return h.agent;};
+ const start=async(parent:any,provider=&#x27;spawn&#x27;,extra:any={})=&gt;{
+  const {signal=new AbortController().signal,delivery=&#x27;caller&#x27;,childId,...request}=extra;
+  const a=await ctx.subagents.startActivation({provider,label:&#x27;inspect tests&#x27;,request:{parent,prompt:blocks(&#x27;Inspect fictional tests; return test-count=3.&#x27;),agentOptions:{model:&#x27;child&#x27;},...request},signal,delivery,...childId===undefined?{}:{childId}});owned.add(a);return a;
+ };
+ const events=(a:any)=&gt;facts.get(typeof a===&#x27;string&#x27;?a:a.id)??[];
+ const tool=(name:string,execute:any,scope:any=ctx)=&gt;scope.tools.register(defineTool({name,description:&#x27;Controlled fixture &#x27;+name,parameters:{},output:{schema:{type:&#x27;string&#x27;},render:(_a:any,v:any)=&gt;blocks(v)},execute}));
+ const exec=async(a:any,name:string,args:object={})=&gt;{
+  const d=ctx.tools.get(name,a);assert.ok(d,name+&#x27; visible&#x27;);return d.execute(args as never,{agent:a,signal:new AbortController().signal} as any);
+ };
+ return {ctx,adapter,facts,events,lifecycle,errors,warnings,root,limits,create,start,tool,exec,owned,spawnFiber,
+  async release(agent:any){const i=handles.findIndex(h=&gt;h.agent===agent);assert.ok(i&gt;=0);await handles[i].dispose();handles.splice(i,1);},
+  async stored(id:any){const h=await ctx.sessionPersistence.open(id,&#x27;read&#x27;);try{return {header:h.header,...await h.read()};}finally{await h.close();}},
+  async close(){await ctx.subagents.drainDescendants(handles.map(h=&gt;h.agent));for(const a of owned)await a.dispose();for(const h of handles)await h.dispose();await ctx.fiber.dispose();},
+ };
+}
+export async function record(name:string,value:any){await writeFile(resolve(process.env.H21_RUN_ROOT!,&#x27;trace-&#x27;+name+&#x27;.json&#x27;),JSON.stringify(value,null,2)+&#x27;\n&#x27;);}
+export function hasText(events:any[],needle:string){return JSON.stringify(events).includes(needle);}</code></pre></div></div></details>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：隔离依赖完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// 依赖锚点均由作者 runner 按固定上游 lock 完整核验。
+import fs from &#x27;node:fs&#x27;;
+import {registerHooks, createRequire, syncBuiltinESMExports} from &#x27;node:module&#x27;;
+import {pathToFileURL} from &#x27;node:url&#x27;;
+const dep=createRequire(pathToFileURL(process.env.H21_DEPS_ANCHOR));
+const zod=createRequire(pathToFileURL(process.env.H21_ZOD_ANCHOR));
+const native=createRequire(pathToFileURL(process.env.H21_NATIVE_ANCHOR));
+const limit=createRequire(pathToFileURL(process.env.H21_LIMIT_ANCHOR));
+const entries=new Map([&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;]
+ .map(name=&gt;[name,pathToFileURL(dep.resolve(name)).href]));
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+entries.set(&#x27;koffi&#x27;,pathToFileURL(native.resolve(&#x27;koffi&#x27;)).href);
+entries.set(&#x27;p-limit&#x27;,pathToFileURL(limit.resolve(&#x27;p-limit&#x27;)).href);
+entries.set(&#x27;@js-temporal/polyfill&#x27;,pathToFileURL(limit.resolve(&#x27;@js-temporal/polyfill&#x27;)).href);
+registerHooks({resolve(specifier,context,next){return next(entries.get(specifier)??specifier,context);}});
+// 用户禁止批量/递归删除；包括上游异常清理路径也不准执行递归 rm。
+const rm=fs.promises.rm;
+fs.promises.rm=async(path,options)=&gt;{
+ if(options?.recursive)throw Error(&#x27;H21 safety guard: recursive removal forbidden&#x27;);
+ return rm(path,options);
+};
+syncBuiltinESMExports();</code></pre></div></div></details>
+<h3>实践 A：服务存在之后，还缺什么？</h3>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="实践 A：预测注册、拒绝与交付"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 A：预测注册、拒绝与交付</div><div class="lesson-callout-body"><p>运行registry、capabilities、cancel-start、no-persistence和caller。先写每项是否得到childId、是否产生生命周期边、是否有父完成通知。解释Fork独立Preset被拒绝的阶段；在缺持久化时比较parent与caller，而不是把两者都当启动失败。</p></div></aside>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,text,blocks,bounded} from &#x27;./support.ts&#x27;;
+export const A_CASES=[&#x27;registry&#x27;,&#x27;capabilities&#x27;,&#x27;cancel-start&#x27;,&#x27;no-persistence&#x27;,&#x27;caller&#x27;] as const;
+export async function practiceA(mode:string){
+ const f=await fixture({disk:mode!==&#x27;no-persistence&#x27;&amp;&amp;mode!==&#x27;registry&#x27;});
+ try{
+  const p=await f.create();
+  if(mode===&#x27;registry&#x27;){
+   assert.deepEqual(f.ctx.subagents.list(),[&#x27;spawn&#x27;,&#x27;fork&#x27;]);
+   assert.equal(f.ctx.subagents.getProvider(&#x27;spawn&#x27;)!.inheritsParentContext,false);
+   assert.equal(f.ctx.subagents.getProvider(&#x27;fork&#x27;)!.inheritsParentContext,true);
+   assert.throws(()=&gt;f.ctx.subagents.registerProvider({name:&#x27;broken&#x27;} as any),{code:&#x27;UNSUPPORTED_CAPABILITY&#x27;});
+   assert.throws(()=&gt;f.ctx.subagents.registerProvider(f.ctx.subagents.getProvider(&#x27;spawn&#x27;)!),{code:&#x27;DUPLICATE_PROVIDER&#x27;});
+   await assert.rejects(f.start(p,&#x27;missing&#x27;),{code:&#x27;NO_PROVIDER&#x27;});
+   return {providers:f.ctx.subagents.list(),missing:&#x27;NO_PROVIDER&#x27;,lifecycle:f.lifecycle};
+  }
+  if(mode===&#x27;capabilities&#x27;){
+   await assert.rejects(f.start(p,&#x27;fork&#x27;,{agentPreset:&#x27;independent&#x27;}),{code:&#x27;UNSUPPORTED_CAPABILITY&#x27;});
+   const unregister=f.ctx.subagents.registerProvider({name:&#x27;limited&#x27;,capabilities:{agentOptions:false,agentPreset:false,outputSchema:false,depthLimit:false},inheritsParentContext:false,start:async()=&gt;{throw Error(&#x27;must not reach&#x27;);}});
+   await assert.rejects(f.start(p,&#x27;limited&#x27;),{code:&#x27;UNSUPPORTED_CAPABILITY&#x27;});
+   unregister();assert.equal(f.ctx.subagents.getProvider(&#x27;limited&#x27;),undefined);
+   assert.equal(f.lifecycle.length,0);return {rejectedBeforeCreation:true};
+  }
+  if(mode===&#x27;cancel-start&#x27;){
+   const c=new AbortController();c.abort();await assert.rejects(f.start(p,&#x27;spawn&#x27;,{signal:c.signal}));
+   assert.deepEqual(f.ctx.agents.list().map(a=&gt;a.id),[p.id]);assert.equal(f.lifecycle.length,0);
+   return {accepted:false,registry:f.ctx.agents.list().map(a=&gt;a.id)};
+  }
+  if(mode===&#x27;no-persistence&#x27;){
+   await assert.rejects(f.start(p,&#x27;spawn&#x27;,{delivery:&#x27;parent&#x27;}),{code:&#x27;PERSISTENCE_UNAVAILABLE&#x27;});
+   f.adapter.scripts.set(&#x27;child&#x27;,[text(&#x27;ephemeral caller result&#x27;)]);
+   const a=await f.start(p);const result=await bounded(a.result);assert.equal(result.stopReason,&#x27;completed&#x27;);
+   assert.equal(f.ctx.agents.get(a.childId),undefined);return {result,parentNotices:f.events(p).filter(e=&gt;e.type===&#x27;user/message&#x27;).length};
+  }
+  assert.equal(mode,&#x27;caller&#x27;);f.adapter.scripts.set(&#x27;child&#x27;,[text(&#x27;test-count=3&#x27;)]);
+  const a=await f.start(p);const result=await bounded(a.result);await a.dispose();
+  assert.deepEqual(result.output,blocks(&#x27;test-count=3&#x27;));assert.equal(f.ctx.agents.get(a.childId),undefined);
+  assert.equal(f.events(p).filter(e=&gt;e.type===&#x27;user/message&#x27;).length,0);
+  const children=await f.ctx.subagents.listChildren(p.id);assert.equal(children[0].id,a.childId);
+  return {result,children,lifecycle:f.lifecycle,parent:f.events(p),child:f.events(a.childId)};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>registry得到spawn/fork两个名称；missing为NO_PROVIDER，重复注册及无执行方法各按自己的错误拒绝。capabilities在Factory创建前拒绝Fork独立Preset和不支持选项的后端，生命周期边为0。cancel-start预先取消，也没有可用子级，Registry只剩父级。</p><p>no-persistence中parent以PERSISTENCE_UNAVAILABLE拒绝；caller仍真实创建临时本地子级并收到completed。caller模式的output为test-count=3、父user/message数0，但父catalog存在该子级。此时子Agent已退出实时表，Session由JSONL保留；不能说“没有父通知所以子级没运行”。</p><p>建议10分：注册及具名选择2，能力/取消阶段3，两种delivery和持久化3，结果/清理/目录2。只看进程退出0不算完成；必须指出NOT_RUN的Host UI和真实外部后端。</p></div></details>
+<h3>实践 B：全新的子级，有自己的工作状态</h3>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="实践 B：先写两张Session与工具表"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 B：先写两张Session与工具表</div><div class="lesson-callout-body"><p>运行spawn、child-failure、post-accept-abort。父级先完成一轮并持有局部工具；子级模型被门闩暂停。预测父子SessionId、继承数、工具可见性和status，再放行；失败分支要查stopReason，启动后取消原signal要查真实是否停止。</p></div></aside>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,text,gate,until,bounded,user,hasText} from &#x27;./support.ts&#x27;;
+export const B_CASES=[&#x27;spawn&#x27;,&#x27;child-failure&#x27;,&#x27;post-accept-abort&#x27;] as const;
+export async function practiceB(mode:string){
+ const g=gate(),f=await fixture();
+ try{
+  const parent=await f.create(&#x27;parent&#x27;,async(inner:any)=&gt;{f.tool(&#x27;parent_only&#x27;,async()=&gt;&#x27;parent secret&#x27;,inner);});
+  f.adapter.scripts.set(&#x27;parent&#x27;,[text(&#x27;PARENT_PRIVATE_HISTORY&#x27;)]);parent.followup(user(&#x27;parent context&#x27;));await bounded(parent.whenIdle());
+  let entered=false;
+  f.adapter.scripts.set(&#x27;child&#x27;,[async function*(){entered=true;await g.promise;if(mode===&#x27;child-failure&#x27;)throw Error(&#x27;controlled child transport failure&#x27;);yield*text(&#x27;test-count=3&#x27;);}]);
+  const c=new AbortController();const a=await f.start(parent,&#x27;spawn&#x27;,{signal:c.signal});const child=f.ctx.agents.get(a.childId)!;
+  await until(()=&gt;entered);assert.notEqual(child.id,parent.id);assert.equal(child.session.inheritedEventCount,0);
+  assert.equal(f.ctx.agents.isOwnedBy(child.id,parent),true);assert.equal(f.ctx.tools.get(&#x27;parent_only&#x27;,child),undefined);
+  assert.equal(hasText(f.events(child),&#x27;PARENT_PRIVATE_HISTORY&#x27;),false);assert.ok(hasText(f.events(child),&#x27;Inspect fictional tests&#x27;));
+  assert.notEqual(child.ctx,parent.ctx);assert.equal(parent.status,&#x27;idle&#x27;);assert.equal(child.status,&#x27;running&#x27;);
+  if(mode===&#x27;post-accept-abort&#x27;){c.abort();assert.equal(child.status,&#x27;running&#x27;);}
+  g.release();const result=await bounded(a.result);await a.dispose();
+  assert.equal(result.stopReason,mode===&#x27;child-failure&#x27;?&#x27;error&#x27;:&#x27;completed&#x27;);assert.equal(f.ctx.agents.get(child.id),undefined);
+  return {mode,parentId:parent.id,childId:child.id,inherited:child.session.inheritedEventCount,parentTools:f.ctx.tools.schemas(parent).map((x:any)=&gt;x.name),result,lifecycle:f.lifecycle,parent:f.events(parent),child:f.events(child),requests:f.adapter.requests,errors:f.errors};
+ }finally{g.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>父级保有PARENT_PRIVATE_HISTORY，子级继承数0，子日志没有这段历史，却有自己的任务输入。两个ID和Context不同，Registry确认子级owner是确切父对象；父局部parent_only对子级不可见。门闩内父idle、子running，父子状态没有强制同步。</p><p>正常及post-accept-abort最终completed、output=test-count=3；后者abort发生在成功接受之后，不是发布前取消。child-failure从真实Adapter抛受控传输错误，最终error，子级资源仍释放。不能把控制结果error改成“没有子Session”，也不能把Mock的固定输出当真实模型测试能力。</p><p>建议10分：历史与初始任务3，Scope与实时owner3，两个状态1，失败/取消/清理3。门闩由finally放行，不能用不结束的Promise当取消实验。</p></div></details>
+<h3>实践 C：两种Fork，同一父级、不同边界</h3>
+<aside id="lesson-task-3" class="lesson-callout lesson-task" aria-label="实践 C：逐事件预测继承范围"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 C：逐事件预测继承范围</div><div class="lesson-callout-body"><p>先跑C，再跑C empty。画出已完成前缀、当前开放输入、子标记与descriptor；比较普通Session Fork选当前user/message时的历史。父级后来完成当前轮次，子日志是否变化？子级自己的回答追加在哪里？</p></div></aside>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,text,gate,until,bounded,user,hasText,SessionId,SessionSeq,record} from &#x27;./support.ts&#x27;;
+export async function practiceC(empty=false){
+ const pg=gate(),cg=gate(),f=await fixture();let ordinary:any;
+ try{
+  const p=await f.create();
+  if(!empty){f.adapter.scripts.set(&#x27;parent&#x27;,[text(&#x27;COMPLETED_PARENT&#x27;)]);p.followup(user(&#x27;closed turn&#x27;));await bounded(p.whenIdle());}
+  const prefix=[...f.events(p)];let parentEntered=false;
+  f.adapter.scripts.set(&#x27;parent&#x27;,[async function*(){parentEntered=true;yield {type:&#x27;text-delta&#x27;,index:0,text:&#x27;CURRENT_PARTIAL&#x27;};await pg.promise;yield {type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}};}]);
+  p.followup(user(&#x27;CURRENT_OPEN_INPUT&#x27;));await until(()=&gt;parentEntered);
+  const openInput=f.events(p).findLast(e=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;hasText([e],&#x27;CURRENT_OPEN_INPUT&#x27;))!;
+  ordinary=f.ctx.sessions.fork(p.session,SessionSeq(openInput.seq),SessionId(&#x27;ordinary-fork&#x27;));
+  assert.equal(ordinary.header.parentSession,undefined);assert.ok(hasText(ordinary.deriveMessages(),&#x27;CURRENT_OPEN_INPUT&#x27;));
+  const childReply=async function*(){await cg.promise;yield*text(&#x27;CHILD_OWN_ANSWER&#x27;);};
+  // Keep the fork on the inherited request route; this exercise isolates history,
+  // and does not claim to verify changing a seeded child&#x27;s model selection.
+  if(empty)f.adapter.scripts.set(&#x27;child&#x27;,[childReply]);else f.adapter.scripts.get(&#x27;parent&#x27;)!.push(childReply);
+  const a=await f.start(p,&#x27;fork&#x27;,{agentOptions:{model:empty?&#x27;child&#x27;:&#x27;parent&#x27;}});const child=f.ctx.agents.get(a.childId)!;
+  const inherited=child.session.inheritedEventCount;
+  assert.equal(inherited,prefix.length);assert.equal(hasText(f.events(child),&#x27;CURRENT_OPEN_INPUT&#x27;),false);
+  // Inherited events are observed through the production point-read, not emitted anew.
+  using observation=await f.ctx.sessionQuery.observeSession(child.id);
+  assert.deepEqual(observation.events.slice(0,inherited),prefix);
+  assert.equal(empty?child.session.header.isSeeded===false:child.session.header.isSeeded===true,true);
+  pg.release();await bounded(p.whenIdle());
+  assert.equal(hasText(f.events(child),&#x27;CURRENT_PARTIAL&#x27;),false);
+  cg.release();const result=await bounded(a.result);const stored=await f.stored(child.id);
+  await record(&#x27;fork-diagnostic-&#x27;+empty,{result,options:child.options,requests:f.adapter.requests,errors:f.errors,stored});
+  assert.deepEqual(stored.events.slice(0,inherited),prefix);assert.ok(hasText(stored.events.slice(inherited),&#x27;CHILD_OWN_ANSWER&#x27;));
+  const catalog=await f.ctx.subagents.listChildren(p.id);assert.ok(catalog.some(x=&gt;x.id===child.id));assert.ok(!catalog.some(x=&gt;x.id===ordinary.id));
+  return {empty,prefix,inherited,openInput,child:stored,ordinary:{header:ordinary.header,messages:ordinary.deriveMessages()},catalog,result,parent:f.events(p),lifecycle:f.lifecycle};
+ }finally{pg.release();cg.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>有已完轮次时，prefix为Seq0～10共11条，子级持久日志的前11条逐对象相同；Seq11为继承标记，Seq12为自身descriptor。当前CURRENT_OPEN_INPUT和父后来的CURRENT_PARTIAL均不进入Fork子级历史。子级随后独立记录CHILD_OWN_ANSWER；ordinary分支却含选中的开放轮次输入，并由普通Fork规则闭合。</p><p>ordinary.header没有自动parentSession，也没有被写入父subagent目录。目录只含实际Fork Provider创建的子级。empty分支没有任何已完Turn，所以继承数0、没有凭空造父历史；仍会创建真实子Session和运行子级。两种实验均保持适合该前缀的模型路线，不验证任意换模型。</p><p>建议15分：准确11条及marker/descriptor4，当前Turn排除3，后续独立3，普通Fork不同边界及目录4，空前缀1。不能用事件总量相近代替逐前缀比较。</p></div></details>
+<h3>实践 D：一张回执，几条独立的后续路径</h3>
+<aside id="lesson-task-4" class="lesson-callout lesson-task" aria-label="实践 D：消息、发现、限制与停稳"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 D：消息、发现、限制与停稳</div><div class="lesson-callout-body"><p>运行messages、cold-resume、limits-tree和interrupt。先预测MessageId返回时是否已有Assistant答复；列直接子级与后代的可发送/可中断范围；在容量1时预测第二次准入。最后区分interrupt的回执、真正idle、Activation释放和历史仍可发现。</p></div></aside>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,text,call,gate,until,bounded,blocks,user,hasText} from &#x27;./support.ts&#x27;;
+export const D_CASES=[&#x27;messages&#x27;,&#x27;cold-resume&#x27;,&#x27;limits-tree&#x27;,&#x27;interrupt&#x27;] as const;
+export async function practiceD(mode:string){
+ const g=gate(),h=gate(),f=await fixture({control:true,capacity:mode===&#x27;limits-tree&#x27;?1:8});
+ try{
+  const p=await f.create();let entered=0;
+  f.tool(&#x27;child_probe&#x27;,async()=&gt;&#x27;probe=3&#x27;);
+  const pending=async function*(){entered++;await g.promise;yield*call(&#x27;child_probe&#x27;);};
+  f.adapter.scripts.set(&#x27;child&#x27;,[pending,text(&#x27;CHILD_REPLY&#x27;)]);
+  const a=await f.start(p),child=f.ctx.agents.get(a.childId)!;await until(()=&gt;entered===1);
+  if(mode===&#x27;messages&#x27;){
+   const receipt=await f.exec(p,&#x27;send_message&#x27;,{agent_id:child.id,message:&#x27;STEER_AT_NEXT_STEP&#x27;});
+   assert.ok(receipt.messageId);assert.equal(f.events(child).filter(e=&gt;e.type===&#x27;assistant/message&#x27;).length,0);
+   assert.ok(child.inbox.nextStep.some(m=&gt;m.id===receipt.messageId));
+   const outsider=await f.create(&#x27;outsider&#x27;);await assert.rejects(f.ctx.subagents.sendMessage(outsider,child.id,blocks(&#x27;denied&#x27;),{signal:new AbortController().signal}),{code:&#x27;UNAUTHORIZED&#x27;});
+   // Direct-parent relay is independently attributed and accepted while parent is idle.
+   f.adapter.scripts.set(&#x27;parent&#x27;,[text(&#x27;parent received relay&#x27;)]);
+   const parentReceipt=await f.ctx.subagents.sendMessage(child,p.id,blocks(&#x27;CHILD_PROGRESS&#x27;),{signal:new AbortController().signal});
+   assert.ok(parentReceipt);g.release();const result=await bounded(a.result);await bounded(p.whenIdle());
+   assert.ok(f.adapter.requests.some(r=&gt;r.model===&#x27;child&#x27;&amp;&amp;hasText(r.messages,&#x27;STEER_AT_NEXT_STEP&#x27;)));
+   assert.ok(f.events(p).some(e=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;agent-message&#x27;));
+   return {receipt,parentReceipt,result,parent:f.events(p),child:f.events(child),requests:f.adapter.requests};
+  }
+  if(mode===&#x27;limits-tree&#x27;){
+   await assert.rejects(f.start(p),{code:&#x27;ACTIVATION_LIMIT_REACHED&#x27;});
+   await assert.rejects(f.start(child,&#x27;spawn&#x27;,{maxDepth:1}),{name:&#x27;SubagentDepthError&#x27;});
+   f.limits.capacity=2;
+   f.adapter.scripts.set(&#x27;grand&#x27;,[async function*(){await h.promise;yield*text(&#x27;grand done&#x27;);}]);
+   const b=await f.start(child,&#x27;spawn&#x27;,{maxDepth:2,agentOptions:{model:&#x27;grand&#x27;}});const grand=f.ctx.agents.get(b.childId)!;
+   assert.equal(grand.session.header.delegationDepth,2);
+   const direct=await f.exec(p,&#x27;list_agents&#x27;),tree=await f.exec(p,&#x27;list_agents&#x27;,{scope:&#x27;descendants&#x27;});
+   assert.equal(direct.length,1);assert.equal(tree.length,2);assert.equal(tree[1].depth,2);
+   await assert.rejects(f.ctx.subagents.sendMessage(p,grand.id,blocks(&#x27;not adjacent&#x27;),{signal:new AbortController().signal}),{code:&#x27;UNAUTHORIZED&#x27;});
+   assert.deepEqual(await f.exec(p,&#x27;interrupt_agent&#x27;,{agent_id:child.id}),{accepted:true});
+   assert.equal(grand.status,&#x27;running&#x27;);
+   let disposed=false;const closing=a.dispose().then(()=&gt;{disposed=true;});await Promise.resolve();assert.equal(disposed,false);
+   g.release();h.release();await bounded(closing);await bounded(b.result);
+   assert.equal(f.ctx.agents.get(grand.id),undefined);assert.equal(f.ctx.agents.get(child.id),undefined);
+   f.adapter.scripts.set(&#x27;child&#x27;,[text(&#x27;slot reused&#x27;)]);const next=await f.start(p);await bounded(next.result);
+   return {direct,tree,capacity:2,slotReused:true,lifecycle:f.lifecycle,child:f.events(child),grand:f.events(grand)};
+  }
+  if(mode===&#x27;interrupt&#x27;){
+   child.followup(user(&#x27;PARKED_FIFO&#x27;)); // Real Inbox; interrupt preserves this unclaimed queue.
+   assert.deepEqual(await f.exec(p,&#x27;interrupt_agent&#x27;,{agent_id:child.id}),{accepted:true});
+   let idle=false;const idlePromise=child.whenIdle().then(()=&gt;{idle=true;});await Promise.resolve();assert.equal(idle,false);
+   g.release();await bounded(idlePromise);assert.ok(child.inbox.nextTurn.length&gt;0);assert.equal(f.ctx.agents.get(child.id),child);
+   f.adapter.scripts.set(&#x27;child&#x27;,[text(&#x27;parked task done&#x27;),text(&#x27;wake task done&#x27;)]);
+   const receipt=await f.exec(p,&#x27;send_message&#x27;,{agent_id:child.id,message:&#x27;WAKE_AFTER_INTERRUPT&#x27;});
+   assert.ok(receipt.messageId);const result=await bounded(a.result);
+   assert.ok(hasText(f.events(child),&#x27;PARKED_FIFO&#x27;));assert.ok(hasText(f.events(child),&#x27;WAKE_AFTER_INTERRUPT&#x27;));
+   return {receipt,idleBeforeGate:false,result,child:f.events(child),lifecycle:f.lifecycle};
+  }
+  assert.equal(mode,&#x27;cold-resume&#x27;);g.release();await bounded(a.result);assert.equal(f.ctx.agents.get(child.id),undefined);
+  const stored=await f.stored(child.id);assert.ok(stored.events.some(e=&gt;e.type===&#x27;subagent/descriptor&#x27;));
+  // Remove Provider registration; cold resume reconstructs from descriptor, not another fork/spawn preparation.
+  await f.spawnFiber.dispose();assert.equal(f.ctx.subagents.getProvider(&#x27;spawn&#x27;),undefined);
+  f.adapter.scripts.set(&#x27;child&#x27;,[async function*(){entered++;await h.promise;yield*text(&#x27;COLD_REPLY&#x27;);}]);
+  f.adapter.scripts.set(&#x27;parent&#x27;,[text(&#x27;parent received cold completion&#x27;)]);
+  const receipt=await f.exec(p,&#x27;send_message&#x27;,{agent_id:child.id,message:&#x27;COLD_FOLLOWUP&#x27;});
+  const replacement=f.ctx.agents.get(child.id)!;assert.notEqual(replacement,child);assert.equal(replacement.id,child.id);
+  await a.dispose();assert.equal(f.ctx.agents.get(child.id),replacement);
+  assert.ok(receipt.messageId);assert.equal(hasText(f.events(child),&#x27;COLD_REPLY&#x27;),false);
+  h.release();await bounded(f.ctx.subagents.waitForChildren(p));await bounded(p.whenIdle());
+  const after=await f.stored(child.id);assert.deepEqual(after.events.slice(0,stored.events.length),stored.events);
+  assert.ok(hasText(after.events,&#x27;COLD_REPLY&#x27;));const list=await f.exec(p,&#x27;list_agents&#x27;);assert.equal(list[0].status,&#x27;inactive&#x27;);
+  return {receipt,list,providerRegistered:false,stored,after,lifecycle:f.lifecycle,root:f.root,scope:&#x27;same-process new Agent and writer, real JSONL; no crash or new PID&#x27;};
+ }finally{g.release();h.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>messages先返回MessageId，此时child的Assistant消息数仍0，输入在nextStep；放行后下一Step的模型请求才包含STEER_AT_NEXT_STEP。外人发送被UNAUTHORIZED拒绝；驻留子级向直接父发送则产生归属于sender的agent-message。回执与最终结果各有证据，不能相互替代。</p><p>cold-resume先等原Activation结束并读真实JSONL。撤掉Spawn Provider后，send_message仍可按历史descriptor重建同childId的新Agent；旧dispose不影响新实例。新输入完成后持久前缀保持一致，目录状态inactive，但可以继续。此次恢复仍在同进程/同Context中，另一个新Context的只读发现由边界程序单独验证。</p><p>limits-tree在容量1拒绝第二项；cap1阻止深度2。容量增至2、请求cap2后真实创建孙级。父list_agents默认1条，descendants为2条；父不能直接send给孙，但可interrupt后代。interrupt子级时孙仍running。dispose子Activation会要求整条所拥有分支停下；门闩未放前不完成，放行并清理后名额可再次使用。</p><p>interrupt保留PARKED_FIFO，回执先于idle；退出当前活动后队列仍驻留，新的唤醒消息才继续处理。最终结果可反映后来完成的工作，不能仅凭最早一次中断就永久标aborted。</p><p>建议20分：接受/回答4，邻接与发现4，冷恢复及新旧身份4，深度/容量4，中断/释放4。把interrupt说成全部后代立即终止、把inactive说成永远不可续行，必须先纠正。</p></div></details>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：边界验证完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,blocks,text,gate,until,bounded,SessionId} from &#x27;./support.ts&#x27;;
+export const C_CASES=[&#x27;tool-registration&#x27;,&#x27;external-cleanup&#x27;,&#x27;teardown-failure&#x27;,&#x27;startup-abort&#x27;,&#x27;parent-replaced&#x27;] as const;
+export async function componentBoundary(mode:string){
+ const f=await fixture({delegate:true,disk:mode!==&#x27;parent-replaced&#x27;}),g=gate(),runResult=Promise.withResolvers&lt;any&gt;();
+ try{
+  const parent=await f.create();
+  if(mode===&#x27;tool-registration&#x27;){
+   assert.ok(f.ctx.tools.get(&#x27;subagent&#x27;,parent));await f.spawnFiber.dispose();assert.equal(f.ctx.tools.get(&#x27;subagent&#x27;,parent),undefined);
+   assert.ok(f.ctx.subagents.getProvider(&#x27;fork&#x27;));return {toolRemoved:true,otherProvider:&#x27;fork&#x27;};
+  }
+  let disposed=0,started=false,controller:AbortSignal|undefined;
+  f.ctx.subagents.registerProvider({name:&#x27;handle-fixture&#x27;,inheritsParentContext:false,capabilities:{agentOptions:false,agentPreset:false,outputSchema:false,depthLimit:false},async start(request:any){
+   started=true;controller=request.signal;
+   if(mode===&#x27;startup-abort&#x27;){
+    await new Promise&lt;void&gt;(resolve=&gt;request.signal.addEventListener(&#x27;abort&#x27;,()=&gt;resolve(),{once:true}));disposed++;request.signal.throwIfAborted();
+   }
+   return {id:SessionId(&#x27;external-fixture&#x27;),result:runResult.promise,async dispose(){disposed++;await g.promise;if(mode===&#x27;teardown-failure&#x27;)throw Error(&#x27;controlled release failure&#x27;);}};
+  }});
+  const c=new AbortController();
+  const starting=f.ctx.subagents.startActivation({provider:&#x27;handle-fixture&#x27;,label:&#x27;fake execution handle&#x27;,request:{parent,prompt:blocks(&#x27;constant fixture&#x27;)},signal:c.signal,delivery:mode===&#x27;parent-replaced&#x27;?&#x27;parent&#x27;:&#x27;caller&#x27;});
+  if(mode===&#x27;startup-abort&#x27;){
+   await until(()=&gt;started);c.abort();await assert.rejects(starting);assert.equal(disposed,1);assert.equal(f.lifecycle.length,0);
+   return {startupCancelled:true,partialCleanup:disposed,externalProcess:false};
+  }
+  const activation=await starting;f.owned.add(activation);
+  await assert.rejects(f.ctx.subagents.sendMessage(parent,activation.childId,blocks(&#x27;unsupported&#x27;),{signal:new AbortController().signal}),{code:&#x27;NOT_CONTINUABLE&#x27;});
+  c.abort();assert.equal(controller!.aborted,false);
+  if(mode===&#x27;parent-replaced&#x27;){
+   // Closing only the H09 parent handle is distinct from scoped descendant drain.
+   // It leaves this independent managed handle until the manager settles it.
+   // Exact original parent is unavailable; result cannot be addressed to another instance.
+   await f.release(parent);const replacement=await f.create(&#x27;parent&#x27;);assert.notEqual(replacement,parent);
+  }
+  runResult.resolve({output:blocks(&#x27;captured result&#x27;),stopReason:&#x27;completed&#x27;});
+  let settled=false;const outcome=activation.result.then(v=&gt;{settled=true;return v;});await until(()=&gt;disposed===1);assert.equal(settled,false);
+  g.release();const result=await bounded(outcome);assert.deepEqual(result.output,blocks(&#x27;captured result&#x27;));
+  if(mode===&#x27;teardown-failure&#x27;){
+   await assert.rejects(activation.dispose(),/controlled release failure/);f.owned.delete(activation);
+   assert.equal(f.lifecycle.at(-1).stopReason,&#x27;error&#x27;);assert.equal(result.stopReason,&#x27;completed&#x27;);
+  }else{await activation.dispose();assert.equal(disposed,1);}
+  if(mode===&#x27;parent-replaced&#x27;){assert.equal(f.adapter.requests.length,0);assert.equal(f.events(parent).filter(e=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;subagent-settled&#x27;).length,0);}
+  return {mode,result,lifecycle:f.lifecycle,disposed,resultWaitedForCleanup:true,externalProcess:false};
+ }finally{runResult.resolve({output:[],stopReason:&#x27;aborted&#x27;});g.release();await f.close();}
+}
+export async function persistedDiscovery(){
+ const f=await fixture();let root:string|undefined,id:any,childId:any,stored:any;
+ try{const parent=await f.create();id=parent.id;f.adapter.scripts.set(&#x27;child&#x27;,[text(&#x27;saved child&#x27;)]);const a=await f.start(parent);childId=a.childId;await bounded(a.result);await f.ctx.sessions.flush(parent.session);root=f.root;stored=await f.stored(childId);}finally{await f.close();}
+ const next=await fixture({root});
+ try{
+  assert.equal(next.ctx.agents.list().length,0);
+  const children=await next.ctx.subagents.listChildren(id),tree=await next.ctx.subagents.listDescendants(id);
+  assert.equal(children[0].id,childId);assert.equal(tree[0].activity,&#x27;inactive&#x27;);assert.equal(next.ctx.agents.list().length,0);assert.equal(next.adapter.requests.length,0);
+  const reread=await next.stored(childId);assert.deepEqual(reread.events,stored.events);
+  return {root,children,tree,agents:[],modelCalls:0,newContext:true,stored:reread};
+ }finally{await next.close();}
+}</code></pre></div></div></details>
+<p>边界程序还验证：Provider撤销带走模型工具；真实Manager对<strong>自制外部执行句柄</strong>先等释放才兑现result；清理失败时已捕获completed结果与end:error、dispose拒绝并存；启动前取消清理部分资源；同ID新父实例不接收旧父通知；另一个新Context从真实JSONL列目录，Agent数量和模型调用均0。外部执行句柄是受控协作者，不创建外部Agent或进程，不升级E。</p>
+<h2>综合实验：父级先获ID，再综合子级证据</h2>
+<p>输入仍是“研究虚构项目架构并检查测试”。父Mock提出官方 <code>inspect_subagent</code> 工具调用；该工具绑定Spawn并配置子模型路线。子Mock先调用自身的child_only得到test-count=3，再用真实send_message回父级，最后收尾。父级始终没有子级局部工具，子级也没有父局部工具。</p>
+<p>先预测四份产物：原委派ToolResult、子级relay、Runtime结算通知、继续消息后的新Activation。再运行X，逐一对照父子Session和生命周期；最后比较实践C的Fork初始历史。完整事件、请求及存储读回保留在trace-X.json。</p>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实验完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,text,call,gate,until,bounded,user,hasText,blocks} from &#x27;./support.ts&#x27;;
+import {practiceC} from &#x27;./C.ts&#x27;;
+export async function integrated(){
+ const g=gate(),f=await fixture({control:true});
+ try{
+  let parentRequests=0,childRequests=0,child:any;
+  const parent=await f.create(&#x27;parent&#x27;,async(inner:any)=&gt;{f.tool(&#x27;parent_only&#x27;,async()=&gt;&#x27;architecture fixture&#x27;,inner);});
+  f.ctx.on(&#x27;agent/created&#x27;,({agent})=&gt;{if(agent.id!==parent.id){child=agent;f.tool(&#x27;child_only&#x27;,async()=&gt;&#x27;test-count=3&#x27;,agent.ctx);}});
+  // Each route is a deterministic Mock script. No real model reasons about the fixture.
+  // An explicitly configured child route uses a separate Mock script.
+  const Delegate=await import(&#x27;@deepseek-ai/dsh-tool-subagent&#x27;);
+  await f.ctx.plugin(Delegate,{provider:&#x27;spawn&#x27;,toolName:&#x27;inspect_subagent&#x27;,agentOptions:{model:&#x27;child&#x27;}});
+  const firstParent=async function*(options:any){parentRequests++;if(!hasText(options.messages,&#x27;started subagent&#x27;))yield*call(&#x27;inspect_subagent&#x27;,{description:&#x27;inspect test suite&#x27;,prompt:&#x27;Use child_only on fictional tests; report test-count=3 via send_message.&#x27;});else yield*text(&#x27;Parent integrated the delegated evidence.&#x27;);};
+  f.adapter.scripts.set(&#x27;parent&#x27;,Array(12).fill(firstParent));
+  f.adapter.scripts.set(&#x27;child&#x27;,[
+   async function*(){childRequests++;await g.promise;yield*call(&#x27;child_only&#x27;);},
+   call(&#x27;send_message&#x27;,{agent_id:parent.id,message:&#x27;test-count=3; fixture only&#x27;}),text(&#x27;CHILD_CLOSING&#x27;),text(&#x27;FOLLOWUP_REPLY&#x27;),
+  ]);
+  parent.followup(user(&#x27;Analyze architecture and test coverage of the fictional project.&#x27;));
+  await until(()=&gt;childRequests===1);await bounded(parent.whenIdle());
+  const toolResult=f.events(parent).find(e=&gt;e.type===&#x27;tool/result&#x27;&amp;&amp;hasText([e],&#x27;started subagent&#x27;));
+  assert.ok(toolResult);assert.equal(child.status,&#x27;running&#x27;);assert.equal(hasText(f.events(parent),&#x27;test-count=3; fixture only&#x27;),false);
+  assert.equal(f.ctx.tools.get(&#x27;parent_only&#x27;,child),undefined);assert.equal(f.ctx.tools.get(&#x27;child_only&#x27;,parent),undefined);
+  const visibleTools={parent:f.ctx.tools.schemas(parent).map(x=&gt;x.name),child:f.ctx.tools.schemas(child).map(x=&gt;x.name)};
+  const firstId=child.id;g.release();await bounded(f.ctx.subagents.waitForChildren(parent));await bounded(parent.whenIdle());
+  assert.ok(f.events(parent).some(e=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;agent-message&#x27;));
+  const notice=f.events(parent).find(e=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;subagent-settled&#x27;);assert.ok(notice);
+  assert.ok(hasText([notice],&#x27;closing message is omitted&#x27;));assert.equal(hasText([notice],&#x27;CHILD_CLOSING&#x27;),false);
+  const childBefore=await f.stored(firstId);assert.equal(f.ctx.agents.get(firstId),undefined);
+  const receipt=await f.exec(parent,&#x27;send_message&#x27;,{agent_id:firstId,message:&#x27;Continue: explain the fixture limit.&#x27;});
+  await bounded(f.ctx.subagents.waitForChildren(parent));await bounded(parent.whenIdle());
+  const childAfter=await f.stored(firstId);assert.ok(hasText(childAfter.events,&#x27;FOLLOWUP_REPLY&#x27;));
+  assert.deepEqual(childAfter.events.slice(0,childBefore.events.length),childBefore.events);
+  await f.ctx.sessions.flush(parent.session);
+  const children=await f.ctx.subagents.listChildren(parent.id),registry=f.ctx.agents.list().map(a=&gt;({id:a.id,status:a.status}));
+  assert.equal(children.length,1);assert.deepEqual(registry,[{id:parent.id,status:&#x27;idle&#x27;}]);
+  return {toolResult,receipt,visibleTools,parentRequests,childRequests,parent:f.events(parent),childBefore,childAfter,lifecycle:f.lifecycle,children,registry,requests:f.adapter.requests,root:f.root,comparison:await practiceC(false)};
+ }finally{g.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合详细参考答案与评分</summary><div class="lesson-callout-body"><p>父Seq9记录委派tool/call，Seq10是父所有catalog，Seq11才是原工具结果started subagent；当时子级仍被门闩挂住。它不是子任务完成答案。父级继续到Seq16结束第一Turn。</p><p>放行后，子级自己的工具事实留在子Session；它向父发送的relay由父Seq21 user/message消费。其后父Seq29 user/message是Runtime的subagent-settled，包含closing省略提示，没有把CHILD_CLOSING冒充relay重复归给子级。两条通知可能引发不同Turn，本夹具有明确门控及有界等待；不能把本次Seq当通用硬编码。</p><p>再发送后续消息，子Session保留原前缀并追加FOLLOWUP_REPLY；同childId对应第二组不同runId的start/end。最后活跃Registry只有idle父Agent，持久目录仍有一个continuable子级。父子工具集合、两个Session事件、Activation边、父级交付、Registry和目录这六份证据必须同时解释。</p><p>建议20分：初始回执4，两个消息来源与结果归属4，Scope2，冷继续与两个runId4，Registry/目录及Spawn/Fork对照4，证据等级2。真实模型语义质量、费用、跨进程、崩溃和完整应用均未验证。</p></div></details>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {practiceA} from &#x27;./A.ts&#x27;;
+import {practiceB} from &#x27;./B.ts&#x27;;
+import {practiceC} from &#x27;./C.ts&#x27;;
+import {practiceD} from &#x27;./D.ts&#x27;;
+import {integrated} from &#x27;./X.ts&#x27;;
+import {record} from &#x27;./support.ts&#x27;;
+const [name=&#x27;X&#x27;,mode]=process.argv.slice(2);
+const result=name===&#x27;A&#x27;?await practiceA(mode??&#x27;caller&#x27;):name===&#x27;B&#x27;?await practiceB(mode??&#x27;spawn&#x27;):name===&#x27;C&#x27;?await practiceC(mode===&#x27;empty&#x27;):name===&#x27;D&#x27;?await practiceD(mode??&#x27;messages&#x27;):await integrated();
+await record(name+&#x27;-&#x27;+(mode??&#x27;default&#x27;),result);console.log(JSON.stringify(result,null,2));</code></pre></div></div></details>
+<aside id="lesson-check" class="lesson-callout lesson-check" aria-label="提交证据，而不只提交绿色测试"><div class="lesson-callout-label">怎么确认做对了</div><div class="lesson-callout-title">提交证据，而不只提交绿色测试</div><div class="lesson-callout-body"><p>保存四项实践预测表、真实输出与纠错解释，以及综合实验的六份证据。默认21个执行项共享真实装配，X还复用C作比较；重跑、demo和共享断言不累加成独立场景数。作者检查不自动评判你的自由解释。全部外部Provider、E级应用、真实试读/时长与独立外审分别列为未验证。</p></div></aside>
+<aside id="lesson-help" class="lesson-callout lesson-stuck" aria-label="按缺口排查，不重置个人环境"><div class="lesson-callout-label">卡住了怎么办</div><div class="lesson-callout-title">按缺口排查，不重置个人环境</div><div class="lesson-callout-body"><p>工具不出现先查Provider名、注册生命周期、Scope与Step准入。启动拒绝按NO_PROVIDER、能力、确切父、持久化、深度、容量分层查。得到MessageId但没回答，先核Inbox和目标状态，不连续发送同一任务。冷恢复拒绝查持久源、直接谱系、自身descriptor与组合。dispose未完成查谁仍握着门闩或外部句柄；不要删断言、忽略清理错或删除个人Session。</p></div></aside>
+<h2>十二道思考题：先推导，再展开</h2>
+<ol>
+<li>为什么Subagent不是普通函数调用？什么时候宁可让一个Agent顺序完成？</li>
+</ol>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>子级有独立运行、历史、工具和可能多轮的输入；原调用返回回执后它仍可推进，结果与释放另有协议。小任务或材料高度耦合时，委派多出的提示词、启动、重复研究及综合成本可能超过收益。源码证明能力与所有权安排，不证明性能优势；应以具体任务的质量、费用和耗时证据决定。</p></div></details>
+<ol start="2">
+<li>代码推导：<code>const a=await startActivation(spec)</code>后立刻拿到id，能否把它显示为“调查完成”？</li>
+</ol>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>不能。成功回执说明启动及适用的初始消息接受边界已越过，后台工作还可能正在运行。Caller等待a.result；Parent等待后续Runtime通知或子自发消息。X的Seq11出现时子级仍被门闩挂住，就是可反驳“拿到id即完成”的真实证据。还应分别检查stopReason与业务结果，不能只看Promise正常兑现。</p></div></details>
+<ol start="3">
+<li>Spawn子级看到“按刚才讨论继续”为什么可能无法完成？</li>
+</ol>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>Spawn Provider不提供父对话seed。任务若只指向“刚才”，缺少实际材料和目标，子级无法从自己的新Session取得它们。要给出自足任务、输入、边界与预期结果，或在适合时选择Fork。共享工作目录/服务不是完整聊天历史，也不是允许读取任意私人文件的授权。</p></div></details>
+<ol start="4">
+<li>事件推导：父Turn1在Seq10结束，Turn2的user/message在Seq16。Fork Subagent继承多少？普通Fork选Seq16呢？</li>
+</ol>
+<details id="lesson-deepdive-22" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>Subagent Fork取Seq0～10共11条，当前Turn2不进入；新子在其后写继承marker与自身descriptor。普通Session Fork按含Seq16的合法前缀创建分支，并按普通API规则闭合开放尾；继承数为17，不会因此成为受Manager管理的Subagent。两个API的选择者、边界和后续责任不同，不能因为名字相同就套同一规则。</p></div></details>
+<ol start="5">
+<li>为什么Fork不持续继承父级未来？为什么历史不等于权限？</li>
+</ol>
+<details id="lesson-deepdive-23" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>Provider只在创建准备时取一次seed；后续子Session追加自己的事件，冷恢复读该日志而非重取父快照。当前未结束轮次可能有未配对工具与未结算工作，固定Provider只选择完成前缀。seed是对话事实，不是工具注册、审批grant或OS权限对象；是否可执行必须查子组合、Scope和策略。不能从“知道父级说过什么”推出“可以做父级做过的一切”。</p></div></details>
+<ol start="6">
+<li>代码推导：父Scope登记parent_only，子创建时登记child_only。同进程能否推导两者都可见？</li>
+</ol>
+<details id="lesson-deepdive-24" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>不能。AgentScope是各自的注册归属，子级不是父局部Scope的简单克隆。X实测父看不到child_only，子看不到parent_only；全局服务和真实Preset组合另有可见性规则。这个实验核注册视图及实际工具执行，不证明恶意同进程代码被OS隔离。把Scope当安全沙箱会跳过真正权限及后端强制。</p></div></details>
+<ol start="7">
+<li>一个子Session文件还在，但Registry没有该Agent，是否矛盾？</li>
+</ol>
+<details id="lesson-deepdive-25" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>不矛盾。Session是持久历史，Registry是当前运行对象表；自然结算后Handle已释放，JSONL和父目录仍可保留。PointQuery可以只读这些历史，不启动Agent。若descriptor有效且授权/组件/容量允许，后续输入可以冷恢复一个新实例。不能把文件存在当running，也不能把inactive当永久终态。</p></div></details>
+<ol start="8">
+<li>事件推导：send_message返回m1，目标流仍等门闩。哪条证据证明回复完成？</li>
+</ol>
+<details id="lesson-deepdive-26" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>回执m1只关联已接受Inbox输入，此时Assistant数可以仍为0。放行后目标在Step边界消费，后续Assistant与Turn事实、必要的最终结果或通知才说明相关执行已结算；仍要按任务与消息关联，而不是任意一条旧Assistant都算回复。D的请求中出现STEER_AT_NEXT_STEP并生成CHILD_REPLY，正是接受与执行的两组证据。</p></div></details>
+<ol start="9">
+<li>代码推导：maxDepth=1、capacity=2。根先后完成十个直接子任务是否合法？一个子级能再开孙级吗？</li>
+</ol>
+<details id="lesson-deepdive-27" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>在每次并发容量满足、工具实际传入cap1及其它准入通过的前提下，十个先后完成的直接子任务深度都为1，不违反深度。子级再开孙级深度2会超过cap1。容量只约束同时的Activation，历史十个Session不因此超额。直接API若不传深度cap，又是不同前提；不能把工具默认当所有调用的全局硬限制。</p></div></details>
+<ol start="10">
+<li>事件推导：interrupt返回accepted后，子级仍在等工具，孙级仍running。是否应把测试改成二者立刻消失？</li>
+</ol>
+<details id="lesson-deepdive-28" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>不应。中断是fire-and-return，本地cancel保留未领取Inbox及已发布后代；已开始工具须合作退出。要等待目标idle或进一步按Manager协议dispose/drain，再查资源与名额。D limits-tree证明孙级继续运行，dispose才停止所拥有分支并等待清理。改断言迎合“立即全停”会掩盖错误生命周期保证，也可能漏掉真实在途工作。</p></div></details>
+<ol start="11">
+<li>清理失败时result为completed、subagent/end为error、dispose拒绝，是否必有一个是假数据？</li>
+</ol>
+<details id="lesson-deepdive-29" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 11 参考答案</summary><div class="lesson-callout-body"><p>未必。result和父通知可保留已捕获的执行结果，end反映含释放失败的执行期终态，dispose把清理错误交给责任方。C级受控外部句柄夹具动态验证这个组合；它没有真实外部进程。只有理解三种通道回答的问题，才能保留调查结果同时报告资源释放故障，不能把其中任一个单独叫“全链成功”。</p></div></details>
+<ol start="12">
+<li>为什么不能把ACP、Codex或Claude Code一次性执行，当作与本地子级相同的继续会话？</li>
+</ol>
+<details id="lesson-deepdive-30" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 12 参考答案</summary><div class="lesson-callout-body"><p>本地prepareContinuable路径由Manager掌管AgentHandle、Session、Inbox和cold resume；这些外部Provider只返回一次执行的run，使用自己的协议、运行时及权限系统。真实Manager会拒绝对外部执行sendMessage，不能仅因外部产品内部有会话就假定父Runtime支持续写。必须重新验证Provider契约和端到端证据；本课仅静态研究它们，并用自制句柄测外部分支，不宣称E级或真实外部Agent通过。</p></div></details>
+<h2>把执行单元交给H22</h2>
+<p>回到贯穿问题：本地子级由Manager借Factory创建，Manager持有精确Handle并管理Activation；Provider决定新建历史还是已完成前缀，子级按自己的Scope和真实组合获得能力；父级先获id，再通过子消息或Runtime通知取得结果；停止当前工作与释放整个执行期分开，恢复需持久描述和新实例。</p>
+<p>进入H22前，提交一个“可启动、可等待、可取消并负责清理”的执行单元说明，写清使用parent还是caller、预算与失败归谁。H22《Workflow、Jobs、Goal 与任务调度》再研究编排与不同任务抽象；H23通信载体，H24综合证据。本课到基本委派和控制为止，不自动开发H22、不发布课程。</p></div></main></body></html>

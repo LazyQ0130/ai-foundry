@@ -1,0 +1,771 @@
+[
+  {
+    "claim": "S01",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/index.ts",
+    "start": 194,
+    "end": 237,
+    "symbol": "SubagentRuntime",
+    "controlBranch": "服务注册具名Provider，agents注入后建立Manager；服务本身不加载模型工具。",
+    "conclusion": "服务注册具名Provider，agents注入后建立Manager；服务本身不加载模型工具。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/service.spec.ts",
+      "start": 106,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A registry",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S02",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/index.ts",
+    "start": 244,
+    "end": 250,
+    "symbol": "resolveMaxDepth",
+    "controlBranch": "显式工具值优先；provider-managed省略cap；否则每次读取Host配置cell。直接Runtime请求不自动补默认深度。",
+    "conclusion": "显式工具值优先；provider-managed省略cap；否则每次读取Host配置cell。直接Runtime请求不自动补默认深度。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary tool-registration",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": [
+      {
+        "file": "packages/boot/config-editor/src/index.ts",
+        "start": 46,
+        "end": 80,
+        "meaning": "profile用户覆盖与继承层的来源"
+      },
+      {
+        "file": "packages/settings/settings/src/index.ts",
+        "start": 301,
+        "end": 330,
+        "meaning": "显示实际值、base与user"
+      },
+      {
+        "file": "packages/client/ui-settings-subagent/src/client/subagent-limits-card-controller.ts",
+        "start": 43,
+        "end": 55,
+        "meaning": "Host subagent section的两项限制"
+      }
+    ]
+  },
+  {
+    "claim": "S03",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/index.ts",
+    "start": 271,
+    "end": 287,
+    "symbol": "startActivation",
+    "controlBranch": "先选名、校能力、取Manager并核精确在线parent，再分本地/外部分支。",
+    "conclusion": "先选名、校能力、取Manager并核精确在线parent，再分本地/外部分支。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/service.spec.ts",
+      "start": 106,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A capabilities",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S04",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/index.ts",
+    "start": 633,
+    "end": 657,
+    "symbol": "assertCapabilities",
+    "controlBranch": "agentPreset要求支持且不继承上下文；其余按字段存在性检查能力标记。",
+    "conclusion": "agentPreset要求支持且不继承上下文；其余按字段存在性检查能力标记。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/service.spec.ts",
+      "start": 106,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A capabilities",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S05",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/index.ts",
+    "start": 549,
+    "end": 570,
+    "symbol": "registerProvider",
+    "controlBranch": "effect持有注册；重复/无执行方法拒绝，撤注册不撤销已持有执行。",
+    "conclusion": "effect持有注册；重复/无执行方法拒绝，撤注册不撤销已持有执行。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/service.spec.ts",
+      "start": 106,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary tool-registration",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S06",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/tool-subagent/src/index.ts",
+    "start": 201,
+    "end": 267,
+    "symbol": "mount / defineTool",
+    "controlBranch": "provider存在才登记；描述由inheritsParentContext和prepareContinuable派生；output只含activation/id。",
+    "conclusion": "provider存在才登记；描述由inheritsParentContext和prepareContinuable派生；output只含activation/id。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/service.spec.ts",
+      "start": 106,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D X model delegation, relay, settlement, cold continuation and fork comparison",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": [
+      {
+        "file": "packages/subagent/tool-subagent/src/index.ts",
+        "start": 355,
+        "end": 382,
+        "meaning": "Provider注册/撤销与模型工具的装卸"
+      }
+    ]
+  },
+  {
+    "claim": "S07",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/tool-subagent/src/index.ts",
+    "start": 268,
+    "end": 332,
+    "symbol": "execute startActivation",
+    "controlBranch": "工具用parent delivery启动，得到回执后返回kind/subagentId，未await result。",
+    "conclusion": "工具用parent delivery启动，得到回执后返回kind/subagentId，未await result。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/parent-result.spec.ts",
+      "start": 15,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D X model delegation, relay, settlement, cold continuation and fork comparison",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S08",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 379,
+    "end": 425,
+    "symbol": "startLocal",
+    "controlBranch": "parent delivery需要持久化；caller可临时；捕获模型/策略，准备seed后再物化。",
+    "conclusion": "parent delivery需要持久化；caller可临时；捕获模型/策略，准备seed后再物化。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D A no-persistence",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S09",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 425,
+    "end": 474,
+    "symbol": "startLocal acceptance",
+    "controlBranch": "创建后接受初始消息、追加父目录再announce；返回childId和messageId。",
+    "conclusion": "创建后接受初始消息、追加父目录再announce；返回childId和messageId。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D A caller",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S10",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 739,
+    "end": 767,
+    "symbol": "materialize",
+    "controlBranch": "每次物化先预留共享pool名额，失败释放；本地连续父链接共享容量。",
+    "conclusion": "每次物化先预留共享pool名额，失败释放；本地连续父链接共享容量。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D limits-tree",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S11",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/activation.ts",
+    "start": 24,
+    "end": 37,
+    "symbol": "ActivationPool.reserve",
+    "controlBranch": "容量满立即ACTIVATION_LIMIT_REACHED；无无限排队，释放幂等。",
+    "conclusion": "容量满立即ACTIVATION_LIMIT_REACHED；无无限排队，释放幂等。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D limits-tree",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S12",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 851,
+    "end": 960,
+    "symbol": "materializeTracked",
+    "controlBranch": "本地经ownerCtx.agents.create/resume取得Handle；external start回句柄；startup信号连接只保留到接受窗口。",
+    "conclusion": "本地经ownerCtx.agents.create/resume取得Handle；external start回句柄；startup信号连接只保留到接受窗口。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/external-lifecycle.spec.ts",
+      "start": 40,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary startup-abort",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S13",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent-spawn-in-process/src/index.ts",
+    "start": 35,
+    "end": 59,
+    "symbol": "SpawnInProcessProvider",
+    "controlBranch": "prepareContinuable返回空创建数据，无父对话seed；支持独立preset。",
+    "conclusion": "prepareContinuable返回空创建数据，无父对话seed；支持独立preset。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D B spawn",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S14",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent-fork-in-process/src/index.ts",
+    "start": 46,
+    "end": 80,
+    "symbol": "completedTurnPrefix / prepareContinuable",
+    "controlBranch": "取最后turn/end含自身的连续前缀；没有已完Turn则空；一次性seed，非持续同步。",
+    "conclusion": "取最后turn/end含自身的连续前缀；没有已完Turn则空；一次性seed，非持续同步。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation-inheritance.spec.ts",
+      "start": 91,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D C fork completed-prefix",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S15",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/child-agent.ts",
+    "start": 49,
+    "end": 59,
+    "symbol": "resolveChildDepth",
+    "controlBranch": "父级depth+1并检查安全整数和可选绝对cap；不是任务总量。",
+    "conclusion": "父级depth+1并检查安全整数和可选绝对cap；不是任务总量。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/child-agent.spec.ts",
+      "start": 22,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D limits-tree",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": [
+      {
+        "file": "packages/subagent/subagent/src/depth.ts",
+        "start": 26,
+        "end": 35,
+        "meaning": "持久header深度与runtime深度取最大值"
+      }
+    ]
+  },
+  {
+    "claim": "S16",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/child-agent.ts",
+    "start": 68,
+    "end": 124,
+    "symbol": "parentAgentOptionsForDelegation / resolveChildAgentOptions",
+    "controlBranch": "创建选项合并当前父请求路线与请求覆盖；不能只看Agent.options就声称实际请求路线已改。",
+    "conclusion": "创建选项合并当前父请求路线与请求覆盖；不能只看Agent.options就声称实际请求路线已改。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/child-agent.spec.ts",
+      "start": 22,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D B spawn",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": [
+      {
+        "file": "packages/core/agent/src/model-selection.ts",
+        "start": 69,
+        "end": 120,
+        "meaning": "已记录的pending/lastUsed优先于创建选项fallback"
+      }
+    ]
+  },
+  {
+    "claim": "S17",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/child-agent.ts",
+    "start": 135,
+    "end": 153,
+    "symbol": "childSessionMeta",
+    "controlBranch": "记录parentSession、origin、depth、isSeeded；这些历史字段不代替Registry owner。",
+    "conclusion": "记录parentSession、origin、depth、isSeeded；这些历史字段不代替Registry owner。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/child-agent.spec.ts",
+      "start": 22,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D B spawn",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S18",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/child-agent.ts",
+    "start": 186,
+    "end": 217,
+    "symbol": "applyChildComposition",
+    "controlBranch": "有选择挂独立preset；省略composeFrom父当前代际；子上下文登记自身覆盖。",
+    "conclusion": "有选择挂独立preset；省略composeFrom父当前代际；子上下文登记自身覆盖。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/activation-presets.spec.ts",
+      "start": 72,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW: preset registry not composed in H21 labs",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S19",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/child-agent.ts",
+    "start": 248,
+    "end": 280,
+    "symbol": "delegated policy capture / append",
+    "controlBranch": "只捕获实际组合提供的策略；sandbox显式override，approval存在时pin never；不复制所有权限或一次性grant。",
+    "conclusion": "只捕获实际组合提供的策略；sandbox显式override，approval存在时pin never；不复制所有权限或一次性grant。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/activation-policy.spec.ts",
+      "start": 80,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW: permission services not composed in H21 labs",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S20",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1100,
+    "end": 1110,
+    "symbol": "settlementState",
+    "controlBranch": "自然结算须无ownedChildren且无正常待领Inbox；idle可仍驻留并占容量。",
+    "conclusion": "自然结算须无ownedChildren且无正常待领Inbox；idle可仍驻留并占容量。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/parked-wait.spec.ts",
+      "start": 98,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D interrupt",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S21",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1113,
+    "end": 1203,
+    "symbol": "finishDisposal",
+    "controlBranch": "停止本地并等待后代/在创子级、idle、flush；捕获结果后释放Handle、归还slot、通知、end、resolve；清理错另由dispose拒绝。",
+    "conclusion": "停止本地并等待后代/在创子级、idle、flush；捕获结果后释放Handle、归还slot、通知、end、resolve；清理错另由dispose拒绝。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/run-settlement.spec.ts",
+      "start": 9,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary teardown-failure",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S22",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1206,
+    "end": 1224,
+    "symbol": "notifySettlement",
+    "controlBranch": "caller不通知；精确父实例不可用则跳过；活动父steer，idle父queue；draining父inject，异常记警告。",
+    "conclusion": "caller不通知；精确父实例不可用则跳过；活动父steer，idle父queue；draining父inject，异常记警告。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/parent-result.spec.ts",
+      "start": 15,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary parent-replaced",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S23",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1228,
+    "end": 1237,
+    "symbol": "flushFinalState",
+    "controlBranch": "最终Session flush是best effort，失败记警告；不保证可恢复最新前缀。",
+    "conclusion": "最终Session flush是best effort，失败记警告；不保证可恢复最新前缀。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW: final-flush failure not injected",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S24",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/activation.ts",
+    "start": 156,
+    "end": 170,
+    "symbol": "captureLocalResult",
+    "controlBranch": "取本activation后缀的最后非空Assistant输出、epoch原因与可选结构化捕获；结果失败不等于缺少Session。",
+    "conclusion": "取本activation后缀的最后非空Assistant输出、epoch原因与可选结构化捕获；结果失败不等于缺少Session。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/assistant-output.spec.ts",
+      "start": 39,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D B child-failure",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S25",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 537,
+    "end": 563,
+    "symbol": "sendMessage",
+    "controlBranch": "精确live sender，仅驻留子→直接父，或父→直接子；其它谱系声明不给授权。",
+    "conclusion": "精确live sender，仅驻留子→直接父，或父→直接子；其它谱系声明不给授权。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation-messages.spec.ts",
+      "start": 12,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D messages",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S26",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1438,
+    "end": 1460,
+    "symbol": "submitAdmitted",
+    "controlBranch": "返回的是消息id；signal只到接受边界；deliver选择steer/queue，不等模型回复。",
+    "conclusion": "返回的是消息id；signal只到接受边界；deliver选择steer/queue，不等模型回复。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation-messages.spec.ts",
+      "start": 12,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D messages",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S27",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 1349,
+    "end": 1415,
+    "symbol": "coldResume",
+    "controlBranch": "query观察历史并核lineage和自身descriptor；重建不调用Provider；默认parent delivery；旧activation.dispose不触及新epoch。",
+    "conclusion": "query观察历史并核lineage和自身descriptor；重建不调用Provider；默认parent delivery；旧activation.dispose不触及新epoch。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D cold-resume",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S28",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/manager.ts",
+    "start": 183,
+    "end": 232,
+    "symbol": "interrupt",
+    "controlBranch": "ancestor核确切实例及记录lineage；本地cancel keepInbox，不等待、不清全部后代；外部中止并dispose一次执行。",
+    "conclusion": "ancestor核确切实例及记录lineage；本地cancel keepInbox，不等待、不清全部后代；外部中止并dispose一次执行。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/control.spec.ts",
+      "start": 88,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D limits-tree",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S29",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/tool-subagent-control/src/index.ts",
+    "start": 29,
+    "end": 113,
+    "symbol": "control tools",
+    "controlBranch": "send_message返回MessageId；interrupt_agent返回accepted；工具不额外授予控制权。",
+    "conclusion": "send_message返回MessageId；interrupt_agent返回accepted；工具不额外授予控制权。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation-messages.spec.ts",
+      "start": 12,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D interrupt",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S30",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/catalog.ts",
+    "start": 115,
+    "end": 164,
+    "symbol": "catalog projection / establishCatalogChild",
+    "controlBranch": "父所有目录只读自身前缀后的成员事实；本地不论delivery都入册；外部仅parent入册。",
+    "conclusion": "父所有目录只读自身前缀后的成员事实；本地不论delivery都入册；外部仅parent入册。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/catalog.spec.ts",
+      "start": 28,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D A caller",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S31",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/descriptor.ts",
+    "start": 220,
+    "end": 269,
+    "symbol": "snapshot / foldSubagentDescriptor",
+    "controlBranch": "首条自身descriptor为准，版本3；未知版本不授continuation；不进入Surface；maxTokens/outputSchema不持久。",
+    "conclusion": "首条自身descriptor为准，版本3；未知版本不授continuation；不进入Surface；maxTokens/outputSchema不持久。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/catalog.spec.ts",
+      "start": 28,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D cold-resume",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": [
+      {
+        "file": "packages/subagent/subagent/src/descriptor.ts",
+        "start": 30,
+        "end": 48,
+        "meaning": "日志事实及版本3定义"
+      }
+    ]
+  },
+  {
+    "claim": "S32",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/list-children.ts",
+    "start": 29,
+    "end": 133,
+    "symbol": "listChildren / listDescendants",
+    "controlBranch": "点读父投影，递归可达目录且释放观察，不resume Agent；未知/不可读分支诊断；external叶。",
+    "conclusion": "点读父投影，递归可达目录且释放观察，不resume Agent；未知/不可读分支诊断；external叶。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/list-children.spec.ts",
+      "start": 89,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D persisted discovery in new Context starts no Agent or model request",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S33",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/tool-subagent-control/src/list-agents.ts",
+    "start": 50,
+    "end": 74,
+    "symbol": "statusOf / project",
+    "controlBranch": "模型列表仅continuable；Registry status===running才running，idle与缺席都inactive；不暴露常驻性。",
+    "conclusion": "模型列表仅continuable；Registry status===running才running，idle与缺席都inactive；不暴露常驻性。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/list-children.spec.ts",
+      "start": 89,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D cold-resume",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S34",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/continuation-messages.ts",
+    "start": 140,
+    "end": 173,
+    "symbol": "createSettlementMessage",
+    "controlBranch": "通知是runtime source=subagent-settled，与子自发agent-message分开；closing文本可省略，结构化/诊断另外附。",
+    "conclusion": "通知是runtime source=subagent-settled，与子自发agent-message分开；closing文本可省略，结构化/诊断另外附。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/parent-result.spec.ts",
+      "start": 15,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D X model delegation, relay, settlement, cold continuation and fork comparison",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S35",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/lifecycle.ts",
+    "start": 96,
+    "end": 118,
+    "symbol": "createActivationObserver",
+    "controlBranch": "新runId配对start/end，同一child冷恢复是新run；事件观察与结果Promise、持久事实不同。",
+    "conclusion": "新runId配对start/end，同一child冷恢复是新run；事件观察与结果Promise、持久事实不同。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/external-lifecycle.spec.ts",
+      "start": 40,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D cold-resume",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S36",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/session/src/index.ts",
+    "start": 1403,
+    "end": 1419,
+    "symbol": "SessionStore.fork",
+    "controlBranch": "普通fork选合法切点，buildForkSeed可闭合开放尾；不调用SubagentManager或追加父catalog。",
+    "conclusion": "普通fork选合法切点，buildForkSeed可闭合开放尾；不调用SubagentManager或追加父catalog。",
+    "officialTest": {
+      "file": "packages/core/session/tests/fork.spec.ts",
+      "start": 62,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D C fork completed-prefix",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S37",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent/src/index.ts",
+    "start": 603,
+    "end": 623,
+    "symbol": "Registry ownership",
+    "controlBranch": "isOwnedBy比较精确Agent对象；历史parentSession不决定roots。",
+    "conclusion": "isOwnedBy比较精确Agent对象；历史parentSession不决定roots。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+      "start": 67,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D B spawn",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  },
+  {
+    "claim": "S38",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent-loop/src/index.ts",
+    "start": 465,
+    "end": 550,
+    "symbol": "Factory teardown",
+    "controlBranch": "Factory清理精确实例；不把父Agent.cancel等同Manager整个子树drain。",
+    "conclusion": "Factory清理精确实例；不把父Agent.cancel等同Manager整个子树drain。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/scope-lifecycle.spec.ts",
+      "start": 67,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D limits-tree",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST",
+    "relatedEvidence": []
+  }
+]

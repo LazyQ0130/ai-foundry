@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys
+ok 1 - V2 parses YAML and Markdown with LF, CRLF and BOM; preserves stable keys
+  ---
+  duration_ms: 25.3559
+  type: 'test'
+  ...
+# Subtest: V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON
+ok 2 - V2 rejects missing, malformed, duplicate or unsupported metadata and old JSON
+  ---
+  duration_ms: 14.5215
+  type: 'test'
+  ...
+# Subtest: Markdown renders headings, prose, formatting, code, GFM, links and captioned images
+ok 3 - Markdown renders headings, prose, formatting, code, GFM, links and captioned images
+  ---
+  duration_ms: 19.8325
+  type: 'test'
+  ...
+# Subtest: all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed
+ok 4 - all seven teaching blocks and image placeholder render; prompt copies only its code; deep dive is closed
+  ---
+  duration_ms: 29.9167
+  type: 'test'
+  ...
+# Subtest: directive allowlist rejects arbitrary components/attributes and malformed prompts
+ok 5 - directive allowlist rejects arbitrary components/attributes and malformed prompts
+  ---
+  duration_ms: 7.5603
+  type: 'test'
+  ...
+# Subtest: help extraction ignores prose and fenced examples and uses the directive allowlist
+ok 6 - help extraction ignores prose and fenced examples and uses the directive allowlist
+  ---
+  duration_ms: 1.274
+  type: 'test'
+  ...
+# Subtest: help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks
+ok 7 - help extraction preserves ordered blocks, exact Markdown, references and nested teaching blocks
+  ---
+  duration_ms: 8.2265
+  type: 'test'
+  ...
+# Subtest: help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks
+ok 8 - help panels cover all authored courses without duplicating article IDs, including 19 troubleshooting blocks
+  ---
+  duration_ms: 933.9421
+  type: 'test'
+  ...
+# Subtest: raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed
+ok 9 - raw HTML and scripts never execute; unsafe URLs and forged custom elements are removed
+  ---
+  duration_ms: 1.8722
+  type: 'test'
+  ...
+# Subtest: resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML
+ok 10 - resource renders only fixed registry IDs; rejects arbitrary URLs, paths, attributes and forged HTML
+  ---
+  duration_ms: 4.6217
+  type: 'test'
+  ...
+# Subtest: published courses render in full with unique stable progress keys
+ok 11 - published courses render in full with unique stable progress keys
+  ---
+  duration_ms: 166.1334
+  type: 'test'
+  ...
+# Subtest: every authored lesson parses and renders with globally unique progress keys
+ok 12 - every authored lesson parses and renders with globally unique progress keys
+  ---
+  duration_ms: 400.8752
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2160.3408

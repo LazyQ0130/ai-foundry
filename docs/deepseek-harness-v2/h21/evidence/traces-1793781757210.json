@@ -1,0 +1,3674 @@
+{
+  "trace-A-cancel-start.json": {
+    "accepted": false,
+    "registry": [
+      "parent"
+    ]
+  },
+  "trace-A-capabilities.json": {
+    "rejectedBeforeCreation": true
+  },
+  "trace-A-no-persistence.json": {
+    "result": {
+      "output": [
+        {
+          "type": "text",
+          "text": "ephemeral caller result"
+        }
+      ],
+      "stopReason": "completed"
+    },
+    "parentNotices": 0
+  },
+  "trace-A-registry.json": {
+    "providers": [
+      "spawn",
+      "fork"
+    ],
+    "missing": "NO_PROVIDER",
+    "lifecycle": []
+  },
+  "trace-B-child-failure.json": {
+    "mode": "child-failure",
+    "parentId": "parent",
+    "childId": "2d8b6ba4-6b59-43d6-b70a-2dc39b30eb45",
+    "inherited": 0,
+    "parentTools": [
+      "parent_only"
+    ],
+    "result": {
+      "output": [],
+      "stopReason": "error"
+    },
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "ba01c6a7-e7fd-4383-8d9a-c57330c203e0",
+        "provider": "spawn",
+        "id": "2d8b6ba4-6b59-43d6-b70a-2dc39b30eb45",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "ba01c6a7-e7fd-4383-8d9a-c57330c203e0",
+        "provider": "spawn",
+        "id": "2d8b6ba4-6b59-43d6-b70a-2dc39b30eb45",
+        "local": true,
+        "stopReason": "error"
+      }
+    ],
+    "parent": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793781756744,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "parent context"
+                }
+              ],
+              "role": "user",
+              "id": "ef49f443-1da6-4c58-a045-78899ee2295d"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793781756744,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793781756744,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793781756744,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793781756745,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f4cb350d-2e5c-46a9-aeca-8bc0103318be"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793781756745,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "parent context"
+            }
+          ],
+          "role": "user",
+          "id": "ef49f443-1da6-4c58-a045-78899ee2295d"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793781756745,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "parent_only",
+                "description": "Controlled fixture parent_only",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793781756745,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793781756745,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "PARENT_PRIVATE_HISTORY"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "7bfedb71-a79b-42ad-9892-2459ccbd0be1"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756745,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "PARENT_PRIVATE_HISTORY"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756745,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793781756745,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793781756745,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 11,
+        "time": 1793781756748,
+        "data": {
+          "version": 0,
+          "childId": "2d8b6ba4-6b59-43d6-b70a-2dc39b30eb45",
+          "childCreatedAt": 1793781756746,
+          "mode": "continuable",
+          "label": "inspect tests"
+        }
+      }
+    ],
+    "child": [
+      {
+        "type": "subagent/descriptor",
+        "seq": 0,
+        "time": 1793781756747,
+        "data": {
+          "version": 3,
+          "mode": "continuable",
+          "provider": "spawn",
+          "label": "inspect tests",
+          "agentProvider": "fixture",
+          "agentModel": "child"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781756747,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional tests; return test-count=3."
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "a2172309-f994-44e0-8b89-466a5b9d353f"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781756748,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781756748,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781756748,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781756748,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "46eccc10-8cb9-4450-9422-0bb33155ba2e"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781756748,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional tests; return test-count=3."
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "a2172309-f994-44e0-8b89-466a5b9d353f"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 7,
+        "time": 1793781756748,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "subagent:delegation",
+                "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "97fceec4-e927-4a6c-8804-5f2cc4dc771b"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 8,
+        "time": 1793781756748,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "child",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 9,
+        "time": 1793781756749,
+        "data": {
+          "provider": "fixture",
+          "model": "child",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 10,
+        "time": 1793781756749,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793781756749,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "message": "controlled child transport failure",
+                    "code": "UNKNOWN"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "step/end",
+        "seq": 11,
+        "time": 1793781756749,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 12,
+        "time": 1793781756749,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "error",
+            "error": {
+              "message": "controlled child transport failure",
+              "code": "UNKNOWN"
+            }
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f4cb350d-2e5c-46a9-aeca-8bc0103318be"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "parent context"
+              }
+            ],
+            "role": "user",
+            "id": "ef49f443-1da6-4c58-a045-78899ee2295d"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "parent_only",
+              "description": "Controlled fixture parent_only",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "parent_only",
+            "description": "Controlled fixture parent_only",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "parent"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "46eccc10-8cb9-4450-9422-0bb33155ba2e"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional tests; return test-count=3."
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "a2172309-f994-44e0-8b89-466a5b9d353f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "97fceec4-e927-4a6c-8804-5f2cc4dc771b"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "2d8b6ba4-6b59-43d6-b70a-2dc39b30eb45"
+      }
+    ],
+    "errors": [
+      "LlmError: controlled child transport failure"
+    ]
+  },
+  "trace-B-post-accept-abort.json": {
+    "mode": "post-accept-abort",
+    "parentId": "parent",
+    "childId": "1a9db6c9-69f3-4714-b923-1bd091696c44",
+    "inherited": 0,
+    "parentTools": [
+      "parent_only"
+    ],
+    "result": {
+      "output": [
+        {
+          "type": "text",
+          "text": "test-count=3"
+        }
+      ],
+      "stopReason": "completed"
+    },
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "ee031f62-6e1f-44b6-b248-6b460ea617e6",
+        "provider": "spawn",
+        "id": "1a9db6c9-69f3-4714-b923-1bd091696c44",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "ee031f62-6e1f-44b6-b248-6b460ea617e6",
+        "provider": "spawn",
+        "id": "1a9db6c9-69f3-4714-b923-1bd091696c44",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "test-count=3"
+          }
+        ]
+      }
+    ],
+    "parent": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793781756779,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "parent context"
+                }
+              ],
+              "role": "user",
+              "id": "042fc20d-f418-432d-8dd9-6fe473cf5ed0"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793781756779,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793781756779,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793781756780,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793781756780,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "823c89d1-bb20-4326-be02-4c9600467a79"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793781756780,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "parent context"
+            }
+          ],
+          "role": "user",
+          "id": "042fc20d-f418-432d-8dd9-6fe473cf5ed0"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793781756780,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "parent_only",
+                "description": "Controlled fixture parent_only",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793781756780,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793781756781,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "PARENT_PRIVATE_HISTORY"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "ce11dc4d-ec0b-41e6-9a53-edb48fd12700"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756781,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "PARENT_PRIVATE_HISTORY"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756781,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793781756781,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793781756781,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 11,
+        "time": 1793781756784,
+        "data": {
+          "version": 0,
+          "childId": "1a9db6c9-69f3-4714-b923-1bd091696c44",
+          "childCreatedAt": 1793781756782,
+          "mode": "continuable",
+          "label": "inspect tests"
+        }
+      }
+    ],
+    "child": [
+      {
+        "type": "subagent/descriptor",
+        "seq": 0,
+        "time": 1793781756783,
+        "data": {
+          "version": 3,
+          "mode": "continuable",
+          "provider": "spawn",
+          "label": "inspect tests",
+          "agentProvider": "fixture",
+          "agentModel": "child"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781756784,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional tests; return test-count=3."
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "a2c4b7f3-a2c6-43a1-88cd-5f07f374cf0d"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781756784,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781756784,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781756785,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781756785,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "91a8f235-9410-4117-adcf-882091fbf0d3"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781756785,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional tests; return test-count=3."
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "a2c4b7f3-a2c6-43a1-88cd-5f07f374cf0d"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 7,
+        "time": 1793781756785,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "subagent:delegation",
+                "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "a6ee96ef-e1a6-4a54-b2a3-6bf9bc8f7a4c"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 8,
+        "time": 1793781756785,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "child",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 9,
+        "time": 1793781756785,
+        "data": {
+          "provider": "fixture",
+          "model": "child",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 10,
+        "time": 1793781756786,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "test-count=3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "18d3bb50-9611-4d18-9a49-e737cad80580"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756786,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "test-count=3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756786,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 11,
+        "time": 1793781756786,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 12,
+        "time": 1793781756786,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "823c89d1-bb20-4326-be02-4c9600467a79"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "parent context"
+              }
+            ],
+            "role": "user",
+            "id": "042fc20d-f418-432d-8dd9-6fe473cf5ed0"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "parent_only",
+              "description": "Controlled fixture parent_only",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "parent_only",
+            "description": "Controlled fixture parent_only",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "parent"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "91a8f235-9410-4117-adcf-882091fbf0d3"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional tests; return test-count=3."
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "a2c4b7f3-a2c6-43a1-88cd-5f07f374cf0d"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "a6ee96ef-e1a6-4a54-b2a3-6bf9bc8f7a4c"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "1a9db6c9-69f3-4714-b923-1bd091696c44"
+      }
+    ],
+    "errors": []
+  },
+  "trace-B-spawn.json": {
+    "mode": "spawn",
+    "parentId": "parent",
+    "childId": "7ee17e8c-e4d0-4936-952a-294218d0cc17",
+    "inherited": 0,
+    "parentTools": [
+      "parent_only"
+    ],
+    "result": {
+      "output": [
+        {
+          "type": "text",
+          "text": "test-count=3"
+        }
+      ],
+      "stopReason": "completed"
+    },
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "2edf7565-5e8a-4f4a-bc43-445f0701e5f3",
+        "provider": "spawn",
+        "id": "7ee17e8c-e4d0-4936-952a-294218d0cc17",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "2edf7565-5e8a-4f4a-bc43-445f0701e5f3",
+        "provider": "spawn",
+        "id": "7ee17e8c-e4d0-4936-952a-294218d0cc17",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "test-count=3"
+          }
+        ]
+      }
+    ],
+    "parent": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793781756707,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "parent context"
+                }
+              ],
+              "role": "user",
+              "id": "d6691c71-d3da-4b93-8412-c70fd69ace73"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793781756707,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793781756708,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793781756708,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793781756708,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "50a84c78-8881-4ac8-9ff5-d69384a9e2e3"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793781756708,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "parent context"
+            }
+          ],
+          "role": "user",
+          "id": "d6691c71-d3da-4b93-8412-c70fd69ace73"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793781756709,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "parent_only",
+                "description": "Controlled fixture parent_only",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793781756709,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793781756709,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "PARENT_PRIVATE_HISTORY"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "7f9abee2-5253-4a5b-8f56-5a3f1541335b"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756709,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "PARENT_PRIVATE_HISTORY"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756709,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793781756709,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793781756709,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 11,
+        "time": 1793781756715,
+        "data": {
+          "version": 0,
+          "childId": "7ee17e8c-e4d0-4936-952a-294218d0cc17",
+          "childCreatedAt": 1793781756710,
+          "mode": "continuable",
+          "label": "inspect tests"
+        }
+      }
+    ],
+    "child": [
+      {
+        "type": "subagent/descriptor",
+        "seq": 0,
+        "time": 1793781756714,
+        "data": {
+          "version": 3,
+          "mode": "continuable",
+          "provider": "spawn",
+          "label": "inspect tests",
+          "agentProvider": "fixture",
+          "agentModel": "child"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781756715,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional tests; return test-count=3."
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "52354c28-49a1-4488-a36f-b01ac02effb0"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781756715,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781756715,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781756715,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781756716,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "29ad9708-a2a7-456e-805b-2cb644aff5f4"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781756716,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional tests; return test-count=3."
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "52354c28-49a1-4488-a36f-b01ac02effb0"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 7,
+        "time": 1793781756716,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "subagent:delegation",
+                "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "71f08e7f-0e36-449e-81f3-717095bd1fc7"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 8,
+        "time": 1793781756716,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "child",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 9,
+        "time": 1793781756716,
+        "data": {
+          "provider": "fixture",
+          "model": "child",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 10,
+        "time": 1793781756717,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "test-count=3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "84128e0a-ad0e-4e0a-a67b-7bce96f1c8ef"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756717,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "test-count=3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756717,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 11,
+        "time": 1793781756717,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 12,
+        "time": 1793781756717,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "50a84c78-8881-4ac8-9ff5-d69384a9e2e3"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "parent context"
+              }
+            ],
+            "role": "user",
+            "id": "d6691c71-d3da-4b93-8412-c70fd69ace73"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "parent_only",
+              "description": "Controlled fixture parent_only",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "parent_only",
+            "description": "Controlled fixture parent_only",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "parent"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "29ad9708-a2a7-456e-805b-2cb644aff5f4"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional tests; return test-count=3."
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "52354c28-49a1-4488-a36f-b01ac02effb0"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "71f08e7f-0e36-449e-81f3-717095bd1fc7"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "7ee17e8c-e4d0-4936-952a-294218d0cc17"
+      }
+    ],
+    "errors": []
+  },
+  "trace-D-interrupt.json": {
+    "receipt": {
+      "messageId": "6f7f5842-a05c-4348-b674-a956f966717f"
+    },
+    "idleBeforeGate": false,
+    "result": {
+      "output": [
+        {
+          "type": "text",
+          "text": "parked task done"
+        }
+      ],
+      "stopReason": "completed"
+    },
+    "child": [
+      {
+        "type": "subagent/descriptor",
+        "seq": 0,
+        "time": 1793781757026,
+        "data": {
+          "version": 3,
+          "mode": "continuable",
+          "provider": "spawn",
+          "label": "inspect tests",
+          "agentProvider": "fixture",
+          "agentModel": "child"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781757026,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional tests; return test-count=3."
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "431e2ad4-ba26-4aef-a76a-ffb5665d6cb1"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781757026,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781757026,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781757027,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781757027,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "c80cd7fc-27ed-4487-8200-6e2f09399a3c"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781757027,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional tests; return test-count=3."
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "431e2ad4-ba26-4aef-a76a-ffb5665d6cb1"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 7,
+        "time": 1793781757027,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "subagent:delegation",
+                "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "53c7d6cd-a709-4be4-a837-45ba69062e78"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 8,
+        "time": 1793781757027,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "child",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "child_probe",
+                "description": "Controlled fixture child_probe",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "interrupt_agent",
+                "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                    }
+                  },
+                  "required": [
+                    "agent_id"
+                  ]
+                }
+              },
+              {
+                "name": "list_agents",
+                "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "scope": {
+                      "type": "string",
+                      "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                      "enum": [
+                        "children",
+                        "descendants"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "send_message",
+                "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "The message to deliver to the agent."
+                    }
+                  },
+                  "required": [
+                    "agent_id",
+                    "message"
+                  ]
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 9,
+        "time": 1793781757027,
+        "data": {
+          "provider": "fixture",
+          "model": "child",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 10,
+        "time": 1793781757027,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "PARKED_FIFO"
+                }
+              ],
+              "role": "user",
+              "id": "0f1f23fa-429a-4948-98c7-65805abf2574"
+            }
+          ]
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 11,
+        "time": 1793781757028,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": []
+        }
+      },
+      {
+        "type": "step/end",
+        "seq": 12,
+        "time": 1793781757028,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 13,
+        "time": 1793781757028,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "aborted",
+            "reason": {
+              "kind": "parent"
+            }
+          }
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 14,
+        "time": 1793781757028,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agent parent sent a message: "
+                },
+                {
+                  "type": "text",
+                  "text": "WAKE_AFTER_INTERRUPT"
+                }
+              ],
+              "source": {
+                "kind": "agent-message",
+                "form": "relay",
+                "senderSessionId": "parent"
+              },
+              "role": "user",
+              "id": "6f7f5842-a05c-4348-b674-a956f966717f"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 15,
+        "time": 1793781757029,
+        "data": {
+          "turn": 2
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 16,
+        "time": 1793781757029,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 17,
+        "time": 1793781757029,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 18,
+        "time": 1793781757029,
+        "data": {
+          "turn": 2,
+          "step": 1
+        }
+      },
+      {
+        "type": "user/message",
+        "seq": 19,
+        "time": 1793781757029,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Agent parent sent a message: "
+            },
+            {
+              "type": "text",
+              "text": "WAKE_AFTER_INTERRUPT"
+            }
+          ],
+          "source": {
+            "kind": "agent-message",
+            "form": "relay",
+            "senderSessionId": "parent"
+          },
+          "role": "user",
+          "id": "6f7f5842-a05c-4348-b674-a956f966717f"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 20,
+        "time": 1793781757029,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "PARKED_FIFO"
+            }
+          ],
+          "role": "user",
+          "id": "0f1f23fa-429a-4948-98c7-65805abf2574"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "assistant/message",
+        "seq": 21,
+        "time": 1793781757029,
+        "data": {
+          "turn": 2,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "parked task done"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "70d83e83-dfef-47c4-8045-73ac17470a66"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781757029,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "parked task done"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781757029,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 22,
+        "time": 1793781757030,
+        "data": {
+          "turn": 2,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 23,
+        "time": 1793781757030,
+        "data": {
+          "turn": 2,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "9a75d158-8c75-4264-a0c8-8d88f7f529d1",
+        "provider": "spawn",
+        "id": "6502657d-1957-48b6-9070-37b9a6469615",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "9a75d158-8c75-4264-a0c8-8d88f7f529d1",
+        "provider": "spawn",
+        "id": "6502657d-1957-48b6-9070-37b9a6469615",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "parked task done"
+          }
+        ]
+      }
+    ]
+  },
+  "trace-D-messages.json": {
+    "receipt": {
+      "messageId": "39356834-3432-4c96-9f55-3048d2a01f24"
+    },
+    "parentReceipt": "b60f19e0-c2b6-49b3-a4f0-6fd711e42992",
+    "result": {
+      "output": [
+        {
+          "type": "text",
+          "text": "CHILD_REPLY"
+        }
+      ],
+      "stopReason": "completed"
+    },
+    "parent": [
+      {
+        "type": "subagent/catalog",
+        "seq": 0,
+        "time": 1793781756884,
+        "data": {
+          "version": 0,
+          "childId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14",
+          "childCreatedAt": 1793781756882,
+          "mode": "continuable",
+          "label": "inspect tests"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781756888,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agent feb08c0a-156c-4895-a54b-32fd4dbd5b14 sent a message: "
+                },
+                {
+                  "type": "text",
+                  "text": "CHILD_PROGRESS"
+                }
+              ],
+              "source": {
+                "kind": "agent-message",
+                "form": "relay",
+                "senderSessionId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14"
+              },
+              "role": "user",
+              "id": "b60f19e0-c2b6-49b3-a4f0-6fd711e42992"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781756888,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781756888,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781756888,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781756889,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f92a26fb-a896-4dd2-af09-47ddb819bebd"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781756889,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Agent feb08c0a-156c-4895-a54b-32fd4dbd5b14 sent a message: "
+            },
+            {
+              "type": "text",
+              "text": "CHILD_PROGRESS"
+            }
+          ],
+          "source": {
+            "kind": "agent-message",
+            "form": "relay",
+            "senderSessionId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14"
+          },
+          "role": "user",
+          "id": "b60f19e0-c2b6-49b3-a4f0-6fd711e42992"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 7,
+        "time": 1793781756889,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "child_probe",
+                "description": "Controlled fixture child_probe",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "interrupt_agent",
+                "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                    }
+                  },
+                  "required": [
+                    "agent_id"
+                  ]
+                }
+              },
+              {
+                "name": "list_agents",
+                "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "scope": {
+                      "type": "string",
+                      "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                      "enum": [
+                        "children",
+                        "descendants"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "send_message",
+                "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "The message to deliver to the agent."
+                    }
+                  },
+                  "required": [
+                    "agent_id",
+                    "message"
+                  ]
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 8,
+        "time": 1793781756889,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 9,
+        "time": 1793781756889,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "parent received relay"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "65790ed8-36ca-4dab-91b2-d10a582a329e"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756889,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "parent received relay"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756889,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 10,
+        "time": 1793781756889,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 11,
+        "time": 1793781756889,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "child": [
+      {
+        "type": "subagent/descriptor",
+        "seq": 0,
+        "time": 1793781756883,
+        "data": {
+          "version": 3,
+          "mode": "continuable",
+          "provider": "spawn",
+          "label": "inspect tests",
+          "agentProvider": "fixture",
+          "agentModel": "child"
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 1,
+        "time": 1793781756883,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional tests; return test-count=3."
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "a89c8b37-29b4-4bf1-955e-f55a39d22732"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 2,
+        "time": 1793781756884,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 3,
+        "time": 1793781756884,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 4,
+        "time": 1793781756884,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 5,
+        "time": 1793781756885,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "31b7095a-baa3-411e-b415-5976734061c4"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793781756885,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional tests; return test-count=3."
+            }
+          ],
+          "source": {
+            "kind": "user"
+          },
+          "role": "user",
+          "id": "a89c8b37-29b4-4bf1-955e-f55a39d22732"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 7,
+        "time": 1793781756885,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "subagent:delegation",
+                "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "14f393ba-d59b-4c95-af21-72b5c35c389c"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 8,
+        "time": 1793781756885,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "child",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "child_probe",
+                "description": "Controlled fixture child_probe",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "interrupt_agent",
+                "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                    }
+                  },
+                  "required": [
+                    "agent_id"
+                  ]
+                }
+              },
+              {
+                "name": "list_agents",
+                "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "scope": {
+                      "type": "string",
+                      "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                      "enum": [
+                        "children",
+                        "descendants"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "send_message",
+                "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "agent_id": {
+                      "type": "string",
+                      "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "The message to deliver to the agent."
+                    }
+                  },
+                  "required": [
+                    "agent_id",
+                    "message"
+                  ]
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 9,
+        "time": 1793781756885,
+        "data": {
+          "provider": "fixture",
+          "model": "child",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 10,
+        "time": 1793781756886,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agent parent sent a message: "
+                },
+                {
+                  "type": "text",
+                  "text": "STEER_AT_NEXT_STEP"
+                }
+              ],
+              "source": {
+                "kind": "agent-message",
+                "form": "relay",
+                "senderSessionId": "parent"
+              },
+              "role": "user",
+              "id": "39356834-3432-4c96-9f55-3048d2a01f24"
+            }
+          ]
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 11,
+        "time": 1793781756890,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "child_probe",
+                "name": "child_probe",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "d331c0da-e703-406f-85f8-651fddf92b59"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793781756889,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756889,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "child_probe",
+                  "name": "child_probe",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756889,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 12,
+        "time": 1793781756890,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "child_probe",
+          "name": "child_probe",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 13,
+        "time": 1793781756892,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "child_probe"
+            },
+            "toolCallId": "child_probe",
+            "content": [
+              {
+                "type": "text",
+                "text": "probe=3"
+              }
+            ],
+            "isError": false,
+            "id": "29cc01c9-a405-40d0-8290-5184881eced4"
+          }
+        },
+        "sourceEventSeqs": [
+          12
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 14,
+        "time": 1793781756892,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 15,
+        "time": 1793781756892,
+        "data": {
+          "target": "next-step",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 16,
+        "time": 1793781756892,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "user/message",
+        "seq": 17,
+        "time": 1793781756893,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Agent parent sent a message: "
+            },
+            {
+              "type": "text",
+              "text": "STEER_AT_NEXT_STEP"
+            }
+          ],
+          "source": {
+            "kind": "agent-message",
+            "form": "relay",
+            "senderSessionId": "parent"
+          },
+          "role": "user",
+          "id": "39356834-3432-4c96-9f55-3048d2a01f24"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "assistant/message",
+        "seq": 18,
+        "time": 1793781756893,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "CHILD_REPLY"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "c9507366-4f68-40d5-b85a-845459779bda"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793781756893,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "CHILD_REPLY"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793781756893,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 19,
+        "time": 1793781756893,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 20,
+        "time": 1793781756893,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "31b7095a-baa3-411e-b415-5976734061c4"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional tests; return test-count=3."
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "a89c8b37-29b4-4bf1-955e-f55a39d22732"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "14f393ba-d59b-4c95-af21-72b5c35c389c"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "child_probe",
+              "description": "Controlled fixture child_probe",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "interrupt_agent",
+              "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                  }
+                },
+                "required": [
+                  "agent_id"
+                ]
+              }
+            },
+            {
+              "name": "list_agents",
+              "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "scope": {
+                    "type": "string",
+                    "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                    "enum": [
+                      "children",
+                      "descendants"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "send_message",
+              "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The message to deliver to the agent."
+                  }
+                },
+                "required": [
+                  "agent_id",
+                  "message"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "child_probe",
+            "description": "Controlled fixture child_probe",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "interrupt_agent",
+            "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                }
+              },
+              "required": [
+                "agent_id"
+              ]
+            }
+          },
+          {
+            "name": "list_agents",
+            "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "type": "string",
+                  "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                  "enum": [
+                    "children",
+                    "descendants"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "send_message",
+            "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                },
+                "message": {
+                  "type": "string",
+                  "description": "The message to deliver to the agent."
+                }
+              },
+              "required": [
+                "agent_id",
+                "message"
+              ]
+            }
+          }
+        ],
+        "sessionId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14"
+      },
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f92a26fb-a896-4dd2-af09-47ddb819bebd"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Agent feb08c0a-156c-4895-a54b-32fd4dbd5b14 sent a message: "
+              },
+              {
+                "type": "text",
+                "text": "CHILD_PROGRESS"
+              }
+            ],
+            "source": {
+              "kind": "agent-message",
+              "form": "relay",
+              "senderSessionId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14"
+            },
+            "role": "user",
+            "id": "b60f19e0-c2b6-49b3-a4f0-6fd711e42992"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "child_probe",
+              "description": "Controlled fixture child_probe",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "interrupt_agent",
+              "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                  }
+                },
+                "required": [
+                  "agent_id"
+                ]
+              }
+            },
+            {
+              "name": "list_agents",
+              "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "scope": {
+                    "type": "string",
+                    "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                    "enum": [
+                      "children",
+                      "descendants"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "send_message",
+              "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The message to deliver to the agent."
+                  }
+                },
+                "required": [
+                  "agent_id",
+                  "message"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "child_probe",
+            "description": "Controlled fixture child_probe",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "interrupt_agent",
+            "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                }
+              },
+              "required": [
+                "agent_id"
+              ]
+            }
+          },
+          {
+            "name": "list_agents",
+            "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "type": "string",
+                  "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                  "enum": [
+                    "children",
+                    "descendants"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "send_message",
+            "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                },
+                "message": {
+                  "type": "string",
+                  "description": "The message to deliver to the agent."
+                }
+              },
+              "required": [
+                "agent_id",
+                "message"
+              ]
+            }
+          }
+        ],
+        "sessionId": "parent"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "31b7095a-baa3-411e-b415-5976734061c4"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional tests; return test-count=3."
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "a89c8b37-29b4-4bf1-955e-f55a39d22732"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "14f393ba-d59b-4c95-af21-72b5c35c389c"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "child_probe",
+                "name": "child_probe",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "child"
+            },
+            "id": "d331c0da-e703-406f-85f8-651fddf92b59"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "child_probe"
+            },
+            "toolCallId": "child_probe",
+            "content": [
+              {
+                "type": "text",
+                "text": "probe=3"
+              }
+            ],
+            "isError": false,
+            "id": "29cc01c9-a405-40d0-8290-5184881eced4"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Agent parent sent a message: "
+              },
+              {
+                "type": "text",
+                "text": "STEER_AT_NEXT_STEP"
+              }
+            ],
+            "source": {
+              "kind": "agent-message",
+              "form": "relay",
+              "senderSessionId": "parent"
+            },
+            "role": "user",
+            "id": "39356834-3432-4c96-9f55-3048d2a01f24"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "child_probe",
+              "description": "Controlled fixture child_probe",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "interrupt_agent",
+              "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                  }
+                },
+                "required": [
+                  "agent_id"
+                ]
+              }
+            },
+            {
+              "name": "list_agents",
+              "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "scope": {
+                    "type": "string",
+                    "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                    "enum": [
+                      "children",
+                      "descendants"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "send_message",
+              "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The message to deliver to the agent."
+                  }
+                },
+                "required": [
+                  "agent_id",
+                  "message"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "child_probe",
+            "description": "Controlled fixture child_probe",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "interrupt_agent",
+            "description": "Ask a subagent to stop its current work. This call returns without waiting for it to stop. You can continue a local direct child's conversation later with send_message. External executions stop permanently and cannot receive follow-ups. Subagents it started will keep running.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The id of an agent created under you: your direct child or a deeper descendant."
+                }
+              },
+              "required": [
+                "agent_id"
+              ]
+            }
+          },
+          {
+            "name": "list_agents",
+            "description": "List subagents you started, with their ids, labels, and status. running means it is working; inactive means it is not currently working. You will be notified when a subagent finishes; there is no need to keep checking its status. Use send_message to continue the conversation.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "type": "string",
+                  "description": "children (default) lists direct children, which accept send_message in any status. descendants lists the whole tree below you with each entry's parent session id and depth; entries deeper than 1 accept only interrupt_agent.",
+                  "enum": [
+                    "children",
+                    "descendants"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "name": "send_message",
+            "description": "Send a message to an agent. A working agent receives it at its next step; an idle agent starts a new turn with it. Returns delivery confirmation, not the agent's answer.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "The agent id of your direct continuable child, or your direct parent when you are a resident continuable child."
+                },
+                "message": {
+                  "type": "string",
+                  "description": "The message to deliver to the agent."
+                }
+              },
+              "required": [
+                "agent_id",
+                "message"
+              ]
+            }
+          }
+        ],
+        "sessionId": "feb08c0a-156c-4895-a54b-32fd4dbd5b14"
+      }
+    ]
+  }
+}

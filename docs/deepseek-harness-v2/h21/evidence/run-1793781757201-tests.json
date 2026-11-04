@@ -1,0 +1,50 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "subagent.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7",
+  "programs": [
+    {
+      "name": "A.ts",
+      "sha256": "f076db556acd7917161cfcdd396bb908c1ee2d20c89918f89749c7dce20ff5cf"
+    },
+    {
+      "name": "B.ts",
+      "sha256": "7ac3d3dea34b97740aafb569770e3ae5a78245ce4711e100f2b2638918bb6282"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "53fe9a0b85d150249f234f773425d265e546a4fc86fac627c5e14119e8ce6e60"
+    },
+    {
+      "name": "C.ts",
+      "sha256": "79d7cdc8bb89f098762a85a3f2a4c1a6e4c4f3f16b52d852f8320b0c4a950d9d"
+    },
+    {
+      "name": "D.ts",
+      "sha256": "dc21b3cc90a5523db93ebb4a6f3e3a4a810729ca7e532f25a84cfc72365faaf5"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "54adbf3dc519e0c1df8370c84e2d5c6d97f44335397bf45635919415b9871d3d"
+    },
+    {
+      "name": "subagent.test.ts",
+      "sha256": "baa924d467ecbebbb60fb8a6b98cc578f162da74714dd4b6e49d84be0bde4a83"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "9aba0c94656772d8fffe796bcf61de14ca54bcca3e0c2df16e14951ec2c0e82e"
+    },
+    {
+      "name": "X.ts",
+      "sha256": "153760e18b7ad3f0a3ddab8efabcc74b65bae84d453a6221b21fb01a2010b10d"
+    }
+  ],
+  "exit": 1,
+  "stdout": "TAP version 13\n# Subtest: C A registry\nok 1 - C A registry\n  ---\n  duration_ms: 39.2298\n  type: 'test'\n  ...\n# Subtest: C A capabilities\nok 2 - C A capabilities\n  ---\n  duration_ms: 14.0012\n  type: 'test'\n  ...\n# Subtest: C A cancel-start\nok 3 - C A cancel-start\n  ---\n  duration_ms: 12.9558\n  type: 'test'\n  ...\n# Subtest: D A no-persistence\nok 4 - D A no-persistence\n  ---\n  duration_ms: 23.8776\n  type: 'test'\n  ...\n# Subtest: D A caller\nnot ok 5 - D A caller\n  ---\n  duration_ms: 51.7339\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:263'\n  failureType: 'testCodeFailure'\n  error: 'listing subagents requires the registered subagentCatalog projection'\n  code: 'SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE'\n  name: 'SubagentError'\n  stack: |-\n    listChildren (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\subagent\\src\\list-children.ts:48:11)\n    async practiceA (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\A.ts:38:18)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\subagent.test.ts:8:146)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D B spawn\nok 6 - D B spawn\n  ---\n  duration_ms: 38.3262\n  type: 'test'\n  ...\n# Subtest: D B child-failure\nok 7 - D B child-failure\n  ---\n  duration_ms: 34.7961\n  type: 'test'\n  ...\n# Subtest: D B post-accept-abort\nok 8 - D B post-accept-abort\n  ---\n  duration_ms: 33.531\n  type: 'test'\n  ...\n# Subtest: D C fork completed-prefix\nnot ok 9 - D C fork completed-prefix\n  ---\n  duration_ms: 44.0654\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:541'\n  failureType: 'testCodeFailure'\n  error: 'ordinary?.dispose is not a function'\n  code: 'ERR_TEST_FAILURE'\n  name: 'TypeError'\n  stack: |-\n    practiceC (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\C.ts:27:47)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\subagent.test.ts:10:119)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D C fork empty\nnot ok 10 - D C fork empty\n  ---\n  duration_ms: 23.0572\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:541'\n  failureType: 'testCodeFailure'\n  error: 'ordinary?.dispose is not a function'\n  code: 'ERR_TEST_FAILURE'\n  name: 'TypeError'\n  stack: |-\n    practiceC (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\C.ts:27:47)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\subagent.test.ts:10:119)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D messages\nok 11 - D D messages\n  ---\n  duration_ms: 39.906\n  type: 'test'\n  ...\n# Subtest: D D cold-resume\nnot ok 12 - D D cold-resume\n  ---\n  duration_ms: 55.6703\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:679'\n  failureType: 'testCodeFailure'\n  error: 'listing subagents requires the registered subagentCatalog projection'\n  code: 'SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE'\n  name: 'SubagentError'\n  stack: |-\n    listChildren (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\subagent\\src\\list-children.ts:48:11)\n    async execute (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\tool-subagent-control\\src\\list-agents.ts:156:27)\n  ...\n# Subtest: D D limits-tree\nnot ok 13 - D D limits-tree\n  ---\n  duration_ms: 42.0915\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:679'\n  failureType: 'testCodeFailure'\n  error: 'listing subagents requires the registered subagentCatalog projection'\n  code: 'SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE'\n  name: 'SubagentError'\n  stack: |-\n    listChildren (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\subagent\\src\\list-children.ts:48:11)\n    async execute (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\tool-subagent-control\\src\\list-agents.ts:156:27)\n  ...\n# Subtest: D D interrupt\nok 14 - D D interrupt\n  ---\n  duration_ms: 38.1052\n  type: 'test'\n  ...\n# Subtest: D X model delegation, relay, settlement, cold continuation and fork comparison\nnot ok 15 - D X model delegation, relay, settlement, cold continuation and fork comparison\n  ---\n  duration_ms: 67.66\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h21-lab-8884N7\\\\subagent.test.ts:1:756'\n  failureType: 'testCodeFailure'\n  error: 'listing subagents requires the registered subagentCatalog projection'\n  code: 'SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE'\n  name: 'SubagentError'\n  stack: |-\n    listChildren (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\subagent\\subagent\\src\\list-children.ts:48:11)\n    async integrated (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\X.ts:35:18)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h21-lab-8884N7\\subagent.test.ts:12:114)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n1..15\n# tests 15\n# suites 0\n# pass 9\n# fail 6\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1586.2056\n",
+  "stderr": "",
+  "error": null
+}

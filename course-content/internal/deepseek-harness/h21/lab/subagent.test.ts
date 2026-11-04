@@ -1,0 +1,15 @@
+import {test} from 'node:test';
+import {practiceA,A_CASES} from './A.ts';
+import {practiceB,B_CASES} from './B.ts';
+import {practiceC} from './C.ts';
+import {practiceD,D_CASES} from './D.ts';
+import {integrated} from './X.ts';
+import {record} from './support.ts';
+import {componentBoundary,C_CASES,persistedDiscovery} from './boundaries.ts';
+for(const mode of A_CASES)test(`${['registry','capabilities','cancel-start'].includes(mode)?'C':'D'} A ${mode}`,async()=>{await record('A-'+mode,await practiceA(mode));});
+for(const mode of B_CASES)test(`D B ${mode}`,async()=>{await record('B-'+mode,await practiceB(mode));});
+for(const empty of [false,true])test(`D C fork ${empty?'empty':'completed-prefix'}`,async()=>{await record('C-'+empty,await practiceC(empty));});
+for(const mode of D_CASES)test(`D D ${mode}`,async()=>{await record('D-'+mode,await practiceD(mode));});
+test('D X model delegation, relay, settlement, cold continuation and fork comparison',async()=>{await record('X',await integrated());});
+for(const mode of C_CASES)test(`C boundary ${mode}`,async()=>{await record(mode,await componentBoundary(mode));});
+test('D persisted discovery in new Context starts no Agent or model request',async()=>{await record('persisted-discovery',await persistedDiscovery());});
