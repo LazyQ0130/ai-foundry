@@ -1,0 +1,412 @@
+{
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-r2LXxI",
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "64b5031cedea63f2f449629ba09b98026c34fa2859c2be5f99f305938dac3cbb",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h23-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1300,
+      "sourceSha256": "f2dc7310543dbe95d492c924ffdd7dce56a7f93764c5eda9e3e68edae3d68cad",
+      "imageSha256": "76c4f09a106bb6df59da532e9a37abc517d3b4e863facd23ec4a03225912bc0f"
+    },
+    {
+      "id": "h23-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1612,
+      "sourceSha256": "67f3a549728c3a33bae02c697c7b4f8c3a4d51232e62a5fe3d7f70551e64a049",
+      "imageSha256": "ebe4ef69f2cb5f48c1fb425f7d27e4d614499e09cb98423c6390d3288323cea6"
+    },
+    {
+      "id": "h23-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1834,
+      "sourceSha256": "7553f33603967efea367e9d3cf7fa7652b0f00c6d905238e2d1b087c5fb35aca",
+      "imageSha256": "fee1e074da61ad0f454374adc6b7be70c921eb6c14f03370f4edc3a348137a6d"
+    },
+    {
+      "id": "h23-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1300,
+      "sourceSha256": "0ef20f4ada1ddd3b22709f1302cc6635178fca6e6d98d1ba29e37c14384f5b15",
+      "imageSha256": "f8767c146f8aa3990355dae1b7471826f3df75cfa869646bc7ef0c54e7ab2f1a"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "CLI按Profile启动应用，Web Client通过Host Remote交互，SDK以独立stdio协议驱动子进程，ACP是另一协议分支；核心AgentLoop和Session可以共享实现",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜多客户端职责结构。各分支可装载不同能力；它们不是同一协议的四个名字，也不是都经浏览器连接。",
+            "src": "/course-media/harness-v2/h23/h23-01.png"
+          },
+          {
+            "alt": "Web控制从Client RPC进入Host Connection和Gateway，经SessionController送入Agent；Session事实与实时流沿follow的快照和增量回Client",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Web控制与状态两条线。监听先于opening snapshot建立；认证与方法权限在Host，UI更新不替代持久化确认。",
+            "src": "/course-media/harness-v2/h23/h23-02.png"
+          },
+          {
+            "alt": "SDK客户端启动独立进程，经initialize检查路由，prompt先回messageId，通知与等待追踪活动，shutdown清理退出，新客户端可独立resume保存的Session",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜SDK时序摘要。run与wait的等待边界不同；本版没有轮次中取消方法，SDK关闭也不删除历史。",
+            "src": "/course-media/harness-v2/h23/h23-03.png"
+          },
+          {
+            "alt": "连接代际、实时Agent与Assistant revision、持久Session seq和不同恢复动作分层；重连不重跑历史，Resume不恢复旧进程句柄",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜状态来源与恢复对象。Connection不是Session，UI完成不是保存确认；领域事实与进程内活动须各自核对。",
+            "src": "/course-media/harness-v2/h23/h23-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "cli-fixture.ts",
+        "sdk-runtime.ts",
+        "web-fixture.ts",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clients.test.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 6987,
+        "scrolled": 6276
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 31
+      },
+      "answerGeometry": {
+        "top": 7.8125,
+        "bottom": 350.984375,
+        "viewport": 950,
+        "height": 343.171875,
+        "content": "想深入再看：实践 A 详细参考答案A1真实parser确认五种Profile名称及交接，web --port后出现的--patch留在args，launcher.patches为空。A2把会exit的解析放独立进程，help/version为0，缺Profile、desktop保留名称和互斥dump等为1，不能在Node测试主进程里直接调用非法解析导致整套退出。A3先用insert创建review条目，再按id整体替换config为model=second，provider不保留；只写一个不存在id的patch会被跳过，原夹具因此失败，现已按正式规则修复。A4真正runCli读取新Home的空Profile做dump，正常退出；不存在Profile走失败出口，不触用户配置。评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。",
+        "lastParagraph": "评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "CLI按Profile启动应用，Web Client通过Host Remote交互，SDK以独立stdio协议驱动子进程，ACP是另一协议分支；核心AgentLoop和Session可以共享实现",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜多客户端职责结构。各分支可装载不同能力；它们不是同一协议的四个名字，也不是都经浏览器连接。",
+            "src": "/course-media/harness-v2/h23/h23-01.png"
+          },
+          {
+            "alt": "Web控制从Client RPC进入Host Connection和Gateway，经SessionController送入Agent；Session事实与实时流沿follow的快照和增量回Client",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Web控制与状态两条线。监听先于opening snapshot建立；认证与方法权限在Host，UI更新不替代持久化确认。",
+            "src": "/course-media/harness-v2/h23/h23-02.png"
+          },
+          {
+            "alt": "SDK客户端启动独立进程，经initialize检查路由，prompt先回messageId，通知与等待追踪活动，shutdown清理退出，新客户端可独立resume保存的Session",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜SDK时序摘要。run与wait的等待边界不同；本版没有轮次中取消方法，SDK关闭也不删除历史。",
+            "src": "/course-media/harness-v2/h23/h23-03.png"
+          },
+          {
+            "alt": "连接代际、实时Agent与Assistant revision、持久Session seq和不同恢复动作分层；重连不重跑历史，Resume不恢复旧进程句柄",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜状态来源与恢复对象。Connection不是Session，UI完成不是保存确认；领域事实与进程内活动须各自核对。",
+            "src": "/course-media/harness-v2/h23/h23-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "cli-fixture.ts",
+        "sdk-runtime.ts",
+        "web-fixture.ts",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clients.test.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 6979,
+        "scrolled": 6658
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 31
+      },
+      "answerGeometry": {
+        "top": 7.703125,
+        "bottom": 663.640625,
+        "viewport": 950,
+        "height": 655.9375,
+        "content": "想深入再看：实践 A 详细参考答案A1真实parser确认五种Profile名称及交接，web --port后出现的--patch留在args，launcher.patches为空。A2把会exit的解析放独立进程，help/version为0，缺Profile、desktop保留名称和互斥dump等为1，不能在Node测试主进程里直接调用非法解析导致整套退出。A3先用insert创建review条目，再按id整体替换config为model=second，provider不保留；只写一个不存在id的patch会被跳过，原夹具因此失败，现已按正式规则修复。A4真正runCli读取新Home的空Profile做dump，正常退出；不存在Profile走失败出口，不触用户配置。评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。",
+        "lastParagraph": "评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.66181640625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "CLI按Profile启动应用，Web Client通过Host Remote交互，SDK以独立stdio协议驱动子进程，ACP是另一协议分支；核心AgentLoop和Session可以共享实现",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜多客户端职责结构。各分支可装载不同能力；它们不是同一协议的四个名字，也不是都经浏览器连接。",
+            "src": "/course-media/harness-v2/h23/h23-01.png"
+          },
+          {
+            "alt": "Web控制从Client RPC进入Host Connection和Gateway，经SessionController送入Agent；Session事实与实时流沿follow的快照和增量回Client",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Web控制与状态两条线。监听先于opening snapshot建立；认证与方法权限在Host，UI更新不替代持久化确认。",
+            "src": "/course-media/harness-v2/h23/h23-02.png"
+          },
+          {
+            "alt": "SDK客户端启动独立进程，经initialize检查路由，prompt先回messageId，通知与等待追踪活动，shutdown清理退出，新客户端可独立resume保存的Session",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜SDK时序摘要。run与wait的等待边界不同；本版没有轮次中取消方法，SDK关闭也不删除历史。",
+            "src": "/course-media/harness-v2/h23/h23-03.png"
+          },
+          {
+            "alt": "连接代际、实时Agent与Assistant revision、持久Session seq和不同恢复动作分层；重连不重跑历史，Resume不恢复旧进程句柄",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜状态来源与恢复对象。Connection不是Session，UI完成不是保存确认；领域事实与进程内活动须各自核对。",
+            "src": "/course-media/harness-v2/h23/h23-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "cli-fixture.ts",
+        "sdk-runtime.ts",
+        "web-fixture.ts",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clients.test.ts",
+        "demo.ts"
+      ],
+      "clipboard": "thirteen full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 6979,
+        "scrolled": 6728
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 31
+      },
+      "answerGeometry": {
+        "top": 7.8125,
+        "bottom": 778.9375,
+        "viewport": 950,
+        "height": 771.125,
+        "content": "想深入再看：实践 A 详细参考答案A1真实parser确认五种Profile名称及交接，web --port后出现的--patch留在args，launcher.patches为空。A2把会exit的解析放独立进程，help/version为0，缺Profile、desktop保留名称和互斥dump等为1，不能在Node测试主进程里直接调用非法解析导致整套退出。A3先用insert创建review条目，再按id整体替换config为model=second，provider不保留；只写一个不存在id的patch会被跳过，原夹具因此失败，现已按正式规则修复。A4真正runCli读取新Home的空Profile做dump，正常退出；不存在Profile走失败出口，不触用户配置。评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。",
+        "lastParagraph": "评分：参数归属3、组合结果3、退出/失败阶段2、范围与未测项2。只交PASS或把CLI称TUI不能满分。A没有启动完整Web/SDK/ACP应用，也未验证HMR或安装包发布。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.59931640625
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

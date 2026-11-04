@@ -1,0 +1,3004 @@
+{
+  "trace-A1.json": [
+    {
+      "mode": "parse",
+      "args": [
+        "web"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"web\",\"patches\":[],\"args\":[]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "web",
+        "patches": [],
+        "args": []
+      }
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--profile",
+        "headless",
+        "fictional task"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"headless\",\"patches\":[],\"args\":[\"fictional task\"]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "headless",
+        "patches": [],
+        "args": [
+          "fictional task"
+        ]
+      }
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--profile",
+        "sdk"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"sdk\",\"patches\":[],\"args\":[]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "sdk",
+        "patches": [],
+        "args": []
+      }
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--profile",
+        "sdk-minimal"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"sdk-minimal\",\"patches\":[],\"args\":[]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      }
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--profile",
+        "acp"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"acp\",\"patches\":[],\"args\":[]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "acp",
+        "patches": [],
+        "args": []
+      }
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "web",
+        "--port",
+        "9123",
+        "--patch",
+        "belongs-to-app"
+      ],
+      "exit": 0,
+      "stdout": "{\"mode\":\"profile\",\"profile\":\"web\",\"patches\":[],\"args\":[\"--port\",\"9123\",\"--patch\",\"belongs-to-app\"]}\n",
+      "stderr": "",
+      "value": {
+        "mode": "profile",
+        "profile": "web",
+        "patches": [],
+        "args": [
+          "--port",
+          "9123",
+          "--patch",
+          "belongs-to-app"
+        ]
+      }
+    }
+  ],
+  "trace-A2.json": [
+    {
+      "mode": "parse",
+      "args": [
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "Usage: dsh [--profile] <name> [options] [app-args...]\n       dsh plugin --profile <name> <pnpm-args...>\n\ndsh: boot a DeepSeek Harness profile — an ordered stack of plugin-bundle patch\nlayers under your own overrides.\n\nArguments:\n  args                           arguments for the booted profile's app (see:\n                                 dsh --profile <name> --help)\n\nOptions:\n  -V, --version                  output the version number\n  --profile <name>               the profile under $DSH_HOME/profiles to boot\n  --from-default-profile <name>  replace a custom profile with a fresh copy of a\n                                 shipped profile template\n  --patch <path>                 extra patch-list overlay applied after the\n                                 profile layer (repeatable)\n  --dump-config                  print the composed profile tree and exit\n  --dump-config-schema           print JSON Schema for profile entries and\n                                 patches without mounting\n  --dump-default-config          print the profile tree without its user layer\n                                 or --patch overlays and exit\n\nExamples:\n  dsh web                                   boot the web profile (same as: dsh --profile web)\n  dsh rescue --from-default-profile web\n                                            recreate rescue from the shipped web template, then boot it\n  dsh headless \"run the tests\"              answer one task, print the result, and exit\n  dsh tui --patch ./extra.yml               boot a custom profile with one extra overlay\n  dsh tui --resume <session>                arguments after the launcher flags reach the app\n  dsh web --help                            the web app's own flags and help\n  dsh plugin --profile tui add <package>    install a plugin into the tui profile\n\n",
+      "stderr": ""
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.2-alpha.2\n",
+      "stderr": ""
+    },
+    {
+      "mode": "parse",
+      "args": [],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "error: --profile <name> is required\n"
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "--profile",
+        "desktop"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "error: profile \"desktop\" is managed exclusively by the Electron application\n"
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "web",
+        "--dump-config",
+        "--dump-default-config"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "error: --dump-config, --dump-default-config, and --dump-config-schema are mutually exclusive\n"
+    },
+    {
+      "mode": "parse",
+      "args": [
+        "web",
+        "--dump-config",
+        "--port",
+        "1"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "error: config dumps take no app arguments, got \"--port\" \"1\"\n"
+    }
+  ],
+  "trace-A4.json": {
+    "home": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\sdk-home-Qe01i6",
+    "normal": {
+      "mode": "cli",
+      "args": [
+        "h23-fixture",
+        "--dump-config"
+      ],
+      "exit": 0,
+      "stdout": "\n",
+      "stderr": ""
+    },
+    "failed": {
+      "mode": "cli",
+      "args": [
+        "definitely-missing-profile"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\profile.ts:736\r\n      throw new Error(\r\n            ^\r\n\r\nError: dsh: profile \"definitely-missing-profile\" does not exist; create it with 'dsh plugin --profile definitely-missing-profile add <package>'\r\n    at loadProfile (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\profile.ts:736:13)\r\n    at prepareProfile (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\apps\\cli\\src\\profile-boot.ts:196:19)\r\n    at composeProfile (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\apps\\cli\\src\\profile-boot.ts:230:47)\r\n    at runProfile (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\apps\\cli\\src\\profile-boot.ts:292:28)\r\n    at async runCli (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\apps\\cli\\src\\bin.ts:35:9)\r\n    at async <anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\cli-fixture.ts:5:135)\r\n\r\nNode.js v24.16.0\r\n"
+    }
+  },
+  "trace-B-web-review.json": {
+    "created": {
+      "ok": true,
+      "value": {
+        "sessionId": "web-review"
+      }
+    },
+    "receipt": {
+      "ok": true,
+      "value": {
+        "accepted": true
+      }
+    },
+    "snapshot": {
+      "value": {
+        "type": "snapshot",
+        "header": {
+          "version": 4,
+          "id": "web-review",
+          "createdAt": 1793791397519,
+          "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb",
+          "isSeeded": false
+        },
+        "projections": {
+          "asOfSeq": -1,
+          "values": {
+            "modelSelection": {
+              "lastUsed": null,
+              "next": null
+            },
+            "inbox": {
+              "next-turn": [],
+              "next-step": []
+            },
+            "subagentCatalog": [],
+            "subagentTiming": {
+              "settledMs": 0
+            },
+            "subagent": null,
+            "sessionListMetadata": {
+              "blank": true,
+              "lastPromptAt": null
+            },
+            "imageLimits": {
+              "maxImageBytes": 5242880,
+              "maxImagesPerMessage": 20,
+              "maxMessageImageBytes": 104857600,
+              "maxImagePixels": 40000000,
+              "maxImageDimension": 2000,
+              "mediaTypes": [
+                "image/png"
+              ]
+            }
+          }
+        },
+        "cursor": -1,
+        "records": [],
+        "hasMore": false
+      },
+      "done": false
+    },
+    "frames": [
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793791397562,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user",
+                  "rpcId": "h23-input"
+                },
+                "role": "user",
+                "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793791397564,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793791397565,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793791397568,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793791397571,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "b50f99f9-37fd-49f0-94a4-4ab5da9912e3"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793791397572,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793791397573,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              }
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793791397574,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793791397578,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "78f53503-ef20-4185-bb7d-cdbbbdd6fbc2"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793791397576,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793791397577,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793791397579,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793791397579,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      }
+    ],
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793791397562,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793791397564,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793791397565,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793791397568,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793791397571,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "b50f99f9-37fd-49f0-94a4-4ab5da9912e3"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793791397572,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793791397573,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793791397574,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793791397578,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "78f53503-ef20-4185-bb7d-cdbbbdd6fbc2"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793791397576,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793791397577,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793791397579,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793791397579,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "stored": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793791397562,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793791397564,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793791397565,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793791397568,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793791397571,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "b50f99f9-37fd-49f0-94a4-4ab5da9912e3"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793791397572,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793791397573,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793791397574,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793791397578,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "78f53503-ef20-4185-bb7d-cdbbbdd6fbc2"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793791397576,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793791397577,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793791397579,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793791397579,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "b50f99f9-37fd-49f0-94a4-4ab5da9912e3"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "73d52017-45d4-4216-bb1a-cd156d9ebcf2"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "web-review"
+      }
+    ],
+    "wire": [
+      {
+        "route": "api/session/create",
+        "request": {
+          "type": "client-request",
+          "rpcId": "7a69421d-2e59-41b2-b2c9-77907cd4c555",
+          "method": "session/create",
+          "payload": {
+            "args": {
+              "request": {
+                "sessionId": "web-review",
+                "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb"
+              }
+            }
+          }
+        }
+      },
+      {
+        "route": "api/session/prompt",
+        "request": {
+          "type": "client-request",
+          "rpcId": "997605aa-dedc-4aea-9da8-0f46076b517a",
+          "method": "session/prompt",
+          "payload": {
+            "args": {
+              "request": {
+                "requestId": "h23-input",
+                "sessionId": "web-review",
+                "mode": "queue",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\h23-jsonl-aUR9PS",
+    "transport": "real Client RPC envelope + real Gateway + SessionController; author in-process fetch/stream carrier, no HTTP socket or browser"
+  },
+  "trace-C1.json": {
+    "result": {
+      "sessionId": "sdk-review",
+      "finalResponse": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.",
+      "events": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793791398284,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793791398286,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793791398287,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793791398288,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793791398290,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "c94e4836-1495-411b-b516-d3d58f9f846e"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793791398290,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793791398290,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "approval:policy",
+                  "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "313d872a-4911-49ff-8855-1fbde3266477"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793791398290,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "fixture_review",
+                  "description": "Controlled fixture fixture_review",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793791398291,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        },
+        {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793791398293,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "b02ce22a-c2f0-4725-b57e-a9e6488ea693"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793791398292,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793791398292,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "step/end",
+          "seq": 10,
+          "time": 1793791398293,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "turn/end",
+          "seq": 11,
+          "time": 1793791398293,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      ],
+      "notifications": [
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793791398284,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "running"
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793791398286,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793791398287,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793791398288,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793791398290,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "c94e4836-1495-411b-b516-d3d58f9f846e"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793791398290,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793791398290,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "313d872a-4911-49ff-8855-1fbde3266477"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793791398290,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793791398291,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "b02ce22a-c2f0-4725-b57e-a9e6488ea693"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793791398292,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793791398292,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "idle"
+          }
+        }
+      ]
+    },
+    "wire": {
+      "pid": 2224,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_edf8f8761462492b9c31000f84d8cf49\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793791398284,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"47c3a6f4-1c06-4c71-83f2-fc904e110020\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793791398286,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793791398287,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_33fdbc8b5dd94fb9bb4c58c27639c206\",\"result\":{\"messageId\":\"47c3a6f4-1c06-4c71-83f2-fc904e110020\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793791398288,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793791398290,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Analyze controlled, fictional project facts only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"c94e4836-1495-411b-b516-d3d58f9f846e\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793791398290,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"47c3a6f4-1c06-4c71-83f2-fc904e110020\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793791398290,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"approval:policy\",\"text\":\"Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}]},\"role\":\"user\",\"id\":\"313d872a-4911-49ff-8855-1fbde3266477\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793791398290,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"parent\",\"maxTokens\":128},\"adapterDefaults\":{\"maxTokens\":true},\"tools\":[{\"name\":\"fixture_review\",\"description\":\"Controlled fixture fixture_review\",\"parameters\":{\"type\":\"object\",\"properties\":{}}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793791398291,\"data\":{\"provider\":\"fixture\",\"model\":\"parent\",\"contextWindow\":100000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"assistant/message\",\"seq\":9,\"time\":1793791398293,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"parent\"},\"id\":\"b02ce22a-c2f0-4725-b57e-a9e6488ea693\"},\"stream\":[{\"type\":\"text-chunks\",\"time0\":1793791398292,\"index\":0,\"dt\":[],\"texts\":[\"REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"]},{\"type\":\"chunk\",\"time\":1793791398292,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/end\",\"seq\":10,\"time\":1793791398293,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/end\",\"seq\":11,\"time\":1793791398293,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_b9abf2b8204a4045b847521cab163a1c\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_edf8f8761462492b9c31000f84d8cf49\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_33fdbc8b5dd94fb9bb4c58c27639c206\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"sdk-review\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}]}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_b9abf2b8204a4045b847521cab163a1c\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_edf8f8761462492b9c31000f84d8cf49",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793791398284,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "running"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793791398286,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793791398287,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_33fdbc8b5dd94fb9bb4c58c27639c206",
+          "result": {
+            "messageId": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793791398288,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793791398290,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "c94e4836-1495-411b-b516-d3d58f9f846e"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793791398290,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793791398290,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "313d872a-4911-49ff-8855-1fbde3266477"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793791398290,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793791398291,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "b02ce22a-c2f0-4725-b57e-a9e6488ea693"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793791398292,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793791398292,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793791398293,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "idle"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_b9abf2b8204a4045b847521cab163a1c",
+          "result": {}
+        }
+      ]
+    },
+    "runtime": {
+      "pid": 2224,
+      "invocation": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      },
+      "effects": 0,
+      "events": {
+        "sdk-review": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793791398284,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793791398286,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793791398287,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793791398288,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793791398290,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "c94e4836-1495-411b-b516-d3d58f9f846e"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793791398290,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 6,
+            "time": 1793791398290,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "313d872a-4911-49ff-8855-1fbde3266477"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 7,
+            "time": 1793791398290,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "fixture_review",
+                    "description": "Controlled fixture fixture_review",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 8,
+            "time": 1793791398291,
+            "data": {
+              "provider": "fixture",
+              "model": "parent",
+              "contextWindow": 100000
+            }
+          },
+          {
+            "type": "assistant/message",
+            "seq": 9,
+            "time": 1793791398293,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "parent"
+                },
+                "id": "b02ce22a-c2f0-4725-b57e-a9e6488ea693"
+              },
+              "stream": [
+                {
+                  "type": "text-chunks",
+                  "time0": 1793791398292,
+                  "index": 0,
+                  "dt": [],
+                  "texts": [
+                    "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  ]
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793791398292,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "stop"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "step/end",
+            "seq": 10,
+            "time": 1793791398293,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "turn/end",
+            "seq": 11,
+            "time": 1793791398293,
+            "data": {
+              "turn": 1,
+              "reason": {
+                "kind": "completed"
+              }
+            }
+          }
+        ]
+      },
+      "requests": [
+        {
+          "provider": "fixture",
+          "model": "parent",
+          "maxTokens": 128,
+          "messages": [
+            {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "c94e4836-1495-411b-b516-d3d58f9f846e"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "47c3a6f4-1c06-4c71-83f2-fc904e110020"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "313d872a-4911-49ff-8855-1fbde3266477"
+            }
+          ],
+          "toolHistory": {
+            "tools": [
+              {
+                "name": "fixture_review",
+                "description": "Controlled fixture fixture_review",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ],
+            "updates": []
+          },
+          "tools": [
+            {
+              "name": "fixture_review",
+              "description": "Controlled fixture fixture_review",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "sessionId": "sdk-review"
+        }
+      ]
+    },
+    "home": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\sdk-home-LSbkNl"
+  },
+  "trace-D2.json": {
+    "runtime": {
+      "pid": 8564,
+      "invocation": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      },
+      "effects": 0,
+      "events": {
+        "owned": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793791421120,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "FIRST"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "5c386409-7192-4e81-af2a-36f333b91ab3"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793791421121,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793791421121,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793791421122,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793791421123,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "06b467f0-b12d-45ff-b5bd-c9b71191acf9"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793791421124,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "FIRST"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "5c386409-7192-4e81-af2a-36f333b91ab3"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 6,
+            "time": 1793791421124,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "ea63dbbe-fdc7-4671-9d48-9bb72862723b"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 7,
+            "time": 1793791421124,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "fixture_review",
+                    "description": "Controlled fixture fixture_review",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 8,
+            "time": 1793791421124,
+            "data": {
+              "provider": "fixture",
+              "model": "parent",
+              "contextWindow": 100000
+            }
+          },
+          {
+            "type": "assistant/message",
+            "seq": 9,
+            "time": 1793791421126,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "parent"
+                },
+                "id": "be6b451d-e590-49ac-a857-e02157a95a34"
+              },
+              "stream": [
+                {
+                  "type": "text-chunks",
+                  "time0": 1793791421125,
+                  "index": 0,
+                  "dt": [],
+                  "texts": [
+                    "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  ]
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793791421125,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "stop"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "step/end",
+            "seq": 10,
+            "time": 1793791421126,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "turn/end",
+            "seq": 11,
+            "time": 1793791421126,
+            "data": {
+              "turn": 1,
+              "reason": {
+                "kind": "completed"
+              }
+            }
+          }
+        ]
+      },
+      "requests": [
+        {
+          "provider": "fixture",
+          "model": "parent",
+          "maxTokens": 128,
+          "messages": [
+            {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "06b467f0-b12d-45ff-b5bd-c9b71191acf9"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "FIRST"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "5c386409-7192-4e81-af2a-36f333b91ab3"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "ea63dbbe-fdc7-4671-9d48-9bb72862723b"
+            }
+          ],
+          "toolHistory": {
+            "tools": [
+              {
+                "name": "fixture_review",
+                "description": "Controlled fixture fixture_review",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ],
+            "updates": []
+          },
+          "tools": [
+            {
+              "name": "fixture_review",
+              "description": "Controlled fixture fixture_review",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "sessionId": "owned"
+        }
+      ]
+    },
+    "firstWire": {
+      "pid": 8564,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_4eb34d0910b749f483fe8681b8b05a3c\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793791421120,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"FIRST\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"5c386409-7192-4e81-af2a-36f333b91ab3\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"owned\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793791421121,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793791421121,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_286078a4f4e344f69f50fca8d40c14a6\",\"result\":{\"messageId\":\"5c386409-7192-4e81-af2a-36f333b91ab3\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793791421122,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793791421123,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Analyze controlled, fictional project facts only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"06b467f0-b12d-45ff-b5bd-c9b71191acf9\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793791421124,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"FIRST\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"5c386409-7192-4e81-af2a-36f333b91ab3\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793791421124,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"approval:policy\",\"text\":\"Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}]},\"role\":\"user\",\"id\":\"ea63dbbe-fdc7-4671-9d48-9bb72862723b\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793791421124,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"parent\",\"maxTokens\":128},\"adapterDefaults\":{\"maxTokens\":true},\"tools\":[{\"name\":\"fixture_review\",\"description\":\"Controlled fixture fixture_review\",\"parameters\":{\"type\":\"object\",\"properties\":{}}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793791421124,\"data\":{\"provider\":\"fixture\",\"model\":\"parent\",\"contextWindow\":100000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"assistant/message\",\"seq\":9,\"time\":1793791421126,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"parent\"},\"id\":\"be6b451d-e590-49ac-a857-e02157a95a34\"},\"stream\":[{\"type\":\"text-chunks\",\"time0\":1793791421125,\"index\":0,\"dt\":[],\"texts\":[\"REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"]},{\"type\":\"chunk\",\"time\":1793791421125,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"step/end\",\"seq\":10,\"time\":1793791421126,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"owned\",\"event\":{\"type\":\"turn/end\",\"seq\":11,\"time\":1793791421126,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"owned\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_2dee8924e8a741b5a939eb38aeb3cc6e\",\"error\":{\"code\":-32603,\"message\":\"SDK session is already open or opening: owned\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_e1360b73e4d64d17af7d80a232ed72f3\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_4eb34d0910b749f483fe8681b8b05a3c\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_286078a4f4e344f69f50fca8d40c14a6\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"owned\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"FIRST\"}]}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_2dee8924e8a741b5a939eb38aeb3cc6e\",\"method\":\"session/resume\",\"params\":{\"sessionId\":\"owned\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_e1360b73e4d64d17af7d80a232ed72f3\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_4eb34d0910b749f483fe8681b8b05a3c",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793791421120,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "FIRST"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "5c386409-7192-4e81-af2a-36f333b91ab3"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "owned",
+            "status": "running"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793791421121,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793791421121,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_286078a4f4e344f69f50fca8d40c14a6",
+          "result": {
+            "messageId": "5c386409-7192-4e81-af2a-36f333b91ab3"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793791421122,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793791421123,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "06b467f0-b12d-45ff-b5bd-c9b71191acf9"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793791421124,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "FIRST"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "5c386409-7192-4e81-af2a-36f333b91ab3"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793791421124,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "ea63dbbe-fdc7-4671-9d48-9bb72862723b"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793791421124,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793791421124,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793791421126,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "be6b451d-e590-49ac-a857-e02157a95a34"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793791421125,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793791421125,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793791421126,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "owned",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793791421126,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "owned",
+            "status": "idle"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_2dee8924e8a741b5a939eb38aeb3cc6e",
+          "error": {
+            "code": -32603,
+            "message": "SDK session is already open or opening: owned"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_e1360b73e4d64d17af7d80a232ed72f3",
+          "result": {}
+        }
+      ]
+    },
+    "secondWire": {
+      "pid": 31760,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_16f327aa2c2c49ebb140cd793ded9a6d\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_1f967857619a4fb084b9d82ed850142d\",\"error\":{\"code\":-32603,\"message\":\"session \\\"missing\\\" not found\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_f98cceed79a3471588ddca46bf390ac2\",\"error\":{\"code\":-32603,\"message\":\"session \\\"owned\\\" not found\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_7a3a730a32c44c76a734a5136161c2be\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_16f327aa2c2c49ebb140cd793ded9a6d\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_1f967857619a4fb084b9d82ed850142d\",\"method\":\"session/resume\",\"params\":{\"sessionId\":\"missing\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_f98cceed79a3471588ddca46bf390ac2\",\"method\":\"session/resume\",\"params\":{\"sessionId\":\"owned\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_7a3a730a32c44c76a734a5136161c2be\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_16f327aa2c2c49ebb140cd793ded9a6d",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_1f967857619a4fb084b9d82ed850142d",
+          "error": {
+            "code": -32603,
+            "message": "session \"missing\" not found"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_f98cceed79a3471588ddca46bf390ac2",
+          "error": {
+            "code": -32603,
+            "message": "session \"owned\" not found"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_7a3a730a32c44c76a734a5136161c2be",
+          "result": {}
+        }
+      ]
+    }
+  },
+  "trace-D3.json": {
+    "fixturePath": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\sdk-home-Mshxia\\sessions\\--C-Users-QYF-AppData-Local-Temp-aifoundry-h23-lab-duiXlb--\\corrupt\\session.v4.jsonl",
+    "changedFirstLine": {
+      "type": "session",
+      "version": 999,
+      "id": "corrupt",
+      "createdAt": 1793791421751,
+      "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb",
+      "isSeeded": false,
+      "delegationDepth": 0
+    },
+    "wire": {
+      "pid": 15020,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_99b34ef1622842d4bbd34e7545d95e77\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_865d187c6f864e47bcdee4f148bff166\",\"error\":{\"code\":-32603,\"message\":\"session \\\"corrupt\\\" uses log format v999, but this harness reads only v4: the log was written by a newer harness — upgrade the harness to open it (raw log: C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\sdk-home-Mshxia\\\\sessions\\\\--C-Users-QYF-AppData-Local-Temp-aifoundry-h23-lab-duiXlb--\\\\corrupt\\\\session.v4.jsonl)\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_97db4978acce438ea2b1acd2755cce9b\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_99b34ef1622842d4bbd34e7545d95e77\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_865d187c6f864e47bcdee4f148bff166\",\"method\":\"session/resume\",\"params\":{\"sessionId\":\"corrupt\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_97db4978acce438ea2b1acd2755cce9b\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_99b34ef1622842d4bbd34e7545d95e77",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_865d187c6f864e47bcdee4f148bff166",
+          "error": {
+            "code": -32603,
+            "message": "session \"corrupt\" uses log format v999, but this harness reads only v4: the log was written by a newer harness — upgrade the harness to open it (raw log: C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\sdk-home-Mshxia\\sessions\\--C-Users-QYF-AppData-Local-Temp-aifoundry-h23-lab-duiXlb--\\corrupt\\session.v4.jsonl)"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_97db4978acce438ea2b1acd2755cce9b",
+          "result": {}
+        }
+      ]
+    },
+    "runtime": {
+      "pid": 15020,
+      "invocation": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      },
+      "effects": 0,
+      "events": {},
+      "requests": []
+    }
+  },
+  "trace-D7.json": {
+    "wire": {
+      "pid": 10396,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_3b28001203db4cfeb6b993f63da47882\",\"error\":{\"code\":-32603,\"message\":\"no adapter registered for provider \\\"missing-fixture\\\"\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_7104880de5cd456a815440ccccd68bf0\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_3b28001203db4cfeb6b993f63da47882\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\",\"provider\":\"missing-fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_7104880de5cd456a815440ccccd68bf0\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_3b28001203db4cfeb6b993f63da47882",
+          "error": {
+            "code": -32603,
+            "message": "no adapter registered for provider \"missing-fixture\""
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_7104880de5cd456a815440ccccd68bf0",
+          "result": {}
+        }
+      ]
+    },
+    "runtime": {
+      "pid": 10396,
+      "invocation": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      },
+      "effects": 0,
+      "events": {},
+      "requests": []
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-dmgtVC",
+  "error": "Error: Build failed with 2 errors:\n../../.codex/research/harness-v2-source/deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts:18:62: ERROR: Could not resolve \"commander\"\n../../.codex/research/harness-v2-source/deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/sse.ts:3:40: ERROR: Could not resolve \"eventsource-parser/stream\"",
+  "errors": [
+    {
+      "id": "",
+      "location": {
+        "column": 62,
+        "file": "../../.codex/research/harness-v2-source/deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts",
+        "length": 11,
+        "line": 18,
+        "lineText": "import { Command, CommanderError, InvalidArgumentError } from 'commander'",
+        "namespace": "",
+        "suggestion": ""
+      },
+      "notes": [
+        {
+          "location": null,
+          "text": "You can mark the path \"commander\" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle."
+        }
+      ],
+      "pluginName": "",
+      "text": "Could not resolve \"commander\""
+    },
+    {
+      "id": "",
+      "location": {
+        "column": 40,
+        "file": "../../.codex/research/harness-v2-source/deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/sse.ts",
+        "length": 27,
+        "line": 3,
+        "lineText": "import { EventSourceParserStream } from 'eventsource-parser/stream'",
+        "namespace": "",
+        "suggestion": ""
+      },
+      "notes": [
+        {
+          "location": null,
+          "text": "You can mark the path \"eventsource-parser/stream\" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle."
+        }
+      ],
+      "pluginName": "",
+      "text": "Could not resolve \"eventsource-parser/stream\""
+    }
+  ]
+}

@@ -1,0 +1,757 @@
+{
+  "trace-B-web-review.json": {
+    "created": {
+      "ok": true,
+      "value": {
+        "sessionId": "web-review"
+      }
+    },
+    "receipt": {
+      "ok": true,
+      "value": {
+        "accepted": true
+      }
+    },
+    "snapshot": {
+      "value": {
+        "type": "snapshot",
+        "header": {
+          "version": 4,
+          "id": "web-review",
+          "createdAt": 1793791151464,
+          "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-uGdoXX",
+          "isSeeded": false
+        },
+        "projections": {
+          "asOfSeq": -1,
+          "values": {
+            "modelSelection": {
+              "lastUsed": null,
+              "next": null
+            },
+            "inbox": {
+              "next-turn": [],
+              "next-step": []
+            },
+            "subagentCatalog": [],
+            "subagentTiming": {
+              "settledMs": 0
+            },
+            "subagent": null,
+            "sessionListMetadata": {
+              "blank": true,
+              "lastPromptAt": null
+            },
+            "imageLimits": {
+              "maxImageBytes": 5242880,
+              "maxImagesPerMessage": 20,
+              "maxMessageImageBytes": 104857600,
+              "maxImagePixels": 40000000,
+              "maxImageDimension": 2000,
+              "mediaTypes": [
+                "image/png"
+              ]
+            }
+          }
+        },
+        "cursor": -1,
+        "records": [],
+        "hasMore": false
+      },
+      "done": false
+    },
+    "frames": [
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793791151486,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user",
+                  "rpcId": "h23-input"
+                },
+                "role": "user",
+                "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793791151487,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793791151488,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793791151489,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793791151490,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "35403570-14f0-4162-9d70-7a20718e4b67"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793791151491,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793791151491,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              }
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793791151491,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793791151493,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "dac7afc7-1b30-4a82-a3c1-945432706883"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793791151492,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793791151493,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793791151493,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793791151493,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      }
+    ],
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793791151486,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793791151487,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793791151488,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793791151489,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793791151490,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "35403570-14f0-4162-9d70-7a20718e4b67"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793791151491,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793791151491,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793791151491,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "dac7afc7-1b30-4a82-a3c1-945432706883"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793791151492,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793791151493,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "stored": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793791151486,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793791151487,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793791151488,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793791151489,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793791151490,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "35403570-14f0-4162-9d70-7a20718e4b67"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793791151491,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793791151491,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793791151491,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "dac7afc7-1b30-4a82-a3c1-945432706883"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793791151492,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793791151493,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793791151493,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "35403570-14f0-4162-9d70-7a20718e4b67"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "5633bf17-fde6-442a-9bb2-3324270d59a1"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "web-review"
+      }
+    ],
+    "wire": [
+      {
+        "route": "api/session/create",
+        "request": {
+          "type": "client-request",
+          "rpcId": "42dcac9a-c1bf-4eba-b816-2fbd294ab5c4",
+          "method": "session/create",
+          "payload": {
+            "args": {
+              "request": {
+                "sessionId": "web-review",
+                "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-uGdoXX"
+              }
+            }
+          }
+        }
+      },
+      {
+        "route": "api/session/prompt",
+        "request": {
+          "type": "client-request",
+          "rpcId": "99ac041a-8009-494d-843c-a83e9b81146f",
+          "method": "session/prompt",
+          "payload": {
+            "args": {
+              "request": {
+                "requestId": "h23-input",
+                "sessionId": "web-review",
+                "mode": "queue",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-uGdoXX\\h23-jsonl-Zyv8KO",
+    "transport": "real Client RPC envelope + real Gateway + SessionController; author in-process fetch/stream carrier, no HTTP socket or browser"
+  }
+}

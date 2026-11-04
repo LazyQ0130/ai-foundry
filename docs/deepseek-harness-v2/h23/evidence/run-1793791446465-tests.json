@@ -1,0 +1,62 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "clients.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb",
+  "programs": [
+    {
+      "name": "A.ts",
+      "sha256": "d9790608c10ddbc67780cc5d696972a9f63e3447de6b012886e674f12c9ee014"
+    },
+    {
+      "name": "agent-fixture.ts",
+      "sha256": "357222e42199b03d0ee3a5dd7eba148ba85e6826cf3e9a0e5a3d2574e96ba0f2"
+    },
+    {
+      "name": "B.ts",
+      "sha256": "0dd115f363be8ec63e1f83c7b4b8e092952c603fec77234cbff82a9831611198"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "5325b7ff11cb6b0afd319dab6f5b81fd87e2d645d7fb7f0172111eedef15071a"
+    },
+    {
+      "name": "C.ts",
+      "sha256": "86bec2a143ac83ce0fda84cd728d761e18223c074dd59270ed716fd2e79d1eda"
+    },
+    {
+      "name": "cli-fixture.ts",
+      "sha256": "c47d7186e2e3763b1750874491aa4102e1624c881df8245b70113dd409b20dc6"
+    },
+    {
+      "name": "clients.test.ts",
+      "sha256": "92e2da66c3feadd86e6a5844e4c3ee5340f3be3e1461e2b7d678d561aac077e0"
+    },
+    {
+      "name": "D.ts",
+      "sha256": "6c9b827765ae927f8c5b4165ce4de1057a0c54269479938cd0a34616a3602bb2"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "064a2b1000d303f2d85417d604b12262363b4493339b8b3459f941c85a071862"
+    },
+    {
+      "name": "sdk-runtime.ts",
+      "sha256": "911041de0d6711115a1075d42142d09638318933d33b0205fbde10e7646d4117"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "f35f3a583abe81b0e4c5099e0e77ec8ae94e056ef3602b197f943cd9cbe4db6f"
+    },
+    {
+      "name": "web-fixture.ts",
+      "sha256": "c008c650b12facbe68c570f2132e748a5a828057dac5099cb712d10d4d2503dd"
+    }
+  ],
+  "exit": 1,
+  "stdout": "TAP version 13\n# Subtest: C A1 actual launcher parses profiles and separates app arguments\nok 1 - C A1 actual launcher parses profiles and separates app arguments\n  ---\n  duration_ms: 1096.154\n  type: 'test'\n  ...\n# Subtest: C A2 help/version and invalid launcher input exit in isolated processes\nok 2 - C A2 help/version and invalid launcher input exit in isolated processes\n  ---\n  duration_ms: 1058.0403\n  type: 'test'\n  ...\n# Subtest: C A3 real Profile load and whole-config patch composition stay in new home\nnot ok 3 - C A3 real Profile load and whole-config patch composition stay in new home\n  ---\n  duration_ms: 120.0489\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: \"Cannot read properties of undefined (reading 'config')\"\n  code: 'ERR_TEST_FAILURE'\n  name: 'TypeError'\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\A.ts:15:324)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: C A4 actual CLI config dump exits normally and missing profile fails startup\nok 4 - C A4 actual CLI config dump exits normally and missing profile fails startup\n  ---\n  duration_ms: 673.3943\n  type: 'test'\n  ...\n# Subtest: D B1 real Client RPC, Gateway, SessionController and model history\nok 5 - D B1 real Client RPC, Gateway, SessionController and model history\n  ---\n  duration_ms: 216.8648\n  type: 'test'\n  ...\n# Subtest: D C1 real SDK client-server stdio, run notifications, shutdown and process reap\nok 6 - D C1 real SDK client-server stdio, run notifications, shutdown and process reap\n  ---\n  duration_ms: 675.3805\n  type: 'test'\n  ...\n# Subtest: D C2 low-level prompt receipt precedes wait and final result\nnot ok 7 - D C2 low-level prompt receipt precedes wait and final result\n  ---\n  duration_ms: 10632.596\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: 'Mock model gate not entered'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    entered (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\C.ts:4:199)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\C.ts:12:328)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D C3 high-level run owns an activity interval rather than prompt causality\nnot ok 8 - D C3 high-level run owns an activity interval rather than prompt causality\n  ---\n  duration_ms: 10040.8792\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: 'Mock model gate not entered'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    entered (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\C.ts:4:199)\n    async TestContext.cases (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\C.ts:16:148)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D1 new SDK process resumes JSONL without adding a prompt\nnot ok 9 - D D1 new SDK process resumes JSONL without adding a prompt\n  ---\n  duration_ms: 1490.9868\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: |-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(second.events.saved.length>first.events.saved.length)\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:7:557)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D2 missing, open and writer-held sessions reject without replacement\nok 10 - D D2 missing, open and writer-held sessions reject without replacement\n  ---\n  duration_ms: 676.639\n  type: 'test'\n  ...\n# Subtest: D D3 incompatible saved header rejects through the actual wire\nok 11 - D D3 incompatible saved header rejects through the actual wire\n  ---\n  duration_ms: 1355.5785\n  type: 'test'\n  ...\n# Subtest: D D4 unknown SDK method and invalid protocol frames stay recognizable\nnot ok 12 - D D4 unknown SDK method and invalid protocol frames stay recognizable\n  ---\n  duration_ms: 10641.8364\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: 'bounded fixture did not reach JSON-RPC parse error response'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    until (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\agent-fixture.ts:34:8)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:18:41)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D5 close during model work drains server-owned Agent and preserves history\nnot ok 13 - D D5 close during model work drains server-owned Agent and preserves history\n  ---\n  duration_ms: 10028.7226\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: 'Mock model gate not entered'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    entered (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\C.ts:4:199)\n    async TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:22:215)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D6 approval bridge missing\nnot ok 14 - D D6 approval bridge missing\n  ---\n  duration_ms: 629.6327\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: |-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(JSON.stringify(runtime.events).includes(outcome==='missing'?'unavailable':outcome))\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:25:472)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D6 approval bridge allowed-once\nnot ok 15 - D D6 approval bridge allowed-once\n  ---\n  duration_ms: 630.9966\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    0 !== 1\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 1\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:25:413)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D6 approval bridge rejected\nnot ok 16 - D D6 approval bridge rejected\n  ---\n  duration_ms: 630.7643\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: |-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(JSON.stringify(runtime.events).includes(outcome==='missing'?'unavailable':outcome))\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:25:472)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D6 approval bridge cancelled\nnot ok 17 - D D6 approval bridge cancelled\n  ---\n  duration_ms: 613.7703\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-duiXlb\\\\clients.test.ts:1:290'\n  failureType: 'testCodeFailure'\n  error: |-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(JSON.stringify(runtime.events).includes(outcome==='missing'?'unavailable':outcome))\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-duiXlb\\D.ts:25:472)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D7 bad initialize route cleans its subprocess before retry is possible\nok 18 - D D7 bad initialize route cleans its subprocess before retry is possible\n  ---\n  duration_ms: 708.3486\n  type: 'test'\n  ...\n1..18\n# tests 18\n# suites 0\n# pass 8\n# fail 10\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 52615.3266\n",
+  "stderr": "",
+  "error": null
+}

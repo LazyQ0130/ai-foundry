@@ -1,0 +1,374 @@
+{
+  "trace-C1-failure.json": {
+    "home": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-HKzPfH\\sdk-home-ClXM36",
+    "wire": {
+      "pid": 24988,
+      "exitCode": 1,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_e011be5c87674af9aed28e684c0e63fa\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793794064993,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"2af510d8-174d-4ce2-8fd3-441034915fcd\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793794064994,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793794064995,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_7073198caf8549549699db68981112c1\",\"result\":{\"messageId\":\"2af510d8-174d-4ce2-8fd3-441034915fcd\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793794064996,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793794064998,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Analyze controlled, fictional project facts only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"ea598bc6-7fdb-47e8-bd57-bbb4e91cffe5\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793794064998,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"2af510d8-174d-4ce2-8fd3-441034915fcd\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793794064998,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"approval:policy\",\"text\":\"Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}]},\"role\":\"user\",\"id\":\"696ebc19-b938-4807-935c-bbb25deceb85\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793794064998,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"parent\",\"maxTokens\":128},\"adapterDefaults\":{\"maxTokens\":true},\"tools\":[{\"name\":\"fixture_question\",\"description\":\"Controlled fixture fixture_question\",\"parameters\":{\"type\":\"object\",\"properties\":{}}},{\"name\":\"fixture_review\",\"description\":\"Controlled fixture fixture_review\",\"parameters\":{\"type\":\"object\",\"properties\":{}}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793794064999,\"data\":{\"provider\":\"fixture\",\"model\":\"parent\",\"contextWindow\":100000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"assistant/message\",\"seq\":9,\"time\":1793794065000,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"parent\"},\"id\":\"24d3d438-f230-4fde-9222-c610f25162b0\"},\"stream\":[{\"type\":\"text-chunks\",\"time0\":1793794065000,\"index\":0,\"dt\":[],\"texts\":[\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"]},{\"type\":\"chunk\",\"time\":1793794065000,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/end\",\"seq\":10,\"time\":1793794065001,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/end\",\"seq\":11,\"time\":1793794065001,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_f60fc464d7574b8ca727f7d3438676bb\",\"result\":{}}\n",
+      "stderr": "C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1165\r\n    throw new StartupError(startupDiagnostic(binName, failures, required), failures.map(({ entry, outcome }) => ({\r\n          ^\r\n\r\nStartupError: h23-sdk: startup failed: 1 required plugin did not activate\r\n\r\nFailed plugins (1):\r\n  include (required)\r\n    Package: cordis:include\r\n    TypeError: config file must be a top-level array of entries: C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-HKzPfH\\sdk-home-ClXM36\\profiles\\h23-sdk-fixture\\cordis.yml\r\n        at Include.read (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\include\\src\\index.ts:231:13)\r\n        at async Include.[cordis.init] (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\include\\src\\index.ts:247:7)\r\n        at file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h23-lab-HKzPfH/sdk-home-ClXM36/profiles/h23-sdk-fixture/#include\r\n    at auditStartupEntries (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1165:11)\r\n    at async boot (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1243:5)\r\n    at async <anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-HKzPfH\\sdk-runtime.ts:58:1) {\r\n  [cause]: AggregateError: Plugin activation failures\r\n      at new StartupError (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1019:51)\r\n      at auditStartupEntries (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1165:11)\r\n      at async boot (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\boot\\app-boot\\src\\index.ts:1243:5)\r\n      at async <anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-HKzPfH\\sdk-runtime.ts:58:1) {\r\n    [errors]: [\r\n      TypeError: config file must be a top-level array of entries: C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-HKzPfH\\sdk-home-ClXM36\\profiles\\h23-sdk-fixture\\cordis.yml\r\n          at Include.read (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\include\\src\\index.ts:231:13)\r\n          at async Include.[cordis.init] (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\include\\src\\index.ts:247:7)\r\n          at file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h23-lab-HKzPfH/sdk-home-ClXM36/profiles/h23-sdk-fixture/#include\r\n    ]\r\n  }\r\n}\r\n\r\nNode.js v24.16.0\r\n",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_e011be5c87674af9aed28e684c0e63fa\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-HKzPfH\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_7073198caf8549549699db68981112c1\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"sdk-review\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}]}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_f60fc464d7574b8ca727f7d3438676bb\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_e011be5c87674af9aed28e684c0e63fa",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793794064993,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "2af510d8-174d-4ce2-8fd3-441034915fcd"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "running"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793794064994,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793794064995,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_7073198caf8549549699db68981112c1",
+          "result": {
+            "messageId": "2af510d8-174d-4ce2-8fd3-441034915fcd"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793794064996,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793794064998,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "ea598bc6-7fdb-47e8-bd57-bbb4e91cffe5"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793794064998,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "2af510d8-174d-4ce2-8fd3-441034915fcd"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793794064998,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "696ebc19-b938-4807-935c-bbb25deceb85"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793794064998,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_question",
+                      "description": "Controlled fixture fixture_question",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793794064999,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793794065000,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "24d3d438-f230-4fde-9222-c610f25162b0"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793794065000,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793794065000,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793794065001,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793794065001,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "idle"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_f60fc464d7574b8ca727f7d3438676bb",
+          "result": {}
+        }
+      ]
+    },
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+  }
+}

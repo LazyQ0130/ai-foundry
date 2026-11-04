@@ -1,0 +1,292 @@
+{
+  "status": "PASS",
+  "count": 25,
+  "levels": {
+    "C": 7,
+    "D": 18
+  },
+  "cases": [
+    {
+      "name": "C A1 actual launcher parses profiles and separates app arguments",
+      "grade": "C",
+      "status": "PASS",
+      "real": "real CLI parser in subprocess",
+      "collaborators": "no model",
+      "assertedBoundary": "five Profile choices / first unknown token app boundary",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C A2 help/version and invalid launcher input exit in isolated processes",
+      "grade": "C",
+      "status": "PASS",
+      "real": "real CLI parser with process.exit",
+      "collaborators": "no model",
+      "assertedBoundary": "help/version exit0; invalid/missing/conflicting args exit1",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C A3 real Profile load and whole-config patch composition stay in new home",
+      "grade": "C",
+      "status": "PASS",
+      "real": "loadProfileDirectory + composeEntries",
+      "collaborators": "empty author bundle and patch",
+      "assertedBoundary": "new Home profile; insert then whole-config replace; unsafe profile refusal",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C A4 actual CLI config dump exits normally and missing profile fails startup",
+      "grade": "C",
+      "status": "PASS",
+      "real": "runCli + Profile reader",
+      "collaborators": "empty author Profile; no model",
+      "assertedBoundary": "actual dump exit0 and startup missing-profile exit1",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C B6 actual Session client stream rebaselines on a revision gap",
+      "grade": "C",
+      "status": "PASS",
+      "real": "SessionEventStream + RemoteStream",
+      "collaborators": "controlled decoded remote stream, not WebSocket",
+      "assertedBoundary": "revision0→1→3 gap; replace/assistant-stream/replace; no fabricated frame",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D B1 real Client RPC, Gateway, SessionController and model history",
+      "grade": "D",
+      "status": "PASS",
+      "real": "Client RPC + Gateway + SessionController + Loop + JSONL",
+      "collaborators": "controlled fetch/stream/authenticated owner Peer; Mock model",
+      "assertedBoundary": "standard envelope, accepted receipt, follow snapshot/events, flush/readback",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C B2 Gateway named inputs and non-owner access refuse before model work",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Gateway + RemoteAccess + SessionController",
+      "collaborators": "controlled guest Peer/policy; no real browser authentication",
+      "assertedBoundary": "missing named arg / business field conflict / guest denied before model",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D B3 Web cancel receipt is followed by actual model and Turn quiescence",
+      "grade": "D",
+      "status": "PASS",
+      "real": "Gateway + SessionController + Loop",
+      "collaborators": "controlled stream and cooperative Mock gate",
+      "assertedBoundary": "cancel accepted then actual idle and aborted Turn",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "C B4 Connection generations drain old sources before replacement",
+      "grade": "C",
+      "status": "PASS",
+      "real": "installConnection + ConnectionController",
+      "collaborators": "controlled GenerationSource/cleanup gate; no socket",
+      "assertedBoundary": "old aborted source drains before new source; stale ready ignored; peak1",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D B5 history repull in a new Context reads JSONL without activating Agent",
+      "grade": "D",
+      "status": "PASS",
+      "real": "Gateway + Session history + JSONL backend in new Context",
+      "collaborators": "controlled carrier; no page reload/crash",
+      "assertedBoundary": "passive page repull, zero Agent and zero model requests",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D C1 real SDK client-server stdio, run notifications, shutdown and process reap",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK Client/Server/Protocol + AppBoot/Loader + Loop + JSONL",
+      "collaborators": "isolated author Profile / prepare-mounted Mock core; not shipped sdk-minimal",
+      "assertedBoundary": "real stdio child; run notifications/result; shutdown exit0",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D C2 low-level prompt receipt precedes wait and final result",
+      "grade": "D",
+      "status": "PASS",
+      "real": "low SDK Client + Server + Loop",
+      "collaborators": "cooperative Mock adapter with explicit file gate",
+      "assertedBoundary": "prompt messageId before wait gate; notifications and result after release",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D C3 high-level run owns an activity interval rather than prompt causality",
+      "grade": "D",
+      "status": "PASS",
+      "real": "DeepSeekHarness/HarnessSession + low Client + Loop",
+      "collaborators": "same real SDK pipe; controlled Mock queue/gate",
+      "assertedBoundary": "two prompts before next idle; final response from second task",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D8 native onUserQuestion returns an explicit answer over real stdio",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK user-question bridge + client callback + Tool/Loop",
+      "collaborators": "single controlled question; not all malformed answers",
+      "assertedBoundary": "real server→client request and explicit JSON answer over stdio",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D9 close cancels a user-question callback and ignores its late answer",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK question cancellation + close/shutdown",
+      "collaborators": "callback deliberately waits on author gate; own external resources out of scope",
+      "assertedBoundary": "AbortSignal and exit0 before late answer; no request resurrection",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D1 new SDK process resumes JSONL without adding a prompt",
+      "grade": "D",
+      "status": "PASS",
+      "real": "two independent SDK child PIDs + JSONL + Loop",
+      "collaborators": "normal close only, same isolated storage/workspace",
+      "assertedBoundary": "close then resume no auto prompt; history prefix retained/grows; next request sees old fact",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D2 missing, open and writer-held sessions reject without replacement",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK Server + real writer ownership",
+      "collaborators": "two local SDK children, no cross-host lock certification",
+      "assertedBoundary": "missing / already open / second-PID writer-held refusal without replacement",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D3 incompatible saved header rejects through the actual wire",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK resume + JSONL format reader",
+      "collaborators": "deliberately modified new fixture only; not full corruption matrix",
+      "assertedBoundary": "new fixture header version999 rejects; zero model work",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D4 unknown SDK method and invalid protocol frames stay recognizable",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK JSON-RPC transport + method dispatcher",
+      "collaborators": "direct author write to private child stdin for negative frames",
+      "assertedBoundary": "typed errors, unknown method, bad JSON ignored, params[] normalized, later valid prompt runs actual Loop",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D5 close during model work drains server-owned Agent and preserves history",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK close/shutdown + Loop + writer release + new JSONL reader",
+      "collaborators": "cooperative Mock; no forced kill/crash/rollback",
+      "assertedBoundary": "close Promise memo; processing abort; exit0; user and aborted Turn read from disk",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D6 approval bridge missing",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK bidirectional approval + ApprovalService + real Tool/Loop",
+      "collaborators": "constant tool increments memory counter; no real external effect",
+      "assertedBoundary": "only allowed-once effect1; missing unavailable / rejected / cancelled effect0",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D6 approval bridge allowed-once",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK bidirectional approval + ApprovalService + real Tool/Loop",
+      "collaborators": "constant tool increments memory counter; no real external effect",
+      "assertedBoundary": "only allowed-once effect1; missing unavailable / rejected / cancelled effect0",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D6 approval bridge rejected",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK bidirectional approval + ApprovalService + real Tool/Loop",
+      "collaborators": "constant tool increments memory counter; no real external effect",
+      "assertedBoundary": "only allowed-once effect1; missing unavailable / rejected / cancelled effect0",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D6 approval bridge cancelled",
+      "grade": "D",
+      "status": "PASS",
+      "real": "SDK bidirectional approval + ApprovalService + real Tool/Loop",
+      "collaborators": "constant tool increments memory counter; no real external effect",
+      "assertedBoundary": "only allowed-once effect1; missing unavailable / rejected / cancelled effect0",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    },
+    {
+      "name": "D D7 bad initialize route cleans its subprocess before retry is possible",
+      "grade": "D",
+      "status": "PASS",
+      "real": "high SDK initialize + Server + child cleanup",
+      "collaborators": "retry uses newly configured high client; AggregateError cleanup-failure branch static",
+      "assertedBoundary": "bad provider rejects; old child exit0 before new-PID successful Mock run",
+      "platform": "Windows",
+      "source": "clients.test.ts imports A/B/C/D",
+      "rawRun": "run-1793795035125-tests.json"
+    }
+  ],
+  "notCounted": [
+    "X repeats B1/C1",
+    "demo commands",
+    "historical reruns",
+    "upstream reference tests not executed",
+    "Cordis as dependency"
+  ]
+}

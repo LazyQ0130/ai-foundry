@@ -1,0 +1,4058 @@
+{
+  "trace-B-web-review.json": {
+    "created": {
+      "ok": true,
+      "value": {
+        "sessionId": "web-review"
+      }
+    },
+    "receipt": {
+      "ok": true,
+      "value": {
+        "accepted": true
+      }
+    },
+    "snapshot": {
+      "value": {
+        "type": "snapshot",
+        "header": {
+          "version": 4,
+          "id": "web-review",
+          "createdAt": 1793794464949,
+          "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1",
+          "isSeeded": false
+        },
+        "projections": {
+          "asOfSeq": -1,
+          "values": {
+            "modelSelection": {
+              "lastUsed": null,
+              "next": null
+            },
+            "inbox": {
+              "next-turn": [],
+              "next-step": []
+            },
+            "subagentCatalog": [],
+            "subagentTiming": {
+              "settledMs": 0
+            },
+            "subagent": null,
+            "sessionListMetadata": {
+              "blank": true,
+              "lastPromptAt": null
+            },
+            "imageLimits": {
+              "maxImageBytes": 5242880,
+              "maxImagesPerMessage": 20,
+              "maxMessageImageBytes": 104857600,
+              "maxImagePixels": 40000000,
+              "maxImageDimension": 2000,
+              "mediaTypes": [
+                "image/png"
+              ]
+            }
+          }
+        },
+        "cursor": -1,
+        "records": [],
+        "hasMore": false
+      },
+      "done": false
+    },
+    "frames": [
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793794465013,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user",
+                  "rpcId": "h23-input"
+                },
+                "role": "user",
+                "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793794465014,
+          "data": {
+            "turn": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793794465014,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793794465016,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793794465017,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+            }
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793794465017,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793794465018,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              }
+            },
+            "reason": "initial"
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793794465018,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793794465019,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793794465020,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        }
+      },
+      {
+        "type": "event",
+        "event": {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793794465021,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      }
+    ],
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793794465013,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793794465014,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793794465014,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793794465016,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793794465017,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793794465017,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793794465018,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793794465018,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793794465020,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793794465019,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793794465020,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793794465020,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793794465021,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "stored": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793794465013,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793794465014,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793794465014,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793794465016,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793794465017,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793794465017,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect fictional facts"
+            }
+          ],
+          "source": {
+            "kind": "user",
+            "rpcId": "h23-input"
+          },
+          "role": "user",
+          "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793794465018,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793794465018,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 8,
+        "time": 1793794465020,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "REVIEW modules=3; covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793794465019,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "REVIEW modules=3; covered=2/3"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793794465020,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 9,
+        "time": 1793794465020,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 10,
+        "time": 1793794465021,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+          }
+        ],
+        "toolHistory": {
+          "tools": [],
+          "updates": []
+        },
+        "sessionId": "web-review"
+      }
+    ],
+    "wire": [
+      {
+        "route": "api/session/create",
+        "request": {
+          "type": "client-request",
+          "rpcId": "30290097-3c95-478e-8d99-04f7baeb66f7",
+          "method": "session/create",
+          "payload": {
+            "args": {
+              "request": {
+                "sessionId": "web-review",
+                "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1"
+              }
+            }
+          }
+        }
+      },
+      {
+        "route": "api/session/prompt",
+        "request": {
+          "type": "client-request",
+          "rpcId": "bcc0da33-73bc-4e5f-904c-98f40d0e2925",
+          "method": "session/prompt",
+          "payload": {
+            "args": {
+              "request": {
+                "requestId": "h23-input",
+                "sessionId": "web-review",
+                "mode": "queue",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1\\h23-jsonl-HLASg4",
+    "transport": "real Client RPC envelope + real Gateway + SessionController; author in-process fetch/stream carrier, no HTTP socket or browser"
+  },
+  "trace-C1.json": {
+    "result": {
+      "sessionId": "sdk-review",
+      "finalResponse": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts",
+      "events": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793794465738,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793794465740,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793794465740,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793794465742,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793794465743,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793794465743,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 6,
+          "time": 1793794465743,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "approval:policy",
+                  "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 7,
+          "time": 1793794465744,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              },
+              "tools": [
+                {
+                  "name": "fixture_question",
+                  "description": "Controlled fixture fixture_question",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                },
+                {
+                  "name": "fixture_review",
+                  "description": "Controlled fixture fixture_review",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ]
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 8,
+          "time": 1793794465744,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        },
+        {
+          "type": "assistant/message",
+          "seq": 9,
+          "time": 1793794465746,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793794465745,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793794465745,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "step/end",
+          "seq": 10,
+          "time": 1793794465746,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "turn/end",
+          "seq": 11,
+          "time": 1793794465746,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      ],
+      "notifications": [
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793794465738,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "running"
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793794465740,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793794465740,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793794465742,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793794465743,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793794465744,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_question",
+                      "description": "Controlled fixture fixture_question",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793794465744,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793794465745,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793794465745,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "idle"
+          }
+        }
+      ]
+    },
+    "wire": {
+      "pid": 30188,
+      "exitCode": 0,
+      "signalCode": null,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_5ec24c640d354024abb74e53a52ef36b\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793794465738,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793794465740,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793794465740,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_96f91da9661d4910a42a11b3c0459edb\",\"result\":{\"messageId\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793794465742,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793794465743,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Analyze controlled, fictional project facts only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"7453a5ce-cb48-4386-b910-39f6067cc9ea\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793794465743,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793794465743,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"approval:policy\",\"text\":\"Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}]},\"role\":\"user\",\"id\":\"f31bbf1f-50b8-48be-82c2-91110dc9f4ab\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793794465744,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"parent\",\"maxTokens\":128},\"adapterDefaults\":{\"maxTokens\":true},\"tools\":[{\"name\":\"fixture_question\",\"description\":\"Controlled fixture fixture_question\",\"parameters\":{\"type\":\"object\",\"properties\":{}}},{\"name\":\"fixture_review\",\"description\":\"Controlled fixture fixture_review\",\"parameters\":{\"type\":\"object\",\"properties\":{}}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793794465744,\"data\":{\"provider\":\"fixture\",\"model\":\"parent\",\"contextWindow\":100000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"assistant/message\",\"seq\":9,\"time\":1793794465746,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"parent\"},\"id\":\"fc4052ce-f337-4159-ba9b-da6f088f4526\"},\"stream\":[{\"type\":\"text-chunks\",\"time0\":1793794465745,\"index\":0,\"dt\":[],\"texts\":[\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"]},{\"type\":\"chunk\",\"time\":1793794465745,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/end\",\"seq\":10,\"time\":1793794465746,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/end\",\"seq\":11,\"time\":1793794465746,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_aaa5933d70be4336ad09aae51f045809\",\"result\":{}}\n",
+      "stderr": "",
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_5ec24c640d354024abb74e53a52ef36b\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-pmxOF1\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_96f91da9661d4910a42a11b3c0459edb\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"sdk-review\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}]}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_aaa5933d70be4336ad09aae51f045809\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_5ec24c640d354024abb74e53a52ef36b",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793794465738,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "running"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793794465740,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793794465740,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_96f91da9661d4910a42a11b3c0459edb",
+          "result": {
+            "messageId": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793794465742,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793794465743,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793794465744,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_question",
+                      "description": "Controlled fixture fixture_question",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793794465744,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793794465745,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793794465745,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-review",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-review",
+            "status": "idle"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_aaa5933d70be4336ad09aae51f045809",
+          "result": {}
+        }
+      ]
+    },
+    "runtime": {
+      "pid": 30188,
+      "invocation": {
+        "mode": "profile",
+        "profile": "sdk-minimal",
+        "patches": [],
+        "args": []
+      },
+      "effects": 0,
+      "events": {
+        "sdk-review": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793794465738,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793794465740,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793794465740,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793794465742,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793794465743,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793794465743,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 6,
+            "time": 1793794465743,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 7,
+            "time": 1793794465744,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "fixture_question",
+                    "description": "Controlled fixture fixture_question",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  {
+                    "name": "fixture_review",
+                    "description": "Controlled fixture fixture_review",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 8,
+            "time": 1793794465744,
+            "data": {
+              "provider": "fixture",
+              "model": "parent",
+              "contextWindow": 100000
+            }
+          },
+          {
+            "type": "assistant/message",
+            "seq": 9,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "parent"
+                },
+                "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+              },
+              "stream": [
+                {
+                  "type": "text-chunks",
+                  "time0": 1793794465745,
+                  "index": 0,
+                  "dt": [],
+                  "texts": [
+                    "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                  ]
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793794465745,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "stop"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "step/end",
+            "seq": 10,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "turn/end",
+            "seq": 11,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "reason": {
+                "kind": "completed"
+              }
+            }
+          }
+        ]
+      },
+      "requests": [
+        {
+          "provider": "fixture",
+          "model": "parent",
+          "maxTokens": 128,
+          "messages": [
+            {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+            }
+          ],
+          "toolHistory": {
+            "tools": [
+              {
+                "name": "fixture_question",
+                "description": "Controlled fixture fixture_question",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "fixture_review",
+                "description": "Controlled fixture fixture_review",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ],
+            "updates": []
+          },
+          "tools": [
+            {
+              "name": "fixture_question",
+              "description": "Controlled fixture fixture_question",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "fixture_review",
+              "description": "Controlled fixture fixture_review",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "sessionId": "sdk-review"
+        }
+      ]
+    },
+    "home": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1\\sdk-home-hFtr7D"
+  },
+  "trace-X.json": {
+    "web": {
+      "created": {
+        "ok": true,
+        "value": {
+          "sessionId": "web-review"
+        }
+      },
+      "receipt": {
+        "ok": true,
+        "value": {
+          "accepted": true
+        }
+      },
+      "snapshot": {
+        "value": {
+          "type": "snapshot",
+          "header": {
+            "version": 4,
+            "id": "web-review",
+            "createdAt": 1793794464949,
+            "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1",
+            "isSeeded": false
+          },
+          "projections": {
+            "asOfSeq": -1,
+            "values": {
+              "modelSelection": {
+                "lastUsed": null,
+                "next": null
+              },
+              "inbox": {
+                "next-turn": [],
+                "next-step": []
+              },
+              "subagentCatalog": [],
+              "subagentTiming": {
+                "settledMs": 0
+              },
+              "subagent": null,
+              "sessionListMetadata": {
+                "blank": true,
+                "lastPromptAt": null
+              },
+              "imageLimits": {
+                "maxImageBytes": 5242880,
+                "maxImagesPerMessage": 20,
+                "maxMessageImageBytes": 104857600,
+                "maxImagePixels": 40000000,
+                "maxImageDimension": 2000,
+                "mediaTypes": [
+                  "image/png"
+                ]
+              }
+            }
+          },
+          "cursor": -1,
+          "records": [],
+          "hasMore": false
+        },
+        "done": false
+      },
+      "frames": [
+        {
+          "type": "event",
+          "event": {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793794465013,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user",
+                    "rpcId": "h23-input"
+                  },
+                  "role": "user",
+                  "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793794465014,
+            "data": {
+              "turn": 1
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793794465014,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793794465016,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793794465017,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+              }
+            },
+            "surfaceOp": "append"
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793794465017,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+            },
+            "surfaceOp": "append"
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "request/header",
+            "seq": 6,
+            "time": 1793794465018,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                }
+              },
+              "reason": "initial"
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "request/context",
+            "seq": 7,
+            "time": 1793794465018,
+            "data": {
+              "provider": "fixture",
+              "model": "parent",
+              "contextWindow": 100000
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "assistant/message",
+            "seq": 8,
+            "time": 1793794465020,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "REVIEW modules=3; covered=2/3"
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "parent"
+                },
+                "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+              },
+              "stream": [
+                {
+                  "type": "text-chunks",
+                  "time0": 1793794465019,
+                  "index": 0,
+                  "dt": [],
+                  "texts": [
+                    "REVIEW modules=3; covered=2/3"
+                  ]
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793794465020,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "stop"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "step/end",
+            "seq": 9,
+            "time": 1793794465020,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          }
+        },
+        {
+          "type": "event",
+          "event": {
+            "type": "turn/end",
+            "seq": 10,
+            "time": 1793794465021,
+            "data": {
+              "turn": 1,
+              "reason": {
+                "kind": "completed"
+              }
+            }
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793794465013,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user",
+                  "rpcId": "h23-input"
+                },
+                "role": "user",
+                "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793794465014,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793794465014,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793794465016,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793794465017,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793794465017,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793794465018,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              }
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793794465018,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        },
+        {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793794465019,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793794465020,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793794465021,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      ],
+      "stored": [
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 0,
+          "time": 1793794465013,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "inserted": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user",
+                  "rpcId": "h23-input"
+                },
+                "role": "user",
+                "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+              }
+            ]
+          }
+        },
+        {
+          "type": "turn/start",
+          "seq": 1,
+          "time": 1793794465014,
+          "data": {
+            "turn": 1
+          }
+        },
+        {
+          "type": "agent/inbox/spliced",
+          "seq": 2,
+          "time": 1793794465014,
+          "data": {
+            "target": "next-turn",
+            "start": 0,
+            "removedCount": 1,
+            "inserted": []
+          }
+        },
+        {
+          "type": "step/start",
+          "seq": 3,
+          "time": 1793794465016,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "system/message",
+          "seq": 4,
+          "time": 1793794465017,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+            }
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "user/message",
+          "seq": 5,
+          "time": 1793794465017,
+          "data": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Inspect fictional facts"
+              }
+            ],
+            "source": {
+              "kind": "user",
+              "rpcId": "h23-input"
+            },
+            "role": "user",
+            "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "request/header",
+          "seq": 6,
+          "time": 1793794465018,
+          "data": {
+            "header": {
+              "config": {
+                "provider": "fixture",
+                "model": "parent",
+                "maxTokens": 128
+              },
+              "adapterDefaults": {
+                "maxTokens": true
+              }
+            },
+            "reason": "initial"
+          }
+        },
+        {
+          "type": "request/context",
+          "seq": 7,
+          "time": 1793794465018,
+          "data": {
+            "provider": "fixture",
+            "model": "parent",
+            "contextWindow": 100000
+          }
+        },
+        {
+          "type": "assistant/message",
+          "seq": 8,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1,
+            "message": {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "REVIEW modules=3; covered=2/3"
+                }
+              ],
+              "source": {
+                "kind": "model",
+                "provider": "fixture",
+                "model": "parent"
+              },
+              "id": "cf13503a-58fd-4f25-9df6-2c92068df1e2"
+            },
+            "stream": [
+              {
+                "type": "text-chunks",
+                "time0": 1793794465019,
+                "index": 0,
+                "dt": [],
+                "texts": [
+                  "REVIEW modules=3; covered=2/3"
+                ]
+              },
+              {
+                "type": "chunk",
+                "time": 1793794465020,
+                "chunk": {
+                  "type": "finish",
+                  "reason": {
+                    "kind": "stop"
+                  }
+                }
+              }
+            ]
+          },
+          "surfaceOp": "append"
+        },
+        {
+          "type": "step/end",
+          "seq": 9,
+          "time": 1793794465020,
+          "data": {
+            "turn": 1,
+            "step": 1
+          }
+        },
+        {
+          "type": "turn/end",
+          "seq": 10,
+          "time": 1793794465021,
+          "data": {
+            "turn": 1,
+            "reason": {
+              "kind": "completed"
+            }
+          }
+        }
+      ],
+      "requests": [
+        {
+          "provider": "fixture",
+          "model": "parent",
+          "maxTokens": 128,
+          "messages": [
+            {
+              "role": "system",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Analyze controlled, fictional project facts only."
+                }
+              ],
+              "source": {
+                "kind": "system-prompt"
+              },
+              "id": "4f521841-42bd-488a-91fe-d6c1bd2d95fb"
+            },
+            {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user",
+                "rpcId": "h23-input"
+              },
+              "role": "user",
+              "id": "af7a5b82-6c99-4db9-b52b-b12df1e09eb1"
+            }
+          ],
+          "toolHistory": {
+            "tools": [],
+            "updates": []
+          },
+          "sessionId": "web-review"
+        }
+      ],
+      "wire": [
+        {
+          "route": "api/session/create",
+          "request": {
+            "type": "client-request",
+            "rpcId": "30290097-3c95-478e-8d99-04f7baeb66f7",
+            "method": "session/create",
+            "payload": {
+              "args": {
+                "request": {
+                  "sessionId": "web-review",
+                  "cwd": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1"
+                }
+              }
+            }
+          }
+        },
+        {
+          "route": "api/session/prompt",
+          "request": {
+            "type": "client-request",
+            "rpcId": "bcc0da33-73bc-4e5f-904c-98f40d0e2925",
+            "method": "session/prompt",
+            "payload": {
+              "args": {
+                "request": {
+                  "requestId": "h23-input",
+                  "sessionId": "web-review",
+                  "mode": "queue",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ],
+      "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1\\h23-jsonl-HLASg4",
+      "transport": "real Client RPC envelope + real Gateway + SessionController; author in-process fetch/stream carrier, no HTTP socket or browser"
+    },
+    "sdk": {
+      "result": {
+        "sessionId": "sdk-review",
+        "finalResponse": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts",
+        "events": [
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 0,
+            "time": 1793794465738,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "inserted": [
+                {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                }
+              ]
+            }
+          },
+          {
+            "type": "turn/start",
+            "seq": 1,
+            "time": 1793794465740,
+            "data": {
+              "turn": 1
+            }
+          },
+          {
+            "type": "agent/inbox/spliced",
+            "seq": 2,
+            "time": 1793794465740,
+            "data": {
+              "target": "next-turn",
+              "start": 0,
+              "removedCount": 1,
+              "inserted": []
+            }
+          },
+          {
+            "type": "step/start",
+            "seq": 3,
+            "time": 1793794465742,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "system/message",
+            "seq": 4,
+            "time": 1793794465743,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+              }
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 5,
+            "time": 1793794465743,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inspect fictional facts"
+                }
+              ],
+              "source": {
+                "kind": "user"
+              },
+              "role": "user",
+              "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "user/message",
+            "seq": 6,
+            "time": 1793794465743,
+            "data": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                }
+              ],
+              "source": {
+                "kind": "runtime-context",
+                "form": "snapshot",
+                "sections": [
+                  {
+                    "name": "approval:policy",
+                    "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ]
+              },
+              "role": "user",
+              "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "request/header",
+            "seq": 7,
+            "time": 1793794465744,
+            "data": {
+              "header": {
+                "config": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "maxTokens": 128
+                },
+                "adapterDefaults": {
+                  "maxTokens": true
+                },
+                "tools": [
+                  {
+                    "name": "fixture_question",
+                    "description": "Controlled fixture fixture_question",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  {
+                    "name": "fixture_review",
+                    "description": "Controlled fixture fixture_review",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                ]
+              },
+              "reason": "initial"
+            }
+          },
+          {
+            "type": "request/context",
+            "seq": 8,
+            "time": 1793794465744,
+            "data": {
+              "provider": "fixture",
+              "model": "parent",
+              "contextWindow": 100000
+            }
+          },
+          {
+            "type": "assistant/message",
+            "seq": 9,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "step": 1,
+              "message": {
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "model",
+                  "provider": "fixture",
+                  "model": "parent"
+                },
+                "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+              },
+              "stream": [
+                {
+                  "type": "text-chunks",
+                  "time0": 1793794465745,
+                  "index": 0,
+                  "dt": [],
+                  "texts": [
+                    "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                  ]
+                },
+                {
+                  "type": "chunk",
+                  "time": 1793794465745,
+                  "chunk": {
+                    "type": "finish",
+                    "reason": {
+                      "kind": "stop"
+                    }
+                  }
+                }
+              ]
+            },
+            "surfaceOp": "append"
+          },
+          {
+            "type": "step/end",
+            "seq": 10,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "step": 1
+            }
+          },
+          {
+            "type": "turn/end",
+            "seq": 11,
+            "time": 1793794465746,
+            "data": {
+              "turn": 1,
+              "reason": {
+                "kind": "completed"
+              }
+            }
+          }
+        ],
+        "notifications": [
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 0,
+                "time": 1793794465738,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "inserted": [
+                    {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inspect fictional facts"
+                        }
+                      ],
+                      "source": {
+                        "kind": "user"
+                      },
+                      "role": "user",
+                      "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "method": "session.status",
+            "params": {
+              "sessionId": "sdk-review",
+              "status": "running"
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "turn/start",
+                "seq": 1,
+                "time": 1793794465740,
+                "data": {
+                  "turn": 1
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 2,
+                "time": 1793794465740,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "removedCount": 1,
+                  "inserted": []
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "step/start",
+                "seq": 3,
+                "time": 1793794465742,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "system/message",
+                "seq": 4,
+                "time": 1793794465743,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "system",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Analyze controlled, fictional project facts only."
+                      }
+                    ],
+                    "source": {
+                      "kind": "system-prompt"
+                    },
+                    "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+                  }
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "user/message",
+                "seq": 5,
+                "time": 1793794465743,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "user/message",
+                "seq": 6,
+                "time": 1793794465743,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "runtime-context",
+                    "form": "snapshot",
+                    "sections": [
+                      {
+                        "name": "approval:policy",
+                        "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                      }
+                    ]
+                  },
+                  "role": "user",
+                  "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "request/header",
+                "seq": 7,
+                "time": 1793794465744,
+                "data": {
+                  "header": {
+                    "config": {
+                      "provider": "fixture",
+                      "model": "parent",
+                      "maxTokens": 128
+                    },
+                    "adapterDefaults": {
+                      "maxTokens": true
+                    },
+                    "tools": [
+                      {
+                        "name": "fixture_question",
+                        "description": "Controlled fixture fixture_question",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      },
+                      {
+                        "name": "fixture_review",
+                        "description": "Controlled fixture fixture_review",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      }
+                    ]
+                  },
+                  "reason": "initial"
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "request/context",
+                "seq": 8,
+                "time": 1793794465744,
+                "data": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "contextWindow": 100000
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "assistant/message",
+                "seq": 9,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "assistant",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "model",
+                      "provider": "fixture",
+                      "model": "parent"
+                    },
+                    "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+                  },
+                  "stream": [
+                    {
+                      "type": "text-chunks",
+                      "time0": 1793794465745,
+                      "index": 0,
+                      "dt": [],
+                      "texts": [
+                        "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                      ]
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793794465745,
+                      "chunk": {
+                        "type": "finish",
+                        "reason": {
+                          "kind": "stop"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "step/end",
+                "seq": 10,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "turn/end",
+                "seq": 11,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "reason": {
+                    "kind": "completed"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "method": "session.status",
+            "params": {
+              "sessionId": "sdk-review",
+              "status": "idle"
+            }
+          }
+        ]
+      },
+      "wire": {
+        "pid": 30188,
+        "exitCode": 0,
+        "signalCode": null,
+        "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_5ec24c640d354024abb74e53a52ef36b\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793794465738,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793794465740,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793794465740,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_96f91da9661d4910a42a11b3c0459edb\",\"result\":{\"messageId\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793794465742,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793794465743,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Analyze controlled, fictional project facts only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"7453a5ce-cb48-4386-b910-39f6067cc9ea\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793794465743,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"3cae44c3-3e85-4393-a031-ed483d6032d4\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793794465743,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"approval:policy\",\"text\":\"Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed.\"}]},\"role\":\"user\",\"id\":\"f31bbf1f-50b8-48be-82c2-91110dc9f4ab\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793794465744,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"parent\",\"maxTokens\":128},\"adapterDefaults\":{\"maxTokens\":true},\"tools\":[{\"name\":\"fixture_question\",\"description\":\"Controlled fixture fixture_question\",\"parameters\":{\"type\":\"object\",\"properties\":{}}},{\"name\":\"fixture_review\",\"description\":\"Controlled fixture fixture_review\",\"parameters\":{\"type\":\"object\",\"properties\":{}}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793794465744,\"data\":{\"provider\":\"fixture\",\"model\":\"parent\",\"contextWindow\":100000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"assistant/message\",\"seq\":9,\"time\":1793794465746,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"parent\"},\"id\":\"fc4052ce-f337-4159-ba9b-da6f088f4526\"},\"stream\":[{\"type\":\"text-chunks\",\"time0\":1793794465745,\"index\":0,\"dt\":[],\"texts\":[\"REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts\"]},{\"type\":\"chunk\",\"time\":1793794465745,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"step/end\",\"seq\":10,\"time\":1793794465746,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-review\",\"event\":{\"type\":\"turn/end\",\"seq\":11,\"time\":1793794465746,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-review\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_aaa5933d70be4336ad09aae51f045809\",\"result\":{}}\n",
+        "stderr": "",
+        "stdin": [
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_5ec24c640d354024abb74e53a52ef36b\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h23-lab-pmxOF1\",\"provider\":\"fixture\",\"model\":\"parent\"}}\n",
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_96f91da9661d4910a42a11b3c0459edb\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"sdk-review\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Inspect fictional facts\"}]}}\n",
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_aaa5933d70be4336ad09aae51f045809\",\"method\":\"shutdown\",\"params\":{}}\n"
+        ],
+        "frames": [
+          {
+            "jsonrpc": "2.0",
+            "id": "req_5ec24c640d354024abb74e53a52ef36b",
+            "result": {
+              "serverInfo": {
+                "name": "deepseek-harness-sdk-runtime",
+                "version": "0.0.1"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 0,
+                "time": 1793794465738,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "inserted": [
+                    {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inspect fictional facts"
+                        }
+                      ],
+                      "source": {
+                        "kind": "user"
+                      },
+                      "role": "user",
+                      "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.status",
+            "params": {
+              "sessionId": "sdk-review",
+              "status": "running"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "turn/start",
+                "seq": 1,
+                "time": 1793794465740,
+                "data": {
+                  "turn": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 2,
+                "time": 1793794465740,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "removedCount": 1,
+                  "inserted": []
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "id": "req_96f91da9661d4910a42a11b3c0459edb",
+            "result": {
+              "messageId": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "step/start",
+                "seq": 3,
+                "time": 1793794465742,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "system/message",
+                "seq": 4,
+                "time": 1793794465743,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "system",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Analyze controlled, fictional project facts only."
+                      }
+                    ],
+                    "source": {
+                      "kind": "system-prompt"
+                    },
+                    "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+                  }
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "user/message",
+                "seq": 5,
+                "time": 1793794465743,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "user/message",
+                "seq": 6,
+                "time": 1793794465743,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "runtime-context",
+                    "form": "snapshot",
+                    "sections": [
+                      {
+                        "name": "approval:policy",
+                        "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                      }
+                    ]
+                  },
+                  "role": "user",
+                  "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "request/header",
+                "seq": 7,
+                "time": 1793794465744,
+                "data": {
+                  "header": {
+                    "config": {
+                      "provider": "fixture",
+                      "model": "parent",
+                      "maxTokens": 128
+                    },
+                    "adapterDefaults": {
+                      "maxTokens": true
+                    },
+                    "tools": [
+                      {
+                        "name": "fixture_question",
+                        "description": "Controlled fixture fixture_question",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      },
+                      {
+                        "name": "fixture_review",
+                        "description": "Controlled fixture fixture_review",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      }
+                    ]
+                  },
+                  "reason": "initial"
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "request/context",
+                "seq": 8,
+                "time": 1793794465744,
+                "data": {
+                  "provider": "fixture",
+                  "model": "parent",
+                  "contextWindow": 100000
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "assistant/message",
+                "seq": 9,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "assistant",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "model",
+                      "provider": "fixture",
+                      "model": "parent"
+                    },
+                    "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+                  },
+                  "stream": [
+                    {
+                      "type": "text-chunks",
+                      "time0": 1793794465745,
+                      "index": 0,
+                      "dt": [],
+                      "texts": [
+                        "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                      ]
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793794465745,
+                      "chunk": {
+                        "type": "finish",
+                        "reason": {
+                          "kind": "stop"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "step/end",
+                "seq": 10,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "sdk-review",
+              "event": {
+                "type": "turn/end",
+                "seq": 11,
+                "time": 1793794465746,
+                "data": {
+                  "turn": 1,
+                  "reason": {
+                    "kind": "completed"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.status",
+            "params": {
+              "sessionId": "sdk-review",
+              "status": "idle"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "id": "req_aaa5933d70be4336ad09aae51f045809",
+            "result": {}
+          }
+        ]
+      },
+      "runtime": {
+        "pid": 30188,
+        "invocation": {
+          "mode": "profile",
+          "profile": "sdk-minimal",
+          "patches": [],
+          "args": []
+        },
+        "effects": 0,
+        "events": {
+          "sdk-review": [
+            {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793794465738,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Inspect fictional facts"
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793794465740,
+              "data": {
+                "turn": 1
+              }
+            },
+            {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793794465740,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            },
+            {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793794465742,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            },
+            {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793794465743,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyze controlled, fictional project facts only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+                }
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793794465743,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793794465744,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "parent",
+                    "maxTokens": 128
+                  },
+                  "adapterDefaults": {
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "fixture_question",
+                      "description": "Controlled fixture fixture_question",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    {
+                      "name": "fixture_review",
+                      "description": "Controlled fixture fixture_review",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            },
+            {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793794465744,
+              "data": {
+                "provider": "fixture",
+                "model": "parent",
+                "contextWindow": 100000
+              }
+            },
+            {
+              "type": "assistant/message",
+              "seq": 9,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "parent"
+                  },
+                  "id": "fc4052ce-f337-4159-ba9b-da6f088f4526"
+                },
+                "stream": [
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793794465745,
+                    "index": 0,
+                    "dt": [],
+                    "texts": [
+                      "REVIEW modules=3; covered=2/3; prompt=Inspect fictional facts"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793794465745,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            },
+            {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793794465746,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          ]
+        },
+        "requests": [
+          {
+            "provider": "fixture",
+            "model": "parent",
+            "maxTokens": 128,
+            "messages": [
+              {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analyze controlled, fictional project facts only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "7453a5ce-cb48-4386-b910-39f6067cc9ea"
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Inspect fictional facts"
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "3cae44c3-3e85-4393-a031-ed483d6032d4"
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nApproval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "approval:policy",
+                      "text": "Approval prompts are enabled in this session: operations that require approval may ask through the configured answerers; without an available answerer, the request fails closed."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "f31bbf1f-50b8-48be-82c2-91110dc9f4ab"
+              }
+            ],
+            "toolHistory": {
+              "tools": [
+                {
+                  "name": "fixture_question",
+                  "description": "Controlled fixture fixture_question",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                },
+                {
+                  "name": "fixture_review",
+                  "description": "Controlled fixture fixture_review",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              ],
+              "updates": []
+            },
+            "tools": [
+              {
+                "name": "fixture_question",
+                "description": "Controlled fixture fixture_question",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "fixture_review",
+                "description": "Controlled fixture fixture_review",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ],
+            "sessionId": "sdk-review"
+          }
+        ]
+      },
+      "home": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-pmxOF1\\sdk-home-hFtr7D"
+    },
+    "sameInput": "fictional modules=3 and covered=2/3",
+    "shared": "AgentLoop/Tools/LlmRuntime/Session core behavior",
+    "different": "Web Remote controlled carrier vs SDK JSON-RPC real stdio child; separate sessions/writers",
+    "counting": "reuses B1 and C1, no additional independent TAP count"
+  }
+}

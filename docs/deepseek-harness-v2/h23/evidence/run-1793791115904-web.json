@@ -1,0 +1,41 @@
+{
+  "args": [
+    "demo.ts",
+    "web"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-9FWkA8",
+  "programs": [
+    {
+      "name": "agent-fixture.ts",
+      "sha256": "357222e42199b03d0ee3a5dd7eba148ba85e6826cf3e9a0e5a3d2574e96ba0f2"
+    },
+    {
+      "name": "B.ts",
+      "sha256": "0dd115f363be8ec63e1f83c7b4b8e092952c603fec77234cbff82a9831611198"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "5325b7ff11cb6b0afd319dab6f5b81fd87e2d645d7fb7f0172111eedef15071a"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "064a2b1000d303f2d85417d604b12262363b4493339b8b3459f941c85a071862"
+    },
+    {
+      "name": "sdk-runtime.ts",
+      "sha256": "3acaf92cf3b476dbee0b427d8ac32815d0fd272e9c116553300909fc6ef345c8"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "468a797a42f19dede384611d13920b8ed33bae46b9890dafe31a1a3478d83526"
+    },
+    {
+      "name": "web-fixture.ts",
+      "sha256": "6fcd25fc89ae3b6390d112d5c9f4b285b01d83e447776ccb87ef2e3d5bc9dab0"
+    }
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\observation.ts:289\r\n      throw new SessionQueryError(\r\n            ^\r\n\r\nSessionQueryError: failed to project session \"web-review\": [\r\n  {\r\n    \"expected\": \"number\",\r\n    \"code\": \"invalid_type\",\r\n    \"path\": [\r\n      \"maxImageBytes\"\r\n    ],\r\n    \"message\": \"Invalid input: expected number, received undefined\"\r\n  },\r\n  {\r\n    \"expected\": \"number\",\r\n    \"code\": \"invalid_type\",\r\n    \"path\": [\r\n      \"maxImagesPerMessage\"\r\n    ],\r\n    \"message\": \"Invalid input: expected number, received undefined\"\r\n  },\r\n  {\r\n    \"expected\": \"number\",\r\n    \"code\": \"invalid_type\",\r\n    \"path\": [\r\n      \"maxImagePixels\"\r\n    ],\r\n    \"message\": \"Invalid input: expected number, received undefined\"\r\n  },\r\n  {\r\n    \"expected\": \"number\",\r\n    \"code\": \"invalid_type\",\r\n    \"path\": [\r\n      \"maxImageDimension\"\r\n    ],\r\n    \"message\": \"Invalid input: expected number, received undefined\"\r\n  },\r\n  {\r\n    \"expected\": \"array\",\r\n    \"code\": \"invalid_type\",\r\n    \"path\": [\r\n      \"mediaTypes\"\r\n    ],\r\n    \"message\": \"Invalid input: expected array, received undefined\"\r\n  }\r\n]\r\n    at SessionObservationReader.live (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\observation.ts:289:13)\r\n    at SessionObservationReader.read (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\observation.ts:106:43)\r\n    ... 3 lines matching cause stack trace ...\r\n    at WebController.follow (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\api\\session-controller\\src\\web\\controller.ts:41:54)\r\n    at follow.next (<anonymous>)\r\n    at cancellableStream (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\api\\gateway\\src\\index.ts:1341:65)\r\n    at cancellableStream.next (<anonymous>)\r\n    at Object.[Symbol.asyncIterator] (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h23-lab-9FWkA8\\web-fixture.ts:27:116) {\r\n  code: 'SESSION_QUERY_CORRUPT_SESSION',\r\n  [cause]: ZodError: [\r\n    {\r\n      \"expected\": \"number\",\r\n      \"code\": \"invalid_type\",\r\n      \"path\": [\r\n        \"maxImageBytes\"\r\n      ],\r\n      \"message\": \"Invalid input: expected number, received undefined\"\r\n    },\r\n    {\r\n      \"expected\": \"number\",\r\n      \"code\": \"invalid_type\",\r\n      \"path\": [\r\n        \"maxImagesPerMessage\"\r\n      ],\r\n      \"message\": \"Invalid input: expected number, received undefined\"\r\n    },\r\n    {\r\n      \"expected\": \"number\",\r\n      \"code\": \"invalid_type\",\r\n      \"path\": [\r\n        \"maxImagePixels\"\r\n      ],\r\n      \"message\": \"Invalid input: expected number, received undefined\"\r\n    },\r\n    {\r\n      \"expected\": \"number\",\r\n      \"code\": \"invalid_type\",\r\n      \"path\": [\r\n        \"maxImageDimension\"\r\n      ],\r\n      \"message\": \"Invalid input: expected number, received undefined\"\r\n    },\r\n    {\r\n      \"expected\": \"array\",\r\n      \"code\": \"invalid_type\",\r\n      \"path\": [\r\n        \"mediaTypes\"\r\n      ],\r\n      \"message\": \"Invalid input: expected array, received undefined\"\r\n    }\r\n  ]\r\n      at Proxy.viewCell (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-projection\\src\\index.ts:864:28)\r\n      at Object.apply (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\cordis\\src\\utils.ts:160:40)\r\n      at Proxy.snapshot (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session\\session-projection\\src\\index.ts:479:43)\r\n      at Object.apply (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\cordis\\src\\utils.ts:160:40)\r\n      at SessionObservationReader.live (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\observation.ts:287:47)\r\n      at SessionObservationReader.read (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\observation.ts:106:43)\r\n      at Proxy.observeSession (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\session-query\\session-query\\src\\index.ts:144:31)\r\n      at Object.apply (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\vendor\\cordis\\src\\utils.ts:160:40)\r\n      at HistoryController.usingObservation (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\api\\session-controller\\src\\history\\controller.ts:172:49)\r\n      at WebController.follow (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\api\\session-controller\\src\\web\\controller.ts:41:54)\r\n}\r\n\r\nNode.js v24.16.0\r\n",
+  "error": null
+}
