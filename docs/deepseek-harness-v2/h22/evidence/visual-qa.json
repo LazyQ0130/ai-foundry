@@ -1,0 +1,400 @@
+{
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-WBQ96C",
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "d61db1d5186cdef12d757f109a3367370ebd744b36654d0355452ffc7aaef1c9",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h22-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1534,
+      "sourceSha256": "25808923a8cbe29a9a437ecffdafb38937c8d92e85a1692ff9c25ad087e68386",
+      "imageSha256": "a0eba131ca621a8c15cbe80709ad3d500bb16e0354cddd5d3decdb4f06b1542d"
+    },
+    {
+      "id": "h22-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1078,
+      "sourceSha256": "1655811337527c063c0fb51640a1c53775668e2baf2b743ec7951adbe4f1db60",
+      "imageSha256": "cd38638970e840393028e7a3a42baca64b0b9580931d46ca30cd6c2dc55f9011"
+    },
+    {
+      "id": "h22-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1534,
+      "sourceSha256": "dfe47570fb1c68743da2a94bcd922e4e2b98a3b8ac147ea68db68ab024aacfec",
+      "imageSha256": "5acba6e4f11ce54f348825791dd02716abc184513cd04b2e2646a435a7ecc263"
+    },
+    {
+      "id": "h22-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1300,
+      "sourceSha256": "74d2c905ce5f973d75e755aeef3baa6642fa93f4e7d6c480047a11f004a41c12",
+      "imageSha256": "8a73fb202ce15f95a14b53eaef0a022564c05a3317caab0a3b942640cdecade6"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜职责结构。Engine是单一服务，Subagent后端按名选择；只有PTC标为独立进程，职责框不是各自一台机器。",
+            "src": "/course-media/harness-v2/h22/h22-01.png"
+          },
+          {
+            "alt": "parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜依赖关系对照。箭头表示同一条目内部顺序；不同条目之间没有阶段锁，phase也不提供汇总屏障。",
+            "src": "/course-media/harness-v2/h22/h22-02.png"
+          },
+          {
+            "alt": "start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜Run 生命周期。取消不是停稳回执；result含执行期清理等待，持有者仍保留finally中的dispose。异常清理分支可能告警，不能推广为任意外部后端强杀保证。",
+            "src": "/course-media/harness-v2/h22/h22-03.png"
+          },
+          {
+            "alt": "workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜观察、持久事实、模型输入各有通路。后台日志环不等于模型输出流；Session记录也不等于Workflow恢复点。",
+            "src": "/course-media/harness-v2/h22/h22-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "workflow.test.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "boundaries.ts",
+        "demo.ts"
+      ],
+      "clipboard": "eleven full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 4077,
+        "scrolled": 3366
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 8.046875,
+        "bottom": 408.9375,
+        "viewport": 950,
+        "height": 400.890625,
+        "content": "想深入再看：实践 A 详细参考答案A1 使用正式 Engine 与 Node PTC，controlled Provider 只替代子级输出。count=3 经 args 数据通道进入 guest，顶层 await 等子级返回文本，再得 {review:'README fixture=ok',count:3}。预期 completed、agentsStarted=1，fake.active=0，所有 SubprocessHandle.done 已结算。A2 缺 description 为 META_INVALID，TS 标注和 export meta 为 SCRIPT_PARSE；unknown Provider 是 AGENT_START，超过引擎 ceiling 的每次总量为 INVALID_ARGUMENT。这些 start 同步拒绝，不产生 start 事件或进程，不能一律说 INVALID_ARGUMENT。A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。",
+        "lastParagraph": "A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 1｜职责结构。Engine是单一服务，Subagent后端按名选择；只有PTC标为独立进程，职责框不是各自一台机器。",
+            "src": "/course-media/harness-v2/h22/h22-01.png"
+          },
+          {
+            "alt": "parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 2｜依赖关系对照。箭头表示同一条目内部顺序；不同条目之间没有阶段锁，phase也不提供汇总屏障。",
+            "src": "/course-media/harness-v2/h22/h22-02.png"
+          },
+          {
+            "alt": "start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜Run 生命周期。取消不是停稳回执；result含执行期清理等待，持有者仍保留finally中的dispose。异常清理分支可能告警，不能推广为任意外部后端强杀保证。",
+            "src": "/course-media/harness-v2/h22/h22-03.png"
+          },
+          {
+            "alt": "workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 4｜观察、持久事实、模型输入各有通路。后台日志环不等于模型输出流；Session记录也不等于Workflow恢复点。",
+            "src": "/course-media/harness-v2/h22/h22-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "workflow.test.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "boundaries.ts",
+        "demo.ts"
+      ],
+      "clipboard": "eleven full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 4069,
+        "scrolled": 3748
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 8.265625,
+        "bottom": 808.3125,
+        "viewport": 950,
+        "height": 800.046875,
+        "content": "想深入再看：实践 A 详细参考答案A1 使用正式 Engine 与 Node PTC，controlled Provider 只替代子级输出。count=3 经 args 数据通道进入 guest，顶层 await 等子级返回文本，再得 {review:'README fixture=ok',count:3}。预期 completed、agentsStarted=1，fake.active=0，所有 SubprocessHandle.done 已结算。A2 缺 description 为 META_INVALID，TS 标注和 export meta 为 SCRIPT_PARSE；unknown Provider 是 AGENT_START，超过引擎 ceiling 的每次总量为 INVALID_ARGUMENT。这些 start 同步拒绝，不产生 start 事件或进程，不能一律说 INVALID_ARGUMENT。A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。",
+        "lastParagraph": "A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.66181640625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 1｜职责结构。Engine是单一服务，Subagent后端按名选择；只有PTC标为独立进程，职责框不是各自一台机器。",
+            "src": "/course-media/harness-v2/h22/h22-01.png"
+          },
+          {
+            "alt": "parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 2｜依赖关系对照。箭头表示同一条目内部顺序；不同条目之间没有阶段锁，phase也不提供汇总屏障。",
+            "src": "/course-media/harness-v2/h22/h22-02.png"
+          },
+          {
+            "alt": "start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜Run 生命周期。取消不是停稳回执；result含执行期清理等待，持有者仍保留finally中的dispose。异常清理分支可能告警，不能推广为任意外部后端强杀保证。",
+            "src": "/course-media/harness-v2/h22/h22-03.png"
+          },
+          {
+            "alt": "workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 4｜观察、持久事实、模型输入各有通路。后台日志环不等于模型输出流；Session记录也不等于Workflow恢复点。",
+            "src": "/course-media/harness-v2/h22/h22-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "agent-fixture.ts",
+        "workflow.test.ts",
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "boundaries.ts",
+        "demo.ts"
+      ],
+      "clipboard": "eleven full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 12,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 4069,
+        "scrolled": 3818
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 8.046875,
+        "bottom": 1067.390625,
+        "viewport": 1140,
+        "height": 1059.34375,
+        "content": "想深入再看：实践 A 详细参考答案A1 使用正式 Engine 与 Node PTC，controlled Provider 只替代子级输出。count=3 经 args 数据通道进入 guest，顶层 await 等子级返回文本，再得 {review:'README fixture=ok',count:3}。预期 completed、agentsStarted=1，fake.active=0，所有 SubprocessHandle.done 已结算。A2 缺 description 为 META_INVALID，TS 标注和 export meta 为 SCRIPT_PARSE；unknown Provider 是 AGENT_START，超过引擎 ceiling 的每次总量为 INVALID_ARGUMENT。这些 start 同步拒绝，不产生 start 事件或进程，不能一律说 INVALID_ARGUMENT。A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。",
+        "lastParagraph": "A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.59931640625
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

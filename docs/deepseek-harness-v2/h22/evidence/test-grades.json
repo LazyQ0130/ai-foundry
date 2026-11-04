@@ -1,0 +1,270 @@
+{
+  "status": "PASS",
+  "count": 23,
+  "levels": {
+    "C": 19,
+    "D": 4
+  },
+  "cases": [
+    {
+      "name": "C A1 real engine: meta, args, top-level await and JSON result",
+      "grade": "C",
+      "status": "PASS",
+      "real": "WorkflowEngine/PTC/Windows runner/SubagentRuntime",
+      "collaborators": "controlled Provider, directory/config cells",
+      "assertedBoundary": "pre-publication / JSON input-output / resource settlement",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C A2 pre-publication validation: meta, parse, provider, cap",
+      "grade": "C",
+      "status": "PASS",
+      "real": "WorkflowEngine/PTC/Windows runner/SubagentRuntime",
+      "collaborators": "controlled Provider, directory/config cells",
+      "assertedBoundary": "pre-publication / JSON input-output / resource settlement",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C A3 result resolves on script/JSON errors; undefined becomes null",
+      "grade": "C",
+      "status": "PASS",
+      "real": "WorkflowEngine/PTC/Windows runner/SubagentRuntime",
+      "collaborators": "controlled Provider, directory/config cells",
+      "assertedBoundary": "pre-publication / JSON input-output / resource settlement",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C A4 args clone is not lossless JSON validation",
+      "grade": "C",
+      "status": "PASS",
+      "real": "WorkflowEngine/PTC/Windows runner/SubagentRuntime",
+      "collaborators": "controlled Provider, directory/config cells",
+      "assertedBoundary": "pre-publication / JSON input-output / resource settlement",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B6 Subagent capacity can reject below Workflow concurrency",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B7 structured output present versus absent on completed child",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B1 parallel starts together and collects input order",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B2 pipeline is per-item order without a cross-stage barrier",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B3 ordinary child failure and ordinary thunk throw become null",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B4 fatal options/schema and broken provider survive combinators",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C B5 concurrency slots, queued total count and item cap differ",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow helpers + PTC + Subagent admission",
+      "collaborators": "controlled Provider and Promise gates",
+      "assertedBoundary": "concurrency, per-item order, null/fatal, caps and structured result",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C C1 cancellation drains a published child and dispose is shared",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Run/Host/PTC/subprocess/sandbox/Workflow events",
+      "collaborators": "controlled Provider gates; C5 actual fixture file",
+      "assertedBoundary": "cancel, late start, shared dispose, listener containment or native write denial",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C C2 pending startup after cancel is disposed before settlement",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Run/Host/PTC/subprocess/sandbox/Workflow events",
+      "collaborators": "controlled Provider gates; C5 actual fixture file",
+      "assertedBoundary": "cancel, late start, shared dispose, listener containment or native write denial",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C C3 cancel post-await infinite guest work without killing test process",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Run/Host/PTC/subprocess/sandbox/Workflow events",
+      "collaborators": "controlled Provider gates; C5 actual fixture file",
+      "assertedBoundary": "cancel, late start, shared dispose, listener containment or native write denial",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C C4 phase/log are observations; listener failures are isolated",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Run/Host/PTC/subprocess/sandbox/Workflow events",
+      "collaborators": "controlled Provider gates; C5 actual fixture file",
+      "assertedBoundary": "cancel, late start, shared dispose, listener containment or native write denial",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C C5 native read-only runner rejects writes through a VM escape",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Run/Host/PTC/subprocess/sandbox/Workflow events",
+      "collaborators": "controlled Provider gates; C5 actual fixture file",
+      "assertedBoundary": "cancel, late start, shared dispose, listener containment or native write denial",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "D D1 foreground parent tool, three real children, Session and next model request",
+      "grade": "D",
+      "status": "PASS",
+      "real": "parent + three child AgentLoops/Tools/Spawn/Workflow/PTC/Session/JSONL",
+      "collaborators": "local role-keyed Mock LLM; fixture directory/config/query",
+      "assertedBoundary": "schema→model call→children→aggregate→parent ToolResult→next model request + durable log",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "D D2 tool schema, error mapping and rendered cap",
+      "grade": "D",
+      "status": "PASS",
+      "real": "parent AgentLoop/Tools/Workflow/PTC",
+      "collaborators": "Mock LLM, deliberate fatal script and long result",
+      "assertedBoundary": "schema capability, isError, rendered result cap",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "D D3 background receipt, observer log, job_output and notification",
+      "grade": "D",
+      "status": "PASS",
+      "real": "parent/child Loops + Workflow/PTC/LocalJobs/ToolJobs",
+      "collaborators": "Mock LLM gate, quiet notices, inlineOutputBytes0",
+      "assertedBoundary": "early receipt→observer ring vs model delta→notice→terminal read once",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "D D4 background job_kill cancels and drains its workflow",
+      "grade": "D",
+      "status": "PASS",
+      "real": "parent/child Loops + Workflow/PTC/LocalJobs/ToolJobs",
+      "collaborators": "Mock LLM gate",
+      "assertedBoundary": "job_kill→stopping→cancel/cleanup→killed",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C boundary missing confinement fails closed without spawning",
+      "grade": "C",
+      "status": "PASS",
+      "real": "Workflow Host with real engine and Node PTC service",
+      "collaborators": "fault injection: sandboxMode unavailable",
+      "assertedBoundary": "fail-closed before spawn, no unrestricted fallback",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C boundary Goal revision, pause and disarm differ from durable phase",
+      "grade": "C",
+      "status": "PASS",
+      "real": "GoalService/Session/Projection/AgentRegistry",
+      "collaborators": "fixture live parent, no round driver",
+      "assertedBoundary": "CAS/revision/pause/resume/disarm, zero model calls",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    },
+    {
+      "name": "C boundary Schedule persists a future trigger independently of WorkflowRun",
+      "grade": "C",
+      "status": "PASS",
+      "real": "ScheduleService/Storage/DomainFacility/JSON backend/new Context",
+      "collaborators": "future2099 fixture, no due resolver",
+      "assertedBoundary": "selector refusal, saved record readback, zero model/Workflow calls",
+      "platform": "Windows",
+      "source": "workflow.test.ts imports A/B/C/D/boundaries",
+      "rawRun": "run-1793787817242-tests.json"
+    }
+  ],
+  "notCounted": [
+    "X repeats D1",
+    "demo commands",
+    "historical reruns",
+    "upstream Vitest selected only",
+    "Cordis used as dependency"
+  ]
+}

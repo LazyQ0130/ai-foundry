@@ -1,0 +1,205 @@
+{
+  "inputs": [
+    {
+      "path": "docs/deepseek-harness-v2/A-blueprint-v2.md",
+      "sha256": "92bd7d77e2d84581412400e492ef9dc52ebaa92d506390b97956a648c9421f8a"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/E-production-standard.md",
+      "sha256": "6ef85ef8cb630e12bd0409ccec8778002bdf45bdd85cee2db2292208823d98f0"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-one-review/production-standard-v1.md",
+      "sha256": "d47ac4695c0a2a90a42dc8548f40ef7b0e188310e6a9fb4dd50c8acf9a610fcb"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-two-review/production-standard-module-two-addendum.md",
+      "sha256": "04d397ef68c881b0b9103cf3f515abb9b63bfa0aa3b5628d4282fc5996993251"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-three-review/production-standard-module-three-addendum.md",
+      "sha256": "c449339514824c87d3448d950c1a8da236fdbd0398afdefee470043e952494c3"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-four-review/production-standard-module-four-addendum.md",
+      "sha256": "c9cb7ee7bf2a44a08de8a37da7b48386dfa2d2dbaf79b4332c9484a2143fb296"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-five-review/production-standard-module-five-addendum.md",
+      "sha256": "e63c11eddc922c669f9121f96307d26faf4619c890eaa713fcec0aa9744adc89"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-five-review/review-report.md",
+      "sha256": "1f66fe7a87ca8bb09a09a06844e06048844f64764803321b0fdf147e47e21e5d"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/module-five-review/h21-h24-handoff.md",
+      "sha256": "ec0bd5894df9e337de2ec86e328325631031a7dae9c22c4811652ae548078970"
+    },
+    {
+      "path": "course-content/internal/deepseek-harness/h21/lesson.md",
+      "sha256": "11b5d1c8790c02f287e4d84277fa84cc232bea69a1e38749fad3cb2e0cbb25c7"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/h21/quality-review.md",
+      "sha256": "fd7241f789b38f54eec0b4aa9761c28004c2ccf7e94e5fc28036b8f1b91c1f5d"
+    },
+    {
+      "path": "docs/deepseek-harness-v2/h21/h22-handoff.md",
+      "sha256": "c0de365a1fafce2c14473e3c7d2ccf2eebe7badb0d32700c28dad867b1d6aa70"
+    }
+  ],
+  "planning": [
+    {
+      "id": "H01",
+      "title": "为什么有了大模型，还需要 Harness？",
+      "goal": "用可追踪证据划分模型决策与运行环境执行的职责。"
+    },
+    {
+      "id": "H02",
+      "title": "从零读懂 DeepSeek Harness 仓库结构",
+      "goal": "从用户能力反查服务、提供方、消费方与测试。"
+    },
+    {
+      "id": "H03",
+      "title": "一个 Agent 请求的完整执行流程",
+      "goal": "按持久事实与实时通知两条线复述一次请求。"
+    },
+    {
+      "id": "H04",
+      "title": "Profile、运行入口与环境配置",
+      "goal": "在不启动模型的前提下解释启动配置的来源和覆盖顺序。"
+    },
+    {
+      "id": "H05",
+      "title": "一切皆插件——Cordis 设计思想",
+      "goal": "用 Context 服务查询与 inject 说明模块怎样依赖接口。"
+    },
+    {
+      "id": "H06",
+      "title": "事件系统与插件间通信机制",
+      "goal": "根据顺序、等待与短路需求选择正确分发模式。"
+    },
+    {
+      "id": "H07",
+      "title": "插件生命周期、服务依赖与资源回收",
+      "goal": "将每次注册与其所有者、释放函数和等待边界配对。"
+    },
+    {
+      "id": "H08",
+      "title": "Profile、Bundle、Patch 与动态能力组合",
+      "goal": "按固定顺序手算一棵可审查的插件树。"
+    },
+    {
+      "id": "H09",
+      "title": "Agent 实例创建、注册和所有权",
+      "goal": "解释 create/resume 的发布边界与调用者所有权。"
+    },
+    {
+      "id": "H10",
+      "title": "深入 Agent Loop——Turn、Step 与执行循环",
+      "goal": "从 inbox 和停止条件推导 Turn/Step 的边界。"
+    },
+    {
+      "id": "H11",
+      "title": "系统提示词、上下文与模型请求组装",
+      "goal": "从 assembly、prepared capability 和日志重建一次冻结请求。"
+    },
+    {
+      "id": "H12",
+      "title": "LLM 适配器、消息结构与流式响应",
+      "goal": "追踪统一消息/流契约与 Provider 协议的转换边界。"
+    },
+    {
+      "id": "H13",
+      "title": "Tool Registry、Schema 与工具可见性",
+      "goal": "推导作用域、限制交集与 step admission 共同决定的工具集合。"
+    },
+    {
+      "id": "H14",
+      "title": "工具执行流水线与 Hook 机制",
+      "goal": "按准备、分派与结算追踪唯一权威工具结果。"
+    },
+    {
+      "id": "H15",
+      "title": "审批、权限、守卫与沙箱",
+      "goal": "区分审批决定、不可放宽守卫和文件效果隔离的责任。"
+    },
+    {
+      "id": "H16",
+      "title": "文件、Shell、Web 与 MCP 能力接入",
+      "goal": "按 Definition/Provider/Consumer 三角色定位能力，并对比远端信任。"
+    },
+    {
+      "id": "H17",
+      "title": "Session、事件日志与事件溯源",
+      "goal": "从不可变事件推导模型消息与业务投影，区分日志和读视图。"
+    },
+    {
+      "id": "H18",
+      "title": "会话恢复、历史回放与 Fork",
+      "goal": "区分恢复执行、纯历史回放与固定前缀 Fork 的语义。"
+    },
+    {
+      "id": "H19",
+      "title": "上下文管理、Compaction 与 Token 优化",
+      "goal": "比较剪枝、图片省略和摘要压缩对可重建历史的不同影响。"
+    },
+    {
+      "id": "H20",
+      "title": "取消、重试、异常处理与故障恢复",
+      "goal": "按故障阶段区分可重试请求、取消与未知副作用。"
+    },
+    {
+      "id": "H21",
+      "title": "Subagent、任务委派与多智能体协作",
+      "goal": "用 activation 的所有权和 delivery 区分新建、Fork 与外部执行。"
+    },
+    {
+      "id": "H22",
+      "title": "Workflow、Jobs、Goal 与任务调度",
+      "goal": "根据生命周期选择四种任务抽象，并画清它们的组合。"
+    },
+    {
+      "id": "H23",
+      "title": "CLI、Web UI、SDK 与远程通信",
+      "goal": "追踪一个控制动作与一条状态订阅穿过载体边界。"
+    },
+    {
+      "id": "H24",
+      "title": "大型 Agent 系统测试与综合架构分析",
+      "goal": "为一条跨模块链建立事实、测试与限制的证据矩阵。"
+    },
+    {
+      "id": "H25",
+      "title": "自己编写一个 Cordis 插件",
+      "goal": "完成一个可重复挂载/卸载且无外部副作用的插件。"
+    },
+    {
+      "id": "H26",
+      "title": "多模型适配与 Provider 工程",
+      "goal": "设计符合现有 seam 的能力声明、路由与错误转换。"
+    },
+    {
+      "id": "H27",
+      "title": "MCP 深度集成与自定义能力",
+      "goal": "解释每服务器连接生命周期与工具/资源的作用域发布。"
+    },
+    {
+      "id": "H28",
+      "title": "Browser Use、Computer Use 与执行边界",
+      "goal": "区分浏览器 Session 资源所有权和共享桌面输入边界。"
+    },
+    {
+      "id": "H29",
+      "title": "Agent 可观测性、评估和性能分析",
+      "goal": "建立分阶段观测与不可被平均分掩盖的行为评估。"
+    },
+    {
+      "id": "H30",
+      "title": "大型 TypeScript Monorepo、类型系统与 CI 工程",
+      "goal": "解释源码、生成声明、构建产物与 CI 依赖的不同真源。"
+    }
+  ],
+  "meaning": "Input identity and planning map; semantic review documented in preparation/bridge, not runtime evidence."
+}

@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "source",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\check-sources.py"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787805694-source.json"
+    },
+    {
+      "name": "assertions",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\write-source-checklist.py"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787805760-assertions.json"
+    },
+    {
+      "name": "references",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\refresh-references.py"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787805799-references.json"
+    },
+    {
+      "name": "sync",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\sync-lab.py"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787805840-sync.json"
+    },
+    {
+      "name": "labs",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\run-labs.mjs"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787817272-labs.json"
+    },
+    {
+      "name": "figures",
+      "command": "python",
+      "args": [
+        "-X",
+        "utf8",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\draw_figures.py"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787817316-figures.json"
+    },
+    {
+      "name": "preview",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\make-reading-preview.tsx"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787818459-preview.json"
+    },
+    {
+      "name": "content",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\check-content.ts"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787819246-content.json"
+    },
+    {
+      "name": "renderer",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "tests/lesson-renderer.test.ts"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787821487-renderer.json"
+    },
+    {
+      "name": "visual",
+      "command": "D:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\QYF\\Desktop\\AIFoundry\\docs\\deepseek-harness-v2\\h22\\scripts\\preview-and-qa.tsx"
+      ],
+      "exit": 0,
+      "error": null,
+      "raw": "check-1793787842302-visual.json"
+    }
+  ]
+}

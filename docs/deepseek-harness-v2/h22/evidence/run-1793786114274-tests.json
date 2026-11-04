@@ -1,0 +1,58 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "workflow.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze",
+  "programs": [
+    {
+      "name": "A.ts",
+      "sha256": "aaca154aaa3a948ae1f0c11dabc39331e54f96c8f570aa275a60fdb7bf368435"
+    },
+    {
+      "name": "agent-fixture.ts",
+      "sha256": "d46bf2ec4eb333f160ddd0545e0d67a51a41840dda154e4e4c5871bc1eacb497"
+    },
+    {
+      "name": "B.ts",
+      "sha256": "fbece6e17abda32d34b2efc762d72fc8014881e0d5bf7e6aed6c973302efec59"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "9b03f747cd98f97410542c22311fd749bd85855470d3967cd79ea4b5aecc0910"
+    },
+    {
+      "name": "boundaries.ts",
+      "sha256": "cb5b4ecdc64b95cd3c097f60706279808be73ca2b9ea65933f11430eaa3631b2"
+    },
+    {
+      "name": "C.ts",
+      "sha256": "d057330eef94bfe9c64e8f5b32fee1f64acdb28a6de292ecb40694c68fd0cf59"
+    },
+    {
+      "name": "D.ts",
+      "sha256": "18bd8f0045cb0c739c4ee2bcd5d8d4223e3ba490e58efddf1ccce2d6d53e7db6"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "4d2568408096a97380fff6af7505ed949da030b4fcbe7f8b03790211c782ffed"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "ac7e3087224891ddf04335e8e6af7adceb8d6c6c0726ec9e9430f1743e0c3c44"
+    },
+    {
+      "name": "workflow.test.ts",
+      "sha256": "e6f5363ce03ac0986d55edc97bad213c2c9185e5818311a88f72bd3776c16bf6"
+    },
+    {
+      "name": "X.ts",
+      "sha256": "1946d2af6835c327ddc1dc0551191d843be324bb3621741377e1e9c95fb69ee6"
+    }
+  ],
+  "exit": 1,
+  "stdout": "TAP version 13\n# (node:11924) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: C A1 real engine: meta, args, top-level await and JSON result\nok 1 - C A1 real engine: meta, args, top-level await and JSON result\n  ---\n  duration_ms: 548.6407\n  type: 'test'\n  ...\n# Subtest: C A2 pre-publication validation: meta, parse, provider, cap\nnot ok 2 - C A2 pre-publication validation: meta, parse, provider, cap\n  ---\n  duration_ms: 31.8087\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h22-lab-F6ioze\\\\workflow.test.ts:1:259'\n  failureType: 'testCodeFailure'\n  error: |-\n    The validation function is expected to return \"true\". Received false\n    \n    Caught error:\n    \n    WorkflowError: no subagent provider registered for \"missing\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\A.ts:11:329)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: C A3 result resolves on script/JSON errors; undefined becomes null\nok 3 - C A3 result resolves on script/JSON errors; undefined becomes null\n  ---\n  duration_ms: 1488.5865\n  type: 'test'\n  ...\n# Subtest: C A4 args clone is not lossless JSON validation\nok 4 - C A4 args clone is not lossless JSON validation\n  ---\n  duration_ms: 419.612\n  type: 'test'\n  ...\n# Subtest: C B1 parallel starts together and collects input order\nok 5 - C B1 parallel starts together and collects input order\n  ---\n  duration_ms: 341.1077\n  type: 'test'\n  ...\n# Subtest: C B2 pipeline is per-item order without a cross-stage barrier\nok 6 - C B2 pipeline is per-item order without a cross-stage barrier\n  ---\n  duration_ms: 355.7064\n  type: 'test'\n  ...\n# Subtest: C B3 ordinary child failure and ordinary thunk throw become null\nok 7 - C B3 ordinary child failure and ordinary thunk throw become null\n  ---\n  duration_ms: 452.0449\n  type: 'test'\n  ...\n# Subtest: C B4 fatal options/schema and broken provider survive combinators\nok 8 - C B4 fatal options/schema and broken provider survive combinators\n  ---\n  duration_ms: 1122.3973\n  type: 'test'\n  ...\n# Subtest: C B5 concurrency slots, queued total count and item cap differ\nnot ok 9 - C B5 concurrency slots, queued total count and item cap differ\n  ---\n  duration_ms: 1180.2836\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h22-lab-F6ioze\\\\workflow.test.ts:1:259'\n  failureType: 'testCodeFailure'\n  error: |-\n    The input did not match the regular expression /item cap/. Input:\n    \n    'WorkflowError: parallel() received 4 items — over the per-call cap (3); split the work or raise maxItemsPerCall in the engine config\\n' +\n      '    at WorkflowExecution.assertItemCap (dsh-workflow-guest.js:951:51)\\n' +\n      '    at WorkflowExecution.parallel (dsh-workflow-guest.js:916:8)\\n' +\n      '    at parallel (dsh-workflow-guest.js:727:44)\\n' +\n      '    at workflow:project-review:1:14\\n' +\n      '    at workflow:project-review:2:3\\n' +\n      '    at Script.runInContext (node:vm:149:12)\\n' +\n      '    at WorkflowExecution.drive (dsh-workflow-guest.js:745:40)\\n' +\n      '    at runWorkflowGuest (dsh-workflow-guest.js:1036:7)\\n' +\n      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n' +\n      '    at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)'\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  actual: |-\n    WorkflowError: parallel() received 4 items — over the per-call cap (3); split the work or raise maxItemsPerCall in the engine config\n        at WorkflowExecution.assertItemCap (dsh-workflow-guest.js:951:51)\n        at WorkflowExecution.parallel (dsh-workflow-guest.js:916:8)\n        at parallel (dsh-workflow-guest.js:727:44)\n        at workflow:project-review:1:14\n        at workflow:project-review:2:3\n        at Script.runInContext (node:vm:149:12)\n        at WorkflowExecution.drive (dsh-workflow-guest.js:745:40)\n        at runWorkflowGuest (dsh-workflow-guest.js:1036:7)\n        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n        at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)\n  operator: 'match'\n  stack: |-\n    TestContext.cases (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\B.ts:37:207)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: C C1 cancellation drains a published child and dispose is shared\nok 10 - C C1 cancellation drains a published child and dispose is shared\n  ---\n  duration_ms: 432.2546\n  type: 'test'\n  ...\n# Subtest: C C2 pending startup after cancel is disposed before settlement\nok 11 - C C2 pending startup after cancel is disposed before settlement\n  ---\n  duration_ms: 375.3924\n  type: 'test'\n  ...\n# Subtest: C C3 cancel post-await infinite guest work without killing test process\nok 12 - C C3 cancel post-await infinite guest work without killing test process\n  ---\n  duration_ms: 432.1777\n  type: 'test'\n  ...\n# Subtest: C C4 phase/log are observations; listener failures are isolated\nok 13 - C C4 phase/log are observations; listener failures are isolated\n  ---\n  duration_ms: 368.3278\n  type: 'test'\n  ...\n# Subtest: C C5 native read-only runner rejects writes through a VM escape\nok 14 - C C5 native read-only runner rejects writes through a VM escape\n  ---\n  duration_ms: 343.6275\n  type: 'test'\n  ...\n# Subtest: D D1 foreground parent tool, three real children, Session and next model request\nok 15 - D D1 foreground parent tool, three real children, Session and next model request\n  ---\n  duration_ms: 461.0212\n  type: 'test'\n  ...\n# Subtest: D D2 tool schema, error mapping and rendered cap\nnot ok 16 - D D2 tool schema, error mapping and rendered cap\n  ---\n  duration_ms: 315.9602\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h22-lab-F6ioze\\\\workflow.test.ts:1:259'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.fixture.tool (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\D.ts:9:311)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D3 background receipt, observer log, job_output and notification\nnot ok 17 - D D3 background receipt, observer log, job_output and notification\n  ---\n  duration_ms: 10431.1777\n  type: 'test'\n  location: 'C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h22-lab-F6ioze\\\\workflow.test.ts:1:259'\n  failureType: 'testCodeFailure'\n  error: 'bounded fixture did not reach quiet completion notice'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    until (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\agent-fixture.ts:34:8)\n    async TestContext.fixture.tool (C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\D.ts:24:133)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: D D4 background job_kill cancels and drains its workflow\nok 18 - D D4 background job_kill cancels and drains its workflow\n  ---\n  duration_ms: 404.725\n  type: 'test'\n  ...\n# Subtest: C boundary missing confinement fails closed without spawning\nok 19 - C boundary missing confinement fails closed without spawning\n  ---\n  duration_ms: 19.2735\n  type: 'test'\n  ...\n# Subtest: C boundary Goal revision, pause and disarm differ from durable phase\nok 20 - C boundary Goal revision, pause and disarm differ from durable phase\n  ---\n  duration_ms: 26.6348\n  type: 'test'\n  ...\n# Subtest: C boundary Schedule persists a future trigger independently of WorkflowRun\nok 21 - C boundary Schedule persists a future trigger independently of WorkflowRun\n  ---\n  duration_ms: 50.1905\n  type: 'test'\n  ...\n1..21\n# tests 21\n# suites 0\n# pass 17\n# fail 4\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 20960.6916\n",
+  "stderr": "",
+  "error": null
+}

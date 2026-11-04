@@ -1,0 +1,3587 @@
+{
+  "trace-A1.json": {
+    "result": {
+      "value": {
+        "review": "README fixture=ok",
+        "count": 3
+      },
+      "stopReason": "completed",
+      "agentsStarted": 1
+    },
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "1be50a25-6a0d-4c4f-8375-ca526b0addb4",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "1be50a25-6a0d-4c4f-8375-ca526b0addb4",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "README fixture",
+            "childId": "controlled-1"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "1be50a25-6a0d-4c4f-8375-ca526b0addb4",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "README fixture",
+            "childId": "controlled-1",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "1be50a25-6a0d-4c4f-8375-ca526b0addb4",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "completed",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ],
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\workspace-CgKoh7",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\ptc-worker.mjs",
+          "134217728"
+        ],
+        "done": true,
+        "outcome": {
+          "exitCode": 0,
+          "signal": null
+        }
+      }
+    ]
+  },
+  "trace-A3.json": [
+    {
+      "value": null,
+      "stopReason": "completed",
+      "agentsStarted": 0
+    },
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 0,
+      "error": "WorkflowError: the workflow's return value is not plain JSON data — workflow result.nested: undefined is not JSON data. Return only JSON-serializable objects/arrays/scalars.\n    at WorkflowExecution.materializeResult (dsh-workflow-guest.js:778:10)\n    at WorkflowExecution.drive (dsh-workflow-guest.js:748:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runWorkflowGuest (dsh-workflow-guest.js:999:17)\n    at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)"
+    },
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 0,
+      "error": "WorkflowError: the workflow's return value is not plain JSON data — workflow result: bigints are not JSON data. Return only JSON-serializable objects/arrays/scalars.\n    at WorkflowExecution.materializeResult (dsh-workflow-guest.js:778:10)\n    at WorkflowExecution.drive (dsh-workflow-guest.js:748:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runWorkflowGuest (dsh-workflow-guest.js:999:17)\n    at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)"
+    },
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 0,
+      "error": "Error: fixture script failed\n    at workflow:project-review:1:7\n    at workflow:project-review:2:3\n    at Script.runInContext (node:vm:149:12)\n    at WorkflowExecution.drive (dsh-workflow-guest.js:745:40)\n    at runWorkflowGuest (dsh-workflow-guest.js:1036:7)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)"
+    }
+  ],
+  "trace-A4.json": {
+    "value": null,
+    "stopReason": "error",
+    "error": "workflow execution failed (exception): Error: workflow binding value must be lossless JSON\n    at bindingFailure (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:649:61)\n    at Object.value [as begin] (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:671:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runWorkflowGuest (dsh-workflow-guest.js:974:15)\n    at async eval (eval at evaluate (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:697:18), <anonymous>:4:59953)",
+    "agentsStarted": 0
+  },
+  "trace-B1.json": {
+    "result": {
+      "value": [
+        "A",
+        "B"
+      ],
+      "stopReason": "completed",
+      "agentsStarted": 2
+    },
+    "finished": [
+      "B",
+      "A"
+    ],
+    "started": [
+      "A",
+      "B"
+    ],
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 2,
+            "label": "B",
+            "childId": "controlled-2"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 2,
+            "label": "B",
+            "childId": "controlled-2",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "a624536a-9b12-4173-8fd0-d533a746a578",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "completed",
+            "agentsStarted": 2
+          }
+        ]
+      }
+    ]
+  },
+  "trace-B2.json": {
+    "result": {
+      "value": [
+        "A2:A1:0",
+        "B2:B1:1"
+      ],
+      "stopReason": "completed",
+      "agentsStarted": 4
+    },
+    "startOrder": [
+      "A1",
+      "B1",
+      "A2:A1:0",
+      "B2:B1:1"
+    ]
+  },
+  "trace-B3.json": {
+    "value": {
+      "p": [
+        null,
+        null
+      ],
+      "q": [
+        null,
+        "keep"
+      ]
+    },
+    "stopReason": "completed",
+    "agentsStarted": 2
+  },
+  "trace-B4.json": [
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 0,
+      "error": "WorkflowError: agent() option \"effort\" is deferred and not supported by this engine (supported: label, phase, schema, provider, model)\n    at WorkflowExecution.readAgentOptions (dsh-workflow-guest.js:887:47)\n    at WorkflowExecution.agent (dsh-workflow-guest.js:802:21)\n    at agent (dsh-workflow-guest.js:726:47)\n    at workflow:project-review:1:28\n    at dsh-workflow-guest.js:923:18\n    at Array.map (<anonymous>)\n    at WorkflowExecution.parallel (dsh-workflow-guest.js:921:29)\n    at parallel (dsh-workflow-guest.js:727:44)\n    at workflow:project-review:1:14\n    at workflow:project-review:2:3"
+    },
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 0,
+      "error": "WorkflowError: agent() schema is outside the supported subset — unsupported JSON schema: schema.type must be \"object\" (structured output is object-rooted)\n    at WorkflowExecution.readAgentOptions (dsh-workflow-guest.js:903:10)\n    at WorkflowExecution.agent (dsh-workflow-guest.js:802:21)\n    at agent (dsh-workflow-guest.js:726:47)\n    at workflow:project-review:1:31\n    at dsh-workflow-guest.js:942:47\n    at Array.map (<anonymous>)\n    at WorkflowExecution.pipeline (dsh-workflow-guest.js:939:31)\n    at pipeline (dsh-workflow-guest.js:728:54)\n    at workflow:project-review:1:14\n    at workflow:project-review:2:3"
+    },
+    {
+      "value": null,
+      "stopReason": "error",
+      "agentsStarted": 1,
+      "error": "WorkflowError: child agent run failed: Error: broken result channel\n    at bindingFailure (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:649:61)\n    at Object.value [as childResult] (file:///C:/Users/QYF/AppData/Local/Temp/aifoundry-h22-lab-F6ioze/ptc-worker.mjs:671:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at WorkflowExecution.agent (dsh-workflow-guest.js:837:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+    }
+  ],
+  "trace-C1.json": {
+    "result": {
+      "value": null,
+      "stopReason": "cancelled",
+      "error": "workflow run cancelled: fixture cancel",
+      "agentsStarted": 1
+    },
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "e09417f0-c80d-4830-867d-0cae234c80f5",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "e09417f0-c80d-4830-867d-0cae234c80f5",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "held",
+            "childId": "controlled-1"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "e09417f0-c80d-4830-867d-0cae234c80f5",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "held",
+            "childId": "controlled-1",
+            "outcome": "cancelled"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "e09417f0-c80d-4830-867d-0cae234c80f5",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "cancelled",
+            "error": "workflow run cancelled: fixture cancel",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ],
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\workspace-A7Rdl0",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\ptc-worker.mjs",
+          "134217728"
+        ],
+        "done": true,
+        "outcome": {
+          "exitCode": 1,
+          "signal": null
+        }
+      }
+    ],
+    "disposed": [
+      "held"
+    ]
+  },
+  "trace-C2.json": {
+    "result": {
+      "value": null,
+      "stopReason": "cancelled",
+      "error": "workflow run cancelled: workflow cancelled",
+      "agentsStarted": 1
+    },
+    "disposed": [
+      "starting"
+    ],
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "666059d7-c376-4fdd-9db7-2f91ecdf2fd9",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "666059d7-c376-4fdd-9db7-2f91ecdf2fd9",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "cancelled",
+            "error": "workflow run cancelled: workflow cancelled",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ]
+  },
+  "trace-C3.json": {
+    "result": {
+      "value": null,
+      "stopReason": "cancelled",
+      "error": "workflow run cancelled: stop busy guest",
+      "agentsStarted": 1
+    },
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\workspace-2TrGam",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\ptc-worker.mjs",
+          "134217728"
+        ],
+        "done": true,
+        "outcome": {
+          "exitCode": 1,
+          "signal": null
+        }
+      }
+    ]
+  },
+  "trace-C4.json": {
+    "result": {
+      "value": "A=ok",
+      "stopReason": "completed",
+      "agentsStarted": 1
+    },
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/phase",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          "Undeclared annotation"
+        ]
+      },
+      {
+        "name": "workflow/log",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          "fixture progress"
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1",
+            "phase": "Undeclared annotation"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1",
+            "phase": "Undeclared annotation",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "e7be0f9e-e09b-4fa1-a413-25156ab37750",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "completed",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ]
+  },
+  "trace-C5.json": {
+    "result": {
+      "value": {
+        "denied": true,
+        "code": "EPERM"
+      },
+      "stopReason": "completed",
+      "agentsStarted": 0
+    },
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\workspace-86uYye",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\ptc-worker.mjs",
+          "134217728"
+        ],
+        "done": true,
+        "outcome": {
+          "exitCode": 0,
+          "signal": null
+        }
+      }
+    ],
+    "contents": "unchanged",
+    "limit": "one Windows ACL fixture denial; no network or universal sandbox certification"
+  },
+  "trace-confinement.json": {
+    "result": {
+      "value": null,
+      "stopReason": "error",
+      "error": "Error: workflow runtime cannot enforce the read-only file policy\n    at PtcWorkflowRun.drive (C:\\Users\\QYF\\.codex\\research\\harness-v2-source\\deepseek-harness-f3803c96974ad4a94195fb97e5c637e9c2a3afe3\\packages\\workflow\\workflow-ptc\\src\\host.ts:288:15)",
+      "agentsStarted": 0
+    },
+    "processes": []
+  },
+  "trace-D4.json": {
+    "kill": {
+      "outcome": "cancellation-requested",
+      "job": {
+        "id": "workflow-959bcb6eda214862",
+        "kind": "workflow",
+        "label": "project-review",
+        "status": "stopping",
+        "startedAt": 1793786113731
+      }
+    },
+    "terminal": {
+      "id": "workflow-959bcb6eda214862",
+      "kind": "workflow",
+      "label": "project-review",
+      "owner": "parent",
+      "status": "killed",
+      "startedAt": 1793786113731,
+      "finishedAt": 1793786114108,
+      "output": {
+        "total": 0,
+        "earliest": 0
+      }
+    },
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "bd51e2ad-1578-4ad4-90f3-36cd39a64edb",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "bd51e2ad-1578-4ad4-90f3-36cd39a64edb",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "cancelled",
+            "error": "workflow run cancelled: background workflow job killed",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ],
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "b5c6dd01-39a6-467f-b8ec-cc34fdca5bfc",
+        "provider": "spawn",
+        "id": "1fc59859-7e32-4bd0-a16b-31198b395e43",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "b5c6dd01-39a6-467f-b8ec-cc34fdca5bfc",
+        "provider": "spawn",
+        "id": "1fc59859-7e32-4bd0-a16b-31198b395e43",
+        "local": true,
+        "stopReason": "aborted"
+      }
+    ]
+  },
+  "trace-goal.json": {
+    "created": {
+      "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+      "revision": 1,
+      "objective": "Review fictional fixture",
+      "phase": "active",
+      "maxGoalRounds": 2,
+      "roundsStarted": 0,
+      "createdAt": 1793786114148,
+      "updatedAt": 1793786114148,
+      "activation": "armed"
+    },
+    "paused": {
+      "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+      "revision": 2,
+      "objective": "Review fictional fixture",
+      "phase": "paused",
+      "maxGoalRounds": 2,
+      "roundsStarted": 0,
+      "createdAt": 1793786114148,
+      "updatedAt": 1793786114149,
+      "activation": "disarmed"
+    },
+    "resumed": {
+      "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+      "revision": 3,
+      "objective": "Review fictional fixture",
+      "phase": "active",
+      "maxGoalRounds": 2,
+      "roundsStarted": 0,
+      "createdAt": 1793786114148,
+      "updatedAt": 1793786114150,
+      "activation": "armed"
+    },
+    "disarmed": {
+      "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+      "revision": 3,
+      "objective": "Review fictional fixture",
+      "phase": "active",
+      "maxGoalRounds": 2,
+      "roundsStarted": 0,
+      "createdAt": 1793786114148,
+      "updatedAt": 1793786114150,
+      "activation": "disarmed"
+    },
+    "events": [
+      {
+        "type": "goal/change",
+        "seq": 0,
+        "time": 1793786114148,
+        "data": {
+          "kind": "goal/change",
+          "version": 1,
+          "operation": "create",
+          "goal": {
+            "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+            "revision": 1,
+            "objective": "Review fictional fixture",
+            "phase": "active",
+            "maxGoalRounds": 2
+          },
+          "roundsStarted": 0,
+          "createdAt": 1793786114148,
+          "updatedAt": 1793786114148
+        }
+      },
+      {
+        "type": "goal/change",
+        "seq": 1,
+        "time": 1793786114149,
+        "data": {
+          "kind": "goal/change",
+          "version": 1,
+          "operation": "pause",
+          "goal": {
+            "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+            "revision": 2,
+            "objective": "Review fictional fixture",
+            "phase": "paused",
+            "maxGoalRounds": 2
+          },
+          "roundsStarted": 0,
+          "createdAt": 1793786114148,
+          "updatedAt": 1793786114149
+        }
+      },
+      {
+        "type": "goal/change",
+        "seq": 2,
+        "time": 1793786114150,
+        "data": {
+          "kind": "goal/change",
+          "version": 1,
+          "operation": "resume",
+          "goal": {
+            "id": "goal-e9816257-6686-4739-ab66-4acd90fa07ab",
+            "revision": 3,
+            "objective": "Review fictional fixture",
+            "phase": "active",
+            "maxGoalRounds": 2
+          },
+          "roundsStarted": 0,
+          "createdAt": 1793786114148,
+          "updatedAt": 1793786114150
+        }
+      }
+    ],
+    "limit": "service and Session transitions; Goal round driver not mounted"
+  },
+  "trace-schedule.json": {
+    "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\schedule-V6eyzA",
+    "observations": [
+      [
+        {
+          "id": "schedule-78318942-f1ef-42ba-974d-622d067ffeae",
+          "kind": "at",
+          "title": "Future fixture",
+          "prompt": "Review fictional fixture only",
+          "scheduledAt": "2099-01-01T00:00:00.000Z"
+        }
+      ],
+      [
+        {
+          "id": "schedule-78318942-f1ef-42ba-974d-622d067ffeae",
+          "kind": "at",
+          "title": "Future fixture",
+          "prompt": "Review fictional fixture only",
+          "scheduledAt": "2099-01-01T00:00:00.000Z"
+        }
+      ]
+    ],
+    "bytes": "{\n  \"unit\": {\n    \"name\": \"schedule\",\n    \"version\": 1\n  },\n  \"global\": null,\n  \"tables\": {\n    \"tasks\": {\n      \"schedule-78318942-f1ef-42ba-974d-622d067ffeae\": {\n        \"sessionId\": \"parent\",\n        \"record\": {\n          \"id\": \"schedule-78318942-f1ef-42ba-974d-622d067ffeae\",\n          \"kind\": \"at\",\n          \"title\": \"Future fixture\",\n          \"prompt\": \"Review fictional fixture only\",\n          \"scheduledAt\": \"2099-01-01T00:00:00.000Z\"\n        },\n        \"status\": \"active\",\n        \"deliveryHistory\": {\n          \"records\": [],\n          \"earlierRecordsUnavailable\": false\n        }\n      }\n    }\n  }\n}\n",
+    "limit": "new Context + real JSON readback of future trigger; no due delivery or application restart test"
+  },
+  "trace-X.json": {
+    "script": "phase('Inspect');\nlog('review fictional facts');\nconst [architecture,tests] = await parallel([\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\n]);\nphase('Synthesize');\nconst [report] = await pipeline([{architecture,tests}],\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\n);\nreturn {architecture,tests,report};",
+    "parent": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793786102520,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use a workflow to review the fictional project and synthesize risks."
+                }
+              ],
+              "role": "user",
+              "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793786102521,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793786102521,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793786102522,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793786102524,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "63fb6d8b-dd7a-42e1-b600-b400f9dd9fea"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793786102524,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use a workflow to review the fictional project and synthesize risks."
+            }
+          ],
+          "role": "user",
+          "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793786102524,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "sandbox:policy",
+                "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "c41018d0-9a3e-49fe-969c-1f26e1453d99"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 7,
+        "time": 1793786102524,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "workflow",
+                "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "script": {
+                      "type": "string",
+                      "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                    },
+                    "meta": {
+                      "type": "object",
+                      "description": "The workflow identity as plain JSON, not code.",
+                      "additionalProperties": true,
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Short kebab-case workflow name."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "One-line description of what the workflow does."
+                        },
+                        "whenToUse": {
+                          "type": "string",
+                          "description": "Optional guidance on when this workflow applies."
+                        },
+                        "phases": {
+                          "type": "array",
+                          "description": "Optional phase declarations matched by phase() calls.",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "description": "The phase title phase() calls match by exact string."
+                              },
+                              "detail": {
+                                "type": "string",
+                                "description": "Optional one-line description of the phase."
+                              },
+                              "provider": {
+                                "type": "string",
+                                "description": "Optional provider override this phase is expected to use."
+                              },
+                              "model": {
+                                "type": "string",
+                                "description": "Optional model override this phase is expected to use."
+                              }
+                            },
+                            "required": [
+                              "title"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "description"
+                      ]
+                    },
+                    "args": {
+                      "type": "object",
+                      "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                      "additionalProperties": true
+                    },
+                    "run_in_background": {
+                      "type": "boolean",
+                      "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                    }
+                  },
+                  "required": [
+                    "script",
+                    "meta"
+                  ]
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 8,
+        "time": 1793786102525,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 9,
+        "time": 1793786102526,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "review-workflow",
+                "name": "workflow",
+                "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "12d82447-b189-44de-b0c0-8cba5cd48bd1"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "review-workflow",
+                  "name": "workflow",
+                  "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 10,
+        "time": 1793786102527,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "review-workflow",
+          "name": "workflow",
+          "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+        }
+      },
+      {
+        "type": "tool-workflow/run-start",
+        "seq": 11,
+        "time": 1793786102529,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "name": "project-review"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 12,
+        "time": 1793786102687,
+        "data": {
+          "version": 0,
+          "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+          "childCreatedAt": 1793786102683,
+          "mode": "continuable",
+          "label": "project-review child 2"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 13,
+        "time": 1793786102693,
+        "data": {
+          "version": 0,
+          "childId": "b8375537-f413-4b81-979e-682d8011b8a8",
+          "childCreatedAt": 1793786102683,
+          "mode": "continuable",
+          "label": "project-review child 1"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 14,
+        "time": 1793786102712,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 2,
+          "label": "Tests",
+          "phase": "Inspect",
+          "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 15,
+        "time": 1793786102714,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 1,
+          "label": "Architecture",
+          "phase": "Inspect",
+          "childId": "b8375537-f413-4b81-979e-682d8011b8a8"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 16,
+        "time": 1793786102733,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 1,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 17,
+        "time": 1793786102734,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 2,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 18,
+        "time": 1793786102738,
+        "data": {
+          "version": 0,
+          "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+          "childCreatedAt": 1793786102735,
+          "mode": "continuable",
+          "label": "project-review child 3"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 19,
+        "time": 1793786102740,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 3,
+          "label": "Synthesis",
+          "phase": "Synthesize",
+          "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 20,
+        "time": 1793786102746,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 3,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "tool-workflow/run-end",
+        "seq": 21,
+        "time": 1793786102945,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "stopReason": "completed"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 22,
+        "time": 1793786102946,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "review-workflow"
+            },
+            "toolCallId": "review-workflow",
+            "content": [
+              {
+                "type": "text",
+                "text": "workflow \"project-review\" completed (3 agents).\nReturn value:\n{\n  \"architecture\": \"covered=2/3\",\n  \"tests\": \"modules=3\",\n  \"report\": \"risk=one uncovered module; recommend focused test\"\n}"
+              }
+            ],
+            "isError": false,
+            "id": "87a67ff6-c1d9-4de0-af65-321cf306a064"
+          }
+        },
+        "sourceEventSeqs": [
+          10
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 23,
+        "time": 1793786102947,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 24,
+        "time": 1793786102947,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 25,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "PARENT_REVIEW_COMPLETE"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "ba4a113b-bf0b-4cf5-bac5-4f3ba3112807"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793786102948,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "PARENT_REVIEW_COMPLETE"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102948,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 26,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 27,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "63fb6d8b-dd7a-42e1-b600-b400f9dd9fea"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Use a workflow to review the fictional project and synthesize risks."
+              }
+            ],
+            "role": "user",
+            "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "c41018d0-9a3e-49fe-969c-1f26e1453d99"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "workflow",
+              "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "type": "string",
+                    "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "The workflow identity as plain JSON, not code.",
+                    "additionalProperties": true,
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Short kebab-case workflow name."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "One-line description of what the workflow does."
+                      },
+                      "whenToUse": {
+                        "type": "string",
+                        "description": "Optional guidance on when this workflow applies."
+                      },
+                      "phases": {
+                        "type": "array",
+                        "description": "Optional phase declarations matched by phase() calls.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "description": "The phase title phase() calls match by exact string."
+                            },
+                            "detail": {
+                              "type": "string",
+                              "description": "Optional one-line description of the phase."
+                            },
+                            "provider": {
+                              "type": "string",
+                              "description": "Optional provider override this phase is expected to use."
+                            },
+                            "model": {
+                              "type": "string",
+                              "description": "Optional model override this phase is expected to use."
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "description"
+                    ]
+                  },
+                  "args": {
+                    "type": "object",
+                    "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                    "additionalProperties": true
+                  },
+                  "run_in_background": {
+                    "type": "boolean",
+                    "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                  }
+                },
+                "required": [
+                  "script",
+                  "meta"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "workflow",
+            "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "type": "string",
+                  "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                },
+                "meta": {
+                  "type": "object",
+                  "description": "The workflow identity as plain JSON, not code.",
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Short kebab-case workflow name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "One-line description of what the workflow does."
+                    },
+                    "whenToUse": {
+                      "type": "string",
+                      "description": "Optional guidance on when this workflow applies."
+                    },
+                    "phases": {
+                      "type": "array",
+                      "description": "Optional phase declarations matched by phase() calls.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "The phase title phase() calls match by exact string."
+                          },
+                          "detail": {
+                            "type": "string",
+                            "description": "Optional one-line description of the phase."
+                          },
+                          "provider": {
+                            "type": "string",
+                            "description": "Optional provider override this phase is expected to use."
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Optional model override this phase is expected to use."
+                          }
+                        },
+                        "required": [
+                          "title"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description"
+                  ]
+                },
+                "args": {
+                  "type": "object",
+                  "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                  "additionalProperties": true
+                },
+                "run_in_background": {
+                  "type": "boolean",
+                  "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                }
+              },
+              "required": [
+                "script",
+                "meta"
+              ]
+            }
+          }
+        ],
+        "sessionId": "parent"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "9fd9815b-b4d2-4b3c-b533-26e1c8effc9f"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "tests: covered=2/3"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "7f155406-95a9-4e86-9d22-2d81981a3128"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                },
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "6ec8fc37-93c1-433f-80cc-ef76d5b23734"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "workflow",
+              "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "type": "string",
+                    "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "The workflow identity as plain JSON, not code.",
+                    "additionalProperties": true,
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Short kebab-case workflow name."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "One-line description of what the workflow does."
+                      },
+                      "whenToUse": {
+                        "type": "string",
+                        "description": "Optional guidance on when this workflow applies."
+                      },
+                      "phases": {
+                        "type": "array",
+                        "description": "Optional phase declarations matched by phase() calls.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "description": "The phase title phase() calls match by exact string."
+                            },
+                            "detail": {
+                              "type": "string",
+                              "description": "Optional one-line description of the phase."
+                            },
+                            "provider": {
+                              "type": "string",
+                              "description": "Optional provider override this phase is expected to use."
+                            },
+                            "model": {
+                              "type": "string",
+                              "description": "Optional model override this phase is expected to use."
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "description"
+                    ]
+                  },
+                  "args": {
+                    "type": "object",
+                    "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                    "additionalProperties": true
+                  },
+                  "run_in_background": {
+                    "type": "boolean",
+                    "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                  }
+                },
+                "required": [
+                  "script",
+                  "meta"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "workflow",
+            "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "type": "string",
+                  "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                },
+                "meta": {
+                  "type": "object",
+                  "description": "The workflow identity as plain JSON, not code.",
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Short kebab-case workflow name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "One-line description of what the workflow does."
+                    },
+                    "whenToUse": {
+                      "type": "string",
+                      "description": "Optional guidance on when this workflow applies."
+                    },
+                    "phases": {
+                      "type": "array",
+                      "description": "Optional phase declarations matched by phase() calls.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "The phase title phase() calls match by exact string."
+                          },
+                          "detail": {
+                            "type": "string",
+                            "description": "Optional one-line description of the phase."
+                          },
+                          "provider": {
+                            "type": "string",
+                            "description": "Optional provider override this phase is expected to use."
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Optional model override this phase is expected to use."
+                          }
+                        },
+                        "required": [
+                          "title"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description"
+                  ]
+                },
+                "args": {
+                  "type": "object",
+                  "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                  "additionalProperties": true
+                },
+                "run_in_background": {
+                  "type": "boolean",
+                  "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                }
+              },
+              "required": [
+                "script",
+                "meta"
+              ]
+            }
+          }
+        ],
+        "sessionId": "be50e8c7-d328-4d99-81be-8fc27a32e62c"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "21bca49e-27a5-46a4-895f-d51d1b4a3232"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "architecture: modules=3"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "3addddb0-4419-47aa-8532-8f605ae47c37"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                },
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "6219e9c8-8c00-4bdb-bf0e-09dce82bdb50"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "workflow",
+              "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "type": "string",
+                    "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "The workflow identity as plain JSON, not code.",
+                    "additionalProperties": true,
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Short kebab-case workflow name."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "One-line description of what the workflow does."
+                      },
+                      "whenToUse": {
+                        "type": "string",
+                        "description": "Optional guidance on when this workflow applies."
+                      },
+                      "phases": {
+                        "type": "array",
+                        "description": "Optional phase declarations matched by phase() calls.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "description": "The phase title phase() calls match by exact string."
+                            },
+                            "detail": {
+                              "type": "string",
+                              "description": "Optional one-line description of the phase."
+                            },
+                            "provider": {
+                              "type": "string",
+                              "description": "Optional provider override this phase is expected to use."
+                            },
+                            "model": {
+                              "type": "string",
+                              "description": "Optional model override this phase is expected to use."
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "description"
+                    ]
+                  },
+                  "args": {
+                    "type": "object",
+                    "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                    "additionalProperties": true
+                  },
+                  "run_in_background": {
+                    "type": "boolean",
+                    "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                  }
+                },
+                "required": [
+                  "script",
+                  "meta"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "workflow",
+            "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "type": "string",
+                  "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                },
+                "meta": {
+                  "type": "object",
+                  "description": "The workflow identity as plain JSON, not code.",
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Short kebab-case workflow name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "One-line description of what the workflow does."
+                    },
+                    "whenToUse": {
+                      "type": "string",
+                      "description": "Optional guidance on when this workflow applies."
+                    },
+                    "phases": {
+                      "type": "array",
+                      "description": "Optional phase declarations matched by phase() calls.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "The phase title phase() calls match by exact string."
+                          },
+                          "detail": {
+                            "type": "string",
+                            "description": "Optional one-line description of the phase."
+                          },
+                          "provider": {
+                            "type": "string",
+                            "description": "Optional provider override this phase is expected to use."
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Optional model override this phase is expected to use."
+                          }
+                        },
+                        "required": [
+                          "title"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description"
+                  ]
+                },
+                "args": {
+                  "type": "object",
+                  "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                  "additionalProperties": true
+                },
+                "run_in_background": {
+                  "type": "boolean",
+                  "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                }
+              },
+              "required": [
+                "script",
+                "meta"
+              ]
+            }
+          }
+        ],
+        "sessionId": "b8375537-f413-4b81-979e-682d8011b8a8"
+      },
+      {
+        "provider": "fixture",
+        "model": "child",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "4b92c652-272a-4532-8af9-d069c98ef1af"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "risk and synthesis: {\"architecture\":\"covered=2/3\",\"tests\":\"modules=3\"}"
+              }
+            ],
+            "source": {
+              "kind": "user"
+            },
+            "role": "user",
+            "id": "572fd6d7-e672-42db-88d2-82db87410347"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                },
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "271988a2-74f6-4738-a0b9-7cd8890d43f8"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "workflow",
+              "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "type": "string",
+                    "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "The workflow identity as plain JSON, not code.",
+                    "additionalProperties": true,
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Short kebab-case workflow name."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "One-line description of what the workflow does."
+                      },
+                      "whenToUse": {
+                        "type": "string",
+                        "description": "Optional guidance on when this workflow applies."
+                      },
+                      "phases": {
+                        "type": "array",
+                        "description": "Optional phase declarations matched by phase() calls.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "description": "The phase title phase() calls match by exact string."
+                            },
+                            "detail": {
+                              "type": "string",
+                              "description": "Optional one-line description of the phase."
+                            },
+                            "provider": {
+                              "type": "string",
+                              "description": "Optional provider override this phase is expected to use."
+                            },
+                            "model": {
+                              "type": "string",
+                              "description": "Optional model override this phase is expected to use."
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "description"
+                    ]
+                  },
+                  "args": {
+                    "type": "object",
+                    "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                    "additionalProperties": true
+                  },
+                  "run_in_background": {
+                    "type": "boolean",
+                    "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                  }
+                },
+                "required": [
+                  "script",
+                  "meta"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "workflow",
+            "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "type": "string",
+                  "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                },
+                "meta": {
+                  "type": "object",
+                  "description": "The workflow identity as plain JSON, not code.",
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Short kebab-case workflow name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "One-line description of what the workflow does."
+                    },
+                    "whenToUse": {
+                      "type": "string",
+                      "description": "Optional guidance on when this workflow applies."
+                    },
+                    "phases": {
+                      "type": "array",
+                      "description": "Optional phase declarations matched by phase() calls.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "The phase title phase() calls match by exact string."
+                          },
+                          "detail": {
+                            "type": "string",
+                            "description": "Optional one-line description of the phase."
+                          },
+                          "provider": {
+                            "type": "string",
+                            "description": "Optional provider override this phase is expected to use."
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Optional model override this phase is expected to use."
+                          }
+                        },
+                        "required": [
+                          "title"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description"
+                  ]
+                },
+                "args": {
+                  "type": "object",
+                  "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                  "additionalProperties": true
+                },
+                "run_in_background": {
+                  "type": "boolean",
+                  "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                }
+              },
+              "required": [
+                "script",
+                "meta"
+              ]
+            }
+          }
+        ],
+        "sessionId": "cad59055-d69b-4027-8f66-fd9b5976ec55"
+      },
+      {
+        "provider": "fixture",
+        "model": "parent",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "63fb6d8b-dd7a-42e1-b600-b400f9dd9fea"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Use a workflow to review the fictional project and synthesize risks."
+              }
+            ],
+            "role": "user",
+            "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                }
+              ]
+            },
+            "role": "user",
+            "id": "c41018d0-9a3e-49fe-969c-1f26e1453d99"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "review-workflow",
+                "name": "workflow",
+                "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "12d82447-b189-44de-b0c0-8cba5cd48bd1"
+          },
+          {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "review-workflow"
+            },
+            "toolCallId": "review-workflow",
+            "content": [
+              {
+                "type": "text",
+                "text": "workflow \"project-review\" completed (3 agents).\nReturn value:\n{\n  \"architecture\": \"covered=2/3\",\n  \"tests\": \"modules=3\",\n  \"report\": \"risk=one uncovered module; recommend focused test\"\n}"
+              }
+            ],
+            "isError": false,
+            "id": "87a67ff6-c1d9-4de0-af65-321cf306a064"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "workflow",
+              "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "type": "string",
+                    "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "The workflow identity as plain JSON, not code.",
+                    "additionalProperties": true,
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Short kebab-case workflow name."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "One-line description of what the workflow does."
+                      },
+                      "whenToUse": {
+                        "type": "string",
+                        "description": "Optional guidance on when this workflow applies."
+                      },
+                      "phases": {
+                        "type": "array",
+                        "description": "Optional phase declarations matched by phase() calls.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "description": "The phase title phase() calls match by exact string."
+                            },
+                            "detail": {
+                              "type": "string",
+                              "description": "Optional one-line description of the phase."
+                            },
+                            "provider": {
+                              "type": "string",
+                              "description": "Optional provider override this phase is expected to use."
+                            },
+                            "model": {
+                              "type": "string",
+                              "description": "Optional model override this phase is expected to use."
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "description"
+                    ]
+                  },
+                  "args": {
+                    "type": "object",
+                    "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                    "additionalProperties": true
+                  },
+                  "run_in_background": {
+                    "type": "boolean",
+                    "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                  }
+                },
+                "required": [
+                  "script",
+                  "meta"
+                ]
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "workflow",
+            "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "type": "string",
+                  "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                },
+                "meta": {
+                  "type": "object",
+                  "description": "The workflow identity as plain JSON, not code.",
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Short kebab-case workflow name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "One-line description of what the workflow does."
+                    },
+                    "whenToUse": {
+                      "type": "string",
+                      "description": "Optional guidance on when this workflow applies."
+                    },
+                    "phases": {
+                      "type": "array",
+                      "description": "Optional phase declarations matched by phase() calls.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "The phase title phase() calls match by exact string."
+                          },
+                          "detail": {
+                            "type": "string",
+                            "description": "Optional one-line description of the phase."
+                          },
+                          "provider": {
+                            "type": "string",
+                            "description": "Optional provider override this phase is expected to use."
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Optional model override this phase is expected to use."
+                          }
+                        },
+                        "required": [
+                          "title"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description"
+                  ]
+                },
+                "args": {
+                  "type": "object",
+                  "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                  "additionalProperties": true
+                },
+                "run_in_background": {
+                  "type": "boolean",
+                  "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                }
+              },
+              "required": [
+                "script",
+                "meta"
+              ]
+            }
+          }
+        ],
+        "sessionId": "parent"
+      }
+    ],
+    "lifecycle": [
+      {
+        "edge": "start",
+        "runId": "077e3648-feef-49ff-974d-2dd711653d65",
+        "provider": "spawn",
+        "id": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+        "local": true
+      },
+      {
+        "edge": "start",
+        "runId": "a293a793-d9d5-4e6a-b8c9-35be2f41b163",
+        "provider": "spawn",
+        "id": "b8375537-f413-4b81-979e-682d8011b8a8",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "a293a793-d9d5-4e6a-b8c9-35be2f41b163",
+        "provider": "spawn",
+        "id": "b8375537-f413-4b81-979e-682d8011b8a8",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "covered=2/3"
+          }
+        ]
+      },
+      {
+        "edge": "end",
+        "runId": "077e3648-feef-49ff-974d-2dd711653d65",
+        "provider": "spawn",
+        "id": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "modules=3"
+          }
+        ]
+      },
+      {
+        "edge": "start",
+        "runId": "01658629-e24b-4b68-aaad-144c69ceef14",
+        "provider": "spawn",
+        "id": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+        "local": true
+      },
+      {
+        "edge": "end",
+        "runId": "01658629-e24b-4b68-aaad-144c69ceef14",
+        "provider": "spawn",
+        "id": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+        "local": true,
+        "stopReason": "completed",
+        "lastAssistantMessage": [
+          {
+            "type": "text",
+            "text": "risk=one uncovered module; recommend focused test"
+          }
+        ]
+      }
+    ],
+    "workflowEvents": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/phase",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          "Inspect"
+        ]
+      },
+      {
+        "name": "workflow/log",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          "review fictional facts"
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 2,
+            "label": "Tests",
+            "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+            "phase": "Inspect"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "Architecture",
+            "childId": "b8375537-f413-4b81-979e-682d8011b8a8",
+            "phase": "Inspect"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "Architecture",
+            "childId": "b8375537-f413-4b81-979e-682d8011b8a8",
+            "phase": "Inspect",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 2,
+            "label": "Tests",
+            "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+            "phase": "Inspect",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/phase",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          "Synthesize"
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 3,
+            "label": "Synthesis",
+            "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+            "phase": "Synthesize"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 3,
+            "label": "Synthesis",
+            "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+            "phase": "Synthesize",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "completed",
+            "agentsStarted": 3
+          }
+        ]
+      }
+    ],
+    "stored": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793786102520,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use a workflow to review the fictional project and synthesize risks."
+                }
+              ],
+              "role": "user",
+              "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793786102521,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793786102521,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793786102522,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793786102524,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analyze controlled, fictional project facts only.\n\nUse the workflow tool ONLY when the user explicitly asks for a workflow or for large multi-agent orchestration: you write a JavaScript script (the tool description documents the exact format) that fans work out across many subagents with phases and structured results. For one or two delegations, prefer plain subagent calls."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "63fb6d8b-dd7a-42e1-b600-b400f9dd9fea"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793786102524,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Use a workflow to review the fictional project and synthesize risks."
+            }
+          ],
+          "role": "user",
+          "id": "ebf6bdcd-2b4d-4719-89cc-744de17134da"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 6,
+        "time": 1793786102524,
+        "data": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+            }
+          ],
+          "source": {
+            "kind": "runtime-context",
+            "form": "snapshot",
+            "sections": [
+              {
+                "name": "sandbox:policy",
+                "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+              }
+            ]
+          },
+          "role": "user",
+          "id": "c41018d0-9a3e-49fe-969c-1f26e1453d99"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 7,
+        "time": 1793786102524,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "parent",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "workflow",
+                "description": "Run a JavaScript workflow script that orchestrates subagents at scale. Use this for work that fans out across many independent pieces — an audit over many files, a migration, multi-angle research, adversarial verification of findings — where you write the orchestration as a script instead of delegating turn by turn.\n\nScript-body hooks:\n- `agent(prompt, opts?): Promise<any>` — run one subagent to completion. Without `opts.schema` it resolves to the child's final text; with `opts.schema` (an object-rooted JSON Schema using ONLY type/properties/required/additionalProperties/items/enum/const/oneOf) it resolves to the validated object. Resolves `null` when the child fails (filter with `.filter(Boolean)`). Other opts: `label` (display), `phase` (progress group), and independent `provider`/`model` LLM target overrides.\n- `pipeline(items, ...stages): Promise<any[]>` — run each item through the stages independently with NO barrier between stages (prefer this for multi-stage work). Each stage receives `(prev, item, index)`. A stage throw drops that ITEM to `null` and skips its remaining stages.\n- `parallel(thunks): Promise<any[]>` — run zero-argument functions concurrently and await ALL of them (a barrier; use only when a stage genuinely needs every prior result together). A throwing thunk resolves to `null`.\n- `phase(title)` — start a progress phase; `log(message)` — narrate progress; `args` — the tool call's `args` input, verbatim.\n\nMisused hooks (bad arguments, unknown options, unsupported schemas, tripped caps) end the whole script instead of producing `null`. The script has no filesystem, network, timer, or Node.js APIs; the agents do the work.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "script": {
+                      "type": "string",
+                      "description": "The plain JavaScript body, not TypeScript and without an `export const meta` statement; top-level await is allowed. End with `return <value>`; the JSON-serializable value is this tool's result."
+                    },
+                    "meta": {
+                      "type": "object",
+                      "description": "The workflow identity as plain JSON, not code.",
+                      "additionalProperties": true,
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Short kebab-case workflow name."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "One-line description of what the workflow does."
+                        },
+                        "whenToUse": {
+                          "type": "string",
+                          "description": "Optional guidance on when this workflow applies."
+                        },
+                        "phases": {
+                          "type": "array",
+                          "description": "Optional phase declarations matched by phase() calls.",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "description": "The phase title phase() calls match by exact string."
+                              },
+                              "detail": {
+                                "type": "string",
+                                "description": "Optional one-line description of the phase."
+                              },
+                              "provider": {
+                                "type": "string",
+                                "description": "Optional provider override this phase is expected to use."
+                              },
+                              "model": {
+                                "type": "string",
+                                "description": "Optional model override this phase is expected to use."
+                              }
+                            },
+                            "required": [
+                              "title"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "description"
+                      ]
+                    },
+                    "args": {
+                      "type": "object",
+                      "description": "Optional JSON input exposed to the script as the `args` global (wrap a bare list as a field, e.g. {\"files\": [...]}).",
+                      "additionalProperties": true
+                    },
+                    "run_in_background": {
+                      "type": "boolean",
+                      "description": "Run as a background job: return a job id immediately instead of waiting; the return value arrives with the completion notice."
+                    }
+                  },
+                  "required": [
+                    "script",
+                    "meta"
+                  ]
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 8,
+        "time": 1793786102525,
+        "data": {
+          "provider": "fixture",
+          "model": "parent",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 9,
+        "time": 1793786102526,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "review-workflow",
+                "name": "workflow",
+                "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "12d82447-b189-44de-b0c0-8cba5cd48bd1"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "review-workflow",
+                  "name": "workflow",
+                  "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102526,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 10,
+        "time": 1793786102527,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "review-workflow",
+          "name": "workflow",
+          "arguments": "{\"meta\":{\"name\":\"project-review\",\"description\":\"Review a fictional project using controlled children\",\"phases\":[{\"title\":\"Inspect\"},{\"title\":\"Synthesize\"}]},\"script\":\"phase('Inspect');\\nlog('review fictional facts');\\nconst [architecture,tests] = await parallel([\\n () => agent('architecture: modules=3', {model:'child', label:'Architecture'}),\\n () => agent('tests: covered=2/3', {model:'child', label:'Tests'})\\n]);\\nphase('Synthesize');\\nconst [report] = await pipeline([{architecture,tests}],\\n (previous,item,index) => agent('risk and synthesis: '+JSON.stringify(previous), {model:'child',label:'Synthesis'})\\n);\\nreturn {architecture,tests,report};\"}"
+        }
+      },
+      {
+        "type": "tool-workflow/run-start",
+        "seq": 11,
+        "time": 1793786102529,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "name": "project-review"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 12,
+        "time": 1793786102687,
+        "data": {
+          "version": 0,
+          "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c",
+          "childCreatedAt": 1793786102683,
+          "mode": "continuable",
+          "label": "project-review child 2"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 13,
+        "time": 1793786102693,
+        "data": {
+          "version": 0,
+          "childId": "b8375537-f413-4b81-979e-682d8011b8a8",
+          "childCreatedAt": 1793786102683,
+          "mode": "continuable",
+          "label": "project-review child 1"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 14,
+        "time": 1793786102712,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 2,
+          "label": "Tests",
+          "phase": "Inspect",
+          "childId": "be50e8c7-d328-4d99-81be-8fc27a32e62c"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 15,
+        "time": 1793786102714,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 1,
+          "label": "Architecture",
+          "phase": "Inspect",
+          "childId": "b8375537-f413-4b81-979e-682d8011b8a8"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 16,
+        "time": 1793786102733,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 1,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 17,
+        "time": 1793786102734,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 2,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "subagent/catalog",
+        "seq": 18,
+        "time": 1793786102738,
+        "data": {
+          "version": 0,
+          "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55",
+          "childCreatedAt": 1793786102735,
+          "mode": "continuable",
+          "label": "project-review child 3"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-start",
+        "seq": 19,
+        "time": 1793786102740,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 3,
+          "label": "Synthesis",
+          "phase": "Synthesize",
+          "childId": "cad59055-d69b-4027-8f66-fd9b5976ec55"
+        }
+      },
+      {
+        "type": "tool-workflow/agent-end",
+        "seq": 20,
+        "time": 1793786102746,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "seq": 3,
+          "outcome": "completed"
+        }
+      },
+      {
+        "type": "tool-workflow/run-end",
+        "seq": 21,
+        "time": 1793786102945,
+        "data": {
+          "runId": "e91bfd92-e417-47be-9302-c75fcf5c7e51",
+          "stopReason": "completed"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 22,
+        "time": 1793786102946,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "review-workflow"
+            },
+            "toolCallId": "review-workflow",
+            "content": [
+              {
+                "type": "text",
+                "text": "workflow \"project-review\" completed (3 agents).\nReturn value:\n{\n  \"architecture\": \"covered=2/3\",\n  \"tests\": \"modules=3\",\n  \"report\": \"risk=one uncovered module; recommend focused test\"\n}"
+              }
+            ],
+            "isError": false,
+            "id": "87a67ff6-c1d9-4de0-af65-321cf306a064"
+          }
+        },
+        "sourceEventSeqs": [
+          10
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 23,
+        "time": 1793786102947,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 24,
+        "time": 1793786102947,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 25,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "step": 2,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "PARENT_REVIEW_COMPLETE"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "parent"
+            },
+            "id": "ba4a113b-bf0b-4cf5-bac5-4f3ba3112807"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793786102948,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "PARENT_REVIEW_COMPLETE"
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793786102948,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 26,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "step": 2
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 27,
+        "time": 1793786102948,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\workspace-WUxQf8",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\ptc-worker.mjs",
+          "134217728"
+        ],
+        "done": true,
+        "outcome": {
+          "exitCode": 0,
+          "signal": null
+        }
+      }
+    ],
+    "jsonlRoot": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-F6ioze\\h22-jsonl-RHNXn6",
+    "scope": "real parent + 3 child AgentLoops + Spawn + Workflow/PTC + JSONL; controlled local Mock LLM, no E integration"
+  }
+}

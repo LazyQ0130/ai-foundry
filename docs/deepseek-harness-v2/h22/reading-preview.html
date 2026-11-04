@@ -1,0 +1,4288 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H22｜Workflow、Jobs、Goal 与任务调度</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H22 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Workflow、Jobs、Goal 与任务调度</h1><p>210～290 分钟（分三段；作者估计，环境准备与真实试读另计）</p></header><div class="lesson-prose"><h2>两份调查完成之后，谁开始综合？</h2>
+<p>项目研究助手接到明确请求：“请用一个工作流，分别分析示例项目的架构和测试覆盖，再让第三个子 Agent 整理风险，形成综合报告。”假设示例只有三条虚构事实：三个模块、其中两个有测试、剩余模块需要补测。架构调查 A 和测试调查 B 可以同时进行；综合 C 必须取得两份结果。</p>
+<p>H21 已经会把调查交给子 Agent。现在的缺口是<strong>执行关系</strong>：谁决定 C 何时开始？B 先完成，结果会不会放错位置？A 失败后 C 还能否给出可信结论？父级结束本轮对话后，这项工作由谁持有？把这些问题都塞进一串自然语言提醒，难以检查真实依赖。</p>
+<p>Workflow（工作流）把一组工作的依赖、并发和聚合写成可执行程序。这里可以把它理解为一张有返回值的工作单：A/B 汇齐，再交 C。技术上，本课固定实现是 <code>WorkflowEngine.start()</code> 建立一次 <code>WorkflowRun</code>，由 PTC 引擎执行 JavaScript 编排脚本，再经 Subagent Runtime 调用子级。工作单的类比不代表有自动检查点、任意图调度或跨重启续行。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/index.ts#L157-L192" target="_blank" rel="noopener noreferrer">S01 · WorkflowEngine / emitWorkflowEvent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/runtime-types.ts#L19-L49" target="_blank" rel="noopener noreferrer">S02 · WorkflowStartRequest / WorkflowRun</a></p>
+<p><strong>小任务仍可直接委派。</strong> 只查一个目录、让一位子级核对三条事实，普通 Subagent 更容易管理。多阶段依赖、重复条目、规模约束和统一输出开始占据父级注意力时，显式编排才可能值得。额外脚本、进程启动、子级请求和综合都增加成本；这是我们的工程判断，本课没有真实模型成本或加速数据。</p>
+<aside id="lesson-concept" class="lesson-callout lesson-concept" aria-label="本课的产出：一张生命周期图和一条真实轨迹"><div class="lesson-callout-label">先搞懂这件事</div><div class="lesson-callout-title">本课的产出：一张生命周期图和一条真实轨迹</div><div class="lesson-callout-body"><p>正式蓝图课名是《Workflow、Jobs、Goal 与任务调度》。我们以 Workflow 为主线，最终把四种抽象放回同一张生命周期图：Workflow 组织本次工作；Jobs 托管后台工作；Goal 记录持续目标及推进资格；Schedule 保存定时触发。它们可以组合，不是互相替代的四个工具名。</p><p>完整实验没有 API Key。正式 Engine、Node PTC、Windows 受限执行、Subagent、AgentLoop、Session 和 JSONL 都真实运行；模型由确定性 Mock Adapter 提供，A/B/C 只处理常量事实。23 项作者用例为 C19/D4，综合 X 复用 D1，不重复计数；不是 E 级完整 Harness 应用认证。</p></div></aside>
+<h2>先用六分钟分清四个生命周期</h2>
+<p>Stage 4 的短期 Workflow 是把已有工具按状态和停止条件衔接；这里的 Harness JavaScript/PTC 是另一套实现，不能因同名直接套 API。已有权限者可选回看 <a href="/lesson/stage-4/s4-l5">Stage 4 工具编排</a> 与 <a href="/lesson/stage-4/s4-l6">能力组合</a>，无须购买或打开旧课才能完成下面的自足复习。</p>
+<p>复接 H09/H17/H20/H21：Agent 是当前运行实体，Session 保存已接纳事实；一轮父 Agent Turn 可以包含多个模型 Step。SubagentActivation 管理一次委派及其交付，持有者要负责释放。<code>cancel()</code> 发出停止请求，<code>await</code> 清理结果才回答受管资源是否停稳。历史记录能重读，旧 Promise、进程和控制器不能随历史一起复活。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>问题</th><th>选择的抽象</th><th>谁拥有活动期</th><th>留下什么，不能据此推出什么</th></tr></thead><tbody><tr><td>A/B 并行后由 C 汇总</td><td>Workflow</td><td>Run 的调用者</td><td>可有运行事实；没有 guest 栈检查点</td></tr><tr><td>先回对话，稍后收报告或停止任务</td><td>Jobs</td><td>Job Registry 与 producer 分工</td><td>本地表、输出环与游标在进程内</td></tr><tr><td>持续推进“完成项目审查”直到完成或暂停</td><td>Goal</td><td>Session 目标状态与轮次驱动分工</td><td>持久目标不自动授权新进程继续</td></tr><tr><td>明天或每周提醒原会话检查报告</td><td>Schedule</td><td>Host 调度服务</td><td>持久触发记录，不保存 Workflow 执行位置</td></tr></tbody></table></div>
+<p>Jobs（后台作业）解决“调用先返回后，谁还在管理这份工作”。Job 是一个有 owner、状态、输出与取消入口的登记项；producer 提供真正的 <code>cancel/done</code>。它不是多 Agent 依赖图。Goal（目标）解决跨轮推进：目标、修订号、轮次预算、暂停/阻塞/完成属于目标状态；是否允许当前进程自动继续，是另一项 activation。Schedule（调度）解决时间触发：保存何时向哪个 Session 投递什么，不等于某个 Agent 一直活着。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs/src/index.ts#L85-L198" target="_blank" rel="noopener noreferrer">S37 · JobRegistry</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs-local/src/index.ts#L1-L717" target="_blank" rel="noopener noreferrer">S38 · LocalJobRegistry</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/types.ts#L19-L112" target="_blank" rel="noopener noreferrer">S41 · GoalRef / GoalView</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/schedule/schedule/src/index.ts#L243-L335" target="_blank" rel="noopener noreferrer">S43 · Schedule create/list/catalog</a></p>
+<p>可以这样组合：未来的 Schedule 向原 Session 投递一条新输入；Agent 决定是否执行一轮目标工作；这轮选择 Workflow 编排调查；若确需后台体验，Workflow Tool 把运行交给 Jobs。<strong>这是一种有条件的组合设计，不是四项服务默认串联的调用链。</strong> 仅安装 Goal 不会自动挂上轮次驱动；仅有 Schedule 记录，也不证明到期的 Session 恢复、模型调用和业务完成都成功。</p>
+<h2>一项 Workflow 能力，分成四层</h2>
+<p>图一回答“模型看到的工具，是否就是引擎本身”。</p>
+<p><span class="lesson-figure" role="group" aria-label="父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期"><img src="figures/h22-01.png" alt="父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜职责结构。Engine是单一服务，Subagent后端按名选择；只有PTC标为独立进程，职责框不是各自一台机器。</span><a class="lesson-image-expand" href="figures/h22-01.png" target="_blank" rel="noopener noreferrer" aria-label="父Agent通过Workflow工具调用单一Engine，PTC进程经Host Binding使用Subagent Runtime启动A/B/C；四种任务抽象各有生命周期，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p><code>WorkflowEngine</code> 是 Service Definition（服务契约），注册 <code>ctx.workflowEngine</code>。同一个有效 Context 服务位置由一个实现提供，不是与 <code>ctx.subagents</code> 相同的多名称 Provider Registry。<code>PtcWorkflowEngine</code> 是本课实际执行器；<code>dsh-tool-workflow</code> 是消费该契约的模型工具；Subagent Runtime 则管理脚本要求启动的子级。可替换引擎不要求工具依赖具体 PTC 类。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/index.ts#L157-L192" target="_blank" rel="noopener noreferrer">S01 · WorkflowEngine / emitWorkflowEvent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L190" target="_blank" rel="noopener noreferrer">S09 · PtcWorkflowEngine.start</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L318-L400" target="_blank" rel="noopener noreferrer">S29 · apply / tool schema</a></p>
+<p>PTC 在这里提供独立执行进程及 Host Binding（宿主绑定）：guest 中的 <code>agent()</code> 不能直接拿父级 Agent 对象，而是把经过数据边界的请求发给 Host，Host 才调用 Subagent Runtime。Session 是事实容器，Jobs 是可选后台所有者；它们都不是 <code>parallel()</code> 的另一个名字。把 PTC 想成远端窗口有助于记住数据要过界，但本实验是本机子进程，不是远程 Agent 协议。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/guest.ts#L16-L75" target="_blank" rel="noopener noreferrer">S24 · runWorkflowGuest</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/ptc-runtime/ptc-runtime-node/src/index.ts#L1-L104" target="_blank" rel="noopener noreferrer">S25 · NodePtcRuntime</a></p>
+<p>H21 中，Parent Delivery 在原委派工具回执后另给父级通知；Caller Delivery 让程序直接等 Activation 的结果。本课 Host 为所有工作流子级选择 <code>delivery:&#x27;caller&#x27;</code>，同一批 A/B/C 共享请求中的确切父 Agent 归属。C 在脚本上依赖 A/B，并不因此成为 A 或 B 的运行时子级。父 Turn、一次工具调用、WorkflowRun 和三个 Activation 是不同活动期。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a></p>
+<h2>先运行一位子级，再增加关系</h2>
+<p>公共夹具已经建立服务、受限策略和在线父对象 <code>parent</code> 后，最小请求如下。这是 API 用法片段；完整环境与执行入口在实践区。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>const run = ctx.workflowEngine.start({
+  meta: { name: &#x27;readme-review&#x27;, description: &#x27;Review fictional README facts&#x27; },
+  script: &#x27;const review = await agent(&quot;README fixture&quot;); return { review, count: args.count }&#x27;,
+  args: { count: 3 },
+  parent,
+  subagentProvider: &#x27;controlled&#x27;,
+  maxTotalAgents: 2,
+})
+try {
+  const result = await run.result
+  if (result.stopReason !== &#x27;completed&#x27;) throw Error(result.error ?? result.stopReason)
+  console.log(result.value)
+} finally {
+  await run.dispose()
+}</code></pre></div>
+<p>受控后端应返回 <code>{review:&#x27;README fixture=ok&#x27;,count:3}</code>。这里有四份不同的数据：<code>meta</code> 说明这份工作；<code>script</code> 是可执行 JavaScript 函数体；<code>args</code> 是输入数据；<code>parent</code> 是 Host 内真实 Agent 引用，不会传进 guest 当可执行对象。<code>signal</code> 可提供外部取消；<code>subagentProvider</code> 为整次运行选委派后端；每次 <code>maxTotalAgents</code> 只能在引擎上限内收紧。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/runtime-types.ts#L19-L49" target="_blank" rel="noopener noreferrer">S02 · WorkflowStartRequest / WorkflowRun</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L68-L96" target="_blank" rel="noopener noreferrer">S07 · provider and total admission</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L190" target="_blank" rel="noopener noreferrer">S09 · PtcWorkflowEngine.start</a></p>
+<p>Meta（元信息）独立校验，必须有 <code>name/description</code>，可选 <code>whenToUse/phases</code>。不要在脚本写 <code>export const meta</code>；也不要以为 PTC 类型基础设施写着 TypeScript，就能把 <code>const count: number = 3</code> 送进正式 Workflow 脚本。固定引擎按 JavaScript 解析异步函数体，允许顶层 <code>await</code>。源码只要求 name 非空；工具描述建议的 kebab-case 命名应遵循，但不能讲成实现已强制正则。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L33-L65" target="_blank" rel="noopener noreferrer">S06 · Config / assertBodyParses</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/meta.ts#L1-L82" target="_blank" rel="noopener noreferrer">S10 · validateMeta</a></p>
+<p><code>start()</code> 先做 meta、解析、Provider 路由与总量准入，失败可同步抛出，尚无 Run。建立 Run 后，脚本抛错、JSON 返回违规等按 <code>WorkflowResult</code> 以 <code>stopReason:&#x27;error&#x27;</code> 结算，<code>result</code> 不因普通运行失败而 Reject。<code>value</code> 只在 completed 时有意义；没有返回值归为 <code>null</code>。不要把这条契约推广到子级 Provider 的 <code>result</code>：后者的拒绝会被桥接成致命 <code>AGENT_RESULT</code>。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/types.ts#L28-L87" target="_blank" rel="noopener noreferrer">S03 · WorkflowMeta / WorkflowResult</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L190" target="_blank" rel="noopener noreferrer">S09 · PtcWorkflowEngine.start</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a></p>
+<p>JSON 边界比“能 <code>JSON.stringify()</code>”严格。只返回普通对象、数组、有限数字、字符串、布尔和 null；循环、函数、BigInt、稀疏数组、特殊原型及嵌套 undefined 都会拒绝。<code>return undefined</code> 在根处可以变 null，<code>return {x:undefined}</code> 则是错误。Args 在 start 先 <code>structuredClone</code>，这一步还不是无损 JSON 认证：函数可能立刻复制失败，Map 可以复制，却在后续 Host 数据边界被拒绝。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/realm.ts#L44-L147" target="_blank" rel="noopener noreferrer">S18 · materializeFromRealm</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L190" target="_blank" rel="noopener noreferrer">S09 · PtcWorkflowEngine.start</a></p>
+<p>把外部文字放进 <code>args</code> 或 prompt 数据字段，不要拼成源码后 <code>eval</code>。数据通道能避免这类代码拼接错误，却不会自动消除子 Agent 对不可信内容的指令跟随风险；真正的工具权限仍取决于子级组合和执行策略。</p>
+<p><strong>第一段停点，约 55～75 分钟：</strong> 运行 A 后，交出一个成功包络和两个不同阶段的失败。合上程序说明“谁拥有 Run，为什么 meta 不在脚本里”。能区分前置抛错与 result 结算，再进入并发。</p>
+<h2>parallel 收集顺序，pipeline 逐项推进</h2>
+<p>两个互不依赖的调查可以并行。<code>parallel</code> 接受零参数函数数组，先校验全部条目，再调用它们；真正的子级并发由 <code>agent()</code> 的槽位限制。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>const [architecture, tests] = await parallel([
+  () =&gt; agent(&#x27;architecture: modules=3&#x27;),
+  () =&gt; agent(&#x27;tests: covered=2/3&#x27;),
+])
+return { architecture, tests }</code></pre></div>
+<p>即使 B 先完成，返回数组仍按输入位置 <code>[A结果,B结果]</code>。输入索引、开始顺序和完成顺序要分别记。普通函数也能放进 <code>parallel</code>，但引擎的 <code>maxConcurrentAgents</code> 限制的是 <code>agent()</code>，不会把所有普通函数调用都自动排进同一个池。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L285-L308" target="_blank" rel="noopener noreferrer">S15 · parallel</a></p>
+<p>Pipeline（逐项流水线）解决的是“每份材料要先整理，再分析”。它的真实形式是 <code>pipeline(items,...stages)</code>；每个阶段收到 <code>(previous,item,index)</code>。previous 是该条目上一个阶段结果，第一阶段从原始 item 开始；item/index 始终指原输入。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>return await pipeline([&#x27;A&#x27;,&#x27;B&#x27;],
+  (previous, item, index) =&gt; agent(item + &#x27;1&#x27;),
+  (previous, item, index) =&gt; agent(item + &#x27;2:&#x27; + previous + &#x27;:&#x27; + index)
+)</code></pre></div>
+<p>A1 完成后 A2 就能开始，即使 B1 尚未完成。返回结果仍按条目位置排序，<strong>没有全体条目先过第一阶段的屏障</strong>。因此，“A 和 B 都结束后执行 C”要先 <code>await parallel</code> 收齐两份结果，再把聚合对象送给下一段；不能把 <code>phase(&#x27;Synthesize&#x27;)</code> 当成等待。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L311-L340" target="_blank" rel="noopener noreferrer">S16 · pipeline</a></p>
+<p>图二对照三种关系，读到第三框时再检查综合题的依赖。</p>
+<p><span class="lesson-figure" role="group" aria-label="parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B"><img src="figures/h22-02.png" alt="parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜依赖关系对照。箭头表示同一条目内部顺序；不同条目之间没有阶段锁，phase也不提供汇总屏障。</span><a class="lesson-image-expand" href="figures/h22-02.png" target="_blank" rel="noopener noreferrer" aria-label="parallel输入A/B结果按输入位置返回，pipeline每项内部A1到A2和B1到B2独立推进；汇总C需先await收齐A/B，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h3>空值不总是同一种失败</h3>
+<p><code>agent()</code> 子级已经正常返回结果对象，但 stopReason 不是 completed，则脚本拿到 null；要求 schema 时，completed 却没有 structured 值，也算子任务失败并返回 null。没有 schema 则取文本块拼接结果。普通 thunk 抛错被 parallel 转为对应 null；pipeline 普通阶段抛错使该条目为 null，并跳过余下阶段。<strong>阶段只返回 null 没有抛错时，pipeline 仍会执行下一阶段，除非程序显式判断。</strong> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L163-L237" target="_blank" rel="noopener noreferrer">S13 · agent schema result</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L285-L308" target="_blank" rel="noopener noreferrer">S15 · parallel</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L311-L340" target="_blank" rel="noopener noreferrer">S16 · pipeline</a></p>
+<p>契约错误不能静默当成一条没有调查结果：未知选项、未支持 schema、总量或条目超限、子级启动失败、基础设施结果通道拒绝，都是致命路径，穿过组合器令本次 Workflow 为 error。<code>agent()</code> 只接受 label、phase、schema、provider、model；effort、isolation、agentType 在这版未支持。选项中的 provider/model 选择模型路线；整次请求的 subagentProvider 才选择 spawn 等委派后端。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/index.ts#L108-L149" target="_blank" rel="noopener noreferrer">S05 · WorkflowError / isFatalWorkflowError</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L239-L282" target="_blank" rel="noopener noreferrer">S14 · readAgentOptions</a></p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>错误 code</th><th>所在边界</th><th>读结果时的判断</th></tr></thead><tbody><tr><td>META_INVALID、SCRIPT_PARSE</td><td>meta/JavaScript 前置检查</td><td>start 可能直接抛错</td></tr><tr><td>INVALID_ARGUMENT</td><td>参数类型、每次 cap 等</td><td>看发生在 start 还是脚本钩子</td></tr><tr><td>UNSUPPORTED_OPTION、UNSUPPORTED_SCHEMA</td><td>agent 选项/Schema</td><td>运行期 fatal，不能用组合器吞成 null</td></tr><tr><td>AGENT_CAP、ITEM_CAP</td><td>总量/组合器条目</td><td>拒绝新增工作，整项 error</td></tr><tr><td>AGENT_START、AGENT_RESULT</td><td>启动/基础设施结果</td><td>与子任务正常结算为失败分开</td></tr><tr><td>RESULT_UNSERIALIZABLE</td><td>脚本返回数据</td><td>error 结果，不用 stringify 丢字段</td></tr><tr><td>CANCELLED</td><td>取消语义的错误词汇</td><td>公开终态仍检查 stopReason，不靠错误字符串分类</td></tr></tbody></table></div>
+<p>脚本也能自行 try/catch 钩子异常；fatal 在这里规定的是组合器的传播规则，不是不可捕获的语言异常。调查结果为 null 时是否还让 C 综合，应由业务脚本决定。本课 X 的 Mock 都成功，迁移到真实审查须先检查缺失证据，不能让 C 把空值补写成事实。</p>
+<h3>五层限制放进同一个例子</h3>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>限制</th><th>控制什么</th><th>本实验/固定版边界</th></tr></thead><tbody><tr><td>maxConcurrentAgents</td><td>此 Run 同时占用的 agent 槽</td><td>实验 2；固定默认 0 按 CPU 推导，最多 16</td></tr><tr><td>maxTotalAgents</td><td>此 Run 已接受的 agent 调用总数，含等待槽位者</td><td>实验 8；默认 1000，每次可收紧</td></tr><tr><td>maxItemsPerCall</td><td>单次 parallel/pipeline 的条目数</td><td>实验 16；默认 4096，先拒绝再调用</td></tr><tr><td>Subagent maxActiveSubagents / maxDepth</td><td>委派层共享容量/深度</td><td>fixture 显式配置 cell；容量满拒绝，不是 Workflow FIFO</td></tr><tr><td>PTC maxPendingCalls</td><td>跨边界 binding 在途调用预算</td><td>默认 128；不是子级数量或完成目标轮数</td></tr></tbody></table></div>
+<p>若 Workflow 并发=2、总量=3，而 Subagent 容量只有1，同时启动 A/B 时第二个可能在委派层拒绝，成为 AGENT_START；并发=2 不承诺一定有两个资源。若同一条件改成 Workflow 并发=1，三条 agent 调用会先被 guest 接受并计数，再按槽执行。取消中没拿到完整 guest 终态时，agentsStarted 可退为 Host 观察到的启动数，不能把它统一解释为已经创建了多少 Agent。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L100-L133" target="_blank" rel="noopener noreferrer">S08 · PtcWorkflowEngine constructor</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L339-L367" target="_blank" rel="noopener noreferrer">S17 · assertItemCap / phase / log</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L258-L280" target="_blank" rel="noopener noreferrer">S22 · onProgress / cancelled</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/ptc-runtime/ptc-runtime-node/src/config.ts#L1-L65" target="_blank" rel="noopener noreferrer">S26 · resolveConfig</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/activation.ts#L24-L37" target="_blank" rel="noopener noreferrer">S45 · ActivationPool.reserve</a></p>
+<p>本版 Workflow Host 没有给 startActivation 请求传显式 maxDepth；不能把 H21 委派工具消费方的默认深度1，直接当成这条路径已强制的深度限制。需要在实际组合与调用策略中另核，不能只凭配置字段名称下结论。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a></p>
+<p><code>syncTimeoutMs</code> 默认 5000，只限初始 <code>runInContext</code> 的同步切片，不是整个脚本的墙钟截止。Host 启动 PTC 的这条路径显式传 <code>timeoutMs:null</code>；await 之后进入死循环，不能假定五秒自己结束。实验 C3 用运行级取消终止独立 guest 进程，测试主进程继续完成。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L56-L142" target="_blank" rel="noopener noreferrer">S11 · WorkflowExecution.drive</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L282-L324" target="_blank" rel="noopener noreferrer">S23 · drive finally</a></p>
+<p><strong>第二段停点，约 65～90 分钟：</strong> 交 B1 的 B先完成/A在前输出轨迹，再画 B2 的 A2 早于 B1 结束。把容量1的拒绝与并发1的排队分开，解释完再进入取消。</p>
+<h2>运行、取消和释放要分别等待</h2>
+<p>WorkflowRunId 标识这次运行；它不等于父 Turn ID、子级 SessionId 或后台 jobId。Run 建立后，持有者可等待 result、请求 cancel，并统一 await dispose。取消先发 signal，Host 请求释放已发布子级；尚未完成的 start 若晚到，仍须拿到句柄并释放，不能直接遗忘。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/runtime-types.ts#L19-L49" target="_blank" rel="noopener noreferrer">S02 · WorkflowStartRequest / WorkflowRun</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L113-L187" target="_blank" rel="noopener noreferrer">S19 · PtcWorkflowRun ownership</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a></p>
+<p>图三从两个出口读：启动前拒绝，不会产生一次 Run；运行中失败或取消，则进入受管排空。</p>
+<p><span class="lesson-figure" role="group" aria-label="start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose"><img src="figures/h22-03.png" alt="start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜Run 生命周期。取消不是停稳回执；result含执行期清理等待，持有者仍保留finally中的dispose。异常清理分支可能告警，不能推广为任意外部后端强杀保证。</span><a class="lesson-image-expand" href="figures/h22-03.png" target="_blank" rel="noopener noreferrer" aria-label="start前校验失败无Run；建立后经PTC和子级执行，cancel请求停止，在途Host调用及子级清理排空后结算，调用者await幂等dispose，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>固定 Host 的 drive 在 finally 发出停止、处理已发布句柄、循环等 pending Host calls，再等待剩余子级，并为尚活跃的观察成员补 cancelled 终边。result 结算后引擎发布 workflow/end。<code>dispose()</code> 对未完成运行发起取消并返回共享 Promise，重复调用不重新启动一轮清理。C1 的受控子级故意等门闩：cancel 后它仍 active，result 不能越过这份未完成的清理。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L113-L187" target="_blank" rel="noopener noreferrer">S19 · PtcWorkflowRun ownership</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L231-L256" target="_blank" rel="noopener noreferrer">S21 · childResult / disposeChild</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L282-L324" target="_blank" rel="noopener noreferrer">S23 · drive finally</a></p>
+<p>这条路径把清理异常 catch 后记录 warning，有别于“所有资源释放失败必定让 result Reject”。受管进程与本地合作子级的清理可以验证；任意外部后端若不合作，不能外推无限强杀或固定时限停稳。调用方必须继续看告警、终态、句柄和业务效果，不只看一个 completed 单词。</p>
+<h3>phase 与 log：说明发生了什么</h3>
+<p><code>phase(&#x27;Inspect&#x27;)</code> 更新当前语义标签，之后调用的 agent 可捕获这个 phase；agent 的显式 phase 选项也可单独指定。标签在请求调用时就捕获，等待并发槽期间切换 phase 不会追改已排队请求。Meta.phases 用于描述，运行时没有强制逐一匹配声明，更不会因此加锁或等待。<code>log(&#x27;facts collected&#x27;)</code> 发进度观察；不是给父模型投一条新消息。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L339-L367" target="_blank" rel="noopener noreferrer">S17 · assertItemCap / phase / log</a></p>
+<p>运行时六类事件为 workflow/start、end、phase、log、agent-start、agent-end。监听器只是观察者：固定服务隔离同步 throw 和异步 rejection，C4 的故意坏监听器不应把有效脚本变成失败。不过观察日志仍须有清晰、可渲染的内容，不能把监听器隔离理解为业务任意副作用已回滚。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/index.ts#L157-L192" target="_blank" rel="noopener noreferrer">S01 · WorkflowEngine / emitWorkflowEvent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/types.ts#L90-L131" target="_blank" rel="noopener noreferrer">S04 · WorkflowResultInfo / WorkflowAgentInfo</a></p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：可选深读：PTC、Realm 与有效文件策略</summary><div class="lesson-callout-body"><p>先看 Host 如何把 begin/startChild/childResult/disposeChild/progress 暴露为 binding；guest 负责调用、批量进度和结果，Realm 将跨界值物化成普通 JSON。VM context 方便约束语言表面，却不是 OS 权限边界：本课 C5 通过可见的 VM escape 取得进程内 fs 能力，随后实际写入被 Windows 受限令牌拒绝。</p><p>NodePtcRuntime 经正式 sandbox/subprocess 启动。作者环境是 Windows，正式 ACL backend 报告 partial enforcement，read-only 不授写权。一次新建 fixture 文件拒写成功，不能认证所有路径、硬链接、读取、网络与所有平台；文件策略不等于独立网络安全边界。本课没有联网探针，也没有把实验切到 danger-full-access。</p><p>作者把固定源码的 worker 与 Windows runner 打包进新临时目录，保持正式令牌路径和策略；这是为源码缓存补可执行入口，不替换执行器。缺少有效 confinement 的故障注入用例在派生进程前失败；受限后端无法运行的学员环境应停止并记录原因。不要为了跑通而改成无限制执行。具体准备与依赖锁见作者 README。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/realm.ts#L44-L147" target="_blank" rel="noopener noreferrer">S18 · materializeFromRealm</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/guest.ts#L16-L75" target="_blank" rel="noopener noreferrer">S24 · runWorkflowGuest</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/ptc-runtime/ptc-runtime-node/src/index.ts#L1-L104" target="_blank" rel="noopener noreferrer">S25 · NodePtcRuntime</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-local/src/index.ts#L1-L586" target="_blank" rel="noopener noreferrer">S27 · local Windows backend</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-windows-acl/src/runner.ts#L1-L229" target="_blank" rel="noopener noreferrer">S28 · Windows ACL runner</a></p></div></details>
+<h2>前台父级真正得到什么</h2>
+<p>Workflow Tool 的 Schema 把 meta、script、args 分开。前台调用把父工具 signal 交给 Engine，await run.result；非 completed 抛出工具执行错误，由真实 Tools 流水线形成 <code>isError</code>。finally await dispose，随后根调用完成持久记录。成功值是 <code>{kind:&#x27;foreground&#x27;,runId,agentsStarted,result}</code>，输出 render 再把聚合值转成父模型可见文本。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L318-L400" target="_blank" rel="noopener noreferrer">S29 · apply / tool schema</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L401-L487" target="_blank" rel="noopener noreferrer">S30 · foreground execute</a></p>
+<p>所以 D1 在 A/B 门闩未开时，父级只有一次模型请求，尚无 tool/result；全部聚合后，父级第二次模型请求才带上报告。子级使用 Caller Delivery，不再另发 subagent-settled 完成通知。父模型拿到聚合结果，<strong>不会自动合并三个子 Session 的全部工具历史或中间消息</strong>。<code>maxResultChars</code> 只截渲染结果字符；Engine 的完整 value 未因此缩短，计算量也未受保护。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L239-L249" target="_blank" rel="noopener noreferrer">S31 · renderResult</a></p>
+<p>图四把三种“看到了”分开：运行观察者看到了、父 Session 写下了、后续模型请求读到了。</p>
+<p><span class="lesson-figure" role="group" aria-label="workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点"><img src="figures/h22-04.png" alt="workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜观察、持久事实、模型输入各有通路。后台日志环不等于模型输出流；Session记录也不等于Workflow恢复点。</span><a class="lesson-image-expand" href="figures/h22-04.png" target="_blank" rel="noopener noreferrer" aria-label="workflow实时六类事件与父Session根工具四类日志分路，前台聚合ToolResult进入模型；后台走Jobs输出环和通知，均不保存guest检查点，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>根工具调用实际追加四类 log-only 事件：tool-workflow/run-start、agent-start、agent-end、run-end；不是把所有 workflow/* 原封不动存父 Session。嵌套 transport 执行不重复记录这四类。直接 Engine 调用也没有 Tool Recorder 自动替它写。Recorder append 失败会告警并停记，运行可能继续，所以“运行成功”不保证这四类事实全部写入。D1 显式 flush 并从真实 JSONL 读回八条根调用记录；这个局部确认不等于断电耐久。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L93-L169" target="_blank" rel="noopener noreferrer">S32 · createWorkflowRecorder</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/types.ts#L1-L64" target="_blank" rel="noopener noreferrer">S33 · tool-workflow Session event types</a></p>
+<h2>背景工作、持续目标与定时触发</h2>
+<h3>Jobs：先给回执，谁再接管？</h3>
+<p>当配置允许、Jobs 实现和 controller 可用时，workflow 参数可以带 <code>run_in_background:true</code>。Tool 在 Jobs 同步 starter 中建立 Run，不绑定原工具 Step signal，先返回 <code>{kind:&#x27;background&#x27;,jobId,runId}</code>。此后由 Job 拥有取消；done 等待 Workflow result 和 dispose，再映射 completed/killed/failed。没有 Jobs、未附 controller 或配置禁用，都不能假装成功后台化。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L263-L316" target="_blank" rel="noopener noreferrer">S34 · startBackgroundRun</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L219-L237" target="_blank" rel="noopener noreferrer">S35 · jobOutcomeOf</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs/src/index.ts#L85-L198" target="_blank" rel="noopener noreferrer">S37 · JobRegistry</a></p>
+<p>Job 的 running/stopping/终态与 Workflow 的 stopReason 不同。<code>job_kill</code> 请求取消，通常先见 stopping，真正 producer 结束后才 killed。<code>job_output</code> 消费模型游标，<code>readAt</code> 是观察读取，不挪模型游标；终态 result 只在首次适当消费时给出。Workflow phase 更新 progress，叙述和成员边进入环的 log 通道；模型的 job_output 过滤 observer log，不能把观察输出截图当模型已知事实。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/record.ts#L37-L64" target="_blank" rel="noopener noreferrer">S36 · createWorkflowRecordMirror</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs-local/src/index.ts#L1-L717" target="_blank" rel="noopener noreferrer">S38 · LocalJobRegistry</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/tool-jobs/src/render.ts#L1-L84" target="_blank" rel="noopener noreferrer">S40 · renderModelDelta</a></p>
+<p>未收集完成通常通知 owner：默认 idle 时 followup 唤醒，busy 时 inject；quiet 配置只留待下一次输入。本课 D3 使用 quiet 且 inlineOutputBytes=0，观察未消费通知，再用 job_output 取报告并撤销通知，第二次读取不重复给报告。明确 wait 已收集的结算、模型自己 kill 和 teardown 等分支会抑制重复通知，不能统一断言每个结算必发一条消息。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/tool-jobs/src/index.ts#L355-L430" target="_blank" rel="noopener noreferrer">S39 · deliverSettlement</a></p>
+<h3>Goal：继续一个目标，不能靠旧 Run 自己复活</h3>
+<p>GoalService 把 objective、revision、phase 与已开始轮次写入所属 Session；变更要带当前 <code>{id,revision}</code>，避免旧操作覆盖新目标。create 为 active/armed，pause 变 paused/disarmed；resume 需合法阶段、当前 ref 和剩余轮次。<code>disarm</code> 只收回当前进程自动继续资格，不改变持久 phase/revision。历史可显示 active，而当前 activation 仍是 disarmed。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/types.ts#L19-L112" target="_blank" rel="noopener noreferrer">S41 · GoalRef / GoalView</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/index.ts#L280-L405" target="_blank" rel="noopener noreferrer">S42 · Goal create/pause/resume/disarm</a></p>
+<p>Goal Round（目标推进轮次）是续跑消费方获准投递的一条目标输入所对应的编号；它以 source.kind=goal 的 user/message 记录 goalId、revision 和连续 round，推进 roundsStarted。它不是一次模型 Attempt，也不等于一个 Workflow 子级。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/goal.zh.md#L118-L139" target="_blank" rel="noopener noreferrer">S46 · GoalMessageSource / roundsStarted</a></p>
+<p>本课额外边界用例真实 create→pause→拒绝旧 ref→resume→disarm，模型请求数始终0，因为没有挂 Goal 轮次驱动。轮次预算约束目标推进次数，不等于 Workflow 内子级数、Token 上限或真实费用上限。要继续审查，应在目标策略和当前授权下建立新活动期，不能把 Goal 的持久状态称作恢复原 guest。</p>
+<h3>Schedule：保存的是未来投递，不是运行栈</h3>
+<p>ScheduleService 把 Host 任务存入 storage domain，绑定原 Session。create 要求 title 和恰好一种 selector：at、after_seconds、every_seconds、daily、weekly、cron。list/catalog 读任务不激活 Agent；当前子级 Session 不能作为这套提醒的目标。Host 新调度记录与历史 Session 中的旧 Schedule 事件还要分开，历史事件不会自动驱动新 Host 任务。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/schedule/schedule/src/index.ts#L243-L335" target="_blank" rel="noopener noreferrer">S43 · Schedule create/list/catalog</a></p>
+<p>额外用例在新建临时 JSON storage 中保存 2099 年一次触发，关闭后新 Context 读取，同一 ID 仍在，0 Workflow、0模型请求；没有等待到期或制造用户真实提醒。正式 Runtime 到期要通过 resolver 找到/恢复目标 Agent，投递、保存回执和计算后续触发另有分支。本课只静态读其驱动，不宣称 due delivery、跨进程崩溃或恰好一次语义已经验证。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/schedule/schedule/src/runtime.ts#L1-L169" target="_blank" rel="noopener noreferrer">S44 · ScheduleRuntime</a></p>
+<p><strong>第三段停点，约 90～125 分钟：</strong> 完成 C/D，再画“Schedule→新输入→可选 Goal 轮次→Workflow→可选 Job”的条件组合。给每个箭头写出 owner、终态和保存内容，合上程序回答重启会丢哪些活动期。</p>
+<aside id="lesson-warning" class="lesson-callout lesson-warning" aria-label="后台不提供跨重启脚本恢复"><div class="lesson-callout-label">注意风险</div><div class="lesson-callout-title">后台不提供跨重启脚本恢复</div><div class="lesson-callout-body"><p>这版 Workflow 没有持久 guest 执行检查点。本地 Job 表、Promise、子进程与中间变量不会因父 Session 留下日志而恢复。失败后重新跑整个审查是一次新执行；若真实任务有外部写入且结果未知，须先核查外部事实或业务幂等约束，不能因缺少最终 ToolResult 就重做。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L282-L324" target="_blank" rel="noopener noreferrer">S23 · drive finally</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L93-L169" target="_blank" rel="noopener noreferrer">S32 · createWorkflowRecorder</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/jobs/jobs-local/src/index.ts#L1-L717" target="_blank" rel="noopener noreferrer">S38 · LocalJobRegistry</a></p></div></aside>
+<h2>五个文件的精读路线</h2>
+<p>只精读五个文件的选定段落，完整列表及辅助证据在作者断言清单中。</p>
+<ol>
+<li><code>workflow/src/runtime-types.ts</code>：先画 StartRequest→Run，标 parent、signal、result/dispose；再回看 types.ts 的 JSON 包络。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow/src/runtime-types.ts#L19-L49" target="_blank" rel="noopener noreferrer">S02 · WorkflowStartRequest / WorkflowRun</a></li>
+<li><code>workflow-ptc/src/index.ts</code>：按输入→meta/parse/route/cap→建 Run→start/end 观察读，解释启动前失败。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/index.ts#L134-L190" target="_blank" rel="noopener noreferrer">S09 · PtcWorkflowEngine.start</a></li>
+<li><code>workflow-ptc/src/runtime.ts</code>：先 agent 的计数/槽/结果/finally，再 parallel/pipeline 的普通与 fatal 分支；最后读 phase/log。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L144-L237" target="_blank" rel="noopener noreferrer">S12 · acquireSlot / agent</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L285-L308" target="_blank" rel="noopener noreferrer">S15 · parallel</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/runtime.ts#L311-L340" target="_blank" rel="noopener noreferrer">S16 · pipeline</a></li>
+<li><code>workflow-ptc/src/host.ts</code>：从 startChild 的 caller 与 parent 追到 drive finally；标每个 await 等谁，检查晚到启动。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L200-L229" target="_blank" rel="noopener noreferrer">S20 · startChild</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/workflow-ptc/src/host.ts#L282-L324" target="_blank" rel="noopener noreferrer">S23 · drive finally</a></li>
+<li><code>tool-workflow/src/index.ts</code>：对照前台 execute 与 startBackgroundRun，说明原工具 signal、Job owner 和 Recorder 的不同。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L401-L487" target="_blank" rel="noopener noreferrer">S30 · foreground execute</a> <a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/workflow/tool-workflow/src/index.ts#L263-L316" target="_blank" rel="noopener noreferrer">S34 · startBackgroundRun</a></li>
+</ol>
+<p>Realm、guest、PTC、sandbox、Jobs/Goal/Schedule 的实现与官方测试是辅助定位，先不通读。文中 S01–S45 均绑定固定 Commit <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。官方 Vitest 本轮仅选读；原清理钩子含递归删除，未运行。作者测试使用新 fixture 并保留所有目录。</p>
+<h2>实践：从 A 到 D，逐层增加真实边界</h2>
+<p>先在作者仓库根目录运行下面的统一入口；它验证固定源码 SHA256、直接/传递依赖 version+integrity，复制完整程序到新建临时目录，再打包固定 worker/runner。依赖锚点和受限后端准备详见随实验的 README。环境不满足时应非零退出，不能用教学模拟器替换正式引擎后仍报同一等级。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs A
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs B
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs C
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs D
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs X
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs boundaries
+node docs/deepseek-harness-v2/h22/scripts/run-labs.mjs</code></pre></div>
+<p>最后一条才是计数用 TAP 测试。演示与重跑不增加独立测试数。程序只接触新临时目录、虚构事实和 Mock Adapter；不会清理临时根，不使用个人项目、私人会话、付费模型或外部 Agent。公共目录服务、配置 cell、点读 Query 和受控 Provider 是显式协作者，未装载完整 Host Loader、权限 UI、Preset 或真实 Provider。</p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="实践 A：建立一份合法工作单"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 A：建立一份合法工作单</div><div class="lesson-callout-body"><p>运行 A，提交 A1–A4 的结果与失败阶段。先预测：缺 description、TS 类型标注、未知委派 Provider、return 嵌套 undefined、Map args 各在哪里失败？保留一个 result error 而 await 没 Reject 的例子。</p><p>验收：给出完整 meta/args/script；区分 Run 建立之前与之后；说明 A1 的 1 个 accepted child 和最终 JSON；在 finally await dispose，所有已启动受管进程均 done。</p></div></aside>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>A1 使用正式 Engine 与 Node PTC，controlled Provider 只替代子级输出。count=3 经 args 数据通道进入 guest，顶层 await 等子级返回文本，再得 <code>{review:&#x27;README fixture=ok&#x27;,count:3}</code>。预期 completed、agentsStarted=1，fake.active=0，所有 SubprocessHandle.done 已结算。</p><p>A2 缺 description 为 META_INVALID，TS 标注和 export meta 为 SCRIPT_PARSE；unknown Provider 是 AGENT_START，超过引擎 ceiling 的每次总量为 INVALID_ARGUMENT。这些 start 同步拒绝，不产生 start 事件或进程，不能一律说 INVALID_ARGUMENT。</p><p>A3 根 undefined 完成为 null；嵌套 undefined/BigInt 违反无损数据规则；脚本 throw 为 error。它们是已建立 Run 的结果，不要求 result Reject。A4 函数 args 无法 structuredClone，Map 能复制但后续数据过界失败，说明复制不等于 JSON 校验。评分看阶段、包络和资源三项，不能只交 PASS 截图；真实外部副作用和异常清理后端不在 A 中。</p></div></details>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="实践 B：让顺序可被证据推翻"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 B：让顺序可被证据推翻</div><div class="lesson-callout-body"><p>运行 B。先关住 A/B 的完成门闩，确认两个都进入；先放 B，再放 A。再运行逐项 pipeline，关住 B1，观察 A2 已开始。比较普通任务失败、普通 throw、fatal 选项、坏结果通道与 schema 缺值。</p><p>验收：交输入顺序、启动序列、完成序列和输出数组；给出并发1排队与 Subagent容量1拒绝的反例；解释总量和单次 item cap 在哪个位置先拦截。</p></div></aside>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>B1 以真实 Host/guest 和 Promise 门闩验证同时启动；finished 为 <code>[B,A]</code>，结果却为 <code>[A,B]</code>。不能只比较耗时来猜并发。B2 保持 B1 未结束，等待 A2 请求出现，再开门；输出为 <code>[A2:A1:0,B2:B1:1]</code>，回调形式与无全局屏障同时获得证据。</p><p>B3 普通 child stopReason=error 和普通 thunk throw 得 null，pipeline 的抛错项跳过后续阶段；B4 的 effort、非object schema 和 Provider result rejection 则整项 error。B7 schema completed有 structured 返回对象，缺失返回 null。这些不是“全部失败被吞掉”的同一规则。</p><p>B5 并发1时三次 accepted 调用串行，peak=1、agentsStarted=3；每次总量2拦住第三次 agent；单次四条 item 超过3时，连 thunk 都不调用。B6 容量1低于并发2，委派层启动拒绝，第一份已接纳工作仍须取消排空。实验执行次序与用例编号无关；所有门闩有 finally 释放，不能让错误测试悬挂。给分看因果与轨迹，不以是否背出默认值代替解释。</p></div></details>
+<aside id="lesson-task-3" class="lesson-callout lesson-task" aria-label="实践 C：把取消请求与停稳分开"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 C：把取消请求与停稳分开</div><div class="lesson-callout-body"><p>运行 C，提交 published child 和 pending start 两种取消轨迹。C1 调 cancel 后先检查仍活跃，再释放门闩；C2 让 Provider 的启动晚到。运行 C3 取消 await 后进入无限循环的 guest，再运行 C4 的坏监听器和 C5 的文件拒写。</p><p>验收：result 为 cancelled，dispose 两次返回同一个 Promise，已接纳子级只释放一次；配对观察 start/end；受管进程 done。拒写前后 fixture 内容相同；说明为什么一次拒写不等于所有网络和文件安全均通过。</p></div></aside>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>C1 等真实 workflow/agent-start 才取消。cancel 是同步请求：立即观察时 fake.active 仍1，result尚未结束；共享dispose等待Promise。开门后子级 result结束、句柄dispose一次、进程停止，Run才以cancelled结算，观察边闭合。</p><p>C2 阻在Provider.start，取消后才准许返回句柄。Host/Runtime负责晚到释放；不能因为guest已停就忘记这份Host工作，也不能伪造一条从未发布的workflow/agent-start。C3在独立guest循环中取消，Node测试主进程继续执行后续用例；这是真实运行级中止，不是杀掉测试主进程凑通过。</p><p>C4的未声明phase仍可观察，sync/async监听异常被包含，直接Engine调用没有tool-workflow记录。C5通过VM逃逸尝试写新建fixture，OS层拒绝，内容unchanged；运行argv为正式read-only runner。Windows backend是partial，读取、网络、硬链接、任意外部后端与其他平台不因本例获得认证。另有boundary用例注入缺失confinement，在spawn前失败，禁止无限制降级。若核心拒写或清理失败应阻断交付，不能删断言。</p></div></details>
+<aside id="lesson-task-4" class="lesson-callout lesson-task" aria-label="实践 D：父 Agent 拿到的是哪一份结果"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">实践 D：父 Agent 拿到的是哪一份结果</div><div class="lesson-callout-body"><p>运行 D，核对真实父AgentLoop、Tools、Workflow、Spawn、三个子Loop、Session和后续模型请求。再对照工具错误/截断、后台回执/job_output通知、job_kill。</p><p>验收：前台A/B未完成时父工具结果仍缺席；最终只有聚合结果进入父后续请求；根调用四类持久记录读回8条。后台先回ID而子级仍在运行，观察log不混入模型增量，终态结果只取一次，kill后等真正结算。</p></div></aside>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>D1复用综合X。父模型第一步提交Workflow，A/B由不同Mock模型脚本供值，避免把并发请求到达顺序误当任务身份。门闩未开时父模型请求1次、tool/result0条；开门后第三个子级综合，父第2次请求包含最终风险文本。父级只收到一个前台工具结果，没有额外subagent-settled通知；子级caller交付没有合并全部历史。</p><p>根工具Session日志为run-start1、agent-start3、agent-end3、run-end1，共8条；显式session/flush后从真实JSONL读回核对。workflow/end没有报告value，phase/log也没自动变成父Session同名事件。D2非completed映射isError，长结果只render截断；不能把data.message.isError读成外层data.isError。</p><p>D3父Turn先以BACKGROUND_ACCEPTED结束，子级仍受门闩阻挡。readAt可见observer-only，job_output不见此log；开门后无显式wait消费结算，quiet notice留在nextStep，job_output取得报告并撤销notice，再读不重复。D4由job_kill请求停止，先stopping，门闩释放、子树清理后killed。这里未执行默认wakeup自动开新Turn、异常dispose、Job跨进程恢复或真实外部模型；不要据D证据升级E。</p></div></details>
+<h2>综合实验：三个子 Agent 交一份审查报告</h2>
+<p>交付一页依赖图、一段合法脚本、六条精选事件以及一份边界说明。输入固定为 modules=3、covered=2/3，三个子级分别研究架构、测试、风险及综合；“风险整理”和“最终综合”由第三位承担，所以总共三位，不暗增第四位。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>phase(&#x27;Inspect&#x27;)
+const [architecture, tests] = await parallel([
+  () =&gt; agent(&#x27;architecture: modules=3&#x27;, {model:&#x27;architecture&#x27;,label:&#x27;Architecture&#x27;}),
+  () =&gt; agent(&#x27;tests: covered=2/3&#x27;, {model:&#x27;tests&#x27;,label:&#x27;Tests&#x27;})
+])
+phase(&#x27;Synthesize&#x27;)
+const [report] = await pipeline([{architecture,tests}],
+  previous =&gt; agent(&#x27;risk and synthesis: &#x27;+JSON.stringify(previous), {model:&#x27;synthesis&#x27;,label:&#x27;Synthesis&#x27;})
+)
+return {architecture,tests,report}</code></pre></div>
+<p><code>model</code> 名只是在本夹具选择不同 Mock 脚本，不是仓库内置模型名称。完整 X 另带 log 与完整 meta，运行命令选择 X。先写预测，再查看 trace-X：Architecture/Tests 可以交错开始或结束，Synthesis 的开始必须晚于两者的最终结果收集；返回字段必须与任务身份对应，不能按先来先得分配 Mock 答案。</p>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合详细参考答案与评分</summary><div class="lesson-callout-body"><p>依赖图为A∥B→汇总对象→C，只有await parallel建立两份材料汇齐的条件，phase不建立屏障。三个Activation在运行树上都归同一parent；脚本依赖图与Agent所有权树不是同一张图。Meta包括name、description和两个可选phases，script中没有export meta或TS标注。</p><p>X使用正式Engine默认spawn，三个本地真实AgentLoop和独立Session。Architecture/Tests的Mock门闩确保并发已进入；每个角色有自己的model键，因此无论请求到达顺序如何，输出都为architecture=modules=3、tests=covered=2/3。第三位返回risk=one uncovered module; recommend focused test。前台最终值、父ToolResult与后续请求应相互对应。</p><p>建议评分：依赖和屏障25，合法请求/数据15，身份和并发轨迹20，普通/致命失败与空值处理15，owner/取消/记录15，未验证边界10。安全关键错误须修正，不以总分抵消：phase当锁、取消即完全释放、文件策略即网络隔离、后台即可重启续跑。分值是作者自评建议，未经学员校准。</p><p>迁移题：A失败为null时，先让脚本显式停止综合，或在给C的材料和报告中保留证据缺口；接受两种有理由的设计。若C写外部系统且返回丢失，先查效果或业务幂等，再决定新run，不直接重放。23项C/D不验证报告质量、付费请求表现、完整Harness应用、真实外部Agent、崩溃恢复或学员迁移能力。</p></div></details>
+<h2>完整程序：先复制公共准备，再选一个实践</h2>
+<p>下面是受测文件的完整同步副本；依赖固定的官方源码缓存和作者运行器，不是单文件独立发行包。Adapter、目录cell、配置cell和受控Provider都是教学协作者；Workflow、PTC、sandbox、Subagent、AgentLoop、Session和Jobs实现没有自行重造。</p>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：父子 Agent 准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import {Context,Service} from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore,{SessionId,SessionSeq} from &#x27;@deepseek-ai/dsh-session&#x27;;
+import LlmRuntime,{LlmAdapter,createUserMessage,ToolCallId} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SessionQueryEngine from &#x27;@deepseek-ai/dsh-session-query&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService,{defineTool} from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import {NativeToolExecutor} from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import SubagentRuntime from &#x27;@deepseek-ai/dsh-subagent&#x27;;
+import * as Spawn from &#x27;@deepseek-ai/dsh-subagent-spawn-in-process&#x27;;
+import * as Fork from &#x27;@deepseek-ai/dsh-subagent-fork-in-process&#x27;;
+import * as Delegate from &#x27;@deepseek-ai/dsh-tool-subagent&#x27;;
+import * as Control from &#x27;@deepseek-ai/dsh-tool-subagent-control&#x27;;
+import * as Jsonl from &#x27;@deepseek-ai/dsh-session-persistence-jsonl&#x27;;
+import {mkdtemp,writeFile} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+import {setImmediate as tick} from &#x27;node:timers/promises&#x27;;
+export {assert,SessionId,SessionSeq};
+export const blocks=(text:string)=&gt;[{type:&#x27;text&#x27; as const,text}];
+export const user=(text:string)=&gt;createUserMessage({source:{kind:&#x27;user&#x27;},content:blocks(text)});
+export const text=(value=&#x27;done&#x27;)=&gt;[{type:&#x27;text-delta&#x27;,index:0,text:value},{type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}}];
+export const call=(name:string,args:object={},id=name)=&gt;[
+ {type:&#x27;block-start&#x27;,index:0,blockType:&#x27;tool-call&#x27;},
+ {type:&#x27;block-end&#x27;,index:0,block:{type:&#x27;tool-call&#x27;,id:ToolCallId(id),name,arguments:JSON.stringify(args)}},
+ {type:&#x27;finish&#x27;,reason:{kind:&#x27;tool-calls&#x27;}},
+];
+export const visible=(messages:any[])=&gt;messages.flatMap(m=&gt;m.content).filter(b=&gt;b.type===&#x27;text&#x27;).map(b=&gt;b.text).join(&#x27;\n&#x27;);
+export function gate(){let release!:()=&gt;void;const promise=new Promise&lt;void&gt;(r=&gt;release=r);return {promise,release};}
+export async function until(check:()=&gt;boolean,label=&#x27;condition&#x27;){
+ const deadline=Date.now()+10000;while(Date.now()&lt;deadline){if(check())return;await tick();}
+ throw Error(&#x27;bounded fixture did not reach &#x27;+label);
+}
+export async function bounded&lt;T&gt;(p:Promise&lt;T&gt;,label=&#x27;operation&#x27;):Promise&lt;T&gt;{
+ let timer:any;try{return await Promise.race([p,new Promise&lt;never&gt;((_,reject)=&gt;{timer=setTimeout(()=&gt;reject(Error(label+&#x27; timed out&#x27;)),10000);})]);}finally{clearTimeout(timer);}
+}
+// Official test pattern: production observeSession/point reads, no full-text backend.
+class PointQuery extends SessionQueryEngine {
+ override searchSessions():Promise&lt;never&gt;{return Promise.reject(Error(&#x27;full-text search not composed&#x27;));}
+ override searchEvents():Promise&lt;never&gt;{return Promise.reject(Error(&#x27;full-text search not composed&#x27;));}
+}
+// Adapted from official working-directory-fixture.ts. No fs, Shell or directory traversal.
+class FixtureDirectory extends Service {
+ private dirs=new WeakMap&lt;object,string&gt;();
+ constructor(ctx:Context){super(ctx,&#x27;workingDirectory&#x27;);}
+ get(s:any){return this.dirs.get(s)??s.header.cwd??process.env.H22_RUN_ROOT!;}
+ async ensure(a:any,signal?:AbortSignal){signal?.throwIfAborted();return this.get(a.session);}
+ async set(a:any,path:string,signal?:AbortSignal){signal?.throwIfAborted();const p=resolve(this.get(a.session),path);this.dirs.set(a.session,p);return p;}
+}
+export class Adapter extends LlmAdapter {
+ requests:any[]=[];scripts=new Map&lt;string,any[]&gt;();
+ async resolveModel(provider:string,model:string){return {provider,id:model,name:model,context:{contextWindow:100000},defaultMaxTokens:128};}
+ async *stream(options:any):AsyncGenerator&lt;any&gt;{
+  this.requests.push(structuredClone({...options,signal:undefined}));
+  const entry=this.scripts.get(options.model)?.shift();assert.ok(entry,&#x27;script exhausted for &#x27;+options.model);
+  if(entry instanceof Error)throw entry;
+  yield* typeof entry===&#x27;function&#x27;?entry(options):entry;
+ }
+}
+export async function fixture(options:{disk?:boolean;root?:string;capacity?:number;depth?:number;delegate?:boolean;control?:boolean}={}){
+ const ctx=new Context(),facts=new Map&lt;string,any[]&gt;(),lifecycle:any[]=[],errors:string[]=[],warnings:string[]=[];
+ await ctx.plugin(SessionStore);
+ ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{const a=facts.get(s.id)??[];a.push(e);facts.set(s.id,a);});
+ let root=options.root;
+ if(options.disk!==false){assert.ok(process.env.H22_RUN_ROOT);root??=await mkdtemp(resolve(process.env.H22_RUN_ROOT!,&#x27;h22-jsonl-&#x27;));await ctx.plugin(Jsonl,{root,compression:&#x27;none&#x27;});}
+ await ctx.plugin(LlmRuntime);await ctx.plugin(SessionProjectionRegistry);await ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,personaPrefix:&#x27;Analyze controlled, fictional project facts only.&#x27;});
+ await ctx.plugin(ToolsService);ctx.tools.setExecutor(new NativeToolExecutor(ctx));await ctx.plugin(AgentRegistry);await ctx.plugin(AgentLoop,{agents:[],maxParallelToolCalls:2});
+ await ctx.plugin(PointQuery);await ctx.plugin(FixtureDirectory);
+ // Explicit fixture config cells implement Volatile.get. This tests the Runtime,
+ // not Host settings UI, Loader reconciliation or their override precedence.
+ const limits={capacity:options.capacity??8,depth:options.depth??1};
+ class FixtureRuntime extends SubagentRuntime {
+  static Config=undefined as any;
+  constructor(inner:Context){super(inner,{maxActiveSubagents:{get:()=&gt;limits.capacity},maxDepth:{get:()=&gt;limits.depth}} as any);}
+ }
+ await ctx.plugin(FixtureRuntime);
+ const spawnFiber=await ctx.plugin(Spawn,{providerName:&#x27;spawn&#x27;});await ctx.plugin(Fork,{providerName:&#x27;fork&#x27;});
+ if(options.delegate)await ctx.plugin(Delegate,{provider:&#x27;spawn&#x27;,toolName:&#x27;subagent&#x27;});
+ if(options.control)await ctx.plugin(Control);
+ const adapter=new Adapter();ctx.llm.registerAdapter([&#x27;fixture&#x27;],adapter);
+ ctx.on(&#x27;subagent/start&#x27;,p=&gt;{lifecycle.push({edge:&#x27;start&#x27;,...p});});ctx.on(&#x27;subagent/end&#x27;,p=&gt;{lifecycle.push({edge:&#x27;end&#x27;,...p});});ctx.on(&#x27;agent/error&#x27;,p=&gt;{errors.push(String(p.error));});
+ const handles:any[]=[],owned=new Set&lt;any&gt;();
+ const create=async(id=&#x27;parent&#x27;,setup?:any)=&gt;{const h=await ctx.agents.create({sessionId:SessionId(id),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;parent&#x27;},setup});handles.push(h);return h.agent;};
+ const start=async(parent:any,provider=&#x27;spawn&#x27;,extra:any={})=&gt;{
+  const {signal=new AbortController().signal,delivery=&#x27;caller&#x27;,childId,...request}=extra;
+  const a=await ctx.subagents.startActivation({provider,label:&#x27;inspect tests&#x27;,request:{parent,prompt:blocks(&#x27;Inspect fictional tests; return test-count=3.&#x27;),agentOptions:{model:&#x27;child&#x27;},...request},signal,delivery,...childId===undefined?{}:{childId}});owned.add(a);return a;
+ };
+ const events=(a:any)=&gt;facts.get(typeof a===&#x27;string&#x27;?a:a.id)??[];
+ const tool=(name:string,execute:any,scope:any=ctx)=&gt;scope.tools.register(defineTool({name,description:&#x27;Controlled fixture &#x27;+name,parameters:{},output:{schema:{type:&#x27;string&#x27;},render:(_a:any,v:any)=&gt;blocks(v)},execute}));
+ const exec=async(a:any,name:string,args:object={})=&gt;{
+  const d=ctx.tools.get(name,a);assert.ok(d,name+&#x27; visible&#x27;);return d.execute(args as never,{agent:a,signal:new AbortController().signal} as any);
+ };
+ return {ctx,adapter,facts,events,lifecycle,errors,warnings,root,limits,create,start,tool,exec,owned,spawnFiber,
+  async release(agent:any){const i=handles.findIndex(h=&gt;h.agent===agent);assert.ok(i&gt;=0);await handles[i].dispose();handles.splice(i,1);},
+  async stored(id:any){const h=await ctx.sessionPersistence.open(id,&#x27;read&#x27;);try{return {header:h.header,...await h.read()};}finally{await h.close();}},
+  async close(){await ctx.subagents.drainDescendants(handles.map(h=&gt;h.agent));for(const a of owned)await a.dispose();for(const h of handles)await h.dispose();await ctx.fiber.dispose();},
+ };
+}
+export async function record(name:string,value:any){await writeFile(resolve(process.env.H22_RUN_ROOT!,&#x27;trace-&#x27;+name+&#x27;.json&#x27;),JSON.stringify(value,null,2)+&#x27;\n&#x27;);}
+export function hasText(events:any[],needle:string){return JSON.stringify(events).includes(needle);}</code></pre></div></div></details>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：公共准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture as agentFixture,assert,SessionId,bounded,gate,until,text,blocks,user,call,hasText,record} from &#x27;./agent-fixture.ts&#x27;;
+import FileSystem from &#x27;@deepseek-ai/dsh-fs-local&#x27;;
+import Subprocess from &#x27;@deepseek-ai/dsh-subprocess-local&#x27;;
+import Sandbox from &#x27;@deepseek-ai/dsh-sandbox-local&#x27;;
+import SandboxPolicy from &#x27;@deepseek-ai/dsh-sandbox-policy&#x27;;
+import NodePtcRuntime from &#x27;@deepseek-ai/dsh-ptc-runtime-node&#x27;;
+import PtcWorkflowEngine from &#x27;@deepseek-ai/dsh-workflow-ptc&#x27;;
+import * as WorkflowTool from &#x27;@deepseek-ai/dsh-tool-workflow&#x27;;
+import {mkdtemp,mkdir,writeFile,readFile} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+export {assert,SessionId,bounded,gate,until,text,blocks,user,call,hasText,record,readFile,writeFile};
+export const meta={name:&#x27;project-review&#x27;,description:&#x27;Review a fictional project using controlled children&#x27;,phases:[{title:&#x27;Inspect&#x27;},{title:&#x27;Synthesize&#x27;}]};
+export async function fixture(options:{engine?:any;pending?:number;tool?:boolean;background?:boolean}={}){
+ const f=await agentFixture(),workspace=await mkdtemp(resolve(process.env.H22_RUN_ROOT!,&#x27;workspace-&#x27;));
+ await f.ctx.plugin(FileSystem);await f.ctx.plugin(Subprocess);await f.ctx.plugin(Sandbox);await f.ctx.plugin(SandboxPolicy,{mode:&#x27;read-only&#x27;,workspaceRoot:workspace});
+ const sandbox=f.ctx.sandbox as any;sandbox.internals={windowsAclRunnerEntry:process.env.H22_SANDBOX_RUNNER,rmTempDir:(_path:string)=&gt;{throw Error(&#x27;read-only fixture must not create write grants or delete temp directories&#x27;);}};
+ await f.ctx.plugin(NodePtcRuntime,{launch:{kind:&#x27;node-script&#x27;,executable:process.execPath,bootstrapPath:process.env.H22_PTC_WORKER!},graceMs:250,maxPendingCalls:options.pending??128});
+ await f.ctx.plugin(PtcWorkflowEngine,{maxConcurrentAgents:2,maxTotalAgents:8,maxItemsPerCall:16,syncTimeoutMs:500,...options.engine});
+ if(options.tool)await f.ctx.plugin(WorkflowTool,{enableRunInBackground:options.background??true,maxResultChars:200});
+ const workflowEvents:any[]=[],processEvents:any[]=[];
+ for(const name of [&#x27;workflow/start&#x27;,&#x27;workflow/phase&#x27;,&#x27;workflow/log&#x27;,&#x27;workflow/agent-start&#x27;,&#x27;workflow/agent-end&#x27;,&#x27;workflow/end&#x27;] as const)f.ctx.on(name,(...args:any[])=&gt;{workflowEvents.push({name,args:structuredClone(args)});});
+ // Synchronous observation wrapper: preserve the native handle and confinement.
+ const original=f.ctx.subprocess.spawn.bind(f.ctx.subprocess);
+ (f.ctx.subprocess as any).spawn=(spec:any)=&gt;{const h=original(spec),entry:any={argv:spec.argv,options:spec.options,done:false};processEvents.push(entry);void h.done.then((outcome:any)=&gt;{entry.done=true;entry.outcome=outcome;},(error:any)=&gt;{entry.done=true;entry.error=String(error);});return h;};
+ const parent=await f.create();
+ const fake={started:[] as string[],disposed:[] as string[],active:0,peak:0,before:async(_req:any)=&gt;{},behavior:async(prompt:string,_req:any)=&gt;({output:blocks(prompt+&#x27;=ok&#x27;),stopReason:&#x27;completed&#x27;}) as Promise&lt;any&gt;};
+ f.ctx.subagents.registerProvider({name:&#x27;controlled&#x27;,inheritsParentContext:false,capabilities:{agentOptions:true,agentPreset:false,outputSchema:true,depthLimit:false},async start(req:any){
+  const label=req.prompt[0].text,id=SessionId(&#x27;controlled-&#x27;+(fake.started.length+1));fake.started.push(label);fake.active++;fake.peak=Math.max(fake.peak,fake.active);
+  await fake.before(req);
+  const result=fake.behavior(label,req);void result.catch(()=&gt;{});let closing:Promise&lt;void&gt;|undefined;
+  return {id,result,dispose:()=&gt;closing??=(async()=&gt;{await result.catch(()=&gt;{});fake.disposed.push(label);fake.active--;})()};
+ }});
+ const start=(script:string,extra:any={})=&gt;f.ctx.workflowEngine.start({meta,script,parent,subagentProvider:&#x27;controlled&#x27;,...extra});
+ return {...f,parent,workspace,workflowEvents,processEvents,fake,start};
+}
+export async function settled(f:any,run:any){try{return await bounded(run.result,&#x27;workflow result&#x27;);}finally{await bounded(run.dispose(),&#x27;workflow dispose&#x27;);}}
+export function assertStopped(f:any){assert.equal(f.fake.active,0);assert.ok(f.processEvents.every((p:any)=&gt;p.done),&#x27;managed subprocesses settled&#x27;);}</code></pre></div></div></details>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：隔离依赖完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// 依赖锚点均由作者 runner 按固定上游 lock 完整核验。
+import fs from &#x27;node:fs&#x27;;
+import {registerHooks, createRequire, syncBuiltinESMExports} from &#x27;node:module&#x27;;
+import {pathToFileURL} from &#x27;node:url&#x27;;
+const dep=createRequire(pathToFileURL(process.env.H22_DEPS_ANCHOR));
+const zod=createRequire(pathToFileURL(process.env.H22_ZOD_ANCHOR));
+const native=createRequire(pathToFileURL(process.env.H22_NATIVE_ANCHOR));
+const limit=createRequire(pathToFileURL(process.env.H22_LIMIT_ANCHOR));
+const ptc=createRequire(pathToFileURL(process.env.H22_PTC_ANCHOR));
+const entries=new Map([&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;]
+ .map(name=&gt;[name,pathToFileURL(dep.resolve(name)).href]));
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+entries.set(&#x27;koffi&#x27;,pathToFileURL(native.resolve(&#x27;koffi&#x27;)).href);
+entries.set(&#x27;yaml&#x27;,pathToFileURL(native.resolve(&#x27;yaml&#x27;)).href);
+entries.set(&#x27;chokidar&#x27;,pathToFileURL(native.resolve(&#x27;chokidar&#x27;)).href);
+entries.set(&#x27;p-limit&#x27;,pathToFileURL(limit.resolve(&#x27;p-limit&#x27;)).href);
+entries.set(&#x27;@js-temporal/polyfill&#x27;,pathToFileURL(limit.resolve(&#x27;@js-temporal/polyfill&#x27;)).href);
+for(const name of [&#x27;acorn&#x27;,&#x27;acorn-walk&#x27;,&#x27;birpc&#x27;])entries.set(name,pathToFileURL(ptc.resolve(name)).href);
+registerHooks({resolve(specifier,context,next){return next(entries.get(specifier)??specifier,context);}});
+// 用户禁止批量/递归删除；包括上游异常清理路径也不准执行递归 rm。
+const rm=fs.promises.rm;
+const rmSync=fs.rmSync;
+fs.rmSync=(path,options)=&gt;{if(options?.recursive)throw Error(&#x27;H22 safety guard: recursive removal forbidden&#x27;);return rmSync(path,options);};
+fs.promises.rm=async(path,options)=&gt;{
+ if(options?.recursive)throw Error(&#x27;H22 safety guard: recursive removal forbidden&#x27;);
+ return rm(path,options);
+};
+syncBuiltinESMExports();</code></pre></div></div></details>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,settled,assertStopped,record} from &#x27;./support.ts&#x27;;
+export const cases:[string,()=&gt;Promise&lt;void&gt;][]=[
+ [&#x27;C A1 real engine: meta, args, top-level await and JSON result&#x27;,async()=&gt;{
+  const f=await fixture();try{const run=f.start(&#x27;return {review:await agent(&quot;README fixture&quot;),count:args.count}&#x27;,{args:{count:3}});const result=await settled(f,run);
+   assert.deepEqual(result,{value:{review:&#x27;README fixture=ok&#x27;,count:3},stopReason:&#x27;completed&#x27;,agentsStarted:1});assertStopped(f);
+   await record(&#x27;A1&#x27;,{result,events:f.workflowEvents,processes:f.processEvents});
+  }finally{await f.close();}
+ }],
+ [&#x27;C A2 pre-publication validation: meta, parse, provider, cap&#x27;,async()=&gt;{
+  const f=await fixture();try{
+   for(const [script,extra,code] of [[&#x27;return 1&#x27;,{meta:{name:&#x27;missing-description&#x27;}},&#x27;META_INVALID&#x27;],[&#x27;const x: number = 1; return x&#x27;,{},&#x27;SCRIPT_PARSE&#x27;],[&#x27;export const meta = {};&#x27;,{},&#x27;SCRIPT_PARSE&#x27;],[&#x27;return 1&#x27;,{subagentProvider:&#x27;missing&#x27;},&#x27;AGENT_START&#x27;],[&#x27;return 1&#x27;,{maxTotalAgents:9},&#x27;INVALID_ARGUMENT&#x27;]] as any[])assert.throws(()=&gt;f.start(script,extra),(e:any)=&gt;e.code===code);
+   assert.equal(f.workflowEvents.length,0);assert.equal(f.processEvents.length,0);await record(&#x27;A2&#x27;,{events:f.workflowEvents,spawned:0});
+  }finally{await f.close();}
+ }],
+ [&#x27;C A3 result resolves on script/JSON errors; undefined becomes null&#x27;,async()=&gt;{
+  const f=await fixture();try{const out=[];
+   for(const script of [&#x27;return undefined&#x27;,&#x27;return {nested:undefined}&#x27;,&#x27;return 1n&#x27;,&#x27;throw new Error(&quot;fixture script failed&quot;)&#x27;])out.push(await settled(f,f.start(script)));
+   assert.equal(out[0].stopReason,&#x27;completed&#x27;);assert.equal(out[0].value,null);for(const r of out.slice(1)){assert.equal(r.stopReason,&#x27;error&#x27;);assert.equal(r.value,null);assert.ok(r.error);}
+   assert.match(out[1].error!,/plain JSON/);assertStopped(f);await record(&#x27;A3&#x27;,out);
+  }finally{await f.close();}
+ }],
+ [&#x27;C A4 args clone is not lossless JSON validation&#x27;,async()=&gt;{
+  const f=await fixture();try{assert.throws(()=&gt;f.start(&#x27;return args&#x27;,{args:()=&gt;1}));const result=await settled(f,f.start(&#x27;return args&#x27;,{args:new Map([[&#x27;a&#x27;,1]])}));
+   assert.equal(result.stopReason,&#x27;error&#x27;);assertStopped(f);await record(&#x27;A4&#x27;,result);
+  }finally{await f.close();}
+ }],
+];</code></pre></div></div></details>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,gate,until,settled,assertStopped,blocks,record} from &#x27;./support.ts&#x27;;
+export const cases:[string,()=&gt;Promise&lt;void&gt;][]=[
+ [&#x27;C B6 Subagent capacity can reject below Workflow concurrency&#x27;,async()=&gt;{
+  const f=await fixture();try{f.limits.capacity=1;f.fake.behavior=async(_p,req)=&gt;{if(!req.signal.aborted)await new Promise&lt;void&gt;(r=&gt;req.signal.addEventListener(&#x27;abort&#x27;,()=&gt;r(),{once:true}));return {output:[],stopReason:&#x27;aborted&#x27;};};
+   const result=await settled(f,f.start(&#x27;return await parallel([()=&gt;agent(&quot;A&quot;),()=&gt;agent(&quot;B&quot;)])&#x27;));assert.equal(result.stopReason,&#x27;error&#x27;);assert.match(result.error!,/could not start a child/);assert.equal(f.fake.peak,1);assertStopped(f);await record(&#x27;B6&#x27;,{result,started:f.fake.started,disposed:f.fake.disposed,limits:{workflow:2,subagent:1}});
+  }finally{await f.close();}
+ }],
+ [&#x27;C B7 structured output present versus absent on completed child&#x27;,async()=&gt;{
+  const f=await fixture();try{f.fake.behavior=async(p)=&gt;({output:blocks(&#x27;ignored text&#x27;),stopReason:&#x27;completed&#x27;,...p===&#x27;valid&#x27;?{structured:{count:3}}:{}});const result=await settled(f,f.start(&#x27;return await parallel([()=&gt;agent(&quot;valid&quot;,{schema:{type:&quot;object&quot;,properties:{count:{type:&quot;number&quot;}},required:[&quot;count&quot;]}}),()=&gt;agent(&quot;missing&quot;,{schema:{type:&quot;object&quot;}})])&#x27;));assert.equal(result.stopReason,&#x27;completed&#x27;);assert.deepEqual(result.value,[{count:3},null]);assertStopped(f);await record(&#x27;B7&#x27;,result);}finally{await f.close();}
+ }],
+ [&#x27;C B1 parallel starts together and collects input order&#x27;,async()=&gt;{
+  const f=await fixture(),a=gate(),b=gate(),finished:string[]=[];try{
+   f.fake.behavior=async(p)=&gt;{await(p===&#x27;A&#x27;?a:b).promise;finished.push(p);return {output:blocks(p),stopReason:&#x27;completed&#x27;};};
+   const run=f.start(&#x27;return await parallel([()=&gt;agent(&quot;A&quot;),()=&gt;agent(&quot;B&quot;)])&#x27;);
+   await until(()=&gt;f.fake.started.length===2,&#x27;two active children&#x27;);assert.equal(f.fake.peak,2);b.release();await until(()=&gt;finished.includes(&#x27;B&#x27;));assert.deepEqual(finished,[&#x27;B&#x27;]);a.release();
+   const result=await settled(f,run);assert.deepEqual(result.value,[&#x27;A&#x27;,&#x27;B&#x27;]);assertStopped(f);await record(&#x27;B1&#x27;,{result,finished,started:f.fake.started,events:f.workflowEvents});
+  }finally{a.release();b.release();await f.close();}
+ }],
+ [&#x27;C B2 pipeline is per-item order without a cross-stage barrier&#x27;,async()=&gt;{
+  const f=await fixture(),hold=gate();try{f.fake.behavior=async(p)=&gt;{if(p===&#x27;B1&#x27;)await hold.promise;return {output:blocks(p),stopReason:&#x27;completed&#x27;};};
+   const run=f.start(&#x27;return await pipeline([&quot;A&quot;,&quot;B&quot;],(prev,item,index)=&gt;agent(item+&quot;1&quot;),(prev,item,index)=&gt;agent(item+&quot;2:&quot;+prev+&quot;:&quot;+index))&#x27;);
+   await until(()=&gt;f.fake.started.includes(&#x27;A2:A1:0&#x27;),&#x27;A reaches second stage while B1 held&#x27;);assert.ok(!f.fake.disposed.includes(&#x27;B1&#x27;));hold.release();
+   const result=await settled(f,run);assert.deepEqual(result.value,[&#x27;A2:A1:0&#x27;,&#x27;B2:B1:1&#x27;]);assertStopped(f);await record(&#x27;B2&#x27;,{result,startOrder:f.fake.started});
+  }finally{hold.release();await f.close();}
+ }],
+ [&#x27;C B3 ordinary child failure and ordinary thunk throw become null&#x27;,async()=&gt;{
+  const f=await fixture();try{f.fake.behavior=async(p)=&gt;({output:blocks(p),stopReason:p===&#x27;bad&#x27;?&#x27;error&#x27;:&#x27;completed&#x27;});
+   const result=await settled(f,f.start(&#x27;return {p:await parallel([()=&gt;agent(&quot;bad&quot;),()=&gt;{throw Error(&quot;ordinary&quot;)}]),q:await pipeline([&quot;drop&quot;,&quot;keep&quot;],(prev,item)=&gt;{if(item===&quot;drop&quot;)throw Error(&quot;skip&quot;);return item},prev=&gt;agent(prev))}&#x27;));
+   assert.equal(result.stopReason,&#x27;completed&#x27;);assert.deepEqual(result.value,{p:[null,null],q:[null,&#x27;keep&#x27;]});assert.deepEqual(f.fake.started,[&#x27;bad&#x27;,&#x27;keep&#x27;]);
+   const nullValue=await settled(f,f.start(&#x27;return await pipeline([1],()=&gt;null,prev=&gt;({received:prev}))&#x27;));assert.deepEqual(nullValue.value,[{received:null}]);assertStopped(f);await record(&#x27;B3&#x27;,{result,nullValue});
+  }finally{await f.close();}
+ }],
+ [&#x27;C B4 fatal options/schema and broken provider survive combinators&#x27;,async()=&gt;{
+  const f=await fixture();try{const out=[];
+   for(const script of [&#x27;return await parallel([()=&gt;agent(&quot;A&quot;,{effort:&quot;high&quot;})])&#x27;,&#x27;return await pipeline([1],()=&gt;agent(&quot;A&quot;,{schema:{type:&quot;string&quot;}}))&#x27;])out.push(await settled(f,f.start(script)));
+   f.fake.behavior=async()=&gt;{throw Error(&#x27;broken result channel&#x27;);};out.push(await settled(f,f.start(&#x27;return await parallel([()=&gt;agent(&quot;A&quot;)])&#x27;)));
+   for(const r of out)assert.equal(r.stopReason,&#x27;error&#x27;);assert.match(out[0].error!,/deferred/);assert.match(out[1].error!,/schema/);assert.match(out[2].error!,/child agent run failed/);assertStopped(f);await record(&#x27;B4&#x27;,out);
+  }finally{await f.close();}
+ }],
+ [&#x27;C B5 concurrency slots, queued total count and item cap differ&#x27;,async()=&gt;{
+  const f=await fixture({engine:{maxConcurrentAgents:1,maxTotalAgents:3,maxItemsPerCall:3}}),hold=gate();try{
+   f.fake.behavior=async(p)=&gt;{if(p===&#x27;A&#x27;)await hold.promise;return {output:blocks(p),stopReason:&#x27;completed&#x27;};};
+   const run=f.start(&#x27;return await parallel([()=&gt;agent(&quot;A&quot;),()=&gt;agent(&quot;B&quot;),()=&gt;agent(&quot;C&quot;)])&#x27;);await until(()=&gt;f.fake.started.length===1);assert.deepEqual(f.fake.started,[&#x27;A&#x27;]);hold.release();
+   const ok=await settled(f,run);assert.equal(ok.agentsStarted,3);assert.equal(f.fake.peak,1);
+   const total=await settled(f,f.start(&#x27;await agent(&quot;D&quot;);await agent(&quot;E&quot;);return await agent(&quot;F&quot;)&#x27;,{maxTotalAgents:2}));assert.equal(total.stopReason,&#x27;error&#x27;);assert.match(total.error!,/total agent cap/);
+   const count=f.fake.started.length,item=await settled(f,f.start(&#x27;return await parallel([()=&gt;agent(&quot;must-not-start&quot;),()=&gt;2,()=&gt;3,()=&gt;4])&#x27;));assert.equal(item.stopReason,&#x27;error&#x27;);assert.equal(f.fake.started.length,count);assert.match(item.error!,/per-call cap/);assertStopped(f);await record(&#x27;B5&#x27;,{ok,total,item,peak:f.fake.peak});
+  }finally{hold.release();await f.close();}
+ }],
+];</code></pre></div></div></details>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,gate,until,bounded,settled,assertStopped,record,writeFile,readFile} from &#x27;./support.ts&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+export const cases:[string,()=&gt;Promise&lt;void&gt;][]=[
+ [&#x27;C C1 cancellation drains a published child and dispose is shared&#x27;,async()=&gt;{
+  const f=await fixture(),hold=gate();let run:any;try{f.fake.behavior=async()=&gt;{await hold.promise;return {output:[],stopReason:&#x27;cancelled&#x27;};};run=f.start(&#x27;return await agent(&quot;held&quot;)&#x27;);
+   await until(()=&gt;f.workflowEvents.some(e=&gt;e.name===&#x27;workflow/agent-start&#x27;));let ended=false;void run.result.then(()=&gt;{ended=true;});run.cancel(&#x27;fixture cancel&#x27;);await until(()=&gt;f.processEvents.every(p=&gt;p.done),&#x27;managed process stopped while child held&#x27;);await new Promise&lt;void&gt;(r=&gt;setImmediate(r));assert.equal(ended,false);assert.equal(f.fake.active,1);
+   const d1=run.dispose(),d2=run.dispose();assert.equal(d1,d2);hold.release();const result=await bounded(run.result);await bounded(d1);assert.equal(result.stopReason,&#x27;cancelled&#x27;);assert.equal(f.fake.disposed.length,1);assertStopped(f);
+   assert.equal(f.workflowEvents.filter(e=&gt;e.name===&#x27;workflow/start&#x27;).length,1);assert.equal(f.workflowEvents.filter(e=&gt;e.name===&#x27;workflow/end&#x27;).length,1);assert.equal(f.workflowEvents.filter(e=&gt;e.name===&#x27;workflow/agent-end&#x27;).length,1);await record(&#x27;C1&#x27;,{result,events:f.workflowEvents,processes:f.processEvents,disposed:f.fake.disposed});
+  }finally{hold.release();if(run)await run.dispose();await f.close();}
+ }],
+ [&#x27;C C2 pending startup after cancel is disposed before settlement&#x27;,async()=&gt;{
+  const f=await fixture(),hold=gate();let run:any;try{f.fake.before=async()=&gt;{await hold.promise;};run=f.start(&#x27;return await agent(&quot;starting&quot;)&#x27;);await until(()=&gt;f.fake.started.length===1);run.cancel();let settled=false;void run.result.then(()=&gt;{settled=true;});await until(()=&gt;f.processEvents.every(p=&gt;p.done),&#x27;managed process stopped while startup held&#x27;);await new Promise&lt;void&gt;(r=&gt;setImmediate(r));assert.equal(settled,false);hold.release();const result=await bounded(run.result);await run.dispose();assert.equal(result.stopReason,&#x27;cancelled&#x27;);assert.deepEqual(f.fake.disposed,[&#x27;starting&#x27;]);assertStopped(f);await record(&#x27;C2&#x27;,{result,disposed:f.fake.disposed,events:f.workflowEvents,settledBeforeLatePublication:false});
+  }finally{hold.release();if(run)await run.dispose();await f.close();}
+ }],
+ [&#x27;C C3 cancel post-await infinite guest work without killing test process&#x27;,async()=&gt;{
+  const f=await fixture();try{const run=f.start(&#x27;await agent(&quot;ready&quot;);log(&quot;enter busy slice&quot;);await Promise.resolve();while(true){}&#x27;);await until(()=&gt;f.workflowEvents.some(e=&gt;e.name===&#x27;workflow/log&#x27;));run.cancel(&#x27;stop busy guest&#x27;);const result=await settled(f,run);assert.equal(result.stopReason,&#x27;cancelled&#x27;);assertStopped(f);await record(&#x27;C3&#x27;,{result,processes:f.processEvents});}finally{await f.close();}
+ }],
+ [&#x27;C C4 phase/log are observations; listener failures are isolated&#x27;,async()=&gt;{
+  const f=await fixture();try{f.ctx.on(&#x27;workflow/phase&#x27;,()=&gt;{throw Error(&#x27;sync listener fixture&#x27;);});f.ctx.on(&#x27;workflow/log&#x27;,async()=&gt;{throw Error(&#x27;async listener fixture&#x27;);});const result=await settled(f,f.start(&#x27;phase(&quot;Undeclared annotation&quot;);log(&quot;fixture progress&quot;);return await agent(&quot;A&quot;)&#x27;));
+   assert.equal(result.stopReason,&#x27;completed&#x27;);assert.equal(f.workflowEvents.filter(e=&gt;e.name===&#x27;workflow/phase&#x27;).length,1);assert.equal(f.workflowEvents.filter(e=&gt;e.name===&#x27;workflow/log&#x27;).length,1);assert.equal(f.events(f.parent).filter((e:any)=&gt;e.type.startsWith(&#x27;tool-workflow/&#x27;)).length,0);assertStopped(f);await record(&#x27;C4&#x27;,{result,events:f.workflowEvents});
+  }finally{await f.close();}
+ }],
+ [&#x27;C C5 native read-only runner rejects writes through a VM escape&#x27;,async()=&gt;{
+  const f=await fixture();try{const outside=resolve(process.env.H22_RUN_ROOT!,&#x27;denial-fixture.txt&#x27;);await writeFile(outside,&#x27;unchanged&#x27;);const result=await settled(f,f.start(&#x27;const p=globalThis.constructor.constructor(&quot;return process&quot;)();const fs=p.getBuiltinModule(&quot;node:fs&quot;);try{fs.writeFileSync(args.outside,&quot;changed&quot;);return {denied:false}}catch(e){return {denied:true,code:e.code}}&#x27;,{args:{outside}}));
+   assert.equal(result.stopReason,&#x27;completed&#x27;,result.error);assert.equal((result.value as any).denied,true);assert.equal(await readFile(outside,&#x27;utf8&#x27;),&#x27;unchanged&#x27;);assert.ok(f.processEvents.every(p=&gt;p.argv.includes(&#x27;read-only&#x27;)));assertStopped(f);await record(&#x27;C5&#x27;,{result,processes:f.processEvents,contents:&#x27;unchanged&#x27;,limit:&#x27;one Windows ACL fixture denial; no network or universal sandbox certification&#x27;});
+  }finally{await f.close();}
+ }],
+];</code></pre></div></div></details>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,gate,until,bounded,text,call,user,hasText,meta,record} from &#x27;./support.ts&#x27;;
+import LocalJobs from &#x27;@deepseek-ai/dsh-jobs-local&#x27;;
+import * as ToolJobs from &#x27;@deepseek-ai/dsh-tool-jobs&#x27;;
+import {integrated} from &#x27;./X.ts&#x27;;
+export const cases:[string,()=&gt;Promise&lt;void&gt;][]=[
+ [&#x27;D D1 foreground parent tool, three real children, Session and next model request&#x27;,async()=&gt;{await integrated();}],
+ [&#x27;D D2 tool schema, error mapping and rendered cap&#x27;,async()=&gt;{
+  const f=await fixture({tool:true,background:false});try{
+   f.adapter.scripts.set(&#x27;parent&#x27;,[call(&#x27;workflow&#x27;,{meta,script:&#x27;return await agent(&quot;bad&quot;,{effort:&quot;high&quot;})&#x27;}),text(&#x27;RECOVER_AFTER_TOOL_ERROR&#x27;)]);f.parent.followup(user(&#x27;Run a controlled workflow.&#x27;));await bounded(f.parent.whenIdle());const first=f.events(f.parent).find((e:any)=&gt;e.type===&#x27;tool/result&#x27;);assert.equal(first.data.message.isError,true);
+   const def=f.ctx.tools.get(&#x27;workflow&#x27;,f.parent)!;assert.equal(JSON.stringify(def.parameters).includes(&#x27;run_in_background&#x27;),false);
+   f.adapter.scripts.set(&#x27;parent&#x27;,[call(&#x27;workflow&#x27;,{meta,script:&#x27;return &quot;x&quot;.repeat(300)&#x27;}),text(&#x27;DONE&#x27;)]);f.parent.followup(user(&#x27;Return a long fixture value with workflow.&#x27;));await bounded(f.parent.whenIdle());
+   const results=f.events(f.parent).filter((e:any)=&gt;e.type===&#x27;tool/result&#x27;);assert.equal(results[1].data.message.isError,false);assert.ok(hasText([results[1]],&#x27;truncated&#x27;));await record(&#x27;D2&#x27;,{results,requests:f.adapter.requests});
+  }finally{await f.close();}
+ }],
+ [&#x27;D D3 background receipt, observer log, job_output and notification&#x27;,async()=&gt;{
+  const f=await fixture({tool:true}),hold=gate();let entered=0;try{
+   await f.ctx.plugin(LocalJobs);await f.ctx.plugin(ToolJobs,{completionDelivery:&#x27;quiet&#x27;,inlineOutputBytes:0});
+   f.adapter.scripts.set(&#x27;child&#x27;,[async function*(){entered++;await hold.promise;yield*text(&#x27;BACKGROUND_REPORT&#x27;);}]);
+   f.adapter.scripts.set(&#x27;parent&#x27;,[call(&#x27;workflow&#x27;,{meta,script:&#x27;phase(&quot;Inspect&quot;);log(&quot;observer-only&quot;);return await agent(&quot;background&quot;,{model:&quot;child&quot;})&#x27;,run_in_background:true}),text(&#x27;BACKGROUND_ACCEPTED&#x27;)]);
+   f.parent.followup(user(&#x27;Use a background workflow for the fictional facts.&#x27;));await bounded(f.parent.whenIdle());await until(()=&gt;entered===1);
+   const job=f.ctx.jobs.list(f.parent.id)[0];assert.equal(job.status,&#x27;running&#x27;);const receipt=f.events(f.parent).find((e:any)=&gt;e.type===&#x27;tool/result&#x27;);assert.ok(hasText([receipt],job.id));
+   await until(()=&gt;hasText([f.ctx.jobs.readAt(job.id,0,f.parent.id)],&#x27;observer-only&#x27;),&#x27;progress reached observer ring&#x27;);const observer=f.ctx.jobs.readAt(job.id,0,f.parent.id);assert.ok(hasText([observer],&#x27;observer-only&#x27;));
+   const running=await f.exec(f.parent,&#x27;job_output&#x27;,{job_id:job.id});assert.equal(hasText([running],&#x27;observer-only&#x27;),false);
+   hold.release();await until(()=&gt;f.ctx.jobs.get(job.id,f.parent.id).status===&#x27;completed&#x27;,&#x27;background settlement&#x27;);const terminal=f.ctx.jobs.get(job.id,f.parent.id);await until(()=&gt;f.parent.inbox.nextStep.some((m:any)=&gt;m.source.kind===&#x27;tool-jobs&#x27;),&#x27;quiet completion notice&#x27;);
+   const notice=[...f.parent.inbox.nextStep];const final=await f.exec(f.parent,&#x27;job_output&#x27;,{job_id:job.id});assert.ok(hasText([final],&#x27;BACKGROUND_REPORT&#x27;));const again=await f.exec(f.parent,&#x27;job_output&#x27;,{job_id:job.id});assert.equal(hasText([again],&#x27;BACKGROUND_REPORT&#x27;),false);assert.equal(f.parent.inbox.nextStep.some((m:any)=&gt;m.source.kind===&#x27;tool-jobs&#x27;),false);
+   assert.equal(f.processEvents.every(p=&gt;p.done),true);await record(&#x27;D3&#x27;,{receipt,observer,running,terminal,notice,final,again,events:f.workflowEvents,parent:f.events(f.parent)});
+  }finally{hold.release();await f.close();}
+ }],
+ [&#x27;D D4 background job_kill cancels and drains its workflow&#x27;,async()=&gt;{
+  const f=await fixture({tool:true}),hold=gate();let entered=0;try{await f.ctx.plugin(LocalJobs);await f.ctx.plugin(ToolJobs,{completionDelivery:&#x27;quiet&#x27;,inlineOutputBytes:0});
+   f.adapter.scripts.set(&#x27;child&#x27;,[async function*(){entered++;await hold.promise;yield*text(&#x27;late result&#x27;);}]);f.adapter.scripts.set(&#x27;parent&#x27;,[call(&#x27;workflow&#x27;,{meta,script:&#x27;return await agent(&quot;held&quot;,{model:&quot;child&quot;})&#x27;,run_in_background:true}),text(&#x27;ACCEPTED&#x27;)]);f.parent.followup(user(&#x27;Run a background workflow.&#x27;));await bounded(f.parent.whenIdle());await until(()=&gt;entered===1);
+   const job=f.ctx.jobs.list(f.parent.id)[0],kill=await f.exec(f.parent,&#x27;job_kill&#x27;,{job_id:job.id});assert.equal(f.ctx.jobs.get(job.id,f.parent.id).status,&#x27;stopping&#x27;);hold.release();const terminal=await bounded(f.ctx.jobs.wait(job.id,10000,f.parent.id));assert.equal(terminal.status,&#x27;killed&#x27;);assert.equal(f.processEvents.every(p=&gt;p.done),true);assert.equal(f.lifecycle.filter(e=&gt;e.edge===&#x27;start&#x27;).length,f.lifecycle.filter(e=&gt;e.edge===&#x27;end&#x27;).length);await record(&#x27;D4&#x27;,{kill,terminal,events:f.workflowEvents,lifecycle:f.lifecycle});
+  }finally{hold.release();await f.close();}
+ }],
+];</code></pre></div></div></details>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实验完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,gate,until,bounded,text,call,user,hasText,meta,record} from &#x27;./support.ts&#x27;;
+export const script=`phase(&#x27;Inspect&#x27;);
+log(&#x27;review fictional facts&#x27;);
+const [architecture,tests] = await parallel([
+ () =&gt; agent(&#x27;architecture: modules=3&#x27;, {model:&#x27;architecture&#x27;, label:&#x27;Architecture&#x27;}),
+ () =&gt; agent(&#x27;tests: covered=2/3&#x27;, {model:&#x27;tests&#x27;, label:&#x27;Tests&#x27;})
+]);
+phase(&#x27;Synthesize&#x27;);
+const [report] = await pipeline([{architecture,tests}],
+ (previous,item,index) =&gt; agent(&#x27;risk and synthesis: &#x27;+JSON.stringify(previous), {model:&#x27;synthesis&#x27;,label:&#x27;Synthesis&#x27;})
+);
+return {architecture,tests,report};`;
+export async function integrated(){
+ const f=await fixture({tool:true}),hold=gate();let entered=0;
+ try{
+  f.adapter.scripts.set(&#x27;architecture&#x27;,[async function*(){entered++;await hold.promise;yield*text(&#x27;modules=3&#x27;);}]);
+  f.adapter.scripts.set(&#x27;tests&#x27;,[async function*(){entered++;await hold.promise;yield*text(&#x27;covered=2/3&#x27;);}]);
+  f.adapter.scripts.set(&#x27;synthesis&#x27;,[text(&#x27;risk=one uncovered module; recommend focused test&#x27;)]);
+  f.adapter.scripts.set(&#x27;parent&#x27;,[call(&#x27;workflow&#x27;,{meta,script},&#x27;review-workflow&#x27;),text(&#x27;PARENT_REVIEW_COMPLETE&#x27;)]);
+  f.parent.followup(user(&#x27;Use a workflow to review the fictional project and synthesize risks.&#x27;));
+  await until(()=&gt;entered===2,&#x27;two real child AgentLoops&#x27;);
+  assert.equal(f.events(f.parent).filter((e:any)=&gt;e.type===&#x27;tool/result&#x27;).length,0,&#x27;foreground tool result still pending&#x27;);assert.equal(f.adapter.requests.filter(r=&gt;r.model===&#x27;parent&#x27;).length,1);
+  hold.release();await bounded(f.parent.whenIdle(),&#x27;parent workflow turn&#x27;);
+  const parent=f.events(f.parent),results=parent.filter((e:any)=&gt;e.type===&#x27;tool/result&#x27;);assert.equal(results.length,1);assert.equal(results[0].data.message.isError,false);
+  const rendered=results[0].data.message.content[0].text;const aggregate=JSON.parse(rendered.split(&#x27;Return value:\n&#x27;)[1]);assert.deepEqual(aggregate,{architecture:&#x27;modules=3&#x27;,tests:&#x27;covered=2/3&#x27;,report:&#x27;risk=one uncovered module; recommend focused test&#x27;});
+  const requests=f.adapter.requests.filter(r=&gt;r.model===&#x27;parent&#x27;);assert.equal(requests.length,2);assert.ok(hasText(requests[1].messages,&#x27;risk=one uncovered module&#x27;));
+  assert.equal(f.lifecycle.filter(e=&gt;e.edge===&#x27;start&#x27;).length,3);assert.equal(f.lifecycle.filter(e=&gt;e.edge===&#x27;end&#x27;).length,3);assert.equal(parent.filter((e:any)=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;subagent-settled&#x27;).length,0);
+  const durable=parent.filter((e:any)=&gt;e.type.startsWith(&#x27;tool-workflow/&#x27;));assert.equal(durable.length,8);assert.equal(durable.filter((e:any)=&gt;e.type===&#x27;tool-workflow/agent-start&#x27;).length,3);
+  assert.equal(parent.filter((e:any)=&gt;e.type===&#x27;workflow/log&#x27;||e.type===&#x27;workflow/phase&#x27;).length,0);assert.equal(f.processEvents.every(p=&gt;p.done),true);
+  await f.ctx.parallel(&#x27;session/flush&#x27;,f.parent.session);const stored=await f.stored(f.parent.id);assert.deepEqual(stored.events.filter((e:any)=&gt;e.type.startsWith(&#x27;tool-workflow/&#x27;)),durable);
+  const ended=f.workflowEvents.find(e=&gt;e.name===&#x27;workflow/end&#x27;);assert.ok(ended);assert.equal(hasText([ended],&#x27;risk=one uncovered module&#x27;),false);
+  const startC=f.workflowEvents.findIndex(e=&gt;e.name===&#x27;workflow/agent-start&#x27;&amp;&amp;e.args[1].label===&#x27;Synthesis&#x27;);
+  for(const label of [&#x27;Architecture&#x27;,&#x27;Tests&#x27;]){const end=f.workflowEvents.findIndex(e=&gt;e.name===&#x27;workflow/agent-end&#x27;&amp;&amp;e.args[1].label===label);assert.ok(end&gt;=0&amp;&amp;end&lt;startC);}
+  assert.ok(requests[0].tools.some((t:any)=&gt;t.name===&#x27;workflow&#x27;),&#x27;actual parent model sees workflow schema&#x27;);
+  const evidence={script,parent,requests:f.adapter.requests,lifecycle:f.lifecycle,workflowEvents:f.workflowEvents,stored:stored.events,processes:f.processEvents,jsonlRoot:f.root,scope:&#x27;real parent + 3 child AgentLoops + Spawn + Workflow/PTC + JSONL; controlled local Mock LLM, no E integration&#x27;};
+  await record(&#x27;X&#x27;,evidence);return evidence;
+ }finally{hold.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：边界验证完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,settled,record,readFile} from &#x27;./support.ts&#x27;;
+import GoalService from &#x27;@deepseek-ai/dsh-goal&#x27;;
+import Storage from &#x27;@deepseek-ai/dsh-storage&#x27;;
+import {DomainFacility} from &#x27;@deepseek-ai/dsh-storage-domain&#x27;;
+import {JsonStorageBackend} from &#x27;@deepseek-ai/dsh-storage-json&#x27;;
+import ScheduleService from &#x27;@deepseek-ai/dsh-schedule&#x27;;
+import {mkdtemp} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+export const cases:[string,()=&gt;Promise&lt;void&gt;][]=[
+ [&#x27;C boundary missing confinement fails closed without spawning&#x27;,async()=&gt;{
+  const f=await fixture();try{Object.defineProperty(f.ctx.ptcRuntime,&#x27;sandboxMode&#x27;,{get:()=&gt;undefined});const result=await settled(f,f.start(&#x27;return 1&#x27;));assert.equal(result.stopReason,&#x27;error&#x27;);assert.equal(f.processEvents.length,0);await record(&#x27;confinement&#x27;,{result,processes:f.processEvents});}finally{await f.close();}
+ }],
+ [&#x27;C boundary Goal revision, pause and disarm differ from durable phase&#x27;,async()=&gt;{
+  const f=await fixture();try{await f.ctx.plugin(GoalService);const created=f.ctx.goals.create(f.parent,{objective:&#x27;Review fictional fixture&#x27;,maxGoalRounds:2});assert.equal(created.activation,&#x27;armed&#x27;);const paused=f.ctx.goals.pause(f.parent,created);assert.equal(paused.phase,&#x27;paused&#x27;);assert.throws(()=&gt;f.ctx.goals.resume(f.parent,created));const resumed=f.ctx.goals.resume(f.parent,paused),disarmed=f.ctx.goals.disarm(f.parent)!;assert.equal(disarmed.phase,&#x27;active&#x27;);assert.equal(disarmed.activation,&#x27;disarmed&#x27;);assert.equal(disarmed.revision,resumed.revision);assert.equal(f.adapter.requests.length,0);await record(&#x27;goal&#x27;,{created,paused,resumed,disarmed,events:f.events(f.parent),limit:&#x27;service and Session transitions; Goal round driver not mounted&#x27;});}finally{await f.close();}
+ }],
+ [&#x27;C boundary Schedule persists a future trigger independently of WorkflowRun&#x27;,async()=&gt;{
+  const root=await mkdtemp(resolve(process.env.H22_RUN_ROOT!,&#x27;schedule-&#x27;));const observations=[];let id:string|undefined;
+  for(let i=0;i&lt;2;i++){const f=await fixture();let facility:any,backend:any;try{
+   await f.ctx.plugin(Storage);backend=new JsonStorageBackend(root);f.ctx.storage.backend.register(&#x27;fixture&#x27;,backend);facility=new DomainFacility(f.ctx,{backend:&#x27;fixture&#x27;});const unmount=f.ctx.storage.mount(&#x27;domain&#x27;,facility);f.ctx.provide(&#x27;storageDomain&#x27;,facility);f.ctx.effect(()=&gt;async()=&gt;{await facility.closeAll();unmount();await backend.close();});await f.ctx.plugin(ScheduleService,{});
+   if(i===0){await assert.rejects(f.ctx.schedule.create(f.parent.id,{title:&#x27;fixture&#x27;,prompt:&#x27;fictional&#x27;,at:&#x27;2099-01-01T00:00:00Z&#x27;,every_seconds:86400}));const task=await f.ctx.schedule.create(f.parent.id,{title:&#x27;Future fixture&#x27;,prompt:&#x27;Review fictional fixture only&#x27;,at:&#x27;2099-01-01T00:00:00Z&#x27;});id=task.id;}
+   const tasks=await f.ctx.schedule.list({sessionId:f.parent.id});assert.equal(tasks.length,1);assert.equal(tasks[0].id,id);assert.equal(f.adapter.requests.length,0);assert.equal(f.workflowEvents.length,0);observations.push(tasks);
+  }finally{await f.close();}}
+  await record(&#x27;schedule&#x27;,{root,observations,bytes:await readFile(resolve(root,&#x27;schedule.json&#x27;),&#x27;utf8&#x27;),limit:&#x27;new Context + real JSON readback of future trigger; no due delivery or application restart test&#x27;});
+ }],
+];</code></pre></div></div></details>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：测试入口完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {test} from &#x27;node:test&#x27;;
+import {cases as A} from &#x27;./A.ts&#x27;;
+import {cases as B} from &#x27;./B.ts&#x27;;
+import {cases as C} from &#x27;./C.ts&#x27;;
+import {cases as D} from &#x27;./D.ts&#x27;;
+import {cases as boundaries} from &#x27;./boundaries.ts&#x27;;
+for(const [name,run] of [...A,...B,...C,...D,...boundaries])test(name,{concurrency:false},run);</code></pre></div></div></details>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {cases as A} from &#x27;./A.ts&#x27;;
+import {cases as B} from &#x27;./B.ts&#x27;;
+import {cases as C} from &#x27;./C.ts&#x27;;
+import {cases as D} from &#x27;./D.ts&#x27;;
+import {cases as boundaries} from &#x27;./boundaries.ts&#x27;;
+import {integrated} from &#x27;./X.ts&#x27;;
+const choice=process.argv[2],groups:any={A,B,C,D,boundaries};
+if(choice===&#x27;X&#x27;){await integrated();console.log(&#x27;PASS X (same scenario as D1, not an additional counted test)&#x27;);}
+else{if(!groups[choice])throw Error(&#x27;Choose A, B, C, D, X or boundaries&#x27;);for(const [name,run] of groups[choice]){await run();console.log(&#x27;PASS &#x27;+name);}}</code></pre></div></div></details>
+<h2>思考：用代码或事件证明判断</h2>
+<ol>
+<li>只需核对三条README事实，为什么可以继续用H21委派？什么变化使本例值得Workflow？</li>
+</ol>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>先比较工作量和依赖。单个清楚、有边界的核对任务不需要组合器，Activation与结果交付已经足够。本例出现A/B独立、C同时依赖两份输出、统一结果和规模约束，显式程序让依赖可检查，故值得考虑Workflow。不能用“Agent越多越先进”作理由：脚本、进程、提示词与综合增加成本，真实性能本课没有测量。替代方案只要说明依赖与清理责任，也可成立。</p></div></details>
+<ol start="2">
+<li>B先完成、A后完成，parallel输入[A,B]；父级最后得到[B,A]吗？</li>
+</ol>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>先分完成观察与返回索引。Promise.all按输入位置收集，所以完成轨迹可以是B/A，结果数组仍A/B；字段解构仍architecture取A。B1先开B门闩再开A，实际证明两条序列不同。若按第一个完成者分配Mock答案，会把身份与调度顺序混用，X已给每个角色独立model脚本。仅一张PASS截图不能解释结果归属。</p></div></details>
+<ol start="3">
+<li>pipeline有A/B两项、两个阶段，B1被门闩阻挡；A2是否必须等待B1？回调三个参数是什么？</li>
+</ol>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>每项有自己的阶段循环，A1的await结束后即可调用A2，不读取B1的完成状态。previous是本项前阶段值，item/index是原输入，第一阶段previous从item开始。B2实际观察A2开始时B1还没dispose，证明没有全局屏障。若C要两项结果，先await整个组合器并汇总，再调用C；不能因为函数名叫pipeline就推导批次屏障。</p></div></details>
+<ol start="4">
+<li>先phase(&#x27;Synthesize&#x27;)再agent(&#x27;C&#x27;)，能确保先前未await的A/B已完成吗？</li>
+</ol>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>phase更新当前标签并发布观察，不会查此前Promise或关住并发槽。若A/B未await，C可以与它们重叠，甚至脚本先返回触发Host清理遗留子级。修复应保存并awaitA/B的聚合Promise，再启动C。Meta.phases也只是声明，固定实现只校phase字符串非空，不强制命中声明。C4故意用未声明标签仍完成，不能把进度卡当调度器。</p></div></details>
+<ol start="5">
+<li>pipeline第一阶段return null，与throw普通Error对第二阶段有何不同？fatal又怎样？</li>
+</ol>
+<details id="lesson-deepdive-22" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>return null是正常阶段值，for循环仍把null传到下一阶段；需业务代码显式检查才跳过。普通throw被本项外层catch变成null，后续阶段已离开循环，因此不执行。WorkflowError的fatal分支继续抛，整项脚本成为error，而不是只丢一个item。子Agent正常失败返回null和Provider结果拒绝AGENT_RESULT也必须区分，不能统一套“错误都转空值”。</p></div></details>
+<ol start="6">
+<li>并发1、总量2，脚本同时调用三个agent；把并发改成3就能通过吗？</li>
+</ol>
+<details id="lesson-deepdive-23" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>guest先验证并增加accepted总数，再等并发槽，第三次触到总量2就产生AGENT_CAP。加大并发不增加总量预算，仍不能通过；error退出后已经接纳的工作要排空。另一方面并发3也不扩充Subagent容量，底层容量不足可能先触发AGENT_START。预测必须写出各层配置与竞争窗口，不能把agentsStarted一律当已物化子级数量，取消降级计数还可能只见Host启动数。</p></div></details>
+<ol start="7">
+<li>子级返回stopReason=error与result Promise Reject，为什么一个null、一个fatal？</li>
+</ol>
+<details id="lesson-deepdive-24" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>前者是子级协议成功交付的失败结果，调用方可以保留证据缺口并继续其他独立工作；后者表示结果通道的基础设施出错，若吞成普通空值会掩盖坏Provider。agent分支将后者转AGENT_RESULT，并配失败观察边再传播fatal。Workflow自身result仍按约定以error结果结算。这不证明所有子级失败都可以安全继续综合，业务还要检查null与未知外部效果。</p></div></details>
+<ol start="8">
+<li>cancel后立刻观察fake.active=1，是否说明取消失效？为什么dispose要await？</li>
+</ol>
+<details id="lesson-deepdive-25" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>不必然。cancel发信号并请求释放，正在等待门闩的合作后端仍须走退出和资源释放。C1在发请求之后、开门之前确认active仍1；开门后result/dispose才结算并归零。C2还有晚到start句柄，必须等待并释放才能停稳。重复dispose共享Promise。若后端始终不合作或释放告警，应另核实际资源，不能用一个cancel返回值证明任意外部进程已停止。</p></div></details>
+<ol start="9">
+<li>return {x:undefined}能stringify成{}，为什么本引擎拒绝？Map args在哪一步出问题？</li>
+</ol>
+<details id="lesson-deepdive-26" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>stringify丢字段会改变原始数据，不能充当无损物化。Realm拒绝嵌套undefined、特殊原型等；根undefined单独允许归null，所以两例结果不同。Map可structuredClone，start可能已经建立Run，但后续Host JSON边界仍拒绝，得到error结果。函数args则在复制时就失败。需要同时说明数据形状与发生阶段，不能把所有异常都叫脚本解析错误。</p></div></details>
+<ol start="10">
+<li>C5写入被拒绝，为什么仍不能说VM禁止所有网络或所有外部行为？</li>
+</ol>
+<details id="lesson-deepdive-27" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>实际路径先逃逸VM取得fs，再由Windows受限令牌拒绝写入；这恰好说明VM不是安全边界。当前backend报告partial，实验只证明一个新fixture文件在read-only下保持unchanged。读取、网络、硬链接、平台差异和外部子Agent权限各需独立证据。没有有效受限后端时应失败关闭并记录环境，不把策略降为无限制后继续把同一断言标PASS。</p></div></details>
+<ol start="11">
+<li>观察到workflow/log，父Session与父模型是否都已记住它？前台与后台怎样不同？</li>
+</ol>
+<details id="lesson-deepdive-28" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 11 参考答案</summary><div class="lesson-callout-body"><p>先问观察通道。直接Engine的log只发实时事件；根WorkflowTool只持久化四类生命周期log-only记录，不自动存phase/log。前台最终聚合由ToolResult进入模型历史；后台镜像把叙述放Job环log通道，job_output过滤观察log，完成报告另经终态result或通知交付。父Session保存某条事实也不等于它是模型消息，需检查后续请求。D1/D3分别给出这两条轨迹。</p></div></details>
+<ol start="12">
+<li>Schedule记录可读、Goal为active、Job显示completed，重启后能否继续原Workflow中断行？</li>
+</ol>
+<details id="lesson-deepdive-29" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 12 参考答案</summary><div class="lesson-callout-body"><p>三份状态都不保存guest程序计数器。Schedule保存将来的投递目标和时间；Goal的持久phase不等于进程armed；LocalJobs记录及旧Run句柄在进程内，原Promise不恢复。新进程应按当前授权和外部事实建立新的活动期。若中断前可能已写外部系统，不能从缺少最终结果推出未执行，应先查效果或用业务幂等约束，再决定是否重做。后台和持久事实不能拼成不存在的检查点。</p></div></details>
+<h2>进入载体边界之前</h2>
+<p>现在应能交出一条可核查责任链：模型提议工作单，Tool消费服务，Engine建立Run，guest定义依赖，Host启动caller子级，持有者等结算与清理，父级只收到约定结果。再说明何时用Jobs、Goal、Schedule，以及每层保存与丢失的内容。</p>
+<p>下一课按蓝图是H23《CLI、Web UI、SDK 与远程通信》：追踪一个控制动作和一条状态订阅怎样穿过载体边界。这里仅交出所需前置：ID属于谁、终态代表哪一层、哪些事件实时、哪些持久、谁持有取消与释放。H24再统一建立大型系统的证据矩阵；本课没有提前开发通信载体或开展第六模块审查。</p></div></main></body></html>

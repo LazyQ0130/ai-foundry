@@ -1,0 +1,62 @@
+{
+  "args": [
+    "--test",
+    "--test-reporter=tap",
+    "workflow.test.ts"
+  ],
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-swPZA7",
+  "programs": [
+    {
+      "name": "A.ts",
+      "sha256": "6883d3e5e237bf705eb8fb40e9714382a28f38f28896fb7db6dfdc14e2940b1b"
+    },
+    {
+      "name": "agent-fixture.ts",
+      "sha256": "d46bf2ec4eb333f160ddd0545e0d67a51a41840dda154e4e4c5871bc1eacb497"
+    },
+    {
+      "name": "B.ts",
+      "sha256": "31341f718b40573254a758f796603579a7d9680e62f960fed20cff15cffbeac3"
+    },
+    {
+      "name": "bootstrap.mjs",
+      "sha256": "9b03f747cd98f97410542c22311fd749bd85855470d3967cd79ea4b5aecc0910"
+    },
+    {
+      "name": "boundaries.ts",
+      "sha256": "cb5b4ecdc64b95cd3c097f60706279808be73ca2b9ea65933f11430eaa3631b2"
+    },
+    {
+      "name": "C.ts",
+      "sha256": "0a658783c0c7d119f6a4738a75766b4d9fbf194fac42f9a4f5a37c2b8791d44f"
+    },
+    {
+      "name": "D.ts",
+      "sha256": "669f13250e49ded60786206765cb9ac29b05b54e7f59a10825d12a5cb6526011"
+    },
+    {
+      "name": "demo.ts",
+      "sha256": "4d2568408096a97380fff6af7505ed949da030b4fcbe7f8b03790211c782ffed"
+    },
+    {
+      "name": "README.md",
+      "sha256": "218ee122d94418e98a03a582d00656f87ea147d75e25a7f1ea7b95e3a88c8e91"
+    },
+    {
+      "name": "support.ts",
+      "sha256": "23af3594ac6493229a0afba63db3f07862a755398de7f0124394cd5743cbe887"
+    },
+    {
+      "name": "workflow.test.ts",
+      "sha256": "e6f5363ce03ac0986d55edc97bad213c2c9185e5818311a88f72bd3776c16bf6"
+    },
+    {
+      "name": "X.ts",
+      "sha256": "b1ae54e5adbb7c94171dd6e3d22ed62c951c3c306e14b0fcf40f9f8fa13cbeb8"
+    }
+  ],
+  "exit": 0,
+  "stdout": "TAP version 13\n# (node:18444) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: C A1 real engine: meta, args, top-level await and JSON result\nok 1 - C A1 real engine: meta, args, top-level await and JSON result\n  ---\n  duration_ms: 334.1528\n  type: 'test'\n  ...\n# Subtest: C A2 pre-publication validation: meta, parse, provider, cap\nok 2 - C A2 pre-publication validation: meta, parse, provider, cap\n  ---\n  duration_ms: 15.9307\n  type: 'test'\n  ...\n# Subtest: C A3 result resolves on script/JSON errors; undefined becomes null\nok 3 - C A3 result resolves on script/JSON errors; undefined becomes null\n  ---\n  duration_ms: 1204.9163\n  type: 'test'\n  ...\n# Subtest: C A4 args clone is not lossless JSON validation\nok 4 - C A4 args clone is not lossless JSON validation\n  ---\n  duration_ms: 281.6513\n  type: 'test'\n  ...\n# Subtest: C B6 Subagent capacity can reject below Workflow concurrency\nok 5 - C B6 Subagent capacity can reject below Workflow concurrency\n  ---\n  duration_ms: 294.1617\n  type: 'test'\n  ...\n# Subtest: C B7 structured output present versus absent on completed child\nok 6 - C B7 structured output present versus absent on completed child\n  ---\n  duration_ms: 280.9774\n  type: 'test'\n  ...\n# Subtest: C B1 parallel starts together and collects input order\nok 7 - C B1 parallel starts together and collects input order\n  ---\n  duration_ms: 297.5165\n  type: 'test'\n  ...\n# Subtest: C B2 pipeline is per-item order without a cross-stage barrier\nok 8 - C B2 pipeline is per-item order without a cross-stage barrier\n  ---\n  duration_ms: 281.5304\n  type: 'test'\n  ...\n# Subtest: C B3 ordinary child failure and ordinary thunk throw become null\nok 9 - C B3 ordinary child failure and ordinary thunk throw become null\n  ---\n  duration_ms: 637.1825\n  type: 'test'\n  ...\n# Subtest: C B4 fatal options/schema and broken provider survive combinators\nok 10 - C B4 fatal options/schema and broken provider survive combinators\n  ---\n  duration_ms: 827.4591\n  type: 'test'\n  ...\n# Subtest: C B5 concurrency slots, queued total count and item cap differ\nok 11 - C B5 concurrency slots, queued total count and item cap differ\n  ---\n  duration_ms: 963.5038\n  type: 'test'\n  ...\n# Subtest: C C1 cancellation drains a published child and dispose is shared\nok 12 - C C1 cancellation drains a published child and dispose is shared\n  ---\n  duration_ms: 313.6273\n  type: 'test'\n  ...\n# Subtest: C C2 pending startup after cancel is disposed before settlement\nok 13 - C C2 pending startup after cancel is disposed before settlement\n  ---\n  duration_ms: 280.4108\n  type: 'test'\n  ...\n# Subtest: C C3 cancel post-await infinite guest work without killing test process\nok 14 - C C3 cancel post-await infinite guest work without killing test process\n  ---\n  duration_ms: 312.0042\n  type: 'test'\n  ...\n# Subtest: C C4 phase/log are observations; listener failures are isolated\nok 15 - C C4 phase/log are observations; listener failures are isolated\n  ---\n  duration_ms: 284.2161\n  type: 'test'\n  ...\n# Subtest: C C5 native read-only runner rejects writes through a VM escape\nok 16 - C C5 native read-only runner rejects writes through a VM escape\n  ---\n  duration_ms: 308.2973\n  type: 'test'\n  ...\n# Subtest: D D1 foreground parent tool, three real children, Session and next model request\nok 17 - D D1 foreground parent tool, three real children, Session and next model request\n  ---\n  duration_ms: 352.8989\n  type: 'test'\n  ...\n# Subtest: D D2 tool schema, error mapping and rendered cap\nok 18 - D D2 tool schema, error mapping and rendered cap\n  ---\n  duration_ms: 632.4277\n  type: 'test'\n  ...\n# Subtest: D D3 background receipt, observer log, job_output and notification\nok 19 - D D3 background receipt, observer log, job_output and notification\n  ---\n  duration_ms: 355.1775\n  type: 'test'\n  ...\n# Subtest: D D4 background job_kill cancels and drains its workflow\nok 20 - D D4 background job_kill cancels and drains its workflow\n  ---\n  duration_ms: 327.2054\n  type: 'test'\n  ...\n# Subtest: C boundary missing confinement fails closed without spawning\nok 21 - C boundary missing confinement fails closed without spawning\n  ---\n  duration_ms: 16.1438\n  type: 'test'\n  ...\n# Subtest: C boundary Goal revision, pause and disarm differ from durable phase\nok 22 - C boundary Goal revision, pause and disarm differ from durable phase\n  ---\n  duration_ms: 42.0336\n  type: 'test'\n  ...\n# Subtest: C boundary Schedule persists a future trigger independently of WorkflowRun\nok 23 - C boundary Schedule persists a future trigger independently of WorkflowRun\n  ---\n  duration_ms: 41.1908\n  type: 'test'\n  ...\n1..23\n# tests 23\n# suites 0\n# pass 23\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 9432.8239\n",
+  "stderr": "",
+  "error": null
+}

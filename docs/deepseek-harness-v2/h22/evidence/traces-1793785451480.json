@@ -1,0 +1,138 @@
+{
+  "trace-probe.json": {
+    "result": {
+      "value": {
+        "answer": "A=ok",
+        "input": 42
+      },
+      "stopReason": "completed",
+      "agentsStarted": 1
+    },
+    "events": [
+      {
+        "name": "workflow/start",
+        "args": [
+          {
+            "id": "f3954b41-ac19-4a43-830c-e41ab37b2521",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-start",
+        "args": [
+          {
+            "id": "f3954b41-ac19-4a43-830c-e41ab37b2521",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1"
+          }
+        ]
+      },
+      {
+        "name": "workflow/agent-end",
+        "args": [
+          {
+            "id": "f3954b41-ac19-4a43-830c-e41ab37b2521",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "seq": 1,
+            "label": "A",
+            "childId": "controlled-1",
+            "outcome": "completed"
+          }
+        ]
+      },
+      {
+        "name": "workflow/end",
+        "args": [
+          {
+            "id": "f3954b41-ac19-4a43-830c-e41ab37b2521",
+            "meta": {
+              "name": "project-review",
+              "description": "Review a fictional project using controlled children",
+              "phases": [
+                {
+                  "title": "Inspect"
+                },
+                {
+                  "title": "Synthesize"
+                }
+              ]
+            }
+          },
+          {
+            "stopReason": "completed",
+            "agentsStarted": 1
+          }
+        ]
+      }
+    ],
+    "processes": [
+      {
+        "argv": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-TEWHva\\windows-acl-runner.mjs",
+          "--workspace",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-TEWHva\\workspace-5M33nW",
+          "--temp",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp",
+          "--mode",
+          "read-only",
+          "--",
+          "D:\\Program Files\\nodejs\\node.exe",
+          "--max-old-space-size=512",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h22-lab-TEWHva\\ptc-worker.mjs",
+          "134217728"
+        ]
+      }
+    ],
+    "fake": {
+      "started": [
+        "A"
+      ],
+      "disposed": [
+        "A"
+      ],
+      "active": 0,
+      "peak": 1
+    }
+  }
+}

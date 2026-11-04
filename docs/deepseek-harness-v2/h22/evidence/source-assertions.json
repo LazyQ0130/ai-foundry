@@ -1,0 +1,830 @@
+[
+  {
+    "claim": "S01",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow/src/index.ts",
+    "start": 157,
+    "end": 192,
+    "symbol": "WorkflowEngine / emitWorkflowEvent",
+    "controlBranch": "单一 ctx.workflowEngine 服务，不是具名后端表；观察者同步与异步异常分别包含。",
+    "conclusion": "单一 ctx.workflowEngine 服务，不是具名后端表；观察者同步与异步异常分别包含。",
+    "officialTest": {
+      "file": "packages/workflow/workflow/tests/workflow.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S02",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow/src/runtime-types.ts",
+    "start": 19,
+    "end": 49,
+    "symbol": "WorkflowStartRequest / WorkflowRun",
+    "controlBranch": "script、meta、args、parent、signal、subagentProvider、maxTotalAgents；start返回持有者拥有的run，result约定不拒绝，dispose异步。",
+    "conclusion": "script、meta、args、parent、signal、subagentProvider、maxTotalAgents；start返回持有者拥有的run，result约定不拒绝，dispose异步。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 746,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A1; C C1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S03",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow/src/types.ts",
+    "start": 28,
+    "end": 87,
+    "symbol": "WorkflowMeta / WorkflowResult",
+    "controlBranch": "meta是数据；stopReason为completed/cancelled/error；value只在completed有意义；agentsStarted正常来自guest接受数量，终止可能降为host观察数。",
+    "conclusion": "meta是数据；stopReason为completed/cancelled/error；value只在completed有意义；agentsStarted正常来自guest接受数量，终止可能降为host观察数。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 201,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A1; C A3; C C1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S04",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow/src/types.ts",
+    "start": 90,
+    "end": 131,
+    "symbol": "WorkflowResultInfo / WorkflowAgentInfo",
+    "controlBranch": "实时end只含终态信息，不含最终value；agent事件含seq/label/childId与可选phase。",
+    "conclusion": "实时end只含终态信息，不含最终value；agent事件含seq/label/childId与可选phase。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 861,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D1; C C1",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S05",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow/src/index.ts",
+    "start": 108,
+    "end": 149,
+    "symbol": "WorkflowError / isFatalWorkflowError",
+    "controlBranch": "十二类code，fatal默认true；普通异常与本实现创建的致命契约错误分开。",
+    "conclusion": "十二类code，fatal默认true；普通异常与本实现创建的致命契约错误分开。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 350,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S06",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/index.ts",
+    "start": 33,
+    "end": 65,
+    "symbol": "Config / assertBodyParses",
+    "controlBranch": "脚本是JavaScript异步函数体，支持顶层await，拒绝TS标注和export meta；四项引擎限制。",
+    "conclusion": "脚本是JavaScript异步函数体，支持顶层await，拒绝TS标注和export meta；四项引擎限制。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 582,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A2",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S07",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/index.ts",
+    "start": 68,
+    "end": 96,
+    "symbol": "provider and total admission",
+    "controlBranch": "整次run选择一个Subagent Provider；未知Provider为AGENT_START；每次总量正整数且不得越过引擎上限。",
+    "conclusion": "整次run选择一个Subagent Provider；未知Provider为AGENT_START；每次总量正整数且不得越过引擎上限。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 279,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A2; C B5",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S08",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/index.ts",
+    "start": 100,
+    "end": 133,
+    "symbol": "PtcWorkflowEngine constructor",
+    "controlBranch": "默认spawn；并发0由CPU推导最多16；总量1000、组合器4096、同步切片5000ms；要求runtime语言typescript，不代表脚本接受TS。",
+    "conclusion": "默认spawn；并发0由CPU推导最多16；总量1000、组合器4096、同步切片5000ms；要求runtime语言typescript，不代表脚本接受TS。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/host.spec.ts",
+      "start": 263,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S09",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/index.ts",
+    "start": 134,
+    "end": 190,
+    "symbol": "PtcWorkflowEngine.start",
+    "controlBranch": "先meta/parse/Provider/cap，structuredClone args，然后建立run并发布start；结果后发end，meta与args分别捕获。",
+    "conclusion": "先meta/parse/Provider/cap，structuredClone args，然后建立run并发布start；结果后发end，meta与args分别捕获。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 186,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A1; C A2; C A4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S10",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/meta.ts",
+    "start": 1,
+    "end": 82,
+    "symbol": "validateMeta",
+    "controlBranch": "校验必填及允许字段并复制meta；name只校非空，未强制kebab正则；phases声明不建立调度控制。",
+    "conclusion": "校验必填及允许字段并复制meta；name只校非空，未强制kebab正则；phases声明不建立调度控制。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/meta.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A2; C C4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S11",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 56,
+    "end": 142,
+    "symbol": "WorkflowExecution.drive",
+    "controlBranch": "创建VM context注入六类钩子和args；syncTimeout只包初始runInContext；返回值物化、undefined归null，异常成为error结果。",
+    "conclusion": "创建VM context注入六类钩子和args；syncTimeout只包初始runInContext；返回值物化、undefined归null，异常成为error结果。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/guest.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A3; C C3",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S12",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 144,
+    "end": 237,
+    "symbol": "acquireSlot / agent",
+    "controlBranch": "guest接受计数先于FIFO槽；启动失败AGENT_START，结果拒绝AGENT_RESULT；已结算子级非completed返回null；finally dispose并还槽。",
+    "conclusion": "guest接受计数先于FIFO槽；启动失败AGENT_START，结果拒绝AGENT_RESULT；已结算子级非completed返回null；finally dispose并还槽。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 471,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B1; C B4; C B5; C B6",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S13",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 163,
+    "end": 237,
+    "symbol": "agent schema result",
+    "controlBranch": "schema为受支持object子集；completed但缺structured也返回null；无schema拼接文本输出。",
+    "conclusion": "schema为受支持object子集；completed但缺structured也返回null；无schema拼接文本输出。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/integration.spec.ts",
+      "start": 73,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B7",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S14",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 239,
+    "end": 282,
+    "symbol": "readAgentOptions",
+    "controlBranch": "只支持label、phase、schema、provider、model；effort/isolation/agentType延后未支持；provider/model是模型路线，非Subagent backend。",
+    "conclusion": "只支持label、phase、schema、provider、model；effort/isolation/agentType延后未支持；provider/model是模型路线，非Subagent backend。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 232,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B4; D D1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S15",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 285,
+    "end": 308,
+    "symbol": "parallel",
+    "controlBranch": "先整体校验数组/条目，再Promise.all；结果按输入顺序，普通thunk抛错为null，fatal继续传播。",
+    "conclusion": "先整体校验数组/条目，再Promise.all；结果按输入顺序，普通thunk抛错为null，fatal继续传播。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/guest.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B1; C B3; C B4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S16",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 311,
+    "end": 340,
+    "symbol": "pipeline",
+    "controlBranch": "pipeline(items,...stages)，回调(previous,item,index)；每项内部顺序，无跨条目阶段屏障；普通throw使该项null并跳过余阶段。",
+    "conclusion": "pipeline(items,...stages)，回调(previous,item,index)；每项内部顺序，无跨条目阶段屏障；普通throw使该项null并跳过余阶段。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/guest.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B2; C B3; D D1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S17",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/runtime.ts",
+    "start": 339,
+    "end": 367,
+    "symbol": "assertItemCap / phase / log",
+    "controlBranch": "组合器条目上限在调用前拒绝；phase只非空字符串并更新注解，log只字符串；不要求匹配meta声明、不产生屏障。",
+    "conclusion": "组合器条目上限在调用前拒绝；phase只非空字符串并更新注解，log只字符串；不要求匹配meta声明、不产生屏障。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 201,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B5; C C4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S18",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/realm.ts",
+    "start": 44,
+    "end": 147,
+    "symbol": "materializeFromRealm",
+    "controlBranch": "只接受无损plain JSON：拒绝exotic prototype、循环、嵌套undefined、非有限数、BigInt、稀疏数组、函数；不能用JSON.stringify替代。",
+    "conclusion": "只接受无损plain JSON：拒绝exotic prototype、循环、嵌套undefined、非有限数、BigInt、稀疏数组、函数；不能用JSON.stringify替代。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/realm.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C A3; C A4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S19",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/host.ts",
+    "start": 113,
+    "end": 187,
+    "symbol": "PtcWorkflowRun ownership",
+    "controlBranch": "捕获服务/父级/策略，cancel只请求停止；dispose共享result之后的Promise；pending集合用于结算等待。",
+    "conclusion": "捕获服务/父级/策略，cancel只请求停止；dispose共享result之后的Promise；pending集合用于结算等待。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 746,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S20",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/host.ts",
+    "start": 200,
+    "end": 229,
+    "symbol": "startChild",
+    "controlBranch": "所有子级使用同一parent与cwd，delivery caller；不传显式maxDepth；晚到已取消句柄先dispose再拒绝发布。",
+    "conclusion": "所有子级使用同一parent与cwd，delivery caller；不传显式maxDepth；晚到已取消句柄先dispose再拒绝发布。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/host.spec.ts",
+      "start": 267,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C2; D D1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S21",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/host.ts",
+    "start": 231,
+    "end": 256,
+    "symbol": "childResult / disposeChild",
+    "controlBranch": "子级结果严格JSON过界；dispose memoize，异常被catch并warn；不能宣称任意清理失败都由result拒绝。",
+    "conclusion": "子级结果严格JSON过界；dispose memoize，异常被catch并warn；不能宣称任意清理失败都由result拒绝。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 531,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B4; C C1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S22",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/host.ts",
+    "start": 258,
+    "end": 280,
+    "symbol": "onProgress / cancelled",
+    "controlBranch": "host只接受当前活跃子级，cancel后不再叙述；未收正常guest结果的取消计数用host已观察启动数。",
+    "conclusion": "host只接受当前活跃子级，cancel后不再叙述；未收正常guest结果的取消计数用host已观察启动数。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 695,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C1; C C4",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S23",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/host.ts",
+    "start": 282,
+    "end": 324,
+    "symbol": "drive finally",
+    "controlBranch": "策略受限而runtime不宣称confinement则fail closed；调用timeoutMs:null；finally abort、dispose、排空pending并补live agent终边。",
+    "conclusion": "策略受限而runtime不宣称confinement则fail closed；调用timeoutMs:null；finally abort、dispose、排空pending并补live agent终边。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts",
+      "start": 888,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C1; C C2; C C3; C boundary missing confinement",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S24",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/workflow-ptc/src/guest.ts",
+    "start": 16,
+    "end": 75,
+    "symbol": "runWorkflowGuest",
+    "controlBranch": "进度分批有序发Host，已发布子级dispose前排空进度；最后再排空进度后返回。",
+    "conclusion": "进度分批有序发Host，已发布子级dispose前排空进度；最后再排空进度后返回。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/guest.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C1; D D1",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S25",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/ptc-runtime/ptc-runtime-node/src/index.ts",
+    "start": 1,
+    "end": 104,
+    "symbol": "NodePtcRuntime",
+    "controlBranch": "真实隔离进程经sandbox与subprocess执行，sandboxMode反映默认策略；不以VM充当安全边界。",
+    "conclusion": "真实隔离进程经sandbox与subprocess执行，sandboxMode反映默认策略；不以VM充当安全边界。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/built-runtime.e2e.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C5",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S26",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/ptc-runtime/ptc-runtime-node/src/config.ts",
+    "start": 1,
+    "end": 65,
+    "symbol": "resolveConfig",
+    "controlBranch": "PTC maxPendingCalls默认128为binding在途请求预算，独立于Workflow子级并发；内存、消息和进程grace也独立。",
+    "conclusion": "PTC maxPendingCalls默认128为binding在途请求预算，独立于Workflow子级并发；内存、消息和进程grace也独立。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/built-runtime.e2e.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S27",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/sandbox/sandbox-local/src/index.ts",
+    "start": 1,
+    "end": 586,
+    "symbol": "local Windows backend",
+    "controlBranch": "Windows ACL默认partial，read-only不授写权；文件策略不等于网络隔离，不能静默以unrestricted补受限能力。",
+    "conclusion": "Windows ACL默认partial，read-only不授写权；文件策略不等于网络隔离，不能静默以unrestricted补受限能力。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/built-runtime.e2e.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C5; C boundary missing confinement",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S28",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/sandbox/sandbox-windows-acl/src/runner.ts",
+    "start": 1,
+    "end": 229,
+    "symbol": "Windows ACL runner",
+    "controlBranch": "正式runner创建受限令牌，失败报告非零，不启动无约束替代；实验只打包固定源码。",
+    "conclusion": "正式runner创建受限令牌，失败报告非零，不启动无约束替代；实验只打包固定源码。",
+    "officialTest": {
+      "file": "packages/workflow/workflow-ptc/tests/built-runtime.e2e.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C C5",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S29",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 318,
+    "end": 400,
+    "symbol": "apply / tool schema",
+    "controlBranch": "工具消费抽象Engine；meta/script分开；enableRunInBackground可隐藏Schema参数；用工具prompt限定显式workflow或大规模编排。",
+    "conclusion": "工具消费抽象Engine；meta/script分开；enableRunInBackground可隐藏Schema参数；用工具prompt限定显式workflow或大规模编排。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 619,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D2",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S30",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 401,
+    "end": 487,
+    "symbol": "foreground execute",
+    "controlBranch": "前台传工具signal，等待结果，异常由Tools形成isError；finally等待dispose，根调用才finish/abandon记录。",
+    "conclusion": "前台传工具signal，等待结果，异常由Tools形成isError；finally等待dispose，根调用才finish/abandon记录。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 298,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D1; D D2",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S31",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 239,
+    "end": 249,
+    "symbol": "renderResult",
+    "controlBranch": "maxResultChars截展示JSON字符串，不截Engine值，也不是计算或安全预算。",
+    "conclusion": "maxResultChars截展示JSON字符串，不截Engine值，也不是计算或安全预算。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 382,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D2",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S32",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 93,
+    "end": 169,
+    "symbol": "createWorkflowRecorder",
+    "controlBranch": "仅根调用记录run-start/agent-start/agent-end/run-end四类log-only事实；append失败warn并停记，不反转工作流。",
+    "conclusion": "仅根调用记录run-start/agent-start/agent-end/run-end四类log-only事实；append失败warn并停记，不反转工作流。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 154,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D1",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S33",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/types.ts",
+    "start": 1,
+    "end": 64,
+    "symbol": "tool-workflow Session event types",
+    "controlBranch": "持久payload不包含phase/log或全部子历史；不能将runtime事件自动等同持久Session输入。",
+    "conclusion": "持久payload不包含phase/log或全部子历史；不能将runtime事件自动等同持久Session输入。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 228,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D1; C C4",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S34",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 263,
+    "end": 316,
+    "symbol": "startBackgroundRun",
+    "controlBranch": "Jobs先准入再同步建立run，无tool-step signal；返回jobId/runId；job取消拥有run；done等待dispose后映射终态。",
+    "conclusion": "Jobs先准入再同步建立run，无tool-step signal；返回jobId/runId；job取消拥有run；done等待dispose后映射终态。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 479,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3; D D4",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S35",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/index.ts",
+    "start": 219,
+    "end": 237,
+    "symbol": "jobOutcomeOf",
+    "controlBranch": "completed→completed携渲染结果；cancelled→killed；error→failed。后台不是Engine自身恢复机制。",
+    "conclusion": "completed→completed携渲染结果；cancelled→killed；error→failed。后台不是Engine自身恢复机制。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 541,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3; D D4",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S36",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/workflow/tool-workflow/src/record.ts",
+    "start": 37,
+    "end": 64,
+    "symbol": "createWorkflowRecordMirror",
+    "controlBranch": "phase更新progress并向log通道追加，log和成员观察也进log；不是模型增量流。",
+    "conclusion": "phase更新progress并向log通道追加，log和成员观察也进log；不是模型增量流。",
+    "officialTest": {
+      "file": "packages/workflow/tool-workflow/tests/tool-workflow.spec.ts",
+      "start": 479,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S37",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/jobs/jobs/src/index.ts",
+    "start": 85,
+    "end": 198,
+    "symbol": "JobRegistry",
+    "controlBranch": "抽象服务不可直接装载；producer提供cancel/done；owner授权、controller准入、read模型游标、readAt观察游标各自独立。",
+    "conclusion": "抽象服务不可直接装载；producer提供cancel/done；owner授权、controller准入、read模型游标、readAt观察游标各自独立。",
+    "officialTest": {
+      "file": "packages/jobs/jobs-local/tests/events.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3; D D4",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S38",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/jobs/jobs-local/src/index.ts",
+    "start": 1,
+    "end": 717,
+    "symbol": "LocalJobRegistry",
+    "controlBranch": "任务表和环在进程内；五状态running/stopping/completed/killed/failed；读后终态结果只交一次，非持久脚本检查点。",
+    "conclusion": "任务表和环在进程内；五状态running/stopping/completed/killed/failed；读后终态结果只交一次，非持久脚本检查点。",
+    "officialTest": {
+      "file": "packages/jobs/jobs-local/tests/events.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3; D D4",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S39",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/jobs/tool-jobs/src/index.ts",
+    "start": 355,
+    "end": 430,
+    "symbol": "deliverSettlement",
+    "controlBranch": "未收集且非teardown的完成通知：默认idle followup，busy inject；quiet只inject；显式wait已收集则不再通知。",
+    "conclusion": "未收集且非teardown的完成通知：默认idle followup，busy inject；quiet只inject；显式wait已收集则不再通知。",
+    "officialTest": {
+      "file": "packages/jobs/tool-jobs/tests/tool-jobs.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S40",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/jobs/tool-jobs/src/render.ts",
+    "start": 1,
+    "end": 84,
+    "symbol": "renderModelDelta",
+    "controlBranch": "模型只见stdout、未标通道与stderr增量和终态结果，observer log被过滤；job_output取回并撤销未送达通知。",
+    "conclusion": "模型只见stdout、未标通道与stderr增量和终态结果，observer log被过滤；job_output取回并撤销未送达通知。",
+    "officialTest": {
+      "file": "packages/jobs/tool-jobs/tests/tool-jobs.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "D D3",
+    "grade": "D",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S41",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/goal/goal/src/types.ts",
+    "start": 19,
+    "end": 112,
+    "symbol": "GoalRef / GoalView",
+    "controlBranch": "Goal目标与revision/CAS、轮次上限、持久phase和进程activation分层；armed不是已恢复旧执行栈。",
+    "conclusion": "Goal目标与revision/CAS、轮次上限、持久phase和进程activation分层；armed不是已恢复旧执行栈。",
+    "officialTest": {
+      "file": "packages/goal/goal/tests/projection.spec.ts",
+      "start": 94,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary Goal",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S42",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/goal/goal/src/index.ts",
+    "start": 280,
+    "end": 405,
+    "symbol": "Goal create/pause/resume/disarm",
+    "controlBranch": "create armed，pause持久变更，resume需当前ref与剩余预算；disarm不改phase/revision；单装service不等于驱动自动目标轮。",
+    "conclusion": "create armed，pause持久变更，resume需当前ref与剩余预算；disarm不改phase/revision；单装service不等于驱动自动目标轮。",
+    "officialTest": {
+      "file": "packages/goal/goal/tests/projection.spec.ts",
+      "start": 94,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary Goal",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S43",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/schedule/schedule/src/index.ts",
+    "start": 243,
+    "end": 335,
+    "symbol": "Schedule create/list/catalog",
+    "controlBranch": "Host durable domain，恰选一种时间selector且有title；只读列表不激活Agent，子Session拒绝；历史Schedule Session事件不驱动Host任务。",
+    "conclusion": "Host durable domain，恰选一种时间selector且有title；只读列表不激活Agent，子Session拒绝；历史Schedule Session事件不驱动Host任务。",
+    "officialTest": {
+      "file": "packages/schedule/schedule/tests/recovery.spec.ts",
+      "start": 57,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C boundary Schedule",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S44",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/schedule/schedule/src/runtime.ts",
+    "start": 1,
+    "end": 169,
+    "symbol": "ScheduleRuntime",
+    "controlBranch": "Schedule持久化待触发记录并经Session resolver投递，记录回执与重复计划；恢复的是调度状态，非Workflow guest程序计数器。",
+    "conclusion": "Schedule持久化待触发记录并经Session resolver投递，记录回执与重复计划；恢复的是调度状态，非Workflow guest程序计数器。",
+    "officialTest": {
+      "file": "packages/schedule/schedule/tests/recovery.spec.ts",
+      "start": 57,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S45",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/subagent/subagent/src/activation.ts",
+    "start": 24,
+    "end": 37,
+    "symbol": "ActivationPool.reserve",
+    "controlBranch": "Subagent容量层满直接拒绝，与Workflow FIFO槽不同；Workflow不自动提高树容量或深度。",
+    "conclusion": "Subagent容量层满直接拒绝，与Workflow FIFO槽不同；Workflow不自动提高树容量或深度。",
+    "officialTest": {
+      "file": "packages/subagent/subagent/tests/continuation.spec.ts",
+      "start": 1,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "C B6",
+    "grade": "C",
+    "status": "DYNAMIC_COVERAGE_LIMITED_TO_LOCAL_TEST"
+  },
+  {
+    "claim": "S46",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "docs/subsystems/goal.zh.md",
+    "start": 118,
+    "end": 139,
+    "symbol": "GoalMessageSource / roundsStarted",
+    "controlBranch": "获准目标续跑user/message携goalId、revision和连续round；只有获准输入推进计数，非模型Attempt或Workflow子级。",
+    "conclusion": "获准目标续跑user/message携goalId、revision和连续round；只有获准输入推进计数，非模型Attempt或Workflow子级。",
+    "officialTest": {
+      "file": "packages/goal/goal/tests/projection.spec.ts",
+      "start": 94,
+      "status": "SELECTED_READ_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  }
+]
