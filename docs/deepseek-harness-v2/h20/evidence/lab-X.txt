@@ -1,0 +1,2101 @@
+{
+  "sourceRoot": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h20-lab-ufP18Y\\h20-jsonl-bzQlZd",
+  "copyRoot": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h20-lab-ufP18Y\\h20-jsonl-zhmMQY",
+  "snapshot": {
+    "header": {
+      "version": 4,
+      "id": "reliability-task",
+      "createdAt": 1793773610703,
+      "isSeeded": false,
+      "delegationDepth": 0
+    },
+    "eventState": "shared-frozen",
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793773610709,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "read fixture, execute controlled test and explain failure"
+                }
+              ],
+              "role": "user",
+              "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793773610710,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793773610711,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793773610712,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793773610713,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only controlled fixture facts."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793773610714,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "read fixture, execute controlled test and explain failure"
+            }
+          ],
+          "role": "user",
+          "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793773610714,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "large",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "read-fixture",
+                "description": "Safe memory fixture read-fixture",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "write-fixture",
+                "description": "Safe memory fixture write-fixture",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793773610714,
+        "data": {
+          "provider": "fixture",
+          "model": "large",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 8,
+        "time": 1793773610716,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793773610715,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "message": "controlled RATE_LIMIT",
+                    "code": "RATE_LIMIT",
+                    "status": 429
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "llm/retry",
+        "seq": 9,
+        "time": 1793773610716,
+        "data": {
+          "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+          "turn": 1,
+          "step": 1,
+          "provider": "fixture",
+          "mode": "normal",
+          "policyKey": "[\"normal\",2,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],500,10000,0]",
+          "retry": 1,
+          "maxRetries": 2,
+          "delayMs": 500,
+          "failure": {
+            "message": "controlled RATE_LIMIT",
+            "code": "RATE_LIMIT",
+            "status": 429
+          }
+        }
+      },
+      {
+        "type": "llm/retry-started",
+        "seq": 10,
+        "time": 1793773610717,
+        "data": {
+          "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+          "turn": 1,
+          "step": 1,
+          "retry": 1
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 11,
+        "time": 1793773610718,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "call-0",
+                "name": "write-fixture",
+                "arguments": "{}"
+              },
+              {
+                "type": "tool-call",
+                "id": "call-1",
+                "name": "read-fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "large"
+            },
+            "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "call-0",
+                  "name": "write-fixture",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-start",
+                "index": 1,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-end",
+                "index": 1,
+                "block": {
+                  "type": "tool-call",
+                  "id": "call-1",
+                  "name": "read-fixture",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 12,
+        "time": 1793773610719,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "call-0",
+          "name": "write-fixture",
+          "arguments": "{}"
+        }
+      }
+    ]
+  },
+  "original": {
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 0,
+        "time": 1793773610709,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "read fixture, execute controlled test and explain failure"
+                }
+              ],
+              "role": "user",
+              "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 1,
+        "time": 1793773610710,
+        "data": {
+          "turn": 1
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 2,
+        "time": 1793773610711,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 3,
+        "time": 1793773610712,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "system/message",
+        "seq": 4,
+        "time": 1793773610713,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only controlled fixture facts."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "user/message",
+        "seq": 5,
+        "time": 1793773610714,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "read fixture, execute controlled test and explain failure"
+            }
+          ],
+          "role": "user",
+          "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 6,
+        "time": 1793773610714,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "large",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            },
+            "tools": [
+              {
+                "name": "read-fixture",
+                "description": "Safe memory fixture read-fixture",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "name": "write-fixture",
+                "description": "Safe memory fixture write-fixture",
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "reason": "initial"
+        }
+      },
+      {
+        "type": "request/context",
+        "seq": 7,
+        "time": 1793773610714,
+        "data": {
+          "provider": "fixture",
+          "model": "large",
+          "contextWindow": 100000
+        }
+      },
+      {
+        "type": "assistant/attempt",
+        "seq": 8,
+        "time": 1793773610716,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793773610715,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "error",
+                  "failure": {
+                    "message": "controlled RATE_LIMIT",
+                    "code": "RATE_LIMIT",
+                    "status": 429
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "llm/retry",
+        "seq": 9,
+        "time": 1793773610716,
+        "data": {
+          "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+          "turn": 1,
+          "step": 1,
+          "provider": "fixture",
+          "mode": "normal",
+          "policyKey": "[\"normal\",2,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],500,10000,0]",
+          "retry": 1,
+          "maxRetries": 2,
+          "delayMs": 500,
+          "failure": {
+            "message": "controlled RATE_LIMIT",
+            "code": "RATE_LIMIT",
+            "status": 429
+          }
+        }
+      },
+      {
+        "type": "llm/retry-started",
+        "seq": 10,
+        "time": 1793773610717,
+        "data": {
+          "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+          "turn": 1,
+          "step": 1,
+          "retry": 1
+        }
+      },
+      {
+        "type": "assistant/message",
+        "seq": 11,
+        "time": 1793773610718,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "call-0",
+                "name": "write-fixture",
+                "arguments": "{}"
+              },
+              {
+                "type": "tool-call",
+                "id": "call-1",
+                "name": "read-fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "large"
+            },
+            "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+          },
+          "stream": [
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-start",
+                "index": 0,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-end",
+                "index": 0,
+                "block": {
+                  "type": "tool-call",
+                  "id": "call-0",
+                  "name": "write-fixture",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-start",
+                "index": 1,
+                "blockType": "tool-call"
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "block-end",
+                "index": 1,
+                "block": {
+                  "type": "tool-call",
+                  "id": "call-1",
+                  "name": "read-fixture",
+                  "arguments": "{}"
+                }
+              }
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610718,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "tool-calls"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 12,
+        "time": 1793773610719,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "call-0",
+          "name": "write-fixture",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 13,
+        "time": 1793773610748,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "call-0"
+            },
+            "toolCallId": "call-0",
+            "content": [
+              {
+                "type": "text",
+                "text": "Error: tool call aborted"
+              }
+            ],
+            "isError": true,
+            "id": "8f267004-5c97-4668-9a80-53161cd6deaf"
+          },
+          "error": {
+            "name": "AbortError",
+            "code": "ABORTED"
+          }
+        },
+        "sourceEventSeqs": [
+          12
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "tool/call",
+        "seq": 14,
+        "time": 1793773610748,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "callId": "call-1",
+          "name": "read-fixture",
+          "arguments": "{}"
+        }
+      },
+      {
+        "type": "tool/result",
+        "seq": 15,
+        "time": 1793773610748,
+        "data": {
+          "turn": 1,
+          "step": 1,
+          "message": {
+            "role": "tool",
+            "source": {
+              "kind": "tool",
+              "callId": "call-1"
+            },
+            "toolCallId": "call-1",
+            "content": [
+              {
+                "type": "text",
+                "text": "Error: tool call aborted before dispatch"
+              }
+            ],
+            "isError": true,
+            "id": "4862af0a-3060-4d9b-9415-64509a95926e"
+          },
+          "error": {
+            "name": "AbortError",
+            "code": "ABORTED_BEFORE_DISPATCH"
+          }
+        },
+        "sourceEventSeqs": [
+          14
+        ],
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 16,
+        "time": 1793773610748,
+        "data": {
+          "turn": 1,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 17,
+        "time": 1793773610748,
+        "data": {
+          "turn": 1,
+          "reason": {
+            "kind": "aborted",
+            "reason": {
+              "kind": "user"
+            }
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "large",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only controlled fixture facts."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "read fixture, execute controlled test and explain failure"
+              }
+            ],
+            "role": "user",
+            "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read-fixture",
+              "description": "Safe memory fixture read-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "write-fixture",
+              "description": "Safe memory fixture write-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read-fixture",
+            "description": "Safe memory fixture read-fixture",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "write-fixture",
+            "description": "Safe memory fixture write-fixture",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "reliability-task"
+      },
+      {
+        "provider": "fixture",
+        "model": "large",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only controlled fixture facts."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "read fixture, execute controlled test and explain failure"
+              }
+            ],
+            "role": "user",
+            "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read-fixture",
+              "description": "Safe memory fixture read-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "write-fixture",
+              "description": "Safe memory fixture write-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": []
+        },
+        "tools": [
+          {
+            "name": "read-fixture",
+            "description": "Safe memory fixture read-fixture",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "write-fixture",
+            "description": "Safe memory fixture write-fixture",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "sessionId": "reliability-task"
+      }
+    ],
+    "frames": [
+      {
+        "type": "start",
+        "attemptId": "reliability-task:1",
+        "revision": 1,
+        "turn": 1,
+        "step": 1
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:1",
+        "revision": 2,
+        "index": 0,
+        "time": 1793773610715,
+        "chunk": {
+          "type": "finish",
+          "reason": {
+            "kind": "error",
+            "failure": {
+              "message": "controlled RATE_LIMIT",
+              "code": "RATE_LIMIT",
+              "status": 429
+            }
+          }
+        }
+      },
+      {
+        "type": "end",
+        "attemptId": "reliability-task:1",
+        "revision": 3,
+        "index": 1,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/attempt",
+          "seq": 8
+        }
+      },
+      {
+        "type": "start",
+        "attemptId": "reliability-task:2",
+        "revision": 4,
+        "turn": 1,
+        "step": 1
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:2",
+        "revision": 5,
+        "index": 0,
+        "time": 1793773610718,
+        "chunk": {
+          "type": "block-start",
+          "index": 0,
+          "blockType": "tool-call"
+        }
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:2",
+        "revision": 6,
+        "index": 1,
+        "time": 1793773610718,
+        "chunk": {
+          "type": "block-end",
+          "index": 0,
+          "block": {
+            "type": "tool-call",
+            "id": "call-0",
+            "name": "write-fixture",
+            "arguments": "{}"
+          }
+        }
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:2",
+        "revision": 7,
+        "index": 2,
+        "time": 1793773610718,
+        "chunk": {
+          "type": "block-start",
+          "index": 1,
+          "blockType": "tool-call"
+        }
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:2",
+        "revision": 8,
+        "index": 3,
+        "time": 1793773610718,
+        "chunk": {
+          "type": "block-end",
+          "index": 1,
+          "block": {
+            "type": "tool-call",
+            "id": "call-1",
+            "name": "read-fixture",
+            "arguments": "{}"
+          }
+        }
+      },
+      {
+        "type": "chunk",
+        "attemptId": "reliability-task:2",
+        "revision": 9,
+        "index": 4,
+        "time": 1793773610718,
+        "chunk": {
+          "type": "finish",
+          "reason": {
+            "kind": "tool-calls"
+          }
+        }
+      },
+      {
+        "type": "end",
+        "attemptId": "reliability-task:2",
+        "revision": 10,
+        "index": 5,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/message",
+          "seq": 11
+        }
+      }
+    ],
+    "errors": [],
+    "counts": {
+      "preStep": 1,
+      "prepareCall": 2,
+      "resolveTools": 1,
+      "assemble": 1,
+      "recovery": 1
+    },
+    "delays": [
+      200,
+      500,
+      200
+    ],
+    "virtualMs": 500,
+    "surface": [
+      4,
+      5,
+      11,
+      13,
+      15
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "Use only controlled fixture facts."
+          }
+        ],
+        "source": {
+          "kind": "system-prompt"
+        },
+        "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+      },
+      {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "read fixture, execute controlled test and explain failure"
+          }
+        ],
+        "role": "user",
+        "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool-call",
+            "id": "call-0",
+            "name": "write-fixture",
+            "arguments": "{}"
+          },
+          {
+            "type": "tool-call",
+            "id": "call-1",
+            "name": "read-fixture",
+            "arguments": "{}"
+          }
+        ],
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "large"
+        },
+        "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+      },
+      {
+        "role": "tool",
+        "source": {
+          "kind": "tool",
+          "callId": "call-0"
+        },
+        "toolCallId": "call-0",
+        "content": [
+          {
+            "type": "text",
+            "text": "Error: tool call aborted"
+          }
+        ],
+        "isError": true,
+        "id": "8f267004-5c97-4668-9a80-53161cd6deaf"
+      },
+      {
+        "role": "tool",
+        "source": {
+          "kind": "tool",
+          "callId": "call-1"
+        },
+        "toolCallId": "call-1",
+        "content": [
+          {
+            "type": "text",
+            "text": "Error: tool call aborted before dispatch"
+          }
+        ],
+        "isError": true,
+        "id": "4862af0a-3060-4d9b-9415-64509a95926e"
+      }
+    ],
+    "pressure": 154
+  },
+  "restoredLog": [
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 0,
+      "time": 1793773610709,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "inserted": [
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "read fixture, execute controlled test and explain failure"
+              }
+            ],
+            "role": "user",
+            "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+          }
+        ]
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 1,
+      "time": 1793773610710,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 2,
+      "time": 1793773610711,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "removedCount": 1,
+        "inserted": []
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 3,
+      "time": 1793773610712,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 4,
+      "time": 1793773610713,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only controlled fixture facts."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 5,
+      "time": 1793773610714,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "read fixture, execute controlled test and explain failure"
+          }
+        ],
+        "role": "user",
+        "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 6,
+      "time": 1793773610714,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "large",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "read-fixture",
+              "description": "Safe memory fixture read-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "write-fixture",
+              "description": "Safe memory fixture write-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "request/context",
+      "seq": 7,
+      "time": 1793773610714,
+      "data": {
+        "provider": "fixture",
+        "model": "large",
+        "contextWindow": 100000
+      }
+    },
+    {
+      "type": "assistant/attempt",
+      "seq": 8,
+      "time": 1793773610716,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "stream": [
+          {
+            "type": "chunk",
+            "time": 1793773610715,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "error",
+                "failure": {
+                  "message": "controlled RATE_LIMIT",
+                  "code": "RATE_LIMIT",
+                  "status": 429
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "llm/retry",
+      "seq": 9,
+      "time": 1793773610716,
+      "data": {
+        "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+        "turn": 1,
+        "step": 1,
+        "provider": "fixture",
+        "mode": "normal",
+        "policyKey": "[\"normal\",2,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],500,10000,0]",
+        "retry": 1,
+        "maxRetries": 2,
+        "delayMs": 500,
+        "failure": {
+          "message": "controlled RATE_LIMIT",
+          "code": "RATE_LIMIT",
+          "status": 429
+        }
+      }
+    },
+    {
+      "type": "llm/retry-started",
+      "seq": 10,
+      "time": 1793773610717,
+      "data": {
+        "retryId": "67025aa9-b5b7-4280-8958-d69f9f1ed890",
+        "turn": 1,
+        "step": 1,
+        "retry": 1
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 11,
+      "time": 1793773610718,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool-call",
+              "id": "call-0",
+              "name": "write-fixture",
+              "arguments": "{}"
+            },
+            {
+              "type": "tool-call",
+              "id": "call-1",
+              "name": "read-fixture",
+              "arguments": "{}"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "large"
+          },
+          "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+        },
+        "stream": [
+          {
+            "type": "chunk",
+            "time": 1793773610718,
+            "chunk": {
+              "type": "block-start",
+              "index": 0,
+              "blockType": "tool-call"
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793773610718,
+            "chunk": {
+              "type": "block-end",
+              "index": 0,
+              "block": {
+                "type": "tool-call",
+                "id": "call-0",
+                "name": "write-fixture",
+                "arguments": "{}"
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793773610718,
+            "chunk": {
+              "type": "block-start",
+              "index": 1,
+              "blockType": "tool-call"
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793773610718,
+            "chunk": {
+              "type": "block-end",
+              "index": 1,
+              "block": {
+                "type": "tool-call",
+                "id": "call-1",
+                "name": "read-fixture",
+                "arguments": "{}"
+              }
+            }
+          },
+          {
+            "type": "chunk",
+            "time": 1793773610718,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "tool-calls"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "tool/call",
+      "seq": 12,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "callId": "call-0",
+        "name": "write-fixture",
+        "arguments": "{}"
+      }
+    },
+    {
+      "type": "tool/result",
+      "seq": 13,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "id": "interrupted-tool-result-call-0-13",
+          "role": "tool",
+          "toolCallId": "call-0",
+          "isError": true,
+          "source": {
+            "kind": "tool",
+            "callId": "call-0"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly."
+            }
+          ]
+        },
+        "error": {
+          "name": "ToolOutcomeUnknownError",
+          "code": "TOOL_OUTCOME_UNKNOWN"
+        }
+      },
+      "surfaceOp": "append",
+      "sourceEventSeqs": [
+        12
+      ]
+    },
+    {
+      "type": "tool/result",
+      "seq": 14,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "id": "interrupted-tool-result-call-1-14",
+          "role": "tool",
+          "toolCallId": "call-1",
+          "isError": true,
+          "source": {
+            "kind": "tool",
+            "callId": "call-1"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed."
+            }
+          ]
+        },
+        "error": {
+          "name": "ToolNotStartedError",
+          "code": "TOOL_NOT_STARTED"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 15,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 16,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "interrupted"
+        }
+      }
+    },
+    {
+      "type": "session/end-seed",
+      "seq": 17,
+      "time": 1793773610783,
+      "data": {}
+    }
+  ],
+  "closers": [
+    {
+      "type": "tool/result",
+      "seq": 13,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "id": "interrupted-tool-result-call-0-13",
+          "role": "tool",
+          "toolCallId": "call-0",
+          "isError": true,
+          "source": {
+            "kind": "tool",
+            "callId": "call-0"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly."
+            }
+          ]
+        },
+        "error": {
+          "name": "ToolOutcomeUnknownError",
+          "code": "TOOL_OUTCOME_UNKNOWN"
+        }
+      },
+      "surfaceOp": "append",
+      "sourceEventSeqs": [
+        12
+      ]
+    },
+    {
+      "type": "tool/result",
+      "seq": 14,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "id": "interrupted-tool-result-call-1-14",
+          "role": "tool",
+          "toolCallId": "call-1",
+          "isError": true,
+          "source": {
+            "kind": "tool",
+            "callId": "call-1"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed."
+            }
+          ]
+        },
+        "error": {
+          "name": "ToolNotStartedError",
+          "code": "TOOL_NOT_STARTED"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 15,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 16,
+      "time": 1793773610719,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "interrupted"
+        }
+      }
+    },
+    {
+      "type": "session/end-seed",
+      "seq": 17,
+      "time": 1793773610783,
+      "data": {}
+    }
+  ],
+  "recovered": {
+    "events": [
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 18,
+        "time": 1793773610791,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "inserted": [
+            {
+              "source": {
+                "kind": "user"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "external state checked: memory resource count is one"
+                }
+              ],
+              "role": "user",
+              "id": "2ddc1f0b-8beb-42c9-8e37-3e0cfa850112"
+            }
+          ]
+        }
+      },
+      {
+        "type": "turn/start",
+        "seq": 19,
+        "time": 1793773610791,
+        "data": {
+          "turn": 2
+        }
+      },
+      {
+        "type": "agent/inbox/spliced",
+        "seq": 20,
+        "time": 1793773610791,
+        "data": {
+          "target": "next-turn",
+          "start": 0,
+          "removedCount": 1,
+          "inserted": []
+        }
+      },
+      {
+        "type": "step/start",
+        "seq": 21,
+        "time": 1793773610792,
+        "data": {
+          "turn": 2,
+          "step": 1
+        }
+      },
+      {
+        "type": "user/message",
+        "seq": 22,
+        "time": 1793773610792,
+        "data": {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "external state checked: memory resource count is one"
+            }
+          ],
+          "role": "user",
+          "id": "2ddc1f0b-8beb-42c9-8e37-3e0cfa850112"
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "request/header",
+        "seq": 23,
+        "time": 1793773610792,
+        "data": {
+          "header": {
+            "config": {
+              "provider": "fixture",
+              "model": "large",
+              "maxTokens": 128
+            },
+            "adapterDefaults": {
+              "maxTokens": true
+            }
+          },
+          "reason": "resume"
+        }
+      },
+      {
+        "type": "developer/message",
+        "seq": 24,
+        "time": 1793773610792,
+        "data": {
+          "turn": 2,
+          "step": 1,
+          "message": {
+            "source": {
+              "kind": "tool-registry"
+            },
+            "content": [
+              {
+                "type": "tool-removal",
+                "toolName": "read-fixture"
+              },
+              {
+                "type": "tool-removal",
+                "toolName": "write-fixture"
+              }
+            ],
+            "role": "developer",
+            "id": "3506dc85-f971-4132-a862-e5fe83d118f5"
+          }
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "assistant/message",
+        "seq": 25,
+        "time": 1793773610793,
+        "data": {
+          "turn": 2,
+          "step": 1,
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "External fixture shows operation already happened; reconcile without repeating."
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "large"
+            },
+            "id": "3567ddaf-8aef-4d75-abb9-18af9ac407c2"
+          },
+          "stream": [
+            {
+              "type": "text-chunks",
+              "time0": 1793773610793,
+              "index": 0,
+              "dt": [],
+              "texts": [
+                "External fixture shows operation already happened; reconcile without repeating."
+              ]
+            },
+            {
+              "type": "chunk",
+              "time": 1793773610793,
+              "chunk": {
+                "type": "finish",
+                "reason": {
+                  "kind": "stop"
+                }
+              }
+            }
+          ]
+        },
+        "surfaceOp": "append"
+      },
+      {
+        "type": "step/end",
+        "seq": 26,
+        "time": 1793773610793,
+        "data": {
+          "turn": 2,
+          "step": 1
+        }
+      },
+      {
+        "type": "turn/end",
+        "seq": 27,
+        "time": 1793773610793,
+        "data": {
+          "turn": 2,
+          "reason": {
+            "kind": "completed"
+          }
+        }
+      }
+    ],
+    "requests": [
+      {
+        "provider": "fixture",
+        "model": "large",
+        "maxTokens": 128,
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use only controlled fixture facts."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            },
+            "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "read fixture, execute controlled test and explain failure"
+              }
+            ],
+            "role": "user",
+            "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "tool-call",
+                "id": "call-0",
+                "name": "write-fixture",
+                "arguments": "{}"
+              },
+              {
+                "type": "tool-call",
+                "id": "call-1",
+                "name": "read-fixture",
+                "arguments": "{}"
+              }
+            ],
+            "source": {
+              "kind": "model",
+              "provider": "fixture",
+              "model": "large"
+            },
+            "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+          },
+          {
+            "id": "interrupted-tool-result-call-0-13",
+            "role": "tool",
+            "toolCallId": "call-0",
+            "isError": true,
+            "source": {
+              "kind": "tool",
+              "callId": "call-0"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly."
+              }
+            ]
+          },
+          {
+            "id": "interrupted-tool-result-call-1-14",
+            "role": "tool",
+            "toolCallId": "call-1",
+            "isError": true,
+            "source": {
+              "kind": "tool",
+              "callId": "call-1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed."
+              }
+            ]
+          },
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "external state checked: memory resource count is one"
+              }
+            ],
+            "role": "user",
+            "id": "2ddc1f0b-8beb-42c9-8e37-3e0cfa850112"
+          }
+        ],
+        "toolHistory": {
+          "tools": [
+            {
+              "name": "read-fixture",
+              "description": "Safe memory fixture read-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "write-fixture",
+              "description": "Safe memory fixture write-fixture",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ],
+          "updates": [
+            {
+              "messageId": "3506dc85-f971-4132-a862-e5fe83d118f5",
+              "additions": []
+            }
+          ]
+        },
+        "sessionId": "interrupted-copy"
+      }
+    ],
+    "frames": [
+      {
+        "type": "start",
+        "attemptId": "interrupted-copy:1",
+        "revision": 1,
+        "turn": 2,
+        "step": 1
+      },
+      {
+        "type": "chunk",
+        "attemptId": "interrupted-copy:1",
+        "revision": 2,
+        "index": 0,
+        "time": 1793773610793,
+        "chunk": {
+          "type": "text-delta",
+          "index": 0,
+          "text": "External fixture shows operation already happened; reconcile without repeating."
+        }
+      },
+      {
+        "type": "chunk",
+        "attemptId": "interrupted-copy:1",
+        "revision": 3,
+        "index": 1,
+        "time": 1793773610793,
+        "chunk": {
+          "type": "finish",
+          "reason": {
+            "kind": "stop"
+          }
+        }
+      },
+      {
+        "type": "end",
+        "attemptId": "interrupted-copy:1",
+        "revision": 4,
+        "index": 2,
+        "outcome": {
+          "kind": "committed",
+          "eventType": "assistant/message",
+          "seq": 25
+        }
+      }
+    ],
+    "errors": [],
+    "counts": {
+      "preStep": 1,
+      "prepareCall": 1,
+      "resolveTools": 1,
+      "assemble": 1,
+      "recovery": 0
+    },
+    "delays": [
+      200
+    ],
+    "virtualMs": 0,
+    "surface": [
+      4,
+      5,
+      11,
+      13,
+      14,
+      22,
+      24,
+      25
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "Use only controlled fixture facts."
+          }
+        ],
+        "source": {
+          "kind": "system-prompt"
+        },
+        "id": "f9d78833-76d6-4f48-8086-42b99963df26"
+      },
+      {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "read fixture, execute controlled test and explain failure"
+          }
+        ],
+        "role": "user",
+        "id": "200f96ba-d55e-457f-b571-62d1f465786e"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool-call",
+            "id": "call-0",
+            "name": "write-fixture",
+            "arguments": "{}"
+          },
+          {
+            "type": "tool-call",
+            "id": "call-1",
+            "name": "read-fixture",
+            "arguments": "{}"
+          }
+        ],
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "large"
+        },
+        "id": "fe25c9c1-83be-43b6-a975-24c9c322757e"
+      },
+      {
+        "id": "interrupted-tool-result-call-0-13",
+        "role": "tool",
+        "toolCallId": "call-0",
+        "isError": true,
+        "source": {
+          "kind": "tool",
+          "callId": "call-0"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly."
+          }
+        ]
+      },
+      {
+        "id": "interrupted-tool-result-call-1-14",
+        "role": "tool",
+        "toolCallId": "call-1",
+        "isError": true,
+        "source": {
+          "kind": "tool",
+          "callId": "call-1"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed."
+          }
+        ]
+      },
+      {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "external state checked: memory resource count is one"
+          }
+        ],
+        "role": "user",
+        "id": "2ddc1f0b-8beb-42c9-8e37-3e0cfa850112"
+      },
+      {
+        "source": {
+          "kind": "tool-registry"
+        },
+        "content": [
+          {
+            "type": "tool-removal",
+            "toolName": "read-fixture"
+          },
+          {
+            "type": "tool-removal",
+            "toolName": "write-fixture"
+          }
+        ],
+        "role": "developer",
+        "id": "3506dc85-f971-4132-a862-e5fe83d118f5"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "text",
+            "text": "External fixture shows operation already happened; reconcile without repeating."
+          }
+        ],
+        "source": {
+          "kind": "model",
+          "provider": "fixture",
+          "model": "large"
+        },
+        "id": "3567ddaf-8aef-4d75-abb9-18af9ac407c2"
+      }
+    ]
+  },
+  "effects": 1,
+  "crashSimulation": "exact logical committed prefix copied to a fresh JSONL fixture; no actual process crash",
+  "restoration": "same process, new context + backend; real agents.resume",
+  "budget": "500 virtual ms; one generic retry; no external Provider"
+}

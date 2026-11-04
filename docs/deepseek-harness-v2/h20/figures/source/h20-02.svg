@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1710" viewBox="0 0 640 1710" role="img"><title>同一个 Step，新的请求 Attempt</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1710" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">同一个 Step，新的请求 Attempt</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">已打开 Turn / Step</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">A:rate-limit 的 step/start = Seq3</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">失败分片只归属这次 Attempt</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Seq8 assistant/attempt 已结算</text>
+<path d="M320 307 V363" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="342" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">恢复点</text>
+<rect x="32" y="388" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="431" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">agent/request-error Waterfall</text>
+<text x="52" y="475" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">失败码、provider、捕获策略、signal</text>
+<text x="52" y="517" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">normal：合格码和预算才处理</text>
+<text x="52" y="559" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">always：先等待下游恢复</text>
+<rect x="32" y="616" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="659" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">Seq9 llm/retry：先登记计划</text>
+<text x="52" y="703" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">retryId / policyKey / retry1 / 500ms</text>
+<text x="52" y="745" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">仅日志，不进入模型消息</text>
+<text x="52" y="787" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Session append 不等于磁盘屏障</text>
+<path d="M320 823 V879" fill="none" stroke="#187A91" stroke-width="3" marker-end="url(#a)"/>
+<text x="350" y="858" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">可取消等待</text>
+<rect x="32" y="904" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="947" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">等待分支</text>
+<text x="52" y="991" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">取消 / 释放：清计时器，无 started</text>
+<text x="52" y="1033" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">正常结束：Seq10 retry-started</text>
+<text x="52" y="1075" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">这个事件不证明新请求已成功</text>
+<rect x="32" y="1132" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1175" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">重新准备请求，不重接用户消息</text>
+<text x="52" y="1219" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不重跑 pre-step / 工具准入 / assemble</text>
+<text x="52" y="1261" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">刷新运行时上下文，派生当前 Surface</text>
+<text x="52" y="1303" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">新的请求仍属原 Turn / Step</text>
+<rect x="32" y="1360" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="1403" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">成功与真正关闭</text>
+<text x="52" y="1447" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Seq11 assistant/message</text>
+<text x="52" y="1489" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Seq12 step/end → Seq13 turn/end</text>
+<text x="52" y="1531" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">本地保存检查点须另按路径 flush</text>
+<text x="32" y="1682" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

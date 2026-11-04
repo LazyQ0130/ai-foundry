@@ -1,0 +1,4164 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H20｜Agent 可靠性工程：取消、重试与故障恢复</title><style>*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  ::selection {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
+  .shell {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1120px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+  @media (min-width: 640px) {
+
+  .shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+  @media (min-width: 1024px) {
+
+  .shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+  .card {
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .btn {
+  display: inline-flex;
+  height: 2.5rem;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+  .btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+  .btn:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(59 130 246 / 0.4);
+  --tw-ring-offset-width: 2px;
+}
+
+  .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .btn-sm {
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  font-size: 13px;
+}
+  .btn-md {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+  .btn-lg {
+  height: 2.75rem;
+  border-radius: 10px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 15px;
+}
+  .btn-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
+}
+  .btn-outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+  .btn-outline:not(:disabled):not([aria-disabled="true"]):hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+  .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+  .h-sec {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+  @media (min-width: 640px) {
+
+  .h-sec {
+    font-size: 27px;
+  }
+}
+  .sub-sec {
+  margin-top: 0.5rem;
+  font-size: 13.5px;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+  .link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+  .link-more:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.visible {
+  visibility: visible;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-3 {
+  left: 0.75rem;
+  right: 0.75rem;
+}
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+.-bottom-0\.5 {
+  bottom: -0.125rem;
+}
+.-bottom-\[9px\] {
+  bottom: -9px;
+}
+.-right-0\.5 {
+  right: -0.125rem;
+}
+.-right-20 {
+  right: -5rem;
+}
+.-right-24 {
+  right: -6rem;
+}
+.-right-\[15px\] {
+  right: -15px;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.-top-20 {
+  top: -5rem;
+}
+.-top-24 {
+  top: -6rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.bottom-6 {
+  bottom: 1.5rem;
+}
+.left-0 {
+  left: 0px;
+}
+.left-6 {
+  left: 1.5rem;
+}
+.right-0 {
+  right: 0px;
+}
+.right-3 {
+  right: 0.75rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.top-11 {
+  top: 2.75rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
+.top-\[70px\] {
+  top: 70px;
+}
+.isolate {
+  isolation: isolate;
+}
+.-z-10 {
+  z-index: -10;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-30 {
+  z-index: 30;
+}
+.z-40 {
+  z-index: 40;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.m-0 {
+  margin: 0px;
+}
+.m-auto {
+  margin: auto;
+}
+.-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+.mt-10 {
+  margin-top: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.mt-\[1px\] {
+  margin-top: 1px;
+}
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+.mt-\[3px\] {
+  margin-top: 3px;
+}
+.mt-\[7px\] {
+  margin-top: 7px;
+}
+.mt-\[8px\] {
+  margin-top: 8px;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-1 {
+  height: 0.25rem;
+}
+.h-1\.5 {
+  height: 0.375rem;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-14 {
+  height: 3.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-2\.5 {
+  height: 0.625rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-60 {
+  height: 15rem;
+}
+.h-7 {
+  height: 1.75rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-\[14px\] {
+  height: 14px;
+}
+.h-\[15px\] {
+  height: 15px;
+}
+.h-\[18px\] {
+  height: 18px;
+}
+.h-\[2px\] {
+  height: 2px;
+}
+.h-\[420px\] {
+  height: 420px;
+}
+.h-\[70px\] {
+  height: 70px;
+}
+.h-\[calc\(100vh-6rem\)\] {
+  height: calc(100vh - 6rem);
+}
+.h-auto {
+  height: auto;
+}
+.h-dvh {
+  height: 100dvh;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-96 {
+  max-height: 24rem;
+}
+.max-h-\[85dvh\] {
+  max-height: 85dvh;
+}
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[94vh\] {
+  max-height: 94vh;
+}
+.max-h-none {
+  max-height: none;
+}
+.min-h-0 {
+  min-height: 0px;
+}
+.min-h-10 {
+  min-height: 2.5rem;
+}
+.min-h-9 {
+  min-height: 2.25rem;
+}
+.min-h-\[132px\] {
+  min-height: 132px;
+}
+.min-h-\[360px\] {
+  min-height: 360px;
+}
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
+}
+.w-1\.5 {
+  width: 0.375rem;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-11 {
+  width: 2.75rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-2\.5 {
+  width: 0.625rem;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-3\/4 {
+  width: 75%;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-60 {
+  width: 15rem;
+}
+.w-7 {
+  width: 1.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-\[14px\] {
+  width: 14px;
+}
+.w-\[15px\] {
+  width: 15px;
+}
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[204px\] {
+  width: 204px;
+}
+.w-\[260px\] {
+  width: 260px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
+.w-\[38px\] {
+  width: 38px;
+}
+.w-\[420px\] {
+  width: 420px;
+}
+.w-\[440px\] {
+  width: 440px;
+}
+.w-\[62px\] {
+  width: 62px;
+}
+.w-\[85px\] {
+  width: 85px;
+}
+.w-\[86\%\] {
+  width: 86%;
+}
+.w-\[92px\] {
+  width: 92px;
+}
+.w-\[calc\(100\%-2rem\)\] {
+  width: calc(100% - 2rem);
+}
+.w-fit {
+  width: fit-content;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-0 {
+  min-width: 0px;
+}
+.min-w-\[1040px\] {
+  min-width: 1040px;
+}
+.min-w-\[105px\] {
+  min-width: 105px;
+}
+.min-w-\[110px\] {
+  min-width: 110px;
+}
+.min-w-\[115px\] {
+  min-width: 115px;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+.min-w-\[125px\] {
+  min-width: 125px;
+}
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.min-w-\[220px\] {
+  min-width: 220px;
+}
+.min-w-\[420px\] {
+  min-width: 420px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.min-w-\[90px\] {
+  min-width: 90px;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-5xl {
+  max-width: 64rem;
+}
+.max-w-\[125px\] {
+  max-width: 125px;
+}
+.max-w-\[1440px\] {
+  max-width: 1440px;
+}
+.max-w-\[180px\] {
+  max-width: 180px;
+}
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+.max-w-\[445px\] {
+  max-width: 445px;
+}
+.max-w-\[620px\] {
+  max-width: 620px;
+}
+.max-w-\[740px\] {
+  max-width: 740px;
+}
+.max-w-\[760px\] {
+  max-width: 760px;
+}
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+.max-w-\[85vw\] {
+  max-width: 85vw;
+}
+.max-w-full {
+  max-width: 100%;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.max-w-none {
+  max-width: none;
+}
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.basis-full {
+  flex-basis: 100%;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes fade-up {
+
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up .45s ease-out both;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  user-select: none;
+}
+.select-all {
+  user-select: all;
+}
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}
+.list-disc {
+  list-style-type: disc;
+}
+.list-none {
+  list-style-type: none;
+}
+.appearance-none {
+  appearance: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-\[minmax\(0\2c 1fr\)\] {
+  grid-template-columns: minmax(0,1fr);
+}
+.grid-cols-\[minmax\(0\2c 1fr\)_72px_72px\] {
+  grid-template-columns: minmax(0,1fr) 72px 72px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.place-items-center {
+  place-items: center;
+}
+.content-start {
+  align-content: flex-start;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-2\.5 {
+  gap: 0.625rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-3\.5 {
+  gap: 0.875rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.gap-x-2 {
+  column-gap: 0.5rem;
+}
+.gap-x-3 {
+  column-gap: 0.75rem;
+}
+.gap-x-4 {
+  column-gap: 1rem;
+}
+.gap-x-5 {
+  column-gap: 1.25rem;
+}
+.gap-x-6 {
+  column-gap: 1.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+.gap-y-4 {
+  row-gap: 1rem;
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.625rem * var(--tw-space-y-reverse));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.space-y-7 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-divide-opacity, 1));
+}
+.self-start {
+  align-self: flex-start;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+.break-words {
+  overflow-wrap: break-word;
+}
+.break-all {
+  word-break: break-all;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+.rounded-\[18px\] {
+  border-radius: 18px;
+}
+.rounded-\[24px\] {
+  border-radius: 24px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[5px\] {
+  border-radius: 5px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-b-\[16px\] {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-l {
+  border-left-width: 1px;
+}
+.border-l-2 {
+  border-left-width: 2px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-r {
+  border-right-width: 1px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-t-2 {
+  border-top-width: 2px;
+}
+.border-brand-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.border-brand-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.border-brand-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
+}
+.border-brand-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.border-brand-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-cyan-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(207 250 254 / var(--tw-border-opacity, 1));
+}
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
+}
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-200\/60 {
+  border-color: rgb(226 232 240 / 0.6);
+}
+.border-slate-200\/70 {
+  border-color: rgb(226 232 240 / 0.7);
+}
+.border-slate-200\/80 {
+  border-color: rgb(226 232 240 / 0.8);
+}
+.border-slate-200\/90 {
+  border-color: rgb(226 232 240 / 0.9);
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-violet-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(221 214 254 / var(--tw-border-opacity, 1));
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-\[\#f3f4f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7f6f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 246 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f7faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8f7f4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 244 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#f8faff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 255 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#faf9f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 249 245 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-200\/30 {
+  background-color: rgb(191 219 254 / 0.3);
+}
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+.bg-brand-50\/50 {
+  background-color: rgb(239 246 255 / 0.5);
+}
+.bg-brand-50\/60 {
+  background-color: rgb(239 246 255 / 0.6);
+}
+.bg-brand-50\/70 {
+  background-color: rgb(239 246 255 / 0.7);
+}
+.bg-brand-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-50\/90 {
+  background-color: rgb(236 254 255 / 0.9);
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+.bg-cyan-500\/80 {
+  background-color: rgb(6 182 212 / 0.8);
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/70 {
+  background-color: rgb(236 253 245 / 0.7);
+}
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50\/50 {
+  background-color: rgb(248 250 252 / 0.5);
+}
+.bg-slate-50\/60 {
+  background-color: rgb(248 250 252 / 0.6);
+}
+.bg-slate-50\/70 {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.bg-slate-50\/80 {
+  background-color: rgb(248 250 252 / 0.8);
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900\/30 {
+  background-color: rgb(15 23 42 / 0.3);
+}
+.bg-slate-900\/35 {
+  background-color: rgb(15 23 42 / 0.35);
+}
+.bg-slate-900\/40 {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-violet-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 243 255 / var(--tw-bg-opacity, 1));
+}
+.bg-violet-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1));
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
+}
+.bg-white\/75 {
+  background-color: rgb(255 255 255 / 0.75);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.bg-white\/85 {
+  background-color: rgb(255 255 255 / 0.85);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.from-\[\#E9F2FE\] {
+  --tw-gradient-from: #E9F2FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(233 242 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-\[\#EEF4FE\] {
+  --tw-gradient-from: #EEF4FE var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(238 244 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-brand-50 {
+  --tw-gradient-from: #EFF6FF var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200\/90 {
+  --tw-gradient-from: rgb(226 232 240 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(226 232 240 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.via-\[\#F1F7FF\] {
+  --tw-gradient-to: rgb(241 247 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F1F7FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.via-\[\#F5F9FF\] {
+  --tw-gradient-to: rgb(245 249 255 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #F5F9FF var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.to-slate-300\/40 {
+  --tw-gradient-to: rgb(203 213 225 / 0.4) var(--tw-gradient-to-position);
+}
+.to-slate-50\/60 {
+  --tw-gradient-to: rgb(248 250 252 / 0.6) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-contain {
+  object-fit: contain;
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-0 {
+  padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-16 {
+  padding: 4rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-3\.5 {
+  padding: 0.875rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-\[7px\] {
+  padding: 7px;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-28 {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-3\.5 {
+  padding-bottom: 0.875rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-\[max\(20px\2c env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-3 {
+  padding-left: 0.75rem;
+}
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pr-12 {
+  padding-right: 3rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pr-9 {
+  padding-right: 2.25rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
+}
+.pt-14 {
+  padding-top: 3.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pt-7 {
+  padding-top: 1.75rem;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.pt-9 {
+  padding-top: 2.25rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.\!text-\[11\.5px\] {
+  font-size: 11.5px !important;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-\[10\.5px\] {
+  font-size: 10.5px;
+}
+.text-\[104px\] {
+  font-size: 104px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11\.5px\] {
+  font-size: 11.5px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.text-\[12\.5px\] {
+  font-size: 12.5px;
+}
+.text-\[12px\] {
+  font-size: 12px;
+}
+.text-\[13\.5px\] {
+  font-size: 13.5px;
+}
+.text-\[13px\] {
+  font-size: 13px;
+}
+.text-\[14\.5px\] {
+  font-size: 14.5px;
+}
+.text-\[14px\] {
+  font-size: 14px;
+}
+.text-\[15px\] {
+  font-size: 15px;
+}
+.text-\[16px\] {
+  font-size: 16px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-\[18px\] {
+  font-size: 18px;
+}
+.text-\[19px\] {
+  font-size: 19px;
+}
+.text-\[21px\] {
+  font-size: 21px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+.text-\[23px\] {
+  font-size: 23px;
+}
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[25px\] {
+  font-size: 25px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
+.text-\[27px\] {
+  font-size: 27px;
+}
+.text-\[28px\] {
+  font-size: 28px;
+}
+.text-\[30px\] {
+  font-size: 30px;
+}
+.text-\[32px\] {
+  font-size: 32px;
+}
+.text-\[34px\] {
+  font-size: 34px;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+.leading-5 {
+  line-height: 1.25rem;
+}
+.leading-6 {
+  line-height: 1.5rem;
+}
+.leading-7 {
+  line-height: 1.75rem;
+}
+.leading-8 {
+  line-height: 2rem;
+}
+.leading-\[1\.16\] {
+  line-height: 1.16;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-snug {
+  line-height: 1.375;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-\[0\.16em\] {
+  letter-spacing: 0.16em;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
+}
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+.text-brand-50 {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
+}
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+.text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.text-brand-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-cyan-800 {
+  --tw-text-opacity: 1;
+  color: rgb(21 94 117 / var(--tw-text-opacity, 1));
+}
+.text-emerald-500 {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-700 {
+  --tw-text-opacity: 1;
+  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-slate-100\/80 {
+  color: rgb(241 245 249 / 0.8);
+}
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-slate-950 {
+  --tw-text-opacity: 1;
+  color: rgb(2 6 23 / var(--tw-text-opacity, 1));
+}
+.text-violet-600 {
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+.text-violet-700 {
+  --tw-text-opacity: 1;
+  color: rgb(109 40 217 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.accent-brand-600 {
+  accent-color: #2563EB;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.25\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.25);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_28px_64px_-30px_rgba\(37\2c 99\2c 235\2c 0\.35\)\] {
+  --tw-shadow: 0 28px 64px -30px rgba(37,99,235,0.35);
+  --tw-shadow-colored: 0 28px 64px -30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_8px_32px_-16px_rgba\(15\2c 23\2c 42\2c 0\.16\)\] {
+  --tw-shadow: 0 8px 32px -16px rgba(15,23,42,0.16);
+  --tw-shadow-colored: 0 8px 32px -16px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-card {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-hero {
+  --tw-shadow: 0 30px 70px -28px rgba(37,99,235,0.32);
+  --tw-shadow-colored: 0 30px 70px -28px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lift {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-brand-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(219 234 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity, 1));
+}
+.ring-brand-500\/10 {
+  --tw-ring-color: rgb(59 130 246 / 0.1);
+}
+.ring-brand-500\/15 {
+  --tw-ring-color: rgb(59 130 246 / 0.15);
+}
+.ring-emerald-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 250 229 / var(--tw-ring-opacity, 1));
+}
+.ring-emerald-500\/15 {
+  --tw-ring-color: rgb(16 185 129 / 0.15);
+}
+.ring-orange-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 237 213 / var(--tw-ring-opacity, 1));
+}
+.ring-orange-500\/15 {
+  --tw-ring-color: rgb(249 115 22 / 0.15);
+}
+.ring-slate-200 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-100 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(237 233 254 / var(--tw-ring-opacity, 1));
+}
+.ring-violet-500\/15 {
+  --tw-ring-color: rgb(139 92 246 / 0.15);
+}
+.blur-3xl {
+  --tw-blur: blur(64px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c background-color\2c box-shadow\] {
+  transition-property: border-color,background-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[border-color\2c box-shadow\] {
+  transition-property: border-color,box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[stroke-dashoffset\] {
+  transition-property: stroke-dashoffset;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-\[width\] {
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.brand-icon img,
+.brand-wordmark img,
+.brand-lockup img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.brand-icon img {
+  width: 121%;
+  left: -10%;
+  top: -9%;
+}
+
+.brand-wordmark {
+  font-size: 17px;
+  width: 6.4em;
+  height: 1.2em;
+}
+
+.brand-wordmark img {
+  width: 12.6em;
+  left: -4.3em;
+  top: -2.32em;
+}
+
+.brand-lockup {
+  font-size: 30px;
+  width: 5em;
+  height: 1em;
+}
+
+.brand-lockup img {
+  width: 7.2em;
+  left: -1.1em;
+  top: -1.16em;
+}
+/* Lesson Renderer V2: scoped article typography; application UI keeps its own scale. */
+.lesson-header { margin: 32px 0 36px; padding-bottom: 28px; border-bottom: 1px solid #e2e8f0; }
+.lesson-title { margin-top: 16px; font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -.025em; color: #0f172a; }
+.lesson-prose { font-size: 16px; line-height: 1.8; color: #334155; overflow-wrap: anywhere; }
+.lesson-prose h2 { margin: 48px 0 16px; font-size: 24px; line-height: 1.4; font-weight: 700; color: #0f172a; }
+.lesson-prose h3 { margin: 32px 0 12px; font-size: 18px; line-height: 1.5; font-weight: 600; color: #0f172a; }
+.lesson-prose h4, .lesson-prose h5, .lesson-prose h6 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: #0f172a; }
+.lesson-prose p { margin: 0 0 16px; }
+.lesson-prose strong { font-weight: 600; color: #0f172a; }
+.lesson-prose ul, .lesson-prose ol { padding-left: 1.5em; margin: 16px 0 20px; }
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li { margin: 7px 0; padding-left: 4px; }
+.lesson-prose li > p { margin-bottom: 8px; }
+.lesson-prose li > ul, .lesson-prose li > ol { margin: 8px 0; }
+.lesson-prose .contains-task-list { list-style: none; padding-left: 0; }
+.lesson-prose input[type=checkbox] { margin-right: 8px; accent-color: #2563eb; }
+.lesson-prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+.lesson-prose a:hover { color: #1e40af; }
+.lesson-prose :focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.lesson-prose :not(pre) > code { padding: 2px 5px; border: 1px solid #e2e8f0; border-radius: 4px; background: #f8fafc; color: #334155; font-size: .9em; }
+.lesson-prose blockquote { margin: 24px 0; border-left: 3px solid #cbd5e1; padding: 2px 0 2px 20px; color: #475569; }
+.lesson-prose blockquote > :last-child { margin-bottom: 0; }
+.lesson-prose hr { margin: 36px 0; border-color: #e2e8f0; }
+.lesson-code { margin: 20px 0 24px; min-width: 0; border: 1px solid #dbe3ee; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+.lesson-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; line-height: 1.5; color: #64748b; }
+.lesson-copy { padding: 4px 8px; min-height: 32px; color: #1d4ed8; font-weight: 500; border-radius: 4px; }
+.lesson-copy:hover { background: #eff6ff; }
+.lesson-prose pre { margin: 0; padding: 18px; overflow-x: auto; font-size: 14px; line-height: 1.7; color: #1e293b; tab-size: 2; }
+.lesson-prose pre code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+.lesson-code-prompt pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lesson-callout { --callout: #2563eb; --callout-bg: #f5f9ff; margin: 28px 0; padding: 18px 22px; border-left: 3px solid var(--callout); border-radius: 0 6px 6px 0; background: var(--callout-bg); scroll-margin-top: 90px; }
+.lesson-callout-label { font-size: 13px; font-weight: 600; color: var(--callout); margin-bottom: 6px; }
+.lesson-callout-title { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+.lesson-callout-body > :first-child { margin-top: 0; }
+.lesson-callout-body > :last-child { margin-bottom: 0; }
+.lesson-callout .lesson-code { background: #fff; }
+.lesson-callout blockquote { font-size: 14px; color: #64748b; border-left: 0; padding-left: 0; }
+.lesson-concept { --callout: #6d28d9; --callout-bg: #faf8ff; }
+.lesson-check { --callout: #047857; --callout-bg: #f3fbf7; }
+.lesson-stuck { --callout: #92400e; --callout-bg: #fffbf2; }
+.lesson-warning { --callout: #b91c1c; --callout-bg: #fff5f5; }
+.lesson-deepdive { --callout: #64748b; --callout-bg: #f8fafc; }
+.lesson-deepdive summary { cursor: pointer; font-size: 16px; font-weight: 600; color: #334155; }
+.lesson-deepdive[open] summary { margin-bottom: 16px; }
+.lesson-image-placeholder { --callout: #94a3b8; --callout-bg: #fafafa; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 14px; color: #64748b; }
+.lesson-figure { display: block; margin: 24px 0; }
+.lesson-figure img { max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.lesson-caption { display: block; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #64748b; text-align: center; }
+.lesson-prose .lesson-image-expand { display: block; width: fit-content; margin: 6px auto 0; font-size: 13px; }
+.lesson-table { width: 100%; overflow-x: auto; margin: 24px 0; }
+.lesson-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.lesson-table th, .lesson-table td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: left; }
+.lesson-table th { background: #f8fafc; font-weight: 600; }
+.lesson-help-item .lesson-prose { font-size: 15px; }
+.lesson-help-item .lesson-prose > :first-child { margin-top: 0; }
+.lesson-help-item .lesson-prose > :last-child { margin-bottom: 0; }
+@media (max-width: 1359px) { .lesson-callout { scroll-margin-top: 128px; } }
+@media (max-width: 639px) {
+  .lesson-title { font-size: 29px; line-height: 1.3; }
+  .lesson-header { margin: 16px 0 20px; padding-bottom: 16px; }
+  .lesson-prose h2 { font-size: 22px; margin-top: 40px; }
+  .lesson-prose h3 { font-size: 17px; margin-top: 28px; }
+  .lesson-callout { padding: 16px; }
+  .lesson-prose pre { padding: 14px; }
+  .lesson-code-bar { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course attachments use the fixed registry and authenticated download API. */
+.lesson-resource { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+.lesson-resource-icon { color: #64748b; flex-shrink: 0; }
+.lesson-resource-info { flex: 1; min-width: 180px; }
+.lesson-resource-label, .lesson-resource-meta { color: #64748b; font-size: 13px; line-height: 1.6; }
+.lesson-resource-title { color: #0f172a; font-size: 17px; font-weight: 600; }
+.lesson-resource-description { color: #475569; font-size: 14px; margin: 3px 0; }
+.lesson-resource-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #2563eb; color: white; font-size: 14px; font-weight: 500; padding: 10px 14px; border-radius: 6px; }
+.lesson-resource-download:hover { background: #1d4ed8; }
+.lesson-resource-download:disabled { opacity: .6; cursor: wait; }
+.lesson-resource-download:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.lesson-resource-message { flex-basis: 100%; color: #475569; font-size: 14px; }
+@media (max-width: 639px) { .lesson-resource { padding: 16px; gap: 12px; } .lesson-resource-download { width: 100%; } }
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.backdrop\:bg-slate-900\/40::backdrop {
+  background-color: rgb(15 23 42 / 0.4);
+}
+.backdrop\:bg-transparent::backdrop {
+  background-color: transparent;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+.last\:border-0:last-child {
+  border-width: 0px;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+.hover\:-translate-y-0\.5:hover {
+  --tw-translate-y: -0.125rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:border-brand-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
+}
+.hover\:border-brand-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+.hover\:border-slate-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
+}
+.hover\:bg-brand-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-brand-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-slate-50\/70:hover {
+  background-color: rgb(248 250 252 / 0.7);
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.hover\:text-brand-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.hover\:text-brand-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity, 1));
+}
+.hover\:text-slate-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+.hover\:shadow-card:hover {
+  --tw-shadow: 0 1px 2px 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color), 0 1px 3px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-lift:hover {
+  --tw-shadow: 0 6px 20px -6px rgba(15,23,42,0.10), 0 2px 6px -2px rgba(15,23,42,0.05);
+  --tw-shadow-colored: 0 6px 20px -6px var(--tw-shadow-color), 0 2px 6px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:shadow-sm:hover {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:border-brand-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+.focus-visible\:outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:-outline-offset-2:focus-visible {
+  outline-offset: -2px;
+}
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.focus-visible\:outline-offset-4:focus-visible {
+  outline-offset: 4px;
+}
+.focus-visible\:outline-brand-600:focus-visible {
+  outline-color: #2563EB;
+}
+.group[open] .group-open\:rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.group:hover .group-hover\:text-brand-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-brand-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+.group:hover .group-hover\:text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+
+  .motion-reduce\:transform-none {
+    transform: none;
+  }
+
+  .motion-reduce\:transition-none {
+    transition-property: none;
+  }
+}
+@media (min-width: 360px) {
+
+  .min-\[360px\]\:w-64 {
+    width: 16rem;
+  }
+}
+@media (min-width: 640px) {
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .sm\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:block {
+    display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
+  }
+
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:min-h-\[108px\] {
+    min-height: 108px;
+  }
+
+  .sm\:min-h-\[48px\] {
+    min-height: 48px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:max-w-\[380px\] {
+    max-width: 380px;
+  }
+
+  .sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:items-start {
+    align-items: flex-start;
+  }
+
+  .sm\:items-end {
+    align-items: flex-end;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
+  .sm\:divide-x > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-x-reverse: 0;
+    border-right-width: calc(1px * var(--tw-divide-x-reverse));
+    border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+  }
+
+  .sm\:divide-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(0px * var(--tw-divide-y-reverse));
+  }
+
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-2\.5 {
+    padding: 0.625rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
+  .sm\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:p-9 {
+    padding: 2.25rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:py-11 {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:text-\[12\.5px\] {
+    font-size: 12.5px;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[23px\] {
+    font-size: 23px;
+  }
+
+  .sm\:text-\[25px\] {
+    font-size: 25px;
+  }
+
+  .sm\:text-\[27px\] {
+    font-size: 27px;
+  }
+
+  .sm\:text-\[28px\] {
+    font-size: 28px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[38px\] {
+    font-size: 38px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[42px\] {
+    font-size: 42px;
+  }
+
+  .sm\:text-\[44px\] {
+    font-size: 44px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-\[1\.4fr_repeat\(3\2c 1fr\)\] {
+    grid-template-columns: 1.4fr repeat(3,1fr);
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-20 {
+    top: 5rem;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:ml-\[204px\] {
+    margin-left: 204px;
+  }
+
+  .lg\:mt-4 {
+    margin-top: 1rem;
+  }
+
+  .lg\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:grid {
+    display: grid;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:max-w-\[850px\] {
+    max-width: 850px;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[1\.4fr_1fr\] {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .lg\:grid-cols-\[1fr_1\.1fr\] {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .lg\:grid-cols-\[220px_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[45\%_55\%\] {
+    grid-template-columns: 45% 55%;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1\.8fr\)_minmax\(0\2c 1fr\)\] {
+    grid-template-columns: minmax(0,1.8fr) minmax(0,1fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_220px\] {
+    grid-template-columns: minmax(0,1fr) 220px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\] {
+    grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_330px\] {
+    grid-template-columns: minmax(0,1fr) 330px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_360px\] {
+    grid-template-columns: minmax(0,1fr) 360px;
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 470px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,470px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 1fr\)_minmax\(0\2c 480px\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,480px);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 32fr\)_minmax\(0\2c 36fr\)_minmax\(0\2c 32fr\)\] {
+    grid-template-columns: minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);
+  }
+
+  .lg\:grid-cols-\[minmax\(0\2c 43\%\)_minmax\(0\2c 57\%\)\] {
+    grid-template-columns: minmax(0,43%) minmax(0,57%);
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
+  }
+
+  .lg\:self-start {
+    align-self: flex-start;
+  }
+
+  .lg\:border-b-0 {
+    border-bottom-width: 0px;
+  }
+
+  .lg\:border-l {
+    border-left-width: 1px;
+  }
+
+  .lg\:border-r {
+    border-right-width: 1px;
+  }
+
+  .lg\:border-t-0 {
+    border-top-width: 0px;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .lg\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .lg\:text-\[120px\] {
+    font-size: 120px;
+  }
+
+  .lg\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-\[330px_repeat\(4\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: 330px repeat(4,minmax(0,1fr));
+  }
+
+  .xl\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .xl\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1360px) {
+
+  .min-\[1360px\]\:sticky {
+    position: sticky;
+  }
+
+  .min-\[1360px\]\:inset-y-0 {
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .min-\[1360px\]\:left-auto {
+    left: auto;
+  }
+
+  .min-\[1360px\]\:top-20 {
+    top: 5rem;
+  }
+
+  .min-\[1360px\]\:block {
+    display: block;
+  }
+
+  .min-\[1360px\]\:flex {
+    display: flex;
+  }
+
+  .min-\[1360px\]\:hidden {
+    display: none;
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-6rem\)\] {
+    max-height: calc(100dvh - 6rem);
+  }
+
+  .min-\[1360px\]\:max-h-\[calc\(100dvh-96px\)\] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .min-\[1360px\]\:max-h-none {
+    max-height: none;
+  }
+
+  .min-\[1360px\]\:min-h-0 {
+    min-height: 0px;
+  }
+
+  .min-\[1360px\]\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .min-\[1360px\]\:max-w-none {
+    max-width: none;
+  }
+
+  .min-\[1360px\]\:scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+
+  .min-\[1360px\]\:grid-cols-\[260px_minmax\(0\2c 1fr\)_260px\] {
+    grid-template-columns: 260px minmax(0,1fr) 260px;
+  }
+
+  .min-\[1360px\]\:flex-col {
+    flex-direction: column;
+  }
+
+  .min-\[1360px\]\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .min-\[1360px\]\:overflow-y-auto {
+    overflow-y: auto;
+  }
+
+  .min-\[1360px\]\:rounded-none {
+    border-radius: 0px;
+  }
+
+  .min-\[1360px\]\:pb-6 {
+    padding-bottom: 1.5rem;
+  }
+}
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
+}
+
+body{font-family:"Microsoft YaHei",sans-serif;background:white}main{max-width:808px;padding:24px;margin:auto}.preview-note{font-size:13px;color:#64748b;background:#f1f5f9;padding:12px}@media(max-width:639px){main{padding:16px}}</style></head><body><main><p class="preview-note">H20 作者审阅页 · 未发布。实际 LessonMarkdown 的静态渲染，折叠答案可展开；课程版本的复制交互已另经 React 挂载测试。图片在本页映射为相邻文件，不改变教材的 /course-media 路径。</p><header class="lesson-header"><h1 class="lesson-title">Agent 可靠性工程：取消、重试与故障恢复</h1><p>280～380 分钟（分三段：失败与重试90～120、取消与工具95～130、恢复与综合95～130；作者估算，环境另计，待试读）</p></header><div class="lesson-prose"><h2>同一个代码研究任务，五次失败该怎样继续？</h2>
+<p>Agent 接到任务：“读取项目文件，执行测试，并总结构建失败原因。”它正准备模型请求，提供方却返回限流；稍后另一次请求已经流出文字，网络突然断开。第三次工具真的执行了测试，只是测试失败。第四次用户点击停止，工具还没有退出。第五次进程消失，只剩已经保存的会话前缀。</p>
+<p>先在纸上分别写下一步：继续、等待、重试模型、重读材料、检查外部结果，还是停止并请人决定？再补一句“我依据什么事实”。暂时不要用一个自动重跑整个任务的按钮覆盖五种情况：用户消息可能已经接纳，工具可能已经写入，取消也可能刚刚改变了继续执行的授权。</p>
+<p>H17让事件能重建历史，H18让指定范围的事实能够保存与恢复，H19让当前模型输入在容量内取舍。H20补上执行控制：<strong>恢复必须依据失败发生的位置、已经提交的事实、外部副作用和当前控制权。</strong> 本课最终交付一条可核对轨迹，从失败Attempt、退避、工具开始，到取消排空和新实例恢复。</p>
+<p>官方固定Commit仍是 <code>f3803c96974ad4a94195fb97e5c637e9c2a3afe3</code>。S编号给出实现与断言。本课Provider是受控Adapter，工具只操作内存假效果，磁盘均为新建JSONL夹具；“真实组件”不表示真实付费模型或完整Harness应用。</p>
+<h2>先定位故障，别先套重试</h2>
+<p>把调用看成几道边界：Agent接纳用户输入，准备模型请求，消费流，提交Assistant，再按提议派发工具，最后提交结果。错误在哪道边界出现，决定当前组件看得见什么；出现同一句“失败”，并不表示已发生的事情相同。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>故障</th><th>当前可观察事实</th><th>可考虑的恢复与前提</th></tr></thead><tbody><tr><td>模型请求故障</td><td>Adapter规范终止失败、Attempt流、规范code</td><td>在请求恢复点按策略判断，可能重新计费</td></tr><tr><td>工具业务故障</td><td>工具已执行，tool/result为错误</td><td>让模型解释或选择下一步；不能直接当作模型限流</td></tr><tr><td>执行基础设施故障</td><td>准入、插件、流水线或调度阶段抛错</td><td>看具体错误边界，必要时排空、补缺结果并结束Turn</td></tr><tr><td>用户主动取消</td><td>当前运行signal已abort，用户不希望继续</td><td>停止安排新工作，等待已启动工作达到结算边界</td></tr><tr><td>进程中断</td><td>内存状态消失，只能读持久有效前缀</td><td>取得所有权，修复开放语义；不能重放旧工具副作用</td></tr></tbody></table></div>
+<p>故障分类不是统一的自动执行表。比如单工具pre hook抛错，可被流水线规范成错误结果；模型middleware抛错，则仍可能直接结束Turn。只说“插件错误都重试”或“插件错误都结束任务”都会漏掉实施边界。实践B把工具业务错误和工具策略错误都交给真实流水线，下一模型请求读到错误结果，request-error次数仍为0。</p>
+<p><span class="lesson-figure" role="group" aria-label="模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界"><img src="figures/h20-01.png" alt="模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 1｜先定位失败层，再检查事件、控制权与副作用。错误结果不等于模型请求失败，取消请求不等于工作已经退出。</span><a class="lesson-image-expand" href="figures/h20-01.png" target="_blank" rel="noopener noreferrer" aria-label="模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界，在新窗口查看原图">查看原图 ↗</a></span></p>
+<p>七分钟基础回顾：Promise表示以后会结算的工作，不是一个通用可强杀对象。AbortController发出中止，AbortSignal把状态和原因传给愿意观察的组件。请求取消后仍要有人等待清理和结果，这叫排空；完全停稳意味着本次拥有的活动已经到达可确定的结束边界。这个边界仍不证明外部业务成功，也不抹掉已发生写入。与撤回未发货订单相比，已经在路上的包裹还需要明确收尾；类比不能代替各工具自己的取消协议。</p>
+<h2>LlmFailure：程序看code，人读message</h2>
+<p>LlmFailure保存可序列化失败事实：message、开放字符串code，以及可选status、providerRetryAfterMs、requestId等。它不是一张封闭枚举，插件还可扩展规范码。LlmError是带code与failure快照的实时Error；日志能保存failure，不能把任意SDK对象和调用栈当作通用恢复协议。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/types.ts#L48-L66" target="_blank" rel="noopener noreferrer">S01 · LlmFailure</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L96-L143" target="_blank" rel="noopener noreferrer">S02 · LlmError</a>。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>规范code</th><th>本课如何理解</th><th>默认normal是否合格</th></tr></thead><tbody><tr><td>RATE_LIMIT</td><td>临时速率限制，仍要检查账户与提供方事实</td><td>是</td></tr><tr><td>SERVER</td><td>提供方服务端故障</td><td>是</td></tr><tr><td>TIMEOUT</td><td>超时，不证明提供方没有处理请求</td><td>是</td></tr><tr><td>TRANSPORT</td><td>网络传输故障，可能已经流出部分内容</td><td>是</td></tr><tr><td>EMPTY_RESPONSE</td><td>正常完成却没有任何内容，被适配器识别为失败</td><td>是</td></tr><tr><td>AUTH</td><td>凭据或权限问题</td><td>否</td></tr><tr><td>QUOTA</td><td>配额或余额耗尽</td><td>否</td></tr><tr><td>CONTEXT_WINDOW_EXCEEDED</td><td>已确认输入超过上下文容量</td><td>否，通常交专门恢复</td></tr><tr><td>ABORTED</td><td>Adapter报告中止；还要检查Agent自身signal</td><td>否</td></tr></tbody></table></div>
+<p>status描述HTTP响应，code描述程序决策类别，二者不是同一个字段。固定DeepSeek适配器先考虑鉴权、配额、限流等分类，再处理上下文与一般请求错误；同一个HTTP 429不应靠本课猜成任何业务结论。requestId方便追查某次提供方请求，不能当工具幂等键。真实HTTP解析的依据是<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/transport.ts#L22-L44" target="_blank" rel="noopener noreferrer">S03 · providerError</a>，本课运行的Adapter直接提供受控失败事实，没有联网验证所有适配器的归一化。</p>
+<p>最终Adapter抛出LlmError时，Runtime会验证并分离它的结构化事实。普通Error上的任意SDK code不能自动冒充Harness分类；无法可信规范的错误可回退UNKNOWN。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/adapter-failure.ts#L16-L32" target="_blank" rel="noopener noreferrer">S04 · normalizeLlmFailure</a>。这解释为什么应在适配器边界规范化，而不是在重试插件里用message包含“busy”作为授权。</p>
+<h2>单次模型流与持久请求恢复由不同对象负责</h2>
+<p><code>ctx.llm.stream(options)</code>消费一次流。Runtime负责路由、适配器边界、消息投影与流协议；默认不在已经交付一半内容后悄悄再发同一个请求。否则两次输出可能混成一个回答，工具参数被拼接，失败Attempt与费用也难以分清。实践A:raw-stream即使挂着Retry插件，直接调用仍只请求一次，返回RATE_LIMIT终止分片。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L1068-L1157" target="_blank" rel="noopener noreferrer">S05 · adapterStream</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L1174-L1183" target="_blank" rel="noopener noreferrer">S06 · streamWithRegistration</a>。</p>
+<p>Provider路由在登记时捕获解析后的retryPolicy；没有显式配置会得到normal默认值。<strong>有一份默认策略，不等于已经安装策略执行器。</strong> <code>dsh-llm-retry</code>是可选插件，执行位置在AgentLoop恢复点。A:no-plugin有真实Loop但不挂Retry，限流仍结束Turn；A:rate-limit挂载后才等待并继续。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L450-L457" target="_blank" rel="noopener noreferrer">S07 · prepareRoutes policy branch</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L960-L1017" target="_blank" rel="noopener noreferrer">S08 · LlmRuntime.prepareCall</a>。</p>
+<p>正式调用中，Adapter负责协议转换和终止失败规范化，AgentLoop拥有Turn/Step/Attempt与Session提交边界，Retry插件执行提供方策略。直接消费Runtime的其他程序需要自己定义恢复与记录责任，不能自动继承本课的持久恢复。</p>
+<h2>agent/request-error只接住特定失败</h2>
+<p>正常模型流以error或aborted的finish终止时，Loop先把紧凑流结算为assistant/attempt，再分发<code>agent/request-error</code>。载荷带agent、turn、step、实际provider、failure、准备调用捕获的retryPolicy和当前signal。监听器返回<code>{kind:&#x27;retry&#x27;}</code>授权下一次请求尝试；没有恢复决定则向外形成终态失败。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L543-L566" target="_blank" rel="noopener noreferrer">S31 · step request-error branch</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/runtime-types.ts#L389-L412" target="_blank" rel="noopener noreferrer">S52 · Events agent/request-error</a>。</p>
+<p>这里的Waterfall可以理解成有顺序的恢复链：当前监听者决定处理，或者调用next把判断交给后面；外层还可以等待后面的结果再决定。注册顺序和是否调用next影响优先级，并不是所有策略各自独立“加一次”。</p>
+<p>normal先过滤错误码、预算与延迟范围，合格才自己安排等待；不合格、耗尽或超上限则委派。always先await下游恢复，下游已返回retry就直接采用；下游抛错会告警后考虑自己的回退，但取消或释放已经发生时不会继续写计划。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L197-L217" target="_blank" rel="noopener noreferrer">S24 · recover always branch</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L212-L221" target="_blank" rel="noopener noreferrer">S25 · recover normal admission</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L224-L240" target="_blank" rel="noopener noreferrer">S26 · recover provider delay branch</a>。</p>
+<p>Middleware或消费方自身抛错位于Adapter规范化边界外，不会被无条件改成可恢复提供方故障。A:middleware真实抛出插件错误，Adapter请求0、request-error次数0，Turn结束；如果流已经开始，还可能只留下Attempt供诊断。工具错误也不走这条模型恢复链。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/index.ts#L1174-L1183" target="_blank" rel="noopener noreferrer">S06 · streamWithRegistration</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L499-L540" target="_blank" rel="noopener noreferrer">S32 · step thrown stream settlement</a>。</p>
+<h2>Normal：预算、资格和时间共同决定能否重试</h2>
+<p>RetryPolicyConfig归提供方配置，不放在llm-retry插件自身的config里。插件函数本身没有可调重试字段；本课在Adapter的providerRetryPolicy返回官方resolveRetryPolicy结果。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/retry-policy.ts#L14-L26" target="_blank" rel="noopener noreferrer">S09 · default constants</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/retry-policy.ts#L37-L83" target="_blank" rel="noopener noreferrer">S10 · RetryPolicyConfig / ResolvedRetryPolicy</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/retry-policy.ts#L149-L195" target="_blank" rel="noopener noreferrer">S12 · resolveRetryPolicy</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L30-L39" target="_blank" rel="noopener noreferrer">S13 · validateConfig</a>。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>const policy = resolveRetryPolicy({
+  mode: &#x27;normal&#x27;,
+  maxRetries: 2,
+  retryableCodes: [&#x27;RATE_LIMIT&#x27;, &#x27;SERVER&#x27;],
+  backoff: { initialDelayMs: 500, maxDelayMs: 10000, jitterRatio: 0.1 },
+}, &#x27;fixture.provider.retryPolicy&#x27;)</code></pre></div>
+<p>这是提供方侧的组合片段，完整装配在公共程序。默认maxRetries为5，合格码是表中五类瞬态错误，初始退避500ms、本地上限10000ms、抖动比例0.1。maxRetries指<strong>初次请求以外</strong>可以增加的尝试：固定提供方、相同策略、同一Step全部失败时，最多6次调用。A:budget使用这些真实默认值，实际请求6次、计划5次，最后Turn为error。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>调用序号</th><th>若仍失败</th><th>默认预算下的下一动作</th></tr></thead><tbody><tr><td>1</td><td>第一次失败</td><td>安排retry1</td></tr><tr><td>2</td><td>第二次失败</td><td>安排retry2</td></tr><tr><td>3～5</td><td>连续失败</td><td>依次安排retry3～5</td></tr><tr><td>6</td><td>仍失败</td><td>本策略预算耗尽，委派；没有其他恢复则结束</td></tr></tbody></table></div>
+<p>状态由Session Projection读取，键包含provider与完整policyKey。normal的key还包含预算、排序后的错误码集合及全部退避字段；不能把不同提供方或不同策略的计数当作一个全局总额。step/start与turn/end清除这份计数状态；回放投影是重建已记录事实，不是重新启动旧计时器。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L66-L78" target="_blank" rel="noopener noreferrer">S16 · retryPolicyKey</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L79-L81" target="_blank" rel="noopener noreferrer">S17 · retryStateKey</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L122-L137" target="_blank" rel="noopener noreferrer">S19 · llmRetry projection</a>。</p>
+<h2>退避：算对等待时间，也算清谁能取消</h2>
+<p>立即重复请求可能在服务繁忙时继续施压。指数退避逐步增大本地等待；抖动把同时失败的一组客户端稍微错开。我们的分析：这样能减少同步重试峰值，但本课没有真实服务负载与延迟收益数据。</p>
+<p>固定算法中，r是从1起的重试编号，d0是initialDelayMs，M是maxDelayMs，j是jitterRatio，U是0～1随机样本：先算E=min(d0×2^min(r−1,1024), M)，再乘(1−j+2jU)，最后再与M取min。指数封顶和最终封顶是两步。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L59-L65" target="_blank" rel="noopener noreferrer">S15 · localDelay</a>。</p>
+<p>例：d0=500、M=10000、j=.1。第一次U0得450ms，U.5得500ms，U1得550ms；第二次U1得1100ms。A:jitter固定U1，实际计划550、1100、2200、4400、8800、10000；达到上限后正向抖动也不能越过M。j=1与U0的合法边界可得0，但不是让生产代码忙等；对应官方测试只作静态选读，本课没有把它算成动态通过。</p>
+<p>Provider的Retry-After是另一项输入。适配器可把合法秒数或日期转换成providerRetryAfterMs。插件接受范围内的有效正值时原样使用，不再加本地抖动，也不一定选两者最大值。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>提供方延迟与M10000</th><th>normal</th><th>always</th></tr></thead><tbody><tr><td>9000ms</td><td>接受9000</td><td>接受9000</td></tr><tr><td>20000ms</td><td>委派，不安排本插件计划</td><td>回退本地退避，本课为500</td></tr><tr><td>不存在或不可用</td><td>本地退避</td><td>本地退避</td></tr></tbody></table></div>
+<p>实践的random使用官方RetryInternals非序列化测试钩子，时钟只在隔离子进程替换setTimeout/clearTimeout；官方算法和监听器仍真实运行。我们推进虚拟毫秒，不等待真实500或9000毫秒。它不证明宿主时钟精度、网络超时或生产性能。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L40-L44" target="_blank" rel="noopener noreferrer">S14 · RetryInternals</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L83-L98" target="_blank" rel="noopener noreferrer">S18 · cancellableDelay</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L224-L240" target="_blank" rel="noopener noreferrer">S26 · recover provider delay branch</a>。</p>
+<aside id="lesson-task" class="lesson-callout lesson-task" aria-label="第一段停顿：给出可计算的恢复决定"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第一段停顿：给出可计算的恢复决定</div><div class="lesson-callout-body"><p>先写出六次调用与五次重试的对应，再算450、550和1100。对20000ms的Retry-After分别给normal与always下一动作；最后说明这个结论是否能推导真实费用。完成实践A后再进入取消。</p></div></aside>
+<h2>Always：下游优先，不保证最终成功</h2>
+<p>always没有normal的错误码过滤与maxRetries限制，AUTH、QUOTA等永久性错误也可能持续请求。它不是默认推荐配置，也不保证凭据会自己变好；一次次调用可能产生不断增长的费用和等待。A:always只给两个失败再成功，最多三次，实验始终有界。</p>
+<p>下游优先很重要。专门恢复可能先改输入，再要求重试；always不能在它之前无脑重发。A:downstream由下游返回retry，普通调用两次，却没有本插件llm/retry事件；A:downstream-error才走always回退。不能因此说“重试了就一定有通用Retry事件”。</p>
+<p>等待下游也带来责任：若它忽略signal且永不结算，always无法强杀这个Promise，Agent和插件释放都可能迟迟无法完全停稳。B:delegated用门控模拟“不及时退出”，取消与释放先保持pending，放行门控后才完成，且没有第二次模型请求。本课绝不运行真正无法停止的无限Provider循环。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L140-L145" target="_blank" rel="noopener noreferrer">S20 · track</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L197-L217" target="_blank" rel="noopener noreferrer">S24 · recover always branch</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L240-L256" target="_blank" rel="noopener noreferrer">S27 · apply disposal effect</a>。</p>
+<h2>计划、等待结束与请求成功，是三种事实</h2>
+<p>A:rate-limit给出最小真实轨迹。一个Turn、一条用户消息、一个Step；序号是该夹具的SessionSeq，不是每个项目都固定的数字。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>Seq</th><th>事件或动作</th><th>它确立了什么</th></tr></thead><tbody><tr><td>1 / 3</td><td>turn/start、step/start</td><td>当前控制边界已打开</td></tr><tr><td>5</td><td>user/message</td><td>用户输入已接纳，不应因重试再写一遍</td></tr><tr><td>8</td><td>assistant/attempt</td><td>第一次失败流已结算，只作诊断历史</td></tr><tr><td>9</td><td>llm/retry</td><td>retry1计划已提交，等待500虚拟毫秒</td></tr><tr><td>10</td><td>llm/retry-started</td><td>等待完成，即将进入下一次请求准备</td></tr><tr><td>11</td><td>assistant/message</td><td>后续请求产生可见成功回答</td></tr><tr><td>12 / 13</td><td>step/end、turn/end</td><td>Step与Turn真正闭合</td></tr></tbody></table></div>
+<p>RetryId关联同一恢复链，policyKey表明适用的完整策略，retry记录次数。retry-started不证明下一请求已经发到Provider，更不证明成功；后续准备也可能失败或被取消。两类Retry事件没有SurfaceOp，不作为普通消息增加模型Token。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L184-L187" target="_blank" rel="noopener noreferrer">S21 · backoff commit/wait</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/types.ts#L16-L45" target="_blank" rel="noopener noreferrer">S22 · LlmRetryEventData / LlmRetryStartedEventData</a>。</p>
+<p><strong>“先记录、后等待”首先是逻辑Session提交顺序。</strong> 插件在append计划后直接等待，没有在这里调用flush。若挂了write-behind后端，不能把官方文档的“先持久”概括成任意后端已经fsync。H18的提交/可见/耐久分层仍有效；C和X另执行真实flush才建立本轮保存证据。等待中取消后，计划可保留而没有started；这不是日志损坏。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L184-L187" target="_blank" rel="noopener noreferrer">S21 · backoff commit/wait</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L303-L310" target="_blank" rel="noopener noreferrer">S53 · SessionEventMap turn/end</a>。</p>
+<p><span class="lesson-figure" role="group" aria-label="失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn"><img src="figures/h20-02.png" alt="失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 2｜Seq8～13来自A的真实轨迹。Session提交计划不等于通用磁盘屏障；等待完成和请求成功分别取证。</span><a class="lesson-image-expand" href="figures/h20-02.png" target="_blank" rel="noopener noreferrer" aria-label="失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>重试改变Attempt，不重新接纳任务</h2>
+<p>Loop在pre-step中领取Inbox、固定当前模型选择、解析工具准入并assemble提示词；进入Step后才开始请求尝试循环。一般请求重试复用这份assembly与toolSet，不重新运行pre-step，也不重新接纳同一用户消息。A的各Loop分支核pre-step、工具resolve、assemble各1次。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L283-L316" target="_blank" rel="noopener noreferrer">S28 · ReactLoopAgent.preStep</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L435-L479" target="_blank" rel="noopener noreferrer">S29 · ReactLoopAgent.step attempt loop</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L463-L478" target="_blank" rel="noopener noreferrer">S30 · step firstAttempt admission</a>。</p>
+<p>每次尝试仍会重新prepareCall，绑定当时适配器，并刷新已登记运行时上下文、协调当前System Prompt节点、从<strong>当前</strong>Surface派生请求。H19专门恢复可以改变Surface，因此不能把“不重新assemble”误说成“请求对象逐字永远不变”。普通输入只首次提交，循环自己的上下文投影则可以原位更新。底层已弃用的agent/request仍在固定实现里；本课不新增该监听器，计数使用夹具包装真实服务方法。</p>
+<p>Step直到成功回答及其相关工具执行或终止失败后才关闭。一次请求失败不新开Turn，也不把同一用户消息放回Inbox。失败Attempt中的紧凑流保留诊断分片，却不进入deriveMessages；A:partial甚至给出完整工具提议后再传输失败，工具执行0次，重试请求没有FAILED_PARTIAL。<strong>失败分片可被记录，不等于模型可见。</strong></p>
+<h2>取消：发信号、等结算、再释放</h2>
+<p>AgentCancelCause允许user、parent、hook与disposed；hook还保留reason。agent.cancel(cause, options)中止当前活动信号，默认清除待处理Inbox；keepInbox=true保留尚未开始的输入。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L191-L198" target="_blank" rel="noopener noreferrer">S35 · ReactLoopAgent.cancel</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/runtime-types.ts#L44-L51" target="_blank" rel="noopener noreferrer">S36 · CancelOptions</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/types.ts#L194-L207" target="_blank" rel="noopener noreferrer">S54 · AgentCancelCause</a>。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>agent.cancel({ kind: &#x27;user&#x27; }, { keepInbox: true })
+await agent.whenIdle()
+// 检查turn/end与结果，再决定后续工作；whenIdle本身不是成功回执。</code></pre></div>
+<p>这是已有活跃Agent的控制片段。keepInbox不让当前Turn“继续跑完”，也不承诺自动唤醒留下的任务。B:inbox-keep先取消第一任务，队列仍有第二条，当前请求仍只有一次；之后显式followup第三条，才依次处理留下的第二条与第三条。默认取消则清空待办。</p>
+<p>whenIdle追踪activityDone，遇到活动被后续唤醒工作替换会继续等待。它要等流、当前恢复和已启动工具到达结束边界；检查status或丢掉Promise都不能替代它。Turn可能以error或aborted结束，Agent实例仍可在以后接新任务。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L253-L258" target="_blank" rel="noopener noreferrer">S37 · ReactLoopAgent.whenIdle</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L268-L281" target="_blank" rel="noopener noreferrer">S38 · ReactLoopAgent.kick</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L404-L427" target="_blank" rel="noopener noreferrer">S39 · turn ending classification</a>。</p>
+<p>AgentHandle.dispose是生命周期所有者的操作：默认工厂发disposed原因取消并等whenIdle，再撤作用域、关闭持久writer、离开实时登记。cancel只改变当前活动控制，不销毁整个Agent，也不删除历史。Retry插件的释放又是另一层：注销监听器，中止自身lifetime，并等待捕获的恢复Promise排空。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L511-L545" target="_blank" rel="noopener noreferrer">S40 · initializeAgent teardown</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-retry/src/index.ts#L240-L256" target="_blank" rel="noopener noreferrer">S27 · apply disposal effect</a>。</p>
+<p><span class="lesson-figure" role="group" aria-label="用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾"><img src="figures/h20-03.png" alt="用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 3｜取消请求与完全停稳分开。非合作工具或下游恢复仍可能阻塞；dispose还拥有作用域、写句柄与登记的退出责任。</span><a class="lesson-image-expand" href="figures/h20-03.png" target="_blank" rel="noopener noreferrer" aria-label="用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>流中取消：保住安全前缀，不执行半个工具调用</h2>
+<p>已经展示给用户的内容不能靠关掉页面当作没发生。流被当前Agent信号打断时，Loop询问interruptedBlocks：保留非空text和reasoning块，丢掉工具调用及未知开放块。若有可安全结算内容，写assistant/message并标interrupted:true；没有则只记assistant/attempt。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L499-L540" target="_blank" rel="noopener noreferrer">S32 · step thrown stream settlement</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm/src/assembler.ts#L169-L180" target="_blank" rel="noopener noreferrer">S34 · BlockAssembler.interruptedBlocks</a>。</p>
+<p>B:stream-prefix先交付SAFE_PREFIX，再交付未完成工具参数，取消后持久消息只有安全文本，没有可执行工具块。B:stream-empty尚未交付安全块，最后只有Attempt。这里保存reasoning是固定实现的块规则，不意味着产品应把推理内容都展示给用户；UI与持久事实仍有各自消费者。</p>
+<p>实时agent/assistant-stream发start/chunk/end；committed end在匹配Session事件提交后发布，提交失败可abandon。实时看到一段分片，不证明磁盘已经保存，也不证明一次完整Assistant消息已经形成。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/assistant-stream.ts#L78-L105" target="_blank" rel="noopener noreferrer">S33 · AssistantStreamAttempt.settle</a>。</p>
+<p>还要区分Adapter报告ABORTED与当前Agent信号真的取消。A:adapter-aborted的Provider终态是aborted，但Agent signal没有abort；normal不恢复后，最终Turn是error，failure.code为ABORTED。B真正用户取消才记录turn/end aborted及用户原因。不能只看一个单词合并两种控制状态。</p>
+<h2>工具取消：未开始与已开始，需要不同结果</h2>
+<p>流水线在准备前、pre/审批/guard之后和真正dispatch前检查取消。主体尚未开始时可返回ABORTED_BEFORE_DISPATCH；主体已经开始则先等它返回或抛错，再选择结算。原caller signal与around-wrapper的替换信号还会融合，不能换一根新signal绕开调用者取消。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L190-L232" target="_blank" rel="noopener noreferrer">S41 · ToolExecutionPipeline.prepare</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L258-L285" target="_blank" rel="noopener noreferrer">S42 · dispatchToolBody</a>。</p>
+<p>取消不等于回滚。B:tool-after在内存计数增加后挂住，发cancel时whenIdle仍未完成；放行后得到ABORTED，计数仍1。如果主体已经给出业务错误，流水线会保留错误，不把一切都改成ABORTED。B:tool-business的测试命令失败被转为错误tool/result，模型随后解释，Turn仍可completed；B:tool-policy在主体前失败，主体0次，也形成模型可见错误。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L336-L364" target="_blank" rel="noopener noreferrer">S43 · complete</a>。</p>
+<p>批次取消停止继续补位，等待已经启动的dispatch，再按模型原顺序提交。B:parallel中first与second已启动，first结果提交时取消；first成功结果保留，second排空后ABORTED，third主体未开始，收到合成tool/call与ABORTED_BEFORE_DISPATCH结果。执行完成顺序、最终观察通知和持久模型顺序不能混成一个时钟。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/batch.ts#L117-L236" target="_blank" rel="noopener noreferrer">S44 · runGroup</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/batch.ts#L271-L283" target="_blank" rel="noopener noreferrer">S45 · BatchSettlement.skip</a>。</p>
+<p>内部调度失败则先排空已启动调用，再以ToolBatchExecutionError保留部分结果向上拒绝。Loop在关闭失败Step前用ToolCallRecovery补尚未结算的提议。它不同于一次正常工具业务错误，也不进入模型请求重试。该调度故障组合本轮只核源码与官方测试分支；不要把B的取消测试当作全部调度器故障都验证了。并发分类抛错本身会失败关闭为exclusive，并不自动构成调度器崩溃。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts#L376-L392" target="_blank" rel="noopener noreferrer">S55 · turn live-step repair/finally</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts#L105-L116" target="_blank" rel="noopener noreferrer">S56 · executionMode</a>。</p>
+<aside id="lesson-task-2" class="lesson-callout lesson-task" aria-label="第二段停顿：写出取消后还欠的事件"><div class="lesson-callout-label">现在去做</div><div class="lesson-callout-title">第二段停顿：写出取消后还欠的事件</div><div class="lesson-callout-body"><p>主体已经增加假外部计数，但Promise没返回。发cancel后立刻把计数清零是否合理？列出必须等待的工作、结果码、step/end与turn/end，再对比尚未dispatch的工具。运行B，解释为何whenIdle不是“所有操作都没发生”的证据。</p></div></aside>
+<h2>结果未知：先查外部事实，再谈重新执行</h2>
+<p>只读工具重复读取可能只是重新取得材料；写工具可能创建第二份资源。日志没有tool/result，只能说明结果未记录，不能证明动作没发生。ToolCallRecovery区分模型已提议但未见tool/call的TOOL_NOT_STARTED，与已有开始却缺结果的TOOL_OUTCOME_UNKNOWN。已提交结果会从待答集合移除；step/end清除该Step的待答，恢复不回头凭空修旧Step。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L116-L158" target="_blank" rel="noopener noreferrer">S46 · ToolCallRecovery.observe</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L157-L205" target="_blank" rel="noopener noreferrer">S47 · ToolCallRecovery.results</a>。</p>
+<p>在官方记录顺序和合法前缀内，NOT_STARTED表示未登记为开始，UNKNOWN明确保留不确定性；两者不能并成一个“工具失败”。恢复读的是指定耐久前缀，也不能对任何自定义执行器或外部系统承诺“日志没开始就绝对没有外部效果”。遇到可能有副作用的未知操作，先查业务状态或请用户决定。</p>
+<p>实践D让内存Map保存operation-1的结果：效果已经发生一次，恢复只追加保守错误，不调用主体，计数仍1。按同一个教学幂等键再次查询返回原结果，计数仍1；故意直接执行非幂等函数则变2。<strong>幂等针对业务结果设计，不是网络请求文本一样就自动成立。</strong> 这个键机制是教学策略，不是Harness已为全部工具安装的通用能力。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>操作语义</th><th>可考虑的决定</th><th>仍要核查</th></tr></thead><tbody><tr><td>只读</td><td>仍需要时重新读取</td><td>数据是否变化、权限与成本</td></tr><tr><td>幂等写</td><td>用业务键核既有结果，再决定</td><td>键是否由外部系统真实强制</td></tr><tr><td>非幂等且结果未知</td><td>核外部状态、请确认或停止</td><td>不重复创建、付款或发送</td></tr><tr><td>已有最终结果</td><td>使用已记事实</td><td>不因“恢复”再做一次</td></tr></tbody></table></div>
+<p><span class="lesson-figure" role="group" aria-label="综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次"><img src="figures/h20-04.png" alt="综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次" loading="lazy" referrerPolicy="no-referrer"/><span class="lesson-caption">图 4｜原任务后来正常取消排空，副本模拟中断时点。恢复不重执行工具；幂等核查是业务策略，两个Session的未来不能互相冒用。</span><a class="lesson-image-expand" href="figures/h20-04.png" target="_blank" rel="noopener noreferrer" aria-label="综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次，在新窗口查看原图">查看原图 ↗</a></span></p>
+<h2>Crash Recovery与请求Retry，时间尺度不同</h2>
+<p>请求重试发生在当前活着的Agent、开放Step与当前signal内。Crash Recovery先取得持久Session写所有权，再读物理有效历史，追加interruptedTurnClosers普通批次，重建新Agent与运行能力。它不会把旧Provider请求、计时器和工具再执行一遍。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L53-L107" target="_blank" rel="noopener noreferrer">S48 · openTurnClosers</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/repair.ts#L209-L211" target="_blank" rel="noopener noreferrer">S49 · interruptedTurnClosers</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts#L763-L838" target="_blank" rel="noopener noreferrer">S50 · AgentLoop.resumeWith</a>。</p>
+<p>C保存失败Attempt、Retry计划和成功回答后显式flush，关闭旧Agent/Context/后端；新Context与新后端重读header/事件完全相同，Resume后派生消息相等，旧模型请求0。取消退避的版本则保存有计划、无started的合法历史；重开也不启动旧计时器，新输入才发新任务。这里是同进程新实例，不是独立进程或真实断电。</p>
+<p>X进一步保存工具已开始、结果未记的开放前缀。真实Resume追加两类结果、step/end、turn/end interrupted与end-seed，原始前缀不变。修复发生在Agent发布前，不能只订阅新的session/event就当作已经读到了全部恢复事实；本课通过真实SessionHandle.read核对。这个细节正连接H17的日志与实时通知、H18的恢复准备。</p>
+<h2>与H19共存：输入修复拥有独立预算</h2>
+<p>CONTEXT_WINDOW_EXCEEDED通常先需要改变输入，而不是等待同一过大请求自己变小。Basic Compaction检查规范错误、独立maxOverflowRetries及Surface替换generation进展；没有有效变化就不能据此重试。默认normal不把该code列入合格集合，会委派后面的专门恢复。依据<a href="https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts#L213-L265" target="_blank" rel="noopener noreferrer">S51 · Basic request-error listener</a>。</p>
+<p>A:compaction-normal先装Retry，再装Basic：长上下文被摘要，普通请求2、辅助摘要1，没有llm/retry。A:compaction-always同样先等下游Basic，再采用它的retry，也没有消耗通用计划。这只验证列明注册顺序的两种组合；改错误集合或顺序需要重新推导。</p>
+<p>通用策略按Provider/policyKey计数，Compaction有自己的进展条件与预算，图片省略还可以拥有另一种输入修复。不能把数字直接相加，宣布全应用永远最多固定N次。哪些请求重复输入、缓存能否复用、摘要是否抵消成本，都需要真实Provider证据；本课没有测费用、缓存命中或吞吐。</p>
+<h2>运行准备：真实组件，受控故障与有界时间</h2>
+<p>在AI Foundry仓库根使用Node24和固定源码；完整依赖锚点准备见lab/README及作者README。runner先核9619项固定源码/配置/文档hash，再逐项核46项直接与传递依赖的版本/integrity。程序复制到全新临时根运行，不往业务项目安装Harness依赖。</p>
+<div class="lesson-code"><div class="lesson-code-bar"><span>终端</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="powershell 代码"><code>node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs
+node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs A rate-limit
+node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs B parallel
+node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs C recovered
+node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs D unknown
+node docs/deepseek-harness-v2/h20/scripts/run-labs.mjs X</code></pre></div>
+<p>默认45个TAP执行项：C6/D39。命名A/B/C/D是实践编号，不是证据等级。模型无真实联网，工具不触碰用户文件；退避为虚拟时间，门控显式释放，循环有硬上限。真实JSONL只用于C/X的Windows原始格式，同进程新实例；E级、跨进程、真实崩溃/断电、其他平台与真实费用均未验证。</p>
+<p>所有新文件和空目录保留登记，没有清理脚本；H18/H19保留产物不动。原始记录含参数、exit、stdout/stderr、程序hash及scratch，behavior-traces保存每个实际用例事件。失败记录也保留，不修改官方源码求PASS。</p>
+<details id="lesson-deepdive" class="lesson-callout lesson-deepdive"><summary>想深入再看：公共准备完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import assert from &#x27;node:assert/strict&#x27;;
+import {Context} from &#x27;@deepseek-ai/cordis&#x27;;
+import SessionStore,{SessionId,Session,ToolCallRecovery,interruptedTurnClosers} from &#x27;@deepseek-ai/dsh-session&#x27;;
+import LlmRuntime,{LlmAdapter,LlmError,resolveRetryPolicy,createUserMessage,createAssistantMessage,createToolResultMessage,ToolCallId} from &#x27;@deepseek-ai/dsh-llm&#x27;;
+import SessionProjectionRegistry from &#x27;@deepseek-ai/dsh-session-projection&#x27;;
+import SystemPrompt from &#x27;@deepseek-ai/dsh-system-prompt&#x27;;
+import ToolsService,{defineTool} from &#x27;@deepseek-ai/dsh-tools&#x27;;
+import {NativeToolExecutor} from &#x27;@deepseek-ai/dsh-tool-executor-native&#x27;;
+import AgentRegistry from &#x27;@deepseek-ai/dsh-agent&#x27;;
+import AgentLoop from &#x27;@deepseek-ai/dsh-agent-loop&#x27;;
+import * as Retry from &#x27;@deepseek-ai/dsh-llm-retry&#x27;;
+import * as Jsonl from &#x27;@deepseek-ai/dsh-session-persistence-jsonl&#x27;;
+import TokenMeter from &#x27;@deepseek-ai/dsh-token-meter&#x27;;
+import Basic from &#x27;@deepseek-ai/dsh-compaction-basic&#x27;;
+import {mkdtemp,writeFile} from &#x27;node:fs/promises&#x27;;
+import {resolve} from &#x27;node:path&#x27;;
+import {Clock,pump,until,gate} from &#x27;./clock.ts&#x27;;
+export {assert,SessionId,Session,ToolCallRecovery,interruptedTurnClosers,LlmError,resolveRetryPolicy,createAssistantMessage,createToolResultMessage,ToolCallId,gate,pump,until};
+export const user=(text:string,kind=&#x27;user&#x27;)=&gt;createUserMessage({source:{kind},content:[{type:&#x27;text&#x27;,text}]});
+export const text=(value=&#x27;done&#x27;)=&gt;[{type:&#x27;text-delta&#x27;,index:0,text:value},{type:&#x27;finish&#x27;,reason:{kind:&#x27;stop&#x27;}}];
+export const call=(names:string[])=&gt;[...names.flatMap((name,index)=&gt;[{type:&#x27;block-start&#x27;,index,blockType:&#x27;tool-call&#x27;},{type:&#x27;block-end&#x27;,index,block:{type:&#x27;tool-call&#x27;,id:ToolCallId(&#x27;call-&#x27;+index),name,arguments:&#x27;{}&#x27;}}]),{type:&#x27;finish&#x27;,reason:{kind:&#x27;tool-calls&#x27;}}];
+export const visible=(messages:any[])=&gt;messages.flatMap(m=&gt;m.content).filter(b=&gt;b.type===&#x27;text&#x27;).map(b=&gt;b.text).join(&#x27;\n&#x27;);
+export class Adapter extends LlmAdapter{
+ requests:any[]=[];entries:any[]=[];policy:any;summaryCalls=0;
+ override providerRetryPolicy(){return this.policy;}
+ async resolveModel(provider:string,model:string){return {provider,id:model,name:model,context:{contextWindow:100000},defaultMaxTokens:128};}
+ async *stream(options:any):AsyncGenerator&lt;any&gt;{
+  this.requests.push(structuredClone({...options,signal:undefined}));
+  if(options.purpose===&#x27;compaction&#x27;){this.summaryCalls++;yield*text(&#x27;Goal: inspect fixture. Next: verify external state.&#x27;);return;}
+  const entry=this.entries.shift();assert.ok(entry,&#x27;bounded adapter script exhausted&#x27;);
+  if(entry instanceof Error)throw entry;
+  yield* typeof entry===&#x27;function&#x27;?entry(options):entry;
+ }
+}
+export async function fixture(options:{policy?:any;retry?:boolean;random?:()=&gt;number;disk?:boolean;root?:string;downstream?:(p:any,next:any)=&gt;any;compaction?:boolean}={}){
+ const ctx=new Context();await ctx.plugin(SessionStore);const facts=new Map&lt;string,any[]&gt;(),frames:any[]=[],errors:any[]=[],counts={preStep:0,prepareCall:0,resolveTools:0,assemble:0,recovery:0};
+ ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{const a=facts.get(s.id)??[];a.push(e);facts.set(s.id,a);});
+ let root=options.root;if(options.disk){assert.ok(process.env.H20_RUN_ROOT);root??=await mkdtemp(resolve(process.env.H20_RUN_ROOT!,&#x27;h20-jsonl-&#x27;));await ctx.plugin(Jsonl,{root,compression:&#x27;none&#x27;});}
+ await ctx.plugin(LlmRuntime);await ctx.plugin(SessionProjectionRegistry);await ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,personaPrefix:&#x27;Use only controlled fixture facts.&#x27;});await ctx.plugin(ToolsService);ctx.tools.setExecutor(new NativeToolExecutor(ctx));await ctx.plugin(AgentRegistry);await ctx.plugin(TokenMeter);
+ const adapter=new Adapter();adapter.policy=resolveRetryPolicy(options.policy,&#x27;fixture.provider.retryPolicy&#x27;);ctx.llm.registerAdapter([&#x27;fixture&#x27;],adapter);
+ ctx.on(&#x27;agent/pre-step&#x27;,async(p,next)=&gt;{counts.preStep++;return next();});ctx.on(&#x27;agent/request-error&#x27;,async(p,next)=&gt;{counts.recovery++;return next();});
+ let retryFiber:any;if(options.retry!==false)retryFiber=await ctx.plugin(Object.assign(async(inner:any)=&gt;Retry.apply(inner,{}, {random:options.random??(()=&gt;0.5)}),{inject:Retry.inject}));
+ if(options.downstream)ctx.on(&#x27;agent/request-error&#x27;,options.downstream);
+ if(options.compaction)await ctx.plugin(Basic,{auto:true,headroomTokens:0,maxTokens:256,retainTokens:80});
+ await ctx.plugin(AgentLoop,{agents:[],maxParallelToolCalls:2});ctx.on(&#x27;agent/assistant-stream&#x27;,p=&gt;frames.push(structuredClone(p.frame)));ctx.on(&#x27;agent/error&#x27;,p=&gt;errors.push(String(p.error)));
+ for(const [service,key,counter] of [[ctx.llm,&#x27;prepareCall&#x27;,&#x27;prepareCall&#x27;],[ctx.tools,&#x27;resolve&#x27;,&#x27;resolveTools&#x27;],[ctx.systemPrompt,&#x27;assemble&#x27;,&#x27;assemble&#x27;]] as const){const original=(service as any)[key].bind(service);(service as any)[key]=(...args:any[])=&gt;{counts[counter]++;return original(...args);};}
+ const clock=new Clock();clock.install();const handles:any[]=[];
+ const create=async(id=&#x27;task&#x27;)=&gt;{const h=await ctx.agents.create({sessionId:SessionId(id),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});handles.push(h);return h.agent;};
+ const tool=(name:string,execute:any,parallel=false)=&gt;ctx.tools.register(defineTool({name,description:&#x27;Safe memory fixture &#x27;+name,parameters:{},...(parallel?{isConcurrencySafe:()=&gt;true}:{}),output:{schema:{type:&#x27;string&#x27;},render:(_a:any,v:any)=&gt;[{type:&#x27;text&#x27;,text:v}]},execute} as any));
+ return {ctx,adapter,facts,frames,errors,counts,clock,root,retryFiber,create,tool,handles,events:(a:any)=&gt;facts.get(a.id)??[],async close(){for(const h of handles)await h.dispose();await ctx.fiber.dispose();clock.restore();}};
+}
+export const normal=(maxRetries=2,backoff:any={})=&gt;({mode:&#x27;normal&#x27;,maxRetries,backoff:{initialDelayMs:500,maxDelayMs:10000,jitterRatio:0,...backoff}});
+export const failed=(code=&#x27;RATE_LIMIT&#x27;,extra:any={})=&gt;new LlmError(&#x27;controlled &#x27;+code,code,extra);
+export const summary=(f:any,a:any)=&gt;({events:f.events(a),requests:f.adapter.requests,frames:f.frames,errors:f.errors,counts:f.counts,delays:f.clock.delays,virtualMs:f.clock.now,surface:a.session.surface.nodes,messages:a.session.deriveMessages()});
+export async function record(name:string,value:any){await writeFile(resolve(process.env.H20_RUN_ROOT!,&#x27;trace-&#x27;+name+&#x27;.json&#x27;),JSON.stringify(value,null,2)+&#x27;\n&#x27;);}</code></pre></div></div></details>
+<details id="lesson-deepdive-2" class="lesson-callout lesson-deepdive"><summary>想深入再看：隔离依赖完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>JAVASCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="javascript 代码"><code>// 依赖锚点均由作者 runner 按固定上游 lock 完整核验。
+import fs from &#x27;node:fs&#x27;;
+import {registerHooks, createRequire, syncBuiltinESMExports} from &#x27;node:module&#x27;;
+import {pathToFileURL} from &#x27;node:url&#x27;;
+const dep=createRequire(pathToFileURL(process.env.H20_DEPS_ANCHOR));
+const zod=createRequire(pathToFileURL(process.env.H20_ZOD_ANCHOR));
+const native=createRequire(pathToFileURL(process.env.H20_NATIVE_ANCHOR));
+const limit=createRequire(pathToFileURL(process.env.H20_LIMIT_ANCHOR));
+const entries=new Map([&#x27;js-yaml&#x27;,&#x27;@eslint-community/regexpp&#x27;,&#x27;ajv&#x27;,&#x27;node-addon-require-builtin&#x27;,&#x27;resolve.exports&#x27;,&#x27;semver&#x27;]
+ .map(name=&gt;[name,pathToFileURL(dep.resolve(name)).href]));
+entries.set(&#x27;zod&#x27;,pathToFileURL(zod.resolve(&#x27;zod&#x27;)).href);
+entries.set(&#x27;koffi&#x27;,pathToFileURL(native.resolve(&#x27;koffi&#x27;)).href);
+entries.set(&#x27;p-limit&#x27;,pathToFileURL(limit.resolve(&#x27;p-limit&#x27;)).href);
+entries.set(&#x27;@js-temporal/polyfill&#x27;,pathToFileURL(limit.resolve(&#x27;@js-temporal/polyfill&#x27;)).href);
+for(const file of [&#x27;region&#x27;,&#x27;config&#x27;,&#x27;summarizer&#x27;])entries.set(&#x27;@deepseek-ai/dsh-compaction-basic/src/&#x27;+file+&#x27;.ts&#x27;,pathToFileURL(process.env.HARNESS_SOURCE_CACHE+&#x27;/packages/compaction/compaction-basic/src/&#x27;+file+&#x27;.ts&#x27;).href);
+entries.set(&#x27;@deepseek-ai/dsh-compaction-image-offload/src/image-offload.ts&#x27;,pathToFileURL(process.env.HARNESS_SOURCE_CACHE+&#x27;/packages/compaction/compaction-image-offload/src/image-offload.ts&#x27;).href);
+registerHooks({resolve(specifier,context,next){return next(entries.get(specifier)??specifier,context);}});
+// 用户禁止批量/递归删除；包括上游异常清理路径也不准执行递归 rm。
+const rm=fs.promises.rm;
+fs.promises.rm=async(path,options)=&gt;{
+ if(options?.recursive)throw Error(&#x27;H20 safety guard: recursive removal forbidden&#x27;);
+ return rm(path,options);
+};
+syncBuiltinESMExports();</code></pre></div></div></details>
+<details id="lesson-deepdive-3" class="lesson-callout lesson-deepdive"><summary>想深入再看：虚拟时钟完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>// 教学夹具时钟：只替换本隔离子进程的定时器，不替换官方重试算法。
+import {setImmediate as immediate} from &#x27;node:timers/promises&#x27;;
+import assert from &#x27;node:assert/strict&#x27;;
+export async function pump(){await immediate();}
+export async function until(predicate:()=&gt;boolean,label=&#x27;condition&#x27;){
+ for(let n=0;n&lt;1000;n++){if(predicate())return;await pump();}throw Error(&#x27;bounded fixture did not reach &#x27;+label);
+}
+export function gate(){let release!:()=&gt;void;const promise=new Promise&lt;void&gt;(r=&gt;release=r);return {promise,release};}
+export class Clock{
+ now=0;delays:number[]=[];private next=0;private timers=new Map&lt;any,{at:number;fn:()=&gt;void}&gt;();
+ private originalSet=globalThis.setTimeout;private originalClear=globalThis.clearTimeout;
+ install(){const self=this;globalThis.setTimeout=((fn:any,ms=0,...args:any[])=&gt;{const id={id:++self.next,ref(){return this;},unref(){return this;}};self.delays.push(ms);self.timers.set(id,{at:self.now+ms,fn:()=&gt;fn(...args)});return id;}) as any;globalThis.clearTimeout=((id:any)=&gt;{self.timers.delete(id);}) as any;}
+ get pending(){return this.timers.size;}
+ advance(ms:number){this.now+=ms;for(const [id,t] of [...this.timers].sort((a,b)=&gt;a[1].at-b[1].at)){if(t.at&lt;=this.now&amp;&amp;this.timers.delete(id))t.fn();}}
+ nextTimer(){assert.ok(this.pending);const at=Math.min(...[...this.timers.values()].map(t=&gt;t.at));this.advance(at-this.now);}
+ async idle(agent:any){let done=false;const p=agent.whenIdle().then(()=&gt;{done=true;});for(let n=0;n&lt;200;n++){await pump();if(done){await p;return;}if(this.pending)this.nextTimer();}agent.cancel({kind:&#x27;user&#x27;});throw Error(&#x27;fixture exceeded 200 bounded scheduler rounds&#x27;);}
+ restore(){const pending=this.pending;globalThis.setTimeout=this.originalSet;globalThis.clearTimeout=this.originalClear;assert.equal(pending,0,&#x27;all virtual timers must be drained/cancelled&#x27;);}
+}</code></pre></div></div></details>
+<h3>实践A：先预测调用次数，再核Retry事实</h3>
+<p>输入包括成功、未挂执行器、五类默认瞬态错误、AUTH/QUOTA/Adapter ABORTED、预算耗尽、Retry-After、固定抖动、always与下游优先、直接Runtime、middleware、失败部分工具流以及两种Compaction组合。先写每类模型调用数、计划数、started数、Step数与最终Turn原因；再运行A_CASES对应分支。</p>
+<details id="lesson-deepdive-4" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,text,call,normal,failed,summary,visible,pump,until,gate,resolveRetryPolicy} from &#x27;./support.ts&#x27;;
+export const A_CASES=[&#x27;success&#x27;,&#x27;no-plugin&#x27;,&#x27;rate-limit&#x27;,&#x27;server&#x27;,&#x27;timeout&#x27;,&#x27;empty&#x27;,&#x27;adapter-aborted&#x27;,&#x27;auth&#x27;,&#x27;quota&#x27;,&#x27;budget&#x27;,&#x27;retry-after&#x27;,&#x27;over-cap&#x27;,&#x27;jitter&#x27;,&#x27;always&#x27;,&#x27;always-over-cap&#x27;,&#x27;downstream&#x27;,&#x27;downstream-error&#x27;,&#x27;raw-stream&#x27;,&#x27;middleware&#x27;,&#x27;partial&#x27;,&#x27;compaction-normal&#x27;,&#x27;compaction-always&#x27;];
+export async function practiceA(kind=&#x27;rate-limit&#x27;){
+ const always=[&#x27;always&#x27;,&#x27;always-over-cap&#x27;,&#x27;downstream&#x27;,&#x27;downstream-error&#x27;,&#x27;compaction-always&#x27;].includes(kind),special=kind.startsWith(&#x27;compaction&#x27;);
+ const policy=always?{mode:&#x27;always&#x27;,backoff:{initialDelayMs:500,maxDelayMs:10000,jitterRatio:0}}:kind===&#x27;budget&#x27;?undefined:normal(kind===&#x27;jitter&#x27;?6:2,kind===&#x27;jitter&#x27;?{jitterRatio:0.1}:{});
+ let downstream=0;const f=await fixture({policy,retry:kind!==&#x27;no-plugin&#x27;,random:()=&gt;kind===&#x27;jitter&#x27;?1:0.5,compaction:special,downstream:kind.startsWith(&#x27;downstream&#x27;)?async(_p,next)=&gt;{downstream++;if(kind===&#x27;downstream-error&#x27;)throw Error(&#x27;controlled policy failure&#x27;);return {kind:&#x27;retry&#x27;};}:undefined});
+ try{
+  let bodies=0;f.tool(&#x27;danger&#x27;,async()=&gt;{bodies++;return &#x27;never on failed attempt&#x27;;});
+  if(kind===&#x27;success&#x27;)f.adapter.entries=[text()];
+  else if([&#x27;no-plugin&#x27;,&#x27;rate-limit&#x27;,&#x27;server&#x27;,&#x27;timeout&#x27;,&#x27;empty&#x27;,&#x27;adapter-aborted&#x27;,&#x27;auth&#x27;,&#x27;quota&#x27;].includes(kind))f.adapter.entries=[failed(kind===&#x27;server&#x27;?&#x27;SERVER&#x27;:kind===&#x27;timeout&#x27;?&#x27;TIMEOUT&#x27;:kind===&#x27;empty&#x27;?&#x27;EMPTY_RESPONSE&#x27;:kind===&#x27;adapter-aborted&#x27;?&#x27;ABORTED&#x27;:kind===&#x27;auth&#x27;?&#x27;AUTH&#x27;:kind===&#x27;quota&#x27;?&#x27;QUOTA&#x27;:&#x27;RATE_LIMIT&#x27;),text()];
+  else if(kind===&#x27;budget&#x27;||kind===&#x27;jitter&#x27;)f.adapter.entries=Array.from({length:8},()=&gt;failed());
+  else if(kind===&#x27;retry-after&#x27;||kind===&#x27;over-cap&#x27;||kind===&#x27;always-over-cap&#x27;)f.adapter.entries=[failed(&#x27;RATE_LIMIT&#x27;,{providerRetryAfterMs:kind===&#x27;retry-after&#x27;?9000:20000}),text()];
+  else if(kind===&#x27;always&#x27;)f.adapter.entries=[failed(&#x27;AUTH&#x27;),failed(&#x27;QUOTA&#x27;),text()];
+  else if(kind.startsWith(&#x27;downstream&#x27;))f.adapter.entries=[failed(&#x27;AUTH&#x27;),text()];
+  else if(kind===&#x27;raw-stream&#x27;){
+   f.adapter.entries=[failed(),text()];const chunks=[];for await(const chunk of f.ctx.llm.stream({provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;,messages:[user(&#x27;raw&#x27;)]}))chunks.push(chunk);
+   assert.equal(f.adapter.requests.length,1);assert.equal((chunks.at(-1) as any).reason.failure.code,&#x27;RATE_LIMIT&#x27;);assert.equal(f.clock.pending,0);return {kind,chunks,requests:f.adapter.requests};
+  }else if(kind===&#x27;middleware&#x27;){
+   f.ctx.on(&#x27;llm/stream&#x27;,()=&gt;{throw Error(&#x27;plugin failed outside adapter&#x27;);});f.adapter.entries=[text()];
+  }else if(kind===&#x27;partial&#x27;)f.adapter.entries=[async function*(){yield {type:&#x27;text-delta&#x27;,index:0,text:&#x27;FAILED_PARTIAL&#x27;};yield*call([&#x27;danger&#x27;]).slice(0,-1);throw failed(&#x27;TRANSPORT&#x27;);},text(&#x27;safe answer&#x27;)];
+  else if(special){
+   f.adapter.entries=[failed(&#x27;CONTEXT_WINDOW_EXCEEDED&#x27;),text()];
+  }
+  const a=await f.create();if(special)a.inject(user(&#x27;OLD_CONTEXT &#x27;+ &#x27;material &#x27;.repeat(1500),&#x27;fixture-context&#x27;));a.followup(user(&#x27;read fixture and explain&#x27;)); await f.clock.idle(a);const out=summary(f,a),plans=out.events.filter((e:any)=&gt;e.type===&#x27;llm/retry&#x27;),started=out.events.filter((e:any)=&gt;e.type===&#x27;llm/retry-started&#x27;);
+  if([&#x27;auth&#x27;,&#x27;quota&#x27;,&#x27;adapter-aborted&#x27;,&#x27;over-cap&#x27;,&#x27;middleware&#x27;,&#x27;no-plugin&#x27;].includes(kind)){assert.equal(plans.length,0);assert.equal(f.errors.length,1);}
+  else if(kind===&#x27;budget&#x27;){assert.equal(f.adapter.requests.length,6);assert.deepEqual(plans.map((e:any)=&gt;e.data.retry),[1,2,3,4,5]);assert.deepEqual(f.clock.delays,[500,1000,2000,4000,8000]);assert.equal(f.errors.length,1);}
+  else if(kind===&#x27;jitter&#x27;){assert.equal(f.adapter.requests.length,7);assert.deepEqual(f.clock.delays,[550,1100,2200,4400,8800,10000]);}
+  else if(kind===&#x27;downstream&#x27;){assert.equal(downstream,1);assert.equal(plans.length,0);assert.equal(f.adapter.requests.length,2);}
+  else if(special){assert.equal(plans.length,0);assert.equal(f.adapter.summaryCalls,1);assert.equal(out.events.filter((e:any)=&gt;e.type===&#x27;compaction/summary&#x27;).length,1);assert.equal(f.adapter.requests.filter((r:any)=&gt;r.purpose!==&#x27;compaction&#x27;).length,2);assert.equal(f.errors.length,0);}
+  else{assert.equal(f.errors.length,0);assert.equal(f.adapter.requests.length,kind===&#x27;success&#x27;?1:kind===&#x27;always&#x27;?3:2);}
+  assert.equal(plans.length,started.length);
+  for(let n=0;n&lt;plans.length;n++){assert.equal(plans[n].data.retryId,started[n].data.retryId);assert.ok(plans[n].seq&lt;started[n].seq);assert.equal(plans[n].data.step,1);}
+  if(kind===&#x27;retry-after&#x27;)assert.deepEqual(f.clock.delays,[9000]);if(kind===&#x27;always-over-cap&#x27;)assert.deepEqual(f.clock.delays,[500]);
+  if(kind===&#x27;partial&#x27;){assert.equal(bodies,0);assert.equal(out.events.filter((e:any)=&gt;e.type===&#x27;assistant/attempt&#x27;).length,1);assert.ok(!visible(a.session.deriveMessages()).includes(&#x27;FAILED_PARTIAL&#x27;));assert.ok(!visible(f.adapter.requests.at(-1).messages).includes(&#x27;FAILED_PARTIAL&#x27;));}
+  if(kind===&#x27;adapter-aborted&#x27;)assert.equal(out.events.find((e:any)=&gt;e.type===&#x27;turn/end&#x27;).data.reason.kind,&#x27;error&#x27;);
+  if(kind===&#x27;middleware&#x27;){assert.equal(f.counts.recovery,0);assert.equal(f.adapter.requests.length,0);}
+  assert.equal(f.counts.preStep,1);assert.equal(f.counts.resolveTools,1);assert.equal(f.counts.assemble,1);
+  assert.equal(out.events.filter((e:any)=&gt;e.type===&#x27;user/message&#x27;&amp;&amp;e.data.source.kind===&#x27;user&#x27;).length,1);
+  assert.equal(out.events.filter((e:any)=&gt;e.type===&#x27;step/start&#x27;).length,1);assert.equal(out.events.filter((e:any)=&gt;e.type===&#x27;turn/start&#x27;).length,1);
+  assert.ok(!plans.some((e:any)=&gt;a.session.surface.nodes.includes(e.seq)));return {kind,...out,bodies,downstream};
+ }finally{await f.close();}
+}
+export function policyBoundary(){
+ const p=resolveRetryPolicy(undefined,&#x27;fixture&#x27;);assert.equal(p.mode,&#x27;normal&#x27;);assert.equal(p.maxRetries,5);assert.equal(p.jitterRatio,0.1);assert.deepEqual(p.retryableCodes,[&#x27;EMPTY_RESPONSE&#x27;,&#x27;RATE_LIMIT&#x27;,&#x27;SERVER&#x27;,&#x27;TIMEOUT&#x27;,&#x27;TRANSPORT&#x27;]);assert.ok(Object.isFrozen(p.retryableCodes));
+ assert.throws(()=&gt;resolveRetryPolicy({mode:&#x27;normal&#x27;,maxRetries:-1},&#x27;fixture&#x27;));
+ assert.throws(()=&gt;resolveRetryPolicy({mode:&#x27;normal&#x27;,retryableCodes:[&#x27;SERVER&#x27;,&#x27;SERVER&#x27;]},&#x27;fixture&#x27;));
+ const a=resolveRetryPolicy({mode:&#x27;always&#x27;,maxRetries:-9,retryableCodes:[]} as any,&#x27;fixture&#x27;);assert.equal(&#x27;maxRetries&#x27; in a,false);return {p,a};
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-5" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 A 详细参考答案</summary><div class="lesson-callout-body"><p>success调用1、计划0；no-plugin、auth、quota、adapter-aborted、over-cap普通调用1后结束。rate-limit、server、timeout、empty与partial是一次失败后再成功，普通调用2，计划/started各1，仍只有一个Turn/Step和一条用户输入。partial的FAILED_PARTIAL只在Attempt流内，danger主体0次，下一请求不含它。middleware抛错发生在Adapter外，Adapter调用0，恢复点0。</p><p>budget使用默认5次重试，合计6次调用，虚拟延迟500、1000、2000、4000、8000，最后仍error；jitter固定U1，六次计划550、1100、2200、4400、8800、10000，七次请求后耗尽。retry-after接受9000；always-over-cap把20000回退500。always的AUTH、QUOTA后成功，共3次；downstream先决定retry，不写通用计划；下游抛错才触发always回退。</p><p>两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。</p></div></details>
+<h3>实践B：取消到底传到哪里、等到哪里？</h3>
+<p>先给14个分支写预期：before-request、stream-prefix、stream-empty、backoff、tool-business、tool-policy、tool-before、tool-after、parallel、inbox-clear、inbox-keep、handle-dispose、plugin-dispose、delegated。门控没放行前，哪些Promise应保持pending？哪种结果已经不能撤销？</p>
+<details id="lesson-deepdive-6" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,text,call,normal,failed,summary,pump,until,gate,visible} from &#x27;./support.ts&#x27;;
+export const B_CASES=[&#x27;before-request&#x27;,&#x27;stream-prefix&#x27;,&#x27;stream-empty&#x27;,&#x27;backoff&#x27;,&#x27;tool-business&#x27;,&#x27;tool-policy&#x27;,&#x27;tool-before&#x27;,&#x27;tool-after&#x27;,&#x27;parallel&#x27;,&#x27;inbox-clear&#x27;,&#x27;inbox-keep&#x27;,&#x27;handle-dispose&#x27;,&#x27;plugin-dispose&#x27;,&#x27;delegated&#x27;];
+export async function practiceB(kind=&#x27;stream-prefix&#x27;){
+ const g=gate();let entered=false,bodies:string[]=[],effect=0,downstream=false;
+ const f=await fixture({policy:kind===&#x27;delegated&#x27;?{mode:&#x27;always&#x27;}:normal(),downstream:kind===&#x27;delegated&#x27;?async()=&gt;{downstream=true;await g.promise;return {kind:&#x27;retry&#x27;};}:undefined});
+ try{
+  const a=await f.create();const safeStream=async function*(o:any){entered=true;if(kind!==&#x27;stream-empty&#x27;){yield {type:&#x27;text-delta&#x27;,index:0,text:&#x27;SAFE_PREFIX&#x27;};yield {type:&#x27;block-start&#x27;,index:1,blockType:&#x27;tool-call&#x27;};yield {type:&#x27;tool-call-delta&#x27;,index:1,id:&#x27;unfinished&#x27;,name:&#x27;work&#x27;,argumentsDelta:&#x27;{&#x27;};}await new Promise&lt;void&gt;(r=&gt;o.signal.addEventListener(&#x27;abort&#x27;,()=&gt;r(),{once:true}));o.signal.throwIfAborted();};
+  if(kind===&#x27;before-request&#x27;){f.ctx.on(&#x27;agent/pre-step&#x27;,async(_p,next)=&gt;{a.cancel({kind:&#x27;user&#x27;});return next();});f.adapter.entries=[text()];}
+  else if([&#x27;backoff&#x27;,&#x27;handle-dispose&#x27;,&#x27;plugin-dispose&#x27;,&#x27;delegated&#x27;].includes(kind))f.adapter.entries=[failed(),text()];
+  else if(kind===&#x27;tool-business&#x27;||kind===&#x27;tool-policy&#x27;){f.tool(&#x27;work&#x27;,async()=&gt;{bodies.push(&#x27;work&#x27;);throw Error(&#x27;controlled test command exit failure&#x27;);});if(kind===&#x27;tool-policy&#x27;)f.ctx.on(&#x27;tools/pre-execute&#x27;,async()=&gt;{throw Error(&#x27;controlled policy failure&#x27;);});f.adapter.entries=[call([&#x27;work&#x27;]),text(&#x27;tool failed; explain without retrying model&#x27;)];}
+  else if(kind===&#x27;tool-before&#x27;||kind===&#x27;tool-after&#x27;){
+   f.tool(&#x27;work&#x27;,async()=&gt;{bodies.push(&#x27;work&#x27;);effect++;entered=true;await g.promise;return &#x27;effect complete&#x27;;});f.adapter.entries=[call([&#x27;work&#x27;]),text()];
+   if(kind===&#x27;tool-before&#x27;)f.ctx.on(&#x27;tools/pre-execute&#x27;,async(_p,next)=&gt;{a.cancel({kind:&#x27;user&#x27;});return next();});
+  }else if(kind===&#x27;parallel&#x27;){
+   f.tool(&#x27;first&#x27;,async()=&gt;{bodies.push(&#x27;first&#x27;);return &#x27;completed first&#x27;;},true);f.tool(&#x27;second&#x27;,async()=&gt;{bodies.push(&#x27;second&#x27;);entered=true;await g.promise;return &#x27;second drained&#x27;;},true);f.tool(&#x27;third&#x27;,async()=&gt;{bodies.push(&#x27;third&#x27;);return &#x27;must not run&#x27;;},true);
+   f.ctx.on(&#x27;session/event&#x27;,(s,e)=&gt;{if(s===a.session&amp;&amp;e.type===&#x27;tool/result&#x27;&amp;&amp;e.data.message.source.callId===&#x27;call-0&#x27;)a.cancel({kind:&#x27;user&#x27;});});f.adapter.entries=[call([&#x27;first&#x27;,&#x27;second&#x27;,&#x27;third&#x27;]),text()];
+  }else f.adapter.entries=[safeStream,text(&#x27;queued second&#x27;),text(&#x27;third&#x27;)];
+  a.followup(user(&#x27;active task&#x27;));if(kind.startsWith(&#x27;inbox&#x27;))a.followup(user(&#x27;QUEUED_SECOND&#x27;));
+  if(kind===&#x27;tool-business&#x27;||kind===&#x27;tool-policy&#x27;){await f.clock.idle(a);assert.equal(f.adapter.requests.length,2);assert.equal(f.counts.recovery,0);assert.equal(f.errors.length,0);assert.equal(bodies.length,kind===&#x27;tool-business&#x27;?1:0);}
+  else if(kind===&#x27;before-request&#x27;||kind===&#x27;tool-before&#x27;){await a.whenIdle();assert.equal(f.adapter.requests.length,kind===&#x27;before-request&#x27;?0:1);}
+  else if([&#x27;backoff&#x27;,&#x27;handle-dispose&#x27;,&#x27;plugin-dispose&#x27;].includes(kind)){
+   await until(()=&gt;f.clock.pending===1,&#x27;scheduled retry&#x27;);assert.equal(f.events(a).filter(e=&gt;e.type===&#x27;llm/retry-started&#x27;).length,0);
+   if(kind===&#x27;handle-dispose&#x27;)await f.handles[0].dispose();else if(kind===&#x27;plugin-dispose&#x27;)await f.retryFiber.dispose();else a.cancel({kind:&#x27;user&#x27;});
+   await a.whenIdle();assert.equal(f.clock.pending,0);assert.equal(f.adapter.requests.length,1);
+  }else if(kind===&#x27;delegated&#x27;){
+   await until(()=&gt;downstream);let idle=false,disposed=false;const p=a.whenIdle().then(()=&gt;{idle=true;});a.cancel({kind:&#x27;user&#x27;});const d=f.retryFiber.dispose().then(()=&gt;{disposed=true;});await pump();assert.equal(idle,false);assert.equal(disposed,false);g.release();await p;await d;assert.equal(f.adapter.requests.length,1);assert.equal(f.clock.pending,0);
+  }else{
+   await until(()=&gt;entered);if(kind===&#x27;parallel&#x27;)await until(()=&gt;f.events(a).some(e=&gt;e.type===&#x27;tool/result&#x27;),&#x27;first result&#x27;);
+   else a.cancel({kind:&#x27;user&#x27;},{keepInbox:kind===&#x27;inbox-keep&#x27;});
+   if(kind===&#x27;tool-after&#x27;||kind===&#x27;parallel&#x27;){let idle=false;const p=a.whenIdle().then(()=&gt;{idle=true;});await pump();assert.equal(idle,false,&#x27;started tool must drain&#x27;);g.release();await p;}
+   else await a.whenIdle();
+  }
+  const events=f.events(a),result=events.filter(e=&gt;e.type===&#x27;tool/result&#x27;);
+  if(kind===&#x27;stream-prefix&#x27;){const m=events.find(e=&gt;e.type===&#x27;assistant/message&#x27;);assert.equal(m.data.interrupted,true);assert.equal(visible([m.data.message]),&#x27;SAFE_PREFIX&#x27;);assert.equal(m.data.message.content.some((b:any)=&gt;b.type===&#x27;tool-call&#x27;),false);assert.equal(result.length,0);}
+  if(kind===&#x27;stream-empty&#x27;)assert.equal(events.filter(e=&gt;e.type===&#x27;assistant/attempt&#x27;).length,1);
+  if(kind===&#x27;tool-business&#x27;||kind===&#x27;tool-policy&#x27;)assert.equal(result[0].data.message.isError,true);
+  if(kind===&#x27;tool-before&#x27;){assert.deepEqual(bodies,[]);assert.equal(result[0].data.error.code,&#x27;ABORTED_BEFORE_DISPATCH&#x27;);}
+  if(kind===&#x27;tool-after&#x27;){assert.equal(effect,1);assert.equal(result[0].data.error.code,&#x27;ABORTED&#x27;);}
+  if(kind===&#x27;parallel&#x27;){assert.deepEqual(bodies,[&#x27;first&#x27;,&#x27;second&#x27;]);assert.deepEqual(result.map(e=&gt;e.data.message.source.callId),[&#x27;call-0&#x27;,&#x27;call-1&#x27;,&#x27;call-2&#x27;]);assert.equal(result[0].data.message.isError,false);assert.deepEqual(result.slice(1).map(e=&gt;e.data.error.code),[&#x27;ABORTED&#x27;,&#x27;ABORTED_BEFORE_DISPATCH&#x27;]);}
+  if(kind===&#x27;inbox-clear&#x27;)assert.equal(a.inbox.nextTurn.length,0);
+  if(kind===&#x27;inbox-keep&#x27;){assert.equal(a.inbox.nextTurn.length,1);assert.equal(f.adapter.requests.length,1);a.followup(user(&#x27;THIRD&#x27;));await f.clock.idle(a);assert.equal(f.adapter.requests.length,3);assert.ok(visible(f.adapter.requests[1].messages).includes(&#x27;QUEUED_SECOND&#x27;));}
+  const ending=events.filter(e=&gt;e.type===&#x27;turn/end&#x27;)[0];assert.equal(ending.data.reason.kind,[&#x27;tool-business&#x27;,&#x27;tool-policy&#x27;].includes(kind)?&#x27;completed&#x27;:kind===&#x27;plugin-dispose&#x27;?&#x27;error&#x27;:&#x27;aborted&#x27;);
+  return {kind,...summary(f,a),bodies,effect,quiescence:&#x27;waited for every started controlled gate; no real-time sleep&#x27;};
+ }finally{g.release();await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-7" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 B 详细参考答案</summary><div class="lesson-callout-body"><p>before-request模型0，Turn可零Step终止；stream-prefix保留interrupted文本，不执行未完成工具；stream-empty只有Attempt。backoff已有llm/retry，无started，取消清计时器，不发第二请求。Adapter的单独ABORTED码与这里真正signal取消不同。</p><p>tool-before主体0，结果ABORTED_BEFORE_DISPATCH；tool-after假效果1，取消后whenIdle仍pending，放行才得ABORTED。parallel的first成功保留，second排空后ABORTED，third主体0并有合成call/result；结果按call-0/1/2排序。business主体1、policy主体0，但两者错误结果都可进入下一模型请求，恢复点0、普通调用2、Turn completed，不是假装业务成功。</p><p>默认取消清队列；keep保留第二条但不自动唤醒，后来第三条followup才按FIFO推进，总模型调用3。Handle释放以disposed原因取消；Retry插件释放只结束自身恢复，未另取消Agent时原请求可成为error。delegated在下游未放行时，idle与插件dispose都pending；放行后取消胜出，不发新请求。建议20分：流/退避5，工具/副作用7，队列/所有权4，完全停稳4。只丢弃Promise、把结果ABORTED解释成效果0，关键项不通过。</p></div></details>
+<h3>实践C：把失败、计划与继续执行真正保存下来</h3>
+<p>输入为第一次传输失败（已有FAILED_FRAGMENT），第二次回答RECOVERED。先预测日志保留什么、模型看什么；再运行cancelled变体，在退避中取消。比较显式flush、关闭、新Context/后端重读、Resume和新输入后的调用次数。</p>
+<details id="lesson-deepdive-8" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,text,call,failed,normal,summary,visible,SessionId,until} from &#x27;./support.ts&#x27;;
+export async function practiceC(kind=&#x27;recovered&#x27;){
+ const f=await fixture({disk:true,policy:normal()});let saved:any,before:any,root=f.root;
+ try{
+  const a=await f.create(&#x27;persisted-retry&#x27;);f.adapter.entries=[async function*(){yield {type:&#x27;text-delta&#x27;,index:0,text:&#x27;FAILED_FRAGMENT&#x27;};throw failed(&#x27;TRANSPORT&#x27;,{requestId:&#x27;fixture-request&#x27;});},text(&#x27;RECOVERED&#x27;)];
+  a.followup(user(&#x27;inspect fixture&#x27;));
+  if(kind===&#x27;cancelled&#x27;){await until(()=&gt;f.events(a).some(e=&gt;e.type===&#x27;llm/retry&#x27;));a.cancel({kind:&#x27;user&#x27;});await a.whenIdle();}else await f.clock.idle(a);
+  assert.equal(await f.ctx.sessions.flush(a.session),true);const r=await f.ctx.sessionPersistence.open(a.id,&#x27;read&#x27;);try{saved={header:r.header,...await r.read()};}finally{await r.close();}
+  before=summary(f,a);assert.ok(!visible(a.session.deriveMessages()).includes(&#x27;FAILED_FRAGMENT&#x27;));
+ }finally{await f.close();}
+ const next=await fixture({disk:true,root,policy:normal()});let handle:any;
+ try{
+  const r=await next.ctx.sessionPersistence.open(saved.header.id,&#x27;read&#x27;);try{assert.deepEqual(r.header,saved.header);assert.deepEqual((await r.read()).events,saved.events);}finally{await r.close();}
+  handle=await next.ctx.agents.resume({resumeSessionId:saved.header.id,agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});const a=handle.agent;
+  assert.deepEqual(a.session.deriveMessages(),before.messages);assert.equal(next.adapter.requests.length,0);assert.equal(next.clock.pending,0);
+  assert.equal(saved.events.filter((e:any)=&gt;e.type===&#x27;assistant/attempt&#x27;).length,1);assert.equal(saved.events.filter((e:any)=&gt;e.type===&#x27;llm/retry&#x27;).length,1);assert.equal(saved.events.filter((e:any)=&gt;e.type===&#x27;llm/retry-started&#x27;).length,kind===&#x27;cancelled&#x27;?0:1);
+  next.adapter.entries=[text(&#x27;NEW_TASK&#x27;)];a.followup(user(&#x27;continue after reopening&#x27;));await next.clock.idle(a);assert.equal(next.adapter.requests.length,1);assert.ok(!visible(next.adapter.requests[0].messages).includes(&#x27;FAILED_FRAGMENT&#x27;));
+  return {kind,root,backend:&#x27;real JSONL none&#x27;,restoration:&#x27;same process, new context/backend instance&#x27;,saved,before,after:summary(next,a),plannedRetryDoesNotReplay:true};
+ }finally{await handle?.dispose();await next.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-9" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 C 详细参考答案</summary><div class="lesson-callout-body"><p>recovered保存一个失败Attempt、一条计划、一条started与成功消息；cancelled保存一个Attempt、一条计划、零started及aborted Turn。原失败紧凑流包含分片，但deriveMessages不含FAILED_FRAGMENT。两者均由真实JSONL none存储，flush为true，关闭后新实例header与事件逐对象相等。</p><p>真实agents.resume后派生消息与原消息相等，模型0次、虚拟计时器0；旧计划不是“重开就自动执行”的任务队列。之后显式新输入才调用一次模型，仍没有FAILED_FRAGMENT。建议10分：日志与Surface3，检查点/重读3，不自动重放2，平台边界2。这是同进程新实例，不证明独立进程、Zstd或断电；不能把H18已验证项目挪到本轮计数。</p></div></details>
+<h3>实践D：未知结果不能凭空变成未执行</h3>
+<p>输入一条Assistant工具提议，分别停在尚无call、已有call、已有result与已关闭Step。先预测ToolCallRecovery待答集合、closers顺序和code，再用内存假资源比较业务键重用与盲目再写。closed-step是组件边界夹具，不宣称该人工轨迹已通过完整持久格式验证。</p>
+<details id="lesson-deepdive-10" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,createAssistantMessage,createToolResultMessage,ToolCallId,ToolCallRecovery,interruptedTurnClosers} from &#x27;./support.ts&#x27;;
+export const D_CASES=[&#x27;not-started&#x27;,&#x27;unknown&#x27;,&#x27;result&#x27;,&#x27;closed-step&#x27;,&#x27;idempotency&#x27;];
+export async function practiceD(kind=&#x27;unknown&#x27;){
+ const f=await fixture({retry:false});try{
+  const s=f.ctx.sessions.create(),id=ToolCallId(&#x27;effect&#x27;);s.append(&#x27;turn/start&#x27;,{turn:1});s.append(&#x27;step/start&#x27;,{turn:1,step:1});
+  s.append(&#x27;assistant/message&#x27;,{turn:1,step:1,stream:[],message:createAssistantMessage({source:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;},content:[{type:&#x27;tool-call&#x27;,id,name:&#x27;write-fixture&#x27;,arguments:&#x27;{}&#x27;}]})},{surfaceOp:&#x27;append&#x27;});
+  let effects=0;const seen=new Map&lt;string,string&gt;();const nonIdempotent=()=&gt;{effects++;return &#x27;resource-&#x27;+effects;};const idempotent=(key:string)=&gt;{if(!seen.has(key))seen.set(key,nonIdempotent());return seen.get(key);};
+  if(kind!==&#x27;not-started&#x27;)s.append(&#x27;tool/call&#x27;,{turn:1,step:1,callId:id,name:&#x27;write-fixture&#x27;,arguments:&#x27;{}&#x27;});
+  if([&#x27;unknown&#x27;,&#x27;idempotency&#x27;].includes(kind))idempotent(&#x27;operation-1&#x27;);
+  if(kind===&#x27;result&#x27;)s.append(&#x27;tool/result&#x27;,{turn:1,step:1,message:createToolResultMessage({callId:id,content:[{type:&#x27;text&#x27;,text:&#x27;already recorded&#x27;}],isError:false})},{surfaceOp:&#x27;append&#x27;,sourceEventSeqs:[3]});
+  if(kind===&#x27;closed-step&#x27;)s.append(&#x27;step/end&#x27;,{turn:1,step:1}); // repair must not invent outcomes for a closed step
+  const original=[...f.facts.get(s.id)!],recovery=new ToolCallRecovery();original.forEach(e=&gt;recovery.observe(e));const pending=recovery.results(),closers=interruptedTurnClosers(original);
+  assert.deepEqual(closers.filter(e=&gt;e.type===&#x27;tool/result&#x27;),pending);
+  const code=closers.find(e=&gt;e.type===&#x27;tool/result&#x27;)?.data.error?.code;
+  if(kind===&#x27;not-started&#x27;)assert.equal(code,&#x27;TOOL_NOT_STARTED&#x27;);
+  if(kind===&#x27;unknown&#x27;||kind===&#x27;idempotency&#x27;){assert.equal(code,&#x27;TOOL_OUTCOME_UNKNOWN&#x27;);assert.equal(effects,1);assert.equal(seen.get(&#x27;operation-1&#x27;),&#x27;resource-1&#x27;);}
+  if(kind===&#x27;result&#x27;||kind===&#x27;closed-step&#x27;)assert.equal(pending.length,0);
+  for(const e of closers)s.append(e.type,e.data,{...(e.surfaceOp===undefined?{}:{surfaceOp:e.surfaceOp}),...(e.sourceEventSeqs===undefined?{}:{sourceEventSeqs:e.sourceEventSeqs})});
+  assert.deepEqual(f.facts.get(s.id)!.slice(0,original.length),original);assert.deepEqual(interruptedTurnClosers(f.facts.get(s.id)!),[]);
+  const effectsAfterRepair=effects;if(kind===&#x27;idempotency&#x27;){const prior=idempotent(&#x27;operation-1&#x27;);assert.equal(prior,&#x27;resource-1&#x27;);assert.equal(effects,1);nonIdempotent();assert.equal(effects,2,&#x27;naive repeat duplicates fake effect&#x27;);}
+  return {kind,original,closers,pending,effectsAfterRepair,effectsAfterDemonstration:effects,decision:code===&#x27;TOOL_OUTCOME_UNKNOWN&#x27;?&#x27;inspect external fixture state first; reconcile operation-1, no automatic tool replay&#x27;:&#x27;decide from recorded lifecycle and tool semantics&#x27;,boundary:&#x27;real repair; external world is only an in-memory teaching fixture; closed-step case is component-only&#x27;};
+ }finally{await f.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-11" class="lesson-callout lesson-deepdive"><summary>想深入再看：实践 D 详细参考答案</summary><div class="lesson-callout-body"><p>没有tool/call得到NOT_STARTED；有call无结果得到UNKNOWN并引用开始seq；已经result则不补第二个，Step已经关闭也不重新修旧Step。开放尾部先补缺结果，再必要step/end，再turn/end interrupted。追加后原前缀逐对象相等，再跑closers为空；恢复函数没有调用工具。</p><p>unknown与idempotency夹具的效果事先已发生1次，修复后仍1。查询operation-1得到既有resource-1不新增，故意无业务键再执行则2，正好暴露风险。建议10分：生命周期与code4，顺序/前缀3，外部核查与幂等3。真实的是Session/Repair，外部系统只是内存模拟；不能说Harness已提供全局幂等或业务恰好一次。</p></div></details>
+<h2>综合实验：限流、未知工具与取消，怎样共享同一条证据链？</h2>
+<p>先创建真实持久Agent，接受用户任务。第一次模型限流，记录失败Attempt与retry计划；推进500虚拟毫秒后，新尝试提出write-fixture和read-fixture。第一工具把内存假资源计数加到1后挂住。此时显式flush，读取真实开放日志前缀。</p>
+<p>原任务随后用户取消并放行工具，正常排空和关闭。另把刚才精确前缀写到<strong>全新根、全新ID</strong>的JSONL测试副本，再以新Context和后端真实Resume。这个副本模拟进程在记录结果前消失的可见事实，不杀真实进程、不截断文件、不声称普通Fork。最后先核假外部状态，再送入新用户说明，模型给出核对结果。</p>
+<p>先推导原任务和副本在Seq13之后为何不同，再写出两种未来的工具code。不要把正常取消的ABORTED当作副本已经拥有的结果，也不要让恢复自动再次写资源。</p>
+<details id="lesson-deepdive-12" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合实验完整程序</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {fixture,assert,user,text,call,normal,failed,until,gate,SessionId,summary,visible} from &#x27;./support.ts&#x27;;
+export async function integrated(){
+ const g=gate(),f=await fixture({disk:true,policy:normal()});let effects=0,snapshot:any,original:any,started=false,copyRoot:string|undefined;
+ try{
+  f.tool(&#x27;write-fixture&#x27;,async()=&gt;{effects++;started=true;await g.promise;return &#x27;memory resource created&#x27;;});f.tool(&#x27;read-fixture&#x27;,async()=&gt;String(effects));
+  const a=await f.create(&#x27;reliability-task&#x27;);f.adapter.entries=[failed(&#x27;RATE_LIMIT&#x27;,{status:429}),call([&#x27;write-fixture&#x27;,&#x27;read-fixture&#x27;]),text(&#x27;unused&#x27;)];a.followup(user(&#x27;read fixture, execute controlled test and explain failure&#x27;));
+  await until(()=&gt;f.events(a).some(e=&gt;e.type===&#x27;llm/retry&#x27;));assert.equal(f.events(a).filter(e=&gt;e.type===&#x27;llm/retry-started&#x27;).length,0);f.clock.advance(500);await until(()=&gt;started);
+  assert.equal(effects,1);assert.equal(await f.ctx.sessions.flush(a.session),true);const r=await f.ctx.sessionPersistence.open(a.id,&#x27;read&#x27;);try{snapshot={header:r.header,...await r.read()};}finally{await r.close();}
+  // Persist an exact open-turn prefix into a NEW fixture. This models a crash
+  // point; it does not kill a process or mutilate an existing physical file.
+  a.cancel({kind:&#x27;user&#x27;});let idle=false;const p=a.whenIdle().then(()=&gt;{idle=true;});await Promise.resolve();assert.equal(idle,false);g.release();await p;original={...summary(f,a),pressure:f.ctx.tokenMeter.measure(a.session).totalTokens};
+  assert.equal(f.adapter.requests.length,2);assert.equal(f.events(a).filter(e=&gt;e.type===&#x27;turn/end&#x27;).at(-1).data.reason.kind,&#x27;aborted&#x27;);assert.equal(effects,1);
+ }finally{g.release();await f.close();}
+  const copy=await fixture({disk:true,retry:false});copyRoot=copy.root;
+  try{const writer=await copy.ctx.sessionPersistence.create({...snapshot.header,id:SessionId(&#x27;interrupted-copy&#x27;)});try{await writer.append(snapshot.events);await writer.flush();}finally{await writer.close();}}finally{await copy.close();}
+ const restored=await fixture({disk:true,root:copyRoot,policy:normal()});let h:any;
+ try{
+  h=await restored.ctx.agents.resume({resumeSessionId:SessionId(&#x27;interrupted-copy&#x27;),agentOptions:{provider:&#x27;fixture&#x27;,model:&#x27;large&#x27;}});const a=h.agent;await restored.ctx.sessions.flush(a.session);const reader=await restored.ctx.sessionPersistence.open(a.id,&#x27;read&#x27;);let restoredLog:any[];try{restoredLog=(await reader.read()).events;}finally{await reader.close();}assert.deepEqual(restoredLog.slice(0,snapshot.events.length),snapshot.events);const closers=restoredLog.slice(snapshot.events.length);
+  assert.equal(restored.adapter.requests.length,0);assert.equal(effects,1);assert.deepEqual(closers.filter(e=&gt;e.type===&#x27;tool/result&#x27;).map(e=&gt;e.data.error.code),[&#x27;TOOL_OUTCOME_UNKNOWN&#x27;,&#x27;TOOL_NOT_STARTED&#x27;]);
+  restored.adapter.entries=[text(&#x27;External fixture shows operation already happened; reconcile without repeating.&#x27;)];a.followup(user(&#x27;external state checked: memory resource count is one&#x27;));await restored.clock.idle(a);
+  assert.equal(restored.adapter.requests.length,1);assert.equal(effects,1);assert.ok(visible(restored.adapter.requests[0].messages).includes(&#x27;outcome is unknown&#x27;));
+  assert.equal(await restored.ctx.sessions.flush(a.session),true);
+  return {sourceRoot:f.root,copyRoot,snapshot,original,restoredLog,closers,recovered:summary(restored,a),effects,crashSimulation:&#x27;exact logical committed prefix copied to a fresh JSONL fixture; no actual process crash&#x27;,restoration:&#x27;same process, new context + backend; real agents.resume&#x27;,budget:&#x27;500 virtual ms; one generic retry; no external Provider&#x27;};
+ }finally{await h?.dispose();await restored.close();}
+}</code></pre></div></div></details>
+<details id="lesson-deepdive-13" class="lesson-callout lesson-deepdive"><summary>想深入再看：综合详细参考答案与评分</summary><div class="lesson-callout-body"><p>原前缀0～12：8是失败Attempt，9 retry，10 started，11 Assistant提出两工具，12是write的call。快照时效果计数已经1，却没有任何tool/result。原任务取消后13为ABORTED结果、14第二工具合成call、15 BEFORE_DISPATCH结果、16 step/end、17 turn/end aborted；write已发生的内存效果不回滚。</p><p>测试副本只保存0～12。真实Resume追加13 UNKNOWN、14 NOT_STARTED、15 step/end、16 turn/end interrupted、17 end-seed；13引用原call12，14无虚构开始引用。原始前缀保持完全相同。恢复旧模型0次、旧工具0次，计数仍1；新输入说明外部核查后才发一条新请求，其中包含保守工具结果。恢复阶段的事件通过真实句柄读回，不只依赖发布后的实时通知。</p><p>原任务普通请求2，一次500虚拟毫秒通用重试；没有付费Provider、真实写入业务或真实进程崩溃。正常取消结束后Meter测得154，是当前受控封装的启发式压力，不是费用；模型后续读取当前有效Surface而非把所有Retry事实当消息。</p><p>建议20分：失败与计划4，精确前缀和两条未来6，取消排空4，外部核查/不重执行4，边界2。把副本说成真实崩溃、把JSONL说成E级、把UNKNOWN直接重试，关键项不通过。评分与耗时均待真实试读校准。</p></div></details>
+<details id="lesson-deepdive-14" class="lesson-callout lesson-deepdive"><summary>想深入再看：统一运行入口</summary><div class="lesson-callout-body"><div class="lesson-code"><div class="lesson-code-bar"><span>TYPESCRIPT</span><span>静态预览：可选择代码复制</span></div><pre tabindex="0" aria-label="typescript 代码"><code>import {practiceA} from &#x27;./A.ts&#x27;;import {practiceB} from &#x27;./B.ts&#x27;;import {practiceC} from &#x27;./C.ts&#x27;;import {practiceD} from &#x27;./D.ts&#x27;;import {integrated} from &#x27;./X.ts&#x27;;
+const [which=&#x27;X&#x27;,kind]=process.argv.slice(2);const result=which===&#x27;A&#x27;?await practiceA(kind):which===&#x27;B&#x27;?await practiceB(kind):which===&#x27;C&#x27;?await practiceC(kind):which===&#x27;D&#x27;?await practiceD(kind):which===&#x27;X&#x27;?await integrated():(()=&gt;{throw Error(&#x27;choose A/B/C/D/X&#x27;)})();console.log(JSON.stringify(result,null,2));</code></pre></div></div></details>
+<h2>五个精读入口与最终决策表</h2>
+<ol>
+<li><code>llm/retry-policy.ts</code>：先看normal/always类型与默认值，再看resolveRetryPolicy，交出5次重试与6次请求的推导。</li>
+<li><code>llm-retry/src/index.ts</code>：依次看localDelay、projection、recover、backoff和dispose，标出每次await前后已提交的事实。</li>
+<li><code>agent-loop/src/agent.ts</code>：从preStep进入step的attempt循环，再对比异常catch、request-error、工具执行和Turn finally；不把普通错误与signal取消合并。</li>
+<li><code>tools/src/batch.ts</code>：看fillPool、commitReady、排空和skip；Pipeline/Assembler作为辅助定位，核取消时主体是否已经开始。</li>
+<li><code>session/src/repair.ts</code>：按observe/results/openTurnClosers读，分别列出NOT_STARTED、UNKNOWN、已有结果和关闭Step。</li>
+</ol>
+<p>README、适配器、Factory、持久接口与官方测试是辅助材料；上游带递归清理的测试只选读，不直接运行。本课程序是独立装配真实实现，既没有复制整份官方测试，也没有改固定源码。</p>
+<div class="lesson-table" tabindex="0" role="region" aria-label="课程表格"><table><thead><tr><th>最终故障判断</th><th>下一步框架</th><th>必须携带的证据</th></tr></thead><tbody><tr><td>临时限流/网络失败</td><td>在模型恢复边界按策略等待/重试</td><td>code、策略、预算、Attempt与计划</td></tr><tr><td>AUTH/QUOTA</td><td>修配置或余额；通常不持续请求</td><td>实际failure；always风险与停止入口</td></tr><tr><td>Context Overflow</td><td>专门缩减输入、确认进展再试</td><td>Surface变化、独立预算与注册顺序</td></tr><tr><td>工具业务失败</td><td>读错误结果，解释或另选动作</td><td>主体是否执行、错误内容与外部状态</td></tr><tr><td>工具非幂等结果未知</td><td>核查、请确认或停止</td><td>call开始、缺结果、外部业务事实</td></tr><tr><td>用户取消</td><td>停止新增、排空、结算</td><td>signal、工具边界、结束原因与idle</td></tr><tr><td>进程中断</td><td>持权重建、保守补齐</td><td>已耐久前缀、修复事件与新生命周期</td></tr></tbody></table></div>
+<p>这是一份教学决策框架，不替代具体部署策略。通用Retry不回滚副作用，Crash Recovery不重放动作，Compaction不提供无限容量。每次重试仍可能发生新的成本；缓存、性能和真实模型效果需要独立测量。</p>
+<h2>十五道思考与综合测验</h2>
+<p>每题建议4分，评分看因果与证据，关键可靠性误解须纠正；总分与通过线未经学员校准。标准答案不要求逐字相同，其他符合固定实现的推导同样成立。</p>
+<ol>
+<li>前提：模型限流、测试退出失败、写工具缺结果。为什么不能都重跑整个任务？</li>
+</ol>
+<details id="lesson-deepdive-15" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 1 参考答案</summary><div class="lesson-callout-body"><p>推导：先定位模型请求、工具业务与未知副作用三层。限流可由请求恢复点按预算重试；测试已经执行，错误结果可供模型解释；写工具可能已经产生效果，需要外部核查。标准决定不是统一重接用户消息，而是分别依据Attempt、tool/result与call生命周期。依据S31/S43/S47。评分：分类1、事实1、动作1、副作用1。常见误区：把没有成功结果解释成什么都没发生。</p></div></details>
+<ol start="2">
+<li>推导：默认normal连续RATE_LIMIT，始终没有下游恢复，最多调用多少次，写多少计划？</li>
+</ol>
+<details id="lesson-deepdive-16" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 2 参考答案</summary><div class="lesson-callout-body"><p>初次请求不计入maxRetries；每次合格失败先查已记次数，未满才加1。默认5次额外重试，所以调用6次、llm/retry与started各5，仍在同Turn/Step；第六次失败后委派，无决定才error。依据S09/S19/S25及A:budget。评分：次数1、预算推导1、边界1、委派1。常见误区：说总共5次，或把局部6次推广成含所有专门恢复的全局上限。</p></div></details>
+<ol start="3">
+<li>推导：d0=500、M10000、j=.1，前两次U为0、1，延迟是多少？</li>
+</ol>
+<details id="lesson-deepdive-17" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 3 参考答案</summary><div class="lesson-callout-body"><p>先算指数基值500与1000，都未达M；乘(.9+.2U)，分别得450与1100，最终再封顶。标准答案须说明两个封顶位置，不能把第二次仍算550。依据S15及官方对应测试选读；本课动态jitter使用U1全序列。评分：公式1、两数各1、验证边界1。常见误区：把抖动当固定再加100ms，或把启发式等待说成生产真实性能。</p></div></details>
+<ol start="4">
+<li>前提：always遇AUTH，下游一直pending。取消后为何还可能无法立即whenIdle？</li>
+</ol>
+<details id="lesson-deepdive-18" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 4 参考答案</summary><div class="lesson-callout-body"><p>always先等待下游settle，取消只能改变融合signal，不能强杀不合作的Promise。活动恢复仍被track，Loop也在等Waterfall，所以whenIdle和插件dispose要等该下游退出；退出后检查取消，禁止回退和新请求。依据S20/S24/S27与B:delegated。评分：下游优先1、协作取消1、排空1、后续禁止1。常见误区：认为always可以保证最终成功，或强行丢Promise就算释放。</p></div></details>
+<ol start="5">
+<li>推导：Retry-After20000、M10000，normal与always是否都等20000？</li>
+</ol>
+<details id="lesson-deepdive-19" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 5 参考答案</summary><div class="lesson-callout-body"><p>不是。有效Provider延迟仍要过上限判断；normal委派，不写本插件计划。always退回本地指数/抖动，本课初始值500。若建议9000则直接接受9000，不再加抖动，也不是一律max(本地,Provider)。依据S26与A三个延迟分支。评分：normal1、always1、范围内规则1、原因1。常见误区：无条件照做、静默截成10000，或假设只要有Retry-After就必重试。</p></div></details>
+<ol start="6">
+<li>推导：只看到llm/retry，没有started，也没有第二次请求，日志一定坏了吗？</li>
+</ol>
+<details id="lesson-deepdive-20" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 6 参考答案</summary><div class="lesson-callout-body"><p>计划先提交，等待中可以取消或释放，因此没有started是合法终止。即使有started也只说明等待结束，后续准备/派发仍可能失败。查Turn结束与signal相关事实，再判断；C:cancelled保存重开后不重启旧timer。依据S18/S21/S22。评分：合法路径1、两个事件区别1、诊断依据1、恢复不重放1。常见误区：把计划当成功，或把Session append当作任意后端已fsync。</p></div></details>
+<ol start="7">
+<li>前提：Adapter已经输出工具提议，随后TRANSPORT失败。为什么重试不能执行那条工具？</li>
+</ol>
+<details id="lesson-deepdive-21" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 7 参考答案</summary><div class="lesson-callout-body"><p>失败finish先结算assistant/attempt，未形成可用Assistant消息；工具派发只在成功消息分支之后。紧凑流仍可保存提议供诊断，但deriveMessages与新请求不能把失败分片当普通历史。A:partial主体0且下一请求无FAILED_PARTIAL。依据S31/S32。评分：结算1、派发位置1、两种历史1、证据1。常见误区：看到完整参数就自行执行，混淆“已展示/记录分片”与执行授权。</p></div></details>
+<ol start="8">
+<li>前提：用户取消时已有SAFE_PREFIX和半截工具参数。标准持久结果是什么？</li>
+</ol>
+<details id="lesson-deepdive-22" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 8 参考答案</summary><div class="lesson-callout-body"><p>当前signal中止使Loop走interrupted分支，Assembler取非空text/reasoning安全块，省略工具调用；有安全块则assistant/message interrupted，无安全块则Attempt。随后关闭Step/Turn，工具主体不执行。依据S32/S34与B两个流分支。评分：条件1、安全内容1、工具排除1、结算1。常见误区：一律删除已见文字，或把半个调用补成可执行动作；实时UI也不证明磁盘已经保存。</p></div></details>
+<ol start="9">
+<li>推导：first结果已提交、second主体挂住、third没开始，此时取消得到什么？</li>
+</ol>
+<details id="lesson-deepdive-23" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 9 参考答案</summary><div class="lesson-callout-body"><p>保留first结果，停止补位，等待second到结算边界，再为third合成未派发结果。B:parallel按模型序得到success、ABORTED、ABORTED_BEFORE_DISPATCH；third有合成call/result但主体0。依据S44/S45。评分：原结果1、排空1、未开始处理1、顺序1。常见误区：取消清掉全部结果，或把有tool/call绝对解释成主体已执行；call登记与dispatch仍有间隔。</p></div></details>
+<ol start="10">
+<li>前提：写主体已经把假资源计数加1，取消后结果ABORTED，为什么计数仍可为1？</li>
+</ol>
+<details id="lesson-deepdive-24" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 10 参考答案</summary><div class="lesson-callout-body"><p>ABORTED是执行控制和结果结算类别，不是外部事务回滚。主体已发生的写入没有被取消信号逆转；流水线只是等已启动Promise并决定当前结果。先核外部资源再决定后续，不能凭错误码重复写。依据S42/S43、B:tool-after及X。评分：控制/效果区分1、等待1、核查1、禁止盲重1。常见误区：把失败结果当作执行次数0，或宣称whenIdle意味着外部世界恢复原样。</p></div></details>
+<ol start="11">
+<li>推导：原前缀有Assistant两工具、只有第一call，Resume应补什么？</li>
+</ol>
+<details id="lesson-deepdive-25" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 11 参考答案</summary><div class="lesson-callout-body"><p>按提议顺序，第一有开始无结果，补UNKNOWN并引用call；第二没有开始记录，补NOT_STARTED，不伪造开始引用。再补开放step/end、turn/end interrupted，新生命周期另有end-seed。X副本Seq13/14/15/16/17对应这些事实，原0～12不改。依据S47/S48/S50。评分：两码1、来源1、顺序1、原前缀1。常见误区：两项都自动执行，或把原任务后来产生的ABORTED结果搬进早期副本。</p></div></details>
+<ol start="12">
+<li>前提：缺结果的是非幂等资源创建。什么信息足以支持安全决定？</li>
+</ol>
+<details id="lesson-deepdive-26" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 12 参考答案</summary><div class="lesson-callout-body"><p>先核外部业务状态、业务键和可验证结果，确认操作是否已经发生；无法确定时请用户决定或停止。只读可按需要重读，真正幂等写可借外部强制键核既有结果。D的Map只是教学机制，不是Harness通用幂等。依据S47/S49及D:idempotency。评分：核查1、语义区分1、人工边界1、实现范围1。常见误区：同一prompt或callId天然幂等，或因为日志缺结果就断言动作未执行。</p></div></details>
+<ol start="13">
+<li>前提：Retry插件和Basic按本课顺序挂载，遇Context Overflow，为何可能没有llm/retry？</li>
+</ol>
+<details id="lesson-deepdive-27" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 13 参考答案</summary><div class="lesson-callout-body"><p>默认normal不接该code，委派Basic；always也先让下游判断。Basic改变Surface、有进展且预算允许才返回retry，通用插件直接采用，所以本课两分支普通请求2、摘要1、通用计划0。依据S24/S25/S51。评分：资格/优先1、输入进展1、事件1、独立预算1。常见误区：把Overflow当RATE_LIMIT，或简单加两个预算宣布全应用固定次数。</p></div></details>
+<ol start="14">
+<li>推导：keepInbox保留第二条，当前任务取消后立即idle，是否第二条已经成功？</li>
+</ol>
+<details id="lesson-deepdive-28" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 14 参考答案</summary><div class="lesson-callout-body"><p>保留只说明队列事实没清，当前活动仍取消，也不保证立即唤醒。B先看到第二条仍排队、模型只1次，显式第三条followup之后才按FIFO推进，最终调用3次。whenIdle是等待活动停稳，不是逐消息成功回执。依据S35/S36/S37。评分：队列1、取消1、唤醒1、回执区别1。常见误区：有待办等于正在执行，或把dispose与cancel当成同一个所有权动作。</p></div></details>
+<ol start="15">
+<li>前提：C/X磁盘、事件和取消检查全通过，能否宣布完整可靠性已验证？</li>
+</ol>
+<details id="lesson-deepdive-29" class="lesson-callout lesson-deepdive"><summary>想深入再看：思考 15 参考答案</summary><div class="lesson-callout-body"><p>不能。已验证的是固定版本、Windows本地原始JSONL、同进程新实例、受控Provider与内存工具的C/D路径。真实网络分类、费用/缓存、真实进程崩溃/断电、跨进程和平台、E应用、真实学员与外审仍缺证据。依据C/X与验证矩阵。评分：实际范围1、至少两项未验1、故障与副作用边界1、不升级E1。常见误区：把多个局部测试相加叫E，或用测试通过替代实际摘要/教学/业务效果。</p></div></details>
+<h2>把所有权与恢复证据带到H21</h2>
+<p>现在可以从故障分类出发，读取事件、判断恢复、传递控制、等工作停稳，再核最终结果。H17的事件语义、H18的持权恢复、H19的输入取舍与H20的执行控制共同提供证据；它们仍不自动实现对外部世界的恰好一次。</p>
+<p>下一问是：任务委派给子Agent后，谁拥有创建、取消、结果回传和后代清理？H21会把本课的所有权与等待边界扩展到委派，不把历史parentSession误作运行时parentAgent。本轮只生成第五模块审查准备包与H21前置说明，正式模块审查和H21研发尚未开始；课程没有发布。</p></div></main></body></html>

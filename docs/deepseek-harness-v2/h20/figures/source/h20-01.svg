@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1450" viewBox="0 0 640 1450" role="img"><title>失败在哪一层，恢复就看哪一层</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#187A91" stroke-width="2"/></marker></defs><rect width="640" height="1450" fill="#F3F9F8"/>
+<text x="32" y="57" font-size="32" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">失败在哪一层，恢复就看哪一层</text>
+<rect x="32" y="100" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="143" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">模型请求：终止失败事实</text>
+<text x="52" y="187" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">RATE_LIMIT / SERVER / TRANSPORT</text>
+<text x="52" y="229" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">失败 Attempt → request-error</text>
+<text x="52" y="271" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">按提供方策略过滤、预算与等待</text>
+<rect x="32" y="328" width="576" height="198" rx="15" fill="#D9F4E9" stroke="#78A7AC"/>
+<text x="52" y="371" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">工具业务：执行过，结果是错误</text>
+<text x="52" y="415" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">主体抛错可结算为 tool/result</text>
+<text x="52" y="457" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型可收到错误，再解释或换方案</text>
+<text x="52" y="499" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不自动进入模型请求重试</text>
+<rect x="32" y="556" width="576" height="198" rx="15" fill="#FFF0D7" stroke="#78A7AC"/>
+<text x="52" y="599" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">策略 / 基础设施：看实际边界</text>
+<text x="52" y="643" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">单工具 hook 错误可变成错误结果</text>
+<text x="52" y="685" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">模型 middleware 错误仍向外抛</text>
+<text x="52" y="727" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">调度失败先排空，再由 Step 修复</text>
+<rect x="32" y="784" width="576" height="198" rx="15" fill="#FCE5E3" stroke="#78A7AC"/>
+<text x="52" y="827" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">主动取消：任务控制权已改变</text>
+<text x="52" y="871" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">发出 AbortSignal，停止新增工作</text>
+<text x="52" y="913" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">已启动操作协作退出并结算</text>
+<text x="52" y="955" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">取消请求 ≠ 已经完全停稳</text>
+<rect x="32" y="1012" width="576" height="198" rx="15" fill="#DDEDF5" stroke="#78A7AC"/>
+<text x="52" y="1055" font-size="30" font-weight="700" fill="#15394B" font-family="Microsoft YaHei">进程中断：读持久有效前缀</text>
+<text x="52" y="1099" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">Resume → 缺结果 / 开放边界修复</text>
+<text x="52" y="1141" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">不重放旧模型与工具副作用</text>
+<text x="52" y="1183" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">先核外部状态，再决定是否再做</text>
+<text x="32" y="1422" font-size="28" font-weight="400" fill="#15394B" font-family="Microsoft YaHei">固定 f3803c9 · 图中边界以正文为准</text>
+</svg>

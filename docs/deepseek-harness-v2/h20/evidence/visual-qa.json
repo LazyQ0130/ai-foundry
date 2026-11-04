@@ -1,0 +1,394 @@
+{
+  "scratch": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h20-Rh1y9S",
+  "kind": "actual LessonMarkdown mounted with React createRoot + platform CSS compiled by PostCSS; author-only fixture",
+  "lessonSha256": "00af4fa10cd9fe1a6562bbfd7a2086e0bb1405f39828b19611e43036c4e9206f",
+  "rendererSha256": "5c63efd2fc6fa3f3c0113c674a53642cd8332972975a94b72e024e5bb8a09228",
+  "figures": [
+    {
+      "id": "h20-01",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1450,
+      "sourceSha256": "94c1699ea0a3f2b22294e29d5b553a550db1801be9d5b46d9a72960205861e3f",
+      "imageSha256": "ae28f891e86956701ef09cee2eae1b5384af41178a659212feb9945d045b9fc0"
+    },
+    {
+      "id": "h20-02",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1710,
+      "sourceSha256": "8111594ada2156a6e475568ba59b2340a3e4fccb8dab96c1e1f6a95b4503f06c",
+      "imageSha256": "5dee63df7056fc10a031630b295acaf614a2cc4724f6f740b43a62aa8f0a2cde"
+    },
+    {
+      "id": "h20-03",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1598,
+      "sourceSha256": "0d9bd4b1b6c661b9c383bcd5c6b0acf792c45be163e26e7fe1070dfec49141ed",
+      "imageSha256": "59b7b5b20481c72950ee3af50c7d0e7cde271f3f65b30f4eafbbc88752645b61"
+    },
+    {
+      "id": "h20-04",
+      "status": "PASS",
+      "font": true,
+      "out": [],
+      "overlap": [],
+      "minFont": 28,
+      "width": 640,
+      "height": 1538,
+      "sourceSha256": "da80efd5930ece73f25c3ff0886ba6b524507eee0184083b086220e52a77baf5",
+      "imageSha256": "b740613db9106291823aae7c36c314785158a2c29d413be27af113916df6456d"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "images": [
+          {
+            "alt": "模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 1｜先定位失败层，再检查事件、控制权与副作用。错误结果不等于模型请求失败，取消请求不等于工作已经退出。",
+            "src": "/course-media/harness-v2/h20/h20-01.png"
+          },
+          {
+            "alt": "失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Seq8～13来自A的真实轨迹。Session提交计划不等于通用磁盘屏障；等待完成和请求成功分别取证。",
+            "src": "/course-media/harness-v2/h20/h20-02.png"
+          },
+          {
+            "alt": "用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 3｜取消请求与完全停稳分开。非合作工具或下游恢复仍可能阻塞；dispose还拥有作用域、写句柄与登记的退出责任。",
+            "src": "/course-media/harness-v2/h20/h20-03.png"
+          },
+          {
+            "alt": "综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次",
+            "width": 760,
+            "naturalWidth": 1280,
+            "caption": "图 4｜原任务后来正常取消排空，副本模拟中断时点。恢复不重执行工具；幂等核查是业务策略，两个Session的未来不能互相冒用。",
+            "src": "/course-media/harness-v2/h20/h20-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clock.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 15,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 711,
+        "scrollWidth": 3223,
+        "scrolled": 2512
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 1440,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 7.671875,
+        "bottom": 494.828125,
+        "viewport": 950,
+        "height": 487.15625,
+        "content": "想深入再看：实践 A 详细参考答案success调用1、计划0；no-plugin、auth、quota、adapter-aborted、over-cap普通调用1后结束。rate-limit、server、timeout、empty与partial是一次失败后再成功，普通调用2，计划/started各1，仍只有一个Turn/Step和一条用户输入。partial的FAILED_PARTIAL只在Attempt流内，danger主体0次，下一请求不含它。middleware抛错发生在Adapter外，Adapter调用0，恢复点0。budget使用默认5次重试，合计6次调用，虚拟延迟500、1000、2000、4000、8000，最后仍error；jitter固定U1，六次计划550、1100、2200、4400、8800、10000，七次请求后耗尽。retry-after接受9000；always-over-cap把20000回退500。always的AUTH、QUOTA后成功，共3次；downstream先决定retry，不写通用计划；下游抛错才触发always回退。两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。",
+        "lastParagraph": "两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 33.25
+    },
+    {
+      "width": 390,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "images": [
+          {
+            "alt": "模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 1｜先定位失败层，再检查事件、控制权与副作用。错误结果不等于模型请求失败，取消请求不等于工作已经退出。",
+            "src": "/course-media/harness-v2/h20/h20-01.png"
+          },
+          {
+            "alt": "失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn",
+            "width": 358,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Seq8～13来自A的真实轨迹。Session提交计划不等于通用磁盘屏障；等待完成和请求成功分别取证。",
+            "src": "/course-media/harness-v2/h20/h20-02.png"
+          },
+          {
+            "alt": "用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜取消请求与完全停稳分开。非合作工具或下游恢复仍可能阻塞；dispose还拥有作用域、写句柄与登记的退出责任。",
+            "src": "/course-media/harness-v2/h20/h20-03.png"
+          },
+          {
+            "alt": "综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次",
+            "width": 357.984375,
+            "naturalWidth": 1280,
+            "caption": "图 4｜原任务后来正常取消排空，副本模拟中断时点。恢复不重执行工具；幂等核查是业务策略，两个Session的未来不能互相冒用。",
+            "src": "/course-media/harness-v2/h20/h20-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clock.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 15,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 321,
+        "scrollWidth": 3215,
+        "scrolled": 2894
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 390,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 8.46875,
+        "bottom": 894.78125,
+        "viewport": 967,
+        "height": 886.3125,
+        "content": "想深入再看：实践 A 详细参考答案success调用1、计划0；no-plugin、auth、quota、adapter-aborted、over-cap普通调用1后结束。rate-limit、server、timeout、empty与partial是一次失败后再成功，普通调用2，计划/started各1，仍只有一个Turn/Step和一条用户输入。partial的FAILED_PARTIAL只在Attempt流内，danger主体0次，下一请求不含它。middleware抛错发生在Adapter外，Adapter调用0，恢复点0。budget使用默认5次重试，合计6次调用，虚拟延迟500、1000、2000、4000、8000，最后仍error；jitter固定U1，六次计划550、1100、2200、4400、8800、10000，七次请求后耗尽。retry-after接受9000；always-over-cap把20000回退500。always的AUTH、QUOTA后成功，共3次；downstream先决定retry，不写通用计划；下游抛错才触发always回退。两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。",
+        "lastParagraph": "两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 15.66181640625
+    },
+    {
+      "width": 320,
+      "status": "PASS",
+      "metrics": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "images": [
+          {
+            "alt": "模型请求、工具业务、执行基础设施、主动取消与进程中断分别拥有不同事实和恢复边界",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 1｜先定位失败层，再检查事件、控制权与副作用。错误结果不等于模型请求失败，取消请求不等于工作已经退出。",
+            "src": "/course-media/harness-v2/h20/h20-01.png"
+          },
+          {
+            "alt": "失败Attempt先结算，恢复链记录计划后可取消等待，等待完成才记录retry-started，再进入同Step新请求，成功后关闭Step与Turn",
+            "width": 288,
+            "naturalWidth": 1280,
+            "caption": "图 2｜Seq8～13来自A的真实轨迹。Session提交计划不等于通用磁盘屏障；等待完成和请求成功分别取证。",
+            "src": "/course-media/harness-v2/h20/h20-02.png"
+          },
+          {
+            "alt": "用户取消向模型流、退避和工具批次传播；已启动工作排空后闭合Step与Turn，whenIdle之后Handle才能继续生命周期收尾",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 3｜取消请求与完全停稳分开。非合作工具或下游恢复仍可能阻塞；dispose还拥有作用域、写句柄与登记的退出责任。",
+            "src": "/course-media/harness-v2/h20/h20-03.png"
+          },
+          {
+            "alt": "综合X副本在真实工具开始后截取有效逻辑前缀，Resume补UNKNOWN和NOT_STARTED，再闭合Step与Turn；外部假效果保持一次",
+            "width": 287.984375,
+            "naturalWidth": 1280,
+            "caption": "图 4｜原任务后来正常取消排空，副本模拟中断时点。恢复不重执行工具；幂等核查是业务策略，两个Session的未来不能互相冒用。",
+            "src": "/course-media/harness-v2/h20/h20-04.png"
+          }
+        ],
+        "details": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "h1": 1
+      },
+      "copiedPrograms": [
+        "support.ts",
+        "bootstrap.mjs",
+        "A.ts",
+        "B.ts",
+        "C.ts",
+        "D.ts",
+        "X.ts",
+        "clock.ts",
+        "demo.ts"
+      ],
+      "clipboard": "nine full programs exact LF-normalized match",
+      "keyboardDetails": "all opened/closed",
+      "thoughtAnswers": 15,
+      "originalImages": 4,
+      "labScroll": {
+        "clientWidth": 251,
+        "scrollWidth": 3215,
+        "scrolled": 2964
+      },
+      "codeScroll": {
+        "tested": "full contexts program below"
+      },
+      "staticMetrics": {
+        "documentWidth": 320,
+        "images": 4,
+        "copyButtons": 0,
+        "details": 29
+      },
+      "answerGeometry": {
+        "top": 7.53125,
+        "bottom": 1181.8125,
+        "viewport": 1255,
+        "height": 1174.28125,
+        "content": "想深入再看：实践 A 详细参考答案success调用1、计划0；no-plugin、auth、quota、adapter-aborted、over-cap普通调用1后结束。rate-limit、server、timeout、empty与partial是一次失败后再成功，普通调用2，计划/started各1，仍只有一个Turn/Step和一条用户输入。partial的FAILED_PARTIAL只在Attempt流内，danger主体0次，下一请求不含它。middleware抛错发生在Adapter外，Adapter调用0，恢复点0。budget使用默认5次重试，合计6次调用，虚拟延迟500、1000、2000、4000、8000，最后仍error；jitter固定U1，六次计划550、1100、2200、4400、8800、10000，七次请求后耗尽。retry-after接受9000；always-over-cap把20000回退500。always的AUTH、QUOTA后成功，共3次；downstream先决定retry，不写通用计划；下游抛错才触发always回退。两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。",
+        "lastParagraph": "两种compaction组合均普通请求2、辅助摘要1、通用计划0；不由此推出任意顺序和策略都一样。各Loop分支pre-step/resolveTools/assemble各1，prepareCall随尝试重新发生。建议15分：资格/次数5，时间推导4，事件/消息4，预算所有权2。把always写成最终必成功、把计划写成成功，关键项需先纠正；评分待试读校准。"
+      },
+      "errors": [],
+      "failed": [],
+      "minimumFigureTextPx": 12.59931640625
+    }
+  ],
+  "manualReview": "See manual-review.json; browser tests do not grade teaching effectiveness",
+  "unverified": [
+    "product authenticated page and progress API",
+    "learner comprehension and actual reading duration",
+    "upstream integration tests and real models"
+  ]
+}

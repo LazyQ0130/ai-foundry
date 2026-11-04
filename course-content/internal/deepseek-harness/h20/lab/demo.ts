@@ -1,0 +1,2 @@
+import {practiceA} from './A.ts';import {practiceB} from './B.ts';import {practiceC} from './C.ts';import {practiceD} from './D.ts';import {integrated} from './X.ts';
+const [which='X',kind]=process.argv.slice(2);const result=which==='A'?await practiceA(kind):which==='B'?await practiceB(kind):which==='C'?await practiceC(kind):which==='D'?await practiceD(kind):which==='X'?await integrated():(()=>{throw Error('choose A/B/C/D/X')})();console.log(JSON.stringify(result,null,2));

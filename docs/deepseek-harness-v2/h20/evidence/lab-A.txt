@@ -1,0 +1,517 @@
+{
+  "kind": "rate-limit",
+  "events": [
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 0,
+      "time": 1793773599492,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "inserted": [
+          {
+            "source": {
+              "kind": "user"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "read fixture and explain"
+              }
+            ],
+            "role": "user",
+            "id": "6b9c0f71-523c-4553-b3bd-ad6b27c028e6"
+          }
+        ]
+      }
+    },
+    {
+      "type": "turn/start",
+      "seq": 1,
+      "time": 1793773599493,
+      "data": {
+        "turn": 1
+      }
+    },
+    {
+      "type": "agent/inbox/spliced",
+      "seq": 2,
+      "time": 1793773599493,
+      "data": {
+        "target": "next-turn",
+        "start": 0,
+        "removedCount": 1,
+        "inserted": []
+      }
+    },
+    {
+      "type": "step/start",
+      "seq": 3,
+      "time": 1793773599494,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "system/message",
+      "seq": 4,
+      "time": 1793773599496,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only controlled fixture facts."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "3a81e121-4e44-4f6a-a709-a04fb313bf05"
+        }
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "user/message",
+      "seq": 5,
+      "time": 1793773599496,
+      "data": {
+        "source": {
+          "kind": "user"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "read fixture and explain"
+          }
+        ],
+        "role": "user",
+        "id": "6b9c0f71-523c-4553-b3bd-ad6b27c028e6"
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "request/header",
+      "seq": 6,
+      "time": 1793773599497,
+      "data": {
+        "header": {
+          "config": {
+            "provider": "fixture",
+            "model": "large",
+            "maxTokens": 128
+          },
+          "adapterDefaults": {
+            "maxTokens": true
+          },
+          "tools": [
+            {
+              "name": "danger",
+              "description": "Safe memory fixture danger",
+              "parameters": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          ]
+        },
+        "reason": "initial"
+      }
+    },
+    {
+      "type": "request/context",
+      "seq": 7,
+      "time": 1793773599497,
+      "data": {
+        "provider": "fixture",
+        "model": "large",
+        "contextWindow": 100000
+      }
+    },
+    {
+      "type": "assistant/attempt",
+      "seq": 8,
+      "time": 1793773599498,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "stream": [
+          {
+            "type": "chunk",
+            "time": 1793773599498,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "error",
+                "failure": {
+                  "message": "controlled RATE_LIMIT",
+                  "code": "RATE_LIMIT"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "llm/retry",
+      "seq": 9,
+      "time": 1793773599499,
+      "data": {
+        "retryId": "4f279630-a0d6-4a87-be1c-969e5fdc57e5",
+        "turn": 1,
+        "step": 1,
+        "provider": "fixture",
+        "mode": "normal",
+        "policyKey": "[\"normal\",2,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],500,10000,0]",
+        "retry": 1,
+        "maxRetries": 2,
+        "delayMs": 500,
+        "failure": {
+          "message": "controlled RATE_LIMIT",
+          "code": "RATE_LIMIT"
+        }
+      }
+    },
+    {
+      "type": "llm/retry-started",
+      "seq": 10,
+      "time": 1793773599503,
+      "data": {
+        "retryId": "4f279630-a0d6-4a87-be1c-969e5fdc57e5",
+        "turn": 1,
+        "step": 1,
+        "retry": 1
+      }
+    },
+    {
+      "type": "assistant/message",
+      "seq": 11,
+      "time": 1793773599504,
+      "data": {
+        "turn": 1,
+        "step": 1,
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "done"
+            }
+          ],
+          "source": {
+            "kind": "model",
+            "provider": "fixture",
+            "model": "large"
+          },
+          "id": "d549aaf1-fc20-47f6-abf9-610e820a839c"
+        },
+        "stream": [
+          {
+            "type": "text-chunks",
+            "time0": 1793773599503,
+            "index": 0,
+            "dt": [],
+            "texts": [
+              "done"
+            ]
+          },
+          {
+            "type": "chunk",
+            "time": 1793773599503,
+            "chunk": {
+              "type": "finish",
+              "reason": {
+                "kind": "stop"
+              }
+            }
+          }
+        ]
+      },
+      "surfaceOp": "append"
+    },
+    {
+      "type": "step/end",
+      "seq": 12,
+      "time": 1793773599504,
+      "data": {
+        "turn": 1,
+        "step": 1
+      }
+    },
+    {
+      "type": "turn/end",
+      "seq": 13,
+      "time": 1793773599504,
+      "data": {
+        "turn": 1,
+        "reason": {
+          "kind": "completed"
+        }
+      }
+    }
+  ],
+  "requests": [
+    {
+      "provider": "fixture",
+      "model": "large",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only controlled fixture facts."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "3a81e121-4e44-4f6a-a709-a04fb313bf05"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "read fixture and explain"
+            }
+          ],
+          "role": "user",
+          "id": "6b9c0f71-523c-4553-b3bd-ad6b27c028e6"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "danger",
+            "description": "Safe memory fixture danger",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "danger",
+          "description": "Safe memory fixture danger",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "task"
+    },
+    {
+      "provider": "fixture",
+      "model": "large",
+      "maxTokens": 128,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "Use only controlled fixture facts."
+            }
+          ],
+          "source": {
+            "kind": "system-prompt"
+          },
+          "id": "3a81e121-4e44-4f6a-a709-a04fb313bf05"
+        },
+        {
+          "source": {
+            "kind": "user"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "read fixture and explain"
+            }
+          ],
+          "role": "user",
+          "id": "6b9c0f71-523c-4553-b3bd-ad6b27c028e6"
+        }
+      ],
+      "toolHistory": {
+        "tools": [
+          {
+            "name": "danger",
+            "description": "Safe memory fixture danger",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "updates": []
+      },
+      "tools": [
+        {
+          "name": "danger",
+          "description": "Safe memory fixture danger",
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "sessionId": "task"
+    }
+  ],
+  "frames": [
+    {
+      "type": "start",
+      "attemptId": "task:1",
+      "revision": 1,
+      "turn": 1,
+      "step": 1
+    },
+    {
+      "type": "chunk",
+      "attemptId": "task:1",
+      "revision": 2,
+      "index": 0,
+      "time": 1793773599498,
+      "chunk": {
+        "type": "finish",
+        "reason": {
+          "kind": "error",
+          "failure": {
+            "message": "controlled RATE_LIMIT",
+            "code": "RATE_LIMIT"
+          }
+        }
+      }
+    },
+    {
+      "type": "end",
+      "attemptId": "task:1",
+      "revision": 3,
+      "index": 1,
+      "outcome": {
+        "kind": "committed",
+        "eventType": "assistant/attempt",
+        "seq": 8
+      }
+    },
+    {
+      "type": "start",
+      "attemptId": "task:2",
+      "revision": 4,
+      "turn": 1,
+      "step": 1
+    },
+    {
+      "type": "chunk",
+      "attemptId": "task:2",
+      "revision": 5,
+      "index": 0,
+      "time": 1793773599503,
+      "chunk": {
+        "type": "text-delta",
+        "index": 0,
+        "text": "done"
+      }
+    },
+    {
+      "type": "chunk",
+      "attemptId": "task:2",
+      "revision": 6,
+      "index": 1,
+      "time": 1793773599503,
+      "chunk": {
+        "type": "finish",
+        "reason": {
+          "kind": "stop"
+        }
+      }
+    },
+    {
+      "type": "end",
+      "attemptId": "task:2",
+      "revision": 7,
+      "index": 2,
+      "outcome": {
+        "kind": "committed",
+        "eventType": "assistant/message",
+        "seq": 11
+      }
+    }
+  ],
+  "errors": [],
+  "counts": {
+    "preStep": 1,
+    "prepareCall": 2,
+    "resolveTools": 1,
+    "assemble": 1,
+    "recovery": 1
+  },
+  "delays": [
+    500
+  ],
+  "virtualMs": 500,
+  "surface": [
+    4,
+    5,
+    11
+  ],
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "Use only controlled fixture facts."
+        }
+      ],
+      "source": {
+        "kind": "system-prompt"
+      },
+      "id": "3a81e121-4e44-4f6a-a709-a04fb313bf05"
+    },
+    {
+      "source": {
+        "kind": "user"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "read fixture and explain"
+        }
+      ],
+      "role": "user",
+      "id": "6b9c0f71-523c-4553-b3bd-ad6b27c028e6"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "done"
+        }
+      ],
+      "source": {
+        "kind": "model",
+        "provider": "fixture",
+        "model": "large"
+      },
+      "id": "d549aaf1-fc20-47f6-abf9-610e820a839c"
+    }
+  ],
+  "bodies": 0,
+  "downstream": 0
+}

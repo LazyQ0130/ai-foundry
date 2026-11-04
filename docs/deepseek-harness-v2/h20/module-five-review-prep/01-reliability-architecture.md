@@ -1,0 +1,7 @@
+# 统一可靠性架构（供正式审查）
+
+用户输入经Inbox接纳，活跃Agent持有控制信号和Scope。Loop在Turn/Step边界准备工具与Prompt，Model Request每次Attempt产生实时流，最后结算message或attempt。成功工具提议进入流水线，call/结果按实际阶段记录。所有Session事实只追加，Surface与Projection提供不同读法；真实Backend通过Handle的所有权和检查点保存指定范围。
+
+失败请求在特定恢复点交策略链：通用Retry管理Provider/policy预算与退避，Compaction管理输入缩减与独立进展预算。取消中止当前活动、停止补位并等待已启动工作；Handle释放再承担作用域、writer和登记退出。进程中断后Resume持权读有效前缀、补缺结果和生命周期边界，新对象继续使用历史，不重放旧动作。
+
+候选硬不变式：模型可见消息有合法提交来源；失败Attempt不当普通聊天；Seq与Surface位置分开；工具调用/结果配对；未知结果不当未执行；取消不是回滚；Session提交/后端可见/flush耐久分开；历史谱系不等于运行时父子所有权。这是审查输入，不是全系统已证实的形式化保证。
