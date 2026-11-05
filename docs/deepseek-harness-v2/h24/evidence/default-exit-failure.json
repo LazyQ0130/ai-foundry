@@ -1,0 +1,52 @@
+{
+  "status": "OPEN_P1_NO_GO",
+  "failures": [
+    {
+      "trace": "traces-1793850111155.json",
+      "key": "trace-C1-failure.json",
+      "pid": 25240,
+      "exit": 3221226505,
+      "stderr": "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\\win\\async.c, line 94\r\n",
+      "world": {
+        "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC",
+        "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\workspace",
+        "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture",
+        "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture\\cordis.yml",
+        "env": {
+          "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture",
+          "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC",
+          "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home"
+        }
+      }
+    },
+    {
+      "trace": "traces-1793850184334.json",
+      "key": "trace-C1-failure.json",
+      "pid": 2252,
+      "exit": 3221226505,
+      "stderr": "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\\win\\async.c, line 94\r\n",
+      "world": {
+        "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL",
+        "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL\\workspace",
+        "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL\\home\\profiles\\h24-fixture",
+        "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL\\home\\profiles\\h24-fixture\\cordis.yml",
+        "env": {
+          "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL\\home\\profiles\\h24-fixture",
+          "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL",
+          "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-SsYKji\\world-u9z6WL\\home"
+        }
+      }
+    }
+  ],
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "release": "10.0.26300"
+  },
+  "expected": "SDK+official HTTP Mock work then shutdown, actual exit0",
+  "actual": "shutdown response received but default process.exit path ends with Windows native libuv assertion, exit0xC0000409",
+  "scope": "author source YAML composition; not proof that every shipped build or OS fails",
+  "attempts": "connection close header and owned undici dispatcher close did not fix default exit; original failures retained",
+  "currentFixture": "official runtime-only SDK exit hook => process.exitCode plus stdin.pause, natural process exit, all23 pass; does not clear default branch",
+  "requiredClosure": "independent minimal reproduction, default exit ownership/Node compatibility diagnosis and zero-exit regression on relevant product entry; no upstream fixed-source edit in this lesson"
+}

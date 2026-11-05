@@ -1,0 +1,66 @@
+from pathlib import Path
+import json
+R=Path(__file__).resolve().parents[1];L=json.loads((R/'evidence/source-lock.json').read_text());S=Path(L['sourceCache']);rows=[]
+def add(f,a,b,symbol,conclusion,reference,local='STATIC_REVIEW'):
+ lines=(S/f).read_text(encoding='utf-8').splitlines();assert 0<a<=len(lines),f
+ b=min(b or len(lines),len(lines));assert b>=a
+ assert (S/reference).is_file(),reference
+ rows.append(dict(claim=f'S{len(rows)+1:02}',commit=L['commit'],file=f,start=a,end=b,symbol=symbol,controlBranch=conclusion,conclusion=conclusion,officialTest=dict(file=reference,status='REFERENCE_LOCATED_NOT_EXECUTED'),localTest=local,grade=local[0] if local.startswith(('C ','D ')) else 'STATIC',status='STATIC_REVIEW' if local=='STATIC_REVIEW' else 'DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH'))
+t='docs/testing.zh.md';ls='packages/test-support/loader-smoke';ss='packages/test-support/session-snapshot';lr='packages/test-support/llm-replay';ms='packages/test-support/llm-mock-server'
+add(t,7,18,'官方测试分类','官方分类含单元、覆盖率、API e2e、expected、bench、snapshot、Web；A–E是课程证据级，不是官方同名层级。','vitest.config.ts')
+add(t,19,55,'确定性与清理策略','快照需比较外部workspace，测试资源由测试拥有；Record/Refresh改变基线，平台skip不能计PASS。','package.json')
+add('vitest.config.ts',1,125,'source aliases / platform selection','Vitest源码路径映射及平台选择不能证明Node正式exports/lib启动。','package.json','C A4')
+add('package.json',19,84,'build / test scripts','真实命令为build、build:lib、test:snapshot和test:web:built等；本轮未执行官方全量构建或产品Web。','scripts/run-web-snapshots.ts')
+add(ls+'/src/index.ts',32,132,'resolveExampleMode / resolveExampleLaunch','模式严格为src/lib；src带TS加载条件，lib为构建后普通Node；非法模式拒绝。',ls+'/tests/example-launch.spec.ts','C A4')
+add(ls+'/src/index.ts',198,None,'runLoaderSmoke','传cwd时目录归调用方；未传时helper会自动递归清理。inspect在退出码检查之后，失败证据须外层保存。',ls+'/tests/loader-smoke.spec.ts','D A1; C A2')
+add(ls+'/src/agent-turn.ts',41,None,'onlyRootAgent / runFixtureTurn','等恰好一个配置根Agent发布，先监听后投递，用收据关联输入并等idle及flush；不是只等一段文本。',ls+'/tests/agent-turn.spec.ts','D A1')
+add(ls+'/tests/fixtures/production-profile.ts',1,None,'production Profile fixture','官方fixture组合发行Profile和包安装；作者自有核心YAML没有执行该完整发行入口。',ls+'/tests/loader-smoke.spec.ts')
+add('packages/boot/app-boot/src/profile.ts',678,762,'loadProfileDirectory / composeEntries','真实manifest和Patch组成Loader条目；作者Profile bundles为空但核心服务全部走YAML加载。','apps/cli/src/profile-boot.ts','D A1; C A2')
+add('packages/boot/app-boot/src/index.ts',1118,1205,'startup audit','settled后只对已出现且启用的特定必需ID和bootstrap include严审；其余FAILED/PENDING可警告，所以作者额外核必需行ACTIVE。','packages/boot/app-boot/src/index.ts','C A2')
+add('packages/bundle/base/cordis.patch.yml',1,None,'base composition','base是正式共享配置树；作者core Profile不能冒充执行base全部插件。','packages/bundle/base/package.json')
+add('packages/bundle/headless/cordis.patch.yml',1,None,'headless composition','一次性入口对base施加差异；运行作者driver不等于运行已交付headless。','packages/bundle/headless/package.json')
+add('packages/bundle/sdk-minimal/cordis.patch.yml',1,None,'sdk-minimal composition','minimal是独立服务组合；只挂SDK server和核心服务不等于该完整发行树。','packages/bundle/sdk-minimal/package.json')
+add('packages/test-support/agent-loop-testkit/src/index.ts',1,None,'mountAgentLoopTestDependencies','testkit挂官方循环依赖，不替调用方安装Loop与脚本模型；用于P1真实工具测试依赖。','packages/test-support/agent-loop-testkit/tests/agent-loop-testkit.spec.ts','C P1')
+add('packages/test-support/tool-testkit/src/index.ts',1,None,'executeModelToolFixture','真实Tool/Native管线与受控工具body分开；拒绝测试需核body未进入。','packages/test-support/tool-testkit/tests/model-call.spec.ts','C P1')
+add('packages/core/tools/src/schema.ts',1,171,'author schema DSL','required写在属性声明上；对象additionalProperties等由作者DSL转换，不能随意塞Zod或任意JSON Schema。','packages/core/tools/tests/schema.spec.ts','C P1')
+add('packages/core/tools/tests/properties.spec.ts',1,100,'seeded properties','属性测试对不变量取有种子样本，非穷尽证明；40样本不是40独立行为场景。','packages/core/tools/tests/properties.spec.ts','C P1')
+add('packages/core/agent-loop/tests/mock-adapter.ts',1,None,'MockAdapter / hang / toolCallResponse','脚本化文本、工具和hang提供受控模型边界；不测真实模型推理质量。','packages/core/agent-loop/tests/loop.spec.ts','D A1; D D5')
+add(lr+'/src/index.ts',214,342,'parseSessionLog / comparison encoding','通过固定catalog恢复并校验事件；comparison编码与可执行回放fixture不同，不应覆盖原格式基线。',lr+'/tests/llm-replay.spec.ts','D B1; D X')
+add(lr+'/src/index.ts',467,623,'deriveReplayScript','从已记录请求和Assistant事实派生脚本；chunk前throw/hang等需要override，不凭结算日志推断完整时序。',lr+'/tests/llm-replay.spec.ts','D B1')
+add(lr+'/src/index.ts',1037,1213,'installLlmReplay','按Session分配脚本并要求consume；多子级首次请求顺序是回放限制，不能声称随机并行轨迹必定确定。',lr+'/tests/llm-replay.spec.ts','D B1')
+add(ms+'/src/index.ts',117,178,'MockLlmServerOptions','支持Messages HTTP/SSE脚本、随机种子和故障选项；不是任意Chat Completions服务器。',ms+'/tests/server.spec.ts','D D1; D D2; D D3')
+add(ms+'/src/index.ts',643,None,'startMockLlmServer','动态端口、有效请求序列记录；close关闭连接，测试还需等待调用方和子进程释放。',ms+'/tests/server.spec.ts','D D1; D D6')
+add(ss+'/src/manifest.ts',139,218,'writesCurrentSessionFixtures / parseSnapshotManifest','replay不写current fixture，record可写；未知字段拒绝。单独测parser不等于完整Snapshot Suite。',ss+'/tests/manifest.spec.ts','C B4')
+add(ss+'/src/normalize.ts',350,511,'normalizeSessionSnapshot(s)','标识/时间/cwd规范化后可比；Windows嵌套JSON cwd要给escaped alias；plural comparison会处理格式元数据，不能作原始replay基线。',ss+'/tests/normalize.spec.ts','D B1; D B2')
+add(ss+'/src/identity.ts',1,115,'redactSessionSnapshotIds','typed映射区分Session、Message等身份并保留关联；本课随后用identityMode preserve避免旧式UUID合并。',ss+'/tests/identity.spec.ts','D B1')
+add(ss+'/src/workspace.ts',1,145,'captureWorkspaceSnapshot','独立遍历实际workspace与expected树，比文件集合、内容等；Agent文本不是外部事实。',ss+'/tests/workspace.spec.ts','D B1; D D4')
+add(ss+'/src/normalize.ts',549,None,'scrubSystemPrompts / scrubToolSchemas','压缩主Snapshot可另存请求头/系统提示/工具Schema，不能把剥离大块解释为无需比较它们。',ss+'/tests/suite.spec.ts','D B1')
+add('packages/core/agent-loop/src/index.ts',291,415,'AgentLoop Config / creation','真实Loop通过Factory创建Agent并依赖所需服务；静态agent配置与SDK动态创建分开。','packages/core/agent-loop/tests/model.spec.ts','D A1; D C1')
+add('packages/core/agent-loop/src/agent.ts',327,486,'Turn / Step / request boundaries','Turn与Step开闭不同，运行进程exit0也可能Turn error；测试检查终态及工具事实。','packages/core/agent-loop/tests/loop.spec.ts','D D3; D D5')
+add('packages/core/agent-loop/src/agent.ts',656,744,'buildRequest','模型输入由Session派生后冻结；应比较真实下一请求包含工具结果，不用作者自写摘要作唯一证据。','packages/core/agent-loop/tests/tool-calls.spec.ts','D B1; D X')
+add('packages/core/session/src/index.ts',611,705,'Session.fromRestore','恢复验证当前header/事件和精确继承前缀，产生新Session；不重新执行工具或复活旧资源。','packages/session/session-format-catalog/src/current.ts','D X; D C2')
+add('packages/core/session/src/index.ts',990,1025,'deriveMessages','Surface派生模型可见消息，不能把所有审计事件直接拼成输入；X核重建前缀等于真实请求。','packages/session/session-format-catalog/tests/developer-history.spec.ts','D X')
+add('packages/session/session-persistence-jsonl/src/index.ts',1310,1470,'JSONL handles','真实文件读写、flush、handle close分别有确认点；本轮正常关闭/新PID不证明断电或所有Backend。','packages/session/session-persistence-jsonl/tests/fork-delivery.spec.ts','D A1; D C2; D D6')
+add('packages/sdk/protocol/src/transport.ts',65,160,'JsonRpcLineTransport','换行JSON-RPC承载请求/响应/通知，flush和关闭不是Agent任务完成。','packages/sdk/protocol/tests/transport.spec.ts','D C1; C C3')
+add('packages/sdk/server/src/index.ts',25,104,'apply / runtime exit hook','正式插件支持运行时exit钩子；默认process.exit。shutdown响应后flush、root dispose再exit；钩子通过不覆盖默认分支。','packages/sdk/server/tests/shutdown.spec.ts','D C1; D D1; default exit FAILED_NATIVE')
+add('packages/sdk/client/src/client.ts',1,None,'HarnessClient process owner','客户端持有stdio子进程，close与异常退出需观察进程事实；不能只看shutdown响应。','packages/sdk/client/tests/sdk-client.spec.ts','D C1; D C2; C C3')
+add('packages/test-support/client-runtime/src/remote.ts',1,103,'TestRemote','官方TestRemote支持订阅与emit/disposer，拒绝真实mount；它是测试double，不能证明Host权限和真实连接。','packages/test-support/client-runtime/tests/remote.client.spec.ts','C P2')
+add('packages/test-support/client-runtime/src/index.ts',1,145,'SlotTestRuntime','完整Client Runtime还需jsdom、Slots及会话等；本轮只执行TestRemote子集。','packages/test-support/client-runtime/tests/assembly-test-client.client.spec.ts')
+add('packages/test-support/remote-mock/src/index.ts',1,None,'RemoteMock exports','Remote Mock是受控client carrier工具；本轮未执行，不推导真实Host授权通过。','packages/test-support/remote-mock/tests/rpc.client.spec.ts')
+add('apps/web/tests/scaffold.ts',1,140,'browser scaffold','固定版本有真实浏览器测试脚手架；产品构建及Host fixture缺失时不得拿教材Chrome截图代替。','apps/web/tests/smoke-real.e2e.ts')
+add('scripts/run-web-snapshots.ts',1,None,'browser CI owners','串行HMR/client-plugin owners后再有界池，DSH_WEB_SNAPSHOT_WORKERS须正整数；不是所有文件无条件并行。','vitest.web.config.ts')
+add('packages/client/ui-trajectory/src/index.ts',1,160,'SessionToolResults','实时成功raw Tool Result按精确Session对象保存有界映射，随后映射seq并随释放清理；不是新的权威历史库。','packages/client/ui-trajectory/tests/tool-results.host.spec.ts')
+add('packages/llm/llm/src/types.ts',182,230,'TokenUsage','usage字段有可选项；缺失值不等于0，Mock usage不等真实计费。','packages/llm/token-meter/src/usage-projection.ts')
+add('packages/telemetry/otel/src/index.ts',1,None,'OTel','OTel仅暴露基础发送能力，挂服务本身不等于采集所有Session；具体消费者负责创建上报通道和生命周期。','packages/telemetry/otel/tests/event-log.spec.ts')
+add('docs/subsystems/otel.zh.md',1,None,'OTel architecture','本地记录与上传是不同动作；通道、身份、脱敏及发送时机由业务组件配置，本课不上传。','packages/telemetry/otel/tests/session-log.spec.ts')
+add('packages/session/session-telemetry/src/coordinator.ts',179,255,'redact / contained capture','没有脱敏规则时透传；规则抛错受隔离，不应假设自动安全脱敏。','packages/session/session-telemetry/tests/redact.spec.ts')
+add('packages/feedback/message-feedback/src/index.ts',1,140,'message feedback','反馈是显式业务动作，有自身提交/上传路径，不由Session日志存在推定用户同意上传。','packages/feedback/message-feedback/tests/message-feedback.spec.ts')
+add('packages/llm/llm-retry/src/index.ts',120,257,'recover / Retry-After','策略来自Provider；normal遇Provider延迟超过本地上限可委派，不强行重试；429 wire1秒与1毫秒配置不同。','packages/llm/llm-retry/src/index.ts','D D7; D D1')
+add('benchmarks/AGENTS.md',1,None,'built benchmark contract','基准用构建产物、固定输入、独立worker及原始测量；功能测试耗时不等真实吞吐、缓存收益或费用。','scripts/run-bench-suite.ts')
+assert len(rows)==50,len(rows)
+(R/'evidence/source-assertions.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+text='# H24 固定源码断言（50项）\n\n固定 '+L['commit']+'。每行静态结论来自实现分支；官方测试仅定位，未执行官方全套。localTest 仅覆盖所列子分支，关键词/hash存在性不证明行为。X复用D1不增加计数；默认exit失败独列。\n\n'
+for r in rows:
+ url=f"https://github.com/deepseek-ai/deepseek-harness/blob/{r['commit']}/{r['file']}#L{r['start']}-L{r['end']}"
+ text+=f"## {r['claim']} · {r['symbol']}\n\n[{r['file']}:{r['start']}–{r['end']}]({url})\n\n{r['conclusion']}\n\n官方对照：`{r['officialTest']['file']}`（定位/静态选读，NOT_RUN）；本轮 `{r['localTest']}`；证据级 `{r['grade']}`。\n\n"
+(R/'source-checklist.md').write_text(text.rstrip()+'\n',encoding='utf-8');print('50 fixed-source conclusions with explicit dynamic subbranch limits')

@@ -1,0 +1,858 @@
+{
+  "trace-C1-failure.json": {
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n3221226505 !== 0\n",
+    "world": {
+      "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC",
+      "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\workspace",
+      "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture",
+      "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture\\cordis.yml",
+      "env": {
+        "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home\\profiles\\h24-fixture",
+        "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC",
+        "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-728LmC\\home"
+      }
+    },
+    "wire": {
+      "pid": 25240,
+      "exit": 3221226505,
+      "signal": null,
+      "stdin": [
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_9618759e8df94b52b7a93cbf77973cb3\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-lab-5wJvMs\\\\world-728LmC\\\\workspace\",\"provider\":\"fixture\",\"model\":\"fixture\"}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_bc1b304034f14415ac9548a12cd84c9b\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"sdk-report\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}]}}\n",
+        "{\"jsonrpc\":\"2.0\",\"id\":\"req_d67865f905284a869e969da3e25144bb\",\"method\":\"shutdown\",\"params\":{}}\n"
+      ],
+      "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_9618759e8df94b52b7a93cbf77973cb3\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793850110007,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"0f4464e4-6d5f-480b-be76-c70ae609b82b\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-report\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793850110008,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793850110008,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_bc1b304034f14415ac9548a12cd84c9b\",\"result\":{\"messageId\":\"0f4464e4-6d5f-480b-be76-c70ae609b82b\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793850110010,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793850110012,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"5406ba03-8d58-47c1-bf24-68657f6c578f\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793850110012,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"0f4464e4-6d5f-480b-be76-c70ae609b82b\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793850110012,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-lab-5wJvMs\\\\\\\\world-728LmC\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-lab-5wJvMs\\\\\\\\world-728LmC\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"623bbd13-b208-45d3-b3bd-2b17d533c481\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793850110012,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793850110013,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"assistant/attempt\",\"seq\":9,\"time\":1793850110039,\"data\":{\"turn\":1,\"step\":1,\"stream\":[{\"type\":\"chunk\",\"time\":1793850110039,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"error\",\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"llm/retry\",\"seq\":10,\"time\":1793850110040,\"data\":{\"retryId\":\"e62b47f1-beb6-4dcc-95b5-28f20d22576f\",\"turn\":1,\"step\":1,\"provider\":\"fixture\",\"mode\":\"normal\",\"policyKey\":\"[\\\"normal\\\",1,[\\\"EMPTY_RESPONSE\\\",\\\"RATE_LIMIT\\\",\\\"SERVER\\\",\\\"TIMEOUT\\\",\\\"TRANSPORT\\\"],1,1000,0]\",\"retry\":1,\"maxRetries\":1,\"delayMs\":1000,\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"llm/retry-started\",\"seq\":11,\"time\":1793850111045,\"data\":{\"retryId\":\"e62b47f1-beb6-4dcc-95b5-28f20d22576f\",\"turn\":1,\"step\":1,\"retry\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"assistant/message\",\"seq\":12,\"time\":1793850111053,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"tool-call\",\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"fixture\",\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"tool-call\"}]}},\"id\":\"05d7fd4d-cfcf-489d-9e06-66008887d23a\"},\"usage\":{\"inputTokens\":3,\"outputTokens\":2,\"totalTokens\":5},\"stream\":[{\"type\":\"chunk\",\"time\":1793850111051,\"chunk\":{\"type\":\"block-start\",\"index\":0,\"blockType\":\"tool-call\"}},{\"type\":\"tool-call-chunks\",\"time0\":1793850111051,\"index\":0,\"dt\":[],\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"args\":[\"\"]},{\"type\":\"tool-call-chunks\",\"time0\":1793850111051,\"index\":0,\"dt\":[0],\"id\":\"mock-call-1\",\"args\":[\"{\\\"text\\\":\\\"mo\",\"de=safe\\\\n\\\"}\"]},{\"type\":\"chunk\",\"time\":1793850111051,\"chunk\":{\"type\":\"block-end\",\"index\":0,\"block\":{\"type\":\"tool-call\",\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}}},{\"type\":\"chunk\",\"time\":1793850111052,\"chunk\":{\"type\":\"usage\",\"usage\":{\"inputTokens\":3,\"outputTokens\":2,\"totalTokens\":5}}},{\"type\":\"chunk\",\"time\":1793850111052,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"tool-calls\"},\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"tool-call\"}]}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"tool/call\",\"seq\":13,\"time\":1793850111053,\"data\":{\"turn\":1,\"step\":1,\"callId\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"tool/result\",\"seq\":14,\"time\":1793850111057,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"tool\",\"source\":{\"kind\":\"tool\",\"callId\":\"mock-call-1\"},\"toolCallId\":\"mock-call-1\",\"content\":[{\"type\":\"text\",\"text\":\"{\\\"written\\\":true}\"}],\"isError\":false,\"id\":\"fce2d3e7-36cc-4d28-89cb-37dd72adef91\"}},\"sourceEventSeqs\":[13],\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"step/end\",\"seq\":15,\"time\":1793850111057,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"step/start\",\"seq\":16,\"time\":1793850111058,\"data\":{\"turn\":1,\"step\":2}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"assistant/message\",\"seq\":17,\"time\":1793850111062,\"data\":{\"turn\":1,\"step\":2,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"HTTP fixture completed.\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"fixture\",\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"text\"}]}},\"id\":\"8d73f0b8-22da-4fe3-a859-59928812251c\"},\"usage\":{\"inputTokens\":3,\"outputTokens\":23,\"totalTokens\":26},\"stream\":[{\"type\":\"chunk\",\"time\":1793850111061,\"chunk\":{\"type\":\"block-start\",\"index\":0,\"blockType\":\"text\"}},{\"type\":\"text-chunks\",\"time0\":1793850111061,\"index\":0,\"dt\":[1,0],\"texts\":[\"HTTP fix\",\"ture com\",\"pleted.\"]},{\"type\":\"chunk\",\"time\":1793850111062,\"chunk\":{\"type\":\"block-end\",\"index\":0,\"block\":{\"type\":\"text\",\"text\":\"HTTP fixture completed.\"}}},{\"type\":\"chunk\",\"time\":1793850111062,\"chunk\":{\"type\":\"usage\",\"usage\":{\"inputTokens\":3,\"outputTokens\":23,\"totalTokens\":26}}},{\"type\":\"chunk\",\"time\":1793850111062,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"},\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"text\"}]}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"step/end\",\"seq\":18,\"time\":1793850111062,\"data\":{\"turn\":1,\"step\":2}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"sdk-report\",\"event\":{\"type\":\"turn/end\",\"seq\":19,\"time\":1793850111063,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"sdk-report\",\"status\":\"idle\"}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_d67865f905284a869e969da3e25144bb\",\"result\":{}}\n",
+      "stderr": "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\\win\\async.c, line 94\r\n",
+      "frames": [
+        {
+          "jsonrpc": "2.0",
+          "id": "req_9618759e8df94b52b7a93cbf77973cb3",
+          "result": {
+            "serverInfo": {
+              "name": "deepseek-harness-sdk-runtime",
+              "version": "0.0.1"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793850110007,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Set fixture config to safe mode."
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "0f4464e4-6d5f-480b-be76-c70ae609b82b"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-report",
+            "status": "running"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793850110008,
+              "data": {
+                "turn": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793850110008,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_bc1b304034f14415ac9548a12cd84c9b",
+          "result": {
+            "messageId": "0f4464e4-6d5f-480b-be76-c70ae609b82b"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793850110010,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793850110012,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Use fictional fixture only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "5406ba03-8d58-47c1-bf24-68657f6c578f"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793850110012,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Set fixture config to safe mode."
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "0f4464e4-6d5f-480b-be76-c70ae609b82b"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793850110012,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-lab-5wJvMs\\\\world-728LmC\\\\workspace\"."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "working-directory:current",
+                      "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-lab-5wJvMs\\\\world-728LmC\\\\workspace\"."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "623bbd13-b208-45d3-b3bd-2b17d533c481"
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793850110012,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "maxTokens": 128,
+                    "reasoningEffort": "off"
+                  },
+                  "adapterDefaults": {
+                    "reasoningEffort": true,
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "write_fixture",
+                      "description": "Write one new fixture config file.",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "enum": [
+                              "mode=safe\n"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793850110013,
+              "data": {
+                "provider": "fixture",
+                "model": "fixture",
+                "contextWindow": 1000000
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "assistant/attempt",
+              "seq": 9,
+              "time": 1793850110039,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793850110039,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "error",
+                        "failure": {
+                          "message": "mock rate limit",
+                          "code": "RATE_LIMIT",
+                          "status": 429,
+                          "providerRetryAfterMs": 1000
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "llm/retry",
+              "seq": 10,
+              "time": 1793850110040,
+              "data": {
+                "retryId": "e62b47f1-beb6-4dcc-95b5-28f20d22576f",
+                "turn": 1,
+                "step": 1,
+                "provider": "fixture",
+                "mode": "normal",
+                "policyKey": "[\"normal\",1,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],1,1000,0]",
+                "retry": 1,
+                "maxRetries": 1,
+                "delayMs": 1000,
+                "failure": {
+                  "message": "mock rate limit",
+                  "code": "RATE_LIMIT",
+                  "status": 429,
+                  "providerRetryAfterMs": 1000
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "llm/retry-started",
+              "seq": 11,
+              "time": 1793850111045,
+              "data": {
+                "retryId": "e62b47f1-beb6-4dcc-95b5-28f20d22576f",
+                "turn": 1,
+                "step": 1,
+                "retry": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "assistant/message",
+              "seq": 12,
+              "time": 1793850111053,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "tool-call",
+                      "id": "mock-call-1",
+                      "name": "write_fixture",
+                      "arguments": "{\"text\":\"mode=safe\\n\"}"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "replayState": {
+                      "response": {
+                        "kind": "deepseek-messages",
+                        "version": 1,
+                        "model": "fixture"
+                      },
+                      "blocks": [
+                        {
+                          "type": "tool-call"
+                        }
+                      ]
+                    }
+                  },
+                  "id": "05d7fd4d-cfcf-489d-9e06-66008887d23a"
+                },
+                "usage": {
+                  "inputTokens": 3,
+                  "outputTokens": 2,
+                  "totalTokens": 5
+                },
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793850111051,
+                    "chunk": {
+                      "type": "block-start",
+                      "index": 0,
+                      "blockType": "tool-call"
+                    }
+                  },
+                  {
+                    "type": "tool-call-chunks",
+                    "time0": 1793850111051,
+                    "index": 0,
+                    "dt": [],
+                    "id": "mock-call-1",
+                    "name": "write_fixture",
+                    "args": [
+                      ""
+                    ]
+                  },
+                  {
+                    "type": "tool-call-chunks",
+                    "time0": 1793850111051,
+                    "index": 0,
+                    "dt": [
+                      0
+                    ],
+                    "id": "mock-call-1",
+                    "args": [
+                      "{\"text\":\"mo",
+                      "de=safe\\n\"}"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111051,
+                    "chunk": {
+                      "type": "block-end",
+                      "index": 0,
+                      "block": {
+                        "type": "tool-call",
+                        "id": "mock-call-1",
+                        "name": "write_fixture",
+                        "arguments": "{\"text\":\"mode=safe\\n\"}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111052,
+                    "chunk": {
+                      "type": "usage",
+                      "usage": {
+                        "inputTokens": 3,
+                        "outputTokens": 2,
+                        "totalTokens": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111052,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "tool-calls"
+                      },
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "tool-call"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "tool/call",
+              "seq": 13,
+              "time": 1793850111053,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "callId": "mock-call-1",
+                "name": "write_fixture",
+                "arguments": "{\"text\":\"mode=safe\\n\"}"
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "tool/result",
+              "seq": 14,
+              "time": 1793850111057,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "tool",
+                  "source": {
+                    "kind": "tool",
+                    "callId": "mock-call-1"
+                  },
+                  "toolCallId": "mock-call-1",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\"written\":true}"
+                    }
+                  ],
+                  "isError": false,
+                  "id": "fce2d3e7-36cc-4d28-89cb-37dd72adef91"
+                }
+              },
+              "sourceEventSeqs": [
+                13
+              ],
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "step/end",
+              "seq": 15,
+              "time": 1793850111057,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "step/start",
+              "seq": 16,
+              "time": 1793850111058,
+              "data": {
+                "turn": 1,
+                "step": 2
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "assistant/message",
+              "seq": 17,
+              "time": 1793850111062,
+              "data": {
+                "turn": 1,
+                "step": 2,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP fixture completed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "replayState": {
+                      "response": {
+                        "kind": "deepseek-messages",
+                        "version": 1,
+                        "model": "fixture"
+                      },
+                      "blocks": [
+                        {
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "id": "8d73f0b8-22da-4fe3-a859-59928812251c"
+                },
+                "usage": {
+                  "inputTokens": 3,
+                  "outputTokens": 23,
+                  "totalTokens": 26
+                },
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793850111061,
+                    "chunk": {
+                      "type": "block-start",
+                      "index": 0,
+                      "blockType": "text"
+                    }
+                  },
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793850111061,
+                    "index": 0,
+                    "dt": [
+                      1,
+                      0
+                    ],
+                    "texts": [
+                      "HTTP fix",
+                      "ture com",
+                      "pleted."
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111062,
+                    "chunk": {
+                      "type": "block-end",
+                      "index": 0,
+                      "block": {
+                        "type": "text",
+                        "text": "HTTP fixture completed."
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111062,
+                    "chunk": {
+                      "type": "usage",
+                      "usage": {
+                        "inputTokens": 3,
+                        "outputTokens": 23,
+                        "totalTokens": 26
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793850111062,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      },
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "step/end",
+              "seq": 18,
+              "time": 1793850111062,
+              "data": {
+                "turn": 1,
+                "step": 2
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.event",
+          "params": {
+            "sessionId": "sdk-report",
+            "event": {
+              "type": "turn/end",
+              "seq": 19,
+              "time": 1793850111063,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "session.status",
+          "params": {
+            "sessionId": "sdk-report",
+            "status": "idle"
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "id": "req_d67865f905284a869e969da3e25144bb",
+          "result": {}
+        }
+      ]
+    }
+  },
+  "trace-D7.json": {
+    "world": {
+      "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE",
+      "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\workspace",
+      "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture",
+      "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture\\cordis.yml",
+      "env": {
+        "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture",
+        "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE",
+        "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home"
+      }
+    },
+    "stdout": "{\"type\":\"result\",\"sessionId\":\"h24-root\",\"output\":\"\"}\n",
+    "stderr": "",
+    "log": "{\"type\":\"session\",\"version\":4,\"id\":\"h24-root\",\"createdAt\":1793850109282,\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-lab-5wJvMs\\\\world-m0unUE\\\\workspace\",\"isSeeded\":false,\"delegationDepth\":0}\n{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793850109286,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"ff0c8287-92fe-43f6-be4b-adc189311ac1\"}]}}\n{\"type\":\"turn/start\",\"seq\":1,\"time\":1793850109287,\"data\":{\"turn\":1}}\n{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793850109287,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}\n{\"type\":\"step/start\",\"seq\":3,\"time\":1793850109289,\"data\":{\"turn\":1,\"step\":1}}\n{\"type\":\"system/message\",\"seq\":4,\"time\":1793850109291,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"311f5788-7d6d-41d1-99e0-f6bc55d4e9de\"}},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":5,\"time\":1793850109291,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"ff0c8287-92fe-43f6-be4b-adc189311ac1\"},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":6,\"time\":1793850109291,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-lab-5wJvMs\\\\\\\\world-m0unUE\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-lab-5wJvMs\\\\\\\\world-m0unUE\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"5e1280c1-3e26-4c44-a949-51d4a99e0db0\"},\"surfaceOp\":\"append\"}\n{\"type\":\"request/header\",\"seq\":7,\"time\":1793850109291,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}\n{\"type\":\"request/context\",\"seq\":8,\"time\":1793850109291,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}\n{\"type\":\"assistant/attempt\",\"seq\":9,\"time\":1793850109320,\"data\":{\"turn\":1,\"step\":1,\"stream\":[{\"type\":\"chunk\",\"time\":1793850109319,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"error\",\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}]}}\n{\"type\":\"step/end\",\"seq\":10,\"time\":1793850109321,\"data\":{\"turn\":1,\"step\":1}}\n{\"type\":\"turn/end\",\"seq\":11,\"time\":1793850109321,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"error\",\"error\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}\n",
+    "requests": [
+      {
+        "attempt": 1,
+        "scriptBehavior": "rate_limit",
+        "behavior": "rate_limit",
+        "path": "/v1/messages",
+        "headers": {
+          "host": "127.0.0.1:51391",
+          "connection": "close",
+          "user-agent": "deepseek-harness/0.2.2-alpha.2 (+https://github.com/deepseek-ai/deepseek-harness)",
+          "content-type": "application/json",
+          "accept": "text/event-stream",
+          "x-api-key": "h24-local-only",
+          "anthropic-version": "2023-06-01",
+          "x-deepseek-harness-user-id": "h24-fictional-user",
+          "x-deepseek-harness-session-id": "h24-root",
+          "accept-language": "*",
+          "sec-fetch-mode": "cors",
+          "accept-encoding": "gzip, deflate",
+          "content-length": "670"
+        },
+        "body": {
+          "model": "fixture",
+          "stream": true,
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Set fixture config to safe mode."
+                },
+                {
+                  "type": "text",
+                  "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-lab-5wJvMs\\\\world-m0unUE\\\\workspace\"."
+                }
+              ]
+            }
+          ],
+          "max_tokens": 128,
+          "thinking": {
+            "type": "disabled"
+          },
+          "system": "Use fictional fixture only.",
+          "tools": [
+            {
+              "name": "write_fixture",
+              "description": "Write one new fixture config file.",
+              "input_schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "enum": [
+                      "mode=safe\n"
+                    ]
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          ]
+        },
+        "chunksSent": 0,
+        "outcome": "completed"
+      }
+    ],
+    "expected": "wire Retry-After rounds to1000ms > explicit1ms policy ceiling; normal policy delegates instead of retrying"
+  },
+  "trace-last-smoke.json": {
+    "world": {
+      "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE",
+      "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\workspace",
+      "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture",
+      "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture\\cordis.yml",
+      "env": {
+        "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home\\profiles\\h24-fixture",
+        "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE",
+        "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-lab-5wJvMs\\world-m0unUE\\home"
+      }
+    },
+    "stdout": "{\"type\":\"result\",\"sessionId\":\"h24-root\",\"output\":\"\"}\n",
+    "stderr": ""
+  }
+}

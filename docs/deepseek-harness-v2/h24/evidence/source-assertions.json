@@ -1,0 +1,852 @@
+[
+  {
+    "claim": "S01",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "docs/testing.zh.md",
+    "start": 7,
+    "end": 18,
+    "symbol": "官方测试分类",
+    "controlBranch": "官方分类含单元、覆盖率、API e2e、expected、bench、snapshot、Web；A–E是课程证据级，不是官方同名层级。",
+    "conclusion": "官方分类含单元、覆盖率、API e2e、expected、bench、snapshot、Web；A–E是课程证据级，不是官方同名层级。",
+    "officialTest": {
+      "file": "vitest.config.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S02",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "docs/testing.zh.md",
+    "start": 19,
+    "end": 55,
+    "symbol": "确定性与清理策略",
+    "controlBranch": "快照需比较外部workspace，测试资源由测试拥有；Record/Refresh改变基线，平台skip不能计PASS。",
+    "conclusion": "快照需比较外部workspace，测试资源由测试拥有；Record/Refresh改变基线，平台skip不能计PASS。",
+    "officialTest": {
+      "file": "package.json",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S03",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "vitest.config.ts",
+    "start": 1,
+    "end": 125,
+    "symbol": "source aliases / platform selection",
+    "controlBranch": "Vitest源码路径映射及平台选择不能证明Node正式exports/lib启动。",
+    "conclusion": "Vitest源码路径映射及平台选择不能证明Node正式exports/lib启动。",
+    "officialTest": {
+      "file": "package.json",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C A4",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S04",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "package.json",
+    "start": 19,
+    "end": 84,
+    "symbol": "build / test scripts",
+    "controlBranch": "真实命令为build、build:lib、test:snapshot和test:web:built等；本轮未执行官方全量构建或产品Web。",
+    "conclusion": "真实命令为build、build:lib、test:snapshot和test:web:built等；本轮未执行官方全量构建或产品Web。",
+    "officialTest": {
+      "file": "scripts/run-web-snapshots.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S05",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/loader-smoke/src/index.ts",
+    "start": 32,
+    "end": 132,
+    "symbol": "resolveExampleMode / resolveExampleLaunch",
+    "controlBranch": "模式严格为src/lib；src带TS加载条件，lib为构建后普通Node；非法模式拒绝。",
+    "conclusion": "模式严格为src/lib；src带TS加载条件，lib为构建后普通Node；非法模式拒绝。",
+    "officialTest": {
+      "file": "packages/test-support/loader-smoke/tests/example-launch.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C A4",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S06",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/loader-smoke/src/index.ts",
+    "start": 198,
+    "end": 259,
+    "symbol": "runLoaderSmoke",
+    "controlBranch": "传cwd时目录归调用方；未传时helper会自动递归清理。inspect在退出码检查之后，失败证据须外层保存。",
+    "conclusion": "传cwd时目录归调用方；未传时helper会自动递归清理。inspect在退出码检查之后，失败证据须外层保存。",
+    "officialTest": {
+      "file": "packages/test-support/loader-smoke/tests/loader-smoke.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1; C A2",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S07",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/loader-smoke/src/agent-turn.ts",
+    "start": 41,
+    "end": 116,
+    "symbol": "onlyRootAgent / runFixtureTurn",
+    "controlBranch": "等恰好一个配置根Agent发布，先监听后投递，用收据关联输入并等idle及flush；不是只等一段文本。",
+    "conclusion": "等恰好一个配置根Agent发布，先监听后投递，用收据关联输入并等idle及flush；不是只等一段文本。",
+    "officialTest": {
+      "file": "packages/test-support/loader-smoke/tests/agent-turn.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S08",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/loader-smoke/tests/fixtures/production-profile.ts",
+    "start": 1,
+    "end": 115,
+    "symbol": "production Profile fixture",
+    "controlBranch": "官方fixture组合发行Profile和包安装；作者自有核心YAML没有执行该完整发行入口。",
+    "conclusion": "官方fixture组合发行Profile和包安装；作者自有核心YAML没有执行该完整发行入口。",
+    "officialTest": {
+      "file": "packages/test-support/loader-smoke/tests/loader-smoke.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S09",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/boot/app-boot/src/profile.ts",
+    "start": 678,
+    "end": 762,
+    "symbol": "loadProfileDirectory / composeEntries",
+    "controlBranch": "真实manifest和Patch组成Loader条目；作者Profile bundles为空但核心服务全部走YAML加载。",
+    "conclusion": "真实manifest和Patch组成Loader条目；作者Profile bundles为空但核心服务全部走YAML加载。",
+    "officialTest": {
+      "file": "apps/cli/src/profile-boot.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1; C A2",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S10",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/boot/app-boot/src/index.ts",
+    "start": 1118,
+    "end": 1205,
+    "symbol": "startup audit",
+    "controlBranch": "settled后只对已出现且启用的特定必需ID和bootstrap include严审；其余FAILED/PENDING可警告，所以作者额外核必需行ACTIVE。",
+    "conclusion": "settled后只对已出现且启用的特定必需ID和bootstrap include严审；其余FAILED/PENDING可警告，所以作者额外核必需行ACTIVE。",
+    "officialTest": {
+      "file": "packages/boot/app-boot/src/index.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C A2",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S11",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/bundle/base/cordis.patch.yml",
+    "start": 1,
+    "end": 531,
+    "symbol": "base composition",
+    "controlBranch": "base是正式共享配置树；作者core Profile不能冒充执行base全部插件。",
+    "conclusion": "base是正式共享配置树；作者core Profile不能冒充执行base全部插件。",
+    "officialTest": {
+      "file": "packages/bundle/base/package.json",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S12",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/bundle/headless/cordis.patch.yml",
+    "start": 1,
+    "end": 46,
+    "symbol": "headless composition",
+    "controlBranch": "一次性入口对base施加差异；运行作者driver不等于运行已交付headless。",
+    "conclusion": "一次性入口对base施加差异；运行作者driver不等于运行已交付headless。",
+    "officialTest": {
+      "file": "packages/bundle/headless/package.json",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S13",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/bundle/sdk-minimal/cordis.patch.yml",
+    "start": 1,
+    "end": 179,
+    "symbol": "sdk-minimal composition",
+    "controlBranch": "minimal是独立服务组合；只挂SDK server和核心服务不等于该完整发行树。",
+    "conclusion": "minimal是独立服务组合；只挂SDK server和核心服务不等于该完整发行树。",
+    "officialTest": {
+      "file": "packages/bundle/sdk-minimal/package.json",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S14",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/agent-loop-testkit/src/index.ts",
+    "start": 1,
+    "end": 106,
+    "symbol": "mountAgentLoopTestDependencies",
+    "controlBranch": "testkit挂官方循环依赖，不替调用方安装Loop与脚本模型；用于P1真实工具测试依赖。",
+    "conclusion": "testkit挂官方循环依赖，不替调用方安装Loop与脚本模型；用于P1真实工具测试依赖。",
+    "officialTest": {
+      "file": "packages/test-support/agent-loop-testkit/tests/agent-loop-testkit.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C P1",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S15",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/tool-testkit/src/index.ts",
+    "start": 1,
+    "end": 92,
+    "symbol": "executeModelToolFixture",
+    "controlBranch": "真实Tool/Native管线与受控工具body分开；拒绝测试需核body未进入。",
+    "conclusion": "真实Tool/Native管线与受控工具body分开；拒绝测试需核body未进入。",
+    "officialTest": {
+      "file": "packages/test-support/tool-testkit/tests/model-call.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C P1",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S16",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/tools/src/schema.ts",
+    "start": 1,
+    "end": 171,
+    "symbol": "author schema DSL",
+    "controlBranch": "required写在属性声明上；对象additionalProperties等由作者DSL转换，不能随意塞Zod或任意JSON Schema。",
+    "conclusion": "required写在属性声明上；对象additionalProperties等由作者DSL转换，不能随意塞Zod或任意JSON Schema。",
+    "officialTest": {
+      "file": "packages/core/tools/tests/schema.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C P1",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S17",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/tools/tests/properties.spec.ts",
+    "start": 1,
+    "end": 100,
+    "symbol": "seeded properties",
+    "controlBranch": "属性测试对不变量取有种子样本，非穷尽证明；40样本不是40独立行为场景。",
+    "conclusion": "属性测试对不变量取有种子样本，非穷尽证明；40样本不是40独立行为场景。",
+    "officialTest": {
+      "file": "packages/core/tools/tests/properties.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C P1",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S18",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent-loop/tests/mock-adapter.ts",
+    "start": 1,
+    "end": 139,
+    "symbol": "MockAdapter / hang / toolCallResponse",
+    "controlBranch": "脚本化文本、工具和hang提供受控模型边界；不测真实模型推理质量。",
+    "conclusion": "脚本化文本、工具和hang提供受控模型边界；不测真实模型推理质量。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/loop.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1; D D5",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S19",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/llm-replay/src/index.ts",
+    "start": 214,
+    "end": 342,
+    "symbol": "parseSessionLog / comparison encoding",
+    "controlBranch": "通过固定catalog恢复并校验事件；comparison编码与可执行回放fixture不同，不应覆盖原格式基线。",
+    "conclusion": "通过固定catalog恢复并校验事件；comparison编码与可执行回放fixture不同，不应覆盖原格式基线。",
+    "officialTest": {
+      "file": "packages/test-support/llm-replay/tests/llm-replay.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1; D X",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S20",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/llm-replay/src/index.ts",
+    "start": 467,
+    "end": 623,
+    "symbol": "deriveReplayScript",
+    "controlBranch": "从已记录请求和Assistant事实派生脚本；chunk前throw/hang等需要override，不凭结算日志推断完整时序。",
+    "conclusion": "从已记录请求和Assistant事实派生脚本；chunk前throw/hang等需要override，不凭结算日志推断完整时序。",
+    "officialTest": {
+      "file": "packages/test-support/llm-replay/tests/llm-replay.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S21",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/llm-replay/src/index.ts",
+    "start": 1037,
+    "end": 1213,
+    "symbol": "installLlmReplay",
+    "controlBranch": "按Session分配脚本并要求consume；多子级首次请求顺序是回放限制，不能声称随机并行轨迹必定确定。",
+    "conclusion": "按Session分配脚本并要求consume；多子级首次请求顺序是回放限制，不能声称随机并行轨迹必定确定。",
+    "officialTest": {
+      "file": "packages/test-support/llm-replay/tests/llm-replay.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S22",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/llm-mock-server/src/index.ts",
+    "start": 117,
+    "end": 178,
+    "symbol": "MockLlmServerOptions",
+    "controlBranch": "支持Messages HTTP/SSE脚本、随机种子和故障选项；不是任意Chat Completions服务器。",
+    "conclusion": "支持Messages HTTP/SSE脚本、随机种子和故障选项；不是任意Chat Completions服务器。",
+    "officialTest": {
+      "file": "packages/test-support/llm-mock-server/tests/server.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D D1; D D2; D D3",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S23",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/llm-mock-server/src/index.ts",
+    "start": 643,
+    "end": 755,
+    "symbol": "startMockLlmServer",
+    "controlBranch": "动态端口、有效请求序列记录；close关闭连接，测试还需等待调用方和子进程释放。",
+    "conclusion": "动态端口、有效请求序列记录；close关闭连接，测试还需等待调用方和子进程释放。",
+    "officialTest": {
+      "file": "packages/test-support/llm-mock-server/tests/server.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D D1; D D6",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S24",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/session-snapshot/src/manifest.ts",
+    "start": 139,
+    "end": 218,
+    "symbol": "writesCurrentSessionFixtures / parseSnapshotManifest",
+    "controlBranch": "replay不写current fixture，record可写；未知字段拒绝。单独测parser不等于完整Snapshot Suite。",
+    "conclusion": "replay不写current fixture，record可写；未知字段拒绝。单独测parser不等于完整Snapshot Suite。",
+    "officialTest": {
+      "file": "packages/test-support/session-snapshot/tests/manifest.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C B4",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S25",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/session-snapshot/src/normalize.ts",
+    "start": 350,
+    "end": 511,
+    "symbol": "normalizeSessionSnapshot(s)",
+    "controlBranch": "标识/时间/cwd规范化后可比；Windows嵌套JSON cwd要给escaped alias；plural comparison会处理格式元数据，不能作原始replay基线。",
+    "conclusion": "标识/时间/cwd规范化后可比；Windows嵌套JSON cwd要给escaped alias；plural comparison会处理格式元数据，不能作原始replay基线。",
+    "officialTest": {
+      "file": "packages/test-support/session-snapshot/tests/normalize.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1; D B2",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S26",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/session-snapshot/src/identity.ts",
+    "start": 1,
+    "end": 115,
+    "symbol": "redactSessionSnapshotIds",
+    "controlBranch": "typed映射区分Session、Message等身份并保留关联；本课随后用identityMode preserve避免旧式UUID合并。",
+    "conclusion": "typed映射区分Session、Message等身份并保留关联；本课随后用identityMode preserve避免旧式UUID合并。",
+    "officialTest": {
+      "file": "packages/test-support/session-snapshot/tests/identity.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S27",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/session-snapshot/src/workspace.ts",
+    "start": 1,
+    "end": 113,
+    "symbol": "captureWorkspaceSnapshot",
+    "controlBranch": "独立遍历实际workspace与expected树，比文件集合、内容等；Agent文本不是外部事实。",
+    "conclusion": "独立遍历实际workspace与expected树，比文件集合、内容等；Agent文本不是外部事实。",
+    "officialTest": {
+      "file": "packages/test-support/session-snapshot/tests/workspace.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1; D D4",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S28",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/session-snapshot/src/normalize.ts",
+    "start": 549,
+    "end": 665,
+    "symbol": "scrubSystemPrompts / scrubToolSchemas",
+    "controlBranch": "压缩主Snapshot可另存请求头/系统提示/工具Schema，不能把剥离大块解释为无需比较它们。",
+    "conclusion": "压缩主Snapshot可另存请求头/系统提示/工具Schema，不能把剥离大块解释为无需比较它们。",
+    "officialTest": {
+      "file": "packages/test-support/session-snapshot/tests/suite.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S29",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent-loop/src/index.ts",
+    "start": 291,
+    "end": 415,
+    "symbol": "AgentLoop Config / creation",
+    "controlBranch": "真实Loop通过Factory创建Agent并依赖所需服务；静态agent配置与SDK动态创建分开。",
+    "conclusion": "真实Loop通过Factory创建Agent并依赖所需服务；静态agent配置与SDK动态创建分开。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/model.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1; D C1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S30",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent-loop/src/agent.ts",
+    "start": 327,
+    "end": 486,
+    "symbol": "Turn / Step / request boundaries",
+    "controlBranch": "Turn与Step开闭不同，运行进程exit0也可能Turn error；测试检查终态及工具事实。",
+    "conclusion": "Turn与Step开闭不同，运行进程exit0也可能Turn error；测试检查终态及工具事实。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/loop.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D D3; D D5",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S31",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/agent-loop/src/agent.ts",
+    "start": 656,
+    "end": 744,
+    "symbol": "buildRequest",
+    "controlBranch": "模型输入由Session派生后冻结；应比较真实下一请求包含工具结果，不用作者自写摘要作唯一证据。",
+    "conclusion": "模型输入由Session派生后冻结；应比较真实下一请求包含工具结果，不用作者自写摘要作唯一证据。",
+    "officialTest": {
+      "file": "packages/core/agent-loop/tests/tool-calls.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D B1; D X",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S32",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/session/src/index.ts",
+    "start": 611,
+    "end": 705,
+    "symbol": "Session.fromRestore",
+    "controlBranch": "恢复验证当前header/事件和精确继承前缀，产生新Session；不重新执行工具或复活旧资源。",
+    "conclusion": "恢复验证当前header/事件和精确继承前缀，产生新Session；不重新执行工具或复活旧资源。",
+    "officialTest": {
+      "file": "packages/session/session-format-catalog/src/current.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D X; D C2",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S33",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/core/session/src/index.ts",
+    "start": 990,
+    "end": 1025,
+    "symbol": "deriveMessages",
+    "controlBranch": "Surface派生模型可见消息，不能把所有审计事件直接拼成输入；X核重建前缀等于真实请求。",
+    "conclusion": "Surface派生模型可见消息，不能把所有审计事件直接拼成输入；X核重建前缀等于真实请求。",
+    "officialTest": {
+      "file": "packages/session/session-format-catalog/tests/developer-history.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D X",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S34",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/session/session-persistence-jsonl/src/index.ts",
+    "start": 1310,
+    "end": 1470,
+    "symbol": "JSONL handles",
+    "controlBranch": "真实文件读写、flush、handle close分别有确认点；本轮正常关闭/新PID不证明断电或所有Backend。",
+    "conclusion": "真实文件读写、flush、handle close分别有确认点；本轮正常关闭/新PID不证明断电或所有Backend。",
+    "officialTest": {
+      "file": "packages/session/session-persistence-jsonl/tests/fork-delivery.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D A1; D C2; D D6",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S35",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/sdk/protocol/src/transport.ts",
+    "start": 65,
+    "end": 160,
+    "symbol": "JsonRpcLineTransport",
+    "controlBranch": "换行JSON-RPC承载请求/响应/通知，flush和关闭不是Agent任务完成。",
+    "conclusion": "换行JSON-RPC承载请求/响应/通知，flush和关闭不是Agent任务完成。",
+    "officialTest": {
+      "file": "packages/sdk/protocol/tests/transport.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D C1; C C3",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S36",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/sdk/server/src/index.ts",
+    "start": 25,
+    "end": 104,
+    "symbol": "apply / runtime exit hook",
+    "controlBranch": "正式插件支持运行时exit钩子；默认process.exit。shutdown响应后flush、root dispose再exit；钩子通过不覆盖默认分支。",
+    "conclusion": "正式插件支持运行时exit钩子；默认process.exit。shutdown响应后flush、root dispose再exit；钩子通过不覆盖默认分支。",
+    "officialTest": {
+      "file": "packages/sdk/server/tests/shutdown.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D C1; D D1; default exit FAILED_NATIVE",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S37",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/sdk/client/src/client.ts",
+    "start": 1,
+    "end": 600,
+    "symbol": "HarnessClient process owner",
+    "controlBranch": "客户端持有stdio子进程，close与异常退出需观察进程事实；不能只看shutdown响应。",
+    "conclusion": "客户端持有stdio子进程，close与异常退出需观察进程事实；不能只看shutdown响应。",
+    "officialTest": {
+      "file": "packages/sdk/client/tests/sdk-client.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D C1; D C2; C C3",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S38",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/client-runtime/src/remote.ts",
+    "start": 1,
+    "end": 103,
+    "symbol": "TestRemote",
+    "controlBranch": "官方TestRemote支持订阅与emit/disposer，拒绝真实mount；它是测试double，不能证明Host权限和真实连接。",
+    "conclusion": "官方TestRemote支持订阅与emit/disposer，拒绝真实mount；它是测试double，不能证明Host权限和真实连接。",
+    "officialTest": {
+      "file": "packages/test-support/client-runtime/tests/remote.client.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "C P2",
+    "grade": "C",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S39",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/client-runtime/src/index.ts",
+    "start": 1,
+    "end": 145,
+    "symbol": "SlotTestRuntime",
+    "controlBranch": "完整Client Runtime还需jsdom、Slots及会话等；本轮只执行TestRemote子集。",
+    "conclusion": "完整Client Runtime还需jsdom、Slots及会话等；本轮只执行TestRemote子集。",
+    "officialTest": {
+      "file": "packages/test-support/client-runtime/tests/assembly-test-client.client.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S40",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/test-support/remote-mock/src/index.ts",
+    "start": 1,
+    "end": 17,
+    "symbol": "RemoteMock exports",
+    "controlBranch": "Remote Mock是受控client carrier工具；本轮未执行，不推导真实Host授权通过。",
+    "conclusion": "Remote Mock是受控client carrier工具；本轮未执行，不推导真实Host授权通过。",
+    "officialTest": {
+      "file": "packages/test-support/remote-mock/tests/rpc.client.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S41",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "apps/web/tests/scaffold.ts",
+    "start": 1,
+    "end": 140,
+    "symbol": "browser scaffold",
+    "controlBranch": "固定版本有真实浏览器测试脚手架；产品构建及Host fixture缺失时不得拿教材Chrome截图代替。",
+    "conclusion": "固定版本有真实浏览器测试脚手架；产品构建及Host fixture缺失时不得拿教材Chrome截图代替。",
+    "officialTest": {
+      "file": "apps/web/tests/smoke-real.e2e.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S42",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "scripts/run-web-snapshots.ts",
+    "start": 1,
+    "end": 44,
+    "symbol": "browser CI owners",
+    "controlBranch": "串行HMR/client-plugin owners后再有界池，DSH_WEB_SNAPSHOT_WORKERS须正整数；不是所有文件无条件并行。",
+    "conclusion": "串行HMR/client-plugin owners后再有界池，DSH_WEB_SNAPSHOT_WORKERS须正整数；不是所有文件无条件并行。",
+    "officialTest": {
+      "file": "vitest.web.config.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S43",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/client/ui-trajectory/src/index.ts",
+    "start": 1,
+    "end": 127,
+    "symbol": "SessionToolResults",
+    "controlBranch": "实时成功raw Tool Result按精确Session对象保存有界映射，随后映射seq并随释放清理；不是新的权威历史库。",
+    "conclusion": "实时成功raw Tool Result按精确Session对象保存有界映射，随后映射seq并随释放清理；不是新的权威历史库。",
+    "officialTest": {
+      "file": "packages/client/ui-trajectory/tests/tool-results.host.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S44",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/llm/llm/src/types.ts",
+    "start": 182,
+    "end": 230,
+    "symbol": "TokenUsage",
+    "controlBranch": "usage字段有可选项；缺失值不等于0，Mock usage不等真实计费。",
+    "conclusion": "usage字段有可选项；缺失值不等于0，Mock usage不等真实计费。",
+    "officialTest": {
+      "file": "packages/llm/token-meter/src/usage-projection.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S45",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/telemetry/otel/src/index.ts",
+    "start": 1,
+    "end": 35,
+    "symbol": "OTel",
+    "controlBranch": "OTel仅暴露基础发送能力，挂服务本身不等于采集所有Session；具体消费者负责创建上报通道和生命周期。",
+    "conclusion": "OTel仅暴露基础发送能力，挂服务本身不等于采集所有Session；具体消费者负责创建上报通道和生命周期。",
+    "officialTest": {
+      "file": "packages/telemetry/otel/tests/event-log.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S46",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "docs/subsystems/otel.zh.md",
+    "start": 1,
+    "end": 44,
+    "symbol": "OTel architecture",
+    "controlBranch": "本地记录与上传是不同动作；通道、身份、脱敏及发送时机由业务组件配置，本课不上传。",
+    "conclusion": "本地记录与上传是不同动作；通道、身份、脱敏及发送时机由业务组件配置，本课不上传。",
+    "officialTest": {
+      "file": "packages/telemetry/otel/tests/session-log.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S47",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/session/session-telemetry/src/coordinator.ts",
+    "start": 179,
+    "end": 255,
+    "symbol": "redact / contained capture",
+    "controlBranch": "没有脱敏规则时透传；规则抛错受隔离，不应假设自动安全脱敏。",
+    "conclusion": "没有脱敏规则时透传；规则抛错受隔离，不应假设自动安全脱敏。",
+    "officialTest": {
+      "file": "packages/session/session-telemetry/tests/redact.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S48",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/feedback/message-feedback/src/index.ts",
+    "start": 1,
+    "end": 140,
+    "symbol": "message feedback",
+    "controlBranch": "反馈是显式业务动作，有自身提交/上传路径，不由Session日志存在推定用户同意上传。",
+    "conclusion": "反馈是显式业务动作，有自身提交/上传路径，不由Session日志存在推定用户同意上传。",
+    "officialTest": {
+      "file": "packages/feedback/message-feedback/tests/message-feedback.spec.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  },
+  {
+    "claim": "S49",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "packages/llm/llm-retry/src/index.ts",
+    "start": 120,
+    "end": 257,
+    "symbol": "recover / Retry-After",
+    "controlBranch": "策略来自Provider；normal遇Provider延迟超过本地上限可委派，不强行重试；429 wire1秒与1毫秒配置不同。",
+    "conclusion": "策略来自Provider；normal遇Provider延迟超过本地上限可委派，不强行重试；429 wire1秒与1毫秒配置不同。",
+    "officialTest": {
+      "file": "packages/llm/llm-retry/src/index.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "D D7; D D1",
+    "grade": "D",
+    "status": "DYNAMIC_LIMITED_TO_NAMED_LOCAL_SUBBRANCH"
+  },
+  {
+    "claim": "S50",
+    "commit": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+    "file": "benchmarks/AGENTS.md",
+    "start": 1,
+    "end": 18,
+    "symbol": "built benchmark contract",
+    "controlBranch": "基准用构建产物、固定输入、独立worker及原始测量；功能测试耗时不等真实吞吐、缓存收益或费用。",
+    "conclusion": "基准用构建产物、固定输入、独立worker及原始测量；功能测试耗时不等真实吞吐、缓存收益或费用。",
+    "officialTest": {
+      "file": "scripts/run-bench-suite.ts",
+      "status": "REFERENCE_LOCATED_NOT_EXECUTED"
+    },
+    "localTest": "STATIC_REVIEW",
+    "grade": "STATIC",
+    "status": "STATIC_REVIEW"
+  }
+]
