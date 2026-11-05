@@ -1,0 +1,11 @@
+--- a/packages/sdk/server/src/index.ts
++++ b/packages/sdk/server/src/index.ts
+@@ -53,7 +53,7 @@
+   /* v8 ignore next -- production stdio wiring; tests always inject the runtime hooks */
+   const output = config.output ?? process.stdout
+   /* v8 ignore next -- production exit wiring; tests always inject the runtime hooks */
+-  const exit = config.exit ?? ((code: number): void => { process.exit(code) })
++  const exit = config.exit ?? ((code: number): void => { process.exitCode = code; input.pause() })
+ 
+   const transport = new JsonRpcLineTransport(input, output)
+   const server = new HarnessSdkJsonRpcServer(ctx, transport, {

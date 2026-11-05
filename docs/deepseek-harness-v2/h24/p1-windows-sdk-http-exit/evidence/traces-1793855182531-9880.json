@@ -1,0 +1,2259 @@
+{
+  "rawRun": "run-1793855182529-9880-lifecycle.json",
+  "traces": {
+    "trace-lifecycle.json": {
+      "style": "sigterm",
+      "active": false,
+      "node": "v24.16.0",
+      "world": {
+        "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9",
+        "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9\\workspace",
+        "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9\\home\\profiles\\h24-fixture",
+        "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9\\home\\profiles\\h24-fixture\\cordis.yml",
+        "env": {
+          "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9\\home\\profiles\\h24-fixture",
+          "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9",
+          "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\world-iIbJC9\\home"
+        }
+      },
+      "wire": {
+        "spawnfile": "D:\\Program Files\\nodejs\\node.exe",
+        "spawnargs": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-n5Vpn8\\sdk-entry.mjs",
+          "--profile",
+          "h24-fixture"
+        ],
+        "pid": 21772,
+        "exit": null,
+        "signal": "SIGTERM",
+        "stdin": [
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_9847508a2b55495e91c5dc87788fb5e9\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\",\"provider\":\"fixture\",\"model\":\"fixture\"}}\n",
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_42cf5958c1f94607ac1ae676107dff3b\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"lifecycle\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}]}}\n"
+        ],
+        "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_9847508a2b55495e91c5dc87788fb5e9\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793855181344,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"c8966b33-9c11-4b01-92c8-893b6c0db4aa\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"lifecycle\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793855181345,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793855181346,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_42cf5958c1f94607ac1ae676107dff3b\",\"result\":{\"messageId\":\"c8966b33-9c11-4b01-92c8-893b6c0db4aa\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793855181352,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793855181353,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"c7c4a442-7caa-470e-ad83-9e6071424a20\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793855181353,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"c8966b33-9c11-4b01-92c8-893b6c0db4aa\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793855181353,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-n5Vpn8\\\\\\\\world-iIbJC9\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-n5Vpn8\\\\\\\\world-iIbJC9\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"272a85c4-e0c5-4182-a657-87feaa3f3b0a\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793855181354,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793855181354,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"assistant/attempt\",\"seq\":9,\"time\":1793855181374,\"data\":{\"turn\":1,\"step\":1,\"stream\":[{\"type\":\"chunk\",\"time\":1793855181374,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"error\",\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"llm/retry\",\"seq\":10,\"time\":1793855181375,\"data\":{\"retryId\":\"87da4c9c-a15e-4129-b0d9-fe064b7a2122\",\"turn\":1,\"step\":1,\"provider\":\"fixture\",\"mode\":\"normal\",\"policyKey\":\"[\\\"normal\\\",1,[\\\"EMPTY_RESPONSE\\\",\\\"RATE_LIMIT\\\",\\\"SERVER\\\",\\\"TIMEOUT\\\",\\\"TRANSPORT\\\"],1,1000,0]\",\"retry\":1,\"maxRetries\":1,\"delayMs\":1000,\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"llm/retry-started\",\"seq\":11,\"time\":1793855182378,\"data\":{\"retryId\":\"87da4c9c-a15e-4129-b0d9-fe064b7a2122\",\"turn\":1,\"step\":1,\"retry\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"assistant/message\",\"seq\":12,\"time\":1793855182385,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"tool-call\",\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"fixture\",\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"tool-call\"}]}},\"id\":\"09e6c513-924c-4ed0-bf5a-76a30d18373a\"},\"usage\":{\"inputTokens\":3,\"outputTokens\":2,\"totalTokens\":5},\"stream\":[{\"type\":\"chunk\",\"time\":1793855182384,\"chunk\":{\"type\":\"block-start\",\"index\":0,\"blockType\":\"tool-call\"}},{\"type\":\"tool-call-chunks\",\"time0\":1793855182384,\"index\":0,\"dt\":[],\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"args\":[\"\"]},{\"type\":\"tool-call-chunks\",\"time0\":1793855182384,\"index\":0,\"dt\":[0],\"id\":\"mock-call-1\",\"args\":[\"{\\\"text\\\":\\\"mo\",\"de=safe\\\\n\\\"}\"]},{\"type\":\"chunk\",\"time\":1793855182384,\"chunk\":{\"type\":\"block-end\",\"index\":0,\"block\":{\"type\":\"tool-call\",\"id\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}}},{\"type\":\"chunk\",\"time\":1793855182384,\"chunk\":{\"type\":\"usage\",\"usage\":{\"inputTokens\":3,\"outputTokens\":2,\"totalTokens\":5}}},{\"type\":\"chunk\",\"time\":1793855182384,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"tool-calls\"},\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"tool-call\"}]}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"tool/call\",\"seq\":13,\"time\":1793855182386,\"data\":{\"turn\":1,\"step\":1,\"callId\":\"mock-call-1\",\"name\":\"write_fixture\",\"arguments\":\"{\\\"text\\\":\\\"mode=safe\\\\n\\\"}\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"tool/result\",\"seq\":14,\"time\":1793855182389,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"tool\",\"source\":{\"kind\":\"tool\",\"callId\":\"mock-call-1\"},\"toolCallId\":\"mock-call-1\",\"content\":[{\"type\":\"text\",\"text\":\"{\\\"written\\\":true}\"}],\"isError\":false,\"id\":\"84bd390b-dcd8-4910-9b48-499f26f050fe\"}},\"sourceEventSeqs\":[13],\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"step/end\",\"seq\":15,\"time\":1793855182389,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"step/start\",\"seq\":16,\"time\":1793855182391,\"data\":{\"turn\":1,\"step\":2}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"assistant/message\",\"seq\":17,\"time\":1793855182395,\"data\":{\"turn\":1,\"step\":2,\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"Lifecycle fixture completed.\"}],\"source\":{\"kind\":\"model\",\"provider\":\"fixture\",\"model\":\"fixture\",\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"text\"}]}},\"id\":\"942f6941-d4df-4ca9-ba31-dab7068d0e06\"},\"usage\":{\"inputTokens\":3,\"outputTokens\":28,\"totalTokens\":31},\"stream\":[{\"type\":\"chunk\",\"time\":1793855182394,\"chunk\":{\"type\":\"block-start\",\"index\":0,\"blockType\":\"text\"}},{\"type\":\"text-chunks\",\"time0\":1793855182394,\"index\":0,\"dt\":[0,0,0],\"texts\":[\"Lifecycl\",\"e fixtur\",\"e comple\",\"ted.\"]},{\"type\":\"chunk\",\"time\":1793855182395,\"chunk\":{\"type\":\"block-end\",\"index\":0,\"block\":{\"type\":\"text\",\"text\":\"Lifecycle fixture completed.\"}}},{\"type\":\"chunk\",\"time\":1793855182395,\"chunk\":{\"type\":\"usage\",\"usage\":{\"inputTokens\":3,\"outputTokens\":28,\"totalTokens\":31}}},{\"type\":\"chunk\",\"time\":1793855182395,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"stop\"},\"replayState\":{\"response\":{\"kind\":\"deepseek-messages\",\"version\":1,\"model\":\"fixture\"},\"blocks\":[{\"type\":\"text\"}]}}}]},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"step/end\",\"seq\":18,\"time\":1793855182395,\"data\":{\"turn\":1,\"step\":2}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"turn/end\",\"seq\":19,\"time\":1793855182396,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"completed\"}}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"lifecycle\",\"status\":\"idle\"}}\n",
+        "stderr": "",
+        "frames": [
+          {
+            "jsonrpc": "2.0",
+            "id": "req_9847508a2b55495e91c5dc87788fb5e9",
+            "result": {
+              "serverInfo": {
+                "name": "deepseek-harness-sdk-runtime",
+                "version": "0.0.1"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 0,
+                "time": 1793855181344,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "inserted": [
+                    {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Set fixture config to safe mode."
+                        }
+                      ],
+                      "source": {
+                        "kind": "user"
+                      },
+                      "role": "user",
+                      "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.status",
+            "params": {
+              "sessionId": "lifecycle",
+              "status": "running"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "turn/start",
+                "seq": 1,
+                "time": 1793855181345,
+                "data": {
+                  "turn": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 2,
+                "time": 1793855181346,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "removedCount": 1,
+                  "inserted": []
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "id": "req_42cf5958c1f94607ac1ae676107dff3b",
+            "result": {
+              "messageId": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "step/start",
+                "seq": 3,
+                "time": 1793855181352,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "system/message",
+                "seq": 4,
+                "time": 1793855181353,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "system",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Use fictional fixture only."
+                      }
+                    ],
+                    "source": {
+                      "kind": "system-prompt"
+                    },
+                    "id": "c7c4a442-7caa-470e-ad83-9e6071424a20"
+                  }
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "user/message",
+                "seq": 5,
+                "time": 1793855181353,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "user/message",
+                "seq": 6,
+                "time": 1793855181353,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                    }
+                  ],
+                  "source": {
+                    "kind": "runtime-context",
+                    "form": "snapshot",
+                    "sections": [
+                      {
+                        "name": "working-directory:current",
+                        "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                      }
+                    ]
+                  },
+                  "role": "user",
+                  "id": "272a85c4-e0c5-4182-a657-87feaa3f3b0a"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "request/header",
+                "seq": 7,
+                "time": 1793855181354,
+                "data": {
+                  "header": {
+                    "config": {
+                      "provider": "fixture",
+                      "model": "fixture",
+                      "maxTokens": 128,
+                      "reasoningEffort": "off"
+                    },
+                    "adapterDefaults": {
+                      "reasoningEffort": true,
+                      "maxTokens": true
+                    },
+                    "tools": [
+                      {
+                        "name": "write_fixture",
+                        "description": "Write one new fixture config file.",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string",
+                              "enum": [
+                                "mode=safe\n"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "text"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "reason": "initial"
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "request/context",
+                "seq": 8,
+                "time": 1793855181354,
+                "data": {
+                  "provider": "fixture",
+                  "model": "fixture",
+                  "contextWindow": 1000000
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "assistant/attempt",
+                "seq": 9,
+                "time": 1793855181374,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "stream": [
+                    {
+                      "type": "chunk",
+                      "time": 1793855181374,
+                      "chunk": {
+                        "type": "finish",
+                        "reason": {
+                          "kind": "error",
+                          "failure": {
+                            "message": "mock rate limit",
+                            "code": "RATE_LIMIT",
+                            "status": 429,
+                            "providerRetryAfterMs": 1000
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "llm/retry",
+                "seq": 10,
+                "time": 1793855181375,
+                "data": {
+                  "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                  "turn": 1,
+                  "step": 1,
+                  "provider": "fixture",
+                  "mode": "normal",
+                  "policyKey": "[\"normal\",1,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],1,1000,0]",
+                  "retry": 1,
+                  "maxRetries": 1,
+                  "delayMs": 1000,
+                  "failure": {
+                    "message": "mock rate limit",
+                    "code": "RATE_LIMIT",
+                    "status": 429,
+                    "providerRetryAfterMs": 1000
+                  }
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "llm/retry-started",
+                "seq": 11,
+                "time": 1793855182378,
+                "data": {
+                  "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                  "turn": 1,
+                  "step": 1,
+                  "retry": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "assistant/message",
+                "seq": 12,
+                "time": 1793855182385,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "assistant",
+                    "content": [
+                      {
+                        "type": "tool-call",
+                        "id": "mock-call-1",
+                        "name": "write_fixture",
+                        "arguments": "{\"text\":\"mode=safe\\n\"}"
+                      }
+                    ],
+                    "source": {
+                      "kind": "model",
+                      "provider": "fixture",
+                      "model": "fixture",
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "tool-call"
+                          }
+                        ]
+                      }
+                    },
+                    "id": "09e6c513-924c-4ed0-bf5a-76a30d18373a"
+                  },
+                  "usage": {
+                    "inputTokens": 3,
+                    "outputTokens": 2,
+                    "totalTokens": 5
+                  },
+                  "stream": [
+                    {
+                      "type": "chunk",
+                      "time": 1793855182384,
+                      "chunk": {
+                        "type": "block-start",
+                        "index": 0,
+                        "blockType": "tool-call"
+                      }
+                    },
+                    {
+                      "type": "tool-call-chunks",
+                      "time0": 1793855182384,
+                      "index": 0,
+                      "dt": [],
+                      "id": "mock-call-1",
+                      "name": "write_fixture",
+                      "args": [
+                        ""
+                      ]
+                    },
+                    {
+                      "type": "tool-call-chunks",
+                      "time0": 1793855182384,
+                      "index": 0,
+                      "dt": [
+                        0
+                      ],
+                      "id": "mock-call-1",
+                      "args": [
+                        "{\"text\":\"mo",
+                        "de=safe\\n\"}"
+                      ]
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182384,
+                      "chunk": {
+                        "type": "block-end",
+                        "index": 0,
+                        "block": {
+                          "type": "tool-call",
+                          "id": "mock-call-1",
+                          "name": "write_fixture",
+                          "arguments": "{\"text\":\"mode=safe\\n\"}"
+                        }
+                      }
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182384,
+                      "chunk": {
+                        "type": "usage",
+                        "usage": {
+                          "inputTokens": 3,
+                          "outputTokens": 2,
+                          "totalTokens": 5
+                        }
+                      }
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182384,
+                      "chunk": {
+                        "type": "finish",
+                        "reason": {
+                          "kind": "tool-calls"
+                        },
+                        "replayState": {
+                          "response": {
+                            "kind": "deepseek-messages",
+                            "version": 1,
+                            "model": "fixture"
+                          },
+                          "blocks": [
+                            {
+                              "type": "tool-call"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "tool/call",
+                "seq": 13,
+                "time": 1793855182386,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "callId": "mock-call-1",
+                  "name": "write_fixture",
+                  "arguments": "{\"text\":\"mode=safe\\n\"}"
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "tool/result",
+                "seq": 14,
+                "time": 1793855182389,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "tool",
+                    "source": {
+                      "kind": "tool",
+                      "callId": "mock-call-1"
+                    },
+                    "toolCallId": "mock-call-1",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "{\"written\":true}"
+                      }
+                    ],
+                    "isError": false,
+                    "id": "84bd390b-dcd8-4910-9b48-499f26f050fe"
+                  }
+                },
+                "sourceEventSeqs": [
+                  13
+                ],
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "step/end",
+                "seq": 15,
+                "time": 1793855182389,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "step/start",
+                "seq": 16,
+                "time": 1793855182391,
+                "data": {
+                  "turn": 1,
+                  "step": 2
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "assistant/message",
+                "seq": 17,
+                "time": 1793855182395,
+                "data": {
+                  "turn": 1,
+                  "step": 2,
+                  "message": {
+                    "role": "assistant",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lifecycle fixture completed."
+                      }
+                    ],
+                    "source": {
+                      "kind": "model",
+                      "provider": "fixture",
+                      "model": "fixture",
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    },
+                    "id": "942f6941-d4df-4ca9-ba31-dab7068d0e06"
+                  },
+                  "usage": {
+                    "inputTokens": 3,
+                    "outputTokens": 28,
+                    "totalTokens": 31
+                  },
+                  "stream": [
+                    {
+                      "type": "chunk",
+                      "time": 1793855182394,
+                      "chunk": {
+                        "type": "block-start",
+                        "index": 0,
+                        "blockType": "text"
+                      }
+                    },
+                    {
+                      "type": "text-chunks",
+                      "time0": 1793855182394,
+                      "index": 0,
+                      "dt": [
+                        0,
+                        0,
+                        0
+                      ],
+                      "texts": [
+                        "Lifecycl",
+                        "e fixtur",
+                        "e comple",
+                        "ted."
+                      ]
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182395,
+                      "chunk": {
+                        "type": "block-end",
+                        "index": 0,
+                        "block": {
+                          "type": "text",
+                          "text": "Lifecycle fixture completed."
+                        }
+                      }
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182395,
+                      "chunk": {
+                        "type": "usage",
+                        "usage": {
+                          "inputTokens": 3,
+                          "outputTokens": 28,
+                          "totalTokens": 31
+                        }
+                      }
+                    },
+                    {
+                      "type": "chunk",
+                      "time": 1793855182395,
+                      "chunk": {
+                        "type": "finish",
+                        "reason": {
+                          "kind": "stop"
+                        },
+                        "replayState": {
+                          "response": {
+                            "kind": "deepseek-messages",
+                            "version": 1,
+                            "model": "fixture"
+                          },
+                          "blocks": [
+                            {
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "step/end",
+                "seq": 18,
+                "time": 1793855182395,
+                "data": {
+                  "turn": 1,
+                  "step": 2
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "turn/end",
+                "seq": 19,
+                "time": 1793855182396,
+                "data": {
+                  "turn": 1,
+                  "reason": {
+                    "kind": "completed"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.status",
+            "params": {
+              "sessionId": "lifecycle",
+              "status": "idle"
+            }
+          }
+        ]
+      },
+      "shutdownResponse": false,
+      "exit": {
+        "code": null,
+        "signal": "SIGTERM"
+      },
+      "result": {
+        "value": {
+          "sessionId": "lifecycle",
+          "finalResponse": "Lifecycle fixture completed.",
+          "events": [
+            {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793855181344,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Set fixture config to safe mode."
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793855181345,
+              "data": {
+                "turn": 1
+              }
+            },
+            {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793855181346,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            },
+            {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793855181352,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            },
+            {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793855181353,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Use fictional fixture only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "c7c4a442-7caa-470e-ad83-9e6071424a20"
+                }
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793855181353,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Set fixture config to safe mode."
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793855181353,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "working-directory:current",
+                      "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "272a85c4-e0c5-4182-a657-87feaa3f3b0a"
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793855181354,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "maxTokens": 128,
+                    "reasoningEffort": "off"
+                  },
+                  "adapterDefaults": {
+                    "reasoningEffort": true,
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "write_fixture",
+                      "description": "Write one new fixture config file.",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "enum": [
+                              "mode=safe\n"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            },
+            {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793855181354,
+              "data": {
+                "provider": "fixture",
+                "model": "fixture",
+                "contextWindow": 1000000
+              }
+            },
+            {
+              "type": "assistant/attempt",
+              "seq": 9,
+              "time": 1793855181374,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793855181374,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "error",
+                        "failure": {
+                          "message": "mock rate limit",
+                          "code": "RATE_LIMIT",
+                          "status": 429,
+                          "providerRetryAfterMs": 1000
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "llm/retry",
+              "seq": 10,
+              "time": 1793855181375,
+              "data": {
+                "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                "turn": 1,
+                "step": 1,
+                "provider": "fixture",
+                "mode": "normal",
+                "policyKey": "[\"normal\",1,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],1,1000,0]",
+                "retry": 1,
+                "maxRetries": 1,
+                "delayMs": 1000,
+                "failure": {
+                  "message": "mock rate limit",
+                  "code": "RATE_LIMIT",
+                  "status": 429,
+                  "providerRetryAfterMs": 1000
+                }
+              }
+            },
+            {
+              "type": "llm/retry-started",
+              "seq": 11,
+              "time": 1793855182378,
+              "data": {
+                "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                "turn": 1,
+                "step": 1,
+                "retry": 1
+              }
+            },
+            {
+              "type": "assistant/message",
+              "seq": 12,
+              "time": 1793855182385,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "tool-call",
+                      "id": "mock-call-1",
+                      "name": "write_fixture",
+                      "arguments": "{\"text\":\"mode=safe\\n\"}"
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "replayState": {
+                      "response": {
+                        "kind": "deepseek-messages",
+                        "version": 1,
+                        "model": "fixture"
+                      },
+                      "blocks": [
+                        {
+                          "type": "tool-call"
+                        }
+                      ]
+                    }
+                  },
+                  "id": "09e6c513-924c-4ed0-bf5a-76a30d18373a"
+                },
+                "usage": {
+                  "inputTokens": 3,
+                  "outputTokens": 2,
+                  "totalTokens": 5
+                },
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793855182384,
+                    "chunk": {
+                      "type": "block-start",
+                      "index": 0,
+                      "blockType": "tool-call"
+                    }
+                  },
+                  {
+                    "type": "tool-call-chunks",
+                    "time0": 1793855182384,
+                    "index": 0,
+                    "dt": [],
+                    "id": "mock-call-1",
+                    "name": "write_fixture",
+                    "args": [
+                      ""
+                    ]
+                  },
+                  {
+                    "type": "tool-call-chunks",
+                    "time0": 1793855182384,
+                    "index": 0,
+                    "dt": [
+                      0
+                    ],
+                    "id": "mock-call-1",
+                    "args": [
+                      "{\"text\":\"mo",
+                      "de=safe\\n\"}"
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182384,
+                    "chunk": {
+                      "type": "block-end",
+                      "index": 0,
+                      "block": {
+                        "type": "tool-call",
+                        "id": "mock-call-1",
+                        "name": "write_fixture",
+                        "arguments": "{\"text\":\"mode=safe\\n\"}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182384,
+                    "chunk": {
+                      "type": "usage",
+                      "usage": {
+                        "inputTokens": 3,
+                        "outputTokens": 2,
+                        "totalTokens": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182384,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "tool-calls"
+                      },
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "tool-call"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "tool/call",
+              "seq": 13,
+              "time": 1793855182386,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "callId": "mock-call-1",
+                "name": "write_fixture",
+                "arguments": "{\"text\":\"mode=safe\\n\"}"
+              }
+            },
+            {
+              "type": "tool/result",
+              "seq": 14,
+              "time": 1793855182389,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "tool",
+                  "source": {
+                    "kind": "tool",
+                    "callId": "mock-call-1"
+                  },
+                  "toolCallId": "mock-call-1",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\"written\":true}"
+                    }
+                  ],
+                  "isError": false,
+                  "id": "84bd390b-dcd8-4910-9b48-499f26f050fe"
+                }
+              },
+              "sourceEventSeqs": [
+                13
+              ],
+              "surfaceOp": "append"
+            },
+            {
+              "type": "step/end",
+              "seq": 15,
+              "time": 1793855182389,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            },
+            {
+              "type": "step/start",
+              "seq": 16,
+              "time": 1793855182391,
+              "data": {
+                "turn": 1,
+                "step": 2
+              }
+            },
+            {
+              "type": "assistant/message",
+              "seq": 17,
+              "time": 1793855182395,
+              "data": {
+                "turn": 1,
+                "step": 2,
+                "message": {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Lifecycle fixture completed."
+                    }
+                  ],
+                  "source": {
+                    "kind": "model",
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "replayState": {
+                      "response": {
+                        "kind": "deepseek-messages",
+                        "version": 1,
+                        "model": "fixture"
+                      },
+                      "blocks": [
+                        {
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "id": "942f6941-d4df-4ca9-ba31-dab7068d0e06"
+                },
+                "usage": {
+                  "inputTokens": 3,
+                  "outputTokens": 28,
+                  "totalTokens": 31
+                },
+                "stream": [
+                  {
+                    "type": "chunk",
+                    "time": 1793855182394,
+                    "chunk": {
+                      "type": "block-start",
+                      "index": 0,
+                      "blockType": "text"
+                    }
+                  },
+                  {
+                    "type": "text-chunks",
+                    "time0": 1793855182394,
+                    "index": 0,
+                    "dt": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "texts": [
+                      "Lifecycl",
+                      "e fixtur",
+                      "e comple",
+                      "ted."
+                    ]
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182395,
+                    "chunk": {
+                      "type": "block-end",
+                      "index": 0,
+                      "block": {
+                        "type": "text",
+                        "text": "Lifecycle fixture completed."
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182395,
+                    "chunk": {
+                      "type": "usage",
+                      "usage": {
+                        "inputTokens": 3,
+                        "outputTokens": 28,
+                        "totalTokens": 31
+                      }
+                    }
+                  },
+                  {
+                    "type": "chunk",
+                    "time": 1793855182395,
+                    "chunk": {
+                      "type": "finish",
+                      "reason": {
+                        "kind": "stop"
+                      },
+                      "replayState": {
+                        "response": {
+                          "kind": "deepseek-messages",
+                          "version": 1,
+                          "model": "fixture"
+                        },
+                        "blocks": [
+                          {
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "surfaceOp": "append"
+            },
+            {
+              "type": "step/end",
+              "seq": 18,
+              "time": 1793855182395,
+              "data": {
+                "turn": 1,
+                "step": 2
+              }
+            },
+            {
+              "type": "turn/end",
+              "seq": 19,
+              "time": 1793855182396,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "completed"
+                }
+              }
+            }
+          ],
+          "notifications": [
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "agent/inbox/spliced",
+                  "seq": 0,
+                  "time": 1793855181344,
+                  "data": {
+                    "target": "next-turn",
+                    "start": 0,
+                    "inserted": [
+                      {
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "Set fixture config to safe mode."
+                          }
+                        ],
+                        "source": {
+                          "kind": "user"
+                        },
+                        "role": "user",
+                        "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.status",
+              "params": {
+                "sessionId": "lifecycle",
+                "status": "running"
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "turn/start",
+                  "seq": 1,
+                  "time": 1793855181345,
+                  "data": {
+                    "turn": 1
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "agent/inbox/spliced",
+                  "seq": 2,
+                  "time": 1793855181346,
+                  "data": {
+                    "target": "next-turn",
+                    "start": 0,
+                    "removedCount": 1,
+                    "inserted": []
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "step/start",
+                  "seq": 3,
+                  "time": 1793855181352,
+                  "data": {
+                    "turn": 1,
+                    "step": 1
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "system/message",
+                  "seq": 4,
+                  "time": 1793855181353,
+                  "data": {
+                    "turn": 1,
+                    "step": 1,
+                    "message": {
+                      "role": "system",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Use fictional fixture only."
+                        }
+                      ],
+                      "source": {
+                        "kind": "system-prompt"
+                      },
+                      "id": "c7c4a442-7caa-470e-ad83-9e6071424a20"
+                    }
+                  },
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "user/message",
+                  "seq": 5,
+                  "time": 1793855181353,
+                  "data": {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Set fixture config to safe mode."
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "c8966b33-9c11-4b01-92c8-893b6c0db4aa"
+                  },
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "user/message",
+                  "seq": 6,
+                  "time": 1793855181353,
+                  "data": {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                      }
+                    ],
+                    "source": {
+                      "kind": "runtime-context",
+                      "form": "snapshot",
+                      "sections": [
+                        {
+                          "name": "working-directory:current",
+                          "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                        }
+                      ]
+                    },
+                    "role": "user",
+                    "id": "272a85c4-e0c5-4182-a657-87feaa3f3b0a"
+                  },
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "request/header",
+                  "seq": 7,
+                  "time": 1793855181354,
+                  "data": {
+                    "header": {
+                      "config": {
+                        "provider": "fixture",
+                        "model": "fixture",
+                        "maxTokens": 128,
+                        "reasoningEffort": "off"
+                      },
+                      "adapterDefaults": {
+                        "reasoningEffort": true,
+                        "maxTokens": true
+                      },
+                      "tools": [
+                        {
+                          "name": "write_fixture",
+                          "description": "Write one new fixture config file.",
+                          "parameters": {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "string",
+                                "enum": [
+                                  "mode=safe\n"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "text"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "reason": "initial"
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "request/context",
+                  "seq": 8,
+                  "time": 1793855181354,
+                  "data": {
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "contextWindow": 1000000
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "assistant/attempt",
+                  "seq": 9,
+                  "time": 1793855181374,
+                  "data": {
+                    "turn": 1,
+                    "step": 1,
+                    "stream": [
+                      {
+                        "type": "chunk",
+                        "time": 1793855181374,
+                        "chunk": {
+                          "type": "finish",
+                          "reason": {
+                            "kind": "error",
+                            "failure": {
+                              "message": "mock rate limit",
+                              "code": "RATE_LIMIT",
+                              "status": 429,
+                              "providerRetryAfterMs": 1000
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "llm/retry",
+                  "seq": 10,
+                  "time": 1793855181375,
+                  "data": {
+                    "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                    "turn": 1,
+                    "step": 1,
+                    "provider": "fixture",
+                    "mode": "normal",
+                    "policyKey": "[\"normal\",1,[\"EMPTY_RESPONSE\",\"RATE_LIMIT\",\"SERVER\",\"TIMEOUT\",\"TRANSPORT\"],1,1000,0]",
+                    "retry": 1,
+                    "maxRetries": 1,
+                    "delayMs": 1000,
+                    "failure": {
+                      "message": "mock rate limit",
+                      "code": "RATE_LIMIT",
+                      "status": 429,
+                      "providerRetryAfterMs": 1000
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "llm/retry-started",
+                  "seq": 11,
+                  "time": 1793855182378,
+                  "data": {
+                    "retryId": "87da4c9c-a15e-4129-b0d9-fe064b7a2122",
+                    "turn": 1,
+                    "step": 1,
+                    "retry": 1
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "assistant/message",
+                  "seq": 12,
+                  "time": 1793855182385,
+                  "data": {
+                    "turn": 1,
+                    "step": 1,
+                    "message": {
+                      "role": "assistant",
+                      "content": [
+                        {
+                          "type": "tool-call",
+                          "id": "mock-call-1",
+                          "name": "write_fixture",
+                          "arguments": "{\"text\":\"mode=safe\\n\"}"
+                        }
+                      ],
+                      "source": {
+                        "kind": "model",
+                        "provider": "fixture",
+                        "model": "fixture",
+                        "replayState": {
+                          "response": {
+                            "kind": "deepseek-messages",
+                            "version": 1,
+                            "model": "fixture"
+                          },
+                          "blocks": [
+                            {
+                              "type": "tool-call"
+                            }
+                          ]
+                        }
+                      },
+                      "id": "09e6c513-924c-4ed0-bf5a-76a30d18373a"
+                    },
+                    "usage": {
+                      "inputTokens": 3,
+                      "outputTokens": 2,
+                      "totalTokens": 5
+                    },
+                    "stream": [
+                      {
+                        "type": "chunk",
+                        "time": 1793855182384,
+                        "chunk": {
+                          "type": "block-start",
+                          "index": 0,
+                          "blockType": "tool-call"
+                        }
+                      },
+                      {
+                        "type": "tool-call-chunks",
+                        "time0": 1793855182384,
+                        "index": 0,
+                        "dt": [],
+                        "id": "mock-call-1",
+                        "name": "write_fixture",
+                        "args": [
+                          ""
+                        ]
+                      },
+                      {
+                        "type": "tool-call-chunks",
+                        "time0": 1793855182384,
+                        "index": 0,
+                        "dt": [
+                          0
+                        ],
+                        "id": "mock-call-1",
+                        "args": [
+                          "{\"text\":\"mo",
+                          "de=safe\\n\"}"
+                        ]
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182384,
+                        "chunk": {
+                          "type": "block-end",
+                          "index": 0,
+                          "block": {
+                            "type": "tool-call",
+                            "id": "mock-call-1",
+                            "name": "write_fixture",
+                            "arguments": "{\"text\":\"mode=safe\\n\"}"
+                          }
+                        }
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182384,
+                        "chunk": {
+                          "type": "usage",
+                          "usage": {
+                            "inputTokens": 3,
+                            "outputTokens": 2,
+                            "totalTokens": 5
+                          }
+                        }
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182384,
+                        "chunk": {
+                          "type": "finish",
+                          "reason": {
+                            "kind": "tool-calls"
+                          },
+                          "replayState": {
+                            "response": {
+                              "kind": "deepseek-messages",
+                              "version": 1,
+                              "model": "fixture"
+                            },
+                            "blocks": [
+                              {
+                                "type": "tool-call"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "tool/call",
+                  "seq": 13,
+                  "time": 1793855182386,
+                  "data": {
+                    "turn": 1,
+                    "step": 1,
+                    "callId": "mock-call-1",
+                    "name": "write_fixture",
+                    "arguments": "{\"text\":\"mode=safe\\n\"}"
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "tool/result",
+                  "seq": 14,
+                  "time": 1793855182389,
+                  "data": {
+                    "turn": 1,
+                    "step": 1,
+                    "message": {
+                      "role": "tool",
+                      "source": {
+                        "kind": "tool",
+                        "callId": "mock-call-1"
+                      },
+                      "toolCallId": "mock-call-1",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "{\"written\":true}"
+                        }
+                      ],
+                      "isError": false,
+                      "id": "84bd390b-dcd8-4910-9b48-499f26f050fe"
+                    }
+                  },
+                  "sourceEventSeqs": [
+                    13
+                  ],
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "step/end",
+                  "seq": 15,
+                  "time": 1793855182389,
+                  "data": {
+                    "turn": 1,
+                    "step": 1
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "step/start",
+                  "seq": 16,
+                  "time": 1793855182391,
+                  "data": {
+                    "turn": 1,
+                    "step": 2
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "assistant/message",
+                  "seq": 17,
+                  "time": 1793855182395,
+                  "data": {
+                    "turn": 1,
+                    "step": 2,
+                    "message": {
+                      "role": "assistant",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Lifecycle fixture completed."
+                        }
+                      ],
+                      "source": {
+                        "kind": "model",
+                        "provider": "fixture",
+                        "model": "fixture",
+                        "replayState": {
+                          "response": {
+                            "kind": "deepseek-messages",
+                            "version": 1,
+                            "model": "fixture"
+                          },
+                          "blocks": [
+                            {
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      },
+                      "id": "942f6941-d4df-4ca9-ba31-dab7068d0e06"
+                    },
+                    "usage": {
+                      "inputTokens": 3,
+                      "outputTokens": 28,
+                      "totalTokens": 31
+                    },
+                    "stream": [
+                      {
+                        "type": "chunk",
+                        "time": 1793855182394,
+                        "chunk": {
+                          "type": "block-start",
+                          "index": 0,
+                          "blockType": "text"
+                        }
+                      },
+                      {
+                        "type": "text-chunks",
+                        "time0": 1793855182394,
+                        "index": 0,
+                        "dt": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "texts": [
+                          "Lifecycl",
+                          "e fixtur",
+                          "e comple",
+                          "ted."
+                        ]
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182395,
+                        "chunk": {
+                          "type": "block-end",
+                          "index": 0,
+                          "block": {
+                            "type": "text",
+                            "text": "Lifecycle fixture completed."
+                          }
+                        }
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182395,
+                        "chunk": {
+                          "type": "usage",
+                          "usage": {
+                            "inputTokens": 3,
+                            "outputTokens": 28,
+                            "totalTokens": 31
+                          }
+                        }
+                      },
+                      {
+                        "type": "chunk",
+                        "time": 1793855182395,
+                        "chunk": {
+                          "type": "finish",
+                          "reason": {
+                            "kind": "stop"
+                          },
+                          "replayState": {
+                            "response": {
+                              "kind": "deepseek-messages",
+                              "version": 1,
+                              "model": "fixture"
+                            },
+                            "blocks": [
+                              {
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "surfaceOp": "append"
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "step/end",
+                  "seq": 18,
+                  "time": 1793855182395,
+                  "data": {
+                    "turn": 1,
+                    "step": 2
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.event",
+              "params": {
+                "sessionId": "lifecycle",
+                "event": {
+                  "type": "turn/end",
+                  "seq": 19,
+                  "time": 1793855182396,
+                  "data": {
+                    "turn": 1,
+                    "reason": {
+                      "kind": "completed"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "method": "session.status",
+              "params": {
+                "sessionId": "lifecycle",
+                "status": "idle"
+              }
+            }
+          ]
+        }
+      },
+      "server": {
+        "port": 52844,
+        "requests": [
+          {
+            "attempt": 1,
+            "scriptBehavior": "rate_limit",
+            "behavior": "rate_limit",
+            "path": "/v1/messages",
+            "headers": {
+              "host": "127.0.0.1:52844",
+              "connection": "close",
+              "user-agent": "deepseek-harness/0.2.2-alpha.2 (+https://github.com/deepseek-ai/deepseek-harness)",
+              "content-type": "application/json",
+              "accept": "text/event-stream",
+              "x-api-key": "h24-local-only",
+              "anthropic-version": "2023-06-01",
+              "x-deepseek-harness-user-id": "h24-fictional-user",
+              "x-deepseek-harness-session-id": "lifecycle",
+              "accept-language": "*",
+              "sec-fetch-mode": "cors",
+              "accept-encoding": "gzip, deflate",
+              "content-length": "669"
+            },
+            "body": {
+              "model": "fixture",
+              "stream": true,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                    }
+                  ]
+                }
+              ],
+              "max_tokens": 128,
+              "thinking": {
+                "type": "disabled"
+              },
+              "system": "Use fictional fixture only.",
+              "tools": [
+                {
+                  "name": "write_fixture",
+                  "description": "Write one new fixture config file.",
+                  "input_schema": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "enum": [
+                          "mode=safe\n"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  }
+                }
+              ]
+            },
+            "chunksSent": 0,
+            "outcome": "completed"
+          },
+          {
+            "attempt": 2,
+            "scriptBehavior": "tool_call_success",
+            "behavior": "tool_call_success",
+            "path": "/v1/messages",
+            "headers": {
+              "host": "127.0.0.1:52844",
+              "connection": "close",
+              "user-agent": "deepseek-harness/0.2.2-alpha.2 (+https://github.com/deepseek-ai/deepseek-harness)",
+              "content-type": "application/json",
+              "accept": "text/event-stream",
+              "x-api-key": "h24-local-only",
+              "anthropic-version": "2023-06-01",
+              "x-deepseek-harness-user-id": "h24-fictional-user",
+              "x-deepseek-harness-session-id": "lifecycle",
+              "accept-language": "*",
+              "sec-fetch-mode": "cors",
+              "accept-encoding": "gzip, deflate",
+              "content-length": "669"
+            },
+            "body": {
+              "model": "fixture",
+              "stream": true,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                    }
+                  ]
+                }
+              ],
+              "max_tokens": 128,
+              "thinking": {
+                "type": "disabled"
+              },
+              "system": "Use fictional fixture only.",
+              "tools": [
+                {
+                  "name": "write_fixture",
+                  "description": "Write one new fixture config file.",
+                  "input_schema": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "enum": [
+                          "mode=safe\n"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  }
+                }
+              ]
+            },
+            "chunksSent": 7,
+            "outcome": "completed"
+          },
+          {
+            "attempt": 3,
+            "scriptBehavior": "success",
+            "behavior": "success",
+            "path": "/v1/messages",
+            "headers": {
+              "host": "127.0.0.1:52844",
+              "connection": "close",
+              "user-agent": "deepseek-harness/0.2.2-alpha.2 (+https://github.com/deepseek-ai/deepseek-harness)",
+              "content-type": "application/json",
+              "accept": "text/event-stream",
+              "x-api-key": "h24-local-only",
+              "anthropic-version": "2023-06-01",
+              "x-deepseek-harness-user-id": "h24-fictional-user",
+              "x-deepseek-harness-session-id": "lifecycle",
+              "accept-language": "*",
+              "sec-fetch-mode": "cors",
+              "accept-encoding": "gzip, deflate",
+              "content-length": "947"
+            },
+            "body": {
+              "model": "fixture",
+              "stream": true,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\"."
+                    }
+                  ]
+                },
+                {
+                  "role": "assistant",
+                  "content": [
+                    {
+                      "type": "tool_use",
+                      "id": "mock-call-1",
+                      "name": "write_fixture",
+                      "input": {
+                        "text": "mode=safe\n"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "tool_result",
+                      "tool_use_id": "mock-call-1",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "{\"written\":true}"
+                        }
+                      ],
+                      "is_error": false
+                    }
+                  ]
+                }
+              ],
+              "max_tokens": 128,
+              "thinking": {
+                "type": "disabled"
+              },
+              "system": "Use fictional fixture only.",
+              "tools": [
+                {
+                  "name": "write_fixture",
+                  "description": "Write one new fixture config file.",
+                  "input_schema": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "enum": [
+                          "mode=safe\n"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  }
+                }
+              ]
+            },
+            "chunksSent": 9,
+            "outcome": "completed"
+          }
+        ],
+        "socketsObserved": 3,
+        "socketsRemaining": 0,
+        "listenerClosed": true,
+        "portRebound": true
+      },
+      "log": "{\"type\":\"session\",\"version\":4,\"id\":\"lifecycle\",\"createdAt\":1793855181338,\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-n5Vpn8\\\\world-iIbJC9\\\\workspace\",\"isSeeded\":false,\"delegationDepth\":0}\n{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793855181344,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"c8966b33-9c11-4b01-92c8-893b6c0db4aa\"}]}}\n{\"type\":\"turn/start\",\"seq\":1,\"time\":1793855181345,\"data\":{\"turn\":1}}\n{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793855181346,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}\n{\"type\":\"step/start\",\"seq\":3,\"time\":1793855181352,\"data\":{\"turn\":1,\"step\":1}}\n{\"type\":\"system/message\",\"seq\":4,\"time\":1793855181353,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"c7c4a442-7caa-470e-ad83-9e6071424a20\"}},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":5,\"time\":1793855181353,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"c8966b33-9c11-4b01-92c8-893b6c0db4aa\"},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":6,\"time\":1793855181353,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-n5Vpn8\\\\\\\\world-iIbJC9\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-n5Vpn8\\\\\\\\world-iIbJC9\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"272a85c4-e0c5-4182-a657-87feaa3f3b0a\"},\"surfaceOp\":\"append\"}\n{\"type\":\"request/header\",\"seq\":7,\"time\":1793855181354,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}\n{\"type\":\"request/context\",\"seq\":8,\"time\":1793855181354,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}\n{\"type\":\"assistant/attempt\",\"seq\":9,\"time\":1793855181374,\"data\":{\"turn\":1,\"step\":1,\"stream\":[{\"type\":\"chunk\",\"time\":1793855181374,\"chunk\":{\"type\":\"finish\",\"reason\":{\"kind\":\"error\",\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}}]}}\n{\"type\":\"llm/retry\",\"seq\":10,\"time\":1793855181375,\"data\":{\"retryId\":\"87da4c9c-a15e-4129-b0d9-fe064b7a2122\",\"turn\":1,\"step\":1,\"provider\":\"fixture\",\"mode\":\"normal\",\"policyKey\":\"[\\\"normal\\\",1,[\\\"EMPTY_RESPONSE\\\",\\\"RATE_LIMIT\\\",\\\"SERVER\\\",\\\"TIMEOUT\\\",\\\"TRANSPORT\\\"],1,1000,0]\",\"retry\":1,\"maxRetries\":1,\"delayMs\":1000,\"failure\":{\"message\":\"mock rate limit\",\"code\":\"RATE_LIMIT\",\"status\":429,\"providerRetryAfterMs\":1000}}}\n",
+      "runtime": null,
+      "normalExit": false,
+      "meaning": "Windows SIGTERM uses TerminateProcess: forced observation, not graceful PASS"
+    }
+  }
+}

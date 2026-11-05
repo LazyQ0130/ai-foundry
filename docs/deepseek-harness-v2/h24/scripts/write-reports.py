@@ -3,6 +3,7 @@ import json,hashlib
 R=Path(__file__).resolve().parents[1];P=R.parents[2];E=R/'evidence';Q=R/'module-six-review-prep';Q.mkdir(exist_ok=True)
 def write(name,s):
  p=R/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s.strip()+'\n',encoding='utf-8')
+if (R/'p1-windows-sdk-http-exit/evidence/gate-decision.json').exists():raise SystemExit('Historical H24 generator: preserve appended P1 revalidation; use the专项 scripts instead of overwriting current reports.')
 metrics=json.loads((E/'content-check.json').read_text())['metrics'];b=json.loads((E/'workspace-before.json').read_text());source=json.loads((E/'source-check.json').read_text());v=json.loads((E/'visual-qa.json').read_text())
 write('README.md','''# H24｜大型 Agent 系统测试与综合架构分析
 

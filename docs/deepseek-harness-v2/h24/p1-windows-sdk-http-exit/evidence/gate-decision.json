@@ -1,0 +1,48 @@
+{
+  "quality": "NO-GO",
+  "originalP1Cleared": false,
+  "scope": "fixed f3803c9 author SDK+HTTP source composition on Windows x64 / official Node24.16.0 default SDK exit",
+  "gates": [
+    {
+      "id": 1,
+      "status": "PASS",
+      "fact": "trigger localized to old Windows Node runtime forced-exit scheduling; builtins-only reproduction and official-binary controls"
+    },
+    {
+      "id": 2,
+      "status": "FAIL",
+      "fact": "unchanged fixed SDK default exit on original Node24.16.0 still aborts 0xC0000409 in fresh locked environment"
+    },
+    {
+      "id": 3,
+      "status": "PASS",
+      "fact": "unfiltered stderr, external actual process close; exit hooks/observer/patch/new runtime never substituted for original"
+    },
+    {
+      "id": 4,
+      "status": "PASS",
+      "fact": "eight fresh exact-lock installs, locks unchanged, no original cache replacement; forensic before-version candidate separately tagged"
+    },
+    {
+      "id": 5,
+      "status": "PARTIAL",
+      "fact": "23 hook / 23 patched / 23 official newer runtime, H23 original and patched25, Renderer12 and3width pass; original exit and active EOF/direct-dispose terminal checks not passed"
+    },
+    {
+      "id": 6,
+      "status": "PASS",
+      "fact": "E/productWeb/realProvider/performance/cost/learners/measuredtime/externalreview remain unverified; P2 retained"
+    }
+  ],
+  "remaining": [
+    "original Node24.16 default exit P1",
+    "active HTTP EOF/direct Context disposal lacks persisted Turn end despite exit0",
+    "complete E and built product",
+    "product Web UI",
+    "real Provider",
+    "performance/cost",
+    "learner trial and measured time",
+    "independent external review",
+    "learning burden P2"
+  ]
+}

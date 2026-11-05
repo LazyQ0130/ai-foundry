@@ -1,0 +1,738 @@
+{
+  "rawRun": "run-1793855187181-23016-lifecycle.json",
+  "traces": {
+    "trace-lifecycle.json": {
+      "style": "protocol",
+      "active": true,
+      "node": "v24.16.0",
+      "world": {
+        "root": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C",
+        "workspace": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C\\workspace",
+        "profile": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C\\home\\profiles\\h24-fixture",
+        "config": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C\\home\\profiles\\h24-fixture\\cordis.yml",
+        "env": {
+          "H24_PROFILE": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C\\home\\profiles\\h24-fixture",
+          "H24_WORLD": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C",
+          "DSH_HOME": "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\world-eO251C\\home"
+        }
+      },
+      "wire": {
+        "spawnfile": "D:\\Program Files\\nodejs\\node.exe",
+        "spawnargs": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\QYF\\AppData\\Local\\Temp\\aifoundry-h24-p1-hMSk3s\\sdk-entry.mjs",
+          "--profile",
+          "h24-fixture"
+        ],
+        "pid": 24108,
+        "exit": 0,
+        "signal": null,
+        "stdin": [
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_529cde86d727427888541ebbf83a6709\",\"method\":\"initialize\",\"params\":{\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\",\"provider\":\"fixture\",\"model\":\"fixture\"}}\n",
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_07c9052915ab4fc78fe6c3d5ad478ba8\",\"method\":\"session/prompt\",\"params\":{\"sessionId\":\"lifecycle\",\"contentBlocks\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}]}}\n",
+          "{\"jsonrpc\":\"2.0\",\"id\":\"req_aac14e199f4542f8bf54d55ba189fa72\",\"method\":\"shutdown\",\"params\":{}}\n"
+        ],
+        "stdout": "{\"jsonrpc\":\"2.0\",\"id\":\"req_529cde86d727427888541ebbf83a6709\",\"result\":{\"serverInfo\":{\"name\":\"deepseek-harness-sdk-runtime\",\"version\":\"0.0.1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793855186918,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"701b93e6-8910-4ecf-9fd9-cf992b8da7ba\"}]}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.status\",\"params\":{\"sessionId\":\"lifecycle\",\"status\":\"running\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"turn/start\",\"seq\":1,\"time\":1793855186920,\"data\":{\"turn\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793855186921,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_07c9052915ab4fc78fe6c3d5ad478ba8\",\"result\":{\"messageId\":\"701b93e6-8910-4ecf-9fd9-cf992b8da7ba\"}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"step/start\",\"seq\":3,\"time\":1793855186930,\"data\":{\"turn\":1,\"step\":1}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"system/message\",\"seq\":4,\"time\":1793855186932,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"f3242455-746f-4732-a3c4-1525bbea7a94\"}},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"user/message\",\"seq\":5,\"time\":1793855186932,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"701b93e6-8910-4ecf-9fd9-cf992b8da7ba\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"user/message\",\"seq\":6,\"time\":1793855186933,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-hMSk3s\\\\\\\\world-eO251C\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-hMSk3s\\\\\\\\world-eO251C\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"e62acd2b-c987-406d-be17-361c3b72b009\"},\"surfaceOp\":\"append\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"request/header\",\"seq\":7,\"time\":1793855186933,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"session.event\",\"params\":{\"sessionId\":\"lifecycle\",\"event\":{\"type\":\"request/context\",\"seq\":8,\"time\":1793855186933,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}}}\n{\"jsonrpc\":\"2.0\",\"id\":\"req_aac14e199f4542f8bf54d55ba189fa72\",\"result\":{}}\n",
+        "stderr": "",
+        "frames": [
+          {
+            "jsonrpc": "2.0",
+            "id": "req_529cde86d727427888541ebbf83a6709",
+            "result": {
+              "serverInfo": {
+                "name": "deepseek-harness-sdk-runtime",
+                "version": "0.0.1"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 0,
+                "time": 1793855186918,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "inserted": [
+                    {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Set fixture config to safe mode."
+                        }
+                      ],
+                      "source": {
+                        "kind": "user"
+                      },
+                      "role": "user",
+                      "id": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.status",
+            "params": {
+              "sessionId": "lifecycle",
+              "status": "running"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "turn/start",
+                "seq": 1,
+                "time": 1793855186920,
+                "data": {
+                  "turn": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "agent/inbox/spliced",
+                "seq": 2,
+                "time": 1793855186921,
+                "data": {
+                  "target": "next-turn",
+                  "start": 0,
+                  "removedCount": 1,
+                  "inserted": []
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "id": "req_07c9052915ab4fc78fe6c3d5ad478ba8",
+            "result": {
+              "messageId": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "step/start",
+                "seq": 3,
+                "time": 1793855186930,
+                "data": {
+                  "turn": 1,
+                  "step": 1
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "system/message",
+                "seq": 4,
+                "time": 1793855186932,
+                "data": {
+                  "turn": 1,
+                  "step": 1,
+                  "message": {
+                    "role": "system",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Use fictional fixture only."
+                      }
+                    ],
+                    "source": {
+                      "kind": "system-prompt"
+                    },
+                    "id": "f3242455-746f-4732-a3c4-1525bbea7a94"
+                  }
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "user/message",
+                "seq": 5,
+                "time": 1793855186932,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    }
+                  ],
+                  "source": {
+                    "kind": "user"
+                  },
+                  "role": "user",
+                  "id": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "user/message",
+                "seq": 6,
+                "time": 1793855186933,
+                "data": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                    }
+                  ],
+                  "source": {
+                    "kind": "runtime-context",
+                    "form": "snapshot",
+                    "sections": [
+                      {
+                        "name": "working-directory:current",
+                        "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                      }
+                    ]
+                  },
+                  "role": "user",
+                  "id": "e62acd2b-c987-406d-be17-361c3b72b009"
+                },
+                "surfaceOp": "append"
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "request/header",
+                "seq": 7,
+                "time": 1793855186933,
+                "data": {
+                  "header": {
+                    "config": {
+                      "provider": "fixture",
+                      "model": "fixture",
+                      "maxTokens": 128,
+                      "reasoningEffort": "off"
+                    },
+                    "adapterDefaults": {
+                      "reasoningEffort": true,
+                      "maxTokens": true
+                    },
+                    "tools": [
+                      {
+                        "name": "write_fixture",
+                        "description": "Write one new fixture config file.",
+                        "parameters": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string",
+                              "enum": [
+                                "mode=safe\n"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "text"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "reason": "initial"
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "method": "session.event",
+            "params": {
+              "sessionId": "lifecycle",
+              "event": {
+                "type": "request/context",
+                "seq": 8,
+                "time": 1793855186933,
+                "data": {
+                  "provider": "fixture",
+                  "model": "fixture",
+                  "contextWindow": 1000000
+                }
+              }
+            }
+          },
+          {
+            "jsonrpc": "2.0",
+            "id": "req_aac14e199f4542f8bf54d55ba189fa72",
+            "result": {}
+          }
+        ]
+      },
+      "shutdownResponse": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "result": {
+        "error": "TransportClosedError: dsh profile \"h24-fixture\": DeepSeek Harness runtime exited\nexit code: 0"
+      },
+      "server": {
+        "port": 52855,
+        "requests": [
+          {
+            "attempt": 1,
+            "scriptBehavior": "stall",
+            "behavior": "stall",
+            "path": "/v1/messages",
+            "headers": {
+              "host": "127.0.0.1:52855",
+              "connection": "close",
+              "user-agent": "deepseek-harness/0.2.2-alpha.2 (+https://github.com/deepseek-ai/deepseek-harness)",
+              "content-type": "application/json",
+              "accept": "text/event-stream",
+              "x-api-key": "h24-local-only",
+              "anthropic-version": "2023-06-01",
+              "x-deepseek-harness-user-id": "h24-fictional-user",
+              "x-deepseek-harness-session-id": "lifecycle",
+              "accept-language": "*",
+              "sec-fetch-mode": "cors",
+              "accept-encoding": "gzip, deflate",
+              "content-length": "669"
+            },
+            "body": {
+              "model": "fixture",
+              "stream": true,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Set fixture config to safe mode."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                    }
+                  ]
+                }
+              ],
+              "max_tokens": 128,
+              "thinking": {
+                "type": "disabled"
+              },
+              "system": "Use fictional fixture only.",
+              "tools": [
+                {
+                  "name": "write_fixture",
+                  "description": "Write one new fixture config file.",
+                  "input_schema": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "enum": [
+                          "mode=safe\n"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  }
+                }
+              ]
+            },
+            "chunksSent": 0,
+            "outcome": "stalled"
+          }
+        ],
+        "socketsObserved": 1,
+        "socketsRemaining": 0,
+        "listenerClosed": true,
+        "portRebound": true
+      },
+      "log": "{\"type\":\"session\",\"version\":4,\"id\":\"lifecycle\",\"createdAt\":1793855186912,\"cwd\":\"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\",\"isSeeded\":false,\"delegationDepth\":0}\n{\"type\":\"agent/inbox/spliced\",\"seq\":0,\"time\":1793855186918,\"data\":{\"target\":\"next-turn\",\"start\":0,\"inserted\":[{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"701b93e6-8910-4ecf-9fd9-cf992b8da7ba\"}]}}\n{\"type\":\"turn/start\",\"seq\":1,\"time\":1793855186920,\"data\":{\"turn\":1}}\n{\"type\":\"agent/inbox/spliced\",\"seq\":2,\"time\":1793855186921,\"data\":{\"target\":\"next-turn\",\"start\":0,\"removedCount\":1,\"inserted\":[]}}\n{\"type\":\"step/start\",\"seq\":3,\"time\":1793855186930,\"data\":{\"turn\":1,\"step\":1}}\n{\"type\":\"system/message\",\"seq\":4,\"time\":1793855186932,\"data\":{\"turn\":1,\"step\":1,\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"text\",\"text\":\"Use fictional fixture only.\"}],\"source\":{\"kind\":\"system-prompt\"},\"id\":\"f3242455-746f-4732-a3c4-1525bbea7a94\"}},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":5,\"time\":1793855186932,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Set fixture config to safe mode.\"}],\"source\":{\"kind\":\"user\"},\"role\":\"user\",\"id\":\"701b93e6-8910-4ecf-9fd9-cf992b8da7ba\"},\"surfaceOp\":\"append\"}\n{\"type\":\"user/message\",\"seq\":6,\"time\":1793855186933,\"data\":{\"content\":[{\"type\":\"text\",\"text\":\"Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\\n\\nCurrent working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-hMSk3s\\\\\\\\world-eO251C\\\\\\\\workspace\\\".\"}],\"source\":{\"kind\":\"runtime-context\",\"form\":\"snapshot\",\"sections\":[{\"name\":\"working-directory:current\",\"text\":\"Current working directory: \\\"C:\\\\\\\\Users\\\\\\\\QYF\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\aifoundry-h24-p1-hMSk3s\\\\\\\\world-eO251C\\\\\\\\workspace\\\".\"}]},\"role\":\"user\",\"id\":\"e62acd2b-c987-406d-be17-361c3b72b009\"},\"surfaceOp\":\"append\"}\n{\"type\":\"request/header\",\"seq\":7,\"time\":1793855186933,\"data\":{\"header\":{\"config\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"maxTokens\":128,\"reasoningEffort\":\"off\"},\"adapterDefaults\":{\"reasoningEffort\":true,\"maxTokens\":true},\"tools\":[{\"name\":\"write_fixture\",\"description\":\"Write one new fixture config file.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"text\":{\"type\":\"string\",\"enum\":[\"mode=safe\\n\"]}},\"required\":[\"text\"]}}]},\"reason\":\"initial\"}}\n{\"type\":\"request/context\",\"seq\":8,\"time\":1793855186933,\"data\":{\"provider\":\"fixture\",\"model\":\"fixture\",\"contextWindow\":1000000}}\n{\"type\":\"assistant/attempt\",\"seq\":9,\"time\":1793855186962,\"data\":{\"turn\":1,\"step\":1,\"stream\":[]}}\n{\"type\":\"step/end\",\"seq\":10,\"time\":1793855186963,\"data\":{\"turn\":1,\"step\":1}}\n{\"type\":\"turn/end\",\"seq\":11,\"time\":1793855186963,\"data\":{\"turn\":1,\"reason\":{\"kind\":\"aborted\",\"reason\":{\"kind\":\"disposed\"}}}}\n",
+      "runtime": {
+        "pid": 24108,
+        "writes": 0,
+        "calls": [],
+        "requests": [
+          {
+            "provider": "fixture",
+            "model": "fixture",
+            "maxTokens": 128,
+            "reasoningEffort": "off",
+            "messages": [
+              {
+                "role": "system",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use fictional fixture only."
+                  }
+                ],
+                "source": {
+                  "kind": "system-prompt"
+                },
+                "id": "f3242455-746f-4732-a3c4-1525bbea7a94"
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Set fixture config to safe mode."
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "working-directory:current",
+                      "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "e62acd2b-c987-406d-be17-361c3b72b009"
+              }
+            ],
+            "toolHistory": {
+              "tools": [
+                {
+                  "name": "write_fixture",
+                  "description": "Write one new fixture config file.",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "enum": [
+                          "mode=safe\n"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  }
+                }
+              ],
+              "updates": []
+            },
+            "tools": [
+              {
+                "name": "write_fixture",
+                "description": "Write one new fixture config file.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "enum": [
+                        "mode=safe\n"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ]
+                }
+              }
+            ],
+            "sessionId": "lifecycle"
+          }
+        ],
+        "events": [
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 0,
+              "time": 1793855186918,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "inserted": [
+                  {
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Set fixture config to safe mode."
+                      }
+                    ],
+                    "source": {
+                      "kind": "user"
+                    },
+                    "role": "user",
+                    "id": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "turn/start",
+              "seq": 1,
+              "time": 1793855186920,
+              "data": {
+                "turn": 1
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "agent/inbox/spliced",
+              "seq": 2,
+              "time": 1793855186921,
+              "data": {
+                "target": "next-turn",
+                "start": 0,
+                "removedCount": 1,
+                "inserted": []
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "step/start",
+              "seq": 3,
+              "time": 1793855186930,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "system/message",
+              "seq": 4,
+              "time": 1793855186932,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "message": {
+                  "role": "system",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Use fictional fixture only."
+                    }
+                  ],
+                  "source": {
+                    "kind": "system-prompt"
+                  },
+                  "id": "f3242455-746f-4732-a3c4-1525bbea7a94"
+                }
+              },
+              "surfaceOp": "append"
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "user/message",
+              "seq": 5,
+              "time": 1793855186932,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Set fixture config to safe mode."
+                  }
+                ],
+                "source": {
+                  "kind": "user"
+                },
+                "role": "user",
+                "id": "701b93e6-8910-4ecf-9fd9-cf992b8da7ba"
+              },
+              "surfaceOp": "append"
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "user/message",
+              "seq": 6,
+              "time": 1793855186933,
+              "data": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                  }
+                ],
+                "source": {
+                  "kind": "runtime-context",
+                  "form": "snapshot",
+                  "sections": [
+                    {
+                      "name": "working-directory:current",
+                      "text": "Current working directory: \"C:\\\\Users\\\\QYF\\\\AppData\\\\Local\\\\Temp\\\\aifoundry-h24-p1-hMSk3s\\\\world-eO251C\\\\workspace\"."
+                    }
+                  ]
+                },
+                "role": "user",
+                "id": "e62acd2b-c987-406d-be17-361c3b72b009"
+              },
+              "surfaceOp": "append"
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "request/header",
+              "seq": 7,
+              "time": 1793855186933,
+              "data": {
+                "header": {
+                  "config": {
+                    "provider": "fixture",
+                    "model": "fixture",
+                    "maxTokens": 128,
+                    "reasoningEffort": "off"
+                  },
+                  "adapterDefaults": {
+                    "reasoningEffort": true,
+                    "maxTokens": true
+                  },
+                  "tools": [
+                    {
+                      "name": "write_fixture",
+                      "description": "Write one new fixture config file.",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "enum": [
+                              "mode=safe\n"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "reason": "initial"
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "request/context",
+              "seq": 8,
+              "time": 1793855186933,
+              "data": {
+                "provider": "fixture",
+                "model": "fixture",
+                "contextWindow": 1000000
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "assistant/attempt",
+              "seq": 9,
+              "time": 1793855186962,
+              "data": {
+                "turn": 1,
+                "step": 1,
+                "stream": []
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "step/end",
+              "seq": 10,
+              "time": 1793855186963,
+              "data": {
+                "turn": 1,
+                "step": 1
+              }
+            }
+          },
+          {
+            "sessionId": "lifecycle",
+            "event": {
+              "type": "turn/end",
+              "seq": 11,
+              "time": 1793855186963,
+              "data": {
+                "turn": 1,
+                "reason": {
+                  "kind": "aborted",
+                  "reason": {
+                    "kind": "disposed"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "normalExit": true,
+      "meaning": "outer process close observed; native assertions or nonzero exits remain failures"
+    }
+  }
+}

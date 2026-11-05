@@ -1,0 +1,13 @@
+# Preserve machine evidence, original report bytes and downloaded upstream inputs.
+evidence/** -text
+original-reports/** -text
+upstream/** -text
+patches/** -text
+evidence/** whitespace=cr-at-eol
+original-reports/** whitespace=cr-at-eol
+upstream/** whitespace=cr-at-eol
+# Preserve the upstream license's original space/tab indentation as downloaded.
+upstream/LICENSE-node.txt whitespace=cr-at-eol,-space-before-tab
+# A unified diff has required single-space context markers on empty lines.
+upstream/*.patch whitespace=cr-at-eol,-blank-at-eol
+patches/*.patch whitespace=cr-at-eol,-blank-at-eol

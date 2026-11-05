@@ -1,0 +1,46 @@
+{
+  "rawRun": "run-1793855173929-18436-http-only.json",
+  "traces": {
+    "trace-http-only.json": {
+      "node": "v24.16.0",
+      "pid": 20792,
+      "port": 52830,
+      "response": {
+        "status": 200,
+        "body": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"mock-message\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"mock-model\",\"content\":[],\"usage\":{\"input_tokens\":3,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"mock res\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"ponse re\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"covered\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":23}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+        "complete": true
+      },
+      "requests": [
+        {
+          "attempt": 1,
+          "scriptBehavior": "success",
+          "behavior": "success",
+          "path": "/v1/messages",
+          "headers": {
+            "content-type": "application/json",
+            "x-api-key": "h24-local-only",
+            "host": "127.0.0.1:52830",
+            "connection": "keep-alive",
+            "content-length": "95"
+          },
+          "body": {
+            "model": "fixture",
+            "messages": [
+              {
+                "role": "user",
+                "content": "test"
+              }
+            ],
+            "max_tokens": 20,
+            "stream": true
+          },
+          "chunksSent": 8,
+          "outcome": "completed"
+        }
+      ],
+      "listenerClosed": true,
+      "portRebound": true,
+      "scope": "official Mock LLM HTTP server only, no SDK runtime created"
+    }
+  }
+}

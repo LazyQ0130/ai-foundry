@@ -1,0 +1,8 @@
+from pathlib import Path
+import json,hashlib,subprocess,tempfile,time
+R=Path(__file__).resolve().parents[1];E=R/'evidence';S=Path(json.loads((R.parent/'evidence/source-lock.json').read_text())['sourceCache']);patch=R/'patches/sdk-natural-default-exit.patch';before=(S/'packages/sdk/server/src/index.ts').read_bytes();D=Path(tempfile.mkdtemp(prefix='aifoundry-h24-p1-apply-'));target=D/'packages/sdk/server/src/index.ts';target.parent.mkdir(parents=True);target.write_bytes(before);(D/'.gitattributes').write_bytes(b'* -text\n');commands=[]
+for args in [['git','-c','core.autocrlf=false','apply','--check',str(patch)],['git','-c','core.autocrlf=false','apply',str(patch)]]:
+ r=subprocess.run(args,cwd=D,text=True,capture_output=True);commands.append(dict(command=args,exit=r.returncode,stdout=r.stdout,stderr=r.stderr));assert r.returncode==0,r.stderr
+expected=before.replace(b'{ process.exit(code) }',b'{ process.exitCode = code; input.pause() }');assert target.read_bytes()==expected;assert (S/'packages/sdk/server/src/index.ts').read_bytes()==before
+result=dict(status='PASS',isolatedDirectory=str(D),commands=commands,patchSha256=hashlib.sha256(patch.read_bytes()).hexdigest(),sdkOriginalUnchanged=True,patchedSourceSha256=hashlib.sha256(expected).hexdigest(),lineEndings='command-local autocrlf=false and isolated .gitattributes; no global Git setting changed')
+(E/f'patch-apply-{time.time_ns()}.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');(E/'patch-apply-check.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print('Patch applies byte-exactly to isolated SDK source copy; original unchanged')

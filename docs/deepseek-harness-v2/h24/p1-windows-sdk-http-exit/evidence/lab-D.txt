@@ -1,0 +1,23 @@
+PASS D D7 provider Retry-After above normal ceiling refuses a retry
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+3221226505 !== 0
+
+    at sdkTurn (C:\Users\QYF\AppData\Local\Temp\aifoundry-h24-p1-fLwidf\C.ts:10:265)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async httpReview (C:\Users\QYF\AppData\Local\Temp\aifoundry-h24-p1-fLwidf\D.ts:12:28)
+    at async cases.startMockLlmServer.startMockLlmServer (C:\Users\QYF\AppData\Local\Temp\aifoundry-h24-p1-fLwidf\D.ts:17:90)
+    at async <anonymous> (C:\Users\QYF\AppData\Local\Temp\aifoundry-h24-p1-fLwidf\demo.ts:7:278) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 3221226505,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0
