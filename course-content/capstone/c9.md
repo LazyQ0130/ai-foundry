@@ -30,7 +30,7 @@ Capstone C9 · Production Delivery & Portfolio
 
 继续自己的 C8 项目，不覆盖 Product Brief，不重建 RAG/Agent。C9 只增加交付所需的最小工程改动。
 
-本课可以先完成可部署作品的本地交付：容器、迁移、私有存储、恢复、完整 Eval 与演示材料都要有实际证据；Staging 和云端 Production 尚未运行的项目如实标记 NOT VERIFIED。完成本地交付不等于获得 Production Ready 结论。选择实际云部署时，再验收下面的 HTTPS、云存储与 Production Safe Smoke，不为了完成课程伪造云端结果。
+本课可以先完成可部署作品的本地交付。Smoke（冒烟检查）是在运行中的应用上走一小组关键路径，例如登录、上传和保存笔记。本地交付需要以下实证：容器、迁移、私有存储、恢复、完整 Eval 与演示材料都要有实际证据；Staging（用于正式上线前验证的独立环境）和云端 Production（正式运行环境）尚未运行的项目如实标记 NOT VERIFIED。完成本地交付不等于获得 Production Ready 结论。选择实际云部署时，再验收下面的 HTTPS、云存储与 Production Safe Smoke，不为了完成课程伪造云端结果。
 
 | 阶段 | 证明什么 | 不能自动证明什么 |
 |---|---|---|
@@ -48,7 +48,7 @@ Capstone C9 · Production Delivery & Portfolio
 
 先自己检查：C8 结果在哪里？依赖 High/Critical 是否为零？同步 Run 的时限是多少？进程死亡时 RUNNING 会怎样？哪些云配置还没有验证？
 
-建立 Release Matrix：Code、Dependencies、Database、Storage、Provider、MCP、Security、Eval、Recovery、Deployment、Smoke、Artifacts。每项只写 PASS / FAIL / NOT VERIFIED，并附证据路径。不要先让 AI 把全表写成 PASS。
+建立发布验收表（Release Matrix），逐项检查 Code、Dependencies、Database、Storage、Provider、MCP、Security、Eval、Recovery、Deployment、Smoke、Artifacts。每项只写 PASS / FAIL / NOT VERIFIED，并附证据路径。不要先让 AI 把全表写成 PASS。
 
 :::prompt{title="1 · 只读 Production Readiness Review"}
 ```text
@@ -76,7 +76,14 @@ Capstone C9 · Production Delivery & Portfolio
 
 三个都是合理候选。本 Reference 选择第二种：一个 Node 部署单元，加 PostgreSQL/pgvector、私有 S3-compatible storage。没有因为毕业项目就加 Kubernetes。
 
-云目标采用 Render paid Docker + Render Postgres + private R2 的设计，具体配置见 Reference 的 deployment-decision.md。作者当前云部署若未验证，会明确保留 **CLOUD DEPLOYMENT NOT VERIFIED**；学生可以按自己的可用平台做同样的证据检查。
+作者选择的云目标是 Render paid Docker + Render Postgres + private R2，状态为 **CLOUD DEPLOYMENT NOT VERIFIED**。用下面的配置和证据要求写自己的 `docs/deployment-decision.md`，也可以换成自己能使用的平台。
+
+| 项目 | 作者方案与需要实测的证据 |
+|---|---|
+| Node 与网络 | Docker 内以非 root 用户运行 Node，监听 `0.0.0.0:$PORT`；通过产品 HTTPS 域名验证代理和 120 秒研究路径。MCP 使用同一 HTTPS 域名的 `/api/mcp/external-research` 和独立 Secret。 |
+| 数据库 | 同区域独立 PostgreSQL，使用 TLS。先备份，再在受控发布步骤执行 `prisma migrate deploy` 和 `prisma migrate status`，核对 pgvector 与 `vector(1024)`。 |
+| 对象存储 | 私有 R2，通过 S3 兼容接口访问，凭据仅授权本应用 bucket。签名 PUT/GET 有效期 300 秒，浏览器 CORS 仅允许产品 origin、所需的 PUT/GET/HEAD 和 Content-Type。实测浏览器上传与匿名 GET 被拒绝。 |
+| 发布与恢复 | 分开 Local、Test/Eval、Staging、Production 的数据库、bucket 与凭据。保留上一版镜像标识，实测备份恢复和回滚前后的 schema 兼容性。 |
 
 部署前阅读并记录当天的官方文档：[Next self-hosting](https://nextjs.org/docs/15/app/guides/self-hosting)、[Render Docker](https://render.com/docs/docker)、[Render deploy](https://render.com/docs/deploys)、[Postgres extensions](https://render.com/docs/postgresql-extensions)、[R2 CORS](https://developers.cloudflare.com/r2/buckets/cors/)。不要把 build command timeout 当成 HTTP request timeout；有 Docker 也不代表代理没有时限。
 
@@ -98,7 +105,7 @@ npm audit
 
 命令在自己的 Capstone 项目根目录执行，确认可见 `package.json` 与 `package-lock.json`。`.runtime` 被忽略且可能不在文件栏显示，找报告见[环境页操作](/environment#reports)。`npm outdated` 有过期包、`npm audit` 有漏洞时可能非零退出，这是结果的一部分；网络或 registry 错误则是检查未完成，不能当作零漏洞。保存报告前只保留包名、版本、依赖路径和风险，不保存环境变量或凭据。
 
-**直接依赖（direct）**是你在 `package.json` 中明确安装的包；**间接依赖（transitive）**是这些包继续使用的其他包。`outdated` 只说版本是否较旧，不是漏洞清单。逐项写直接／间接路径、漏洞根因、已修复版本（patched version）和升级风险。C8 当时继承了 1 moderate / 4 high / 0 critical，条目包含 @prisma/config、deepmerge-ts、next、postcss、prisma；它们不等于五个独立根因。你运行当天的结果才是你项目的事实。
+**直接依赖**（direct）是你在 `package.json` 中明确安装的包；**间接依赖**（transitive）是这些包继续使用的其他包。`outdated` 只说版本是否较旧，不是漏洞清单。逐项写直接／间接路径、漏洞根因、已修复版本（patched version）和升级风险。C8 当时继承了 1 moderate / 4 high / 0 critical，条目包含 @prisma/config、deepmerge-ts、next、postcss、prisma；它们不等于五个独立根因。你运行当天的结果才是你项目的事实。
 
 Reference 在 C9 锁定 Next 15.5.27、PostCSS 8.5.23、deepmerge-ts 8.0.2；保留 Prisma 6.19.3 并对其间接依赖使用明确 override。deepmerge 跨 major override 必须以 generate/migration/HTTP/Eval 回归证明兼容。全量审计中的未修复 braces 开发依赖链通过调整 lint 配置移除；TypeScript 和 React Hooks 检查继续执行。不是隐藏 dev audit，也不是把 Prisma 自动降级。
 
@@ -111,7 +118,7 @@ npm ls prisma @prisma/client deepmerge-ts
 
 第一条应显示谁依赖它，第二条应显示本项目实际安装版本；目标包不存在时，记录“此项目未安装”，不要为了照参考答案而装一个。让 AI 先对照你当天的 audit 和[官方 overrides 规则](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#overrides)说明改哪一条路径、为什么选该版本，再做最小改动；参考版本不是永久安全清单。
 
-**修改与恢复顺序：**先审查 `git status --short`、`git diff`，把已确认的源码保存为本机提交并记录编号；若还有未解释的改动，先在编辑器给将改的依赖配置各留一份本机备份。每次只处理一个根因，让本项目的 npm 更新 `package.json` 和锁文件，不手工删改锁文件中的条目。安装后重跑上面的路径检查和两种 audit，再运行下面要求的全部回归。成功要同时有目标版本生效、审计门槛通过、原功能通过。失败先停止继续升级，对照 Diff，只恢复本次修改的依赖配置与锁文件到保存点（编辑器本地备份，或先查看 `git show 提交编号:package.json` 及对应锁文件，再按保存点恢复这两个文件），执行 `npm ci` 恢复原安装并重验；不回退整个项目、不删锁文件或批量清理目录。秘密与运行报告仍不进入提交。
+**修改与恢复顺序**：先审查 `git status --short`、`git diff`，把已确认的源码保存为本机提交并记录编号；若还有未解释的改动，先在编辑器给将改的依赖配置各留一份本机备份。每次只处理一个根因，让本项目的 npm 更新 `package.json` 和锁文件，不手工删改锁文件中的条目。安装后重跑上面的路径检查和两种 audit，再运行下面要求的全部回归。成功要同时有目标版本生效、审计门槛通过、原功能通过。失败先停止继续升级，对照 Diff，只恢复本次修改的依赖配置与锁文件到保存点（编辑器本地备份，或先查看 `git show 提交编号:package.json` 及对应锁文件，再按保存点恢复这两个文件），执行 `npm ci` 恢复原安装并重验；不回退整个项目、不删锁文件或批量清理目录。秘密与运行报告仍不进入提交。
 
 :::warning{title="不要用 force 换一张绿图"}
 不要执行 `npm audit fix --force`。修复 Next/Prisma/React/MCP 后要重跑 lint、typecheck、test、build、migration、HTTP、Eval 和受控 real smoke。High/Critical 未清零就阻断交付；Moderate 必须修复或记录具体路径、可利用条件和接受理由。
@@ -136,7 +143,7 @@ npm ls prisma @prisma/client deepmerge-ts
 为现有 ResearchRun 实现 scripts/reconcile-stale-runs.mjs：默认 dry-run，--apply 显式写入，十分钟阈值。
 锁 Run 后复核 RUNNING/startedAt/所有近期 Step 活动；保护新鲜 Run。
 陈旧 Run 和 RUNNING Steps 标 FAILED / PROCESS_INTERRUPTED；幂等，不 Resume，不批准 Action，不创建 Note。
-增加独立测试 DB 的真实测试：dry-run 无改动、stale/fresh/completed、recent Step、PROPOSED Action、重复/并发执行。
+增加 test/recovery.integration.mjs，注册 test:recovery 为 node --test test/recovery.integration.mjs。只连接 C8 允许的独立测试库，测试 dry-run 无改动、stale/fresh/completed、recent Step、PROPOSED Action、重复/并发执行。
 记录安全计数；不打印数据库 URL/异常对象/Secret。运行必要回归并报告真实结果，不操作 Git。
 ```
 :::
@@ -144,7 +151,7 @@ npm ls prisma @prisma/client deepmerge-ts
 :::task{title="Break → Fix → Re-run：模拟一次进程中断"}
 只在隔离 Test DB 建一个旧 RUNNING 和旧 MODEL Step，再建一个 10 秒的新 Run，以及带近期完成 Step 的旧 Run。先 dry-run，观察 eligible，不应有写入。apply 后旧 Run/Step 失败；新鲜/近期活动的 Run 不变。再 apply 应为零。检查 PROPOSED 和 Note 数量不变。
 
-不能为实验杀生产进程或篡改生产 DB。Reference 的 `npm run test:recovery` 自带 DB allowlist；先阅读它的 guard。
+不能为实验杀生产进程或篡改生产 DB。先按 Starter `docs/local-environment.md` 配置 C8 的独立测试库并应用迁移，再用 `npm run test:recovery` 跑上面实现的检查。核对脚本只接受该本机独立目标。
 :::
 
 ## 做出真正可运行的容器
@@ -157,13 +164,13 @@ C2 用 Docker **运行别人配好的服务**，这里才用 Docker **构建并�
 
 :::prompt{title="3 · Docker、环境检查和部署工件"}
 ```text
-阅读我的部署 ADR，生成 multi-stage Dockerfile/.dockerignore 与部署 runbook。
+阅读我的部署 ADR，生成 multi-stage Dockerfile、.dockerignore 和 docs/deployment.md（部署操作手册）。Dockerfile 至少提供 runtime 和 release 两个具名构建阶段，前者启动应用，后者包含 Prisma CLI 与 migrations。
 使用支持的 Node>=20.19、production mode、平台 PORT、非 root；若用 standalone 必须实际 build/run 验证。
 新增 GET /api/health，只返回 status ok；不要调用 DB/Provider/Crossref/S3。
 建立 check-production-env.mjs：必需配置/HTTPS/remote DB TLS/1024维度/real modes/独立随机32字节安全secret。
 拒绝 TEST_DATABASE_URL、local HTTP、mock/fault flags、NEXT_PUBLIC secret；只输出变量名和状态。
 建立 production-smoke.mjs：显式 opt-in、公开HTTPS、synthetic only、调用预算和超时；禁止故障注入/泄密。
-Staging full smoke 与 Production safe smoke 分开。增加 release:check 复用 C8 deterministic Eval，绝不真实付费。
+建立 staging-smoke.mjs，要求 C9_STAGING_SMOKE=1，测试合成资料、私有及混合研究与批准重放；production-smoke.mjs 要求 C9_PRODUCTION_SMOKE=1。两者在 npm scripts 分别注册 smoke:staging 和 smoke:production，接收目标 URL。check:production-env 指向 node scripts/check-production-env.mjs。实现 scripts/release-check.mjs 并注册 release:check 为 tsx scripts/release-check.mjs，复用 C8 deterministic Eval 和基线，不调用真实付费模型。
 写清 private bucket/CORS、单独 migrate deploy/status、备份/回滚、recovery运行时机。
 关键 Research 事件用 allowlist structured logs，不记录prompt、providerbody、private chunks、token或URL。
 不加新业务功能，不操作 Git，不替我声称云部署成功。
@@ -186,7 +193,7 @@ docker build --target release -t research-workspace-release:这里换成提交�
 4. 执行已核对的 runbook 启动命令，`docker ps` 应显示**自己这次**的容器在运行。浏览器打开 runbook 写明的本机地址加 `/api/health`，应收到只含安全状态的 `status: ok`；再逐项完成上面的账号、Task、PDF 和后面的 smoke。health 成功只说明进程可响应。
 5. 启动失败先运行 `docker logs 自己的容器名`，仅在本机查看，给 AI 的错误先脱敏。核对 PORT、网络与配置来源；修改源码就重新构建新标签，不反复运行付费 smoke。暂停用 `docker stop 自己的容器名`，原配置可用时用 `docker start 自己的容器名` 恢复；回滚镜像按 runbook 核对 schema 兼容性与备份，不删卷、清库或杀其他项目。
 
-**成功标志：**镜像标签可追溯到提交，容器内真实账号与任务读写、PDF、隔离评估和受控 smoke 都有证据。只有 build 或 health 通过仍未完成本课；本机验证也不等于真实 HTTPS 云部署已通过。
+**成功标志**：镜像标签可追溯到提交，容器内真实账号与任务读写、PDF、隔离评估和受控 smoke 都有证据。只有 build 或 health 通过仍未完成本课；本机验证也不等于真实 HTTPS 云部署已通过。
 
 数据库 release 顺序必须是：Build image → backup/verify DB → migrate deploy once → migrate status → deploy app → smoke。生产禁用 migrate dev、db push、reset。确认 pgvector extension version 和 vector(1024) 查询真的可用。
 
@@ -200,13 +207,13 @@ docker build --target release -t research-workspace-release:这里换成提交�
 
 ## 发布验证不是在线故障注入
 
-先在隔离 Test/Eval shell 运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；生产 env check 在另一个安全进程进行。
+先按 Starter `docs/local-environment.md` 的 C8 步骤，在隔离 Test/Eval 终端让 `DATABASE_URL` 与 `TEST_DATABASE_URL` 指向本机 `capstone_c8_eval`，应用现有迁移，再运行 `npm run release:check`。Reference 先检查 C8 DB allowlist，清除 paid key、强制 mock；在单独的安全终端注入目标环境配置后执行 `npm run check:production-env`，记录变量检查状态。该命令只检查配置，实际网络、存储权限与 HTTPS 由后面的运行检查验证。
 
 验收 C7 的 Proposal 三步长度处理：首次生成、同一 deadline 内的一次压缩、两次仅超长时的完整 Claim 草稿降级。区分三个来源标识，保留严格校验与人工审批；具体实现和失败条件回看 C7“长度超限时的三步处理”，不要在交付时另加一套规则。
 
-Staging Full Smoke：Register/Login → synthetic TXT/PDF → READY → private search → Task → private Run → external enabled Run → Grounded Report → Citation/source → Proposal → Human approval → replay → one Note。再检验 bucket anonymous denied、MCP HTTPS、recovery。C8 的破坏性实验只能在 Test/Eval，不能迁到 Production。
+Staging Full Smoke：Register/Login → synthetic TXT/PDF → READY → private search → Task → private Run → external enabled Run → Grounded Report → Citation/source → Proposal → Human approval → replay → one Note。再检验 bucket anonymous denied、MCP HTTPS、recovery。若 Staging 运行环境连不上 Crossref，沿用 C6 的记录方式，将真实 mixed 链路标为 NOT VERIFIED，保留其他已验证项与证据。C8 的破坏性实验只能在 Test/Eval，不能迁到 Production。
 
-Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 bounded mixed Run，检查 health/HTTPS/auth/READY/Citation/Proposal/Approve/replay/source。最多 60 HTTP calls、8 分钟，Run 还有现有预算。数据用 [SMOKE]/smoke- 前缀，不为清理加用户删除 API。
+Production Safe Smoke：显式启用，只用一个 synthetic TXT、一个 bounded mixed Run，检查 health/HTTPS/auth/READY/Citation/Proposal/Approve/replay/source。最多 60 HTTP calls、8 分钟，Run 还有现有预算。数据用 [SMOKE]/smoke- 前缀。恢复与线上 Smoke 各用独立验证环境。在验证终端中显式设置 `C9_STAGING_SMOKE=1` 或 `C9_PRODUCTION_SMOKE=1`（PowerShell 用 `$env:变量名 = '1'`，macOS/Linux 用 `export 变量名=1`），再运行 `npm run smoke:staging -- https://你的实际预发布域名` 或 `npm run smoke:production -- https://你的实际生产域名`，按当前验证环境选其中一条。只做本机 Staging 时，还需设置 `C9_LOCAL_STAGING_SMOKE=1` 并传自己的本机地址；把 HTTPS 和云端验证保留为未验证。
 
 :::check{title="你能拿出的运行证据"}
 - 空 DB 的正式 migration 和 vector(1024) scoped retrieval。
@@ -230,6 +237,8 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 
 实际 cloud 不可用时可以完成本地验证，记录 **LOCAL PRODUCTION-LIKE VERIFIED / CLOUD DEPLOYMENT NOT VERIFIED**。这一状态下，验收记录中的 Production Safe Smoke 必须保持 NOT VERIFIED，也不能宣称 Production Ready。等真实目标可用再完成该项，无须伪造 URL。
 
+把发布验证汇总到 `docs/release-evidence.md`。这份交付证据记录列出各环境的验证状态、对应的提交或镜像标识，以及迁移、存储、恢复、Smoke 和 C8 Eval 的证据位置。
+
 ## 用事实完成作品集首页
 
 到这里再写 README。中文主名 **AI 研究工作台**，副名 AI Research Workspace，说明是 AI 研究 Agent 毕业项目实战。
@@ -240,7 +249,7 @@ Production Safe Smoke：显式 opt-in，只用一个 synthetic TXT、一个 boun
 
 :::prompt{title="5 · 基于证据写 README 与 Architecture"}
 ```text
-阅读 Product Brief、真实代码与 release-evidence/Eval 验证报告，完善中文 README、docs/architecture.md 与 architecture.mmd。
+阅读 Product Brief、真实代码、docs/release-evidence.md 的交付证据记录和 C8 Eval 报告，完善中文 README、docs/architecture.md 与 architecture.mmd。
 结构包括 Demo、Why、What it does、Product Flow、Features、Trust & Safety、Architecture、Eval、Stack、Local Run、Deployment、Known Limitations。
 只写真实事实和真实测过的数字；没有HTTPS部署就明确未部署，不填写假URL。
 画系统图和Trust Boundary，不画无依据的新服务。保留同步执行/no worker/stale fail-closed/provider变化/小数据集/人工判断限制。

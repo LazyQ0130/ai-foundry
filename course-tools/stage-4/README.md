@@ -1,6 +1,10 @@
 # Stage 4 验收工具
 
-只复制本包 `scripts` 文件到自己的 Stage 4 项目；不要覆盖自己的页面、`package.json` 或 `.env`。重复文件先比较。4.6 提供固定的三单元核心检查；4.7 的完整 Eval 案例、Runner 和界面仍由该课开发任务生成。本包不包含 Agent 完成答案。
+把本包 `scripts` 中的工具复制到自己的 Stage 4 项目；不要覆盖自己的页面、`package.json` 或 `.env`。重复文件先比较。4.6 提供固定的三单元核心检查；4.7 的完整 Eval 案例、Runner 和界面仍由该课开发任务生成。本包不包含 Agent 完成答案。
+
+## 可选的本机验收配置
+
+默认只需要项目原来的 `.env` 和日常 `DATABASE_URL`。如果需要覆盖测试库地址或评估端口，在**自己的项目根目录**用编辑器创建 `.env.course-checks`，参考本包 `.env.course-checks.example`。只有需要覆盖时才添加 `TEST_DATABASE_URL`。用 `git check-ignore .env.course-checks` 确认输出该文件名后，再运行工具。
 
 ## 4.6：三次学习，使用同一套固定检查
 

@@ -61,7 +61,7 @@ test('all new Stage 1/2 figures decode and are captioned in the correct lesson',
 
 test('advanced teaching figures are delivered, captioned and present in every Capstone lesson', async () => {
   const figures = JSON.parse(await readFile('docs/course-advanced-visuals.json', 'utf8')) as { lesson: string; asset: string; caption: string; readingNote: string }[]
-  assert.equal(figures.length, 17)
+  assert.equal(figures.length, 16)
   assert.equal(new Set(figures.map(item => item.asset)).size, figures.length)
   for (const figure of figures) {
     const source = await readFile(`course-content/${figure.lesson}`, 'utf8')

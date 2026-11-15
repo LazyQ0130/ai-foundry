@@ -9,7 +9,7 @@ checklist:
   - "已验证固定 host、DOI、摘要清洗、内容上限与 Evidence eligibility"
   - "已让私人和外部证据进入同一 Grounded Report 与 Citation Snapshot"
   - "已验证 disabled、extra tool、坏结果、timeout、metadata-only、注入及 Alice/Bob"
-  - "已完成测试、真实 Smoke、依赖审计、Git diff 与秘密文件检查并保存 C6"
+  - "已完成确定性测试，记录真实 Smoke 结果或未验证原因，完成依赖审计、Git diff 与秘密文件检查并保存 C6"
 checkKeys:
   - "check-c6d6000000000001"
   - "check-c6d6000000000002"
@@ -30,7 +30,7 @@ checkKeys:
 写下自己的一个研究问题、私人资料当前能回答的部分，以及需要公开研究补充的部分。决定外部检索默认关闭的理由；列出不能发给外部服务的信息。先写判断，再向 AI 提需求。
 :::
 
-本节沿用 Stage 4 的 MCP 原语：Client、Streamable HTTP、鉴权、协议检查、固定工具调用和超时。新问题是如何让这些原语服从研究产品的隐私与证据规则。完整链路如下：
+本节沿用 Stage 4 的 [4.4 MCP 接入](/lesson/stage-4/s4-l4)，包括 Client、Streamable HTTP（用 HTTP 传递 MCP 消息）、鉴权、协议检查、固定工具调用和超时。新问题是如何让这些原语服从研究产品的隐私与证据规则。完整链路如下：
 
 ```text
 Source Policy → local registry → model proposal → strict tool input
@@ -40,7 +40,7 @@ Source Policy → local registry → model proposal → strict tool input
 
 ## 搜索结果何时成为证据
 
-Crossref 提供 scholarly metadata。题名、DOI、年份说明有一条文献记录；它们不能证明论文的研究结论。摘要可能缺失，也可能含 JATS/XML 标记。即使摘要存在，本课也只读取有限摘录，没有读取全文。
+Crossref 提供学术出版物的题录信息。题名、DOI、年份说明有一条文献记录；它们不能证明论文的研究结论。摘要可能缺失，也可能带 JATS/XML 标记（期刊用来标记段落、标题等结构的标签）。即使摘要存在，本课也只读取有限摘录，没有读取全文。
 
 | 对象 | 能说明什么 | 能否进入报告 allowed evidence |
 |---|---|---|
@@ -95,20 +95,30 @@ PRIVATE_AND_EXTERNAL → search_knowledge + search_external_references
 
 先查 [Crossref REST API](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) 和 [filters](https://www.crossref.org/documentation/retrieve-metadata/rest-api/rest-api-filters/)，再低频试一条非敏感 query。作者验证使用 `query=agent memory`、`filter=has-abstract:true`、`rows=3`。带 abstract 的 select 请求曾返回 500，去掉 select 后成功；这说明参数组合要实际验证。实时内容可能变化，不把某篇论文永久写成验收前提。
 
+:::stuck{title="当前网络连不上 Crossref"}
+从**运行 adapter 的环境**试一次下面的查询。不同地区和网络（包括中国大陆的校园网、宽带或移动网络）结果可能不同。下面是 Windows PowerShell 命令；macOS 把 `curl.exe` 换成 `curl`，把 `NUL` 换成 `/dev/null`。只记录 HTTP 状态或脱敏错误类别，查询使用合成关键词。
+
+```bash
+curl.exe --max-time 8 --silent --show-error --output NUL --write-out "%{http_code}\n" "https://api.crossref.org/works?query=agent%20memory&filter=has-abstract%3Atrue&rows=3"
+```
+
+200 表示该环境能连接 API，是否有可引用摘要仍由 adapter 检查。DNS、TLS、连接超时或持续上游错误时，记录实际运行环境、时间和错误类别，将真实外部查询和 mixed Smoke 标为 `CROSSREF SMOKE NOT VERIFIED`。继续用本地 fetch fixture 验证清洗、超时和降级，用 MCP Stub 验证混合引用，再用 `PRIVATE_ONLY` 的合成资料完成后续课程。恢复可达后补跑真实 mixed Smoke；fixture 的通过记录只计入确定性验收。
+:::
+
 adapter 独立于 MCP、数据库和 Session。固定请求 `https://api.crossref.org/works`，不接受 URL、host、apiKey 或 rows 覆盖。上游 8 秒、最多 3 条、响应最多 250KB、原摘要最多 16K 字符；清洗后证据最多 1600 字符，外部 Citation 摘录最多 1600。禁止重定向。可选 mailto 只从服务端环境读取。
 
 :::prompt{title="Prompt 2：Crossref Adapter"}
 
 ```text
-先核对 Crossref 官方文档，并低频验证非敏感 query。实现独立 crossref-adapter，不接 Agent。输入严格 {query}，trim 后3～200字符，拒绝额外字段和URL。固定 api.crossref.org/works、rows=3、8秒timeout、bounded response、redirect:error。mailto只能来自服务端环境。
+先核对 Crossref 官方文档，用一次非敏感 query 探测可达性；真实查询无法完成时记录 CROSSREF SMOKE NOT VERIFIED，继续实现与运行本地 fixture。实现独立 crossref-adapter，不接 Agent。输入严格 {query}，trim 后3～200字符，拒绝额外字段和URL。固定 api.crossref.org/works、rows=3、8秒timeout、bounded response、redirect:error。mailto只能来自服务端环境。
 验证 DOI、title、year；sourceUrl 只能由合法 DOI 本地构造 https://doi.org/DOI，忽略 upstream URL。用保守、平衡的 JATS 标记白名单清洗成纯文本；不可靠则降级 REFERENCE_METADATA，安全摘要才是 CLAIM_EVIDENCE。证据1600字符以内，不渲染 raw HTML。
-返回严格 sourceType/externalId/title/sourceUrl/publishedYear/supportLevel/evidenceText。缺DOI、坏title跳过；坏顶层响应拒绝。429→EXTERNAL_RATE_LIMITED，timeout→EXTERNAL_TIMEOUT，不泄露原始body、不无限重试。为正常/缺摘要/坏markup/巨型响应/恶意URL/429/取消写确定性fetch fixture测试。输出低频真实验证的query、计数、耗时，不保存完整摘要和原始响应。不操作Git。
+返回严格 sourceType/externalId/title/sourceUrl/publishedYear/supportLevel/evidenceText。缺DOI、坏title跳过；坏顶层响应拒绝。429→EXTERNAL_RATE_LIMITED，timeout→EXTERNAL_TIMEOUT，不泄露原始body、不无限重试。为正常/缺摘要/坏markup/巨型响应/恶意URL/429/连接失败/超时/取消写确定性fetch fixture测试。真实查询成功时输出query、计数、耗时；无法完成时输出脱敏错误类别和未验证标记。只保存这些摘要信息。不操作Git。
 ```
 
 :::
 
 :::check{title="Adapter gate"}
-测试必须证明 upstream 的恶意 URL 不会被执行或保存；摘要不能可靠清洗时只返回题录。检查真实查询是否含可用摘要，再继续 MCP。如果没有，换非敏感关键词并记录原因。
+测试必须证明 upstream 的恶意 URL 不会被执行或保存；摘要不能可靠清洗时只返回题录。真实查询可达时检查是否有可用摘要；若有响应但无相关摘要，换非敏感关键词并记录原因。网络不可达时按上面的排障记录真实证据状态，确定性测试通过后继续 MCP。
 :::
 
 ## MCP Server / Client 的信任边界
@@ -126,8 +136,8 @@ MCP Server 不需要 User Session、Workspace、数据库或私人资料访问�
 :::prompt{title="Prompt 3：固定 MCP Server"}
 
 ```text
-复用 Stage 4 已验证的 @modelcontextprotocol/server 2.2.0 和 Streamable HTTP handler 原语，建立固定 /api/mcp/external-research。只注册 search_external_references，严格 {query} 调用已经测试的 Crossref adapter。
-复用短期 HMAC Bearer、恒定时间验签、Host/Origin与进程级请求限制。使用全新 audience ai-research-external、scope tools:call:search_external_references、server-only MCP_EXTERNAL_AUTH_SECRET。生产HTTPS，localhost HTTP只允许显式本地验证。MCP URL只来自服务端配置，路径固定。保留协议2026-07-28，核对2.2.0实际类型；取消signal传给adapter。
+复用第 4.4 课已验证的 @modelcontextprotocol/server 2.2.0 和 Streamable HTTP handler 原语，建立固定 /api/mcp/external-research。只注册 search_external_references，严格 {query} 调用已经测试的 Crossref adapter。
+复用短期 HMAC Bearer、恒定时间验签、Host/Origin与进程级请求限制。使用全新 audience ai-research-external、scope tools:call:search_external_references、server-only MCP_EXTERNAL_AUTH_SECRET。生产HTTPS，localhost HTTP只允许显式本地验证。MCP URL只从服务端 MCP_EXTERNAL_URL 读取，路径固定为 /api/mcp/external-research；用与审批不同的随机 Secret。保留协议2026-07-28，核对2.2.0实际类型；取消signal传给adapter。
 Server不导入Prisma/Auth/Knowledge，不注册写工具，不复制Stage4演示research_reference/publicReference。失败只返回稳定errorCode。列出保留的原语与移除的演示业务。不操作Git。
 ```
 
@@ -136,9 +146,9 @@ Server不导入Prisma/Auth/Knowledge，不注册写工具，不复制Stage4演�
 :::prompt{title="Prompt 4：MCP Client Adapter"}
 
 ```text
-复用 Stage4 @modelcontextprotocol/client 2.2.0 的固定地址、短期Bearer、StreamableHTTPClientTransport、connect、pin协议、listTools与callTool。实现独立 external-research-mcp。总deadline12秒，接收Run取消signal，finally关闭client。
+复用第 4.4 课的 @modelcontextprotocol/client 2.2.0 的固定地址、短期Bearer、StreamableHTTPClientTransport、connect、pin协议、listTools与callTool。实现独立 external-research-mcp。总deadline12秒，接收Run取消signal，finally关闭client。
 listTools只确认search_external_references存在；即使远端还返回send_email/delete_everything，也不得加入本地Registry或调用。仅传{query}，不传私人Evidence/Session/userId/workspaceId。严格解析单个JSON text结果、数量、字段、DOI与本地构造URL一致性；拒绝坏结果。保留稳定错误码，不返回raw body或token。
-用mock client验证extra tool、缺tool、坏DOI、坏URL、额外字段、取消和协议失败。暂不接Runtime，不操作Git。
+用mock client验证extra tool、缺tool、坏DOI、坏URL、额外字段、取消和协议失败。确认 tsx 已作为开发依赖安装；另建仅供 C6 HTTP 验收的本地 scripts/c6-mcp-fixture.ts，显式 C6_TEST_MCP_FIXTURE=1 才可启动，监听 127.0.0.1:3133，复用独立 MCP Secret，提供固定摘要、题录、超时和 extra tool 场景。给 test:db 接入本课 HTTP 检查，读取 CAPSTONE_BASE_URL。暂不接 Runtime，不操作 Git。
 ```
 
 :::
@@ -198,6 +208,8 @@ Source URL 是当前 DOI 链接。历史快照回答「当时根据什么写出�
 
 ## Break → Fix → Re-run
 
+先按 Starter `docs/local-environment.md` 的本机 HTTP 验收步骤启动隔离测试应用，再按其中的 C6 步骤启动本机 MCP 测试替身。测试应用的 `MCP_EXTERNAL_URL` 指向替身。跑完下面的故障实验和确定性命令，再按末尾步骤切换到真实 Crossref。
+
 :::task{title="六组故障实验"}
 1. 关闭 external，让 mock model 提议外部工具：执行数和外发数均为 0。
 2. MCP fixture 增加 send_email：本地仍只有固定两个只读工具，新增工具不能执行。
@@ -227,8 +239,6 @@ Strict schema 不能删除自然语言中的所有恶意指令。安全边界必
 无摘要先检查 Crossref query 与 adapter 降级原因；MCP 401 检查 server-only secret、audience/scope/TTL；协议错误检查固定版本和SDK锁；timeout先看upstream与总deadline，不能无限放宽；全是私人引用先查模型是否选择external，再查eligible count，再查报告实际是否引用。metadata-only无需“修成”证据。不要把token、完整响应或.env贴给AI。
 :::
 
-完成确定性测试后才做一次 opt-in real smoke。非敏感私人 TXT + 非敏感研究问题，开启 external，观察真实模型自主选择工具。记录 query、Crossref result/eligible count、external/MCP latency、model/tool次数、两种实际 Citation；不强制模型每次调用两个工具。若问题确实需要外部补充，仍只引用私人证据，先检查研究需求和返回摘要相关性，再调整非敏感问题。不要用 fixture 或硬编码工具顺序冒充真实模型选择。
-
 ```bash
 npm ci
 npm run lint
@@ -245,8 +255,10 @@ git diff
 git diff --check
 ```
 
+确定性检查通过后，若运行环境可达 Crossref，再做一次明确启用的真实 Smoke。在独立的真实验证应用中接入你已验证的 Chat 与 Embedding 配置，将 `AI_RESEARCH_MODE`、`AI_REPORT_MODE`、`AI_EMBEDDING_MODE` 设为 `real`。把 `MCP_EXTERNAL_URL` 指回该应用自身的 `/api/mcp/external-research`，保存并重启，核对请求目标。重新入库非敏感 TXT，实际生成真实向量，再用非敏感问题开启 external。记录实际 query、Crossref 返回数与可引用摘要数、耗时、模型和工具次数、报告引用的来源类型。若没有引用外部证据，先检查模型选择、摘要相关性与报告实际使用的来源。网络不可达时记录 `CROSSREF SMOKE NOT VERIFIED`，同时保留私人链路和 Stub 验收结果。
+
 :::check{title="保存自己的 C6"}
-解释 Search Result / Metadata / Evidence、默认关闭、固定 MCP 边界、混合 Citation 和失败降级。你亲自决定证据标准与隐私取舍，AI 可以生成 adapter、SDK glue、UI 和 tests；你必须检查 migration、query外发、allowed set与真实HTTP证据。确认.env、API Key、MCP secret、测试DB、日志未进入Git，再提交自己的版本，例如 `add controlled external research evidence`。
+解释 Search Result / Metadata / Evidence、默认关闭、固定 MCP 边界、混合 Citation 和失败降级。你亲自决定证据标准与隐私取舍，AI 可以生成 adapter、SDK glue、UI 和 tests；你必须检查 migration、query 外发、allowed set 与 HTTP 证据，并把真实外部 Smoke 的结果或未验证原因写入验收记录。确认 `.env`、API Key、MCP secret、测试库配置和日志未进入 Git，再提交自己的版本，例如 `add controlled external research evidence`。
 :::
 
 在 `docs/architecture.md` 更新双工具和来源流，标明 `Write capability / Approval / KnowledgeNote = Not implemented yet`。C7 将接着实现写能力与人工确认；本课先验收只读外部证据链路。

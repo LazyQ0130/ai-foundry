@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth, type User } from '../auth/AuthProvider.js'
 import { errorMessage } from '../lib/api.js'
 import EmailSecurity from '../components/EmailSecurity.js'
+import { PasswordField } from '../components/PasswordField.js'
 import { authDestination, authPath, isLessonDestination } from '../lib/authNavigation.js'
 import { projectPricingIntent } from '../lib/projectPricingNavigation.js'
 
@@ -16,11 +17,18 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
   const pricingReturnMessage = `完成${register ? '账号设置' : '登录'}后会回到项目版方案，并保留${pricingIntent?.lesson ? ` ${pricingIntent.lesson.id.toUpperCase()} 的课程去向` : '项目工坊入口'}。`
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmation, setConfirmation] = useState('')
+  const [confirmationTouched, setConfirmationTouched] = useState(false)
+  const confirmationInput = useRef<HTMLInputElement>(null)
+  const confirmationError = confirmationTouched && password !== confirmation ? '两次输入的密码不一致' : ''
   const [nickname, setNickname] = useState('')
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [registration, setRegistration] = useState<{ user: User; password: string } | null>(null)
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
+  useEffect(() => {
+    setPassword(''); setConfirmation(''); setConfirmationTouched(false); setAcceptedTerms(false); setError(''); setRegistration(null)
+  }, [register])
   const continueToApp = (user: User) => {
     const next = params.get('next')
     setRegistration(null)
@@ -28,12 +36,19 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
     navigate(authDestination(next, user.role), { replace: true })
   }
   const submit = async (event: FormEvent) => {
-    event.preventDefault(); setPending(true); setError('')
+    event.preventDefault(); setError('')
+    if (register && password !== confirmation) {
+      setConfirmationTouched(true)
+      confirmationInput.current?.focus()
+      return
+    }
+    setPending(true)
     try {
       const user = register ? await auth.register(phone, password, nickname, acceptedTerms) : await auth.login(phone, password)
       if (register) {
         setRegistration({ user, password })
         setPassword('')
+        setConfirmation(''); setConfirmationTouched(false)
         return
       }
       continueToApp(user)
@@ -58,7 +73,8 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
     <form onSubmit={submit} className="mt-5 space-y-4">
     <label className="block text-sm">手机号<input autoComplete="tel" inputMode="tel" pattern="1[3-9][0-9]{9}" title="请输入 11 位中国大陆手机号" maxLength={11} required value={phone} onChange={(e) => setPhone(e.target.value)} className={field} /></label>
     {register && <label className="block text-sm">昵称（可选）<input autoComplete="nickname" maxLength={50} value={nickname} onChange={(e) => setNickname(e.target.value)} className={field} /></label>}
-    <label className="block text-sm">密码<input autoComplete={register ? 'new-password' : 'current-password'} type="password" required minLength={8} maxLength={72} value={password} onChange={(e) => setPassword(e.target.value)} className={field} /><span className="mt-1 block text-xs text-slate-400">8～72 个字符</span></label>
+    <PasswordField key={register ? 'register-password' : 'login-password'} label="密码" autoComplete={register ? 'new-password' : 'current-password'} value={password} onChange={setPassword} hint="8～72 个字符" />
+    {register && <PasswordField label="确认密码" autoComplete="new-password" value={confirmation} onChange={setConfirmation} onBlur={() => setConfirmationTouched(true)} error={confirmationError} inputRef={confirmationInput} />}
     {register && <>
       <p className="text-xs leading-5 text-slate-500">请核对手机号，管理员将据此开通课程；目前手机号不验证归属。</p>
       <label className="flex items-start gap-2 text-sm leading-6"><input className="mt-1.5" type="checkbox" required checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)} /><span>我已阅读并同意<Link to="/terms" target="_blank" rel="noopener noreferrer" className="text-brand-600">《用户协议》</Link>与<Link to="/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-600">《隐私政策》</Link></span></label>
@@ -66,5 +82,6 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
     {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
     <button disabled={pending || (register && !acceptedTerms)} className="btn btn-md btn-primary w-full">{pending ? '请稍候…' : register ? '创建账号，下一步' : '登录'}</button>
     {!register && <Link to="/forgot-password" className="block text-sm text-brand-600">忘记密码？</Link>}
+    {!register && <p className="text-xs leading-6 text-slate-500"><Link to="/terms" target="_blank" rel="noopener noreferrer" className="text-brand-600">《用户协议》</Link><span aria-hidden="true"> · </span><Link to="/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-600">《隐私政策》</Link></p>}
   </form><p className="mt-4 text-xs leading-6 text-slate-500">手机号用于登录，请妥善保管密码。</p><Link className="mt-4 block text-sm text-brand-600" to={authPath(register ? 'login' : 'register', params.get('next'))}>{register ? '已有账号？登录' : '还没有账号？注册'}</Link></div></div></section>
 }

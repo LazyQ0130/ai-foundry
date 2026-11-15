@@ -73,6 +73,10 @@ checkKeys:
 
 第一处 Prompt 自动获得 `lesson-prompt` 锚点；第一处 Stuck 为 `lesson-help`，后续同类型加数字后缀。不要自行插入 HTML 锚点。
 
+课程页会从已授权加载的正文中提取全部 `stuck` 块，作为“卡住了怎么办”面板的内容；正文中的原块与锚点保留。桌面入口位于右侧任务区顶部，小屏入口位于吸顶课程工具条。没有 `stuck` 块时不显示入口。每块的 `title` 会用作面板折叠项标题，建议写清具体症状；未填写时使用“排查建议 N”。
+
+`extractLessonHelp` 使用相同的 remark 解析与白名单校验，从 AST 源位置提取正文并保留引用链接定义。面板复用 `LessonMarkdown` 的可选 `anchorPrefix` 参数隔离教学块与资源 ID，避免和正文重复；默认不传时原有锚点保持不变。
+
 ## 课程资源下载
 
 资源块只声明固定 ID，不接受标题、URL、路径或正文。标题、说明、文件名来自 `src/data/courseAssets.ts` 白名单，文件大小从服务端查询。

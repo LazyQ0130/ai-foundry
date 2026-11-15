@@ -22,17 +22,6 @@
     "tool": "built-in image_gen"
   },
   {
-    "id": "s3-l4-ingestion",
-    "lesson": "stage-3/s3-l4.md",
-    "file": "s3-l4-ingestion-guide.webp",
-    "caption": "文档只有完整写入成功才能进入 ready 状态",
-    "prompt": "Use case: scientific-educational. Asset type: inline illustration for a Chinese AI programming course. Landscape 1536x1024, white background, navy typography, blue/teal accent, amber for warnings, restrained red for failures. Clean textbook infographic with rounded cards, clear arrowheads and large readable Simplified Chinese labels. Short captions, no dense paragraphs, no branding or decorative mascots. Accurate conceptual diagram, never pretend to be a real screenshot. Title \"什么时候可以标记 ready？\". Two lanes: success document -> split chunks -> embed each -> database transaction -> ready -> searchable. Failure lane third embedding fails -> failed -> no ready, retry allowed. Amber intermediate state \"processing\". Show ready requires all expected chunks and valid 1024-dimensional vectors. Do not show partial embedding results as a successful document.",
-    "readingNote": "看图核对：processing 从处理开始就存在；全部分块、向量和 ready 状态需按本课约定在事务中一起完成，提交成功后才对检索可见。上游请求成功不等于入库成功。",
-    "asset": "public/course-media/stage-3/s3-l4-ingestion-guide.webp",
-    "finalEditPrompt": "Edit the supplied teaching illustration. Correct only the process ordering in the upper success lane. The processing state must begin BEFORE splitting/embedding, never after the database transaction. Replace the upper lane with exactly 6 numbered cards: 1 原始文档 / processing; 2 切分分块; 3 逐块生成 1024 维向量; 4 数据库事务写入; 5 提交成功，标记 ready; 6 可被检索. Remove the old fifth card 标记为 processing and any claim processing begins after writing. Retain failure lane and necessary conditions, align arrows. Do not add extra technical steps. Keep Chinese typography clear and readable.",
-    "tool": "built-in image_gen"
-  },
-  {
     "id": "s3-l6-citations",
     "lesson": "stage-3/s3-l6.md",
     "file": "s3-l6-citations-guide.webp",

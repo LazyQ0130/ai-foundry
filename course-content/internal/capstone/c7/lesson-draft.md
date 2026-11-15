@@ -59,7 +59,7 @@ C4～C6 已完成研究生命周期：检索、报告、引用、COMPLETED。保
 | ResearchAction | 一次待产生副作用的精确提议 | PROPOSED / REJECTED / EXECUTED |
 | KnowledgeNote | 人工确认后长期保存的知识资产 | 可独立于来源 Run 生存 |
 
-Stage 4 Demo 允许 AgentRun 停在 waiting_approval；本产品的 ResearchRun 已完成。复用 Stage 4 的 HMAC、精确参数、事务锁和幂等思想，重新围绕 Workspace / ResearchRun / ResearchAction / KnowledgeNote 接线。
+Stage 4 Demo 允许 AgentRun 停在 waiting_approval；本产品的 ResearchRun 已完成。复用 [4.3 的 HMAC 与精确参数](/lesson/stage-4/s4-l3) 和 [4.6 的事务锁与幂等](/lesson/stage-4/s4-l6)，重新围绕 Workspace / ResearchRun / ResearchAction / KnowledgeNote 接线。
 
 本课不把 save_knowledge_note 加进 C6 Research Runtime，也不把审批伪装成 ResearchStep。Run 页面展示独立 Action panel。V1 每个 Run 最多一个 SAVE_KNOWLEDGE_NOTE Action，拒绝后不重新生成第二个；改变主意可以重新研究。
 
@@ -111,6 +111,8 @@ POST /api/research/runs/:runId/knowledge-note-proposal 只接受{}，检查same-
 
 ## Canonical Args、Edit 与 Token
 
+回看你自己的 Stage 4.6 项目。从确认路由沿调用链找到签名校验、参数规范化、事务内锁定 Action、同一动作复用已保存结果这几处，记录实际路径。文件名由你的实现决定。手边只有 Capstone 项目时，可以按下面的契约直接实现，每项都用 C7 的测试核对。
+
 人必须看见服务器即将执行的精确 title、content 和 Source Run。Canonical Args 先 strict parse、trim，再固定字段顺序：
 
 ~~~ts
@@ -122,9 +124,9 @@ JSON.stringify({ title, content })
 :::prompt{title="Prompt 3：Canonicalization 与 Approval Token"}
 
 ~~~text
-先审读Stage4 agent-approval-v2.ts、agent-confirm-transaction.ts、agent-idempotency.ts、agent-persistence.ts，记录保留原语与移除旧业务。新建Capstone文件，不修改Stage4，不复制Resource/AgentRun/waiting_approval/save_research_note旧业务/UI。
+如果能读取我完成的 Stage 4.6 项目，从它的 Confirm 路由追踪签名校验、参数规范化、事务行锁、幂等键与结果复用，记录实际文件位置。如果只有当前 Capstone 项目，直接依据本 Prompt 与后续审批事务约定实现，说明准备怎样测试这些行为。只修改当前 Capstone 的 ResearchAction / KnowledgeNote 实现。
 canonicalizeKnowledgeNoteArgs：strict schema、trim、固定title/content顺序。校验持久化canonicalArgs可解析且重新序列化完全一致。使用Node crypto SHA256/HMAC/randomBytes/timingSafeEqual，不增加生产依赖。
-新Token绑定v、独立audience、SAVE_KNOWLEDGE_NOTE、userId/workspaceId/runId/actionId/actionVersion/canonicalArgsHash/expiresAt/nonce。ACTION_APPROVAL_SECRET至少32bytes、server-only、不入DB/Git，TTL5分钟。GET当前PROPOSED Action动态生成Token，不持久化Token。注入clock测试过期，不等待五分钟；拒绝坏签名、malformed、错误user/workspace/run/action/version/hash。
+新Token绑定v、独立audience、SAVE_KNOWLEDGE_NOTE、userId/workspaceId/runId/actionId/actionVersion/canonicalArgsHash/expiresAt/nonce。ACTION_APPROVAL_SECRET至少32bytes、server-only、不入DB/Git，TTL（有效时长）固定 5 分钟。GET当前PROPOSED Action动态生成Token，不持久化Token。注入clock测试过期，不等待五分钟；拒绝坏签名、malformed、错误user/workspace/run/action/version/hash。
 解释为什么这是当前提议的审批能力而不是登录凭据，不操作Git。
 ~~~
 
@@ -193,6 +195,8 @@ Knowledge 区域增加 /knowledge/notes 与详情：Title、Content、Saved At�
 
 ## Break → Fix → Re-run
 
+按 Starter `docs/local-environment.md` 的本机 HTTP 验收步骤准备数据库和测试应用。先为应用确认及验证脚本设置同一个测试用 `ACTION_APPROVAL_SECRET`（随机生成，独立于 MCP Secret），并把 `AI_NOTE_MODE` 设为 `mock`。让 AI 将本课 HTTP 与事务检查接到 `npm run test:db`，HTTP 检查读取 `CAPSTONE_BASE_URL`。
+
 :::task{title="实际攻击与故障实验"}
 1. 直接 POST /api/knowledge/notes：没有创建入口，不能绕过 Action。
 2. Edit v1→v2，再用 v1 Token：拒绝，无 Note。
@@ -222,8 +226,6 @@ Token 证明批准了哪个版本和哪些参数，事务证明写入原子且�
 生成失败先查 Run eligibility 与 Provider 契约，不改 Run 状态；旧 Token 403 先读当前 version/hash 与 TTL，不关闭验签；并发重复先确认真实数据库锁和两处 UNIQUE，不用前端按钮防重复；来源删后 Note 消失检查 FK 删除策略；批准超时先读 Action/Note 再重试，不在客户端重新发 title/content。不要把秘密、Token 或 Provider raw body贴给AI。
 :::
 
-确定性测试全部通过后，用非敏感真实 grounded 报告做 opt-in smoke：真实 Provider 生成提议，小幅编辑一次，使用当前 Token 批准，再重放。记录 Proposal latency、title/content length、version、replayed、note count；不记录 Token、Secret、Provider 原始响应。
-
 ~~~bash
 npm ci
 npm run lint
@@ -239,6 +241,8 @@ git status
 git diff
 git diff --check
 ~~~
+
+确定性测试全部通过后，在专用验证应用的服务端设置 `AI_NOTE_MODE=real` 和实际 Chat 配置，重启后用非敏感、有证据支持的报告做一次明确启用的真实 Smoke。让真实 Provider 生成提议，小幅编辑后使用当前 Token 批准，再发一次同一批准请求。记录提议耗时、标题和内容长度、版本、是否复用结果与 Note 数量。
 
 :::check{title="保存自己的 C7"}
 亲自解释 post-run action、三个事实、canonical args、version、精确 Token、锁、唯一键、事务和 provenance。检查实际命令与安全实验；确认.env、Approval Secret、Token、测试DB、日志未入Git，再保存自己的提交，例如 add human-approved knowledge notes。AI可生成密码学接线/表单/测试，你负责决定并验收授权边界。

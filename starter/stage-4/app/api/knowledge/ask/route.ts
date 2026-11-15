@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     const raw = query.kind === "mock"
       ? { kind: "mock" as const, text: JSON.stringify({ status: "answered", answer: "MOCK：这是基于第一条命中资料生成的示例回答。", sourceIds: [citable[0].sourceId] }), usage: null }
-      : await generate(buildCitationPrompt(input.question.trim(), citable), { structured: true, system: citationSystemInstruction });
+      : await generate(buildCitationPrompt(input.question.trim(), citable), { structured: true, system: citationSystemInstruction, maxOutputTokens: 1024 });
     if (raw.kind !== query.kind) throw new Error("PROVIDER_MODE_CHANGED");
     const answer = verifiedKnowledgeAnswer(raw.text, citable);
     const completedAt = performance.now();

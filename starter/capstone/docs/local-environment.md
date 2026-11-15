@@ -95,11 +95,82 @@ docker compose --env-file .env.local exec -T db psql -U capstone -d capstone -c 
 
 再按本课验证 1024 维检索、Alice/Bob 隔离和失败重试。基础设施检查不能证明你的上传路由、文件处理或 ownership 已正确。
 
-## 4. C8：复用隔离 Eval 库
+## 4. C2～C7：运行本机 HTTP 验收
 
-`eval-db` 的 55440 端口与 C8 的严格 allowlist 对齐。默认数据库是 `capstone_c8_eval`；首次初始化还创建 `capstone_c8_real`，供可选真实模型评估。二者都与日常开发库分离。运行前在独立测试窗口设置上述 `DATABASE_URL` / `TEST_DATABASE_URL`，部署全部已提交 migration，再执行自己实现的 Eval runner。真实评估换到 `capstone_c8_real`，须对两个变量同时换库、部署 migration 并显式 opt-in；不要给默认 deterministic runner 提供付费 Key。
+HTTP 检查需要一个已经启动、连接隔离库的应用。日常窗口 A 可以继续跑开发服务。另开两个项目终端 B 和 C，分别进入这个项目根目录，按第 2 节的系统命令把两个数据库变量都指向 `capstone_c8_eval`。在 C 部署迁移并核对：
 
-## 5. 停止与排错
+```bash
+npx prisma migrate deploy
+npx prisma migrate status
+```
+
+C3 起如需真实上传，先按第 3 节启动 Garage。把测试应用本课用到的各项 `AI_*_MODE` 设为 `mock`。如果本课测试本身不负责注入故障，先在 B 按该课的测试配置设好所需开关。沿参考命名时，C3 用 `C3_EMBED_FAIL_ONCE_AT=1` 验证失败后重试，C4 用 `C4_MOCK_TEST_SCENARIOS=1`，C5 用 `C5_MOCK_TEST_SCENARIOS=1`。这些开关按课使用，C3 的一次性故障要在该用例前启动新的测试应用进程。C6、C7 先完成本节下方各自的配置，再启动测试应用。下面以端口 3118 为例，在 B 运行：
+
+```bash
+npm run dev -- --hostname 127.0.0.1 --port 3118
+```
+
+进入浏览器核对 B 的实际首页可打开。C 中设置测试脚本使用的 URL，再运行本课已实现的 `test:db`。C6 先确保下文的 MCP 替身已经启动：
+
+```powershell
+$env:CAPSTONE_BASE_URL = 'http://127.0.0.1:3118'
+npm run test:db
+```
+
+```bash
+export CAPSTONE_BASE_URL=http://127.0.0.1:3118
+npm run test:db
+```
+
+B 的启动端口和 C 的请求目标要一致。若用 B 的浏览器做上传（示例为 3118），按第 3 节将该来源加入 `infra/cors.json` 并重跑 `node scripts/check-local-storage.mjs`；日常 A 的上传仍可走原 3000 端口。故障开关仅在本机测试窗口设置，PowerShell 使用 `$env:变量名 = '1'`，macOS/Linux 使用 `export 变量名=1`。验收结束后在 B 按 Ctrl+C，只关闭本轮测试用服务。
+
+**C6 的 MCP 测试替身。** 先在本机 `.env.local` 设置独立随机的 `MCP_EXTERNAL_AUTH_SECRET`，测试应用与替身用同一个值。运行 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成随机值，由你本人在本机填写。C6 的测试应用配置 `MCP_EXTERNAL_URL=http://127.0.0.1:3133/api/mcp/external-research`，把 `MCP_ALLOW_LOCAL_HTTP` 设为 `1`。保存后启动 B；若 B 已运行，则停止后重新启动。另开终端 D，进项目根目录，用对应系统的方式为 D 设置 `C6_TEST_MCP_FIXTURE=1`：
+
+```powershell
+$env:C6_TEST_MCP_FIXTURE = '1'
+node --env-file=.env.local --import tsx scripts/c6-mcp-fixture.ts
+```
+
+```bash
+export C6_TEST_MCP_FIXTURE=1
+node --env-file=.env.local --import tsx scripts/c6-mcp-fixture.ts
+```
+
+等替身显示已在 3133 监听，再从 C 运行 `npm run test:db`。结束后在 D 按 Ctrl+C。验证真实外部链路前，将独立验证应用的 `MCP_EXTERNAL_URL` 指回**实际应用自身**的 `/api/mcp/external-research` 并重启。
+
+**C7 的确认测试。** 另外生成一个独立的随机 `ACTION_APPROVAL_SECRET`，在本机配置中填写。应用和直接验证 Token 的测试都需要能读取同一个值；让 C7 的 `test:db` 从本机配置加载 `ACTION_APPROVAL_SECRET` 并继承 C 的数据库与地址变量。沿用参考文件名时，可在独立终端用 `node --env-file=.env.local scripts/c7-http-smoke.mjs` 与 `node --env-file=.env.local --import tsx --test test/knowledge-write.integration.ts` 分别核对 HTTP 和事务。继续使用隔离库和本机 Mock，按你实现的 C7 用例决定是否保留 C6 的测试替身。
+
+## 5. C8：复用隔离 Eval 库
+
+`eval-db` 的 55440 端口与 C8 的严格 allowlist 对齐。默认数据库是 `capstone_c8_eval`；首次初始化还创建 `capstone_c8_real`，供可选真实模型评估。二者都与日常开发库分离。运行前在独立测试窗口设置第 2 节的两个数据库变量，部署全部已提交 migration，运行 `npm run build`，再执行 C8 注册的 `npm run eval:capstone`（`tsx eval/runner.mjs`）。完成首次全量评估并审核 `eval/baseline.json` 后，用 `npm run eval:capstone -- --compare-baseline eval/baseline.json` 复验。单条故障注入使用 C8 正文的固定 case ID 和 `--` 参数分隔符。默认评估脚本会启动自己的测试应用。准备好评估器约定的端口，作者参考实现使用 3142（应用）和 3911（私有存储替身）；如果已被自己的其他验证进程占用，先停掉那一轮。
+
+仅在选择真实评估时，打开新的专用终端，先按第 2 节设置测试变量，再用下面对应的两行把两个变量同时换到 `capstone_c8_real`。命令只改当前终端，不显示连接串：
+
+```powershell
+$env:TEST_DATABASE_URL = $env:TEST_DATABASE_URL -replace '/capstone_c8_eval(?=\?|$)', '/capstone_c8_real'
+$env:DATABASE_URL = $env:TEST_DATABASE_URL
+```
+
+```bash
+export TEST_DATABASE_URL="$(node -p 'const u = new URL(process.env.TEST_DATABASE_URL); u.pathname = "/capstone_c8_real"; u.toString()')"
+export DATABASE_URL="$TEST_DATABASE_URL"
+```
+
+重新运行 `npx prisma migrate deploy` 和 `npx prisma migrate status`，确认输出目标库是 `capstone_c8_real`。准备实际 Chat 与 1024 维 Embedding 的服务端 Base URL、Key 和模型名，再在此终端选择执行：
+
+```powershell
+$env:C8_REAL_EVAL = '1'
+npm run eval:capstone:real
+```
+
+```bash
+export C8_REAL_EVAL=1
+npm run eval:capstone:real
+```
+
+直接运行 npm 入口时需要让 Runner 进程自己能读到 Provider 配置。若配置只在本机 `.env.local` 中，用 `node --env-file=.env.local --import tsx eval/runner.mjs --real` 代替上面的 npm 命令，已设置的隔离库和启用变量仍优先。验证后关闭此终端。普通确定性评估使用另一个终端，保持 Mock。
+
+## 6. 停止与排错
 
 暂停课程时执行 `docker compose --env-file .env.local stop db eval-db garage`；恢复时执行相应的 `up -d`。named volumes 保留数据与凭据。不要重新生成密码来修连接错误，也不要删除数据卷来排错。
 

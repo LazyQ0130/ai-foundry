@@ -20,15 +20,21 @@ test('session checks accept learner cookie names and both 32-byte encodings, but
   assert.throws(() => sessionCookie(legacy), /COOKIE_ATTRIBUTES_FAILED/)
 })
 
-test('course tools packages contain only their exact script/README allowlists and match delivery bytes', async () => {
+test('course tools packages contain only their exact allowlists and match delivery bytes', async () => {
   for (const stage of [2, 3, 4] as const) {
     const source = await createCourseToolsZip(stage)
     assert.deepEqual(Buffer.from(source), await readFile(`course-tools/aifoundry-stage${stage}-tools.zip`))
     const files = unzipSync(source), prefix = `aifoundry-stage${stage}-tools/`
-    const expected = ['README.md', 'scripts/course-env.mjs', 'scripts/course-checks.mjs', ...(stage === 2 ? ['scripts/fault-project.mjs', 'scripts/fault-proxy-core.mjs', 'scripts/fault-proxy.mjs'] : stage === 3 ? ['scripts/run-rag-eval.mjs'] : ['scripts/prepare-agent-eval.mjs', 'scripts/run-agent-eval.mjs', 'scripts/check-persisted-run.mjs'])]
+    const expected = ['README.md', 'scripts/course-env.mjs', 'scripts/course-checks.mjs', ...(stage === 2 ? ['scripts/fault-project.mjs', 'scripts/fault-proxy-core.mjs', 'scripts/fault-proxy.mjs'] : stage === 3 ? ['scripts/run-rag-eval.mjs'] : ['.env.course-checks.example', 'scripts/prepare-agent-eval.mjs', 'scripts/run-agent-eval.mjs', 'scripts/check-persisted-run.mjs'])]
     assert.deepEqual(Object.keys(files).map(name => name.slice(prefix.length)).sort(), expected.sort())
     for (const name of Object.keys(files)) {
       assert.ok(name.startsWith(prefix))
+      if (stage === 4 && name === prefix + '.env.course-checks.example') {
+        const template = Buffer.from(files[name]).toString('utf8')
+        assert.match(template, /^# TEST_DATABASE_URL=\r?$/m)
+        assert.doesNotMatch(template, /^(TEST_DATABASE_URL|DATABASE_URL)=/m)
+        continue
+      }
       assert.doesNotMatch(name, /\.env|\.runtime|node_modules|\.next|\.test\.|prisma|app\/|eval\//)
     }
   }

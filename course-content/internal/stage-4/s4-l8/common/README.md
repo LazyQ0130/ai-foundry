@@ -68,7 +68,7 @@ Next.js 15 / React 19、TypeScript、Prisma、PostgreSQL + pgvector、Zod、MCP 
 3. 本机 MCP 演示可设 `MCP_REFERENCE_URL=http://127.0.0.1:3000/api/mcp/reference` 和 `MCP_ALLOW_LOCAL_HTTP=1`。运行 `npm run dev`，注册练习账号并进入 Agent 实验区。Mock 模式不需要 Provider Key。
 4. 先建立自己的非私密练习文档，观察 ready 状态；依次试 Direct、知识搜索、MCP、持久化研究 Run、刷新、Confirm、重复 Confirm，再看 Eval 示例面板。
 
-`.env.example` 列出完整变量。**Application secrets：**`DATABASE_URL`、`AGENT_APPROVAL_SECRET`、`MCP_AUTH_SECRET`。**Provider secrets：**`AI_CHAT_API_KEY`、`AI_EMBEDDING_API_KEY`。`TEST_DATABASE_URL` 是仅供本机 Eval 的独立连接配置，不部署到 Production。模型、模式、超时和 MCP URL 是服务端配置。所有 Secret 只放服务端环境，绝不使用 `NEXT_PUBLIC_*`。
+`.env.example` 列出完整变量。**Application secrets：**`DATABASE_URL`、`AGENT_APPROVAL_SECRET`、`MCP_AUTH_SECRET`。**Provider secrets：**`AI_CHAT_API_KEY`、`AI_EMBEDDING_API_KEY`。`TEST_DATABASE_URL` 是可选的本机验收覆盖，默认留空；工具从日常连接派生专用库，Production 不配置它。模型、模式、超时和 MCP URL 是服务端配置。所有 Secret 只放服务端环境，绝不使用 `NEXT_PUBLIC_*`。
 
 ## 生产部署
 

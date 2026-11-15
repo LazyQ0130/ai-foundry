@@ -57,7 +57,7 @@ PENDING_UPLOAD → PROCESSING → READY
                     └──────→ FAILED → 受控 Retry → PROCESSING
 ```
 
-`PENDING_UPLOAD` 表示数据库已登记但对象未必存在；`PROCESSING` 表示解析或索引进行中；`READY` 才能检索；`FAILED` 要显示稳定错误原因并允许有条件重试。一个布尔 `uploaded` 无法表达这些事实。同步 V1 没有 Queue，进程被杀可能留下 PROCESSING；用 `processingStartedAt` 的短租约挡住同时处理，并允许明显超时后受控重试。阈值要是代码常量并测试。
+`PENDING_UPLOAD` 表示数据库已登记但对象未必存在；`PROCESSING` 表示解析或索引进行中；`READY` 才能检索；`FAILED` 要显示稳定错误原因并允许有条件重试。一个布尔 `uploaded` 无法表达这些事实。同步 V1 没有 Queue，进程被杀可能留下 PROCESSING；用短租约挡住同时处理。这里的租约是由 `processingStartedAt` 划定的限时处理权，过期后另一请求才可接手。阈值要是代码常量并测试。
 
 领域从 C2 的 Workspace 增量延伸：
 
@@ -106,9 +106,9 @@ npm install --save-exact @aws-sdk/client-s3@3.1147.0 @aws-sdk/s3-request-presign
 node scripts/check-local-storage.mjs
 ```
 
-应看到健康节点、私有 bucket，以及 CORS、signed GET、匿名访问拒绝和 PUT preflight 的 PASS。Garage 启动 flags 自动初始化布局和 bucket，检查脚本复用 C3 的固定版本 S3 SDK；安装和权限配置按课程文件执行，不让 AI 临时编写另一套安装方案。
+应看到健康节点、私有 bucket，以及 CORS、signed GET、匿名访问拒绝和 PUT preflight 的 PASS。CORS 是存储服务告诉浏览器哪些网页来源可以访问的规则；preflight 是浏览器发送 PUT 前的 OPTIONS 预检。Garage 启动 flags 自动初始化布局和 bucket，检查脚本复用 C3 的固定版本 S3 SDK；安装和权限配置按课程文件执行，不让 AI 临时编写另一套安装方案。
 
-应用的 S3 endpoint 为 `http://127.0.0.1:3900`，region 为 garage，bucket 为 capstone-private，adapter 使用 path style。凭据来自 `.env.local`，只用于服务端。CORS 默认只允许本机 3000 端口；换应用端口时同步 `C3_APP_ORIGIN` 与 `infra/cors.json` 的 AllowedOrigins，再跑检查。完成上传页面后，仍须在浏览器真正上传 TXT，验证 OPTIONS/PUT 和最终 READY。
+应用的 S3 endpoint 为 `http://127.0.0.1:3900`，region 为 garage，bucket 为 capstone-private，adapter 使用 path style（把 bucket 名放在 URL 路径中）。凭据来自 `.env.local`，只用于服务端。CORS 默认只允许本机 3000 端口；换应用端口时同步 `C3_APP_ORIGIN` 与 `infra/cors.json` 的 AllowedOrigins，再跑检查。完成上传页面后，仍须在浏览器真正上传 TXT，验证 OPTIONS/PUT 和最终 READY。
 
 应用数据库保存 objectKey，不保存永久公开 URL。
 
@@ -124,7 +124,7 @@ Browser → POST /api/knowledge/documents/:id/process
 :::prompt{title="Prompt 2：私有存储适配层"}
 
 ```text
-实现一个仅服务端可用的 S3-compatible storage adapter，集中处理 signed PUT、HEAD、GET 和短时 signed GET。配置 endpoint、region、private bucket、access key、secret、path style；Secret 不进入客户端。沿用 starter 中已通过检查的 Garage、私有 bucket、CORS 和 S3 环境变量，不生成新的安装方案。签名 PUT 最多 5～10 分钟，GET 最多 5 分钟。数据库只存 objectKey，不存永久 URL。不把 SDK 调用散在 Route，不改成 public uploads、本地持久文件或 BYTEA。列出权限验证方法，不操作 Git。
+实现一个仅服务端可用的 S3-compatible storage adapter，集中处理 signed PUT、HEAD、GET 和短时 signed GET。配置 endpoint、region、private bucket、access key、secret、path style；Secret 不进入客户端。沿用 starter 中已通过检查的 Garage、私有 bucket、CORS 和 S3 环境变量，不生成新的安装方案。签名 PUT 和 GET 均使用 5 分钟有效期。数据库只存 objectKey，不存永久 URL。不把 SDK 调用散在 Route，不改成 public uploads、本地持久文件或 BYTEA。列出权限验证方法，不操作 Git。
 ```
 
 :::
@@ -143,14 +143,14 @@ Browser → POST /api/knowledge/documents/:id/process
 
 ## 解析与可解释失败
 
-处理阶段重新验证：PDF 的扩展名、MIME 与 `%PDF-` 签名；MD/TXT 的扩展名、允许的类型和严格 UTF-8 decode。不要用 replacement characters 静默吞掉坏编码。PDF 用已验证的 pdfjs-dist 6.4.299 提取每页文本；一页一个 `{ page, text }`。MD/TXT 的 `page = null`。Markdown 在 C3 只是可搜索文本，不做渲染器。
+处理阶段重新验证：PDF 的扩展名、MIME 与 `%PDF-` 签名；MD/TXT 的扩展名、允许的类型和严格 UTF-8 decode。不要用 replacement characters 静默吞掉坏编码。`pdfjs-dist` 是在 Node 端读取 PDF 文本的库，作者参考实现用 6.4.299 验证了逐页提取。进入自己的 Capstone 项目根目录运行 `npm install --save-exact pdfjs-dist@6.4.299`，核对 `package.json` 与 lockfile，再做下面的解析练习。解析器按页返回 `{ page, text }`。MD/TXT 的 `page = null`。Markdown 在 C3 只是可搜索文本，不做渲染器。
 
-扫描 PDF 没有可提取文本，应明确失败：本课不做 OCR。损坏、空文本、加密 PDF 也要进入稳定的错误类别，页面不显示 pdfjs stack trace。对非敏感 fixture 至少跑正常两页 PDF、空 TXT、损坏 PDF、无文本 PDF；可再加密 PDF。
+扫描 PDF 没有可提取文本，应明确失败。OCR 是从图像识别文字，本课暂不接入。损坏、空文本、加密 PDF 也要进入稳定的错误类别，页面不显示 pdfjs stack trace。对非敏感 fixture 至少跑正常两页 PDF、空 TXT、损坏 PDF、无文本 PDF；可再加密 PDF。
 
 :::prompt{title="Prompt 4：Parser、Chunk 与 Locator"}
 
 ```text
-实现只面向 C3 的 parser contract：ParsedPage = { page: number|null, text: string }。PDF 逐页提取 normalized text；MD/TXT 严格 UTF-8；坏、空、扫描/无文本、加密 PDF 返回稳定类别，不泄露内部 stack。然后用确定性、有限上限的 chunking；先尝试约 800 字符、120 重叠，PDF 不跨页，MD/TXT 按 normalized document text。每个 Chunk 保留 position、page、startOffset、endOffset、content 与稳定 citationKey。给我打印一份 fixture 的 Page/Offset/Preview，并加入单测。不要做报告、Agent 或 Citation UI，不操作 Git。
+实现只面向 C3 的 parser contract：ParsedPage = { page: number|null, text: string }。检查当前项目的 package.json 与 lockfile 已固定 pdfjs-dist 6.4.299，缺失时用 npm install --save-exact pdfjs-dist@6.4.299 安装。用 Node 端的 pdfjs-dist/legacy/build/pdf.mjs 逐页提取文本和真实页号；MD/TXT 严格 UTF-8；坏、空、扫描/无文本、加密 PDF 返回稳定类别，不泄露内部 stack。然后用确定性、有限上限的 chunking；先尝试约 800 字符、120 重叠，PDF 不跨页，MD/TXT 按 normalized document text。每个 Chunk 保留 position、page、startOffset、endOffset、content 与稳定 citationKey。给我打印一份 fixture 的 Page/Offset/Preview，并加入单测。不要做报告、Agent 或 Citation UI，不操作 Git。
 ```
 
 :::
@@ -169,21 +169,21 @@ Browser → POST /api/knowledge/documents/:id/process
 
 ## Embedding、事务与 pgvector
 
-不要复制 Stage 4 整个 Chat/Streaming Provider；只提取聚焦的 Embedding adapter。默认 deterministic Mock 用于测试流程、维度和隔离，不能据它宣称真实语义质量。真实模式可用已验证的 `text-embedding-v4`、1024 维，配置和 Key 只在服务端；真实 Smoke 用非敏感小文件且是 opt-in，标准测试不能依赖云 Key。
+可回看 [3.4 的 Embedding 与入库流程](/lesson/stage-3/s3-l4)，在当前项目只实现聚焦的 Embedding adapter。默认 deterministic Mock 用于测试流程、维度和隔离，不能据它宣称真实语义质量。真实模式可用已验证的 `text-embedding-v4`、1024 维，配置和 Key 只在服务端；真实 Smoke 用非敏感小文件且是 opt-in，标准测试不能依赖云 Key。
 
 最关键的边界：**先把所有 bounded Chunk 在事务外解析并 Embedding；把原文封存到服务端专用 key；全部成功后才开短事务替换索引、切换 objectKey 并标 READY**。如果第 N 次 Embedding 失败，Document 为 FAILED，不得有可检索的半成品。不要开启数据库事务后再等待 100 次外部请求。
 
 :::prompt{title="Prompt 5：Embedding 与原子索引"}
 
 ```text
-实现 focused embedding-provider：默认 deterministic mock、可选真实 text-embedding-v4，严格校验 1024 个有限数值和模型名，服务端超时/错误映射，顺序或很小的有界并发。处理流程先 Parse → Chunk → Embed 全部片段，再将已验证原始字节封存到新的仅服务端可写 sealed key；全部成功后，最后短事务内替换该 Document 的 Chunk、切换 objectKey 并标 READY；任一步失败切 FAILED，READY 检索不能看到半索引。加入第 N 个 Embedding 故意失败、Retry 后无重复 Chunk 的确定性测试。PROCESSING 使用有时限 lease；不要加 Queue、Redis、Agent 或 Report，不操作 Git。
+实现 focused embedding-provider：默认 deterministic mock、可选真实 text-embedding-v4，严格校验 1024 个有限数值和模型名，服务端超时/错误映射，逐块顺序执行，确保能稳定让第 N 个片段失败并复验。处理流程先 Parse → Chunk → Embed 全部片段，再将已验证原始字节封存到新的仅服务端可写 sealed key；全部成功后，最后短事务内替换该 Document 的 Chunk、切换 objectKey 并标 READY；任一步失败切 FAILED，READY 检索不能看到半索引。加入第 N 个 Embedding 故意失败、Retry 后无重复 Chunk 的确定性测试。PROCESSING 使用有时限 lease；不要加 Queue、Redis、Agent 或 Report，不操作 Git。
 ```
 
 :::
 
 ### Break：故意折断第 N 个 Embedding
 
-选择一个超过 800 字符的无敏感 TXT，令第二个片段 Embedding 失败。验收：`FAILED`、该文档可检索 Chunk 为 0；恢复后 Retry 进入 READY，Chunk 数与 locator 一致，`(documentId, indexingVersion, position)` 没有重复。再把 READY 文档临时设为 PROCESSING 验证搜索不返回它。恢复测试库状态，不要把这种故障开关注入正式用户请求。
+从一个段落写超过 800 字符的无敏感 TXT，先核对它确实切成至少两块。让上面的本地 Stub 在第二次 Embedding 调用失败，再用页面或 HTTP 测试验证失败结果。验收：`FAILED`、该文档可检索 Chunk 为 0；恢复后 Retry 进入 READY，Chunk 数与 locator 一致，`(documentId, indexingVersion, position)` 没有重复。再把 READY 文档临时设为 PROCESSING 验证搜索不返回它。恢复测试库状态，不要把这种故障开关注入正式用户请求。
 
 :::check
 - 向量列确为 `vector(1024)`；坏维度被拒绝。
@@ -215,12 +215,12 @@ Search Debug 只接受 `query`。服务端从 Session 获取 User，再取得 Wo
 :::prompt{title="Prompt 7：只读安全与故障审查"}
 
 ```text
-只读审查 C3 真实代码、migration 与测试，不改文件。指出：objectKey 如何生成、Bucket 为什么仍 private、实际字节/格式在哪里复核、四种状态怎样转移、PDF page 与 offset 指向哪份 normalized text、citationKey 何时变化、向量维度在哪里验证、SQL 是否在 Top-K 前筛 Workspace/READY/model/dimension、失败时为什么没有半索引、stale PROCESSING 和 Retry 怎样工作。列出最多五个真实剩余风险；不要建议提前实现报告、Citation Snapshot、Agent、MCP、Note 或 OCR。不要把页面隐藏当权限证据。
+只读审查 C3 真实代码、migration 与测试，不改文件。指出：objectKey 如何生成、Bucket 为什么仍 private、实际字节/格式在哪里复核、四种状态怎样转移、PDF page 与 offset 指向哪份 normalized text、citationKey 何时变化、向量维度在哪里验证、SQL 是否在 Top-K 前筛 Workspace/READY/model/dimension、失败时为什么没有半索引、stale PROCESSING 和 Retry 怎样工作。核对 package.json 的 test:db 已接入本课 HTTP 和 DB 检查，目标应用来自 CAPSTONE_BASE_URL。列出最多五个真实剩余风险；不要建议提前实现报告、Citation Snapshot、Agent、MCP、Note 或 OCR。不要把页面隐藏当权限证据。
 ```
 
 :::
 
-最后从空的独立 PostgreSQL 17 + pgvector 测试库执行正式 migration。运行 unit、Garage 私有性、DB 向量查询和 Alice/Bob HTTP smoke，再运行 lint、typecheck、build、`npm audit --omit=dev`。检查新增 runtime 依赖的版本、license 与来源，区分新引入的发现和 C2 既有锁定依赖问题。查看 `git status`、`git diff`、`git diff --check`、migration SQL；确保 `.env`、真实 DB/S3/Provider Secret 和日志不进入 Git。保存自己的 C3 版本。
+最后按 Starter `docs/local-environment.md` 的本机 HTTP 验收步骤，在独立 PostgreSQL 17 + pgvector 测试库应用正式 migration。启动连接测试库的应用和私有 Garage，再用 `npm run test:db` 跑本课 DB 向量查询、Alice/Bob HTTP 与失败重试检查。另运行单元测试、lint、typecheck、build 和 `npm audit --omit=dev`。检查新增 runtime 依赖的版本、license 与来源，区分新引入的发现和 C2 既有锁定依赖问题。查看 `git status`、`git diff`、`git diff --check`、migration SQL；确保 `.env`、真实 DB/S3/Provider Secret 和日志不进入 Git。保存自己的 C3 版本。
 
 :::concept
 正确失败也是产品能力。上传的文件如果没能形成完整、可归属、可定位的索引，就不应被展示为 READY。C4 才会把本课的 Evidence 变成带来源快照的报告。

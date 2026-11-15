@@ -61,9 +61,9 @@ function bounded(input: string, limit: number) {
   return input.trim();
 }
 
-function chatBody(prompt: string, model: string, structured: boolean, streaming: boolean, system?: string) {
+function chatBody(prompt: string, model: string, structured: boolean, streaming: boolean, system?: string, maxOutputTokens = 256) {
   return {
-    model, messages: [...(system ? [{ role: "system", content: system }] : []), { role: "user", content: prompt }], max_tokens: 256,
+    model, messages: [...(system ? [{ role: "system", content: system }] : []), { role: "user", content: prompt }], max_tokens: maxOutputTokens,
     ...(model === "qwen3.7-flash" && process.env.AI_CHAT_DISABLE_THINKING === "1" ? { enable_thinking: false } : {}),
     ...(structured ? { response_format: { type: "json_object" } } : {}),
     ...(streaming ? { stream: true, stream_options: { include_usage: true } } : {}),
@@ -97,9 +97,9 @@ async function openProvider(config: ReturnType<typeof realConfig>, path: string,
   }
 }
 
-async function openChat(prompt: string, options: { structured?: boolean; streaming?: boolean; signal?: AbortSignal; system?: string }) {
+async function openChat(prompt: string, options: { structured?: boolean; streaming?: boolean; signal?: AbortSignal; system?: string; maxOutputTokens?: 256 | 1024 }) {
   const config = realConfig();
-  return openProvider(config, "/chat/completions", chatBody(prompt, config.model, options.structured === true, options.streaming === true, options.system), options.signal);
+  return openProvider(config, "/chat/completions", chatBody(prompt, config.model, options.structured === true, options.streaming === true, options.system, options.maxOutputTokens), options.signal);
 }
 
 /** The same server-only adapter handles embeddings, with independent credentials/config. */
@@ -128,14 +128,14 @@ export async function embed(input: string, options: { signal?: AbortSignal } = {
 }
 
 /** One server-only Provider contract for ordinary, structured, and streaming calls. */
-export async function generate(input: string, options: { structured?: boolean; system?: string } = {}): Promise<AiAnswer> {
+export async function generate(input: string, options: { structured?: boolean; system?: string; maxOutputTokens?: 256 | 1024 } = {}): Promise<AiAnswer> {
   const structured = options.structured === true;
   const prompt = bounded(input, structured || options.system ? 4000 : 2000);
   const system = options.system ? bounded(options.system, 1000) : undefined;
   if (providerMode() === "mock") return structured
     ? { kind: "mock", text: JSON.stringify({ summary: "这是 Mock 模式的结构化建议。", tags: ["Mock", "示例"], confidence: 0.8 }), usage: null }
     : { kind: "mock", text: system ? "MOCK：已根据本次检索内容走通 RAG 链路。此回答仅供流程验证，尚未调用真实模型。" : `MOCK：已收到问题「${prompt.slice(0, 40)}」。这里是固定示例回答，尚未调用真实模型。`, usage: null };
-  const chat = await openChat(prompt, { structured, system });
+  const chat = await openChat(prompt, { structured, system, maxOutputTokens: options.maxOutputTokens });
   try {
     const data: unknown = await chat.response.json();
     if (!data || typeof data !== "object") throw new AiProviderError("UPSTREAM");

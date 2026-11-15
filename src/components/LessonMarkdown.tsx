@@ -62,7 +62,8 @@ const components = {
   'lesson-resource': CourseResource,
 } as Components
 
-export function LessonMarkdown({ body }: { body: string }) {
-  return <div className="lesson-prose"><ReactMarkdown skipHtml remarkPlugins={[remarkGfm, remarkDirective, remarkLessonBlocks]} components={components} urlTransform={lessonUrl}>{body}</ReactMarkdown></div>
+export function LessonMarkdown({ body, anchorPrefix = '' }: { body: string; anchorPrefix?: string }) {
+  const scopedComponents = anchorPrefix ? { ...components, 'lesson-resource': (props: { asset: string }) => <CourseResource {...props} anchorPrefix={anchorPrefix} /> } as Components : components
+  return <div className="lesson-prose"><ReactMarkdown skipHtml remarkPlugins={[remarkGfm, remarkDirective, [remarkLessonBlocks, { anchorPrefix }]]} components={scopedComponents} urlTransform={lessonUrl}>{body}</ReactMarkdown></div>
 }
 

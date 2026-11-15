@@ -18,9 +18,11 @@ checkKeys:
   - "check-c1a1000000000006"
 ---
 
-开始前确认：已完成 Stage 1～4，或能独立验收 Next.js/API、Prisma migration、Session ownership、RAG、bounded Agent、MCP、精确审批与 Eval。缺少其中一项，先回对应阶段补齐。Capstone 是综合毕业实践，建议预留 35 小时 30 分钟～58 小时，分多天完成。这是包含实现、人工审查、环境配置、排错和重新验收的计划区间，不是完成速度承诺；首次安装或复杂故障可能更久，镜像下载、云账号、DNS 和 Provider 等待另计。
+开始前确认：已完成 Stage 1～4，或能独立验收 Next.js/API、Prisma migration、Session ownership、RAG、bounded Agent、MCP、精确审批与 Eval。需要补某一项时，可按能力回看 [2.2 的 API](/lesson/stage-2/s2-l2)、[2.3 的 Prisma 迁移](/lesson/stage-2/s2-l3)、[2.5 的 Session](/lesson/stage-2/s2-l5)、[2.6 的资料归属](/lesson/stage-2/s2-l6)、[3.5 的 RAG](/lesson/stage-3/s3-l5)、[4.1 的 Agent 循环](/lesson/stage-4/s4-l1)、[4.4 的 MCP](/lesson/stage-4/s4-l4)、[4.3 的审批](/lesson/stage-4/s4-l3) 或 [4.7 的 Eval](/lesson/stage-4/s4-l7)。Capstone 是综合毕业实践，建议预留 35 小时 30 分钟～58 小时，分多天完成。这是包含实现、人工审查、环境配置、排错和重新验收的计划区间，不是完成速度承诺；首次安装或复杂故障可能更久，镜像下载、云账号、DNS 和 Provider 等待另计。
 
 建议安排：C1 产品定义 1.5～2 小时；C2 架构与数据库 3～5 小时；C3 文件与索引 4～8 小时；C4 证据报告 3～5 小时；C5～C7 每课 4～6 小时；C8 评估 6～10 小时；C9 交付 6～10 小时。每次完成一个可观察的小结果，再继续下一段。C8 会先带你完成一个人工核对的小样例，再扩到完整矩阵。
+
+正式跟课先在[毕业项目总览](/capstone)的「我的毕业项目」卡片下载 Starter（项目起始包），解压后用编辑器打开能看到 `package.json` 和 `docs/templates/` 的文件夹。C1 直接在这个目录里写文档，数据库到 C2 再启动。为课末保存版本，现在先在这个目录运行 `git status`；若还没有 Git 仓库，按 [1.5 的 Git 初始化和首次保存](/lesson/stage-1/s1-l5) 操作。
 
 ## 一个很容易写出的错误需求
 
@@ -34,9 +36,9 @@ Multi-Agent、团队协作、自动生成报告和自动保存知识。
 
 AI 可能马上给你页面、数据表和技术方案。但你还没说清谁要用它、为什么用、研究报告怎样才算可信。直接动手，后面很可能不断改数据模型、增加页面和扩大 Agent 权限，直到功能不少，却没有一条完整的用户主线。
 
-今天先不写业务代码。你要做的是把「我想做一个 AI Research Agent」变成一句能指导 C2～C9 开发的话：**为谁，在什么情境下，解决什么问题，V1 做到哪里，什么暂时不做。**
+今天先不写业务代码。你要做的是把「我想做一个 AI Research Agent」变成一句能指导 C2～C9 开发的话：**为谁，在什么情境下，解决什么问题，V1（首个可交付版本）做到哪里，什么暂时不做。**
 
-本课会留下三个文件：`docs/product-brief.md`、`docs/user-flow.md`，以及 README 顶部的一句产品定位。当前工程仍是最小 Bootstrap；Auth、数据库、Agent 和 Citation 的实现从后续课程开始。
+本课会留下三个文件：`docs/product-brief.md`、`docs/user-flow.md`，以及 README 顶部的一句产品定位。当前工程仍是 Starter 里的空应用骨架；Auth、数据库、Agent 和 Citation 的实现从后续课程开始。
 
 ## 先看一个研究者的下午
 
@@ -98,6 +100,8 @@ AI 的分析只是候选。拿你的 Before 逐条核对：它如果说「用户
 
 ## 选一个主要用户，写一句 JTBD
 
+JTBD（Jobs to Be Done）描述用户在某个情境下想完成什么，以及完成后有什么价值。
+
 V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息并形成可追溯研究结论的个人研究者。你需要再给他一个具体情境，例如「调研软件技术的开发者」。不用编姓名、年龄、爱好；这些信息帮不了你决定报告、来源和审批流程。
 
 现在用自己的话填一句话：
@@ -126,7 +130,7 @@ V1 只服务一个 Primary User：经常阅读多份资料、补充外部信息�
 | --- | --- | --- |
 | 检索候选资料、整理 Evidence、提出 Research Brief、组织报告、建议笔记 | 登录与归属、文件存储、检索过滤、引用校验、工具名单、运行状态、持久化与审批执行 | 研究目标、是否接受结论、是否批准写入、报告是否可信、笔记是否保存 |
 
-想一想：模型生成了一段「请保存这份研究结论」，就等于它有权写入你的知识库吗？当然不等于。它可以提出 Note Proposal；系统要把准确内容交给你看，你批准后才能执行。你在 Stage 4 学过的审批边界，在这里变成一个真实产品决定。
+想一想：模型生成了一段「请保存这份研究结论」，就等于它有权写入你的知识库吗？当然不等于。它可以提出 Note Proposal；系统要把准确内容交给你看，你批准后才能执行。你在 [4.3 学过的审批边界](/lesson/stage-4/s4-l3)，在这里变成一个真实产品决定。
 
 :::warning{title="把建议当授权，会改变产品性质"}
 研究报告可能包含模型误解的内容。V1 不让 Agent 自动写 KnowledgeNote，更不能让外部资料中的文字命令它写入。人的确认是产品流程的一步，后续 C7 才实现对应的服务端约束。
@@ -240,7 +244,7 @@ Login → Workspace → Upload Knowledge → Create Research Task
 
 ## 写一份能被检验的 Product Brief
 
-你的项目已有 `docs/templates/product-brief.md`。将它复制到 `docs/product-brief.md`，填写 Problem、Target User、Current Workflow、JTBD、MVP、Non-goals、User Flow、Success Criteria、Open Questions。`docs/user-flow.md` 已有 Before；补完 After、失败分支与页面。最后在 README 顶部加一句你自己的产品定位。只改这三个交付文件，不需要把 Bootstrap 改成一个会运行研究的产品。
+你的项目已有 `docs/templates/product-brief.md`。将它复制到 `docs/product-brief.md`，填写 Problem、Target User、Current Workflow、JTBD、MVP、Non-goals、User Flow、Success Criteria、Open Questions。`docs/user-flow.md` 已有 Before；补完 After、失败分支与页面。最后在 README 顶部加一句你自己的产品定位。这次只修改三个交付文件。研究功能从 C2 开始开发。
 
 Success Criteria 不要写「AI 很智能」或「页面好看」。至少写到这些可检查的结果：
 

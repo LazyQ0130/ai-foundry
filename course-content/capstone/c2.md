@@ -41,7 +41,7 @@ Login → Workspace → Upload Knowledge → Research Task → Research Run → 
 浏览器将需要表单、任务列表和后续的报告页面；服务端将承担 Auth、API、ownership 以及未来 AI Provider 和 Agent Runtime；关系数据从 User、Workspace、ResearchTask 起步。文件将来进入私有对象存储，向量检索将来用到 pgvector。**未来需要**并不等于**现在安装**。
 
 :::task{title="写下自己的工程需求"}
-在 `docs/architecture-decision.md` 的 Context 草稿里，先写出你从 C1 MVP、Non-goals 和 User Flow 推出的 4～6 条约束。每条都指出来源。不要先写技术栈。
+先把 Starter 的 `docs/templates/architecture-decision.md` 复制为 `docs/architecture-decision.md`。这份架构决策记录（ADR）用来写清候选方案、取舍和理由。在 Context 草稿里写出你从 C1 MVP、Non-goals 和 User Flow 推出的 4～6 条约束。每条都指出来源。不要先写技术栈。
 :::
 
 :::concept
@@ -113,7 +113,7 @@ Next.js Frontend → API Gateway → Auth / Research / Knowledge / Agent Microse
 逐项标注 Keep、Remove、Revisit。对每个 Keep，指出 C1 哪条需求要求它；对 Revisit，说明出现什么具体条件才重新评估。把当前图收敛到 Browser → Next.js 模块（UI / Routes / Auth / Research）→ PostgreSQL，写入 `docs/architecture.md`。架构复杂度本身没有价值。
 :::
 
-Agent 的选型也只做轻量决定：A 复用 Stage 4 已验证的 bounded runtime；B LangGraph 一类图编排；C 从零重写 Loop。Reference 选择 C5 再复用 A，因为停止、取消、工具校验与边界已有验证，而 Capstone 的新问题是研究产品领域。B 对复杂分支和持久图执行有优势，C 有最大自由度，但现在都不进入 C2 产品。
+Agent 的选型也只做轻量决定：A 复用 [4.1 的受限 Agent 循环](/lesson/stage-4/s4-l1) 与 [4.5 的受限 Workflow](/lesson/stage-4/s4-l5)；B LangGraph 一类图编排；C 从零重写 Loop。Reference 选择 C5 再复用 A，因为停止、取消、工具校验与边界已有验证，而 Capstone 的新问题是研究产品领域。B 对复杂分支和持久图执行有优势，C 有最大自由度，但现在都不进入 C2 产品。
 
 ## 从 User Flow 抽取领域
 
@@ -185,7 +185,7 @@ Prisma 安装并写好 schema 后，用 `node --env-file=.env.local node_modules
 :::prompt{title="Prompt 3：接入 Auth 和 Workspace"}
 
 ```text
-继续当前 C2 项目，把已学的服务端 Session Auth 接进这个新产品。
+继续当前 C2 项目，把 2.5 的服务端 Session Auth 和 2.6 的服务端归属检查接进这个新产品。
 要求：注册、登录、退出、当前会话；密码只存安全 hash；服务端生成随机 token，数据库只存 token hash；HttpOnly Cookie 与过期时间；所有写请求做同源保护。
 浏览器不得提供 userId 或 workspaceId 作为身份依据。注册 User 时，在同一数据库事务内创建唯一 Personal Workspace 和 Session。
 不建 Team、Role、WorkspaceMember，不做 Task UI 或 AI 功能。可复用已验证 Auth primitive 的最小实现，但不要复制 Stage 4 页面、业务路由、Agent 或 RAG。
@@ -210,7 +210,7 @@ Prisma 安装并写好 schema 后，用 `node --env-file=.env.local node_modules
 在现有 C2 数据层和 Session Auth 上，完成第一条 ResearchTask 链路。
 服务端：受保护的 GET / POST /api/research/tasks；身份只从 server session 获取；从 session.userId 查询唯一 Workspace；POST 只接受 title 和 query；trim 后 title 1～120、query 1～2000；strict validation 拒绝 userId、workspaceId、ownerId 等额外字段；列表按真实 Workspace ID 过滤；返回简短安全错误。
 页面：未登录有最小注册/登录入口；登录后显示 Workspace；可创建和列出 Task；刷新后仍可见；有 loading、empty、error 状态。UI 保持最小。
-暂不做 update/delete/run，不加 AI、RAG、文件、Agent、Citation。完成后运行现有测试与 build，报告改动，不操作 Git。
+为注册、Task 持久化、匿名拒绝、伪造归属、跨来源及双用户隔离写 HTTP 检查。注册 npm script test:db，使用 CAPSTONE_BASE_URL 指定独立测试应用。暂不做 update/delete/run，不加 AI、RAG、文件、Agent、Citation。运行现有测试与 build，报告改动，不操作 Git。
 ```
 
 :::
@@ -257,7 +257,7 @@ UI → Route → Validation → Auth → Workspace ownership → Prisma → Post
 
 ## 验收与保存
 
-从空测试库执行正式 migration；运行 lint、typecheck、tests、build 和 HTTP smoke。确认注册、自动 Workspace、创建 Task、刷新后仍在、Bob 看不到、匿名不能写、伪造归属不能写、跨来源写入被拒。检查 `git status`、`git diff`、`git diff --check` 和 migration SQL；确认 `.env`、真实 DATABASE_URL、Session token、测试库配置与日志没有进入 Git。然后保存自己的 C2 版本，提交信息可用 `build first research workspace slice`。
+按 Starter `docs/local-environment.md` 的「C2～C7：运行本机 HTTP 验收」准备测试服务。让 AI 将本课 HTTP 检查接入 `package.json` 的 `test:db`，从 `CAPSTONE_BASE_URL` 读取测试应用地址，逐项检查响应并在失败时退出非零。先在隔离库部署正式 migration，再运行 `npm run lint`、`npm run typecheck`、`npm test`、`npm run build` 和 `npm run test:db`。这里的 Smoke（冒烟检查）是发送真实 HTTP 请求，快速确认这条主要链路连通。确认注册、自动 Workspace、创建 Task、刷新后仍在、Bob 看不到、匿名不能写、伪造归属不能写、跨来源写入被拒。检查 `git status`、`git diff`、`git diff --check` 和 migration SQL；确认 `.env`、真实 DATABASE_URL、Session token、测试库配置与日志没有进入 Git。然后保存自己的 C2 版本，提交信息可用 `build first research workspace slice`。
 
 :::deepdive{title="为什么后续仍可能调整架构"}
 当出现真正的团队权限、独立扩缩容或长时后台任务需求时，重新评估边界与运行方式。今天的模块化单体让这些边界先在代码中清晰存在；不靠提前拆服务证明架构成熟。

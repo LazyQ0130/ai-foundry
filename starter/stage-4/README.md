@@ -7,7 +7,7 @@
 需要 Node.js、npm、Docker，以及能运行 Docker Compose 的环境。
 
 1. 在解压后的项目目录运行 `npm install`。
-2. 将 `.env.example` 复制为本机 `.env`，为 `STAGE4_LOCAL_DB_PASSWORD` 设置你自己的本地数据库密码，并填写与之匹配的 `DATABASE_URL`。数据库名为 `stage4_learning`，Compose 映射本机端口 `55433`。`.env` 已被 Git 忽略，不要提交。
+2. 将 `.env.example` 复制为本机 `.env`，为 `STAGE4_LOCAL_DB_PASSWORD` 设置你自己的本地数据库密码，并填写与之匹配的 `DATABASE_URL`。数据库名为 `stage4_learning`，Compose 映射本机端口 `55433`。`.env` 已被 Git 忽略，不要提交。`TEST_DATABASE_URL` 默认留空，课程工具会派生专用测试库连接；只有需要本机覆盖时才按对应课次配置。
 3. 如果上一阶段 Stage 3 的数据库还在运行，先进入**之前的 Stage 3 项目目录**执行 `docker compose down`，再回到 Stage 4 项目目录。两阶段都使用本机端口 `55433`，不能同时占用；这一步不会删除 Stage 3 的数据库 volume。
 4. 在 Stage 4 项目目录运行 `docker compose up -d`，等待数据库健康检查通过。
 5. 运行 `npx prisma migrate deploy`。这会应用已存在的四次迁移，包括 pgvector；不需要 `migrate reset`。

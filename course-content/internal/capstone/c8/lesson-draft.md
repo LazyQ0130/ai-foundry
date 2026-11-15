@@ -64,7 +64,7 @@ Test 验证代码逻辑按预期运行；Product Eval 检查检索、证据、�
 亲自将 S2 的“提高了可靠性”与原文“没有改善”对照，说明为什么 citation key 正确仍不够。再核对 S4 的 Note 计数。能解释这两项后，才用下面的 Prompt 把观察自动化；不要先让 AI 给全套指标打分。
 :::
 
-这六例是学习检查点，不是毕业验收全集。后面补齐外部题录、取消、预算、索引失败、篡改和并发等矩阵；C9 仍要求完整 deterministic suite、全部安全门槛和基线回归通过。真实模型评估在确定性通过后可选执行，没有 Key 就写 REAL EVAL NOT RUN，不把它勾成通过。
+这六例是学习检查点，不是毕业验收全集。后面补齐外部题录、取消、预算、索引失败、篡改和并发等矩阵；C9 仍要求完整 deterministic suite、全部安全门槛和基线回归通过。真实模型评估在确定性通过后可选执行，缺少 Key 或 Crossref 不可达时，可以记录 REAL EVAL NOT RUN 和原因，不把它勾成通过。
 
 ## 定义四层与观察契约
 
@@ -80,7 +80,8 @@ Test 验证代码逻辑按预期运行；Product Eval 检查检索、证据、�
 :::prompt{title="Prompt 1：Eval Contract"}
 
 ~~~text
-先读我的C7产品、eval/review-notes.md中的六例人工Gold和已有测试，不增加产品功能。先将六例映射到下面四层，逐项解释expected与observed；确认入门观察可复现后，再设计完整矩阵。根据我写的可靠性承诺建立Product Eval契约：functional/quality/safety/reliability；固定case id、mode、subcases；safe assertion、observed metrics、PASS/FAIL/INCOMPLETE；JSON与Markdown report。
+先读我的C7产品、eval/review-notes.md中的六例人工Gold和已有测试，不增加产品功能。先将六例映射到下面四层，逐项解释expected与observed；确认入门观察可复现后，再设计完整矩阵。根据我写的可靠性承诺建立 Product Eval 契约，覆盖 functional/quality/safety/reliability；每例固定 case id、mode、subcases，定义 safe assertion、observed metrics、PASS/FAIL/INCOMPLETE 与 JSON/Markdown report。
+五个验收 case ID 固定为 retrieval-gold（检索 Gold）、citation-support-gold（引用支持度）、unapproved-write（未批准写入）、cross-workspace-isolation（跨 Workspace 隔离）、private-research（私人研究主链路）。它们是 Runner 的主案例 ID，Gold 中单条题目的 ID 另行定义。
 Hard Gates与case pass rate独立；DB断开、fixture缺失、执行抛错不能按零泄漏算PASS。partial运行不得宣称全量通过。默认mock/deterministic，不依赖AI Key、不调用付费模型。
 只输出设计和文件计划，等我检查后再逐步实现，不操作Git。
 ~~~
@@ -170,7 +171,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 :::prompt{title="Prompt 5：Runner、Report 与 Hard Gates"}
 
 ~~~text
-实现固定矩阵Runner，整合Reliability表与已有产品primitive。每例捕获execution error→INCOMPLETE；setup/import/DB/fixture/report失败也写安全INCOMPLETE报告并非零退出。总状态独立计算Hard Gates、Quality Threshold和case pass rate。
+实现固定矩阵 Runner，入口为 eval/runner.mjs，使用设计阶段约定的五个 case ID。在当前项目的 package.json scripts 注册 "eval:capstone": "tsx eval/runner.mjs"；保留已有 scripts。核对 tsx 在 devDependencies 与 lockfile 中；缺失时用 npm install -D tsx 添加。整合 Reliability 表与已有产品 primitive。每例捕获execution error→INCOMPLETE；setup/import/DB/fixture/report失败也写安全INCOMPLETE报告并非零退出。总状态独立计算Hard Gates、Quality Threshold和case pass rate。
 输出.runtime/capstone-eval下JSON与Markdown，含版本、四类结果、计数、Hit@3/abstention/fidelity、model/embedding/tool/external calls、latency及小样本限制。不保存Cookie/approvalToken/APIKey/Secret/Prompt/raw document/chunk/response/vector。
 阈值由我依据人工Gold和实际观察先确定并review，不直接复制作者分数；不通过时先判product bug/eval bug/dataset bug，不降低阈值求PASS。禁止新migration、新Eval UI后台、Worker或Queue。
 ~~~
@@ -186,7 +187,7 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 :::prompt{title="Prompt 6：Failure Injection 与 Regression"}
 
 ~~~text
-提供--case、--inject-failure、--compare-baseline。只修改eval observation：unapproved-write/leak/unsupported-claim/retrieval；不真的越权写入。execution-error让case抛错。各自写单独report并非零退出；FAIL与INCOMPLETE分开。
+沿用 npm run eval:capstone 入口。提供 --case <id>、--inject-failure <kind>、--compare-baseline <path>。故障与 case ID 固定配对：retrieval → retrieval-gold、unsupported-claim → citation-support-gold、unapproved-write → unapproved-write、leak → cross-workspace-isolation、execution-error → private-research。前四种只修改 eval observation，判 FAIL；execution-error 让该 case 抛错，判 INCOMPLETE。每种写独立报告并非零退出。
 基于首次完整通过的实际报告建立reviewed baseline，只存安全聚合metrics/case status/版本。比较退化时阻断，partial不能当full release结果。测试阈值边界、版本不匹配和报告不完整，保留原baseline直到人工批准更新。
 ~~~
 
@@ -195,7 +196,9 @@ Safety覆盖Knowledge list/retrieval/Task/Run及其Step/Citation/external query 
 ## 让 Eval 自己变红
 
 :::task{title="五种故障必须亲自跑"}
-运行下面命令，记录每次 exit code 与 report.overall。前四类应 FAIL；execution-error 应 INCOMPLETE。检查数据库没有因此产生恶意副作用。恢复正常参数再全量运行，结果应回到正常基线。
+先在项目根目录执行 `npm run`，确认能看到 `eval:capstone`，并在 Runner 的案例登记处核对设计阶段约定的五个 ID。用 Starter 内的 `docs/local-environment.md` 中的独立 Eval 库步骤完成 build、迁移和首轮正常全量运行，人工审核后保存 `eval/baseline.json`。
+
+依次运行下面的五条故障命令，记录各次退出码、报告中的 case ID 与 `report.overall`。前四类应为 FAIL；execution-error 应为 INCOMPLETE。检查数据库没有因此产生恶意副作用。最后一条不带注入，应该与基线比较通过。
 :::
 
 ~~~bash
@@ -208,6 +211,8 @@ npm run eval:capstone -- --compare-baseline eval/baseline.json
 ~~~
 
 :::stuck{title="失败后先判断修哪一边"}
+`Missing script: "eval:capstone"` 时先核对当前目录和 `package.json` 的 scripts；未选中案例或直接进入 setup INCOMPLETE 时，核对参数分隔符 `--`、case ID 和配对。故障命令的退出码须与本轮报告里的案例和状态一起核对。
+
 Hit@3 低：查看 safe gold/observed IDs、embedding mode、fixture是否正确。Key 合法但结论错：检查 support 与原文，不重复统计 validity。DB断开：保持INCOMPLETE，不能补零。并发重复：追锁、UNIQUE与事务，不改 expected。Gold自己错了：人工修数据、升版本、重审baseline。不要直接把阈值调低。
 :::
 
@@ -215,12 +220,12 @@ Hit@3 低：查看 safe gold/observed IDs、embedding mode、fixture是否正确
 
 Real Eval 不是再跑一次 smoke。Reference 固定十条语义检索、四份 answerable/irrelevant report、真实 private+Crossref mixed report、Note fidelity 和两条 bounded full workflow。分别记录真实模型与embedding、dimension1024、parser/indexing/dataset/runner版本。
 
-先跑 deterministic gate，再明确 opt-in Real。脚本固定 case count、直连调用上限和总时限；两个完整 Workflow 继续受 C5 的 budget/deadline 限制。普通 build/verify 不会调用付费模型。Real quality 为 informational；若用可选LLM Judge，只能传 claim+cited excerpt，严格 supported/partially_supported/unsupported+reason，绝不接触身份/secret/整库，也不能成为 Safety Gate。Reference 默认固定Gold与可解释规则；C8_JUDGE=1 可单独启用 Note fidelity Judge，词法告警继续记录，Judge 不替换 Safety Gate。
+先跑确定性门槛，再选择是否做真实评估。选择执行时，按 Starter `docs/local-environment.md` 的 C8 步骤把两个数据库变量都切到 `capstone_c8_real`，应用迁移，准备服务端 Chat 与 Embedding 配置，显式设置 `C8_REAL_EVAL=1`，再运行 `npm run eval:capstone:real`。脚本固定案例数、直连调用上限和总时限；两个完整 Workflow 继续受 C5 的 budget/deadline 限制。普通 build/verify 不会调用付费模型。若沿用 C6 的 `CROSSREF SMOKE NOT VERIFIED`，可先保存确定性评估与基线。等 Crossref 恢复可达，再补完整 Real Eval。Real quality 为 informational；若用可选LLM Judge，只能传 claim+cited excerpt，严格 supported/partially_supported/unsupported+reason，绝不接触身份/secret/整库，也不能成为 Safety Gate。Reference 默认固定Gold与可解释规则；C8_JUDGE=1 可单独启用 Note fidelity Judge，词法告警继续记录，Judge 不替换 Safety Gate。
 
 :::prompt{title="Prompt 7：受控 Real Eval 与只读审查"}
 
 ~~~text
-确定性通过后才实现独立opt-in real eval。固定多条paraphrase/中文retrieval、answerable与irrelevant evidence拒答、real mixed Crossref/private report、AI Proposal数字/实体/否定fidelity、两条完整Workflow。固定case count、calls、timeout、model与dimension，不允许任意扩张CLI付费调用。
+确定性通过后才实现独立 opt-in Real Eval，使用同一个入口并在 package.json scripts 注册 "eval:capstone:real": "tsx eval/runner.mjs --real"。只有进程明确收到 C8_REAL_EVAL=1 才能执行任何真实调用。固定多条paraphrase/中文retrieval、answerable与irrelevant evidence拒答、real mixed Crossref/private report、AI Proposal数字/实体/否定fidelity、两条完整Workflow。固定case count、calls、timeout、model与dimension，不允许任意扩张CLI付费调用。
 记录安全汇总和版本；结构validity、固定规则质量信号与需人工语义复核分别写清，不能声称通用semantic certification。只读审查报告泄漏、数据库guard、Hard Gate、INCOMPLETE、baseline、failure injections；列真实风险，不实现C9。
 ~~~
 
@@ -241,8 +246,7 @@ npx prisma migrate deploy
 npx prisma migrate status
 npm run eval:capstone
 npm run eval:capstone -- --compare-baseline eval/baseline.json
-# 可选：单独配置真实Provider并明确opt-in后；没有Key则记录REAL EVAL NOT RUN
-# npm run eval:capstone:real
+
 npm audit --omit=dev
 git status
 git diff

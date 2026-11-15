@@ -64,12 +64,12 @@ Retrieval Result 是当前候选；Citation 是报告声称某结论依赖某个
 
 ## 复用一条可信的 Retrieval Contract
 
-C3 Search Debug 的查询已经在 SQL 中先按 Workspace、READY、embedding model 与 dimension 过滤，再 Top-K。C4 不能在服务端 fetch 自己的 Search API，更不能复制一份略有不同的 SQL。抽一个服务，Search Debug 和 Run 都调用它；内部结果增加 `contentHash` 与 `indexingVersion`，用于快照。浏览器看不到这些内部字段也没关系。
+C3 Search Debug 的查询已经在 SQL 中先按 Workspace、READY、embedding model 与 dimension 过滤，再 Top-K。C4 不能在服务端 fetch 自己的 Search API，更不能复制一份略有不同的 SQL。抽出名为 `retrieveKnowledgeEvidence()` 的服务，Search Debug 和 Run 都调用它；内部结果增加 `contentHash` 与 `indexingVersion`，用于快照。浏览器看不到这些内部字段也没关系。
 
 :::prompt{title="Prompt 2：抽共享 Retrieval Service"}
 
 ```text
-从现有 /api/knowledge/search 抽出 lib/knowledge-retrieval.ts，输入只能是服务端得到的 workspaceId、query 和最多 5 的 limit。保持 SQL 内 Workspace/READY/model/dimension 过滤发生在 Top-K 之前。返回 citationKey、当前 chunk 内容/定位、Document 标题、contentHash 和 indexingVersion。Search Debug 仍返回原有安全 preview 和相似度；Run 直接调用服务，不 HTTP 调自己。补回归测试，解释为什么相似度不能直接充当“能回答”的证明。不操作 Git。
+从现有 /api/knowledge/search 抽出 lib/knowledge-retrieval.ts，导出 retrieveKnowledgeEvidence({workspaceId,query,limit})。输入只能是服务端得到的 workspaceId、query 和最多 5 的 limit。保持 SQL 内 Workspace/READY/model/dimension 过滤发生在 Top-K 之前。返回 citationKey、当前 chunk 内容/定位、Document 标题、contentHash 和 indexingVersion。Search Debug 仍返回原有安全 preview 和相似度；Run 直接调用服务，不 HTTP 调自己。补回归测试，解释为什么相似度不能直接充当“能回答”的证明。不操作 Git。
 ```
 
 :::
@@ -101,7 +101,7 @@ POST `/api/research/tasks/:taskId/runs` 先通过 Session→Workspace→Task 检
 :::prompt{title="Prompt 4：Run API 与失败状态"}
 
 ```text
-在当前工程实现 GET/POST /api/research/tasks/:taskId/runs。POST 不接收客户端归属或 Provider 参数，严格拒绝额外 JSON 字段。先由 Session 找 Workspace，再以 workspaceId 查 Task；未授权不要创建 Run。创建 RUNNING 后只检索一次、最多生成一次；零 Evidence 直接 COMPLETED/INSUFFICIENT_EVIDENCE；有效报告用事务同时写 Citation snapshots、report Json、COMPLETED；失败留下 FAILED 与简短 errorCode，不存 raw Provider 响应。Mock 跑通后加 opt-in OpenAI-compatible chat completions JSON mode、30 秒 timeout、输出 token 与 Evidence 字符上限，并再次做 Zod/allowed-key 校验。不操作 Git。
+在当前工程实现 GET/POST /api/research/tasks/:taskId/runs。POST 不接收客户端归属或 Provider 参数，严格拒绝额外 JSON 字段。先由 Session 找 Workspace，再以 workspaceId 查 Task；未授权不要创建 Run。创建 RUNNING 后只检索一次、最多生成一次；零 Evidence 直接 COMPLETED/INSUFFICIENT_EVIDENCE；有效报告用事务同时写 Citation snapshots、report Json、COMPLETED；失败留下 FAILED 与简短 errorCode，不存 raw Provider 响应。Mock 跑通后加 opt-in OpenAI-compatible chat completions JSON mode、30 秒 timeout、输出 token 与 Evidence 字符上限，并再次做 Zod/allowed-key 校验。为后面的四组 Break 补确定性 HTTP 与数据库断言，把本课检查接到 test:db，使用 CAPSTONE_BASE_URL 读取隔离测试应用地址。不操作 Git。
 ```
 
 :::
@@ -147,12 +147,12 @@ Alice 有 Task/资料/报告；Bob 猜 Task ID 创建 Run、猜 Run ID 读取报
 :::prompt{title="Prompt 6：只读 Grounding 审查"}
 
 ```text
-只读审查当前 C4 代码和 migration，不修改文件。逐一指出：Session 在哪里解析、Workspace/Task/Run 归属在哪里限制、SQL 是否先按 Workspace/READY/model/dimension 过滤、Provider 看到哪些 Evidence、哪些来源字段只能由服务端映射、每个 section 的 Citation 如何验证、零 Evidence 是否跳过 Provider、Source 删除后快照为何仍能展示、失败 Run 留下什么。列出最多五个真实风险；不要建议提前实现 Agent/Tool/MCP/Approval/Note。不要把 UI 隐藏当权限证据。
+只读审查当前 C4 代码和 migration，不修改文件。逐一指出：Session 在哪里解析、Workspace/Task/Run 归属在哪里限制、SQL 是否先按 Workspace/READY/model/dimension 过滤、Provider 看到哪些 Evidence、哪些来源字段只能由服务端映射、每个 section 的 Citation 如何验证、零 Evidence 是否跳过 Provider、Source 删除后快照为何仍能展示、失败 Run 留下什么。核对 package.json 的 test:db 已接入本课 HTTP 检查，以 CAPSTONE_BASE_URL 指定已启动的测试应用。列出最多五个真实风险；不要建议提前实现 Agent/Tool/MCP/Approval/Note。不要把 UI 隐藏当权限证据。
 ```
 
 :::
 
-运行 `npm run lint`、`npm run typecheck`、`npm test`、`npm run build`。用独立 `TEST_DATABASE_URL` 从空库 `prisma migrate deploy`，再执行 HTTP smoke；有可用的非敏感 Provider 配置时只做一次 opt-in 真实集成 smoke。查看 migration SQL、`git status`、`git diff`、`git diff --check`，确保 `.env`、数据库 URL、Session token、日志不入库，再保存自己的 C4 版本。真实一次成功只证明集成可用，报告质量的系统评估属于 C8。
+运行 `npm run lint`、`npm run typecheck`、`npm test`、`npm run build`。按 Starter `docs/local-environment.md` 的本机 HTTP 验收步骤，让 `DATABASE_URL` 与 `TEST_DATABASE_URL` 指向同一个独立测试库，运行 `npx prisma migrate deploy`。启动连接该库的测试应用，再用 `npm run test:db` 执行本课 HTTP Smoke；有可用的非敏感 Provider 配置时只做一次 opt-in 真实集成 smoke。查看 migration SQL、`git status`、`git diff`、`git diff --check`，确保 `.env`、数据库 URL、Session token、日志不入库，再保存自己的 C4 版本。真实一次成功只证明集成可用，报告质量的系统评估属于 C8。
 
 :::check{title="C4 的完成证据"}
 你能展示：Grounded 报告每条 Claim 都引用本次 Evidence；伪造 key 让 Run FAILED；无资料时明确不足；重索引/删除后历史 Snapshot 仍可读；Alice/Bob/匿名隔离。能解释这些证据来自代码、migration 和 HTTP/DB 检查的哪一处。

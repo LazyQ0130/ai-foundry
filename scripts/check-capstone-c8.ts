@@ -22,6 +22,15 @@ for(const key of lesson.meta.checkKeys){assert.ok(!used.has(key));used.add(key)}
 for(const word of ['Functional','Quality','Safety','Reliability','Hit@3','INCOMPLETE','baseline','Test','Eval','C9'])assert.ok(lesson.body.includes(word),word)
 const cases=await read('eval/cases.mjs'),metrics=await read('eval/metrics.mjs'),runner=await read('eval/runner.mjs'),report=await read('eval/report.mjs')
 const count=(cases.match(/^add\('/gm)??[]).length;assert.ok(count>=20&&count<=30)
+const design = lesson.body.split(':::prompt{title="Prompt 1：')[1]?.split('\n:::')[0] ?? ''
+const runnerPrompt = lesson.body.split(':::prompt{title="Prompt 5：')[1]?.split('\n:::')[0] ?? ''
+assert.match(runnerPrompt, /eval:capstone.*tsx eval\/runner\.mjs/, 'Runner prompt must create the npm entry used in acceptance')
+const injectedCases = [...lesson.body.matchAll(/^npm run eval:capstone -- --case ([\w-]+) --inject-failure /gm)]
+assert.equal(new Set(injectedCases.map(([, id]) => id)).size, 5, 'Acceptance must exercise five different cases')
+for (const [, id] of injectedCases) {
+  assert.ok(design.includes(id), `Design prompt must name the acceptance case ${id}`)
+  assert.ok(cases.includes(`add('${id}'`), `Reference runner must register the acceptance case ${id}`)
+}
 for(const category of ['functional','quality','safety','reliability'])assert.ok(cases.includes(`'${category}'`))
 for(const word of ['cross_workspace_leaks','unapproved_writes','duplicate_knowledge_notes','invalid_citations','unsupported_deterministic_claims','hitAtK','supportGold','noteFidelity','compareBaseline'])assert.ok(metrics.includes(word),word)
 for(const word of ['--case','--inject-failure','--compare-baseline','INCOMPLETE','process.exitCode','C8_REAL_EVAL','REAL_CALL_BUDGET_EXHAUSTED'])assert.ok(runner.includes(word),word)

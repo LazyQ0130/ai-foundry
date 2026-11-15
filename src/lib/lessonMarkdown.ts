@@ -13,9 +13,10 @@ export const calloutLabels = {
   deepdive: '想深入再看', 'image-placeholder': '配图待补充',
 } as const
 export type CalloutKind = keyof typeof calloutLabels
+export type LessonHelpItem = { id: string; title: string; body: string }
 
 /** Only these attributes are forwarded. Author HTML, event handlers and styles never are. */
-export function remarkLessonBlocks() {
+export function remarkLessonBlocks({ anchorPrefix = '' }: { anchorPrefix?: string } = {}) {
   return (tree: Root, file: VFile) => {
     const counts: Record<string, number> = {}
     visit(tree, (node, index, parent) => {
@@ -47,7 +48,7 @@ export function remarkLessonBlocks() {
       const anchor = node.name === 'stuck' ? 'lesson-help' : `lesson-${node.name}`
       node.data = { hName: 'lesson-callout', hProperties: {
         kind: node.name, title,
-        id: `${anchor}${counts[node.name] === 1 ? '' : `-${counts[node.name]}`}`,
+        id: `${anchorPrefix}${anchor}${counts[node.name] === 1 ? '' : `-${counts[node.name]}`}`,
       } }
     })
   }
@@ -57,6 +58,30 @@ export function validateLessonMarkdown(body: string) {
   const processor = unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(remarkLessonBlocks)
   const tree = processor.parse(body)
   processor.runSync(tree, { value: body })
+}
+
+/** Extract from the validated Markdown AST, retaining the author's exact source and references. */
+export function extractLessonHelp(body: string): LessonHelpItem[] {
+  // Micromark ignores a leading BOM when reporting source offsets.
+  if (body.charCodeAt(0) === 0xfeff) body = body.slice(1)
+  const processor = unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(remarkLessonBlocks)
+  const tree = processor.runSync(processor.parse(body), { value: body }) as Root
+  const definitions: string[] = []
+  visit(tree, 'definition', node => {
+    definitions.push(body.slice(node.position?.start.offset, node.position?.end.offset))
+  })
+  const items: LessonHelpItem[] = []
+  visit(tree, node => {
+    if (node.type !== 'containerDirective' || node.name !== 'stuck') return
+    const first = node.children[0]?.position?.start.offset
+    const last = node.children[node.children.length - 1]?.position?.end.offset
+    items.push({
+      id: `lesson-help${items.length ? `-${items.length + 1}` : ''}`,
+      title: node.attributes?.title || `排查建议 ${items.length + 1}`,
+      body: [first === undefined || last === undefined ? '' : body.slice(first, last), ...definitions].join('\n\n'),
+    })
+  })
+  return items
 }
 
 /** Restrict links and images even if the Markdown parser recognizes another protocol. */
